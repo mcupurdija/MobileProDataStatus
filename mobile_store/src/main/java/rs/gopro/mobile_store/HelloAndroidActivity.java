@@ -1,13 +1,12 @@
-package rs.gopro.mobile_store.ui;
+package rs.gopro.mobile_store;
 
-import rs.gopro.mobile_store.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
-public class LoginActivity extends Activity {
+public class HelloAndroidActivity extends Activity {
 
-    private static String TAG = "LoginActivity";
+    private static String TAG = "mobile_store";
 
     /**
      * Called when the activity is first created.
@@ -17,9 +16,9 @@ public class LoginActivity extends Activity {
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	super.onCreate(savedInstanceState);
-		Log.i(TAG, "Loga activity created.");
-		setContentView(R.layout.login);
+        super.onCreate(savedInstanceState);
+		Log.i(TAG, "onCreate");
+        setContentView(R.layout.main);
     }
 
 }
