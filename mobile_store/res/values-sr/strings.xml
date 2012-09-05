@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	<!-- KORISNICKI INTERFEJS -->
     <string name="app_name">Mobile store</string>
     <string name="username">Korisnicko ime</string>
     <string name="password">Lozinka</string>
     <string name="login">Prijava za rad</string>
     <string name="app_logo_desc">Logo aplikacije</string>
-
+    <string name="login_title">Prijavi se</string>
+    <string name="home_title">Pocetak</string>
+    <!-- GRESKE -->
+	<string name="login_error">* Greška prilikom prijave za rad!</string>
 </resources>

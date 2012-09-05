@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/log_in"
     android:layout_width="270dp"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
@@ -7,7 +9,11 @@
     android:background="@drawable/login_border"
     android:gravity="center_vertical|center_horizontal"
     android:orientation="vertical"
-    android:padding="20dp" >	<!--  Logo image -->
+    android:padding="20dp"
+    tools:context=".ui.LoginActivity" >
+
+ <!-- Logo image -->
+
     <ImageView
         android:id="@+id/imageViewLogo"
         android:layout_width="wrap_content"
@@ -15,7 +21,8 @@
         android:layout_gravity="left"
         android:contentDescription="@string/app_logo_desc"
         android:src="@drawable/logo_mobile_store" />
-	<!--  Username Label -->
+    <!-- Username Label -->
+
     <TextView
         android:id="@+id/textViewUsername"
         android:layout_width="match_parent"
@@ -23,7 +30,9 @@
         android:layout_gravity="left"
         android:paddingBottom="5dp"
         android:text="@string/username"
-        android:textAppearance="?android:attr/textAppearanceSmall" />	<!--  Username input -->
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+ <!-- Username input -->
+
     <EditText
         android:id="@+id/editTextUsername"
         android:layout_width="match_parent"
@@ -36,7 +45,7 @@
 
         <requestFocus />
     </EditText>
-    <!--  Password Label -->
+    <!-- Password Label -->
 
     <TextView
         android:id="@+id/textViewPassword"
@@ -46,7 +55,8 @@
         android:paddingBottom="5dp"
         android:text="@string/password"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-	<!--  Password input -->
+    <!-- Password input -->
+
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
@@ -56,8 +66,15 @@
         android:hint="@string/password"
         android:inputType="textPassword"
         android:paddingBottom="5dp" />
-    <!-- Login button -->
-
+	<!-- Error text -->
+    <TextView
+        android:id="@+id/textViewError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/error_color" />
+	<!-- Login button -->
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
@@ -66,4 +83,5 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="@string/login" />
+
 </LinearLayout>
