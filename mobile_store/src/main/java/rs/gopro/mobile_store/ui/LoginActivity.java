@@ -30,10 +30,10 @@ public class LoginActivity extends Activity {
         	boolean loginSignal = doLogin(editTextUser.getText().toString(), editTextPass.getText().toString());
         	if (loginSignal) {
         		try {
-					finalize();
-					Log.i(TAG, "User logged successfully.");
+        			Log.i(TAG, "User logged successfully.");
+					finish();
 				} catch (Throwable e) {
-					Log.e(TAG, "Cannot finalize!",e);
+					Log.e(TAG, "Cannot finish!",e);
 					e.printStackTrace();
 				}
         	} else {

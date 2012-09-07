@@ -26,8 +26,8 @@ public class HomeScreenActivity extends ActionMenuActivity {
 	    boolean userLogged = settings.getBoolean("user_logged", false);
 	    
 	    if (!userLogged) {
-	    	Intent loginScreen = new Intent(HomeScreenActivity.this, LoginActivity.class);
-	    	HomeScreenActivity.this.startActivity(loginScreen);
+	    	Intent loginScreen = new Intent(this, LoginActivity.class);
+	    	startActivity(loginScreen);
 	    }
 		
     }
