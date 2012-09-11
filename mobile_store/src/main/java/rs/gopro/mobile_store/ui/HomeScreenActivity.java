@@ -2,7 +2,6 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.ws.CompanyKsoapWs;
-import rs.gopro.mobile_store.ws.CompanyWS;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;

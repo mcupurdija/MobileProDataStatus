@@ -15,7 +15,6 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.ksoap2.HeaderProperty;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.ServiceConnection;
 import org.ksoap2.transport.Transport;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -41,7 +40,7 @@ public class HttpTransportApache extends Transport {
     }
 	
 	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes" })
 	public List call(String soapAction, SoapEnvelope envelope, List headers)
 			throws IOException, XmlPullParserException {
 		if (soapAction == null) {
