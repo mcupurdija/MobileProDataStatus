@@ -11,4 +11,5 @@
 	<!-- ERRORS -->
 	<string name="login_error">* Error during login!</string>
 	<string name="hi_label">Hi!</string>
+	<string name="get_company">get company ws</string>
 </resources>

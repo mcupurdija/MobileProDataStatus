@@ -10,4 +10,6 @@
     <string name="home_title">Pocetak</string>
     <!-- GRESKE -->
 	<string name="login_error">* Greška prilikom prijave za rad!</string>
+	<string name="hi_label">Caos!</string>
+	<string name="get_company">uzmi podatke o kompaniji</string>
 </resources>
