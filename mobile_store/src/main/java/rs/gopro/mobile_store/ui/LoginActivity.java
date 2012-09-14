@@ -1,9 +1,15 @@
 package rs.gopro.mobile_store.ui;
 
+
+
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.contentProvider.UserContentProvider;
+import rs.gopro.mobile_store.database.util.DatabaseSpecification;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -67,13 +73,33 @@ public class LoginActivity extends Activity {
     }
 
     private boolean doLogin(String username, String pass) {
-    	SharedPreferences settings = getSharedPreferences(SESSION_PREFS, MODE_PRIVATE);
+    	/*SharedPreferences settings = getSharedPreferences(SESSION_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("username", username);
         editor.putBoolean("user_logged", true);
-        editor.commit();
-    	return true;
+        editor.commit();*/
+    	String passFromDB = getPassword(username);
+    	if(passFromDB != null && passFromDB.equals(pass)){
+    		return true;
+    	}
+    	return false;
     }
+    
+    
+    private String getPassword(String username){
+    	String password = null;
+    	Uri uri = UserContentProvider.CONTENT_URI;
+    	String[] projection = {DatabaseSpecification.UserColumn.USER_ID.getRepresentation(),DatabaseSpecification.UserColumn.USERNAME.getRepresentation(), DatabaseSpecification.UserColumn.PASSWORD.getRepresentation()};
+    	Cursor cursor = getContentResolver().query(uri, projection, DatabaseSpecification.UserColumn.USERNAME +"= ?", new String[]{username}, null);
+    	boolean hasEntry = cursor.moveToFirst();
+    	if(hasEntry){
+    	password = cursor.getString(cursor.getColumnIndex(DatabaseSpecification.UserColumn.PASSWORD.getRepresentation()));	
+    	}else{
+    		Log.i(this.getClass().getName(), "Username "+username +" does not exist");
+    	}
+    	return password;
+    }
+    
     
 }
 

@@ -30,9 +30,14 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
-        </activity>
-        
+        </activity>       
         <activity android:name=".ui.ActionMenuActivity" />
+        
+         <provider 
+            android:name="rs.gopro.mobile_store.contentProvider.UserContentProvider"
+            android:authorities="rs.gopro.mobile_store.contentProvider.userContentProvider"></provider>
+        
+        
     </application>
 
 </manifest>
