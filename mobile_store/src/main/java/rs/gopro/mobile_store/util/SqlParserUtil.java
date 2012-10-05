@@ -1,4 +1,4 @@
-package rs.gopro.mobile_store.database.util;
+package rs.gopro.mobile_store.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import android.content.res.AssetManager;
  * @author aleksandar
  * 
  */
-public class SqlParser {
+public class SqlParserUtil {
 
 	/**
 	 * Generate list of sql statements

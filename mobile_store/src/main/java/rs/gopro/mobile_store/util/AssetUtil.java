@@ -46,4 +46,14 @@ public class AssetUtil {
 		Collections.sort(listOfFileName);
 		return files;
 	}
+	
+	
+	public static Boolean existsFileWithPrefix(String fileNamePrefix, String filePath, AssetManager assetManager) throws IOException{
+		for (String currentFileName : assetManager.list(filePath)) {
+			if (currentFileName.startsWith(fileNamePrefix)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
