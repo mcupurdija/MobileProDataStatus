@@ -1,0 +1,9 @@
+<resources>
+
+    <color name="red">#ffff0000</color>
+    <color name="white">#fff</color>
+    <color name="actions_bg">#ff3c3c3c</color>
+    <color name="actions_divider">#ff888888</color>
+    <color name="divider">#ffcccccc</color>
+
+</resources>

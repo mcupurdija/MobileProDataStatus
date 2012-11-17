@@ -1,0 +1,15 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="HomePaneHeader">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="HeaderText" parent="@android:style/Widget.TextView">
+      <!--   <item name="android:textAllCaps">true</item> -->
+        <item name="android:textStyle">bold</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_marginTop">8dip</item>
+    </style>
+
+</resources>

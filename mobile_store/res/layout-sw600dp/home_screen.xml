@@ -1,20 +1,76 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical|center_horizontal"
-    android:orientation="vertical" >
-    
-	<TextView
-	        android:id="@+id/textView1"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/hi_label"
-	        android:textAppearance="?android:attr/textAppearanceLarge" />
-	 <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/get_company" />
-	
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:padding="@dimen/multipane_half_padding" >
+
+    <!-- TODO: switch to GridLayout -->
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <TextView
+            style="@style/HomePaneHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/multipane_half_padding"
+            android:layout_marginRight="@dimen/multipane_half_padding"
+            android:layout_marginTop="@dimen/multipane_half_padding"
+            android:text="@string/first_section_title" />
+
+        <FrameLayout
+            android:id="@+id/first_section_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/multipane_half_padding"
+            android:layout_weight="1"
+            android:background="@drawable/home_frame_border" />
+
+        <TextView
+            style="@style/HomePaneHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/multipane_half_padding"
+            android:layout_marginRight="@dimen/multipane_half_padding"
+            android:layout_marginTop="@dimen/multipane_half_padding"
+            android:text="@string/second_section_title" />
+
+        <FrameLayout
+            android:id="@+id/second_section_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/multipane_half_padding"
+            android:layout_weight="1"
+            android:background="@drawable/home_frame_border" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <TextView
+            style="@style/HomePaneHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/multipane_half_padding"
+            android:layout_marginRight="@dimen/multipane_half_padding"
+            android:layout_marginTop="@dimen/multipane_half_padding"
+            android:text="@string/third_section_title" />
+
+        <FrameLayout
+            android:id="@+id/third_section_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/multipane_half_padding"
+            android:layout_weight="1"
+            android:background="@drawable/home_frame_border" />
+
+    </LinearLayout>
+
 </LinearLayout>

@@ -2,27 +2,38 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.ws.CompanyKsoapWs;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class HomeScreenActivity extends ActionMenuActivity {
+public class HomeScreenActivity extends ActionMenuActivity implements OnClickListener{
     private static String TAG = "HomeScreenActivity";
     private static String SESSION_PREFS = "SessionPrefs";
     
-    private OnClickListener btnListener = new OnClickListener() {
+    FirstSectionFragment firstSectionFragment;
+    SecondSectionFragment secondSectionFragment;
+    ThirdSectionFragment thirdSectionFragment;
+    Button nextButton;
+    
+   /* private OnClickListener btnListener = new OnClickListener() {
         public void onClick(View v) {
         	TextView tText = (TextView) findViewById(R.id.textView1);
         	CompanyKsoapWs companyKsoapWs = new CompanyKsoapWs();
         	companyKsoapWs.execute((Void)null);
         	tText.setText(companyKsoapWs.getCompany());
         }
-    };
+    };*/
     
     /**
      * Called when the activity is first created.
@@ -39,15 +50,51 @@ public class HomeScreenActivity extends ActionMenuActivity {
 		SharedPreferences settings = getSharedPreferences(SESSION_PREFS, 0);
 	    boolean userLogged = settings.getBoolean("user_logged", false);
 	    
-	    if (!userLogged) {
+	    if (userLogged) {
 	    	Intent loginScreen = new Intent(this, LoginActivity.class);
 	    	startActivity(loginScreen);
 	    }
 		
 	    Log.i(TAG, "Bas da vidim kada je usao ovde!");
-	    // attach listener to login button
-    	Button btnLogin = (Button)findViewById(R.id.button1);
-    	btnLogin.setOnClickListener(btnListener);
+	   
+	    final FragmentManager fm = getSupportFragmentManager();
+	    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+	    firstSectionFragment = (FirstSectionFragment) fm.findFragmentById(R.id.first_section_fragment);
+	    if(firstSectionFragment == null){
+	    	firstSectionFragment = new FirstSectionFragment();
+	    	 fragmentTransaction.add(R.id.first_section_fragment, firstSectionFragment);
+	    }
+	    secondSectionFragment = (SecondSectionFragment) fm.findFragmentById(R.id.second_section_fragment);
+	    if(secondSectionFragment == null){
+	    	secondSectionFragment = new SecondSectionFragment();
+	    	 fragmentTransaction.add(R.id.second_section_fragment, secondSectionFragment);
+		 
+	    }
+	    thirdSectionFragment = (ThirdSectionFragment) fm.findFragmentById(R.id.third_section_fragment);
+	    if(thirdSectionFragment == null){
+	    	thirdSectionFragment = new ThirdSectionFragment();
+	    	 fragmentTransaction.add(R.id.third_section_fragment, thirdSectionFragment);
+	    }
+	    fragmentTransaction.commit();
+	     
     }
+    
+    @Override
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+    	/*nextButton = (Button) parent.findViewById(R.id.next_button);
+    	nextButton.setOnClickListener(this);*/
+    	
+    	return super.onCreateView(parent, name, context, attrs);
+    }
+
+	@Override
+	public void onClick(View v) {
+	Intent intent =  new Intent(SESSION_PREFS);
+	startActivity(intent);
+		
+	}
+
+
+	
 
 }

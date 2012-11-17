@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Actions -->
+    <array name="actions_icons">
+        <item>@null</item>
+        <item>@drawable/ic_action_settings</item>
+        <item>@drawable/ic_action_settings</item>
+        <item>@drawable/ic_action_settings</item>
+        <item>@drawable/ic_action_settings</item>
+        <item>@drawable/ic_action_settings</item>
+        <item>@null</item>
+        <item>@drawable/ic_action_settings</item>
+    </array>
+
+    <string-array name="actions_names">
+        <item>Glavni meni</item>
+        <item>Plan poseta</item>
+        <item>Liferice</item>
+        <item>Kupci</item>
+        <item>Artikli</item>
+        <item>Izvestaji</item>
+        <item>Podesavanja</item>
+        <item>Podesavanja</item>
+    </string-array>
+    <string-array name="actions_links">
+        <item>category://main_menu</item>
+        <item>settings://plan_visits</item>
+        <item>settings://liferice</item>
+        <item>settings://customers</item>
+        <item>settings://items</item>
+        <item>settings://reports</item>
+        <item>category://settings</item>
+        <item>settings://settings</item>
+    </string-array>
+
+    <!-- Settings arrays -->
+    <string-array name="spacing_types">
+        <item>Right Offset (RO)</item>
+        <item>Actions Width (AW)</item>
+    </string-array>
+    <string-array name="spacing_types_short">
+        <item>RO</item>
+        <item>AW</item>
+    </string-array>
+
+    <integer-array name="spacing_types_values">
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <string-array name="width_strings">
+        <item>0</item>
+        <item>8</item>
+        <item>16</item>
+        <item>24</item>
+        <item>32</item>
+        <item>48</item>
+        <item>64</item>
+    </string-array>
+
+    <integer-array name="width_values">
+        <item>0</item>
+        <item>8</item>
+        <item>16</item>
+        <item>24</item>
+        <item>32</item>
+        <item>48</item>
+        <item>64</item>
+    </integer-array>
+
+</resources>

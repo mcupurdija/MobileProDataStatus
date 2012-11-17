@@ -1,6 +1,6 @@
 package rs.gopro.mobile_store.util;
 
-import rs.gopro.mobile_store.BuildConfig;
+
 import android.util.Log;
 
 public class LogUtils {
@@ -36,7 +36,7 @@ public class LogUtils {
 			Log.i(tag, message);
 			break;
 		case Log.VERBOSE:
-			if (BuildConfig.DEBUG && Log.isLoggable(tag, Log.VERBOSE)) {
+			if (Log.isLoggable(tag, Log.VERBOSE)) {
 				Log.v(tag, message);
 			}
 			break;
@@ -65,7 +65,7 @@ public class LogUtils {
 			Log.i(tag, message, throwable);
 			break;
 		case Log.VERBOSE:
-			if (BuildConfig.DEBUG && Log.isLoggable(tag, Log.VERBOSE)) {
+			if ( Log.isLoggable(tag, Log.VERBOSE)) {
 				Log.v(tag, message, throwable);
 			}
 			break;

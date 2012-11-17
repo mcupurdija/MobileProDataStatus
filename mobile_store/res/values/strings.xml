@@ -12,4 +12,9 @@
 	<string name="login_error">* Error during login!</string>
 	<string name="hi_label">Hi!</string>
 	<string name="get_company">get company ws</string>
+		<string name="s">* Error during login!</string>
+	<string name="first_section_title">First Section</string>
+	<string name="second_section_title">Second Section</string>
+	<string name="third_section_title">Third Section</string>
+	<string name="next_button_title">Next</string>
 </resources>
