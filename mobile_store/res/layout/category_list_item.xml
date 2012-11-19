@@ -19,7 +19,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingLeft="6dip"
-    android:paddingRight="6dip" >
+    android:paddingRight="6dip"
+    android:background="@android:color/black" >
 
     <TextView
         android:id="@android:id/text1"
@@ -28,7 +29,8 @@
         android:layout_height="wrap_content"
         android:drawablePadding="6dip"
         android:gravity="left"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white" 
+        android:background="@android:color/black"/>
 
     <View
         android:id="@+id/divider"
