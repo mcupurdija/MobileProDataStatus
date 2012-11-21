@@ -10,6 +10,15 @@
         <item name="android:textStyle">bold</item>
         <item name="android:singleLine">true</item>
         <item name="android:layout_marginTop">8dip</item>
+          <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+    
+    <style name="HomePaneHeaderLand" parent="@style/HomePaneHeader">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="HeaderTextLand" parent="@style/HeaderText">
+          <item name="android:textSize">@dimen/text_size_large</item>
     </style>
 
 </resources>
