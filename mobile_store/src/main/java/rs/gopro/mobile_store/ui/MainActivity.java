@@ -49,8 +49,6 @@ public class MainActivity extends FragmentActivity implements AdapterView.OnItem
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long flags) {
 		Uri uri = actionsAdapter.getItem(position);
-		System.out.println(uri);
-		System.out.println(uri.getAuthority());
 		setContentTitle(position);
 		this.currentItemPosition = position;
 		actionsAdapter.markSecletedItem(view);

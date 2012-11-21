@@ -78,7 +78,6 @@ public class ActionsAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		final int type = getItemViewType(position);
-		System.out.println("load " + position);
 		final ViewHolder holder;
 		if (convertView == null) {
 			if (type == VIEW_TYPE_CATEGORY) {
