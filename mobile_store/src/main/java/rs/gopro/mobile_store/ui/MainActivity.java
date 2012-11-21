@@ -13,62 +13,74 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 /**
  * Holder for main menu and first nested level (content)
+ * 
  * @author aleksandar
- *
+ * 
  */
+
 public class MainActivity extends FragmentActivity implements AdapterView.OnItemClickListener {
-	TextView contentTitle = null;
+	
 	ActionsAdapter actionsAdapter;
+	private Integer currentItemPosition = new Integer(1);
+	public static final String CURRENT_POSITION_KEY = "current_position";
 
 	/**
-	 * Create menu as list view on left side of screen.
-	 * Create content space right of menu.
-	 *  
+	 * Create menu as list view on left side of screen. Create content space
+	 * right of menu.
+	 * 
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (savedInstanceState != null) {
+			currentItemPosition = savedInstanceState.getInt(CURRENT_POSITION_KEY);
+		}
 		setContentView(R.layout.main_screen);
-	    setDefaultContentTitle();
 		final ListView viewActionsList = (ListView) findViewById(R.id.actions);
 		actionsAdapter = new ActionsAdapter(this);
 		viewActionsList.setAdapter(actionsAdapter);
 		viewActionsList.setOnItemClickListener(this);
+		setContentTitle(currentItemPosition);
+	}
+	
+
+	@Override
+	public void onItemClick(AdapterView<?> adapter, View view, int position, long flags) {
+		Uri uri = actionsAdapter.getItem(position);
+		System.out.println(uri);
+		System.out.println(uri.getAuthority());
+		setContentTitle(position);
+		this.currentItemPosition = position;
+		actionsAdapter.markSecletedItem(view);
+		
+
+	}
+
+	
+
+	/**
+	 * Get title from arrays and setup in text field
+	 * 
+	 * @param position
+	 */
+	private void setContentTitle(int position) {
+		TextView	contentTitle = (TextView) findViewById(R.id.content_title);
+		contentTitle.setText(actionsAdapter.getItemTitle(position));
 
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> adapter, View view, int position, long flags) {
-		setContentTitle(position);
-		System.out.println("POsition: "+position);
-		Uri uri = actionsAdapter.getItem(position);
-		System.out.println(uri);
-		System.out.println(uri.getAuthority());
-	}
-
-	
-	
-	
-	/**
-	 * Set default title
-	 * Get first position value from titles array
-	 */
-	private void setDefaultContentTitle(){
-		setContentTitle(1);
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if(outState != null){
+		outState.putInt(CURRENT_POSITION_KEY, currentItemPosition);
+		}
 	}
 	
-	/**
-	 * Get title from arrays and setup in text field
-	 * @param position
-	 */
-	private void setContentTitle(int position) {
-		final Resources res = getApplicationContext().getResources();
-		String[] titles = res.getStringArray(R.array.actions_names);
-		contentTitle = (TextView) findViewById(R.id.content_title);
-		contentTitle.setText(titles[position]);
-	}
+	public Integer getCurrentItemPosition(){
+	return  currentItemPosition;
+}
 
 }
