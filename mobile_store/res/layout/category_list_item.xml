@@ -19,8 +19,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingLeft="6dip"
-    android:paddingRight="6dip"
-    android:background="@android:color/black" >
+    android:paddingRight="6dip" >
 
     <TextView
         android:id="@android:id/text1"
@@ -28,14 +27,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawablePadding="6dip"
-        android:gravity="left"
-        android:textColor="@android:color/white" 
-        android:background="@android:color/black"/>
+        android:gravity="left"/>
 
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_large_size"
-        android:background="@color/divider" />
+        android:layout_height="@dimen/divider_large_size" />
 
 </LinearLayout>

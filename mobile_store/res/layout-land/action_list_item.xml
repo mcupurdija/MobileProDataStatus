@@ -17,12 +17,10 @@
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
-     style="@style/HomePaneHeaderLand"
+    style="@style/HomePaneHeaderLand"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:minHeight="48dip"
     android:paddingLeft="6dip"
-    android:background="@android:color/black"
-    android:drawablePadding="6dip"
-    android:textColor="@android:color/white" />
+    android:drawablePadding="6dip" />

@@ -12,7 +12,7 @@
         android:layout_margin="@dimen/multipane_half_padding"
         android:layout_weight="5"
         android:background="@drawable/home_frame_border"
-        android:cacheColorHint="@color/actions_bg"
+        android:cacheColorHint="?android:attr/colorBackgroundCacheHint"
         android:divider="@null"
         android:listSelector="@drawable/item_background_holo_light" />
 

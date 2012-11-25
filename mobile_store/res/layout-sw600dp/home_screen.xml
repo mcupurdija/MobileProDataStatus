@@ -27,8 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/multipane_half_padding"
-            android:layout_weight="1"
-            android:background="@drawable/home_frame_border" />
+            android:background="@drawable/home_frame_border"
+            android:layout_weight="1" />
 
         <TextView
             style="@style/HomePaneHeader"
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/multipane_half_padding"
-            android:layout_weight="1"
+ 			android:layout_weight="1"
             android:background="@drawable/home_frame_border" />
     </LinearLayout>
 
@@ -68,8 +68,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/multipane_half_padding"
-            android:layout_weight="1"
-            android:background="@drawable/home_frame_border" />
+            android:background="@drawable/home_frame_border"
+			android:layout_weight="1" />
 
     </LinearLayout>
 

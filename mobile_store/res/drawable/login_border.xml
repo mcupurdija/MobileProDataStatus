@@ -6,7 +6,6 @@
              android:top="1dp"
              android:right="1dp"
              android:bottom="1dp"
-             /> 
-   <solid android:color="#000000" />
-   <stroke android:width="3dp" android:color="#4fa5d5"/>
+             />
+   <stroke android:width="3dp" android:color="#ce000c"/>
 </shape>
