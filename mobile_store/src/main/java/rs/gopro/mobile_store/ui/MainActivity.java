@@ -23,7 +23,7 @@ import android.widget.TextView;
 public class MainActivity extends FragmentActivity implements AdapterView.OnItemClickListener {
 	
 	ActionsAdapter actionsAdapter;
-	private Integer currentItemPosition = new Integer(1);
+	private Integer currentItemPosition = Integer.valueOf(1);
 	public static final String CURRENT_POSITION_KEY = "current_position";
 
 	/**

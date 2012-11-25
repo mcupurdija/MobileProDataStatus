@@ -12,14 +12,14 @@
         <item>@drawable/ic_action_settings</item>
     </array>
     <string-array name="actions_names">
-        <item>Main menu</item>
-        <item>Plan of visits</item>
-        <item>Sale orders</item>
-        <item>Customers</item>
-        <item>Items</item>
-        <item>Reports</item>
-        <item>Settings</item>
-        <item>Settings</item>
+        <item>Glavni meni</item>
+        <item>Plan poseta</item>
+        <item>Liferice</item>
+        <item>Kupci</item>
+        <item>Artikli</item>
+        <item>Izvestaji</item>
+        <item>Podesavanja</item>
+        <item>Podesavanja</item>
     </string-array>
     <string-array name="actions_links">
         <item>category://main_menu</item>
@@ -31,6 +31,7 @@
         <item>category://settings</item>
         <item>settings://settings</item>
     </string-array>
+
     <!-- Settings arrays -->
     <string-array name="spacing_types">
         <item>Right Offset (RO)</item>

@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<!-- KORISNICKI INTERFEJS -->
-    <string name="app_name">Mobile store</string>
-    <string name="username">Korisnicko ime</string>
+    <string name="app_name">MobilePro</string>
+    <string name="username">Korisničko ime</string>
     <string name="password">Lozinka</string>
     <string name="login">Prijava za rad</string>
     <string name="app_logo_desc">Logo aplikacije</string>
     <string name="login_title">Prijavi se</string>
-    <string name="home_title">Pocetak</string>
+    <string name="home_title">Početak</string>
     <!-- GRESKE -->
 	<string name="login_error">* Greška prilikom prijave za rad!</string>
-	<string name="hi_label">Caos!</string>
+	<string name="hi_label">Ćaos!</string>
 	<string name="get_company">uzmi podatke o kompaniji</string>
+	<string name="s">* Greška prilikom prijave za rad!</string>
+	<string name="first_section_title">Prva sekcija</string>
+	<string name="second_section_title">Druga sekcija</string>
+	<string name="third_section_title">Treća sekcija</string>
+	<string name="next_button_title">Dalje</string>
 </resources>

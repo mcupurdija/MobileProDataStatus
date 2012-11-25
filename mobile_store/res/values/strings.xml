@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<!-- UI -->
-    <string name="app_name">Mobile store</string>
+    <string name="app_name">MobilePro</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
@@ -12,7 +12,7 @@
 	<string name="login_error">* Error during login!</string>
 	<string name="hi_label">Hi!</string>
 	<string name="get_company">get company ws</string>
-		<string name="s">* Error during login!</string>
+	<string name="s">* Error during login!</string>
 	<string name="first_section_title">First Section</string>
 	<string name="second_section_title">Second Section</string>
 	<string name="third_section_title">Third Section</string>
