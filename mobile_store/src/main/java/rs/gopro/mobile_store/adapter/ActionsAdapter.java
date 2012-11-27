@@ -81,9 +81,9 @@ public class ActionsAdapter extends BaseAdapter {
 		final ViewHolder holder;
 		if (convertView == null) {
 			if (type == VIEW_TYPE_CATEGORY) {
-				convertView = mInflater.inflate(R.layout.category_list_item, parent, false);
+				convertView = mInflater.inflate(R.layout.main_menu_category_list_item, parent, false);
 			} else {
-				convertView = mInflater.inflate(R.layout.action_list_item, parent, false);
+				convertView = mInflater.inflate(R.layout.main_menu_action_list_item, parent, false);
 
 			}
 			holder = new ViewHolder();

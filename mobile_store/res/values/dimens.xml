@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- UI elements -->
     <dimen name="whats_on_height">50dp</dimen>
     <dimen name="multipane_half_padding">8dp</dimen>
@@ -13,7 +13,4 @@
     <dimen name="text_size_medium">16sp</dimen>
     <dimen name="text_size_large">18sp</dimen>
     <dimen name="text_size_xlarge">18sp</dimen>
-    
-    
-
 </resources>

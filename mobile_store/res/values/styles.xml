@@ -10,13 +10,19 @@
         <item name="android:textStyle">bold</item>
         <item name="android:singleLine">true</item>
         <item name="android:layout_marginTop">8dip</item>
-          <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
     
     <style name="HomePaneHeaderLand" parent="@style/HomePaneHeader">
         <item name="android:textSize">@dimen/text_size_large</item>
     </style>
 
+    <style name="MainMenuHeader" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">@color/main_menu_text</item>
+        <item name="android:background">@color/main_menu_list_background</item>
+    </style>
+    
     <style name="HeaderTextLand" parent="@style/HeaderText">
           <item name="android:textSize">@dimen/text_size_large</item>
     </style>

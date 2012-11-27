@@ -6,12 +6,11 @@
 
     <ListView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/actions"
+        android:id="@+id/main_menu_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/multipane_half_padding"
         android:layout_weight="5"
-        android:background="@drawable/home_frame_border"
+        android:background="@drawable/main_menu_border"
         android:cacheColorHint="?android:attr/colorBackgroundCacheHint"
         android:divider="@null"
         android:listSelector="@drawable/item_background_holo_light" />
@@ -38,8 +37,7 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:layout_margin="@dimen/multipane_half_padding"
-            android:background="@drawable/home_frame_border" />
+            android:layout_margin="@dimen/multipane_half_padding" />
     </LinearLayout>
 
 </LinearLayout>

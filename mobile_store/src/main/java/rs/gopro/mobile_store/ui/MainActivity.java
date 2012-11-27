@@ -2,12 +2,9 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.adapter.ActionsAdapter;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -38,7 +35,7 @@ public class MainActivity extends FragmentActivity implements AdapterView.OnItem
 			currentItemPosition = savedInstanceState.getInt(CURRENT_POSITION_KEY);
 		}
 		setContentView(R.layout.main_screen);
-		final ListView viewActionsList = (ListView) findViewById(R.id.actions);
+		final ListView viewActionsList = (ListView) findViewById(R.id.main_menu_list);
 		actionsAdapter = new ActionsAdapter(this);
 		viewActionsList.setAdapter(actionsAdapter);
 		viewActionsList.setOnItemClickListener(this);

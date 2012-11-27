@@ -6,4 +6,12 @@
     <color name="actions_divider">#ff888888</color>
     <color name="divider">#ffcccccc</color>
 
+    <!-- white -->
+    <color name="main_menu_text">#ffffffff</color>
+    <!-- black -->
+    <color name="main_menu_text_inverse">#ff000000</color>
+    <!-- darker grey  -->
+    <color name="main_menu_list_background">#959595</color>
+    <!-- wurth red --> 
+    <color name="main_menu_lines">#ce000c</color>
 </resources>
