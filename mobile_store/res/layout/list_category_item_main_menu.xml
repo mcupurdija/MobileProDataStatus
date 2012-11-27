@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@android:id/text1"
-        style="@style/HeaderText"
+        style="@style/MainMenuListItemCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawablePadding="6dip"
@@ -32,6 +32,7 @@
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_large_size" />
+        android:layout_height="@dimen/divider_large_size"
+        android:background="@color/main_menu_lines" />
 
 </LinearLayout>

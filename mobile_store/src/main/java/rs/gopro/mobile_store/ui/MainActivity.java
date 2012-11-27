@@ -34,7 +34,7 @@ public class MainActivity extends FragmentActivity implements AdapterView.OnItem
 		if (savedInstanceState != null) {
 			currentItemPosition = savedInstanceState.getInt(CURRENT_POSITION_KEY);
 		}
-		setContentView(R.layout.main_screen);
+		setContentView(R.layout.activity_main_screen);
 		final ListView viewActionsList = (ListView) findViewById(R.id.main_menu_list);
 		actionsAdapter = new ActionsAdapter(this);
 		viewActionsList.setAdapter(actionsAdapter);
@@ -52,8 +52,6 @@ public class MainActivity extends FragmentActivity implements AdapterView.OnItem
 		
 
 	}
-
-	
 
 	/**
 	 * Get title from arrays and setup in text field

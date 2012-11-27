@@ -45,7 +45,7 @@ public class HomeScreenActivity extends ActionMenuActivity implements OnClickLis
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
 		Log.i(TAG, "Loga activity created.");
-		setContentView(R.layout.home_screen);
+		setContentView(R.layout.activity_home_screen);
 		
 		SharedPreferences settings = getSharedPreferences(SESSION_PREFS, 0);
 	    boolean userLogged = settings.getBoolean("user_logged", false);

@@ -9,23 +9,21 @@
         android:id="@+id/main_menu_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="5"
-        android:background="@drawable/main_menu_border"
-        android:cacheColorHint="?android:attr/colorBackgroundCacheHint"
-        android:divider="@null"
-        android:listSelector="@drawable/item_background_holo_light" />
+        android:layout_weight="3"
+        android:background="@drawable/list_border_main_menu"
+        android:divider="@null" />
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/content_master"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:orientation="vertical" >
 
         <TextView
-             android:id="@+id/content_title"
-            style="@style/HomePaneHeader"
+            android:id="@+id/content_title"
+            style="@style/HeaderText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/multipane_half_padding"

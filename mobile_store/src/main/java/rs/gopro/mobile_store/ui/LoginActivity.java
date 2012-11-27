@@ -62,7 +62,7 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		Log.i(TAG, "Log activity created.");
-		setContentView(R.layout.login);
+		setContentView(R.layout.activity_login);
 
 		// hide before login no need to see options
 		ActionBar actionBar = getActionBar();

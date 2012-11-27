@@ -12,6 +12,7 @@
     <color name="main_menu_text_inverse">#ff000000</color>
     <!-- darker grey  -->
     <color name="main_menu_list_background">#959595</color>
+    <color name="main_menu_list_background_pressed">#c4c4c4</color>
     <!-- wurth red --> 
     <color name="main_menu_lines">#ce000c</color>
 </resources>

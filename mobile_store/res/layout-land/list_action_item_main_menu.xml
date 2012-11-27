@@ -14,26 +14,13 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    style="@style/MainMenuListItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:minHeight="48dip"
     android:paddingLeft="6dip"
-    android:paddingRight="6dip">
-
-    <TextView
-        android:id="@android:id/text1"
-        style="@style/HeaderTextLand"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="6dip"
-        android:gravity="left"
-         />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_large_size"
-        android:background="@color/divider" />
-
-</LinearLayout>
+    android:drawablePadding="6dip" />

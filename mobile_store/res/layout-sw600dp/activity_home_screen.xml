@@ -14,7 +14,7 @@
         android:orientation="vertical" >
 
         <TextView
-            style="@style/HomePaneHeader"
+            style="@style/HeaderText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/multipane_half_padding"
@@ -27,11 +27,11 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/multipane_half_padding"
-            android:background="@drawable/home_frame_border"
+            android:background="@drawable/list_border_home_screen"
             android:layout_weight="1" />
 
         <TextView
-            style="@style/HomePaneHeader"
+            style="@style/HeaderText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/multipane_half_padding"
@@ -45,7 +45,7 @@
             android:layout_height="0dp"
             android:layout_margin="@dimen/multipane_half_padding"
  			android:layout_weight="1"
-            android:background="@drawable/home_frame_border" />
+            android:background="@drawable/list_border_home_screen" />
     </LinearLayout>
 
     <LinearLayout
@@ -55,7 +55,7 @@
         android:orientation="vertical" >
 
         <TextView
-            style="@style/HomePaneHeader"
+            style="@style/HeaderText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/multipane_half_padding"
@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/multipane_half_padding"
-            android:background="@drawable/home_frame_border"
+            android:background="@drawable/list_border_home_screen"
 			android:layout_weight="1" />
 
     </LinearLayout>
