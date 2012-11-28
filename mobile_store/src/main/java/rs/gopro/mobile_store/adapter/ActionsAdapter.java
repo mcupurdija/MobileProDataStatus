@@ -136,7 +136,7 @@ public class ActionsAdapter extends BaseAdapter {
 		ViewHolder holder = (ViewHolder) currentSelectedView.getTag();
 		Drawable icon = mIcons.getDrawable(position);
 		icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
-		Drawable drawable = res.getDrawable(R.drawable.ic_menu_moreoverflow_normal_holo_light);
+		Drawable drawable = res.getDrawable(R.drawable.ic_list_active_option);
 		drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), icon.getIntrinsicHeight());
 		holder.text.setCompoundDrawables(icon, null, drawable, null);
 	}
