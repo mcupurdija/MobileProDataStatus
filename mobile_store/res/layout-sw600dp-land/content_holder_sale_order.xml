@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/inner_view_about"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/first_search_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="5dp"
+            android:text="First param title:"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/first_search"
+            android:layout_width="140dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:hint="Name"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:paddingBottom="5dp" >
+        </EditText>
+
+        <TextView
+            android:id="@+id/second_search_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="30dp"
+            android:paddingBottom="5dp"
+            android:text="Second param title:"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/second_search"
+            android:layout_width="140dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:hint="Date"
+            android:imeOptions="actionGo"
+            android:inputType="text"
+            android:paddingBottom="5dp"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/sale_order_search"
+            android:layout_width="110dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="30dp"
+            android:ems="2"
+            android:paddingBottom="5dp"
+            android:text="Search"
+            android:textSize="12dp" />
+    </LinearLayout>
+
+   
+
+    <FrameLayout
+        android:id="@+id/sale_order_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1" />
+
+</LinearLayout>
