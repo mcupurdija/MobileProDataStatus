@@ -4,7 +4,13 @@ import java.util.Calendar;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.adapter.ActionsAdapter;
+import rs.gopro.mobile_store.ui.customlayout.CustomLinearLayout;
+import rs.gopro.mobile_store.ui.customlayout.CustomersLayout;
+import rs.gopro.mobile_store.ui.customlayout.ItemsLayout;
+import rs.gopro.mobile_store.ui.customlayout.PlanOfVisitsLayout;
+import rs.gopro.mobile_store.ui.customlayout.ReportLayout;
 import rs.gopro.mobile_store.ui.customlayout.SaleOrdersLayout;
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
@@ -26,12 +32,13 @@ import android.widget.TextView;
  * 
  */
 
-public class MainActivity extends FragmentActivity implements AdapterView.OnItemClickListener, OnDateSetListener {
+public class MainActivity extends FragmentActivity implements AdapterView.OnItemClickListener {
 
 	ActionsAdapter actionsAdapter;
 	private Integer currentItemPosition = Integer.valueOf(1);
 	public static final String CURRENT_POSITION_KEY = "current_position";
-	public static final int DIALOG_DATE_PICKER = 10;
+
+	CustomLinearLayout currentCustomLinearLayout;
 
 	/**
 	 * Create menu as list view on left side of screen. Create content space
@@ -50,6 +57,7 @@ public class MainActivity extends FragmentActivity implements AdapterView.OnItem
 		viewActionsList.setAdapter(actionsAdapter);
 		viewActionsList.setOnItemClickListener(this);
 		setContentTitle(currentItemPosition);
+		updateContent(currentItemPosition);
 	}
 
 	@Override
@@ -88,10 +96,19 @@ public class MainActivity extends FragmentActivity implements AdapterView.OnItem
 		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.content);
 		linearLayout.removeAllViews();
 		Uri uri = actionsAdapter.getItem(position);
-		View view = null;
+		CustomLinearLayout view = null;
 		if (SaleOrdersLayout.SALE_ORDER_URI.equals(uri)) {
 			view = new SaleOrdersLayout(getSupportFragmentManager(), this);
+		} else if (PlanOfVisitsLayout.PLAN_OF_VISITS_URI.equals(uri)) {
+			view = new PlanOfVisitsLayout(getSupportFragmentManager(), this);
+		}else if(CustomersLayout.CUSTOMERS_URI.equals(uri)){
+			view = new CustomersLayout(getSupportFragmentManager(), this);
+		}else if(ItemsLayout.ITEMS_URI.equals(uri)){
+			view = new ItemsLayout(getSupportFragmentManager(), this);
+		}else if(ReportLayout.REPORTS_URI.equals(uri)){
+			view = new ReportLayout(getSupportFragmentManager(), this);
 		}
+		currentCustomLinearLayout = view;
 		if (view != null) {
 			linearLayout.addView(view);
 		}
@@ -101,17 +118,11 @@ public class MainActivity extends FragmentActivity implements AdapterView.OnItem
 	protected Dialog onCreateDialog(int id) {
 		Calendar calendar = Calendar.getInstance();
 		switch (id) {
-		case DIALOG_DATE_PICKER:
-			DatePickerDialog datePicker = new DatePickerDialog(this, this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+		case ApplicationConstants.DATE_PICKER_DIALOG:
+			DatePickerDialog datePicker = new DatePickerDialog(this, currentCustomLinearLayout, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 			return datePicker;
 		}
 		return super.onCreateDialog(id);
 	}
 
-	@Override
-	public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-		 EditText editText = (EditText) findViewById(R.id.second_search);
-		 editText.setText(year + "/" + (++monthOfYear) + "/" + dayOfMonth);
-		
-	}
 }
