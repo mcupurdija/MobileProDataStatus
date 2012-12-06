@@ -9,10 +9,7 @@
         android:id="@+id/main_menu_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:background="@drawable/list_border_main_menu"
-        android:divider="@color/divider_main_menu_list"
-        android:dividerHeight="1.5dp" />
+        android:layout_weight="3" />
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
