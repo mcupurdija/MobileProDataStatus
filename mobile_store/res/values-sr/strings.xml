@@ -17,4 +17,6 @@
 	<string name="second_section_title">Druga sekcija</string>
 	<string name="third_section_title">Treća sekcija</string>
 	<string name="next_button_title">Dalje</string>
+	<string name="empty_waiting_for_sync">Sacekajte</string>
+	<string name="sale_order_amount_total_template">Iznos je: </string>
 </resources>

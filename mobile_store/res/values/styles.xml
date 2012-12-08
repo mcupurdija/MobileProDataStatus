@@ -11,13 +11,25 @@
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/list_item_background_main_menu</item>
     </style>
-    
+
     <style name="MainMenuListItemCategory" parent="@android:style/Widget.Holo.Light.TextView">
         <item name="android:textStyle">bold</item>
         <item name="android:singleLine">true</item>
         <item name="android:layout_marginTop">8dip</item>
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <!-- List item text -->
+    <style name="ListItemTitle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">@color/body_text_1</item>
+    </style>
+
+    <style name="ListItemSubtitle">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/body_text_2</item>
     </style>
 
 </resources>

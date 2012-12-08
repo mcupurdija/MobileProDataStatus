@@ -5,16 +5,23 @@
     <color name="actions_bg">#ff3c3c3c</color>
     <color name="actions_divider">#ff888888</color>
     <color name="divider">#ffcccccc</color>
+    
+    <color name="body_text_1">#ff000000</color>
+    <color name="body_text_2">#99000000</color>
+    
+     <color name="body_text_1_positive">#ff669900</color>
+    <color name="body_text_1_negative">#ffff4444</color>
 
     <!-- white -->
     <color name="main_menu_text">#ffffffff</color>
     <!-- black -->
     <color name="main_menu_text_inverse">#ff000000</color>
-    <!-- darker grey  -->
+    <!-- darker grey -->
     <color name="main_menu_list_background">#959595</color>
     <!-- <color name="main_menu_list_background_pressed">#c4c4c4</color> -->
     <color name="main_menu_list_background_pressed">#666666</color>
     <color name="divider_main_menu_list">#666666</color>
-    <!-- wurth red --> 
+    <!-- wurth red -->
     <color name="main_menu_lines">#ce000c</color>
+
 </resources>
