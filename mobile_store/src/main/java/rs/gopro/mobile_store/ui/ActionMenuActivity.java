@@ -1,7 +1,6 @@
 package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -20,13 +19,11 @@ public class ActionMenuActivity extends FragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.action_menu, menu);
-	    
 	    return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		System.out.println("Cekica");
 	    // Handle item selection
 	    switch (item.getItemId()) {
 	        case R.id.upaction:

@@ -32,6 +32,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int USERS_ID = 101;
 	private static final int USERNAME = 102;
 
+	private static final int VISITS = 200;
+	private static final int VISIT_ID = 201;
+	//private static final int VISIT = 202;
+
+	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
 	static {
