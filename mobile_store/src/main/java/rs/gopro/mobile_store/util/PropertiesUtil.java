@@ -64,6 +64,7 @@ public class PropertiesUtil {
 			}
 			return value;
 		} catch (NumberFormatException e) {
+			LogUtils.log(Log.WARN,TAG, "Number format exception");
 		}
 		LogUtils.log(Log.WARN,TAG, "Property not found in mobile_store.properties:" + propertyName);
 		return null;

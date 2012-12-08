@@ -24,7 +24,7 @@
     <string-array name="actions_links">
         <item>category://main_menu</item>
         <item>settings://plan_visits</item>
-        <item>settings://liferice</item>
+        <item>settings://sale_orders</item>
         <item>settings://customers</item>
         <item>settings://items</item>
         <item>settings://reports</item>

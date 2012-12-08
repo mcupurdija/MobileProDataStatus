@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.provider;
 
 import java.util.List;
 
+import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SelectionBuilder;
@@ -31,6 +32,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int USERS = 100;
 	private static final int USERS_ID = 101;
 	private static final int USERNAME = 102;
+	
+	private static final int INVOICES = 110;
+	private static final int INVOICES_ID = 111;
+	
 
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -39,6 +44,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "users", USERS);
 		mobileStoreURIMatcher.addURI(authority, "users/#", USERS_ID);
 		mobileStoreURIMatcher.addURI(authority, "users/username", USERNAME);
+		
+		mobileStoreURIMatcher.addURI(authority, "invoices", INVOICES);
+		mobileStoreURIMatcher.addURI(authority, "invoices/#", INVOICES_ID);
 	}
 
 
@@ -70,6 +78,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.USERS, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return Users.buildUsersUri("" + id);
+		case INVOICES:
+			id = database.insertOrThrow(Tables.INVOICES,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return  Invoices.buildInvoicesUri(""+id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -111,6 +123,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Users._ID);
 		case USERNAME:
 			return builder.addTable(Users.USERNAME);
+		case  INVOICES_ID:
+			return builder.addTable(Invoices._ID);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -124,6 +138,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.USERS).where(Users._ID + "=?", userId);
 		case USERNAME:
 			return builder.addTable(Tables.USERS);
+		case INVOICES_ID:
+			String invoicesId = Invoices.getInvoicesId(uri);
+			return builder.addTable(Tables.INVOICES).where(Invoices._ID+ "=?", invoicesId);
+		case INVOICES:
+			return builder.addTable(Tables.INVOICES);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
