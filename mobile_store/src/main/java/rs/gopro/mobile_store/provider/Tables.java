@@ -5,5 +5,5 @@ package rs.gopro.mobile_store.provider;
  */
 public interface Tables {
 	 String USERS = "users";
-
+	 String VISITS = "visits";
 }

@@ -8,7 +8,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.AdapterView;
 
-public class VisitsPlanListFragment extends Fragment implements
+public class VisitPlanListFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
 
 	@Override

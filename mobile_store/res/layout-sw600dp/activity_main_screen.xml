@@ -10,6 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="5"
+        android:layout_marginLeft="@dimen/multipane_padding"
+        android:layout_marginTop="@dimen/multipane_padding"
+        android:layout_marginBottom="@dimen/multipane_padding"
+        android:background="@drawable/grey_frame"
         />
 
     <LinearLayout
@@ -18,7 +22,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_margin="@dimen/multipane_padding"
+        android:background="@drawable/grey_frame_on_white" >
 
         <TextView
             android:id="@+id/content_title"

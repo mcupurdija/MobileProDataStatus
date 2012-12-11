@@ -1,20 +1,16 @@
 package rs.gopro.mobile_store.provider;
 
-import java.util.List;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SelectionBuilder;
 import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.net.NetworkInfo.DetailedState;
-import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -44,6 +40,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "users", USERS);
 		mobileStoreURIMatcher.addURI(authority, "users/#", USERS_ID);
 		mobileStoreURIMatcher.addURI(authority, "users/username", USERNAME);
+		
+		mobileStoreURIMatcher.addURI(authority, "visits", VISITS);
+		mobileStoreURIMatcher.addURI(authority, "visits/#", VISIT_ID);
 	}
 
 
@@ -75,6 +74,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.USERS, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return Users.buildUsersUri("" + id);
+		case VISITS:
+			id = database.insertOrThrow(Tables.VISITS, null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return  Visits.buildVisitsUri(""+id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -116,6 +119,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Users._ID);
 		case USERNAME:
 			return builder.addTable(Users.USERNAME);
+		case VISIT_ID:
+			return builder.addTable(Visits._ID);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -129,6 +134,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.USERS).where(Users._ID + "=?", userId);
 		case USERNAME:
 			return builder.addTable(Tables.USERS);
+		case VISIT_ID:
+			return builder.addTable(Tables.VISITS);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

@@ -69,8 +69,24 @@ public class MobileStoreContract {
 		}
 	}
 	
-	public static class Visits implements VisitsColumns, SalesPersonsColumns, CustomersColumns, AuditColumns {
+	public static class Visits implements VisitsColumns, SalesPersonsColumns, CustomersColumns, AuditColumns, BaseColumns {
+		
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_VISITS).build();
+		 /** Default "ORDER BY" clause. */
+        public static final String DEFAULT_SORT = Visits.CREATED_DATE + " DESC";
+		
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/vnd.mobile_store.visit";
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/vnd.mobile_store.visit";
+        
+        public static Uri buildVisitsUri(String visitsId){
+			return CONTENT_URI.buildUpon().appendPath(visitsId).build();
+		}
+
+		public static String getVisitsId(Uri uri){
+			return  uri.getPathSegments().get(1);
+		}
 	}
 
 }
