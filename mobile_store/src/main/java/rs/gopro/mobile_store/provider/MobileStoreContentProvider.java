@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.provider;
 
 import java.util.List;
 
+import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.util.LogUtils;
@@ -36,6 +37,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int INVOICES = 110;
 	private static final int INVOICES_ID = 111;
 	
+	private static final int CUSTOMERS = 120;
+	private static final int CUSTOMERS_ID = 121;
+	private static final int CUSTOMERS_NO = 122;
+	private static final int CUSTOMERS_SEARCH = 123;
+	
 
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -47,6 +53,12 @@ public class MobileStoreContentProvider extends ContentProvider {
 		
 		mobileStoreURIMatcher.addURI(authority, "invoices", INVOICES);
 		mobileStoreURIMatcher.addURI(authority, "invoices/#", INVOICES_ID);
+		
+		mobileStoreURIMatcher.addURI(authority, "customers",CUSTOMERS);
+		mobileStoreURIMatcher.addURI(authority, "customers/#",CUSTOMERS_ID);
+		mobileStoreURIMatcher.addURI(authority, "customers/no",CUSTOMERS_NO);
+		mobileStoreURIMatcher.addURI(authority, "customers/*/no",CUSTOMERS_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "customers/#/no",CUSTOMERS_SEARCH);
 	}
 
 
@@ -82,6 +94,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.INVOICES,null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return  Invoices.buildInvoicesUri(""+id);
+		case CUSTOMERS:
+			id = database.insertOrThrow(Tables.CUSTOMERS,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return Customers.buildCustomersUri(""+id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -131,6 +147,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	}
 
 	private SelectionBuilder buildExpandedSelection(Uri uri, int match) {
+		System.out.println("URI: "+uri);
 		final SelectionBuilder builder = new SelectionBuilder();
 		switch (match) {
 		case USERS_ID:
@@ -143,6 +160,14 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.INVOICES).where(Invoices._ID+ "=?", invoicesId);
 		case INVOICES:
 			return builder.addTable(Tables.INVOICES);
+		case CUSTOMERS:
+			return builder.addTable(Tables.CUSTOMERS);
+		case CUSTOMERS_NO:
+			return builder.addTable(Tables.CUSTOMERS);
+		case CUSTOMERS_SEARCH:
+			String query = Customers.getSearchQuery(uri);
+			return builder.addTable(Tables.CUSTOMERS)
+			.where(Customers.NO + " like ? OR "+ Customers.NAME + " like ?", new String[] { /*"%" +*/ query + "%", "%" + query + "%"});
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

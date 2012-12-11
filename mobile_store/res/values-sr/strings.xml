@@ -19,4 +19,5 @@
 	<string name="next_button_title">Dalje</string>
 	<string name="empty_waiting_for_sync">Sacekajte</string>
 	<string name="sale_order_amount_total_template">Iznos je: </string>
+	<string name="customer_search_title">Pronadji kupca: </string>
 </resources>

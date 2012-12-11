@@ -19,5 +19,5 @@
 	<string name="next_button_title">Next</string>
 	<string name="empty_waiting_for_sync">Wait sync</string>
 	<string name="sale_order_amount_total_template">Amount is: </string>
-	
+	<string name="customer_search_title">Find customer: </string>
 </resources>

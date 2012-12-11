@@ -1,6 +1,5 @@
 package rs.gopro.mobile_store.provider;
 
-
 import android.net.Uri;
 import android.net.rtp.RtpStream;
 import android.provider.BaseColumns;
@@ -14,6 +13,8 @@ public class MobileStoreContract {
 
 	private static final String PATH_USERS = "users";
 	private static final String PATH_INVOICES = "invoices";
+	private static final String PATH_CUSTOMERS = "customers";
+	private static final String PATH_SEARCH = "search";
 
 	public interface UsersColumns {
 		String USERNAME = "username";
@@ -38,6 +39,29 @@ public class MobileStoreContract {
 
 	}
 
+	public interface CustomersColumns {
+		String NO = "no";
+		String NAME = "name";
+		String NAME_2 = "name2";
+		String ADRESS_ID = "address_id";
+		String CITY = "city";
+		String POST_CODE = "post_code";
+		String PHONE = "phone";
+		String MOBILE = "mobile";
+		String EMAIL = "email";
+		String COMPANY_ID = "company_id";
+		String PRIMARY_CONTACT_ID = "primary_contact_id";
+		String VAR_REG_NO = "vat_reg_no";
+		String CREDIT_LIMIT_LCY = "credit_limit_lcy";
+		String BALANCE_LCY = "balance_lcy";
+		String BALANCE_DUE_LCY = "balance_due_lcy";
+		String PAYMENT_TERMS_CODE = "payment_terms_code";
+		String PRIORITY = "priority";
+		String GLOBAL_DIMENSION = "global_dimension";
+		String CHANNEL_ORAN = "channel_oran";
+
+	}
+
 	public static class Users implements UsersColumns, BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_USERS).build();
 
@@ -57,20 +81,47 @@ public class MobileStoreContract {
 			return uri.getPathSegments().get(1);
 		}
 	}
-	
-	public static class Invoices implements InvoicesColumns, BaseColumns{
+
+	public static class Invoices implements InvoicesColumns, BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_INVOICES).build();
-		
-		public static Uri buildInvoicesUri(String invoicesId){
+
+		public static Uri buildInvoicesUri(String invoicesId) {
 			return CONTENT_URI.buildUpon().appendPath(invoicesId).build();
 		}
-		
-		public static String getInvoicesId(Uri uri){
-			return  uri.getPathSegments().get(1);
+
+		public static String getInvoicesId(Uri uri) {
+			return uri.getPathSegments().get(1);
 		}
-		
-		 /** Default "ORDER BY" clause. */
-        public static final String DEFAULT_SORT = Invoices.CREATED_DATE + " ASC";
+
+		/** Default "ORDER BY" clause. */
+		public static final String DEFAULT_SORT = Invoices.CREATED_DATE + " ASC";
+	}
+
+	public static class Customers implements CustomersColumns, BaseColumns {
+
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CUSTOMERS).build();
+
+		public static Uri buildCustomersUri(String customerId) {
+			return CONTENT_URI.buildUpon().appendPath(customerId).build();
+		}
+
+		public static Uri buildNoUri() {
+			return CONTENT_URI.buildUpon().appendEncodedPath(NO).build();
+		}
+
+		public static Uri buildSearchUri(String query) {
+			return CONTENT_URI.buildUpon().appendPath(query).appendPath(NO).build();
+		}
+
+		public static String getCustomersId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+
+		public static String getSearchQuery(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+
+		public static final String DEFAULT_SORT = Customers.NO + " ASC";
 	}
 
 }
