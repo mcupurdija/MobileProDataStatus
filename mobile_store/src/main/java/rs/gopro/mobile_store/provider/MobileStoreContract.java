@@ -59,6 +59,7 @@ public class MobileStoreContract {
 		String PRIORITY = "priority";
 		String GLOBAL_DIMENSION = "global_dimension";
 		String CHANNEL_ORAN = "channel_oran";
+		String BLOCKED_STATUS = "blocked_status";
 
 	}
 
@@ -112,6 +113,10 @@ public class MobileStoreContract {
 		public static Uri buildSearchUri(String query) {
 			return CONTENT_URI.buildUpon().appendPath(query).appendPath(NO).build();
 		}
+		
+		public static Uri buildCustomSearchUri(String text, String status) {
+			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(NO).build();
+		}
 
 		public static String getCustomersId(Uri uri) {
 			return uri.getPathSegments().get(1);
@@ -120,6 +125,15 @@ public class MobileStoreContract {
 		public static String getSearchQuery(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}
+		
+		public static String getCustomSearchFirstParamQuery(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+		
+		public static String getCustomSearchSecondParamQuery(Uri uri) {
+			return uri.getPathSegments().get(2);
+		}
+		
 
 		public static final String DEFAULT_SORT = Customers.NO + " ASC";
 	}

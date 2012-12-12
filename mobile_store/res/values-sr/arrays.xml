@@ -63,4 +63,10 @@
         <item>48</item>
         <item>64</item>
     </integer-array>
+    
+    <string-array name="customer_block_status_array">
+        <item>Aktivno</item>
+        <item>Blokirano 1</item>
+        <item>Blokirano 2</item>
+    </string-array>
 </resources>

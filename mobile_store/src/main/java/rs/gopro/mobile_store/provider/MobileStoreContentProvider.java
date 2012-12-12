@@ -41,6 +41,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int CUSTOMERS_ID = 121;
 	private static final int CUSTOMERS_NO = 122;
 	private static final int CUSTOMERS_SEARCH = 123;
+	private static final int CUSTOMERS_CUSTOM_SEARCH = 124;
+	private static final int CUSTOMERS_BY_STATUS = 125;
+	
 	
 
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -57,8 +60,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "customers",CUSTOMERS);
 		mobileStoreURIMatcher.addURI(authority, "customers/#",CUSTOMERS_ID);
 		mobileStoreURIMatcher.addURI(authority, "customers/no",CUSTOMERS_NO);
-		mobileStoreURIMatcher.addURI(authority, "customers/*/no",CUSTOMERS_SEARCH);
-		mobileStoreURIMatcher.addURI(authority, "customers/#/no",CUSTOMERS_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "customers/*/no",CUSTOMERS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "customers/#/no",CUSTOMERS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "customers/#/*/no",CUSTOMERS_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "customers/*/#/no",CUSTOMERS_CUSTOM_SEARCH);
 	}
 
 
@@ -164,10 +169,19 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.CUSTOMERS);
 		case CUSTOMERS_NO:
 			return builder.addTable(Tables.CUSTOMERS);
-		case CUSTOMERS_SEARCH:
+		case  CUSTOMERS_BY_STATUS:
 			String query = Customers.getSearchQuery(uri);
 			return builder.addTable(Tables.CUSTOMERS)
-			.where(Customers.NO + " like ? OR "+ Customers.NAME + " like ?", new String[] { /*"%" +*/ query + "%", "%" + query + "%"});
+					.where(Customers.BLOCKED_STATUS + "= ?", new String[]{ query});
+		case CUSTOMERS_CUSTOM_SEARCH:
+			String query1 = Customers.getCustomSearchFirstParamQuery(uri);
+			String query2 = Customers.getCustomSearchSecondParamQuery(uri);
+			return builder.addTable(Tables.CUSTOMERS)
+			.where(Customers.NO + " like ? OR "+ Customers.NAME + " like ?", new String[] { /*"%" +*/ query1 + "%", "%" + query1 + "%"})
+			.where(Customers.BLOCKED_STATUS + "= ?", new String[] {query2});
+			
+		
+			
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

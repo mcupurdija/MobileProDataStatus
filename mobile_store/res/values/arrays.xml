@@ -62,4 +62,13 @@
         <item>48</item>
         <item>64</item>
     </integer-array>
+    
+    
+    
+    <string-array name="customer_block_status_array">
+        <item>Active</item>
+        <item>Blocked One</item>
+        <item>Blocked Two</item>
+    </string-array>
+    
 </resources>
