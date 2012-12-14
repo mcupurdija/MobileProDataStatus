@@ -69,4 +69,10 @@
         <item>Blokirano 1</item>
         <item>Blokirano 2</item>
     </string-array>
+    <string-array name="item_camp_status_array">
+        <item>Aktivno</item>
+        <item>Blokirano 1</item>
+        <item>Blokirano 2</item>
+    </string-array>
+    
 </resources>

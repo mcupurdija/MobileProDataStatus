@@ -80,3 +80,40 @@ INSERT INTO  `customers` (`_id`,`no` , `name` , `name2` , 	`address_id` , 	`city
 			(7, '2112-12-12_NO_1', 'S&S style', 'Selection', 4, 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '0');
 INSERT INTO  `customers` (`_id`,`no` , `name` , `name2` , 	`address_id` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
 			(8, '1999-12-12_NO_1', 'Alpha', 'Selection', 4, 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '0');
+			
+CREATE TABLE `items` (
+			`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL ,
+			`no` TEXT,
+			`description` TEXT,
+			`description2` TEXT,
+			`unit_of_measure` TEXT,
+			`category_code` TEXT,
+			`group_code` TEXT,
+			`campaign_status` INTEGER,
+			`connected_spec_ship_item` TEXT,
+			`unit_sales_price_eur` REAL,
+			`unit_sales_price_din` REAL,
+			`campaign_code` TEXT,
+			`cmpaign_start_date` TEXT,
+			`campaign_end_date` TEXT,
+			`created_date` TEXT,
+			`created_by` TEXT,
+			`updated_date` TEXT,
+			`updated_by` TEXT);
+			
+INSERT INTO `items` (`_id` ,`no` , `description` ,`description2` ,`unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` ,`connected_spec_ship_item` ,`unit_sales_price_eur` ,`unit_sales_price_din` ,`campaign_code` ,`cmpaign_start_date` ,`campaign_end_date` ,`created_date` ,`created_by` ,`updated_date` ,`updated_by` ) VALUES 
+					(1, '1012-12-12-NO1','simple product', 'best article', 'quantity', 'G1', '0', 0, 'spec ship item', 1, 1, 'code', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', 'system','2012-12-12 20:20:20.000', 'system' );
+INSERT INTO `items` (`_id` ,`no` , `description` ,`description2` ,`unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` ,`connected_spec_ship_item` ,`unit_sales_price_eur` ,`unit_sales_price_din` ,`campaign_code` ,`cmpaign_start_date` ,`campaign_end_date` ,`created_date` ,`created_by` ,`updated_date` ,`updated_by` ) VALUES 
+					(2, '2001-12-12-NO1','complex panorama', 'best article', 'quantity', 'G1', '0', 0, 'spec ship item', 1, 1, 'code', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', 'system','2012-12-12 20:20:20.000', 'system' );
+INSERT INTO `items` (`_id` ,`no` , `description` ,`description2` ,`unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` ,`connected_spec_ship_item` ,`unit_sales_price_eur` ,`unit_sales_price_din` ,`campaign_code` ,`cmpaign_start_date` ,`campaign_end_date` ,`created_date` ,`created_by` ,`updated_date` ,`updated_by` ) VALUES 
+					(3, '2011-12-12-NO1','best ice', 'best article', 'quantity', 'G1', '0', 0, 'spec ship item', 1, 1, 'code', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', 'system','2012-12-12 20:20:20.000', 'system' );
+INSERT INTO `items` (`_id` ,`no` , `description` ,`description2` ,`unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` ,`connected_spec_ship_item` ,`unit_sales_price_eur` ,`unit_sales_price_din` ,`campaign_code` ,`cmpaign_start_date` ,`campaign_end_date` ,`created_date` ,`created_by` ,`updated_date` ,`updated_by` ) VALUES 
+					(4, '1012-12-12-NO1','Worst gum', 'best article', 'quantity', 'G1', '1', 1, 'spec ship item', 1, 1, 'code', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', 'system','2012-12-12 20:20:20.000', 'system' );
+INSERT INTO `items` (`_id` ,`no` , `description` ,`description2` ,`unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` ,`connected_spec_ship_item` ,`unit_sales_price_eur` ,`unit_sales_price_din` ,`campaign_code` ,`cmpaign_start_date` ,`campaign_end_date` ,`created_date` ,`created_by` ,`updated_date` ,`updated_by` ) VALUES 
+					(5, '1999-12-12-NO1','Useful watch', 'best article', 'quantity', 'G1', '1', 1, 'spec ship item', 1, 1, 'code', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', 'system','2012-12-12 20:20:20.000', 'system' );
+INSERT INTO `items` (`_id` ,`no` , `description` ,`description2` ,`unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` ,`connected_spec_ship_item` ,`unit_sales_price_eur` ,`unit_sales_price_din` ,`campaign_code` ,`cmpaign_start_date` ,`campaign_end_date` ,`created_date` ,`created_by` ,`updated_date` ,`updated_by` ) VALUES 
+					(6, '2012-12-12-NO1','Temp folder', 'best article', 'quantity', 'G1', '2',2, 'spec ship item', 1, 1, 'code', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', 'system','2012-12-12 20:20:20.000', 'system' );
+INSERT INTO `items` (`_id` ,`no` , `description` ,`description2` ,`unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` ,`connected_spec_ship_item` ,`unit_sales_price_eur` ,`unit_sales_price_din` ,`campaign_code` ,`cmpaign_start_date` ,`campaign_end_date` ,`created_date` ,`created_by` ,`updated_date` ,`updated_by` ) VALUES 
+					(7, '2012-12-12-NO1','Lion snoope', 'best article', 'quantity', 'G1', '2', 2, 'spec ship item', 1, 1, 'code', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', 'system','2012-12-12 20:20:20.000', 'system' );
+INSERT INTO `items` (`_id` ,`no` , `description` ,`description2` ,`unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` ,`connected_spec_ship_item` ,`unit_sales_price_eur` ,`unit_sales_price_din` ,`campaign_code` ,`cmpaign_start_date` ,`campaign_end_date` ,`created_date` ,`created_by` ,`updated_date` ,`updated_by` ) VALUES 
+					(8, '2012-12-12-NO1','Article', 'best article', 'quantity', 'G1', '2', 2, 'spec ship item', 1, 1, 'code', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', 'system','2012-12-12 20:20:20.000', 'system' );

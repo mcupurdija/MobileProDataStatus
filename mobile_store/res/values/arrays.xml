@@ -71,4 +71,10 @@
         <item>Blocked Two</item>
     </string-array>
     
+    <string-array name="item_camp_status_array">
+        <item>Active</item>
+        <item>Blocked One</item>
+        <item>Blocked Two</item>
+    </string-array>
+    
 </resources>

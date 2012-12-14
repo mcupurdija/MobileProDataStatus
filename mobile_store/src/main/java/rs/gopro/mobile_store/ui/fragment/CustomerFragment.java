@@ -35,11 +35,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cursor>, TextWatcher, OnItemSelectedListener {
 
-	//SimpleCursorAdapter cursorAdapter;
-	EditText searchText;
-	Spinner spinner;
-	String splitQuerySeparator = ";";
-	boolean initialStateOfSearchText = true;
+	private EditText searchText;
+	private Spinner spinner;
+	private String splitQuerySeparator = ";";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,15 +49,8 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 		cursorAdapter.setFilterQueryProvider(new FilterQueryProvider() {
 			@Override
 			public Cursor runQuery(CharSequence constraint) {
-				System.out.println("RUN QUERY");
 				String[] queryStrings = constraint.toString().split(splitQuerySeparator);
-				// Cursor cursor =
-				// getActivity().getContentResolver().query(Customers.buildNoUri(),
-				// CustomersQuery.PROJECTION, Customers.NO + " like ? ", new
-				// String[] { "%" + constraint.toString() + "%" },
-				// MobileStoreContract.Customers.DEFAULT_SORT);
 				Cursor cursor = getActivity().getContentResolver().query(Customers.buildCustomSearchUri(queryStrings[0], queryStrings[1]), CustomersQuery.PROJECTION, null, null, MobileStoreContract.Customers.DEFAULT_SORT);
-
 				return cursor;
 			}
 		});
@@ -67,26 +58,12 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-		View view = super.onCreateView(inflater, container, savedInstanceState);
-		return view;
-	}
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-
-	}
-
-	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		if (getListAdapter() != null) {
-			
-			((SimpleCursorAdapter)getListView().getAdapter()).swapCursor(null);
+
+			((SimpleCursorAdapter) getListView().getAdapter()).swapCursor(null);
 		}
-		initialStateOfSearchText = true;
 		getLoaderManager().initLoader(0, null, this);
 		searchText = (EditText) getActivity().findViewById(R.id.input_search_customers);
 		searchText.addTextChangedListener(this);
@@ -95,59 +72,38 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 		spinner = (Spinner) getActivity().findViewById(R.id.customer_block_status_spinner);
 		spinner.setOnItemSelectedListener(this);
 		spinner.setAdapter(adapter);
-		
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
 
 	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		CursorLoader cursorLoader = new CursorLoader(getActivity(), MobileStoreContract.Customers.CONTENT_URI, CustomersQuery.PROJECTION, null, null, MobileStoreContract.Customers.DEFAULT_SORT);
-		return cursorLoader;
+		// CursorLoader cursorLoader = new CursorLoader(getActivity(),
+		// MobileStoreContract.Customers.CONTENT_URI, CustomersQuery.PROJECTION,
+		// null, null, MobileStoreContract.Customers.DEFAULT_SORT);
+		return null;
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		((SimpleCursorAdapter)getListAdapter()).swapCursor(null);
-	
+		((SimpleCursorAdapter) getListAdapter()).swapCursor(null);
 
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		((SimpleCursorAdapter)getListAdapter()).swapCursor(null);
+		((SimpleCursorAdapter) getListAdapter()).changeCursor(null);
 
-	}
-
-	private interface CustomersQuery {
-
-		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Customers.NO, MobileStoreContract.Customers.NAME, MobileStoreContract.Customers.PHONE
-
-		};
-
-		int _ID = 0;
-		int NO = 1;
-		int NAME = 2;
-		int PHONE = 7;
 	}
 
 	@Override
 	public void afterTextChanged(Editable s) {
-		System.out.println("***afterTextChanged");
 		ListView listView = getListView();
 		SimpleCursorAdapter adapter = (SimpleCursorAdapter) listView.getAdapter();
 		adapter.swapCursor(null);
-		if (!initialStateOfSearchText) {
-			int statusId = spinner.getSelectedItemPosition();
-			String queryString = s.toString() + splitQuerySeparator + statusId;
-			adapter.getFilter().filter(queryString);
-		} else {
-			initialStateOfSearchText = false;
-		}
+		int statusId = spinner.getSelectedItemPosition();
+		String queryString = s.toString() + splitQuerySeparator + statusId;
+		adapter.getFilter().filter(queryString);
+
 	}
 
 	@Override
@@ -171,7 +127,11 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
-		
+
+	}
+
+	private interface CustomersQuery {
+		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Customers.NO, MobileStoreContract.Customers.NAME, MobileStoreContract.Customers.PHONE };
 	}
 
 }

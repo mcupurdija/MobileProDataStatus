@@ -17,7 +17,6 @@ public class CustomersLayout extends CustomLinearLayout {
 	private static final String CUSTOMERS_AUTHORITY = "customers";
 	public static final Uri CUSTOMERS_URI = new Uri.Builder().scheme(CUSTOMERS_SCHEME).authority(CUSTOMERS_AUTHORITY).build();
 
-	
 	public CustomersLayout(FragmentManager fragmentManager, Activity activity) {
 		super(fragmentManager, activity);
 	}
@@ -25,18 +24,19 @@ public class CustomersLayout extends CustomLinearLayout {
 	@Override
 	protected void inflateLayout(LayoutInflater layoutInflater) {
 		View view = layoutInflater.inflate(R.layout.content_holder_customers, null);
-		
-		
-		FragmentTransaction tr = fragmentManager.beginTransaction();
-		//Fragment addCommentFragment = new SaleOrderListFragment();
-		Fragment fragment = new CustomerFragment();
-		tr.add(R.id.customers_content, fragment);
-		tr.commit();
-		
+
+		Fragment fragment = fragmentManager.findFragmentById(R.id.customers_content);
+		if (fragment == null) {
+			FragmentTransaction tr = fragmentManager.beginTransaction();
+			fragment = new CustomerFragment();
+			tr.add(R.id.customers_content, fragment);
+			tr.commit();
+		}
+
 		this.addView(view);
 
 	}
-	
+
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();

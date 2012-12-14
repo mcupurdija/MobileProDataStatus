@@ -15,6 +15,7 @@ public class MobileStoreContract {
 	private static final String PATH_INVOICES = "invoices";
 	private static final String PATH_CUSTOMERS = "customers";
 	private static final String PATH_SEARCH = "search";
+	private static final String PATH_ITEMS = "items";
 
 	public interface UsersColumns {
 		String USERNAME = "username";
@@ -60,6 +61,28 @@ public class MobileStoreContract {
 		String GLOBAL_DIMENSION = "global_dimension";
 		String CHANNEL_ORAN = "channel_oran";
 		String BLOCKED_STATUS = "blocked_status";
+
+	}
+
+	public interface ItemsColumns {
+
+		String NO = "no";
+		String DESCRIPTION = "description";
+		String DESCRIPTION2 = "description2";
+		String UNIT_OF_MEASURE = "unit_of_measure";
+		String CATEGORY_CODE = "category_code";
+		String GROUP_CODE = "group_code";
+		String CAMPAIGN_STATUS = "campaign_status";
+		String CONNECTED_SPEC_SHIP_ITEM = "connected_spec_ship_item";
+		String UNIT_SALES_PRICE_EUR = "unit_sales_price_eur";
+		String UNIT_SALES_PRICE_DIN = "unit_sales_price_din";
+		String CAMPAIGN_CODE = "campaign_code";
+		String CMPAIGN_START_DATE = "cmpaign_start_date";
+		String CAMPAIGN_END_DATE = "campaign_end_date";
+		String CREATED_DATE = "created_date";
+		String CREATED_BY = "created_by";
+		String UPDATED_DATE = "updated_date";
+		String UPDATED_BY = "updated_by";
 
 	}
 
@@ -113,7 +136,7 @@ public class MobileStoreContract {
 		public static Uri buildSearchUri(String query) {
 			return CONTENT_URI.buildUpon().appendPath(query).appendPath(NO).build();
 		}
-		
+
 		public static Uri buildCustomSearchUri(String text, String status) {
 			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(NO).build();
 		}
@@ -125,17 +148,47 @@ public class MobileStoreContract {
 		public static String getSearchQuery(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}
+
+		public static String getCustomSearchFirstParamQuery(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+
+		public static String getCustomSearchSecondParamQuery(Uri uri) {
+			return uri.getPathSegments().get(2);
+		}
+
+		public static final String DEFAULT_SORT = Customers.NO + " ASC";
+	}
+
+	public static class Items implements ItemsColumns, BaseColumns {
+
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_ITEMS).build();
+
+		public static Uri buildNoUri() {
+			return CONTENT_URI.buildUpon().appendEncodedPath(NO).build();
+		}
+
+		public static String getItemNo(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
 		
 		public static String getCustomSearchFirstParamQuery(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}
-		
+
 		public static String getCustomSearchSecondParamQuery(Uri uri) {
 			return uri.getPathSegments().get(2);
 		}
 		
 
-		public static final String DEFAULT_SORT = Customers.NO + " ASC";
-	}
+		public static final String DEFAULT_SORT = ItemsColumns.NO + " ASC";
 
+		public static String getItemStatus(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+
+		public static Uri buildCustomSearchUri(String text, String status) {
+			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(NO).build();
+		}
+	}
 }

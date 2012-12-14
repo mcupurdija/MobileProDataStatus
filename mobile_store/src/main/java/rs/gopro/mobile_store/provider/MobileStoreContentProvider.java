@@ -4,6 +4,7 @@ import java.util.List;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SelectionBuilder;
@@ -44,6 +45,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int CUSTOMERS_CUSTOM_SEARCH = 124;
 	private static final int CUSTOMERS_BY_STATUS = 125;
 	
+	private static final int ITEMS = 130;
+	private static final int ITEMS_NO = 131;
+	private static final int ITEMS_BY_STATUS = 132;
+	private static final int ITEMS_CUSTOM_SEARCH = 133;
+	
 	
 
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -64,6 +70,12 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "customers/#/no",CUSTOMERS_BY_STATUS);
 		mobileStoreURIMatcher.addURI(authority, "customers/#/*/no",CUSTOMERS_CUSTOM_SEARCH);
 		mobileStoreURIMatcher.addURI(authority, "customers/*/#/no",CUSTOMERS_CUSTOM_SEARCH);
+		
+		mobileStoreURIMatcher.addURI(authority, "items", ITEMS);
+		mobileStoreURIMatcher.addURI(authority, "items/*/no", ITEMS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "items/#/no", ITEMS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "items/*/#/no", ITEMS_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "items/#/*/no", ITEMS_CUSTOM_SEARCH);
 	}
 
 
@@ -174,14 +186,25 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.CUSTOMERS)
 					.where(Customers.BLOCKED_STATUS + "= ?", new String[]{ query});
 		case CUSTOMERS_CUSTOM_SEARCH:
-			String query1 = Customers.getCustomSearchFirstParamQuery(uri);
-			String query2 = Customers.getCustomSearchSecondParamQuery(uri);
+			String customerCustomParam = Customers.getCustomSearchFirstParamQuery(uri);
+			String customerStatus = Customers.getCustomSearchSecondParamQuery(uri);
 			return builder.addTable(Tables.CUSTOMERS)
-			.where(Customers.NO + " like ? OR "+ Customers.NAME + " like ?", new String[] { /*"%" +*/ query1 + "%", "%" + query1 + "%"})
-			.where(Customers.BLOCKED_STATUS + "= ?", new String[] {query2});
+			.where(Customers.NO + " like ? OR "+ Customers.NAME + " like ?", new String[] { /*"%" +*/ customerCustomParam + "%", "%" + customerCustomParam + "%"})
+			.where(Customers.BLOCKED_STATUS + "= ?", new String[] {customerStatus});
 			
 		
-			
+		case ITEMS:
+			return builder.addTable(Tables.ITEMS);
+		case ITEMS_BY_STATUS:
+			String itemStat = Items.getItemStatus(uri);
+			return builder.addTable(Tables.ITEMS)
+			.where(Items.CAMPAIGN_STATUS + "= ?", new String[]{itemStat});
+		case ITEMS_CUSTOM_SEARCH: 
+			String  itemCustom = Items.getCustomSearchFirstParamQuery(uri);
+			String  itemStatus = Items.getCustomSearchSecondParamQuery(uri);
+			return builder.addTable(Tables.ITEMS)
+			.where(Items.NO + " like ? OR "+Items.DESCRIPTION + " like ? ", new String [] {itemCustom + "%", "%" + itemCustom + "%"} )
+			.where(Items.CAMPAIGN_STATUS + "= ?", new String[]{itemStatus});
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

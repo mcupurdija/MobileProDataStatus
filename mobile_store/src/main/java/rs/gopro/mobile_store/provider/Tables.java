@@ -7,5 +7,6 @@ public interface Tables {
 	String USERS = "users";
 	String INVOICES = "invoices";
 	String CUSTOMERS = "customers";
+	String ITEMS = "items";
 
 }

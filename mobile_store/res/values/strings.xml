@@ -22,4 +22,7 @@
 	<string name="customer_search_title">Find customer: </string>
 	<string name="customer_block_status_spinner_title">Filter by status</string>
 	
+	<string name="item_search_title">Find item: </string>
+	<string name="item_block_status_spinner_title">Filter by status</string>
+	
 </resources>
