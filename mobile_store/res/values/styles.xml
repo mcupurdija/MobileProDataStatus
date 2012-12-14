@@ -20,5 +20,25 @@
 		<item name="android:textColor">@color/main_menu_category_text</item>
 		<item name="android:singleLine">true</item>
     </style>
+    
+    <!-- SimpleListItems are items whose containers provides the appropriate padding, and
+         usually the container and content are a single view. -->
+    <style name="SimpleListItem" parent="ListItemContainerBase">
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
 
+    <style name="SimpleListItemSmall" parent="SimpleListItem">
+        <item name="android:minHeight">48dp</item>
+    </style>
+    
+        <!-- List item text -->
+    <style name="ListItemTitle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">@color/body_text_1</item>
+    </style>
+    
 </resources>

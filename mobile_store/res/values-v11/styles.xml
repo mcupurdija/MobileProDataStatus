@@ -21,4 +21,7 @@
 		<item name="android:singleLine">true</item>
     </style>
 
+    <style name="ListItemContainerBase">
+        <item name="android:minHeight">?android:listPreferredItemHeight</item>
+    </style>
 </resources>

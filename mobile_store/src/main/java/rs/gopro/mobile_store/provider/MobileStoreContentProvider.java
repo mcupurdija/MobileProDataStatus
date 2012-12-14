@@ -30,7 +30,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 
 	private static final int VISITS = 200;
 	private static final int VISIT_ID = 201;
-	//private static final int VISIT = 202;
+	private static final int VISITS_WITH_CUSTOMER = 202;
 
 	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -43,24 +43,37 @@ public class MobileStoreContentProvider extends ContentProvider {
 		
 		mobileStoreURIMatcher.addURI(authority, "visits", VISITS);
 		mobileStoreURIMatcher.addURI(authority, "visits/#", VISIT_ID);
+		mobileStoreURIMatcher.addURI(authority, "visits/with_customer", VISITS_WITH_CUSTOMER);
 	}
 
 
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		LogUtils.log(Log.VERBOSE, TAG, "delete(uri = " + uri + ")");
-		int match = mobileStoreURIMatcher.match(uri);
+		//int match = mobileStoreURIMatcher.match(uri);
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
-
 		SelectionBuilder builder = buildSimpleSelection(uri);
 		int deletedRows = builder.where(selection, selectionArgs).delete(database);
 		getContext().getContentResolver().notifyChange(uri, null);
 		return deletedRows;
 	}
 
-	@Override
-	public String getType(Uri uri) {
-		return null;
+	/** {@inheritDoc} */
+    @Override
+    public String getType(Uri uri) {
+    	final int match = mobileStoreURIMatcher.match(uri);
+        switch (match) {
+            case VISITS:
+            	return Visits.CONTENT_TYPE;
+            case VISIT_ID:
+            	return Visits.CONTENT_TYPE;
+            case VISITS_WITH_CUSTOMER:
+            	return Visits.CONTENT_TYPE;
+            default:
+            	return null;
+                //TODO Throw exception when other tables get content_type
+            	//throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
 	}
 
 	@Override
@@ -77,7 +90,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case VISITS:
 			id = database.insertOrThrow(Tables.VISITS, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
-			return  Visits.buildVisitsUri(""+id);
+			return  Visits.buildVisitUri(""+id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}

@@ -71,7 +71,7 @@ public class VisitsPlanMultipaneActivity extends BaseActivity implements VisitLi
             if (intent.hasExtra(EXTRA_MASTER_URI)) {
                 if (!updateSurfaceOnly) {
                 	loadVisitList((Uri) intent.getParcelableExtra(EXTRA_MASTER_URI),
-                    		MobileStoreContract.Visits.getVisitsId(uri));
+                    		MobileStoreContract.Visits.getVisitId(uri));
                     loadVisitDetail(uri);
                 }
             } else {
@@ -141,7 +141,7 @@ public class VisitsPlanMultipaneActivity extends BaseActivity implements VisitLi
 
 	@Override
 	public boolean onVisitSelected(String visitsId) {
-		loadVisitDetail(MobileStoreContract.Visits.buildVisitsUri(visitsId));
+		loadVisitDetail(MobileStoreContract.Visits.buildVisitUri(visitsId));
         return true;
 	}
 

@@ -2,6 +2,8 @@ package rs.gopro.mobile_store.provider;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.provider.ContactsContract;
+import android.text.TextUtils;
 
 public class MobileStoreContract {
 												
@@ -10,6 +12,7 @@ public class MobileStoreContract {
 
 	private static final String PATH_USERS = "users";
 	private static final String PATH_VISITS = "visits";
+	private static final String PATH_WITH_CUSTOMER = "with_customer";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -69,6 +72,11 @@ public class MobileStoreContract {
 		}
 	}
 	
+	/**
+	 * Visits contract.
+	 * @author vladimirm
+	 *
+	 */
 	public static class Visits implements VisitsColumns, SalesPersonsColumns, CustomersColumns, AuditColumns, BaseColumns {
 		
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_VISITS).build();
@@ -80,13 +88,36 @@ public class MobileStoreContract {
         public static final String CONTENT_ITEM_TYPE =
                 "vnd.android.cursor.item/vnd.mobile_store.visit";
         
-        public static Uri buildVisitsUri(String visitsId){
+        public static Uri buildVisitUri(String visitsId){
 			return CONTENT_URI.buildUpon().appendPath(visitsId).build();
 		}
 
-		public static String getVisitsId(Uri uri){
+		public static String getVisitId(Uri uri){
 			return  uri.getPathSegments().get(1);
+		}
+		
+		public static Uri buildWithCustomer() {
+			return  CONTENT_URI.buildUpon().appendPath(PATH_WITH_CUSTOMER).build();
 		}
 	}
 
+	/**
+	 * To mark data inserted/changed/deleted from sync service and not from UI.
+	 * @param uri
+	 * @return
+	 */
+    public static Uri addCallerIsSyncAdapterParameter(Uri uri) {
+        return uri.buildUpon().appendQueryParameter(
+                ContactsContract.CALLER_IS_SYNCADAPTER, "true").build();
+    }
+
+    /**
+     * To check if data is inserted/changed/deleted from sync service and not from UI.
+     * @param uri
+     * @return
+     */
+    public static boolean hasCallerIsSyncAdapterParameter(Uri uri) {
+        return TextUtils.equals("true",
+                uri.getQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER));
+    }
 }

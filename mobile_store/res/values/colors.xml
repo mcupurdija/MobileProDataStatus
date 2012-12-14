@@ -1,5 +1,12 @@
 <resources>
 
+    <color name="body_text_1">#ff000000</color>
+    <color name="body_text_2">#99000000</color>
+    <color name="body_text_disabled">#66000000</color>
+
+    <color name="body_text_1_inverse">#ffffffff</color>
+    <color name="body_text_2_inverse">#99ffffff</color>
+    
     <color name="red">#ffff0000</color>
     <color name="white">#fff</color>
     <color name="actions_bg">#ff3c3c3c</color>

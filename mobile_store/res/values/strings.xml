@@ -17,4 +17,6 @@
 	<string name="second_section_title">Second Section</string>
 	<string name="third_section_title">Third Section</string>
 	<string name="next_button_title">Next</string>
+	
+	<string name="empty_visits">No planned visits.</string>
 </resources>
