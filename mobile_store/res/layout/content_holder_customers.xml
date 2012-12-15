@@ -15,41 +15,39 @@
             android:layout_gravity="bottom"
             android:layout_marginLeft="10dp"
             android:paddingBottom="5dp"
-            android:text="First input title:"
+            android:text="@string/customer_search_title"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <EditText
-            android:id="@+id/first_input"
+            android:id="@+id/input_search_customers"
             android:layout_width="140dp"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
-            android:hint="Name"
+            android:hint="Search"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:paddingBottom="5dp" >
         </EditText>
-
-        <TextView
-            android:id="@+id/second_input_title"
+          <TextView
+            android:id="@+id/customer_block_status_spinner_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginLeft="30dp"
             android:paddingBottom="5dp"
-            android:text="Second input title:"
+            android:text="@string/customer_block_status_spinner_title"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <EditText
-            android:id="@+id/second_input"
-            android:layout_width="140dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:hint="Address"
-            android:imeOptions="actionGo"
-            android:inputType="text"
-            android:paddingBottom="5dp"
-            android:singleLine="true" />
+        <Spinner
+            android:id="@+id/customer_block_status_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
+     <FrameLayout
+        android:id="@+id/customers_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1" />
 
 </LinearLayout>

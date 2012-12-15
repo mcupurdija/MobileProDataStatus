@@ -12,11 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 public class ItemsLayout extends CustomLinearLayout {
-	
+
 	private static final String ITEMS_SCHEME = "settings";
 	private static final String ITEMS_AUTHORITY = "items";
 	public static final Uri ITEMS_URI = new Uri.Builder().scheme(ITEMS_SCHEME).authority(ITEMS_AUTHORITY).build();
-
 
 	public ItemsLayout(FragmentManager fragmentManager, Activity activity) {
 		super(fragmentManager, activity);
@@ -26,10 +25,14 @@ public class ItemsLayout extends CustomLinearLayout {
 	protected void inflateLayout(LayoutInflater layoutInflater) {
 		View view = layoutInflater.inflate(R.layout.content_holder_items, null);
 		this.addView(view);
-		FragmentTransaction tr = fragmentManager.beginTransaction();
-		Fragment addCommentFragment = new ItemsListFragment();
-		tr.add(R.id.item_content, addCommentFragment);
-		tr.commit();
+
+		Fragment itemsLayout = fragmentManager.findFragmentById(R.id.items_content);
+		if (itemsLayout == null) {
+			FragmentTransaction tr = fragmentManager.beginTransaction();
+			itemsLayout = new ItemsListFragment();
+			tr.add(R.id.items_content, itemsLayout);
+			tr.commit();
+		}
 	}
 
 }

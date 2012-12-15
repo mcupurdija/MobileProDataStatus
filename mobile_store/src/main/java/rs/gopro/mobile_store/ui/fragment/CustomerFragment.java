@@ -1,12 +1,17 @@
-package rs.gopro.mobile_store.ui;
+package rs.gopro.mobile_store.ui.fragment;
+
+import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
-
-import android.content.ClipData.Item;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
+import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.ui.LoginActivity.UsersQuery;
+import android.app.Activity;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.v4.app.ListFragment;
@@ -28,57 +33,54 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class ItemsListFragment extends ListFragment implements LoaderCallbacks<Cursor>, TextWatcher, OnItemSelectedListener {
+public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cursor>, TextWatcher, OnItemSelectedListener {
 
-	EditText searchText;
-	Spinner spinner;
-	String splitQuerySeparator = ";";
+	private EditText searchText;
+	private Spinner spinner;
+	private String splitQuerySeparator = ";";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		CursorAdapter cursorAdapter = null;
-		int[] to = new int[] { android.R.id.empty, R.id.block_time, R.id.block_title/*, R.id.block_subtitle*/ };
-		getLoaderManager().initLoader(0, null, this);
-		cursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(), R.layout.list_item_sale_order_block, null, ItemsQuery.PROJECTION, to, 0);
+		int[] to = new int[] { android.R.id.empty, R.id.block_time, R.id.block_title, R.id.block_subtitle };
+		Loader<Cursor> loader = getLoaderManager().initLoader(0, null, this);
+		cursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(), R.layout.list_item_sale_order_block, null, CustomersQuery.PROJECTION, to, 0);
 		cursorAdapter.setFilterQueryProvider(new FilterQueryProvider() {
 			@Override
 			public Cursor runQuery(CharSequence constraint) {
-				System.out.println("RUN QUERY");
 				String[] queryStrings = constraint.toString().split(splitQuerySeparator);
-				Cursor cursor = getActivity().getContentResolver().query(Items.buildCustomSearchUri(queryStrings[0], queryStrings[1]), ItemsQuery.PROJECTION, null, null, MobileStoreContract.Customers.DEFAULT_SORT);
+				Cursor cursor = getActivity().getContentResolver().query(Customers.buildCustomSearchUri(queryStrings[0], queryStrings[1]), CustomersQuery.PROJECTION, null, null, MobileStoreContract.Customers.DEFAULT_SORT);
 				return cursor;
 			}
 		});
 		setListAdapter(cursorAdapter);
 	}
 
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		if (getListAdapter() != null) {
+
 			((SimpleCursorAdapter) getListView().getAdapter()).swapCursor(null);
 		}
 		getLoaderManager().initLoader(0, null, this);
-		searchText = (EditText) getActivity().findViewById(R.id.input_search_items);
+		searchText = (EditText) getActivity().findViewById(R.id.input_search_customers);
 		searchText.addTextChangedListener(this);
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.item_camp_status_array, android.R.layout.simple_spinner_item);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.customer_block_status_array, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner = (Spinner) getActivity().findViewById(R.id.items_camp_status_spinner);
+		spinner = (Spinner) getActivity().findViewById(R.id.customer_block_status_spinner);
 		spinner.setOnItemSelectedListener(this);
 		spinner.setAdapter(adapter);
 
 	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-
-		super.onViewCreated(view, savedInstanceState);
-	}
-
-	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		CursorLoader cursorLoader = new CursorLoader(getActivity(), MobileStoreContract.Items.CONTENT_URI, ItemsQuery.PROJECTION, null, null, MobileStoreContract.Customers.DEFAULT_SORT);
-		return cursorLoader;
+		// CursorLoader cursorLoader = new CursorLoader(getActivity(),
+		// MobileStoreContract.Customers.CONTENT_URI, CustomersQuery.PROJECTION,
+		// null, null, MobileStoreContract.Customers.DEFAULT_SORT);
+		return null;
 	}
 
 	@Override
@@ -89,12 +91,8 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		((SimpleCursorAdapter) getListAdapter()).swapCursor(null);
+		((SimpleCursorAdapter) getListAdapter()).changeCursor(null);
 
-	}
-
-	@Override
-	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 	}
 
 	@Override
@@ -105,6 +103,11 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 		int statusId = spinner.getSelectedItemPosition();
 		String queryString = s.toString() + splitQuerySeparator + statusId;
 		adapter.getFilter().filter(queryString);
+
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 	}
 
 	@Override
@@ -127,8 +130,8 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 
 	}
 
-	private interface ItemsQuery {
-		String[] PROJECTION = { BaseColumns._ID, Items.NO, Items.DESCRIPTION, Items.CAMPAIGN_STATUS };
+	private interface CustomersQuery {
+		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Customers.NO, MobileStoreContract.Customers.NAME, MobileStoreContract.Customers.PHONE };
 	}
 
 }

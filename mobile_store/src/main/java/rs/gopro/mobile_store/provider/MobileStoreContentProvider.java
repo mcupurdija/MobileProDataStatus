@@ -2,7 +2,9 @@ package rs.gopro.mobile_store.provider;
 
 import java.util.List;
 
+import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SelectionBuilder;
@@ -36,6 +38,19 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int INVOICES = 110;
 	private static final int INVOICES_ID = 111;
 	
+	private static final int CUSTOMERS = 120;
+	private static final int CUSTOMERS_ID = 121;
+	private static final int CUSTOMERS_NO = 122;
+	private static final int CUSTOMERS_SEARCH = 123;
+	private static final int CUSTOMERS_CUSTOM_SEARCH = 124;
+	private static final int CUSTOMERS_BY_STATUS = 125;
+	
+	private static final int ITEMS = 130;
+	private static final int ITEMS_NO = 131;
+	private static final int ITEMS_BY_STATUS = 132;
+	private static final int ITEMS_CUSTOM_SEARCH = 133;
+	
+	
 
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -47,6 +62,20 @@ public class MobileStoreContentProvider extends ContentProvider {
 		
 		mobileStoreURIMatcher.addURI(authority, "invoices", INVOICES);
 		mobileStoreURIMatcher.addURI(authority, "invoices/#", INVOICES_ID);
+		
+		mobileStoreURIMatcher.addURI(authority, "customers",CUSTOMERS);
+		mobileStoreURIMatcher.addURI(authority, "customers/#",CUSTOMERS_ID);
+		mobileStoreURIMatcher.addURI(authority, "customers/no",CUSTOMERS_NO);
+		mobileStoreURIMatcher.addURI(authority, "customers/*/no",CUSTOMERS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "customers/#/no",CUSTOMERS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "customers/#/*/no",CUSTOMERS_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "customers/*/#/no",CUSTOMERS_CUSTOM_SEARCH);
+		
+		mobileStoreURIMatcher.addURI(authority, "items", ITEMS);
+		mobileStoreURIMatcher.addURI(authority, "items/*/no", ITEMS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "items/#/no", ITEMS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "items/*/#/no", ITEMS_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "items/#/*/no", ITEMS_CUSTOM_SEARCH);
 	}
 
 
@@ -82,6 +111,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.INVOICES,null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return  Invoices.buildInvoicesUri(""+id);
+		case CUSTOMERS:
+			id = database.insertOrThrow(Tables.CUSTOMERS,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return Customers.buildCustomersUri(""+id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -131,6 +164,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	}
 
 	private SelectionBuilder buildExpandedSelection(Uri uri, int match) {
+		System.out.println("URI: "+uri);
 		final SelectionBuilder builder = new SelectionBuilder();
 		switch (match) {
 		case USERS_ID:
@@ -143,6 +177,34 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.INVOICES).where(Invoices._ID+ "=?", invoicesId);
 		case INVOICES:
 			return builder.addTable(Tables.INVOICES);
+		case CUSTOMERS:
+			return builder.addTable(Tables.CUSTOMERS);
+		case CUSTOMERS_NO:
+			return builder.addTable(Tables.CUSTOMERS);
+		case  CUSTOMERS_BY_STATUS:
+			String query = Customers.getSearchQuery(uri);
+			return builder.addTable(Tables.CUSTOMERS)
+					.where(Customers.BLOCKED_STATUS + "= ?", new String[]{ query});
+		case CUSTOMERS_CUSTOM_SEARCH:
+			String customerCustomParam = Customers.getCustomSearchFirstParamQuery(uri);
+			String customerStatus = Customers.getCustomSearchSecondParamQuery(uri);
+			return builder.addTable(Tables.CUSTOMERS)
+			.where(Customers.NO + " like ? OR "+ Customers.NAME + " like ?", new String[] { /*"%" +*/ customerCustomParam + "%", "%" + customerCustomParam + "%"})
+			.where(Customers.BLOCKED_STATUS + "= ?", new String[] {customerStatus});
+			
+		
+		case ITEMS:
+			return builder.addTable(Tables.ITEMS);
+		case ITEMS_BY_STATUS:
+			String itemStat = Items.getItemStatus(uri);
+			return builder.addTable(Tables.ITEMS)
+			.where(Items.CAMPAIGN_STATUS + "= ?", new String[]{itemStat});
+		case ITEMS_CUSTOM_SEARCH: 
+			String  itemCustom = Items.getCustomSearchFirstParamQuery(uri);
+			String  itemStatus = Items.getCustomSearchSecondParamQuery(uri);
+			return builder.addTable(Tables.ITEMS)
+			.where(Items.NO + " like ? OR "+Items.DESCRIPTION + " like ? ", new String [] {itemCustom + "%", "%" + itemCustom + "%"} )
+			.where(Items.CAMPAIGN_STATUS + "= ?", new String[]{itemStatus});
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
