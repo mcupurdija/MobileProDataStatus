@@ -24,4 +24,6 @@
 	
 	<string name="item_search_title">Pronadji artikl: </string>
 	<string name="item_block_status_spinner_title">Filtriraj po statusu</string>
+	
+	<string name="empty_visits">Nema planiranih poseta.</string>
 </resources>

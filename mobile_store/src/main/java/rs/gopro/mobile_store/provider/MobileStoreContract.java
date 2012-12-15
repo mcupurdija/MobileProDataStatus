@@ -16,13 +16,38 @@ public class MobileStoreContract {
 	private static final String PATH_CUSTOMERS = "customers";
 	private static final String PATH_SEARCH = "search";
 	private static final String PATH_ITEMS = "items";
+	private static final String PATH_VISITS = "visits";
+	private static final String PATH_WITH_CUSTOMER = "with_customer";
 
+	public interface AuditColumns {
+		String CREATED_DATE = "created_date";
+		String CREATED_BY = "created_by"; 
+		String UPDATED_DATE = "updated_date";
+		String UPDATED_BY = "updated_by"; 
+	}
+	
 	public interface UsersColumns {
 		String USERNAME = "username";
 		String PASSWORD = "pass";
 		String SALES_PERSON_ID = "sales_person_id";
 		String LAST_LOGIN = "last_login";
 	}
+	
+	public interface VisitsColumns {
+		// it has sales_person_id
+		String VISIT_DATE = "visit_date";
+		String CUSTOMER_ID = "customer_id";
+		String CUSTOMER_NAME = "customer_name";
+		String LINE_NO = "line_no";
+		String ENTRY_TYPE = "entry_type";
+		String ODOMETER = "odometer";
+		String DEPARTURE_TIME = "departure_time";
+		String ARRIVAL_TIME = "arrival_time";
+		String VISIT_RESULT = "visit_result";
+		String NOTE = "note";
+		// it has audit columns
+	}
+
 
 	public interface InvoicesColumns {
 		String NO = "no";
@@ -85,7 +110,11 @@ public class MobileStoreContract {
 		String UPDATED_BY = "updated_by";
 
 	}
-
+	
+	public interface SalesPersonsColumns {
+		String SALES_PERSON_ID = "sales_person_id";
+	}
+	
 	public static class Users implements UsersColumns, BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_USERS).build();
 
@@ -191,4 +220,53 @@ public class MobileStoreContract {
 			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(NO).build();
 		}
 	}
+	
+	/**
+	 * Visits contract.
+	 * @author vladimirm
+	 *
+	 */
+	public static class Visits implements VisitsColumns, SalesPersonsColumns, CustomersColumns, AuditColumns, BaseColumns {
+		
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_VISITS).build();
+		 /** Default "ORDER BY" clause. */
+        public static final String DEFAULT_SORT = Visits.CREATED_DATE + " DESC";
+		
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/vnd.mobile_store.visit";
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/vnd.mobile_store.visit";
+        
+        public static Uri buildVisitUri(String visitsId){
+			return CONTENT_URI.buildUpon().appendPath(visitsId).build();
+		}
+
+		public static String getVisitId(Uri uri){
+			return  uri.getPathSegments().get(1);
+		}
+		
+		public static Uri buildWithCustomer() {
+			return  CONTENT_URI.buildUpon().appendPath(PATH_WITH_CUSTOMER).build();
+		}
+	}
+
+	/**
+	 * To mark data inserted/changed/deleted from sync service and not from UI.
+	 * @param uri
+	 * @return
+	 */
+    public static Uri addCallerIsSyncAdapterParameter(Uri uri) {
+        return uri.buildUpon().appendQueryParameter(
+                ContactsContract.CALLER_IS_SYNCADAPTER, "true").build();
+    }
+
+    /**
+     * To check if data is inserted/changed/deleted from sync service and not from UI.
+     * @param uri
+     * @return
+     */
+    public static boolean hasCallerIsSyncAdapterParameter(Uri uri) {
+        return TextUtils.equals("true",
+                uri.getQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER));
+    }
 }

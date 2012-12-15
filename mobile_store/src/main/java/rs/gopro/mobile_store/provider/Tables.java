@@ -8,5 +8,5 @@ public interface Tables {
 	String INVOICES = "invoices";
 	String CUSTOMERS = "customers";
 	String ITEMS = "items";
-
+	String VISITS = "visits";
 }

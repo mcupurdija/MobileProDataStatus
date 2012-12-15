@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
@@ -17,7 +19,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class HomeScreenActivity extends ActionMenuActivity implements OnClickListener{
+public class HomeScreenActivity extends BaseActivity implements OnClickListener{
     private static String TAG = "HomeScreenActivity";
     private static String SESSION_PREFS = "SessionPrefs";
     
@@ -89,12 +91,14 @@ public class HomeScreenActivity extends ActionMenuActivity implements OnClickLis
 
 	@Override
 	public void onClick(View v) {
-	Intent intent =  new Intent(SESSION_PREFS);
-	startActivity(intent);
-		
+		Intent intent =  new Intent(SESSION_PREFS);
+		startActivity(intent);
 	}
-
-
 	
-
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.action_menu, menu);
+	    return true;
+	}
 }

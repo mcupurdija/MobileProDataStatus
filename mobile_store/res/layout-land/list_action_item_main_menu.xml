@@ -22,5 +22,5 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:minHeight="48dip"
-    android:paddingLeft="6dip"
+    android:paddingLeft="12dip"
     android:drawablePadding="6dip" />

@@ -46,18 +46,25 @@ public class ActionsAdapter extends BaseAdapter {
 
 	private final String[] mTitles;
 	private final String[] mUrls;
-	private final TypedArray mIcons;
+	//private final TypedArray mIcons;
 	Resources res;
 	View currentSelectedView;
 	MainActivity mainActivity;
+	
+	private final Drawable iconListOption;
+	private final Drawable iconListActiveOption;
 
 	public ActionsAdapter(Context context) {
 		mInflater = LayoutInflater.from(context);
 		res = context.getResources();
 		mTitles = res.getStringArray(R.array.actions_names);
 		mUrls = res.getStringArray(R.array.actions_links);
-		mIcons = res.obtainTypedArray(R.array.actions_icons);
+		//mIcons = res.obtainTypedArray(R.array.actions_icons);
 		mainActivity = (MainActivity) context;
+		iconListOption = res.getDrawable(R.drawable.ic_list_option);
+		iconListOption.setBounds(0, 0, iconListOption.getIntrinsicWidth(), iconListOption.getIntrinsicHeight());
+		iconListActiveOption = res.getDrawable(R.drawable.ic_list_active_option);
+		iconListActiveOption.setBounds(0, 0, iconListActiveOption.getIntrinsicWidth(), iconListActiveOption.getIntrinsicHeight());
 	}
 
 	@Override
@@ -94,14 +101,11 @@ public class ActionsAdapter extends BaseAdapter {
 		}
 		holder.text.setText(mTitles[position]);
 		if (type != VIEW_TYPE_CATEGORY) {
-			final Drawable icon = mIcons.getDrawable(position);
-			icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
 			if(position == mainActivity.getCurrentItemPosition().intValue()){
 				currentSelectedView = convertView;
 				selectedItem(position);
-				
 			}else{
-				holder.text.setCompoundDrawables(icon, null, null, null);
+				holder.text.setCompoundDrawables(null, null, iconListOption, null);
 			}
 		}
 		return convertView;
@@ -134,17 +138,13 @@ public class ActionsAdapter extends BaseAdapter {
 
 	private void selectedItem(int position) {
 		ViewHolder holder = (ViewHolder) currentSelectedView.getTag();
-		Drawable icon = mIcons.getDrawable(position);
-		icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
-		Drawable drawable = res.getDrawable(R.drawable.ic_list_active_option);
-		drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), icon.getIntrinsicHeight());
-		holder.text.setCompoundDrawables(icon, null, drawable, null);
+		holder.text.setCompoundDrawables(null, null, iconListActiveOption, null);
 	}
 
 	private void unselectedItem() {
 		ViewHolder holder = (ViewHolder) currentSelectedView.getTag();
 		Drawable drawable = holder.text.getCompoundDrawables()[0];
-		holder.text.setCompoundDrawables(drawable, null, null, null);
+		holder.text.setCompoundDrawables(drawable, null, iconListOption, null);
 	}
 
 	public void markSecletedItem(View view) {

@@ -24,5 +24,6 @@
 	
 	<string name="item_search_title">Find item: </string>
 	<string name="item_block_status_spinner_title">Filter by status</string>
-	
+
+	<string name="empty_visits">No planned visits.</string>
 </resources>

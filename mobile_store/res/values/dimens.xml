@@ -7,18 +7,20 @@
     <dimen name="divider_size">.9dp</dimen>
     <dimen name="divider_large_size">1.5dp</dimen>
     <dimen name="actions_spacing">194dp</dimen>
-      <dimen name="list_extra_button_width">48dp</dimen>
+    <dimen name="list_extra_button_width">48dp</dimen>
 
     <!-- body content -->
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>
     <dimen name="text_size_large">18sp</dimen>
     <dimen name="text_size_xlarge">18sp</dimen>
-     <dimen name="text_size_diff_large_small">6sp</dimen>
+    <dimen name="text_size_diff_large_small">6sp</dimen>
     
     <!-- sale orders list items -->
-       <dimen name="sale_order_time_width">72dp</dimen>
-       <dimen name="listPreferredItemPaddingLeft">8dp</dimen>
-       <dimen name="listPreferredItemPaddingRight">8dp</dimen>
-       
+    <dimen name="sale_order_time_width">72dp</dimen>
+    <dimen name="listPreferredItemPaddingLeft">8dp</dimen>
+    <dimen name="listPreferredItemPaddingRight">8dp</dimen>
+
+    <dimen name="multipane_padding">16dp</dimen>
+    <dimen name="left_pane_width_portrait">300dp</dimen>
 </resources>

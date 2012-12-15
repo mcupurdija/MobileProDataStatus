@@ -1,0 +1,27 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="HeaderText">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MainMenuListItem" parent="@android:style/Widget.Holo.TextView">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:minHeight">?android:attr/listPreferredItemHeight</item>
+<!--         <item name="android:textColor">@android:color/primary_text_dark</item> -->
+<!--         <item name="android:textSize">@dimen/text_size_large</item> -->
+<!--         <item name="android:textStyle">bold</item> -->
+        <item name="android:background">@drawable/list_item_background_main_menu</item>
+    </style>
+    
+    <style name="MainMenuListItemCategory" parent="@android:style/Widget.Holo.TextView">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+		<item name="android:background">@color/main_menu_category_background</item>
+		<item name="android:textColor">@color/main_menu_category_text</item>
+		<item name="android:singleLine">true</item>
+    </style>
+
+    <style name="ListItemContainerBase">
+        <item name="android:minHeight">?android:listPreferredItemHeight</item>
+    </style>
+</resources>

@@ -9,10 +9,11 @@
         android:id="@+id/main_menu_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:background="@drawable/list_border_main_menu"
-        android:divider="@color/divider_main_menu_list"
-        android:dividerHeight="1.5dp" />
+        android:layout_weight="3" 
+        android:layout_marginLeft="@dimen/multipane_padding"
+        android:layout_marginTop="@dimen/multipane_padding"
+        android:layout_marginBottom="@dimen/multipane_padding"
+        android:background="@drawable/grey_frame" />
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -20,7 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_margin="@dimen/multipane_padding"
+        android:background="@drawable/grey_frame_on_white" >
 
         <TextView
             android:id="@+id/content_title"

@@ -117,3 +117,22 @@ INSERT INTO `items` (`_id` ,`no` , `description` ,`description2` ,`unit_of_measu
 					(7, '2012-12-12-NO1','Lion snoope', 'best article', 'quantity', 'G1', '2', 2, 'spec ship item', 1, 1, 'code', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', 'system','2012-12-12 20:20:20.000', 'system' );
 INSERT INTO `items` (`_id` ,`no` , `description` ,`description2` ,`unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` ,`connected_spec_ship_item` ,`unit_sales_price_eur` ,`unit_sales_price_din` ,`campaign_code` ,`cmpaign_start_date` ,`campaign_end_date` ,`created_date` ,`created_by` ,`updated_date` ,`updated_by` ) VALUES 
 					(8, '2012-12-12-NO1','Article', 'best article', 'quantity', 'G1', '2', 2, 'spec ship item', 1, 1, 'code', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', 'system','2012-12-12 20:20:20.000', 'system' );
+
+CREATE TABLE `visits` (
+		`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL ,
+		`sales_person_id` INTEGER,
+		`visit_date` TEXT,
+		`customer_id` INTEGER,
+		`customer_name` TEXT,
+		`line_no` INTEGER,
+		`entry_type` TEXT,
+		`odometer` INTEGER,
+		`departure_time` TEXT,
+		`arrival_time` TEXT,
+		`visit_result` TEXT,
+		`note` TEXT,
+		`created_date` TEXT,
+		`created_by` TEXT,
+		`updated_date` TEXT,
+		`updated_by` TEXT
+);

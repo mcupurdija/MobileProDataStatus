@@ -1,23 +1,19 @@
 package rs.gopro.mobile_store.provider;
 
-import java.util.List;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SelectionBuilder;
 import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.net.NetworkInfo.DetailedState;
-import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -52,6 +48,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 	
 	
 
+	private static final int VISITS = 200;
+	private static final int VISIT_ID = 201;
+	private static final int VISITS_WITH_CUSTOMER = 202;
+
+	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
 	static {
@@ -59,7 +60,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "users", USERS);
 		mobileStoreURIMatcher.addURI(authority, "users/#", USERS_ID);
 		mobileStoreURIMatcher.addURI(authority, "users/username", USERNAME);
-		
+
 		mobileStoreURIMatcher.addURI(authority, "invoices", INVOICES);
 		mobileStoreURIMatcher.addURI(authority, "invoices/#", INVOICES_ID);
 		
@@ -76,24 +77,40 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "items/#/no", ITEMS_BY_STATUS);
 		mobileStoreURIMatcher.addURI(authority, "items/*/#/no", ITEMS_CUSTOM_SEARCH);
 		mobileStoreURIMatcher.addURI(authority, "items/#/*/no", ITEMS_CUSTOM_SEARCH);
+
+		mobileStoreURIMatcher.addURI(authority, "visits", VISITS);
+		mobileStoreURIMatcher.addURI(authority, "visits/#", VISIT_ID);
+		mobileStoreURIMatcher.addURI(authority, "visits/with_customer", VISITS_WITH_CUSTOMER);
 	}
 
 
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		LogUtils.log(Log.VERBOSE, TAG, "delete(uri = " + uri + ")");
-		int match = mobileStoreURIMatcher.match(uri);
+		//int match = mobileStoreURIMatcher.match(uri);
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
-
 		SelectionBuilder builder = buildSimpleSelection(uri);
 		int deletedRows = builder.where(selection, selectionArgs).delete(database);
 		getContext().getContentResolver().notifyChange(uri, null);
 		return deletedRows;
 	}
 
-	@Override
-	public String getType(Uri uri) {
-		return null;
+	/** {@inheritDoc} */
+    @Override
+    public String getType(Uri uri) {
+    	final int match = mobileStoreURIMatcher.match(uri);
+        switch (match) {
+            case VISITS:
+            	return Visits.CONTENT_TYPE;
+            case VISIT_ID:
+            	return Visits.CONTENT_TYPE;
+            case VISITS_WITH_CUSTOMER:
+            	return Visits.CONTENT_TYPE;
+            default:
+            	return null;
+                //TODO Throw exception when other tables get content_type
+            	//throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
 	}
 
 	@Override
@@ -115,6 +132,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.CUSTOMERS,null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return Customers.buildCustomersUri(""+id);
+		case VISITS:
+			id = database.insertOrThrow(Tables.VISITS, null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return  Visits.buildVisitUri(""+id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -158,6 +179,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Users.USERNAME);
 		case  INVOICES_ID:
 			return builder.addTable(Invoices._ID);
+		case VISIT_ID:
+			return builder.addTable(Visits._ID);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -205,6 +228,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.ITEMS)
 			.where(Items.NO + " like ? OR "+Items.DESCRIPTION + " like ? ", new String [] {itemCustom + "%", "%" + itemCustom + "%"} )
 			.where(Items.CAMPAIGN_STATUS + "= ?", new String[]{itemStatus});
+		case VISIT_ID:
+			return builder.addTable(Tables.VISITS);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
