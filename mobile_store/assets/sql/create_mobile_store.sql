@@ -283,6 +283,11 @@ CREATE TABLE `sale_orders` (
 	`updated_date` TEXT,
 	`updated_by` TEXT
 );
+
+INSERT INTO `sale_orders` (	`_id` ,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`customer_address_id`,	`contact_phone` ,	`payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
+(1, 'SALE_ORDER_NO1', 2,2, '2012-12-12 20:20:20', 'location code', 'shorecut', 'cuurent_code', 'ext doc', 'quote no', 2,2,2,2,'used limitation', 2,2,2, '2012-12-12 20:20:20', 'uses transit', 1, 2,'06457575','payment op', 'startus phone', 2000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
+
+
 CREATE TRIGGER IF NOT EXISTS "log_new_sale_order" AFTER INSERT ON "sale_orders" 
 BEGIN 
 	update sale_orders set 

@@ -199,7 +199,7 @@ public class MobileStoreContract {
 		}
 
 		/** Default "ORDER BY" clause. */
-		public static final String DEFAULT_SORT = Invoices.CREATED_DATE + " ASC";
+		public static final String DEFAULT_SORT = Invoices.POSTING_DATE + " ASC";
 	}
 
 	public static class Customers implements CustomersColumns, BaseColumns {

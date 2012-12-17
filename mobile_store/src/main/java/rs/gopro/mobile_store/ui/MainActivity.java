@@ -8,10 +8,12 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.adapter.ActionsAdapter;
 import rs.gopro.mobile_store.ui.customlayout.CustomLinearLayout;
 import rs.gopro.mobile_store.ui.customlayout.CustomersLayout;
+import rs.gopro.mobile_store.ui.customlayout.InvoicesLayout;
 import rs.gopro.mobile_store.ui.customlayout.ItemsLayout;
 import rs.gopro.mobile_store.ui.customlayout.PlanOfVisitsLayout;
 import rs.gopro.mobile_store.ui.customlayout.ReportLayout;
 import rs.gopro.mobile_store.ui.customlayout.SaleOrdersLayout;
+import rs.gopro.mobile_store.ui.fragment.InvoicesFragment;
 import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.DatePickerDialog;
@@ -130,7 +132,16 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				view = new ItemsLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(ItemsLayout.ITEMS_URI.toString(), view);
 			}
-		}else if(ReportLayout.REPORTS_URI.equals(uri)) {
+		} else if(InvoicesLayout.INVOICES_URI.equals(uri)){
+			if(savedLayoutInstances.containsKey(InvoicesLayout.INVOICES_URI.toString())){
+				view = savedLayoutInstances.get(InvoicesLayout.INVOICES_URI.toString());
+				
+			} else{
+				view = new InvoicesLayout(getSupportFragmentManager(), this);
+				savedLayoutInstances.put(InvoicesLayout.INVOICES_URI.toString(), view);
+			}
+			
+		} else if(ReportLayout.REPORTS_URI.equals(uri)) {
 			if (savedLayoutInstances.containsKey(ReportLayout.REPORTS_URI.toString())) {
 				view = savedLayoutInstances.get(ReportLayout.REPORTS_URI.toString());
 			} else {

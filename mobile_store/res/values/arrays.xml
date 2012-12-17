@@ -8,6 +8,7 @@
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
+         <item>@drawable/ic_action_settings</item>
         <item>@null</item>
         <item>@drawable/ic_action_settings</item>
     </array>
@@ -17,6 +18,7 @@
         <item>Sale orders</item>
         <item>Customers</item>
         <item>Items</item>
+         <item>Invoices</item>
         <item>Reports</item>
         <item>Settings</item>
         <item>Settings</item>
@@ -27,6 +29,7 @@
         <item>settings://sale_orders</item>
         <item>settings://customers</item>
         <item>settings://items</item>
+         <item>settings://invoices</item>
         <item>settings://reports</item>
         <item>category://settings</item>
         <item>settings://settings</item>
