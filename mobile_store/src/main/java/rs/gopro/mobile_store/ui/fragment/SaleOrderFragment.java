@@ -6,6 +6,8 @@ import java.util.List;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 
 import rs.gopro.mobile_store.ui.widget.SimpleSelectionedListAdapter;
 import rs.gopro.mobile_store.util.UIUtils;
@@ -80,7 +82,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		CursorLoader cursorLoader = new CursorLoader(getActivity(), MobileStoreContract.Invoices.CONTENT_URI, InvoicesQuery.PROJECTION, null, null, MobileStoreContract.Invoices.DEFAULT_SORT);
+		CursorLoader cursorLoader = new CursorLoader(getActivity(), MobileStoreContract.SaleOrders.CONTENT_URI, SaleOrderQuery.PROJECTION, null, null, MobileStoreContract.SaleOrders.DEFAULT_SORT);
 		return cursorLoader;
 	}
 
@@ -92,16 +94,16 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 		}
 		List<SimpleSelectionedListAdapter.Section> sections = new ArrayList<SimpleSelectionedListAdapter.Section>();
 		cursor.moveToFirst();
-		long previouspostingDate = -1;
-		long postingDate;
+		long previousOrderDate = -1;
+		long orderDate;
 		while (!cursor.isAfterLast()) {
-			postingDate = UIUtils.getDate(cursor.getString(InvoicesQuery.POSTING_DATE)).getTime();
-			if (!UIUtils.isSameDay(previouspostingDate, postingDate)) {
-				String title = DateUtils.formatDateTime(getActivity(), postingDate, DateUtils.FORMAT_ABBREV_MONTH | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
+			orderDate = UIUtils.getDate(cursor.getString(SaleOrderQuery.ORDER_DATE)).getTime();
+			if (!UIUtils.isSameDay(previousOrderDate, orderDate)) {
+				String title = DateUtils.formatDateTime(getActivity(), orderDate, DateUtils.FORMAT_ABBREV_MONTH | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
 				sections.add(new SimpleSelectionedListAdapter.Section(cursor.getPosition(), title));
 
 			}
-			previouspostingDate = postingDate;
+			previousOrderDate = orderDate;
 			cursor.moveToNext();
 		}
 		saleAdapter.changeCursor(cursor);
@@ -143,11 +145,11 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 
 		@Override
 		public void bindView(View view, Context context, final Cursor cursor) {
-			final Integer invoicesId = cursor.getInt(InvoicesQuery._ID);
-			final String invoicesNo = cursor.getString(InvoicesQuery.NO);
-			final Integer totalAmount = cursor.getInt(InvoicesQuery.TOTAL);
-			final long dateOfCreation = UIUtils.getDate(cursor.getString(InvoicesQuery.CREATED_DATE)).getTime();
-			final long postingDate = UIUtils.getDate(cursor.getString(InvoicesQuery.POSTING_DATE)).getTime();
+			final Integer saleOrderId = cursor.getInt(SaleOrderQuery._ID);
+			final String saleOrderNo = cursor.getString(SaleOrderQuery.NO);
+			final Integer totalAmount = cursor.getInt(SaleOrderQuery.TOTAL);
+			final long orderDate = UIUtils.getDate(cursor.getString(SaleOrderQuery.ORDER_DATE)).getTime();
+			
 			final TextView timeView = (TextView) view.findViewById(R.id.block_time);
 			final TextView titleView = (TextView) view.findViewById(R.id.block_title);
 			final TextView subtitleView = (TextView) view.findViewById(R.id.block_subtitle);
@@ -161,44 +163,38 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 			View.OnClickListener allSessionsListener = new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					final Uri sessionsUri = MobileStoreContract.Invoices.buildInvoicesUri(invoicesId.toString());
+					final Uri sessionsUri = MobileStoreContract.Invoices.buildInvoicesUri(saleOrderId.toString());
 					final Intent intent = new Intent(Intent.ACTION_VIEW, sessionsUri);
 					// startActivity(intent);
 				}
 			};
 
-			titleView.setText(invoicesNo);
+			titleView.setText(saleOrderNo);
 			titleView.setTextColor(res.getColorStateList(R.color.body_text_1_positive));
 			subtitleView.setText(getString(R.string.sale_order_amount_total_template) + totalAmount);
 			primaryTouchTargetView.setOnClickListener(allSessionsListener);
 			subtitleView.setTextColor(res.getColorStateList(R.color.body_text_2));
 			primaryTouchTargetView.setEnabled(true);
-			timeView.setText(DateUtils.formatDateTime(context, postingDate, DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_12HOUR));
+			timeView.setText(DateUtils.formatDateTime(context, orderDate, DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_12HOUR));
 		}
 
 	}
 
-	private interface InvoicesQuery {
+	private interface SaleOrderQuery {
 
-		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Invoices.INVOICE_NO, MobileStoreContract.Invoices.CUSTOMER_ID, MobileStoreContract.Invoices.POSTING_DATE, MobileStoreContract.Invoices.SALES_PERSON_ID, MobileStoreContract.Invoices.DUE_DATE,
-				MobileStoreContract.Invoices.TOTAL, MobileStoreContract.Invoices.TOTAL_LEFT, MobileStoreContract.Invoices.DUE_DATE_DAYS_LEFT, MobileStoreContract.Invoices.CREATED_DATE, MobileStoreContract.Invoices.CREATED_BY,
-				MobileStoreContract.Invoices.UPDATED_DATE, MobileStoreContract.Invoices.UPDATED_BY
-
+		String[] PROJECTION = { BaseColumns._ID, 
+				SaleOrders.SALES_ORDER_NO,
+				SaleOrders.ORDER_DATE,
+				SaleOrders.TOTAL
+		
+				
+				
 		};
 
 		int _ID = 0;
 		int NO = 1;
-		int CUSTOMER_ID = 2;
-		int POSTING_DATE = 3;
-		int SALES_PERSON_ID = 4;
-		int DUE_DATE = 5;
-		int TOTAL = 6;
-		int TOTAL_LEFT = 7;
-		int DUE_DATE_DAYS_LEFT = 8;
-		int CREATED_DATE = 9;
-		int CREATED_BY = 10;
-		int UPDATED_DATE = 11;
-		int UPDATED_BY = 12;
-	}
+		int ORDER_DATE = 2;
+		int TOTAL = 3;
+		}
 
 }

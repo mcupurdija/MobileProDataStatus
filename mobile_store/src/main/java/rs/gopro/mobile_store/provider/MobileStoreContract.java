@@ -310,7 +310,7 @@ public class MobileStoreContract {
 	public static class SaleOrders implements SaleOrdersColumns, BaseColumns, AuditColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDERS).build();
 		 /** Default "ORDER BY" clause. */
-		public static final String DEFAULT_SORT = SaleOrders.CREATED_DATE + " DESC";
+		public static final String DEFAULT_SORT = SaleOrders.ORDER_DATE + " DESC";
 		
 		public static final String CONTENT_TYPE =
 				"vnd.android.cursor.dir/vnd.mobile_store.sale_orders";

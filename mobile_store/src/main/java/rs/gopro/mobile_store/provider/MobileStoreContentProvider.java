@@ -46,11 +46,13 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int ITEMS_BY_STATUS = 132;
 	private static final int ITEMS_CUSTOM_SEARCH = 133;
 	
-	
+	private static final int SALE_ORDER = 140;
 
 	private static final int VISITS = 200;
 	private static final int VISIT_ID = 201;
 	private static final int VISITS_WITH_CUSTOMER = 202;
+	
+	
 
 	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -81,6 +83,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "visits", VISITS);
 		mobileStoreURIMatcher.addURI(authority, "visits/#", VISIT_ID);
 		mobileStoreURIMatcher.addURI(authority, "visits/with_customer", VISITS_WITH_CUSTOMER);
+		
+		mobileStoreURIMatcher.addURI(authority, "sale_orders",SALE_ORDER);
 	}
 
 
@@ -232,6 +236,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			.where(Items.CAMPAIGN_STATUS + "= ?", new String[]{itemStatus});
 		case VISIT_ID:
 			return builder.addTable(Tables.VISITS);
+		case SALE_ORDER:
+			return builder.addTable(Tables.SALE_ORDERS);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
