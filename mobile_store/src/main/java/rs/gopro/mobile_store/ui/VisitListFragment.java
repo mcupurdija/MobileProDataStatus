@@ -206,15 +206,16 @@ public class VisitListFragment extends ListFragment implements
                 BaseColumns._ID,
                 MobileStoreContract.Visits.SALES_PERSON_ID,
                 MobileStoreContract.Visits.CUSTOMER_ID,
-                MobileStoreContract.Visits.CUSTOMER_NAME,
+                MobileStoreContract.CustomersColumns.NAME,
+                MobileStoreContract.CustomersColumns.NAME_2,
                 MobileStoreContract.Visits.VISIT_DATE
         };
 
         int _ID = 0;
         int SALES_PERSON_ID = 1;
         int CUSTOMER_ID = 2;
-        int CUSTOMER_NAME = 3;
-        int VISIT_DATE = 4;
+        int VISIT_DATE = 3;
+        int CUSTOMER_NAME = 4;
 	}
 
 }

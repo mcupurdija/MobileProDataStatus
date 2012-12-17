@@ -66,17 +66,17 @@ public class MobileStoreContentProvider extends ContentProvider {
 		
 		mobileStoreURIMatcher.addURI(authority, "customers",CUSTOMERS);
 		mobileStoreURIMatcher.addURI(authority, "customers/#",CUSTOMERS_ID);
-		mobileStoreURIMatcher.addURI(authority, "customers/no",CUSTOMERS_NO);
-		mobileStoreURIMatcher.addURI(authority, "customers/*/no",CUSTOMERS_BY_STATUS);
-		mobileStoreURIMatcher.addURI(authority, "customers/#/no",CUSTOMERS_BY_STATUS);
-		mobileStoreURIMatcher.addURI(authority, "customers/#/*/no",CUSTOMERS_CUSTOM_SEARCH);
-		mobileStoreURIMatcher.addURI(authority, "customers/*/#/no",CUSTOMERS_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "customers/customer_no",CUSTOMERS_NO);
+		mobileStoreURIMatcher.addURI(authority, "customers/*/customer_no",CUSTOMERS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "customers/#/customer_no",CUSTOMERS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "customers/#/*/customer_no",CUSTOMERS_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "customers/*/#/customer_no",CUSTOMERS_CUSTOM_SEARCH);
 		
 		mobileStoreURIMatcher.addURI(authority, "items", ITEMS);
-		mobileStoreURIMatcher.addURI(authority, "items/*/no", ITEMS_BY_STATUS);
-		mobileStoreURIMatcher.addURI(authority, "items/#/no", ITEMS_BY_STATUS);
-		mobileStoreURIMatcher.addURI(authority, "items/*/#/no", ITEMS_CUSTOM_SEARCH);
-		mobileStoreURIMatcher.addURI(authority, "items/#/*/no", ITEMS_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "items/*/item_no", ITEMS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "items/#/item_no", ITEMS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "items/*/#/item_no", ITEMS_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "items/#/*/item_no", ITEMS_CUSTOM_SEARCH);
 
 		mobileStoreURIMatcher.addURI(authority, "visits", VISITS);
 		mobileStoreURIMatcher.addURI(authority, "visits/#", VISIT_ID);
@@ -214,7 +214,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 			String customerCustomParam = Customers.getCustomSearchFirstParamQuery(uri);
 			String customerStatus = Customers.getCustomSearchSecondParamQuery(uri);
 			return builder.addTable(Tables.CUSTOMERS)
-			.where(Customers.NO + " like ? OR "+ Customers.NAME + " like ?", new String[] { /*"%" +*/ customerCustomParam + "%", "%" + customerCustomParam + "%"})
+			.where(Customers.CUSTOMER_NO + " like ? OR "+ Customers.NAME + " like ?", new String[] { /*"%" +*/ customerCustomParam + "%", "%" + customerCustomParam + "%"})
 			.where(Customers.BLOCKED_STATUS + "= ?", new String[] {customerStatus});
 			
 		
@@ -228,7 +228,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 			String  itemCustom = Items.getCustomSearchFirstParamQuery(uri);
 			String  itemStatus = Items.getCustomSearchSecondParamQuery(uri);
 			return builder.addTable(Tables.ITEMS)
-			.where(Items.NO + " like ? OR "+Items.DESCRIPTION + " like ? ", new String [] {itemCustom + "%", "%" + itemCustom + "%"} )
+			.where(Items.ITEM_NO + " like ? OR "+Items.DESCRIPTION + " like ? ", new String [] {itemCustom + "%", "%" + itemCustom + "%"} )
 			.where(Items.CAMPAIGN_STATUS + "= ?", new String[]{itemStatus});
 		case VISIT_ID:
 			return builder.addTable(Tables.VISITS);

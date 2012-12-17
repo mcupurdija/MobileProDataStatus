@@ -139,7 +139,7 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 	}
 
 	private interface CustomersQuery {
-		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Customers.NO, MobileStoreContract.Customers.NAME, MobileStoreContract.Customers.PHONE };
+		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Customers.CUSTOMER_NO, MobileStoreContract.Customers.NAME, MobileStoreContract.Customers.PHONE };
 	}
 
 	@Override

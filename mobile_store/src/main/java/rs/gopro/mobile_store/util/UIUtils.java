@@ -46,7 +46,7 @@ public class UIUtils {
 	
 	public static Date getDate(String date){
 		try {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS.SSS");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
 			return dateFormat.parse(date);
 		} catch (ParseException e) {
 			e.printStackTrace();

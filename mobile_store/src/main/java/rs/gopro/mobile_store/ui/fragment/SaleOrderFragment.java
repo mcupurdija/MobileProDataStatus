@@ -180,7 +180,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 
 	private interface InvoicesQuery {
 
-		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Invoices.NO, MobileStoreContract.Invoices.CUSTOMER_ID, MobileStoreContract.Invoices.POSTING_DATE, MobileStoreContract.Invoices.SALES_PERSON_ID, MobileStoreContract.Invoices.DUE_DATE,
+		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Invoices.INVOICE_NO, MobileStoreContract.Invoices.CUSTOMER_ID, MobileStoreContract.Invoices.POSTING_DATE, MobileStoreContract.Invoices.SALES_PERSON_ID, MobileStoreContract.Invoices.DUE_DATE,
 				MobileStoreContract.Invoices.TOTAL, MobileStoreContract.Invoices.TOTAL_LEFT, MobileStoreContract.Invoices.DUE_DATE_DAYS_LEFT, MobileStoreContract.Invoices.CREATED_DATE, MobileStoreContract.Invoices.CREATED_BY,
 				MobileStoreContract.Invoices.UPDATED_DATE, MobileStoreContract.Invoices.UPDATED_BY
 

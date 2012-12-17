@@ -53,7 +53,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 				String[] queryStrings = constraint.toString().split(splitQuerySeparator);
 				Cursor cursor = null;
 				if (getActivity() != null) {
-					cursor = getActivity().getContentResolver().query(Items.buildCustomSearchUri(queryStrings[0], queryStrings[1]), ItemsQuery.PROJECTION, null, null, MobileStoreContract.Customers.DEFAULT_SORT);
+					cursor = getActivity().getContentResolver().query(Items.buildCustomSearchUri(queryStrings[0], queryStrings[1]), ItemsQuery.PROJECTION, null, null, MobileStoreContract.Items.DEFAULT_SORT);
 				}
 				return cursor;
 			}
@@ -126,7 +126,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	}
 
 	private interface ItemsQuery {
-		String[] PROJECTION = { BaseColumns._ID, Items.NO, Items.DESCRIPTION, Items.CAMPAIGN_STATUS };
+		String[] PROJECTION = { BaseColumns._ID, Items.ITEM_NO, Items.DESCRIPTION, Items.CAMPAIGN_STATUS };
 	}
 
 }

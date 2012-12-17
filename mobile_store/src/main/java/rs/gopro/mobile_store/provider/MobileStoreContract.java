@@ -36,7 +36,6 @@ public class MobileStoreContract {
 		// it has sales_person_id
 		String VISIT_DATE = "visit_date";
 		String CUSTOMER_ID = "customer_id";
-		String CUSTOMER_NAME = "customer_name";
 		String LINE_NO = "line_no";
 		String ENTRY_TYPE = "entry_type";
 		String ODOMETER = "odometer";
@@ -49,7 +48,7 @@ public class MobileStoreContract {
 
 
 	public interface InvoicesColumns {
-		String NO = "no";
+		String INVOICE_NO = "invoice_no";
 		String CUSTOMER_ID = "customer_id";
 		String POSTING_DATE = "posting_date";
 		String SALES_PERSON_ID = "sales_person_id";
@@ -65,7 +64,7 @@ public class MobileStoreContract {
 	}
 
 	public interface CustomersColumns {
-		String NO = "no";
+		String CUSTOMER_NO = "customer_no";
 		String NAME = "name";
 		String NAME_2 = "name2";
 		String ADRESS_ID = "address_id";
@@ -90,7 +89,7 @@ public class MobileStoreContract {
 
 	public interface ItemsColumns {
 
-		String NO = "no";
+		String ITEM_NO = "item_no";
 		String DESCRIPTION = "description";
 		String DESCRIPTION2 = "description2";
 		String UNIT_OF_MEASURE = "unit_of_measure";
@@ -158,15 +157,15 @@ public class MobileStoreContract {
 		}
 
 		public static Uri buildNoUri() {
-			return CONTENT_URI.buildUpon().appendEncodedPath(NO).build();
+			return CONTENT_URI.buildUpon().appendEncodedPath(CUSTOMER_NO).build();
 		}
 
 		public static Uri buildSearchUri(String query) {
-			return CONTENT_URI.buildUpon().appendPath(query).appendPath(NO).build();
+			return CONTENT_URI.buildUpon().appendPath(query).appendPath(CUSTOMER_NO).build();
 		}
 
 		public static Uri buildCustomSearchUri(String text, String status) {
-			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(NO).build();
+			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(CUSTOMER_NO).build();
 		}
 
 		public static String getCustomersId(Uri uri) {
@@ -185,7 +184,7 @@ public class MobileStoreContract {
 			return uri.getPathSegments().get(2);
 		}
 
-		public static final String DEFAULT_SORT = Customers.NO + " ASC";
+		public static final String DEFAULT_SORT = Customers.CUSTOMER_NO + " ASC";
 	}
 
 	public static class Items implements ItemsColumns, BaseColumns {
@@ -193,7 +192,7 @@ public class MobileStoreContract {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_ITEMS).build();
 
 		public static Uri buildNoUri() {
-			return CONTENT_URI.buildUpon().appendEncodedPath(NO).build();
+			return CONTENT_URI.buildUpon().appendEncodedPath(ITEM_NO).build();
 		}
 
 		public static String getItemNo(Uri uri) {
@@ -209,14 +208,14 @@ public class MobileStoreContract {
 		}
 		
 
-		public static final String DEFAULT_SORT = ItemsColumns.NO + " ASC";
+		public static final String DEFAULT_SORT = ItemsColumns.ITEM_NO + " ASC";
 
 		public static String getItemStatus(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}
 
 		public static Uri buildCustomSearchUri(String text, String status) {
-			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(NO).build();
+			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(ITEM_NO).build();
 		}
 	}
 	
