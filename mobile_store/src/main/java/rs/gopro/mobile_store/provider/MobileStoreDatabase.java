@@ -71,15 +71,31 @@ public class MobileStoreDatabase extends SQLiteOpenHelper {
 	}
 
 	protected void execSqlFile(String sqlFile, String filePath, SQLiteDatabase db) throws SQLException, IOException {
-		LogUtils.log(Log.INFO, TAG, "Execute sql file: " + sqlFile);
+		
+		String trigger = "";
 		for (String sqlInstruction : SqlParserUtil.parseSqlFile(filePath + "/" + sqlFile, this.context.getAssets())) {
-			LogUtils.log(Log.INFO, TAG, "Execute sql statement: " + sqlInstruction);
 			if (SqlParserUtil.isScriptForTableCreation(sqlInstruction)) {
 				String tableName = SqlParserUtil.getTableName(sqlInstruction);
 				LogUtils.log(Log.INFO, TAG, "Table " + tableName + " is dropped");
 				db.execSQL("DROP TABLE IF EXISTS " + tableName);
+				LogUtils.log(Log.INFO, TAG, "Execute sql file: " + "DROP TABLE IF EXISTS " + tableName);
+				db.execSQL(sqlInstruction);
+				LogUtils.log(Log.INFO, TAG, "Execute sql file: " + sqlInstruction);
+			} else if (SqlParserUtil.isScriptForTriggerCreation(sqlInstruction)) {
+				trigger += sqlInstruction;
+			} else if (sqlInstruction.contains("END;")) {
+				trigger += "END;";
+				db.execSQL(trigger);
+				LogUtils.log(Log.INFO, TAG, "Execute sql file: " + trigger);
+				trigger = "";
+			} else {
+				if (trigger != "") {
+					trigger += sqlInstruction;
+				} else {
+					db.execSQL(sqlInstruction);
+					LogUtils.log(Log.INFO, TAG, "Execute sql file: " + sqlInstruction);
+				}
 			}
-			db.execSQL(sqlInstruction);
 		}
 	}
 	

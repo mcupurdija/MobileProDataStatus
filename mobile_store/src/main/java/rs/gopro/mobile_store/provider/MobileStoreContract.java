@@ -1,7 +1,6 @@
 package rs.gopro.mobile_store.provider;
 
 import android.net.Uri;
-import android.net.rtp.RtpStream;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.text.TextUtils;

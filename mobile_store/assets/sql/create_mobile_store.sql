@@ -1,31 +1,3 @@
--- sales persons
-CREATE TABLE `sales_persons` ( 
-	`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`sales_person_no` TEXT,
-	`name` TEXT,
-	`name2` TEXT,
-	`created_date` TEXT,
-	`created_by` TEXT,
-	`updated_date` TEXT,
-	`updated_by`TEXT
-);
-CREATE TRIGGER "log_new_person" AFTER INSERT ON "persons" 
-BEGIN 
-	update visits set 
-	created_date = datetime('now'),
-	created_by = (select username from users where active = 1)
-	where _id = new._id; 
-END;
-CREATE TRIGGER "log_person_change" AFTER UPDATE ON "persons" 
-BEGIN 
-	update visits set 
-	updated_date = datetime('now'),
-	updated_by = (select username from users where active = 1)
-	where _id = new._id; 
-END;
-INSERT INTO `sales_persons` (_id, sales_person_no, name, name2, created_date, created_by) VALUES 
-	(1, 'SP0001', 'tica', 'tica', datetime('now'), 'INITIAL');
-
 -- users
 CREATE TABLE `users` ( 
 	`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -36,8 +8,35 @@ CREATE TABLE `users` (
 	`last_login` TEXT
 );
 INSERT INTO `users` (_id, username, pass, sales_person_id, last_login) VALUES 
-	(1, 'tica', 'tica', 1, datetime('now')); 
-
+	(1, 'tica', 'tica', 1, datetime('now'));
+	
+-- sales persons
+CREATE TABLE `sales_persons` ( 
+	`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`sales_person_no` TEXT,
+	`name` TEXT,
+	`name2` TEXT,
+	`created_date` TEXT,
+	`created_by` TEXT,
+	`updated_date` TEXT,
+	`updated_by` TEXT
+);
+CREATE TRIGGER IF NOT EXISTS "log_new_person" AFTER INSERT ON "sales_persons" 
+BEGIN 
+	update sales_persons set 
+	created_date = datetime('now'),
+	created_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TRIGGER IF NOT EXISTS "log_person_change" AFTER UPDATE ON "sales_persons" 
+BEGIN 
+	update sales_persons set 
+	updated_date = datetime('now'),
+	updated_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+INSERT INTO `sales_persons` (_id, sales_person_no, name, name2, created_date, created_by) VALUES 
+	(1, 'SP0001', 'tica', 'tica', datetime('now'), 'INITIAL');
 -- invoices
 CREATE TABLE `invoices` (
 	`_id` INTEGER PRIMARY KEY  NOT NULL ,
@@ -54,16 +53,16 @@ CREATE TABLE `invoices` (
 	`updated_date` TEXT,
 	`updated_by`TEXT
 );
-CREATE TRIGGER "log_new_invoice" AFTER INSERT ON "invoices" 
+CREATE TRIGGER IF NOT EXISTS "log_new_invoice" AFTER INSERT ON "invoices" 
 BEGIN 
-	update visits set 
+	update invoices set 
 	created_date = datetime('now'),
 	created_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-CREATE TRIGGER "log_invoice_change" AFTER UPDATE ON "invoices" 
+CREATE TRIGGER IF NOT EXISTS "log_invoice_change" AFTER UPDATE ON "invoices" 
 BEGIN 
-	update visits set 
+	update invoices set 
 	updated_date = datetime('now'),
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
@@ -145,16 +144,16 @@ CREATE TABLE `contacts` (
 	`updated_date` TEXT,
 	`updated_by`TEXT
 );
-CREATE TRIGGER "log_new_contact" AFTER INSERT ON "contacts" 
+CREATE TRIGGER IF NOT EXISTS "log_new_contact" AFTER INSERT ON "contacts" 
 BEGIN 
-	update visits set 
+	update contacts set 
 	created_date = datetime('now'),
 	created_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-CREATE TRIGGER "log_contact_change" AFTER UPDATE ON "contacts" 
+CREATE TRIGGER IF NOT EXISTS "log_contact_change" AFTER UPDATE ON "contacts" 
 BEGIN 
-	update visits set 
+	update contacts set 
 	updated_date = datetime('now'),
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
@@ -181,16 +180,16 @@ CREATE TABLE `items` (
 	`updated_date` TEXT,
 	`updated_by` TEXT
 );
-CREATE TRIGGER "log_new_item" AFTER INSERT ON "items" 
+CREATE TRIGGER IF NOT EXISTS "log_new_item" AFTER INSERT ON "items" 
 BEGIN 
-	update visits set 
+	update items set 
 	created_date = datetime('now'),
 	created_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-CREATE TRIGGER "log_item_change" AFTER UPDATE ON "items" 
+CREATE TRIGGER IF NOT EXISTS "log_item_change" AFTER UPDATE ON "items" 
 BEGIN 
-	update visits set 
+	update items set 
 	updated_date = datetime('now'),
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
@@ -230,14 +229,14 @@ CREATE TABLE `visits` (
 	`updated_date` TEXT,
 	`updated_by` TEXT
 );
-CREATE TRIGGER "log_new_visit" AFTER INSERT ON "visits" 
+CREATE TRIGGER IF NOT EXISTS "log_new_visit" AFTER INSERT ON "visits" 
 BEGIN 
 	update visits set 
 	created_date = datetime('now'),
 	created_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-CREATE TRIGGER "log_visit_change" AFTER UPDATE ON "visits" 
+CREATE TRIGGER IF NOT EXISTS "log_visit_change" AFTER UPDATE ON "visits" 
 BEGIN 
 	update visits set 
 	updated_date = datetime('now'),
@@ -284,16 +283,16 @@ CREATE TABLE `sale_orders` (
 	`updated_date` TEXT,
 	`updated_by` TEXT
 );
-CREATE TRIGGER "log_new_sale_order" AFTER INSERT ON "sale_orders" 
+CREATE TRIGGER IF NOT EXISTS "log_new_sale_order" AFTER INSERT ON "sale_orders" 
 BEGIN 
-	update visits set 
+	update sale_orders set 
 	created_date = datetime('now'),
 	created_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-CREATE TRIGGER "log_sale_order_change" AFTER UPDATE ON "sale_orders" 
+CREATE TRIGGER IF NOT EXISTS "log_sale_order_change" AFTER UPDATE ON "sale_orders" 
 BEGIN 
-	update visits set 
+	update sale_orders set 
 	updated_date = datetime('now'),
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
@@ -321,16 +320,16 @@ CREATE TABLE `sale_order_lines` (
 	`updated_date` TEXT,
 	`updated_by` TEXT
 );
-CREATE TRIGGER "log_new_sale_order_line" AFTER INSERT ON "sale_order_lines" 
+CREATE TRIGGER IF NOT EXISTS "log_new_sale_order_line" AFTER INSERT ON "sale_order_lines" 
 BEGIN 
-	update visits set 
+	update sale_order_lines set 
 	created_date = datetime('now'),
 	created_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-CREATE TRIGGER "log_sale_order_line_change" AFTER UPDATE ON "sale_order_lines" 
+CREATE TRIGGER IF NOT EXISTS "log_sale_order_line_change" AFTER UPDATE ON "sale_order_lines" 
 BEGIN 
-	update visits set 
+	update sale_order_lines set 
 	updated_date = datetime('now'),
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 

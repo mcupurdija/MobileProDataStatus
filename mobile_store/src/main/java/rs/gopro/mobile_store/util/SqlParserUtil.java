@@ -78,7 +78,8 @@ public class SqlParserUtil {
 								multiLineComment = "{";
 							}
 						} else if (!line.startsWith("--") && !line.equals("")) {
-							sqlScritptWithoutComments.append(line);
+							// need to add space because of scripts
+							sqlScritptWithoutComments.append(line).append(" ");
 						}
 					} else if (multiLineComment.equals("/*")) {
 						if (line.endsWith("*/")) {
@@ -119,7 +120,7 @@ public class SqlParserUtil {
 			}
 			if (content[i] == delim && !inLiteral) {
 				if (stringBuffer.length() > 0) {
-					statements.add(stringBuffer.toString().trim());
+					statements.add(stringBuffer.toString().trim() + "; ");
 					stringBuffer = new StringBuilder();
 				}
 			} else {
@@ -127,7 +128,7 @@ public class SqlParserUtil {
 			}
 		}
 		if (stringBuffer.length() > 0) {
-			statements.add(stringBuffer.toString().trim());
+			statements.add(stringBuffer.toString().trim() + "; ");
 		}
 		return statements;
 	}
@@ -154,7 +155,7 @@ public class SqlParserUtil {
 	 * @return
 	 */
 	public static boolean isScriptForTableCreation(String sqlStatement) {
-		String create = "CREATE";
+		String create = "CREATE TABLE";
 		char scriptQuote = '`';
 		sqlStatement = sqlStatement.replace(scriptQuote, ' ');
 		String[] splitSql = sqlStatement.split("\\s+");
@@ -162,5 +163,19 @@ public class SqlParserUtil {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * investigate  whether the script to create trigger
+	 * @param sqlStatement
+	 * @return
+	 */
+	public static boolean isScriptForTriggerCreation(String sqlStatement) {
+		String create = "CREATE TRIGGER";
+		if (sqlStatement.startsWith(create)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
