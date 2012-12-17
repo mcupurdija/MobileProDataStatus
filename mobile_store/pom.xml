@@ -71,9 +71,22 @@
                     <sdk>
                         <platform>13</platform>
                     </sdk>
-                        <undeployBeforeDeploy>true</undeployBeforeDeploy>
+                    <undeployBeforeDeploy>true</undeployBeforeDeploy>    
                 </configuration>
                 <extensions>true</extensions>
+                <executions>
+			      <execution>
+			        <id>update-manifest</id>
+			        <goals>
+			          <goal>manifest-update</goal>
+			        </goals>
+			        <configuration>
+			            <manifest>
+	                        <debuggable>true</debuggable> 
+	                    </manifest>
+			        </configuration>
+			      </execution>
+			    </executions>
             </plugin>
 
             <plugin>
@@ -85,5 +98,38 @@
                 </configuration>
             </plugin>
         </plugins>
+        <pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+						                <artifactId>android-maven-plugin</artifactId>
+						                <versionRange>[3.4.1,)</versionRange>
+										<goals>
+											<goal>manifest-update</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+<!-- 										<execute > -->
+<!-- 										  <runOnIncremental>false</runOnIncremental> -->
+<!-- 										</execute > -->
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
     </build>
 </project>
