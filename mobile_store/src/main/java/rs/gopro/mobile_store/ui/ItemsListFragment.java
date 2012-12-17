@@ -39,7 +39,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		LogUtils.LOGD(TAG, "on create");
+		LogUtils.LOGI(TAG, "on create: "+this.getId());
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		LogUtils.LOGD(TAG, "on create");
+		LogUtils.LOGI(TAG, "on create: "+this.getId());
 	}
 
 	@Override

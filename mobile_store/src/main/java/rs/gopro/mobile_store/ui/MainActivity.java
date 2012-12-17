@@ -13,6 +13,7 @@ import rs.gopro.mobile_store.ui.customlayout.PlanOfVisitsLayout;
 import rs.gopro.mobile_store.ui.customlayout.ReportLayout;
 import rs.gopro.mobile_store.ui.customlayout.SaleOrdersLayout;
 import rs.gopro.mobile_store.util.ApplicationConstants;
+import rs.gopro.mobile_store.util.LogUtils;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
@@ -35,7 +36,7 @@ import android.widget.TextView;
  */
 
 public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener {
-
+	private static String TAG = "MainActivity";
 	ActionsAdapter actionsAdapter;
 	private Integer currentItemPosition = Integer.valueOf(1);
 	public static final String CURRENT_POSITION_KEY = "current_position";
@@ -61,6 +62,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 		viewActionsList.setOnItemClickListener(this);
 		setContentTitle(currentItemPosition);
 		updateContent(currentItemPosition);
+		LogUtils.LOGI(TAG, "onCreate");
 	}
 
 	@Override
@@ -69,7 +71,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 		this.currentItemPosition = position;
 		actionsAdapter.markSecletedItem(view);
 		updateContent(position);
-
+		LogUtils.LOGI(TAG, "onItemClick");
 	}
 
 	/**

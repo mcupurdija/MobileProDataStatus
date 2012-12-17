@@ -3,6 +3,7 @@ package rs.gopro.mobile_store.ui.customlayout;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.ui.fragment.CustomerFragment;
 import rs.gopro.mobile_store.ui.fragment.SaleOrderFragment;
+import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 public class CustomersLayout extends CustomLinearLayout {
-
+	private static String TAG = "CustomersLayout";
 	private static final String CUSTOMERS_SCHEME = "settings";
 	private static final String CUSTOMERS_AUTHORITY = "customers";
 	public static final Uri CUSTOMERS_URI = new Uri.Builder().scheme(CUSTOMERS_SCHEME).authority(CUSTOMERS_AUTHORITY).build();
@@ -25,13 +26,14 @@ public class CustomersLayout extends CustomLinearLayout {
 
 	@Override
 	protected void inflateLayout(LayoutInflater layoutInflater) {
-		if (fragment != null) return;
-		View view = layoutInflater.inflate(R.layout.content_holder_customers, null);
-		this.addView(view);
-		FragmentTransaction tr = fragmentManager.beginTransaction();
-		fragment = new CustomerFragment();
-		tr.replace(R.id.customers_content, fragment);
-		tr.commit();
-		
+		if (fragment == null) {
+			View view = layoutInflater.inflate(R.layout.content_holder_customers, null);
+			this.addView(view);
+			FragmentTransaction tr = fragmentManager.beginTransaction();
+			fragment = new CustomerFragment();
+			tr.replace(R.id.customers_content, fragment);
+			tr.commit();
+			LogUtils.LOGI(TAG, "inflateLayout"+fragment.getId());
+		}
 	}
 }
