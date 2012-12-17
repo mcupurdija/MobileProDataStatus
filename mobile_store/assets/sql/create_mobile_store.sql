@@ -9,6 +9,20 @@ CREATE TABLE `sales_persons` (
 	`updated_date` TEXT,
 	`updated_by`TEXT
 );
+CREATE TRIGGER "log_new_person" AFTER INSERT ON "persons" 
+BEGIN 
+	update visits set 
+	created_date = datetime('now'),
+	created_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TRIGGER "log_person_change" AFTER UPDATE ON "persons" 
+BEGIN 
+	update visits set 
+	updated_date = datetime('now'),
+	updated_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
 INSERT INTO `sales_persons` (_id, sales_person_no, name, name2, created_date, created_by) VALUES 
 	(1, 'SP0001', 'tica', 'tica', datetime('now'), 'INITIAL');
 
@@ -40,6 +54,20 @@ CREATE TABLE `invoices` (
 	`updated_date` TEXT,
 	`updated_by`TEXT
 );
+CREATE TRIGGER "log_new_invoice" AFTER INSERT ON "invoices" 
+BEGIN 
+	update visits set 
+	created_date = datetime('now'),
+	created_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TRIGGER "log_invoice_change" AFTER UPDATE ON "invoices" 
+BEGIN 
+	update visits set 
+	updated_date = datetime('now'),
+	updated_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
 INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`sales_person_id`,`due_date` ,`total` ,`total_left` ,	`due_date_days_left` ,`created_date` ,`created_by` ,`updated_date`,	`updated_by`) VALUES
 	(1 , '2012-12-12_NO_1', 12 , '2012-11-10 08:08:00.000', 1 , '2012-12-12', 1222 , 100 , 5 , '2012-11-10 08:08:00.000', 'system', datetime('now'), 'INITIAL' );
 INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`sales_person_id`,`due_date` ,`total` ,`total_left` ,	`due_date_days_left` ,`created_date` ,`created_by` ,`updated_date`,	`updated_by`) VALUES
@@ -117,6 +145,20 @@ CREATE TABLE `contacts` (
 	`updated_date` TEXT,
 	`updated_by`TEXT
 );
+CREATE TRIGGER "log_new_contact" AFTER INSERT ON "contacts" 
+BEGIN 
+	update visits set 
+	created_date = datetime('now'),
+	created_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TRIGGER "log_contact_change" AFTER UPDATE ON "contacts" 
+BEGIN 
+	update visits set 
+	updated_date = datetime('now'),
+	updated_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
 
 -- items
 CREATE TABLE `items` (
@@ -139,6 +181,20 @@ CREATE TABLE `items` (
 	`updated_date` TEXT,
 	`updated_by` TEXT
 );
+CREATE TRIGGER "log_new_item" AFTER INSERT ON "items" 
+BEGIN 
+	update visits set 
+	created_date = datetime('now'),
+	created_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TRIGGER "log_item_change" AFTER UPDATE ON "items" 
+BEGIN 
+	update visits set 
+	updated_date = datetime('now'),
+	updated_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
 INSERT INTO `items` (`_id` ,`item_no` , `description` ,`description2` ,`unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` ,`connected_spec_ship_item` ,`unit_sales_price_eur` ,`unit_sales_price_din` ,`campaign_code` ,`cmpaign_start_date` ,`campaign_end_date` ,`created_date` ,`created_by` ,`updated_date` ,`updated_by` ) VALUES 
 	(1, '1012-12-12-NO1','simple product', 'best article', 'quantity', 'G1', '0', 0, 'spec ship item', 1, 1, 'code', '2012-12-12 20:20:20.000', '2012-12-12 20:20:20.000', datetime('now'), 'INITIAL',datetime('now'), 'INITIAL' );
 INSERT INTO `items` (`_id` ,`item_no` , `description` ,`description2` ,`unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` ,`connected_spec_ship_item` ,`unit_sales_price_eur` ,`unit_sales_price_din` ,`campaign_code` ,`cmpaign_start_date` ,`campaign_end_date` ,`created_date` ,`created_by` ,`updated_date` ,`updated_by` ) VALUES 
@@ -162,7 +218,6 @@ CREATE TABLE `visits` (
 	`sales_person_id` INTEGER,
 	`visit_date` TEXT,
 	`customer_id` INTEGER,
-	`customer_name` TEXT,
 	`line_no` INTEGER,
 	`entry_type` TEXT,
 	`odometer` INTEGER,
@@ -175,3 +230,108 @@ CREATE TABLE `visits` (
 	`updated_date` TEXT,
 	`updated_by` TEXT
 );
+CREATE TRIGGER "log_new_visit" AFTER INSERT ON "visits" 
+BEGIN 
+	update visits set 
+	created_date = datetime('now'),
+	created_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TRIGGER "log_visit_change" AFTER UPDATE ON "visits" 
+BEGIN 
+	update visits set 
+	updated_date = datetime('now'),
+	updated_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TABLE `sale_orders` (
+	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
+	`sales_order_no` TEXT,
+	`document_type` INTEGER,
+	`customer_id` INTEGER,
+	`order_date` TEXT,
+	`location_code` TEXT,
+	`shortcut_dimension_1_code` TEXT,
+	`currency_code` TEXT,
+	`external_document_no` TEXT,
+	`quote_no` TEXT,
+	`backorder_shipment_status` INTEGER,
+	`order_status_for_shipment` INTEGER,
+	`fin_control_status` INTEGER,
+	`order_condition_status` INTEGER,
+	`used_credit_limit_by_employee` TEXT,
+	`order_value_status` INTEGER,
+	`quote_realized_status` INTEGER,
+	`special_quote` INTEGER,
+	`quote_valid_date_to` TEXT,
+	`cust_uses_transit_cust` TEXT,
+	`sales_person_id` INTEGER,
+	`customer_address_id` INTEGER,
+	`contact_phone` TEXT,
+	`payment_option` TEXT,
+	`check_status_phone` TEXT,
+	`total` REAL,
+	`total_discount` REAL,
+	`total_pdv` REAL,
+	`total_items` REAL,
+	`hide_rebate` INTEGER DEFAULT 0,
+	`further_sale` INTEGER DEFAULT 0,
+	`note1` TEXT,
+	`note2` TEXT,
+	`note3` TEXT,
+	`created_date` TEXT,
+	`created_by` TEXT,
+	`updated_date` TEXT,
+	`updated_by` TEXT
+);
+CREATE TRIGGER "log_new_sale_order" AFTER INSERT ON "sale_orders" 
+BEGIN 
+	update visits set 
+	created_date = datetime('now'),
+	created_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TRIGGER "log_sale_order_change" AFTER UPDATE ON "sale_orders" 
+BEGIN 
+	update visits set 
+	updated_date = datetime('now'),
+	updated_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TABLE `sale_order_lines` (
+	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
+	`sale_order_id` INTEGER,
+	`line_no` INTEGER,
+	`item_id` INTEGER,
+	`quantity` REAL,
+	`unit_of_measure` TEXT,
+	`price` REAL,
+	`min_discount` REAL,
+	`max_discount` REAL,
+	`real_discount` REAL,
+	`line_total` REAL,
+	`line_origin` TEXT,
+	`price_eur` REAL,
+	`campaign_status` INTEGER,
+	`verify_status` INTEGER,
+	`price_discount_status` INTEGER,
+	`quantity_available_status` INTEGER,
+	`created_date` TEXT,
+	`created_by` TEXT,
+	`updated_date` TEXT,
+	`updated_by` TEXT
+);
+CREATE TRIGGER "log_new_sale_order_line" AFTER INSERT ON "sale_order_lines" 
+BEGIN 
+	update visits set 
+	created_date = datetime('now'),
+	created_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TRIGGER "log_sale_order_line_change" AFTER UPDATE ON "sale_order_lines" 
+BEGIN 
+	update visits set 
+	updated_date = datetime('now'),
+	updated_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
