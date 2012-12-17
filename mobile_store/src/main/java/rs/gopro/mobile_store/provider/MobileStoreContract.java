@@ -16,6 +16,8 @@ public class MobileStoreContract {
 	private static final String PATH_SEARCH = "search";
 	private static final String PATH_ITEMS = "items";
 	private static final String PATH_VISITS = "visits";
+	private static final String PATH_SALE_ORDERS = "sale_orders";
+	private static final String PATH_SALE_ORDER_LINES = "sale_order_lines";
 	private static final String PATH_WITH_CUSTOMER = "with_customer";
 
 	public interface AuditColumns {
@@ -84,11 +86,9 @@ public class MobileStoreContract {
 		String GLOBAL_DIMENSION = "global_dimension";
 		String CHANNEL_ORAN = "channel_oran";
 		String BLOCKED_STATUS = "blocked_status";
-
 	}
 
 	public interface ItemsColumns {
-
 		String ITEM_NO = "item_no";
 		String DESCRIPTION = "description";
 		String DESCRIPTION2 = "description2";
@@ -106,7 +106,61 @@ public class MobileStoreContract {
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
 		String UPDATED_BY = "updated_by";
-
+	}
+	
+	public interface SaleOrdersColumns {
+		String SALES_ORDER_NO = "sales_order_no";
+		String DOCUMENT_TYPE = "document_type";
+		String CUSTOMER_ID = "customer_id";
+		String ORDER_DATE = "order_date";
+		String LOCATION_CODE = "location_code";
+		String SHORTCUT_DIMENSION_1_CODE = "shortcut_dimension_1_code";
+		String CURRENCY_CODE = "currency_code";
+		String EXTERNAL_DOCUMENT_NO = "external_document_no";
+		String QUOTE_NO = "quote_no";
+		String BACKORDER_SHIPMENT_STATUS = "backorder_shipment_status";
+		String ORDER_STATUS_FOR_SHIPMENT = "order_status_for_shipment";
+		String FIN_CONTROL_STATUS = "fin_control_status";
+		String ORDER_CONDITION_STATUS = "order_condition_status";
+		String USED_CREDIT_LIMIT_BY_EMPLOYEE = "used_credit_limit_by_employee";
+		String ORDER_VALUE_STATUS = "order_value_status";
+		String QUOTE_IZED_STATUS = "quote_ized_status";
+		String SPECIAL_QUOTE = "special_quote";
+		String QUOTE_VALID_DATE_TO = "quote_valid_date_to";
+		String CUST_USES_TRANSIT_CUST = "cust_uses_transit_cust";
+		String SALES_PERSON_ID = "sales_person_id";
+		String CUSTOMER_ADDRESS_ID = "customer_address_id";
+		String CONTACT_PHONE = "contact_phone";
+		String PAYMENT_OPTION = "payment_option";
+		String CHECK_STATUS_PHONE = "check_status_phone";
+		String TOTAL = "total";
+		String TOTAL_DISCOUNT = "total_discount";
+		String TOTAL_PDV = "total_pdv";
+		String TOTAL_ITEMS = "total_items";
+		String HIDE_REBATE = "hide_rebate";
+		String FURTHER_SALE = "further_sale";
+		String NOTE1 = "note1";
+		String NOTE2 = "note2";
+		String NOTE3 = "note3";
+	}
+	
+	public interface SaleOrderLinesColumns {
+		String SALE_ORDER_ID = "sale_order_id";
+		String LINE_NO = "line_no";
+		String ITEM_ID = "item_id";
+		String QUANTITY = "quantity";
+		String UNIT_OF_MEASURE = "unit_of_measure";
+		String PRICE = "price";
+		String MIN_DISCOUNT = "min_discount";
+		String MAX_DISCOUNT = "max_discount";
+		String REAL_DISCOUNT = "real_discount";
+		String LINE_TOTAL = "line_total";
+		String LINE_ORIGIN = "line_origin";
+		String PRICE_EUR = "price_eur";
+		String CAMPAIGN_STATUS = "campaign_status";
+		String VERIFY_STATUS = "verify_status";
+		String PRICE_DISCOUNT_STATUS = "price_discount_status";
+		String QUANTITY_AVAILABLE_STATUS = "quantity_available_status";
 	}
 	
 	public interface SalesPersonsColumns {
@@ -247,7 +301,55 @@ public class MobileStoreContract {
 			return  CONTENT_URI.buildUpon().appendPath(PATH_WITH_CUSTOMER).build();
 		}
 	}
+	
+	/**
+	 * Sale orders contract
+	 * @author vladimirm
+	 *
+	 */
+	public static class SaleOrders implements SaleOrdersColumns, BaseColumns, AuditColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDERS).build();
+		 /** Default "ORDER BY" clause. */
+		public static final String DEFAULT_SORT = SaleOrders.CREATED_DATE + " DESC";
+		
+		public static final String CONTENT_TYPE =
+				"vnd.android.cursor.dir/vnd.mobile_store.sale_orders";
+		public static final String CONTENT_ITEM_TYPE =
+				"vnd.android.cursor.item/vnd.mobile_store.sale_orders";
+		
+		public static Uri buildSaleOrderUri(String saleOrderId){
+			return CONTENT_URI.buildUpon().appendPath(saleOrderId).build();
+		}
 
+		public static String getSaleOrderId(Uri uri){
+			return  uri.getPathSegments().get(1);
+		}
+	}
+
+	/**
+	 * Sale order lines contract
+	 * @author vladimirm
+	 *
+	 */
+	public static class SaleOrderLines implements SaleOrderLinesColumns, BaseColumns, AuditColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDER_LINES).build();
+		 /** Default "ORDER BY" clause. */
+		public static final String DEFAULT_SORT = SaleOrderLines.CREATED_DATE + " DESC";
+		
+		public static final String CONTENT_TYPE =
+				"vnd.android.cursor.dir/vnd.mobile_store.sale_order_lines";
+		public static final String CONTENT_ITEM_TYPE =
+				"vnd.android.cursor.item/vnd.mobile_store.sale_order_lines";
+		
+		public static Uri buildSaleOrderLineUri(String saleOrderLine){
+			return CONTENT_URI.buildUpon().appendPath(saleOrderLine).build();
+		}
+
+		public static String getSaleOrderLineId(Uri uri){
+			return  uri.getPathSegments().get(1);
+		}
+	}
+	
 	/**
 	 * To mark data inserted/changed/deleted from sync service and not from UI.
 	 * @param uri
