@@ -30,23 +30,30 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 public class ItemsListFragment extends ListFragment implements LoaderCallbacks<Cursor>, TextWatcher, OnItemSelectedListener {
 
-	EditText searchText;
-	Spinner spinner;
-	String splitQuerySeparator = ";";
+	private EditText searchText;
+	private Spinner spinner;
+	private String splitQuerySeparator = ";";
+	private CursorAdapter cursorAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		CursorAdapter cursorAdapter = null;
-		int[] to = new int[] { android.R.id.empty, R.id.block_time, R.id.block_title/*, R.id.block_subtitle*/ };
-		getLoaderManager().initLoader(0, null, this);
+
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		int[] to = new int[] { android.R.id.empty, R.id.block_time, R.id.block_title };
 		cursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(), R.layout.list_item_sale_order_block, null, ItemsQuery.PROJECTION, to, 0);
 		cursorAdapter.setFilterQueryProvider(new FilterQueryProvider() {
 			@Override
 			public Cursor runQuery(CharSequence constraint) {
-				System.out.println("RUN QUERY");
 				String[] queryStrings = constraint.toString().split(splitQuerySeparator);
-				Cursor cursor = getActivity().getContentResolver().query(Items.buildCustomSearchUri(queryStrings[0], queryStrings[1]), ItemsQuery.PROJECTION, null, null, MobileStoreContract.Customers.DEFAULT_SORT);
+				Cursor cursor = null;
+				if (getActivity() != null) {
+					cursor = getActivity().getContentResolver().query(Items.buildCustomSearchUri(queryStrings[0], queryStrings[1]), ItemsQuery.PROJECTION, null, null, MobileStoreContract.Customers.DEFAULT_SORT);
+				}
 				return cursor;
 			}
 		});
@@ -55,41 +62,38 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		if (getListAdapter() != null) {
-			((SimpleCursorAdapter) getListView().getAdapter()).swapCursor(null);
+		if (cursorAdapter != null) {
+			cursorAdapter.swapCursor(null);
 		}
-		getLoaderManager().initLoader(0, null, this);
-		searchText = (EditText) getActivity().findViewById(R.id.input_search_items);
-		searchText.addTextChangedListener(this);
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.item_camp_status_array, android.R.layout.simple_spinner_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner = (Spinner) getActivity().findViewById(R.id.items_camp_status_spinner);
-		spinner.setOnItemSelectedListener(this);
-		spinner.setAdapter(adapter);
-
-	}
-
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-
-		super.onViewCreated(view, savedInstanceState);
+		if (savedInstanceState == null) {
+			getLoaderManager().initLoader(0, null, this);
+			searchText = (EditText) getActivity().findViewById(R.id.input_search_items);
+			searchText.addTextChangedListener(this);
+			ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.item_camp_status_array, android.R.layout.simple_spinner_item);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spinner = (Spinner) getActivity().findViewById(R.id.items_camp_status_spinner);
+			spinner.setOnItemSelectedListener(this);
+			spinner.setAdapter(adapter);
+		}
 	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		CursorLoader cursorLoader = new CursorLoader(getActivity(), MobileStoreContract.Items.CONTENT_URI, ItemsQuery.PROJECTION, null, null, MobileStoreContract.Customers.DEFAULT_SORT);
-		return cursorLoader;
+		// CursorLoader cursorLoader = new CursorLoader(getActivity(),
+		// MobileStoreContract.Items.CONTENT_URI, ItemsQuery.PROJECTION, null,
+		// null, MobileStoreContract.Customers.DEFAULT_SORT);
+		return null;
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		((SimpleCursorAdapter) getListAdapter()).swapCursor(null);
+		cursorAdapter.swapCursor(null);
 
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		((SimpleCursorAdapter) getListAdapter()).swapCursor(null);
+		cursorAdapter.swapCursor(null);
 
 	}
 
@@ -99,27 +103,20 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 
 	@Override
 	public void afterTextChanged(Editable s) {
-		ListView listView = getListView();
-		SimpleCursorAdapter adapter = (SimpleCursorAdapter) listView.getAdapter();
-		adapter.swapCursor(null);
+		cursorAdapter.swapCursor(null);
 		int statusId = spinner.getSelectedItemPosition();
 		String queryString = s.toString() + splitQuerySeparator + statusId;
-		adapter.getFilter().filter(queryString);
+		cursorAdapter.getFilter().filter(queryString);
 	}
 
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
-		SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
-		adapter.swapCursor(null);
 	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		ListView listView = getListView();
-		SimpleCursorAdapter adapter = (SimpleCursorAdapter) listView.getAdapter();
-		adapter.swapCursor(null);
 		String queryString = searchText.getText().toString() + splitQuerySeparator + position;
-		adapter.getFilter().filter(queryString);
+		cursorAdapter.getFilter().filter(queryString);
 	}
 
 	@Override

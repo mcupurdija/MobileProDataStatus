@@ -5,6 +5,7 @@ import rs.gopro.mobile_store.ui.fragment.CustomerFragment;
 import rs.gopro.mobile_store.ui.fragment.SaleOrderFragment;
 import android.app.Activity;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -24,22 +25,11 @@ public class CustomersLayout extends CustomLinearLayout {
 	@Override
 	protected void inflateLayout(LayoutInflater layoutInflater) {
 		View view = layoutInflater.inflate(R.layout.content_holder_customers, null);
-
-		Fragment fragment = fragmentManager.findFragmentById(R.id.customers_content);
-		if (fragment == null) {
-			FragmentTransaction tr = fragmentManager.beginTransaction();
-			fragment = new CustomerFragment();
-			tr.add(R.id.customers_content, fragment);
-			tr.commit();
-		}
-
 		this.addView(view);
-
+		FragmentTransaction tr = fragmentManager.beginTransaction();
+		Fragment fragment = new CustomerFragment();
+		tr.replace(R.id.customers_content, fragment);
+		tr.commit();
+		
 	}
-
-	@Override
-	protected void onFinishInflate() {
-		super.onFinishInflate();
-	}
-
 }

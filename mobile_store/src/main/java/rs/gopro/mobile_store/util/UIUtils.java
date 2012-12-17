@@ -8,14 +8,14 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import rs.gopro.mobile_store.BuildConfig;
-import android.annotation.TargetApi;
+//import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.view.View;
 
 public class UIUtils {
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	//@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public static void setActivatedCompat(View view, boolean activated) {
 		if (hasHoneycomb()) {
 			view.setActivated(activated);

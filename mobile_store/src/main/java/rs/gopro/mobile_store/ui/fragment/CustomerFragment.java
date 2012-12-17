@@ -12,6 +12,7 @@ import rs.gopro.mobile_store.ui.LoginActivity.UsersQuery;
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.net.NetworkInfo.DetailedState;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.v4.app.ListFragment;
@@ -38,71 +39,80 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 	private EditText searchText;
 	private Spinner spinner;
 	private String splitQuerySeparator = ";";
+	private CursorAdapter cursorAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		CursorAdapter cursorAdapter = null;
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
 		int[] to = new int[] { android.R.id.empty, R.id.block_time, R.id.block_title, R.id.block_subtitle };
-		Loader<Cursor> loader = getLoaderManager().initLoader(0, null, this);
 		cursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(), R.layout.list_item_sale_order_block, null, CustomersQuery.PROJECTION, to, 0);
 		cursorAdapter.setFilterQueryProvider(new FilterQueryProvider() {
 			@Override
 			public Cursor runQuery(CharSequence constraint) {
 				String[] queryStrings = constraint.toString().split(splitQuerySeparator);
-				Cursor cursor = getActivity().getContentResolver().query(Customers.buildCustomSearchUri(queryStrings[0], queryStrings[1]), CustomersQuery.PROJECTION, null, null, MobileStoreContract.Customers.DEFAULT_SORT);
+				Cursor cursor = null;
+				if (getActivity() != null) {
+					cursor = getActivity().getContentResolver().query(Customers.buildCustomSearchUri(queryStrings[0], queryStrings[1]), CustomersQuery.PROJECTION, null, null, MobileStoreContract.Customers.DEFAULT_SORT);
+				}
 				return cursor;
 			}
 		});
 		setListAdapter(cursorAdapter);
+
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		if (getListAdapter() != null) {
-
-			((SimpleCursorAdapter) getListView().getAdapter()).swapCursor(null);
+		if (cursorAdapter != null) {
+			cursorAdapter.swapCursor(null);
 		}
-		getLoaderManager().initLoader(0, null, this);
-		searchText = (EditText) getActivity().findViewById(R.id.input_search_customers);
-		searchText.addTextChangedListener(this);
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.customer_block_status_array, android.R.layout.simple_spinner_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner = (Spinner) getActivity().findViewById(R.id.customer_block_status_spinner);
-		spinner.setOnItemSelectedListener(this);
-		spinner.setAdapter(adapter);
-
+		if (savedInstanceState == null) {
+			getLoaderManager().initLoader(0, null, this);
+			searchText = (EditText) getActivity().findViewById(R.id.input_search_customers);
+			searchText.addTextChangedListener(this);
+			ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.customer_block_status_array, android.R.layout.simple_spinner_item);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spinner = (Spinner) getActivity().findViewById(R.id.customer_block_status_spinner);
+			spinner.setOnItemSelectedListener(this);
+			spinner.setAdapter(adapter);
+		}
 	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		// CursorLoader cursorLoader = new CursorLoader(getActivity(),
-		// MobileStoreContract.Customers.CONTENT_URI, CustomersQuery.PROJECTION,
-		// null, null, MobileStoreContract.Customers.DEFAULT_SORT);
+		/*
+		 * CursorLoader cursorLoader = new CursorLoader(getActivity(),
+		 * MobileStoreContract.Customers.CONTENT_URI, CustomersQuery.PROJECTION,
+		 * null, null, MobileStoreContract.Customers.DEFAULT_SORT);
+		 */
 		return null;
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		((SimpleCursorAdapter) getListAdapter()).swapCursor(null);
+		cursorAdapter.swapCursor(null);
 
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		((SimpleCursorAdapter) getListAdapter()).changeCursor(null);
+		cursorAdapter.swapCursor(null);
 
 	}
 
 	@Override
 	public void afterTextChanged(Editable s) {
-		ListView listView = getListView();
-		SimpleCursorAdapter adapter = (SimpleCursorAdapter) listView.getAdapter();
-		adapter.swapCursor(null);
+		cursorAdapter.swapCursor(null);
 		int statusId = spinner.getSelectedItemPosition();
 		String queryString = s.toString() + splitQuerySeparator + statusId;
-		adapter.getFilter().filter(queryString);
+		cursorAdapter.getFilter().filter(queryString);
 
 	}
 
@@ -112,17 +122,13 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
-		SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
-		adapter.swapCursor(null);
 	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		ListView listView = getListView();
-		SimpleCursorAdapter adapter = (SimpleCursorAdapter) listView.getAdapter();
-		adapter.swapCursor(null);
 		String queryString = searchText.getText().toString() + splitQuerySeparator + position;
-		adapter.getFilter().filter(queryString);
+		cursorAdapter.getFilter().filter(queryString);
+
 	}
 
 	@Override
@@ -132,6 +138,11 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 
 	private interface CustomersQuery {
 		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Customers.NO, MobileStoreContract.Customers.NAME, MobileStoreContract.Customers.PHONE };
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
 	}
 
 }

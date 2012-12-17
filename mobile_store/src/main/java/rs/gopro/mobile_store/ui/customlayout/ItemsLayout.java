@@ -25,14 +25,11 @@ public class ItemsLayout extends CustomLinearLayout {
 	protected void inflateLayout(LayoutInflater layoutInflater) {
 		View view = layoutInflater.inflate(R.layout.content_holder_items, null);
 		this.addView(view);
+		FragmentTransaction tr = fragmentManager.beginTransaction();
+		ItemsListFragment fragment = new ItemsListFragment();
+		tr.replace(R.id.items_content, fragment);
+		tr.commit();
 
-		Fragment itemsLayout = fragmentManager.findFragmentById(R.id.items_content);
-		if (itemsLayout == null) {
-			FragmentTransaction tr = fragmentManager.beginTransaction();
-			itemsLayout = new ItemsListFragment();
-			tr.add(R.id.items_content, itemsLayout);
-			tr.commit();
-		}
 	}
 
 }

@@ -201,9 +201,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case INVOICES:
 			return builder.addTable(Tables.INVOICES);
 		case CUSTOMERS:
-			return builder.addTable(Tables.CUSTOMERS);
+			return builder.addTable(Tables.CUSTOMERS)
+					.where(Customers.BLOCKED_STATUS + "= ?", new String[]{ "1"});
 		case CUSTOMERS_NO:
 			return builder.addTable(Tables.CUSTOMERS);
+			
 		case  CUSTOMERS_BY_STATUS:
 			String query = Customers.getSearchQuery(uri);
 			return builder.addTable(Tables.CUSTOMERS)
