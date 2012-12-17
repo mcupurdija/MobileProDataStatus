@@ -7,9 +7,11 @@
     <dimen name="divider_size">.9dp</dimen>
     <dimen name="divider_large_size">1.5dp</dimen>
     <dimen name="actions_spacing">194dp</dimen>
-    <dimen name="list_extra_button_width">48dp</dimen>
-
+    <dimen name="list_extra_button_width">48dp</dimen>   
+	
     <!-- body content -->
+    <dimen name="element_spacing_normal">8dp</dimen>
+	<dimen name="content_padding_normal">16dp</dimen>
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>
     <dimen name="text_size_large">18sp</dimen>

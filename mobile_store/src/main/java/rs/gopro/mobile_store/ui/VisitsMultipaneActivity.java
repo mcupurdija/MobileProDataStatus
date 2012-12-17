@@ -11,7 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 
-public class VisitsPlanMultipaneActivity extends BaseActivity implements VisitListFragment.Callbacks, VisitDetailFragment.Callbacks {
+public class VisitsMultipaneActivity extends BaseActivity implements VisitListFragment.Callbacks, VisitDetailFragment.Callbacks {
 	
 	public static final String EXTRA_MASTER_URI =
             "rs.gopro.mobile_store.extra.MASTER_URI";
