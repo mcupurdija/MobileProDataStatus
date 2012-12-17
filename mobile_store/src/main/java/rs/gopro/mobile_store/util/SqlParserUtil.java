@@ -156,10 +156,8 @@ public class SqlParserUtil {
 	 */
 	public static boolean isScriptForTableCreation(String sqlStatement) {
 		String create = "CREATE TABLE";
-		char scriptQuote = '`';
-		sqlStatement = sqlStatement.replace(scriptQuote, ' ');
-		String[] splitSql = sqlStatement.split("\\s+");
-		if (create.equalsIgnoreCase(splitSql[0])) {
+		sqlStatement = sqlStatement.trim();
+		if (sqlStatement.startsWith(create)) {
 			return true;
 		}
 		return false;
