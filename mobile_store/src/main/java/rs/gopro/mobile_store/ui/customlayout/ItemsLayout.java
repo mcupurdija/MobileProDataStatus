@@ -16,17 +16,20 @@ public class ItemsLayout extends CustomLinearLayout {
 	private static final String ITEMS_SCHEME = "settings";
 	private static final String ITEMS_AUTHORITY = "items";
 	public static final Uri ITEMS_URI = new Uri.Builder().scheme(ITEMS_SCHEME).authority(ITEMS_AUTHORITY).build();
-
+	private Fragment fragment;
+	
+	
 	public ItemsLayout(FragmentManager fragmentManager, Activity activity) {
 		super(fragmentManager, activity);
 	}
 
 	@Override
 	protected void inflateLayout(LayoutInflater layoutInflater) {
+		if (fragment != null) return;
 		View view = layoutInflater.inflate(R.layout.content_holder_items, null);
 		this.addView(view);
 		FragmentTransaction tr = fragmentManager.beginTransaction();
-		ItemsListFragment fragment = new ItemsListFragment();
+		fragment = new ItemsListFragment();
 		tr.replace(R.id.items_content, fragment);
 		tr.commit();
 

@@ -1,6 +1,8 @@
 package rs.gopro.mobile_store.ui;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.adapter.ActionsAdapter;
@@ -39,6 +41,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	public static final String CURRENT_POSITION_KEY = "current_position";
 
 	CustomLinearLayout currentCustomLinearLayout;
+	Map<String, CustomLinearLayout> savedLayoutInstances = new HashMap<String, CustomLinearLayout>();
 
 	/**
 	 * Create menu as list view on left side of screen. Create content space
@@ -98,15 +101,40 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 		Uri uri = actionsAdapter.getItem(position);
 		CustomLinearLayout view = null;
 		if (SaleOrdersLayout.SALE_ORDER_URI.equals(uri)) {
-			view = new SaleOrdersLayout(getSupportFragmentManager(), this);
+			if (savedLayoutInstances.containsKey(SaleOrdersLayout.SALE_ORDER_URI.toString())) {
+				view = savedLayoutInstances.get(SaleOrdersLayout.SALE_ORDER_URI.toString());
+			} else {
+				view =  new SaleOrdersLayout(getSupportFragmentManager(), this);
+				savedLayoutInstances.put(SaleOrdersLayout.SALE_ORDER_URI.toString(), view);
+			}
 		} else if (PlanOfVisitsLayout.PLAN_OF_VISITS_URI.equals(uri)) {
-			view = new PlanOfVisitsLayout(getSupportFragmentManager(), this);
-		}else if(CustomersLayout.CUSTOMERS_URI.equals(uri)){
-			view = new CustomersLayout(getSupportFragmentManager(), this);
-		}else if(ItemsLayout.ITEMS_URI.equals(uri)){
-			view = new ItemsLayout(getSupportFragmentManager(), this);
-		}else if(ReportLayout.REPORTS_URI.equals(uri)){
-			view = new ReportLayout(getSupportFragmentManager(), this);
+			if (savedLayoutInstances.containsKey(PlanOfVisitsLayout.PLAN_OF_VISITS_URI.toString())) {
+				view = savedLayoutInstances.get(PlanOfVisitsLayout.PLAN_OF_VISITS_URI.toString());
+			} else {
+				view = new PlanOfVisitsLayout(getSupportFragmentManager(), this);
+				savedLayoutInstances.put(PlanOfVisitsLayout.PLAN_OF_VISITS_URI.toString(), view);
+			}
+		}else if(CustomersLayout.CUSTOMERS_URI.equals(uri)) {
+			if (savedLayoutInstances.containsKey(CustomersLayout.CUSTOMERS_URI.toString())) {
+				view = savedLayoutInstances.get(CustomersLayout.CUSTOMERS_URI.toString());
+			} else {
+				view = new CustomersLayout(getSupportFragmentManager(), this);
+				savedLayoutInstances.put(CustomersLayout.CUSTOMERS_URI.toString(), view);
+			}
+		}else if(ItemsLayout.ITEMS_URI.equals(uri)) {
+			if (savedLayoutInstances.containsKey(ItemsLayout.ITEMS_URI.toString())) {
+				view = savedLayoutInstances.get(ItemsLayout.ITEMS_URI.toString());
+			} else {
+				view = new ItemsLayout(getSupportFragmentManager(), this);
+				savedLayoutInstances.put(ItemsLayout.ITEMS_URI.toString(), view);
+			}
+		}else if(ReportLayout.REPORTS_URI.equals(uri)) {
+			if (savedLayoutInstances.containsKey(ReportLayout.REPORTS_URI.toString())) {
+				view = savedLayoutInstances.get(ReportLayout.REPORTS_URI.toString());
+			} else {
+				view = new ReportLayout(getSupportFragmentManager(), this);
+				savedLayoutInstances.put(ReportLayout.REPORTS_URI.toString(), view);
+			}
 		}
 		currentCustomLinearLayout = view;
 		if (view != null) {

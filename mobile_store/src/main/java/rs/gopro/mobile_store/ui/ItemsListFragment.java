@@ -4,6 +4,7 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
+import rs.gopro.mobile_store.util.LogUtils;
 
 import android.content.ClipData.Item;
 import android.database.Cursor;
@@ -29,7 +30,7 @@ import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 public class ItemsListFragment extends ListFragment implements LoaderCallbacks<Cursor>, TextWatcher, OnItemSelectedListener {
-
+	private static String TAG = "ItemsListFragment";
 	private EditText searchText;
 	private Spinner spinner;
 	private String splitQuerySeparator = ";";
@@ -38,7 +39,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		LogUtils.LOGD(TAG, "on create");
 	}
 
 	@Override

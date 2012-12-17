@@ -9,6 +9,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.LoginActivity.UsersQuery;
+import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -35,7 +36,7 @@ import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cursor>, TextWatcher, OnItemSelectedListener {
-
+	private static String TAG = "CustomerFragment";
 	private EditText searchText;
 	private Spinner spinner;
 	private String splitQuerySeparator = ";";
@@ -44,6 +45,7 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		LogUtils.LOGD(TAG, "on create");
 	}
 
 	@Override
