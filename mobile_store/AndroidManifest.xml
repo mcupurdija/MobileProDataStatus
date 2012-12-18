@@ -40,7 +40,17 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-
+		<activity
+            android:name=".ui.VisitsMultipaneActivity"
+            android:label="@string/app_name">
+		    <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.mobile_store.visit" />
+            </intent-filter>
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.HomeScreenActivity" />
+		</activity>
         <provider
             android:name="rs.gopro.mobile_store.provider.MobileStoreContentProvider"
             android:authorities="rs.gopro.mobile_store.provider.mobile_store_provider" />

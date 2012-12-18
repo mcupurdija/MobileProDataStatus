@@ -243,6 +243,8 @@ BEGIN
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
+INSERT INTO `visits` VALUES ('1','1','2012-12-18 00:00:00','1',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('2','1','2012-12-18 00:00:00','2',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
 CREATE TABLE `sale_orders` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
 	`sales_order_no` TEXT,
