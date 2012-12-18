@@ -2,5 +2,6 @@
 <resources>
     <style name="MobileStoreTheme" parent="@android:style/Theme.Holo.Light">
         <!-- Any customizations for your app running on devices with Theme.Holo here -->
+        <item name="textHeaderMaxLines">@integer/track_abstract_max_lines</item>
     </style>
 </resources>

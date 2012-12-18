@@ -283,7 +283,7 @@ public class MobileStoreContract {
 		
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_VISITS).build();
 		 /** Default "ORDER BY" clause. */
-        public static final String DEFAULT_SORT = Visits.CREATED_DATE + " DESC";
+        public static final String DEFAULT_SORT = "visits." + Visits.CREATED_DATE + " DESC";
 		
         public static final String CONTENT_TYPE =
                 "vnd.android.cursor.dir/vnd.mobile_store.visit";

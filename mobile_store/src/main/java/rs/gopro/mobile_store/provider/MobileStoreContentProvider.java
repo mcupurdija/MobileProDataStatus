@@ -1,6 +1,5 @@
 package rs.gopro.mobile_store.provider;
 
-
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
@@ -23,7 +22,8 @@ import android.util.Log;
  * 
  */
 public class MobileStoreContentProvider extends ContentProvider {
-	private static final String TAG = LogUtils.makeLogTag(MobileStoreContentProvider.class);
+	private static final String TAG = LogUtils
+			.makeLogTag(MobileStoreContentProvider.class);
 
 	private MobileStoreDatabase databaseHelper;
 
@@ -31,17 +31,17 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int USERS = 100;
 	private static final int USERS_ID = 101;
 	private static final int USERNAME = 102;
-	
+
 	private static final int INVOICES = 110;
 	private static final int INVOICES_ID = 111;
-	
+
 	private static final int CUSTOMERS = 120;
 	private static final int CUSTOMERS_ID = 121;
 	private static final int CUSTOMERS_NO = 122;
 	private static final int CUSTOMERS_SEARCH = 123;
 	private static final int CUSTOMERS_CUSTOM_SEARCH = 124;
 	private static final int CUSTOMERS_BY_STATUS = 125;
-	
+
 	private static final int ITEMS = 130;
 	private static final int ITEMS_NO = 131;
 	private static final int ITEMS_BY_STATUS = 132;
@@ -57,8 +57,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 	
 	
 
-	
-	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
+			UriMatcher.NO_MATCH);
 
 	static {
 		String authority = MobileStoreContract.CONTENT_AUTHORITY;
@@ -68,20 +68,29 @@ public class MobileStoreContentProvider extends ContentProvider {
 
 		mobileStoreURIMatcher.addURI(authority, "invoices", INVOICES);
 		mobileStoreURIMatcher.addURI(authority, "invoices/#", INVOICES_ID);
-		
-		mobileStoreURIMatcher.addURI(authority, "customers",CUSTOMERS);
-		mobileStoreURIMatcher.addURI(authority, "customers/#",CUSTOMERS_ID);
-		mobileStoreURIMatcher.addURI(authority, "customers/customer_no",CUSTOMERS_NO);
-		mobileStoreURIMatcher.addURI(authority, "customers/*/customer_no",CUSTOMERS_BY_STATUS);
-		mobileStoreURIMatcher.addURI(authority, "customers/#/customer_no",CUSTOMERS_BY_STATUS);
-		mobileStoreURIMatcher.addURI(authority, "customers/#/*/customer_no",CUSTOMERS_CUSTOM_SEARCH);
-		mobileStoreURIMatcher.addURI(authority, "customers/*/#/customer_no",CUSTOMERS_CUSTOM_SEARCH);
-		
+
+		mobileStoreURIMatcher.addURI(authority, "customers", CUSTOMERS);
+		mobileStoreURIMatcher.addURI(authority, "customers/#", CUSTOMERS_ID);
+		mobileStoreURIMatcher.addURI(authority, "customers/customer_no",
+				CUSTOMERS_NO);
+		mobileStoreURIMatcher.addURI(authority, "customers/*/customer_no",
+				CUSTOMERS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "customers/#/customer_no",
+				CUSTOMERS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "customers/#/*/customer_no",
+				CUSTOMERS_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "customers/*/#/customer_no",
+				CUSTOMERS_CUSTOM_SEARCH);
+
 		mobileStoreURIMatcher.addURI(authority, "items", ITEMS);
-		mobileStoreURIMatcher.addURI(authority, "items/*/item_no", ITEMS_BY_STATUS);
-		mobileStoreURIMatcher.addURI(authority, "items/#/item_no", ITEMS_BY_STATUS);
-		mobileStoreURIMatcher.addURI(authority, "items/*/#/item_no", ITEMS_CUSTOM_SEARCH);
-		mobileStoreURIMatcher.addURI(authority, "items/#/*/item_no", ITEMS_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "items/*/item_no",
+				ITEMS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "items/#/item_no",
+				ITEMS_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "items/*/#/item_no",
+				ITEMS_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "items/#/*/item_no",
+				ITEMS_CUSTOM_SEARCH);
 
 		mobileStoreURIMatcher.addURI(authority, "visits", VISITS);
 		mobileStoreURIMatcher.addURI(authority, "visits/#", VISIT_ID);
@@ -96,39 +105,39 @@ public class MobileStoreContentProvider extends ContentProvider {
 
 	}
 
-
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		LogUtils.log(Log.VERBOSE, TAG, "delete(uri = " + uri + ")");
-		//int match = mobileStoreURIMatcher.match(uri);
+		// int match = mobileStoreURIMatcher.match(uri);
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
 		SelectionBuilder builder = buildSimpleSelection(uri);
-		int deletedRows = builder.where(selection, selectionArgs).delete(database);
+		int deletedRows = builder.where(selection, selectionArgs).delete(
+				database);
 		getContext().getContentResolver().notifyChange(uri, null);
 		return deletedRows;
 	}
 
 	/** {@inheritDoc} */
-    @Override
-    public String getType(Uri uri) {
-    	final int match = mobileStoreURIMatcher.match(uri);
-        switch (match) {
-            case VISITS:
-            	return Visits.CONTENT_TYPE;
-            case VISIT_ID:
-            	return Visits.CONTENT_TYPE;
-            case VISITS_WITH_CUSTOMER:
-            	return Visits.CONTENT_TYPE;
-            default:
-            	return null;
-                //TODO Throw exception when other tables get content_type
-            	//throw new UnsupportedOperationException("Unknown uri: " + uri);
-        }
+	@Override
+	public String getType(Uri uri) {
+		final int match = mobileStoreURIMatcher.match(uri);
+		switch (match) {
+		case VISITS:
+			return Visits.CONTENT_TYPE;
+		case VISIT_ID:
+			return Visits.CONTENT_ITEM_TYPE;
+		case VISITS_WITH_CUSTOMER:
+			return Visits.CONTENT_TYPE;
+		default:
+			return null;
+			// TODO Throw exception when other tables get content_type
+			// throw new UnsupportedOperationException("Unknown uri: " + uri);
+		}
 	}
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-		LogUtils.log(Log.VERBOSE,TAG, "insert(uri = " + uri + ")");
+		LogUtils.log(Log.VERBOSE, TAG, "insert(uri = " + uri + ")");
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
 		int match = mobileStoreURIMatcher.match(uri);
 		long id = 0;
@@ -138,17 +147,17 @@ public class MobileStoreContentProvider extends ContentProvider {
 			getContext().getContentResolver().notifyChange(uri, null);
 			return Users.buildUsersUri("" + id);
 		case INVOICES:
-			id = database.insertOrThrow(Tables.INVOICES,null, values);
+			id = database.insertOrThrow(Tables.INVOICES, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
-			return  Invoices.buildInvoicesUri(""+id);
+			return Invoices.buildInvoicesUri("" + id);
 		case CUSTOMERS:
-			id = database.insertOrThrow(Tables.CUSTOMERS,null, values);
+			id = database.insertOrThrow(Tables.CUSTOMERS, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
-			return Customers.buildCustomersUri(""+id);
+			return Customers.buildCustomersUri("" + id);
 		case VISITS:
 			id = database.insertOrThrow(Tables.VISITS, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
-			return  Visits.buildVisitUri(""+id);
+			return Visits.buildVisitUri("" + id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -162,22 +171,26 @@ public class MobileStoreContentProvider extends ContentProvider {
 	}
 
 	@Override
-	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+	public Cursor query(Uri uri, String[] projection, String selection,
+			String[] selectionArgs, String sortOrder) {
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
 		int match = mobileStoreURIMatcher.match(uri);
 		switch (match) {
 		default:
 			SelectionBuilder builder = buildExpandedSelection(uri, match);
-			return builder.where(selection, selectionArgs).query(database, projection, sortOrder);
+			return builder.where(selection, selectionArgs).query(database,
+					projection, sortOrder);
 		}
 	}
 
 	@Override
-	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-		LogUtils.log(Log.VERBOSE,TAG, "delete(uri = " + uri + ")");
+	public int update(Uri uri, ContentValues values, String selection,
+			String[] selectionArgs) {
+		LogUtils.log(Log.VERBOSE, TAG, "delete(uri = " + uri + ")");
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
 		SelectionBuilder builder = buildSimpleSelection(uri);
-		int updatedRows = builder.where(selection, selectionArgs).update(database, values);
+		int updatedRows = builder.where(selection, selectionArgs).update(
+				database, values);
 		getContext().getContentResolver().notifyChange(uri, null);
 		return updatedRows;
 	}
@@ -190,61 +203,105 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Users._ID);
 		case USERNAME:
 			return builder.addTable(Users.USERNAME);
-		case  INVOICES_ID:
+		case INVOICES_ID:
 			return builder.addTable(Invoices._ID);
+		case VISITS:
+			return builder.addTable(Tables.VISITS);
 		case VISIT_ID:
-			return builder.addTable(Visits._ID);
+			final String visitId = Visits.getVisitId(uri);
+			return builder.addTable(Tables.VISITS)
+					.where(Visits._ID + "=?", visitId);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
 	}
 
 	private SelectionBuilder buildExpandedSelection(Uri uri, int match) {
-		System.out.println("URI: "+uri);
+		System.out.println("URI: " + uri);
 		final SelectionBuilder builder = new SelectionBuilder();
 		switch (match) {
 		case USERS_ID:
 			String userId = Users.getUserId(uri);
-			return builder.addTable(Tables.USERS).where(Users._ID + "=?", userId);
+			return builder.addTable(Tables.USERS).where(Users._ID + "=?",
+					userId);
 		case USERNAME:
 			return builder.addTable(Tables.USERS);
 		case INVOICES_ID:
 			String invoicesId = Invoices.getInvoicesId(uri);
-			return builder.addTable(Tables.INVOICES).where(Invoices._ID+ "=?", invoicesId);
+			return builder.addTable(Tables.INVOICES).where(Invoices._ID + "=?",
+					invoicesId);
 		case INVOICES:
 			return builder.addTable(Tables.INVOICES);
 		case CUSTOMERS:
-			return builder.addTable(Tables.CUSTOMERS)
-					.where(Customers.BLOCKED_STATUS + "= ?", new String[]{ "1"});
+			return builder.addTable(Tables.CUSTOMERS).where(
+					Customers.BLOCKED_STATUS + "= ?", new String[] { "1" });
 		case CUSTOMERS_NO:
 			return builder.addTable(Tables.CUSTOMERS);
-			
-		case  CUSTOMERS_BY_STATUS:
+
+		case CUSTOMERS_BY_STATUS:
 			String query = Customers.getSearchQuery(uri);
-			return builder.addTable(Tables.CUSTOMERS)
-					.where(Customers.BLOCKED_STATUS + "= ?", new String[]{ query});
+			return builder.addTable(Tables.CUSTOMERS).where(
+					Customers.BLOCKED_STATUS + "= ?", new String[] { query });
 		case CUSTOMERS_CUSTOM_SEARCH:
-			String customerCustomParam = Customers.getCustomSearchFirstParamQuery(uri);
-			String customerStatus = Customers.getCustomSearchSecondParamQuery(uri);
-			return builder.addTable(Tables.CUSTOMERS)
-			.where(Customers.CUSTOMER_NO + " like ? OR "+ Customers.NAME + " like ?", new String[] { /*"%" +*/ customerCustomParam + "%", "%" + customerCustomParam + "%"})
-			.where(Customers.BLOCKED_STATUS + "= ?", new String[] {customerStatus});
-			
-		
+			String customerCustomParam = Customers
+					.getCustomSearchFirstParamQuery(uri);
+			String customerStatus = Customers
+					.getCustomSearchSecondParamQuery(uri);
+			return builder
+					.addTable(Tables.CUSTOMERS)
+					.where(Customers.CUSTOMER_NO + " like ? OR "
+							+ Customers.NAME + " like ?",
+							new String[] { /* "%" + */
+									customerCustomParam + "%",
+									"%" + customerCustomParam + "%" })
+					.where(Customers.BLOCKED_STATUS + "= ?",
+							new String[] { customerStatus });
+
 		case ITEMS:
 			return builder.addTable(Tables.ITEMS);
 		case ITEMS_BY_STATUS:
 			String itemStat = Items.getItemStatus(uri);
-			return builder.addTable(Tables.ITEMS)
-			.where(Items.CAMPAIGN_STATUS + "= ?", new String[]{itemStat});
-		case ITEMS_CUSTOM_SEARCH: 
-			String  itemCustom = Items.getCustomSearchFirstParamQuery(uri);
-			String  itemStatus = Items.getCustomSearchSecondParamQuery(uri);
-			return builder.addTable(Tables.ITEMS)
-			.where(Items.ITEM_NO + " like ? OR "+Items.DESCRIPTION + " like ? ", new String [] {itemCustom + "%", "%" + itemCustom + "%"} )
-			.where(Items.CAMPAIGN_STATUS + "= ?", new String[]{itemStatus});
+			return builder.addTable(Tables.ITEMS).where(
+					Items.CAMPAIGN_STATUS + "= ?", new String[] { itemStat });
+		case ITEMS_CUSTOM_SEARCH:
+			String itemCustom = Items.getCustomSearchFirstParamQuery(uri);
+			String itemStatus = Items.getCustomSearchSecondParamQuery(uri);
+			return builder
+					.addTable(Tables.ITEMS)
+					.where(Items.ITEM_NO + " like ? OR " + Items.DESCRIPTION
+							+ " like ? ",
+							new String[] { itemCustom + "%",
+									"%" + itemCustom + "%" })
+					.where(Items.CAMPAIGN_STATUS + "= ?",
+							new String[] { itemStatus });
+		case VISITS:
+			return builder.addTable(Tables.VISITS_JOIN_CUSTOMERS)
+					.mapToTable(Visits._ID, Tables.VISITS)
+					.mapToTable(Visits.SALES_PERSON_ID, Tables.VISITS)
+					.mapToTable(Visits.CUSTOMER_ID, Tables.VISITS)
+					.mapToTable(Visits.VISIT_DATE, Tables.VISITS)
+					.mapToTable(Visits.CUSTOMER_NO, Tables.CUSTOMERS)
+					.mapToTable(Visits.NAME, Tables.CUSTOMERS)
+					.mapToTable(Visits.NAME_2, Tables.CUSTOMERS)
+					.mapToTable(Visits.ARRIVAL_TIME, Tables.VISITS)
+					.mapToTable(Visits.DEPARTURE_TIME, Tables.VISITS)
+					.mapToTable(Visits.ODOMETER, Tables.VISITS)
+					.mapToTable(Visits.NOTE, Tables.VISITS);
 		case VISIT_ID:
-			return builder.addTable(Tables.VISITS);
+			final String visitId = Visits.getVisitId(uri);
+			return builder.addTable(Tables.VISITS_JOIN_CUSTOMERS)
+					.mapToTable(Visits._ID, Tables.VISITS)
+					.mapToTable(Visits.SALES_PERSON_ID, Tables.VISITS)
+					.mapToTable(Visits.CUSTOMER_ID, Tables.VISITS)
+					.mapToTable(Visits.VISIT_DATE, Tables.VISITS)
+					.mapToTable(Visits.CUSTOMER_NO, Tables.CUSTOMERS)
+					.mapToTable(Visits.NAME, Tables.CUSTOMERS)
+					.mapToTable(Visits.NAME_2, Tables.CUSTOMERS)
+					.mapToTable(Visits.ARRIVAL_TIME, Tables.VISITS)
+					.mapToTable(Visits.DEPARTURE_TIME, Tables.VISITS)
+					.mapToTable(Visits.ODOMETER, Tables.VISITS)
+					.mapToTable(Visits.NOTE, Tables.VISITS)
+					.where(Visits._ID + "=?", visitId);
 		case SALE_ORDER:
 			return builder.addTable(Tables.SALE_ORDERS);
 		case SALE_ORDER_BY_STATUS:

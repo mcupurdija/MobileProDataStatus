@@ -10,6 +10,8 @@ public interface Tables {
 	String CONTACTS = "contacts";
 	String ITEMS = "items";
 	String VISITS = "visits";
+	String VISITS_JOIN_CUSTOMERS = "visits left outer join customers on visits.customer_id = customers._id";
+	
 	
 	String INVOICES = "invoices";
 	String INVOICE_LINES = "invoice_lines";

@@ -131,7 +131,7 @@ public class VisitListFragment extends ListFragment implements
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final Cursor cursor = (Cursor) mAdapter.getItem(position);
-        String visitId = cursor.getString(VisitsQuery._ID);
+        String visitId = String.valueOf(cursor.getInt(VisitsQuery._ID));
         if (mCallbacks.onVisitSelected(visitId)) {
             mSelectedVisitId = visitId;
             mAdapter.notifyDataSetChanged();
@@ -192,10 +192,10 @@ public class VisitListFragment extends ListFragment implements
         public void bindView(View view, Context context, Cursor cursor) {
 //            UIUtils.setActivatedCompat(view, cursor.getString(VisitsQuery.VENDOR_ID)
 //                    .equals(mSelectedVendorId));
-            view.setActivated(cursor.getString(VisitsQuery._ID)
+            view.setActivated(String.valueOf(cursor.getInt(VisitsQuery._ID))
                     .equals(mSelectedVisitId));
             ((TextView) view.findViewById(R.id.visit_date)).setText(
-                    cursor.getString(VisitsQuery.VISIT_DATE) + " - " + cursor.getString(VisitsQuery.CUSTOMER_NAME));
+                    cursor.getString(VisitsQuery.VISIT_DATE) + " - " + cursor.getString(VisitsQuery.CUSTOMER_NO) + " - " + cursor.getString(VisitsQuery.CUSTOMER_NAME) + cursor.getString(VisitsQuery.CUSTOMER_NAME2));
         }
     }
 	
@@ -206,16 +206,19 @@ public class VisitListFragment extends ListFragment implements
                 BaseColumns._ID,
                 MobileStoreContract.Visits.SALES_PERSON_ID,
                 MobileStoreContract.Visits.CUSTOMER_ID,
-                MobileStoreContract.CustomersColumns.NAME,
-                MobileStoreContract.CustomersColumns.NAME_2,
+                MobileStoreContract.Visits.CUSTOMER_NO,
+                MobileStoreContract.Visits.NAME,
+                MobileStoreContract.Visits.NAME_2,
                 MobileStoreContract.Visits.VISIT_DATE
         };
 
         int _ID = 0;
         int SALES_PERSON_ID = 1;
         int CUSTOMER_ID = 2;
-        int VISIT_DATE = 3;
+        int CUSTOMER_NO = 3;
         int CUSTOMER_NAME = 4;
+        int CUSTOMER_NAME2 = 5;
+        int VISIT_DATE = 6;
 	}
 
 }
