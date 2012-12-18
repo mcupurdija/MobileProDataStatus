@@ -18,6 +18,7 @@ import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.SweepGradient;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,35 +46,33 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-
 public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<Cursor>, TextWatcher, OnItemSelectedListener, FilterListener {
 	private String splitQuerySeparator = ";";
 	private SimpleSelectionedListAdapter adapter;
 	private SaleOrdersListAdapter saleAdapter;
 	private EditText searchText;
 	private Spinner spinner;
-	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		saleAdapter = new SaleOrdersListAdapter(getActivity());
 		adapter = new SimpleSelectionedListAdapter(getActivity(), R.layout.list_item_sale_order_header, saleAdapter);
-		
+
 		saleAdapter.setFilterQueryProvider(new FilterQueryProvider() {
-			
+
 			@Override
 			public Cursor runQuery(CharSequence constraint) {
 				System.out.println("USAO U FILTER");
 				String[] queryStrings = constraint.toString().split(splitQuerySeparator);
 				Cursor cursor = null;
-				if(getActivity() != null){
-				cursor = getActivity().getContentResolver().query(SaleOrders.buildCustomSearchUri(queryStrings[0], queryStrings[1]), SaleOrderQuery.PROJECTION, null, null, SaleOrders.DEFAULT_SORT);	
+				if (getActivity() != null) {
+					cursor = getActivity().getContentResolver().query(SaleOrders.buildCustomSearchUri(queryStrings[0], queryStrings[1]), SaleOrderQuery.PROJECTION, null, null, SaleOrders.DEFAULT_SORT);
 				}
 				return cursor;
 			}
 		});
-		
+
 		setListAdapter(adapter);
 	}
 
@@ -93,14 +92,16 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		getLoaderManager().initLoader(0, null, this);
-		searchText = (EditText) getActivity().findViewById(R.id.input_search_sale_order);
-		searchText.addTextChangedListener(this);
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.sale_order_block_status_array, android.R.layout.simple_spinner_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner = (Spinner) getActivity().findViewById(R.id.sale_order_status_spinner);
-		spinner.setOnItemSelectedListener(this);
-		spinner.setAdapter(adapter);
+		if (savedInstanceState == null) {
+			getLoaderManager().initLoader(0, null, this);
+			searchText = (EditText) getActivity().findViewById(R.id.input_search_sale_order);
+			searchText.addTextChangedListener(this);
+			ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.sale_order_block_status_array, android.R.layout.simple_spinner_item);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spinner = (Spinner) getActivity().findViewById(R.id.sale_order_status_spinner);
+			spinner.setOnItemSelectedListener(this);
+			spinner.setAdapter(adapter);
+		}
 	}
 
 	@Override
@@ -117,7 +118,10 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-	//	CursorLoader cursorLoader = new CursorLoader(getActivity(), MobileStoreContract.SaleOrders.CONTENT_URI, SaleOrderQuery.PROJECTION, null, null, MobileStoreContract.SaleOrders.DEFAULT_SORT);
+		// CursorLoader cursorLoader = new CursorLoader(getActivity(),
+		// MobileStoreContract.SaleOrders.CONTENT_URI,
+		// SaleOrderQuery.PROJECTION, null, null,
+		// MobileStoreContract.SaleOrders.DEFAULT_SORT);
 		return null;
 	}
 
@@ -165,7 +169,6 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 		}
 	};
 
-
 	@Override
 	public void afterTextChanged(Editable s) {
 		int statusId = spinner.getSelectedItemPosition();
@@ -176,13 +179,13 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -194,17 +197,15 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onFilterComplete(int count) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	
-	
 	public class SaleOrdersListAdapter extends CursorAdapter {
 		/** Flags used with {@link DateUtils#formatDateRange}. */
 		private static final int TIME_FLAGS = DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY;
@@ -224,7 +225,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 			final String saleOrderNo = cursor.getString(SaleOrderQuery.NO);
 			final Integer totalAmount = cursor.getInt(SaleOrderQuery.TOTAL);
 			final long orderDate = UIUtils.getDate(cursor.getString(SaleOrderQuery.ORDER_DATE)).getTime();
-		
+
 			final TextView timeView = (TextView) view.findViewById(R.id.block_time);
 			final TextView titleView = (TextView) view.findViewById(R.id.block_title);
 			final TextView subtitleView = (TextView) view.findViewById(R.id.block_subtitle);
@@ -257,17 +258,12 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 
 	private interface SaleOrderQuery {
 
-		String[] PROJECTION = { BaseColumns._ID, 
-				SaleOrders.SALES_ORDER_NO,
-				SaleOrders.ORDER_DATE,
-				SaleOrders.TOTAL
-		};
+		String[] PROJECTION = { BaseColumns._ID, SaleOrders.SALES_ORDER_NO, SaleOrders.ORDER_DATE, SaleOrders.TOTAL };
 
 		int _ID = 0;
 		int NO = 1;
 		int ORDER_DATE = 2;
 		int TOTAL = 3;
-		}
-
+	}
 
 }
