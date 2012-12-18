@@ -186,7 +186,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
-		LogUtils.log(Log.VERBOSE, TAG, "delete(uri = " + uri + ")");
+		LogUtils.log(Log.VERBOSE, TAG, "update(uri = " + uri + ")");
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
 		SelectionBuilder builder = buildSimpleSelection(uri);
 		int updatedRows = builder.where(selection, selectionArgs).update(
