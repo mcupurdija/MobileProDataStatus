@@ -19,6 +19,7 @@ public class MobileStoreContract {
 	private static final String PATH_SALE_ORDERS = "sale_orders";
 	private static final String PATH_SALE_ORDER_LINES = "sale_order_lines";
 	private static final String PATH_WITH_CUSTOMER = "with_customer";
+	private static final String PATH_SALE_ORDER_SEARCH_CUSTOM = "custom_search";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -323,6 +324,22 @@ public class MobileStoreContract {
 
 		public static String getSaleOrderId(Uri uri){
 			return  uri.getPathSegments().get(1);
+		}
+
+		public static Uri buildCustomSearchUri(String text, String status) {
+			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(PATH_SALE_ORDER_SEARCH_CUSTOM).build();
+		}
+		
+		public static String getCustomSearchFirstParamQuery(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+
+		public static String getCustomSearchSecondParamQuery(Uri uri) {
+			return uri.getPathSegments().get(2);
+		}
+
+		public static String getSaleOrderDocType(Uri uri) {
+			return uri.getPathSegments().get(1);
 		}
 	}
 

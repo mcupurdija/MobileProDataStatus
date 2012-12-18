@@ -80,4 +80,11 @@
         <item>Blocked Two</item>
     </string-array>
     
+     <string-array name="sale_order_block_status_array">
+        <item>Sale order</item>
+        <item>Order</item>
+        <item>Supply</item>
+        <item>Spec supply</item>
+    </string-array>
+    
 </resources>

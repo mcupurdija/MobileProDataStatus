@@ -4,6 +4,7 @@ package rs.gopro.mobile_store.provider;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.util.LogUtils;
@@ -47,6 +48,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int ITEMS_CUSTOM_SEARCH = 133;
 	
 	private static final int SALE_ORDER = 140;
+	private static final int SALE_ORDER_CUSTOM_SEARCH = 141;
+	private static final int SALE_ORDER_BY_STATUS = 142;
 
 	private static final int VISITS = 200;
 	private static final int VISIT_ID = 201;
@@ -85,6 +88,12 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "visits/with_customer", VISITS_WITH_CUSTOMER);
 		
 		mobileStoreURIMatcher.addURI(authority, "sale_orders",SALE_ORDER);
+		//custom_search
+		mobileStoreURIMatcher.addURI(authority, "sale_orders/*/custom_search", SALE_ORDER_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "sale_orders/#/custom_search", SALE_ORDER_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "sale_orders/*/#/custom_search", SALE_ORDER_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "sale_orders/#/*/custom_search", SALE_ORDER_CUSTOM_SEARCH);
+
 	}
 
 
@@ -238,6 +247,16 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.VISITS);
 		case SALE_ORDER:
 			return builder.addTable(Tables.SALE_ORDERS);
+		case SALE_ORDER_BY_STATUS:
+			String saleOrderDocType = SaleOrders.getSaleOrderDocType(uri);
+			return builder.addTable(Tables.SALE_ORDERS)
+			.where(SaleOrders.DOCUMENT_TYPE+ "= ? ",new String[] {saleOrderDocType} );
+		case SALE_ORDER_CUSTOM_SEARCH:
+			String saleCustomParam = SaleOrders.getCustomSearchFirstParamQuery(uri);
+			String saleDocType = SaleOrders.getCustomSearchSecondParamQuery(uri);
+			return builder.addTable(Tables.SALE_ORDERS)
+			.where(SaleOrders.SALES_ORDER_NO + " like ? ", new String[] {"%"+saleCustomParam+ "%"})
+			.where(SaleOrders.DOCUMENT_TYPE+ "= ? ",new String[] {saleDocType} );
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

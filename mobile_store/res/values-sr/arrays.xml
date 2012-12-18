@@ -78,4 +78,11 @@
         <item>Blokirano 2</item>
     </string-array>
     
+    <string-array name="sale_order_block_status_array">
+        <item>Liferica</item>
+        <item>Porudzbina</item>
+        <item>Ponuda</item>
+        <item>Spec ponuda</item>
+    </string-array>
+    
 </resources>
