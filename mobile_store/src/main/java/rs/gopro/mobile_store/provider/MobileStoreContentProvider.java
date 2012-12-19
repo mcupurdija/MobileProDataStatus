@@ -42,6 +42,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int CUSTOMERS_SEARCH = 123;
 	private static final int CUSTOMERS_CUSTOM_SEARCH = 124;
 	private static final int CUSTOMERS_BY_STATUS = 125;
+	private static final int CUSTOMERS_BY_SALES_PERSON = 126;
 
 	private static final int ITEMS = 130;
 	private static final int ITEMS_NO = 131;
@@ -73,6 +74,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "invoices/#", INVOICES_ID);
 
 		mobileStoreURIMatcher.addURI(authority, "customers", CUSTOMERS);
+		mobileStoreURIMatcher.addURI(authority, "customers_by_sales_person/*", CUSTOMERS_BY_SALES_PERSON);
 		mobileStoreURIMatcher.addURI(authority, "customers/#", CUSTOMERS_ID);
 		mobileStoreURIMatcher.addURI(authority, "customers/customer_no",
 				CUSTOMERS_NO);
@@ -128,6 +130,12 @@ public class MobileStoreContentProvider extends ContentProvider {
 	public String getType(Uri uri) {
 		final int match = mobileStoreURIMatcher.match(uri);
 		switch (match) {
+		case CUSTOMERS:
+			return Customers.CONTENT_TYPE;
+		case CUSTOMERS_ID:
+			return Customers.CONTENT_ITEM_TYPE;
+		case CUSTOMERS_BY_SALES_PERSON:
+			return Customers.CONTENT_TYPE;
 		case VISITS:
 			return Visits.CONTENT_TYPE;
 		case VISIT_ID:
@@ -140,8 +148,6 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return SaleOrderLines.CONTENT_TYPE;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
-			//return null;
-			// TODO Throw exception when other tables get content_type
 		}
 	}
 
@@ -247,9 +253,16 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case CUSTOMERS:
 			return builder.addTable(Tables.CUSTOMERS).where(
 					Customers.BLOCKED_STATUS + "= ?", new String[] { "1" });
+		case CUSTOMERS_BY_SALES_PERSON:
+			final String salesPersonIdOnCustomer = Customers.getCustomersSalesPersonId(uri);
+			return builder.addTable(Tables.CUSTOMERS)
+					.where(Customers.SALES_PERSON_ID + "=?", salesPersonIdOnCustomer);
+		case CUSTOMERS_ID:
+			String customerId = Customers.getCustomersId(uri);
+			return builder.addTable(Tables.CUSTOMERS)
+					.where(Customers._ID + "=?", customerId);
 		case CUSTOMERS_NO:
 			return builder.addTable(Tables.CUSTOMERS);
-
 		case CUSTOMERS_BY_STATUS:
 			String query = Customers.getSearchQuery(uri);
 			return builder.addTable(Tables.CUSTOMERS).where(

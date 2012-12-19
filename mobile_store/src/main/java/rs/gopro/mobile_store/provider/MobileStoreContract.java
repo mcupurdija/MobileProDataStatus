@@ -13,6 +13,7 @@ public class MobileStoreContract {
 	private static final String PATH_USERS = "users";
 	private static final String PATH_INVOICES = "invoices";
 	private static final String PATH_CUSTOMERS = "customers";
+	private static final String PATH_CUSTOMERS_BY_SALES_PERSON = "customers_by_sales_person";
 	private static final String PATH_SEARCH = "search";
 	private static final String PATH_ITEMS = "items";
 	private static final String PATH_VISITS = "visits";
@@ -56,7 +57,7 @@ public class MobileStoreContract {
 		String INVOICE_NO = "invoice_no";
 		String CUSTOMER_ID = "customer_id";
 		String POSTING_DATE = "posting_date";
-		String SALES_PERSON_ID = "sales_person_id";
+		//String SALES_PERSON_ID = "sales_person_id";
 		String DUE_DATE = "due_date";
 		String TOTAL = "total";
 		String TOTAL_LEFT = "total_left";
@@ -69,10 +70,11 @@ public class MobileStoreContract {
 	}
 
 	public interface CustomersColumns {
+		//String SALES_PERSON_ID = "sales_person_id";
 		String CUSTOMER_NO = "customer_no";
 		String NAME = "name";
 		String NAME_2 = "name2";
-		String ADRESS_ID = "address_id";
+		String ADDRESS = "address";
 		String CITY = "city";
 		String POST_CODE = "post_code";
 		String PHONE = "phone";
@@ -89,6 +91,14 @@ public class MobileStoreContract {
 		String GLOBAL_DIMENSION = "global_dimension";
 		String CHANNEL_ORAN = "channel_oran";
 		String BLOCKED_STATUS = "blocked_status";
+		
+		String SML = "sml";
+		String INTERNAL_BALANCE_DUE_LCY = "internal_balance_due_lcy";
+		String ADOPTED_POTENTIAL = "adopted_potential";
+		String FOCUS_CUSTOMER = "focus_customer";
+		String DIVISION = "division";
+		String NUMBER_OF_BLUE_COAT = "number_of_blue_coat";
+		String NUMBER_OF_GREY_COAT = "number_of_grey_coat";
 	}
 
 	public interface ItemsColumns {
@@ -131,7 +141,7 @@ public class MobileStoreContract {
 		String SPECIAL_QUOTE = "special_quote";
 		String QUOTE_VALID_DATE_TO = "quote_valid_date_to";
 		String CUST_USES_TRANSIT_CUST = "cust_uses_transit_cust";
-		String SALES_PERSON_ID = "sales_person_id";
+		//String SALES_PERSON_ID = "sales_person_id";
 		String CUSTOMER_ADDRESS_ID = "customer_address_id";
 		String CONTACT_PHONE = "contact_phone";
 		String PAYMENT_OPTION = "payment_option";
@@ -190,7 +200,7 @@ public class MobileStoreContract {
 		}
 	}
 
-	public static class Invoices implements InvoicesColumns, BaseColumns {
+	public static class Invoices implements InvoicesColumns, BaseColumns, SalesPersonsColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_INVOICES).build();
 
 		public static Uri buildInvoicesUri(String invoicesId) {
@@ -205,10 +215,15 @@ public class MobileStoreContract {
 		public static final String DEFAULT_SORT = Invoices.POSTING_DATE + " ASC";
 	}
 
-	public static class Customers implements CustomersColumns, BaseColumns {
+	public static class Customers implements CustomersColumns, BaseColumns, SalesPersonsColumns {
 
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CUSTOMERS).build();
 
+		public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.customer";
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.customer";
+		
 		public static Uri buildCustomersUri(String customerId) {
 			return CONTENT_URI.buildUpon().appendPath(customerId).build();
 		}
@@ -240,7 +255,15 @@ public class MobileStoreContract {
 		public static String getCustomSearchSecondParamQuery(Uri uri) {
 			return uri.getPathSegments().get(2);
 		}
+		
+		public static Uri getCustomersBySalesPerson(String salesPersonId) {
+			return BASE_CONTENT_URI.buildUpon().appendPath(PATH_CUSTOMERS_BY_SALES_PERSON).appendPath(salesPersonId).build();
+		}
 
+		public static String getCustomersSalesPersonId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+		
 		public static final String DEFAULT_SORT = Customers.CUSTOMER_NO + " ASC";
 	}
 
@@ -310,7 +333,8 @@ public class MobileStoreContract {
 	 * @author vladimirm
 	 *
 	 */
-	public static class SaleOrders implements SaleOrdersColumns, BaseColumns, CustomersColumns, AuditColumns {
+	public static class SaleOrders implements SaleOrdersColumns, BaseColumns, CustomersColumns, AuditColumns, SalesPersonsColumns {
+		
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDERS).build();
 		 /** Default "ORDER BY" clause. */
 		public static final String DEFAULT_SORT = "sale_orders."+SaleOrders.ORDER_DATE + " DESC";
