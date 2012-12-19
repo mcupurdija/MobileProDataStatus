@@ -75,7 +75,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_list_with_empty_container, container, false);
+		/*ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_list_with_empty_container, container, false);
 		inflater.inflate(R.layout.content_empty_waiting_sync, (ViewGroup) rootView.findViewById(android.R.id.empty), true);
 		rootView.setBackgroundColor(Color.WHITE);
 		ListView listView = (ListView) rootView.findViewById(android.R.id.list);
@@ -83,7 +83,9 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 		listView.setCacheColorHint(Color.WHITE);
 		listView.setSelector(android.R.color.transparent);
 
-		return rootView;
+		return rootView;*/
+		return super.onCreateView(inflater, container, savedInstanceState);
+		
 	}
 
 	@Override
