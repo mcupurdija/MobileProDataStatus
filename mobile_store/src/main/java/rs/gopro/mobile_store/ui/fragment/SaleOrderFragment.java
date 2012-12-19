@@ -7,6 +7,7 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 
+import rs.gopro.mobile_store.ui.SaleOrdersPreviewActivity;
 import rs.gopro.mobile_store.ui.widget.SimpleSelectionedListAdapter;
 import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
@@ -47,6 +48,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 	private SaleOrdersListAdapter saleAdapter;
 	private EditText searchText;
 	private Spinner spinner;
+	private static String HARDCODED_SALES_PERSON = "1";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -234,9 +236,10 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 			View.OnClickListener allSessionsListener = new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					final Uri sessionsUri = MobileStoreContract.Invoices.buildInvoicesUri(saleOrderId.toString());
-					final Intent intent = new Intent(Intent.ACTION_VIEW, sessionsUri);
-					// startActivity(intent);
+					final Uri saleOrdersUri = MobileStoreContract.SaleOrders.buildSaleOrdersListUri(HARDCODED_SALES_PERSON);
+                    final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(String.valueOf(saleOrderId.intValue())));
+                    intent.putExtra(SaleOrdersPreviewActivity.EXTRA_MASTER_URI, saleOrdersUri);
+                    startActivity(intent);
 				}
 			};
 

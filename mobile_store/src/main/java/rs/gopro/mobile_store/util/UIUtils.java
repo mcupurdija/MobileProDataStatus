@@ -53,4 +53,9 @@ public class UIUtils {
 		}
 		return null;
 	}
+	
+	public static String formatDate(Date date){
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd. MM. yyyy");
+		return dateFormat.format(date);
+	}
 }

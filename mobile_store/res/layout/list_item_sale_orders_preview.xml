@@ -4,25 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:baselineAligned="false"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:focusable="false">
 
     <RelativeLayout
         android:id="@+id/list_item_middle_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="?activatableItemBackground"
-        android:clickable="true"
-        android:focusable="true" >
+        android:focusable="false"
+        android:background="?activatableItemBackground" >
 
         <FrameLayout
             android:id="@+id/block_time_container"
-            android:layout_width="@dimen/schedule_block_time_width"
+            android:layout_width="@dimen/list_item_sale_orders_head"
             android:layout_height="match_parent"
             android:background="@drawable/schedule_time_background"
             android:duplicateParentState="true"
             android:foreground="?activatableItemBackground"
-            android:padding="8dp" >
+            android:padding="8dp"
+            android:focusable="false" >
 
             <TextView
                 android:id="@+id/block_time"
@@ -30,7 +31,8 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/text_size_diff_large_small"
                 android:textColor="@color/body_text_1"
-                android:textSize="@dimen/text_size_small" />
+                android:textSize="@dimen/text_size_small"
+                android:focusable="false" />
         </FrameLayout>
 
         <TextView
@@ -42,7 +44,8 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_toRightOf="@id/block_time_container"
-            android:paddingTop="8dp" />
+            android:paddingTop="8dp"
+            android:focusable="false" />
 
         <TextView
             android:id="@+id/block_subtitle"
@@ -52,6 +55,7 @@
             android:layout_alignLeft="@id/block_title"
             android:layout_alignRight="@id/block_title"
             android:layout_below="@id/block_title"
-            android:paddingBottom="8dp" />
+            android:paddingBottom="8dp"
+            android:focusable="false" />
     </RelativeLayout>
 </LinearLayout>

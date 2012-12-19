@@ -1,10 +1,12 @@
 package rs.gopro.mobile_store.ui;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.util.UIUtils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -37,6 +39,11 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
 	private CursorAdapter mAdapter;
 	private String mSelectedSaleOrderId;
 	private boolean mHasSetEmptyText = false;
+	
+	private TextView mHeader1;
+	private TextView mHeader2;
+	private TextView mHeader3;
+	private TextView mHeader4;
 	
 	public interface Callbacks {
         /** Return true to select (activate) the vendor in the list, false otherwise. */
@@ -92,7 +99,6 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
         final ListView listView = getListView();
         listView.setSelector(android.R.color.transparent);
         listView.setCacheColorHint(Color.WHITE);
-        
     }
 
     @Override
@@ -135,6 +141,19 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         final Cursor cursor = (Cursor) mAdapter.getItem(position);
+        
+//        mHeader1 = (TextView) v.findViewById(R.id.fragment_sale_order_lines_list_header1);
+//        mHeader2 = (TextView) v.findViewById(R.id.fragment_sale_order_lines_list_header2);
+//        mHeader3 = (TextView) v.findViewById(R.id.fragment_sale_order_lines_list_header3);
+//        mHeader4 = (TextView) v.findViewById(R.id.fragment_sale_order_lines_list_header4);
+//           
+//        String salesOrderDate = cursor.getString(SaleOrdersQuery.ORDER_DATE);
+//        String salesOrderNo = cursor.getString(SaleOrdersQuery.SALES_ORDER_NO);
+//        String customer = cursor.getString(SaleOrdersQuery.CUSTOMER_NO) + " " + cursor.getString(SaleOrdersQuery.CUSTOMER_NAME) + " " + cursor.getString(SaleOrdersQuery.CUSTOMER_NAME2);
+//        
+//        mHeader1.setText(salesOrderDate + " - " + salesOrderNo);
+//        mHeader2.setText(customer);
+        
         String saleOrderId = String.valueOf(cursor.getInt(SaleOrdersQuery._ID));
         if (mCallbacks.onSaleOrderSelected(saleOrderId)) {
             mSelectedSaleOrderId = saleOrderId;
@@ -153,6 +172,7 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
         if (getActivity() == null) {
             return;
         }
+        
         int token = loader.getId();
         if (token == SaleOrdersQuery._TOKEN) {
             mAdapter.changeCursor(cursor);
@@ -180,8 +200,6 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
      * {@link CursorAdapter} that renders a {@link SaleOrdersQuery}.
      */
     private class SaleOrdersAdapter extends CursorAdapter {
-    	int position = 1;
-    	public Map<Integer, Integer> postionOfId = new HashMap<Integer, Integer>();
         public SaleOrdersAdapter(Context context) {
             super(context, null, false);
         }
@@ -196,34 +214,16 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
         /** {@inheritDoc} */
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-//            UIUtils.setActivatedCompat(view, cursor.getString(VisitsQuery.VENDOR_ID)
-//                    .equals(mSelectedVendorId));
             view.setActivated(String.valueOf(cursor.getInt(SaleOrdersQuery._ID))
                     .equals(mSelectedSaleOrderId));
-            final int pos = position++;
-            postionOfId.put(cursor.getInt(SaleOrdersQuery._ID), position++);
             final TextView timeView = (TextView) view.findViewById(R.id.block_time);
             final TextView titleView = (TextView) view.findViewById(R.id.block_title);
             final TextView subtitleView = (TextView) view.findViewById(R.id.block_subtitle);
-            final View primaryTouchTargetView = view.findViewById(R.id.list_item_middle_container);
-            View.OnClickListener viewOrderLinesListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //final Uri sessionsUri = ScheduleContract.Blocks.buildSessionsUri(blockId);
-                	SaleOrdersAdapter adap = (SaleOrdersAdapter) mAdapter;
-                    final Cursor cursor = (Cursor) mAdapter.getItem(pos);
-                    String saleOrderId = String.valueOf(cursor.getInt(SaleOrdersQuery._ID));
-                    if (mCallbacks.onSaleOrderSelected(saleOrderId)) {
-                        mSelectedSaleOrderId = saleOrderId;
-                        mAdapter.notifyDataSetChanged();
-                    }
-                }
-            };
-            primaryTouchTargetView.setOnClickListener(viewOrderLinesListener);
             String salesOrderDate = cursor.getString(SaleOrdersQuery.ORDER_DATE);
+            String salesOrderFormatDate = UIUtils.formatDate(UIUtils.getDate(salesOrderDate));
             String salesOrderNo = cursor.getString(SaleOrdersQuery.SALES_ORDER_NO);
             String salesOrderCust = cursor.getString(SaleOrdersQuery.CUSTOMER_NO) + " " + cursor.getString(SaleOrdersQuery.CUSTOMER_NAME) + " " + cursor.getString(SaleOrdersQuery.CUSTOMER_NAME2);
-            timeView.setText(salesOrderDate);
+            timeView.setText(salesOrderFormatDate);
             titleView.setText(salesOrderNo);
             subtitleView.setText(salesOrderCust);
         }

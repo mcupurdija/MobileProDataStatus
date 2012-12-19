@@ -2,7 +2,6 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
-import rs.gopro.mobile_store.ui.VisitDetailFragment.Callbacks;
 
 import android.app.Activity;
 import android.content.Context;
@@ -131,7 +130,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
     /** {@inheritDoc} */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-    	// TODO no need gor implementation, but can be cool if think something out
+    	// TODO no need for implementation, but can be cool if think something out, like popup
     }
     
 	@Override
@@ -195,8 +194,8 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
             final TextView titleView = (TextView) view.findViewById(R.id.block_title);
             final TextView subtitleView = (TextView) view.findViewById(R.id.block_subtitle);
             String salesOrderDate = cursor.getString(SaleOrderLinesQuery.LINE_NO);
-            String salesOrderNo = cursor.getString(SaleOrderLinesQuery.ITEM_NO) + " " + cursor.getString(SaleOrderLinesQuery.DESCRIPTION);
-            String salesOrderCust = String.valueOf(cursor.getDouble(SaleOrderLinesQuery.QUANTITY)) + " " + String.valueOf(cursor.getDouble(SaleOrderLinesQuery.PRICE_EUR)) + " " + String.valueOf(cursor.getDouble(SaleOrderLinesQuery.REAL_DISCOUNT));
+            String salesOrderNo = cursor.getString(SaleOrderLinesQuery.ITEM_NO) + " - " + cursor.getString(SaleOrderLinesQuery.DESCRIPTION);
+            String salesOrderCust = "Količina: "+String.valueOf(cursor.getDouble(SaleOrderLinesQuery.QUANTITY)) + "  -  Cena:" + String.valueOf(cursor.getDouble(SaleOrderLinesQuery.PRICE_EUR)) + "  -  Popust:" + String.valueOf(cursor.getDouble(SaleOrderLinesQuery.REAL_DISCOUNT));
             timeView.setText(salesOrderDate);
             titleView.setText(salesOrderNo);
             subtitleView.setText(salesOrderCust);
