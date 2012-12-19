@@ -125,7 +125,7 @@ public class MobileStoreContract {
 		String ORDER_CONDITION_STATUS = "order_condition_status";
 		String USED_CREDIT_LIMIT_BY_EMPLOYEE = "used_credit_limit_by_employee";
 		String ORDER_VALUE_STATUS = "order_value_status";
-		String QUOTE_IZED_STATUS = "quote_ized_status";
+		String QUOTE_REALIZED_STATUS = "quote_realized_status";
 		String SPECIAL_QUOTE = "special_quote";
 		String QUOTE_VALID_DATE_TO = "quote_valid_date_to";
 		String CUST_USES_TRANSIT_CUST = "cust_uses_transit_cust";

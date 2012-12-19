@@ -87,7 +87,7 @@ public class VisitDetailFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.id.fragment_visitsplan_detail, null);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_visit_details, null);
         mCustomerName = (TextView) rootView.findViewById(R.id.visit_customer_name);
         mCustomerNo = (TextView) rootView.findViewById(R.id.visit_customer_no);
         mVisitDate = (TextView) rootView.findViewById(R.id.visit_date);

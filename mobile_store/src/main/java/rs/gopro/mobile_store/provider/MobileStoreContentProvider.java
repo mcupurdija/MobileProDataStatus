@@ -210,7 +210,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case VISIT_ID:
 			final String visitId = Visits.getVisitId(uri);
 			return builder.addTable(Tables.VISITS)
-					.where(Visits._ID + "=?", visitId);
+					.where(Tables.VISITS + "." + Visits._ID + "=?", visitId);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -301,7 +301,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(Visits.DEPARTURE_TIME, Tables.VISITS)
 					.mapToTable(Visits.ODOMETER, Tables.VISITS)
 					.mapToTable(Visits.NOTE, Tables.VISITS)
-					.where(Visits._ID + "=?", visitId);
+					.where(Tables.VISITS + "." + Visits._ID + "=?", visitId);
 		case SALE_ORDER:
 			return builder.addTable(Tables.SALE_ORDERS);
 		case SALE_ORDER_BY_STATUS:
