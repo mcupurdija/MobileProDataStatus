@@ -16,5 +16,6 @@ public interface Tables {
 	String INVOICES = "invoices";
 	String INVOICE_LINES = "invoice_lines";
 	String SALE_ORDERS = "sale_orders";
+	String SALE_ORDERS_JOIN_CUSTOMERS = "sale_orders left outer join customers on sale_orders.customer_id = customers._id";
 	String SALE_ORDER_LINES = "sale_order_lines";
 }

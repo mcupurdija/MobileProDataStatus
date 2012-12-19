@@ -47,9 +47,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int ITEMS_BY_STATUS = 132;
 	private static final int ITEMS_CUSTOM_SEARCH = 133;
 	
-	private static final int SALE_ORDER = 140;
+	private static final int SALE_ORDERS = 140;
 	private static final int SALE_ORDER_CUSTOM_SEARCH = 141;
 	private static final int SALE_ORDER_BY_STATUS = 142;
+	private static final int SALE_ORDERS_LIST = 143;
 
 	private static final int VISITS = 200;
 	private static final int VISIT_ID = 201;
@@ -96,7 +97,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "visits/#", VISIT_ID);
 		mobileStoreURIMatcher.addURI(authority, "visits/with_customer", VISITS_WITH_CUSTOMER);
 		
-		mobileStoreURIMatcher.addURI(authority, "sale_orders",SALE_ORDER);
+		mobileStoreURIMatcher.addURI(authority, "sale_orders", SALE_ORDERS);
+		mobileStoreURIMatcher.addURI(authority, "sale_orders_list/*", SALE_ORDERS_LIST);
 		//custom_search
 		mobileStoreURIMatcher.addURI(authority, "sale_orders/*/custom_search", SALE_ORDER_BY_STATUS);
 		mobileStoreURIMatcher.addURI(authority, "sale_orders/#/custom_search", SALE_ORDER_BY_STATUS);
@@ -128,10 +130,12 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return Visits.CONTENT_ITEM_TYPE;
 		case VISITS_WITH_CUSTOMER:
 			return Visits.CONTENT_TYPE;
+		case SALE_ORDERS_LIST:
+			return SaleOrders.CONTENT_TYPE;
 		default:
-			return null;
+			throw new UnsupportedOperationException("Unknown uri: " + uri);
+			//return null;
 			// TODO Throw exception when other tables get content_type
-			// throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
 	}
 
@@ -211,6 +215,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			final String visitId = Visits.getVisitId(uri);
 			return builder.addTable(Tables.VISITS)
 					.where(Tables.VISITS + "." + Visits._ID + "=?", visitId);
+		case SALE_ORDERS:
+			return builder.addTable(Tables.SALE_ORDERS);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -302,8 +308,55 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(Visits.ODOMETER, Tables.VISITS)
 					.mapToTable(Visits.NOTE, Tables.VISITS)
 					.where(Tables.VISITS + "." + Visits._ID + "=?", visitId);
-		case SALE_ORDER:
-			return builder.addTable(Tables.SALE_ORDERS);
+		case SALE_ORDERS:
+			return builder.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)
+					.mapToTable(SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.CUSTOMER_ID, Tables.SALE_ORDERS)
+					.mapToTable(Visits.CUSTOMER_NO, Tables.CUSTOMERS)
+					.mapToTable(Visits.NAME, Tables.CUSTOMERS)
+					.mapToTable(Visits.NAME_2, Tables.CUSTOMERS)
+					.mapToTable(SaleOrders.ORDER_DATE, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.LOCATION_CODE, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.SHORTCUT_DIMENSION_1_CODE, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.CURRENCY_CODE, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.EXTERNAL_DOCUMENT_NO, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.QUOTE_NO, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.BACKORDER_SHIPMENT_STATUS, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.ORDER_STATUS_FOR_SHIPMENT, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.FIN_CONTROL_STATUS, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.ORDER_CONDITION_STATUS, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.USED_CREDIT_LIMIT_BY_EMPLOYEE, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.ORDER_VALUE_STATUS, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.QUOTE_REALIZED_STATUS, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.SPECIAL_QUOTE, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.QUOTE_VALID_DATE_TO, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.CUST_USES_TRANSIT_CUST, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.SALES_PERSON_ID, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.CUSTOMER_ADDRESS_ID, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.CONTACT_PHONE, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.PAYMENT_OPTION, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.CHECK_STATUS_PHONE, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.TOTAL, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.TOTAL_DISCOUNT, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.TOTAL_PDV, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.TOTAL_ITEMS, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.HIDE_REBATE, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.FURTHER_SALE, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.NOTE1, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.NOTE2, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.NOTE3, Tables.SALE_ORDERS);
+		case SALE_ORDERS_LIST:
+			final String salesPersonId = SaleOrders.getSalesPersonId(uri);
+			return builder.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)
+					.mapToTable(SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.CUSTOMER_ID, Tables.SALE_ORDERS)
+					.mapToTable(Visits.CUSTOMER_NO, Tables.CUSTOMERS)
+					.mapToTable(Visits.NAME, Tables.CUSTOMERS)
+					.mapToTable(Visits.NAME_2, Tables.CUSTOMERS)
+					.mapToTable(SaleOrders.ORDER_DATE, Tables.SALE_ORDERS)
+					.where(Tables.SALE_ORDERS + "." + SaleOrders.SALES_PERSON_ID+ "=?", salesPersonId);
 		case SALE_ORDER_BY_STATUS:
 			String saleOrderDocType = SaleOrders.getSaleOrderDocType(uri);
 			return builder.addTable(Tables.SALE_ORDERS)

@@ -7,7 +7,8 @@
     <dimen name="divider_size">.9dp</dimen>
     <dimen name="divider_large_size">1.5dp</dimen>
     <dimen name="actions_spacing">194dp</dimen>
-    <dimen name="list_extra_button_width">48dp</dimen>   
+    <dimen name="list_extra_button_width">48dp</dimen>
+    <dimen name="schedule_block_time_width">72dp</dimen>
 	
     <!-- body content -->
     <dimen name="element_spacing_normal">8dp</dimen>

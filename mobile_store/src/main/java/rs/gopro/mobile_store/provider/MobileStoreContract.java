@@ -17,6 +17,7 @@ public class MobileStoreContract {
 	private static final String PATH_ITEMS = "items";
 	private static final String PATH_VISITS = "visits";
 	private static final String PATH_SALE_ORDERS = "sale_orders";
+	private static final String PATH_SALE_ORDERS_LIST = "sale_orders_list";
 	private static final String PATH_SALE_ORDER_LINES = "sale_order_lines";
 	private static final String PATH_WITH_CUSTOMER = "with_customer";
 	private static final String PATH_SALE_ORDER_SEARCH_CUSTOM = "custom_search";
@@ -286,9 +287,9 @@ public class MobileStoreContract {
         public static final String DEFAULT_SORT = "visits." + Visits.CREATED_DATE + " DESC";
 		
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.mobile_store.visit";
+                "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.visit";
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.mobile_store.visit";
+                "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.visit";
         
         public static Uri buildVisitUri(String visitsId){
 			return CONTENT_URI.buildUpon().appendPath(visitsId).build();
@@ -308,20 +309,28 @@ public class MobileStoreContract {
 	 * @author vladimirm
 	 *
 	 */
-	public static class SaleOrders implements SaleOrdersColumns, BaseColumns, AuditColumns {
+	public static class SaleOrders implements SaleOrdersColumns, BaseColumns, CustomersColumns, AuditColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDERS).build();
 		 /** Default "ORDER BY" clause. */
 		public static final String DEFAULT_SORT = SaleOrders.ORDER_DATE + " DESC";
 		
 		public static final String CONTENT_TYPE =
-				"vnd.android.cursor.dir/vnd.mobile_store.sale_orders";
+				"vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sale_orders";
 		public static final String CONTENT_ITEM_TYPE =
-				"vnd.android.cursor.item/vnd.mobile_store.sale_orders";
+				"vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sale_orders";
 		
 		public static Uri buildSaleOrderUri(String saleOrderId){
 			return CONTENT_URI.buildUpon().appendPath(saleOrderId).build();
 		}
 
+		public static Uri buildSaleOrdersListUri(String salesPersonId) {
+			return BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDERS_LIST).appendPath(salesPersonId).build();
+		}
+		
+		public static String getSalesPersonId(Uri uri){
+			return  uri.getPathSegments().get(1);
+		}
+		
 		public static String getSaleOrderId(Uri uri){
 			return  uri.getPathSegments().get(1);
 		}
@@ -354,9 +363,9 @@ public class MobileStoreContract {
 		public static final String DEFAULT_SORT = SaleOrderLines.CREATED_DATE + " DESC";
 		
 		public static final String CONTENT_TYPE =
-				"vnd.android.cursor.dir/vnd.mobile_store.sale_order_lines";
+				"vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sale_order_lines";
 		public static final String CONTENT_ITEM_TYPE =
-				"vnd.android.cursor.item/vnd.mobile_store.sale_order_lines";
+				"vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sale_order_lines";
 		
 		public static Uri buildSaleOrderLineUri(String saleOrderLine){
 			return CONTENT_URI.buildUpon().appendPath(saleOrderLine).build();

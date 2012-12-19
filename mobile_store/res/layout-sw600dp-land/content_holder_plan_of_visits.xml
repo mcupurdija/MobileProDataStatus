@@ -5,13 +5,22 @@
     android:orientation="vertical" >
 
     <Button
-        android:id="@+id/sale_order_search"
+        android:id="@+id/plan_of_visits_view_test"
         android:layout_width="110dp"
         android:layout_height="45dp"
         android:layout_marginLeft="30dp"
         android:ems="2"
         android:paddingBottom="5dp"
-        android:text="Button"
-        android:textSize="12dp" />
+        android:text="Visits"
+        android:textSize="12sp" />
+ 	<Button
+        android:id="@+id/sale_orders_view_test"
+        android:layout_width="110dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="30dp"
+        android:ems="2"
+        android:paddingBottom="5dp"
+        android:text="Sale orders"
+        android:textSize="12sp" />
 
 </LinearLayout>

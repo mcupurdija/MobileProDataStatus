@@ -2,5 +2,7 @@
 <resources>
     <declare-styleable name="MobileStoreTheme">
         <attr name="textHeaderMaxLines" format="integer" />
+        <attr name="trackAbstractMaxLines" format="integer" />
+        <attr name="activatableItemBackground" format="reference" />
     </declare-styleable>
 </resources>

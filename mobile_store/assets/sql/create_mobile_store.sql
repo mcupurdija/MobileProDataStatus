@@ -36,7 +36,7 @@ BEGIN
 	where _id = new._id; 
 END;
 INSERT INTO `sales_persons` (_id, sales_person_no, name, name2, created_date, created_by) VALUES 
-	(1, 'SP0001', 'tica', 'tica', datetime('now'), 'INITIAL');
+	(1, 'V.MAKEVIC', 'vlada', 'vlada', datetime('now'), 'INITIAL');
 -- invoices
 CREATE TABLE `invoices` (
 	`_id` INTEGER PRIMARY KEY  NOT NULL ,

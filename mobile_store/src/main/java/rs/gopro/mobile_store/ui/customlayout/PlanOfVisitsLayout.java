@@ -18,6 +18,7 @@ public class PlanOfVisitsLayout extends CustomLinearLayout {
 	public static final Uri PLAN_OF_VISITS_URI = new Uri.Builder().scheme(PLAN_OF_VISITS_SCHEME).authority(PLAN_OF_VISITS_AUTHORITY).build();
 
 	private Button callMasterDetail;
+	private Button callSaleOrders;
 	
 	public PlanOfVisitsLayout(FragmentManager fragmentManager, Activity activity) {
 		super(fragmentManager, activity);
@@ -26,12 +27,21 @@ public class PlanOfVisitsLayout extends CustomLinearLayout {
 	@Override
 	protected void inflateLayout(LayoutInflater layoutInflater) {
 		View view = layoutInflater.inflate(R.layout.content_holder_plan_of_visits, null);
-		callMasterDetail = (Button) view.findViewById(R.id.sale_order_search);
+		callMasterDetail = (Button) view.findViewById(R.id.plan_of_visits_view_test);
 		callMasterDetail.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
 				 final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
                  final Intent intent = new Intent(Intent.ACTION_VIEW, visitsUri);
+                 activity.startActivity(intent);
+			}
+		});
+		callSaleOrders = (Button) view.findViewById(R.id.sale_orders_view_test);
+		callSaleOrders.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				 final Uri saleOrdersUri = MobileStoreContract.SaleOrders.buildSaleOrdersListUri("V.MAKEVIC");
+                 final Intent intent = new Intent(Intent.ACTION_VIEW, saleOrdersUri);
                  activity.startActivity(intent);
 			}
 		});
