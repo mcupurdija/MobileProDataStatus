@@ -107,14 +107,34 @@ public class CustomersViewDetailFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_visit_details, null);
-        mCustomerName = (TextView) rootView.findViewById(R.id.visit_customer_name);
-        mCustomerNo = (TextView) rootView.findViewById(R.id.visit_customer_no);
-        mVisitDate = (TextView) rootView.findViewById(R.id.visit_date);
-        mOdometer = (TextView) rootView.findViewById(R.id.visit_odometer_value);
-        mArrivalTime = (TextView) rootView.findViewById(R.id.visit_arrival_time);
-        mDepartureTime = (TextView) rootView.findViewById(R.id.visit_departure_time);
-        mNote = (TextView) rootView.findViewById(R.id.visit_note);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_customer_view_details, null);
+        mCustomer_no = (TextView) rootView.findViewById(R.id.customer_no);
+        mName = (TextView) rootView.findViewById(R.id.name);
+        mName_2 = (TextView) rootView.findViewById(R.id.name_2);
+        mAddress = (TextView) rootView.findViewById(R.id.address);
+        mCity = (TextView) rootView.findViewById(R.id.city);
+        mPost_code = (TextView) rootView.findViewById(R.id.post_code);
+        mPhone = (TextView) rootView.findViewById(R.id.phone);
+        mMobile = (TextView) rootView.findViewById(R.id.mobile);
+        mEmail = (TextView) rootView.findViewById(R.id.email);
+        mCompany_id = (TextView) rootView.findViewById(R.id.company_id);
+        mPrimary_contact_id = (TextView) rootView.findViewById(R.id.primary_contact_id);
+        mVar_reg_no = (TextView) rootView.findViewById(R.id.var_reg_no);
+        mCredit_limit_lcy = (TextView) rootView.findViewById(R.id.credit_limit_lcy);
+        mBalance_lcy = (TextView) rootView.findViewById(R.id.balance_lcy);
+        mBalance_due_lcy = (TextView) rootView.findViewById(R.id.balance_due_lcy);
+        mPayment_terms_code = (TextView) rootView.findViewById(R.id.payment_terms_code);
+        mPriority = (TextView) rootView.findViewById(R.id.priority);
+        mGlobal_dimension = (TextView) rootView.findViewById(R.id.global_dimension);
+        mChannel_oran = (TextView) rootView.findViewById(R.id.channel_oran);
+        mBlocked_status = (TextView) rootView.findViewById(R.id.blocked_status);
+        mSml = (TextView) rootView.findViewById(R.id.sml);
+        mInternal_balance_due_lcy = (TextView) rootView.findViewById(R.id.internal_balance_due_lcy);
+        mAdopted_potential = (TextView) rootView.findViewById(R.id.adopted_potential);
+        mFocus_customer = (TextView) rootView.findViewById(R.id.focus_customer);
+        mDivision = (TextView) rootView.findViewById(R.id.division);
+        mNumber_of_blue_coat = (TextView) rootView.findViewById(R.id.number_of_blue_coat);
+        mNumber_of_grey_coat = (TextView) rootView.findViewById(R.id.number_of_grey_coat);
         return rootView;
     }
 	

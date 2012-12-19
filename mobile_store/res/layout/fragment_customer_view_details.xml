@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.CustomersViewActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/content_padding_normal"
+        android:paddingLeft="@dimen/content_padding_normal"
+        android:paddingRight="@dimen/content_padding_normal"
+        android:paddingTop="@dimen/content_padding_normal" >
+
+        <TextView
+            android:id="@+id/customer_no"
+            style="@style/TextHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/name"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/name_2"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/address"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/city"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/post_code"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/phone"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/mobile"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/email"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/company_id"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/primary_contact_id"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/var_reg_no"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/credit_limit_lcy"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/balance_lcy"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/balance_due_lcy"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/payment_terms_code"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/priority"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/global_dimension"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/channel_oran"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/blocked_status"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/sml"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/internal_balance_due_lcy"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/adopted_potential"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/focus_customer"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/division"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/number_of_blue_coat"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+
+        <TextView
+            android:id="@+id/number_of_grey_coat"
+            style="@style/TextBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal" />
+    </LinearLayout>
+
+</ScrollView>
