@@ -19,6 +19,7 @@ public class MobileStoreContract {
 	private static final String PATH_SALE_ORDERS = "sale_orders";
 	private static final String PATH_SALE_ORDERS_LIST = "sale_orders_list";
 	private static final String PATH_SALE_ORDER_LINES = "sale_order_lines";
+	private static final String PATH_SALE_ORDER_LINES_FROM_ORDER = "sale_order_lines_from_order";
 	private static final String PATH_WITH_CUSTOMER = "with_customer";
 	private static final String PATH_SALE_ORDER_SEARCH_CUSTOM = "custom_search";
 
@@ -312,7 +313,7 @@ public class MobileStoreContract {
 	public static class SaleOrders implements SaleOrdersColumns, BaseColumns, CustomersColumns, AuditColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDERS).build();
 		 /** Default "ORDER BY" clause. */
-		public static final String DEFAULT_SORT = SaleOrders.ORDER_DATE + " DESC";
+		public static final String DEFAULT_SORT = "sale_orders."+SaleOrders.ORDER_DATE + " DESC";
 		
 		public static final String CONTENT_TYPE =
 				"vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sale_orders";
@@ -357,10 +358,10 @@ public class MobileStoreContract {
 	 * @author vladimirm
 	 *
 	 */
-	public static class SaleOrderLines implements SaleOrderLinesColumns, BaseColumns, AuditColumns {
+	public static class SaleOrderLines implements SaleOrderLinesColumns, BaseColumns, ItemsColumns, AuditColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDER_LINES).build();
 		 /** Default "ORDER BY" clause. */
-		public static final String DEFAULT_SORT = SaleOrderLines.CREATED_DATE + " DESC";
+		public static final String DEFAULT_SORT = "sale_order_lines." + AuditColumns.CREATED_DATE + " DESC";
 		
 		public static final String CONTENT_TYPE =
 				"vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sale_order_lines";
@@ -372,6 +373,14 @@ public class MobileStoreContract {
 		}
 
 		public static String getSaleOrderLineId(Uri uri){
+			return  uri.getPathSegments().get(1);
+		}
+		
+		public static Uri buildSaleOrderLinesUri(String saleOrderId){
+			return BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDER_LINES_FROM_ORDER).appendPath(saleOrderId).build();
+		}
+		
+		public static String getSaleOrderId(Uri uri){
 			return  uri.getPathSegments().get(1);
 		}
 	}

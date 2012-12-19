@@ -3,6 +3,7 @@ package rs.gopro.mobile_store.provider;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
@@ -56,6 +57,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int VISIT_ID = 201;
 	private static final int VISITS_WITH_CUSTOMER = 202;
 	
+	private static final int SALE_ORDER_LINES_FROM_ORDER = 300;
 	
 
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
@@ -104,6 +106,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "sale_orders/#/custom_search", SALE_ORDER_BY_STATUS);
 		mobileStoreURIMatcher.addURI(authority, "sale_orders/*/#/custom_search", SALE_ORDER_CUSTOM_SEARCH);
 		mobileStoreURIMatcher.addURI(authority, "sale_orders/#/*/custom_search", SALE_ORDER_CUSTOM_SEARCH);
+		
+		mobileStoreURIMatcher.addURI(authority, "sale_order_lines_from_order/#", SALE_ORDER_LINES_FROM_ORDER);
 
 	}
 
@@ -132,6 +136,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return Visits.CONTENT_TYPE;
 		case SALE_ORDERS_LIST:
 			return SaleOrders.CONTENT_TYPE;
+		case SALE_ORDER_LINES_FROM_ORDER:
+			return SaleOrderLines.CONTENT_TYPE;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 			//return null;
@@ -310,6 +316,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.where(Tables.VISITS + "." + Visits._ID + "=?", visitId);
 		case SALE_ORDERS:
 			return builder.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)
+					.mapToTable(SaleOrders._ID, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.CUSTOMER_ID, Tables.SALE_ORDERS)
@@ -349,6 +356,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case SALE_ORDERS_LIST:
 			final String salesPersonId = SaleOrders.getSalesPersonId(uri);
 			return builder.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)
+					.mapToTable(SaleOrders._ID, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.CUSTOMER_ID, Tables.SALE_ORDERS)
@@ -360,13 +368,26 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case SALE_ORDER_BY_STATUS:
 			String saleOrderDocType = SaleOrders.getSaleOrderDocType(uri);
 			return builder.addTable(Tables.SALE_ORDERS)
-			.where(SaleOrders.DOCUMENT_TYPE+ "= ? ",new String[] {saleOrderDocType} );
+					.where(SaleOrders.DOCUMENT_TYPE+ "= ? ",new String[] {saleOrderDocType} );
 		case SALE_ORDER_CUSTOM_SEARCH:
 			String saleCustomParam = SaleOrders.getCustomSearchFirstParamQuery(uri);
 			String saleDocType = SaleOrders.getCustomSearchSecondParamQuery(uri);
 			return builder.addTable(Tables.SALE_ORDERS)
-			.where(SaleOrders.SALES_ORDER_NO + " like ? ", new String[] {"%"+saleCustomParam+ "%"})
-			.where(SaleOrders.DOCUMENT_TYPE+ "= ? ",new String[] {saleDocType} );
+					.where(SaleOrders.SALES_ORDER_NO + " like ? ", new String[] {"%"+saleCustomParam+ "%"})
+					.where(SaleOrders.DOCUMENT_TYPE+ "= ? ",new String[] {saleDocType} );
+		case SALE_ORDER_LINES_FROM_ORDER:
+			final String salesOrderId = SaleOrderLines.getSaleOrderLineId(uri);
+			return builder.addTable(Tables.SALE_ORDER_LINES_JOIN_ITEMS)
+					.mapToTable(SaleOrderLines._ID, Tables.SALE_ORDER_LINES)
+					.mapToTable(SaleOrderLines.SALE_ORDER_ID, Tables.SALE_ORDER_LINES)
+					.mapToTable(SaleOrderLines.ITEM_NO, Tables.ITEMS)
+					.mapToTable(SaleOrderLines.DESCRIPTION, Tables.ITEMS)
+					.mapToTable(SaleOrderLines.DESCRIPTION2, Tables.ITEMS)
+					.mapToTable(SaleOrderLines.LINE_NO, Tables.SALE_ORDER_LINES)
+					.mapToTable(SaleOrderLines.QUANTITY, Tables.SALE_ORDER_LINES)
+					.mapToTable(SaleOrderLines.PRICE_EUR, Tables.SALE_ORDER_LINES)
+					.mapToTable(SaleOrderLines.REAL_DISCOUNT, Tables.SALE_ORDER_LINES)
+					.where(SaleOrderLines.SALE_ORDER_ID+"=?", salesOrderId);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

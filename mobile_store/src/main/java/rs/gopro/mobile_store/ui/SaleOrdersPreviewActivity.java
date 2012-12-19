@@ -10,9 +10,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
+import android.view.View;
 
 public class SaleOrdersPreviewActivity extends BaseActivity implements
-		SaleOrdersPreviewListFragment.Callbacks, VisitDetailFragment.Callbacks {
+		SaleOrdersPreviewListFragment.Callbacks, SaleOrderLinesPreviewListFragment.Callbacks {
 
 	public static final String EXTRA_MASTER_URI = "rs.gopro.mobile_store.extra.MASTER_URI";
 
@@ -27,11 +28,11 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_visits);
+		setContentView(R.layout.activity_sale_orders);
 		final FragmentManager fm = getSupportFragmentManager();
 
 		// something about swipe at portrait orientation
-		mShowHideMasterLayout = (ShowHideMasterLayout) findViewById(R.id.show_hide_master_layout);
+		mShowHideMasterLayout = (ShowHideMasterLayout) findViewById(R.id.sales_persons_preview_master_layout);
 		if (mShowHideMasterLayout != null) {
 			mShowHideMasterLayout.setFlingToExposeMasterEnabled(true);
 		}
@@ -93,11 +94,11 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 
 	private void updateDetailBackground() {
 		if (saleOrderLinesFragment == null) {
-			findViewById(R.id.fragment_visitsplan_detail)
-					.setBackgroundResource(
+			View view = findViewById(R.id.fragment_sale_order_lines_list);
+				view.setBackgroundResource(
 							R.drawable.grey_frame_on_white_empty_sandbox);
 		} else {
-			findViewById(R.id.fragment_visitsplan_detail)
+			findViewById(R.id.fragment_sale_order_lines_list)
 					.setBackgroundResource(R.drawable.grey_frame_on_white);
 		}
 	}
@@ -134,7 +135,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 	}
 
 	private void loadSaleOrderLines(Uri visitUri) {
-		VisitDetailFragment fragment = new VisitDetailFragment();
+		SaleOrderLinesPreviewListFragment fragment = new SaleOrderLinesPreviewListFragment();
 		fragment.setArguments(BaseActivity
 				.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW,
 						visitUri)));
@@ -151,11 +152,11 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 	
 	@Override
 	public boolean onSaleOrderSelected(String saleOrderId) {
-		loadSaleOrderLines(MobileStoreContract.Visits.buildVisitUri(saleOrderId));
+		loadSaleOrderLines(MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(saleOrderId));
 		return true;
 	}
 
 	@Override
-	public void onVisitIdAvailable(String visitId) {
+	public void onSaleOrderIdAvailable(String saleOrderId) {
 	}
 }

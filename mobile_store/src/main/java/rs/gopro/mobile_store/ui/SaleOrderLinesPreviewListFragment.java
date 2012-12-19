@@ -1,10 +1,8 @@
 package rs.gopro.mobile_store.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.ui.VisitDetailFragment.Callbacks;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,58 +24,58 @@ import android.widget.TextView;
 
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 
-public class SaleOrdersPreviewListFragment extends ListFragment implements
+public class SaleOrderLinesPreviewListFragment extends ListFragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
 
-	private static final String TAG = makeLogTag(SaleOrdersPreviewListFragment.class);
+	private static final String TAG = makeLogTag(SaleOrderLinesPreviewListFragment.class);
 	
 	private static final String STATE_SELECTED_ID = "selectedId";
 	
-	private Uri mSaleOrdersUri;
+	private Uri mSaleOrderLinesUri;
 	private CursorAdapter mAdapter;
 	private String mSelectedSaleOrderId;
 	private boolean mHasSetEmptyText = false;
 	
 	public interface Callbacks {
-        /** Return true to select (activate) the vendor in the list, false otherwise. */
-        public boolean onSaleOrderSelected(String saleOrderId);
-    }
+		public void onSaleOrderIdAvailable(String saleOrderId);
+	}
 
-    private static Callbacks sDummyCallbacks = new Callbacks() {
-        @Override
-        public boolean onSaleOrderSelected(String saleOrderId) {
-            return true;
-        }
-    };
+	private static Callbacks sDummyCallbacks = new Callbacks() {
+		@Override
+		public void onSaleOrderIdAvailable(String saleOrderId) {
+		}
+	};
 
-    private Callbacks mCallbacks = sDummyCallbacks;
+	private Callbacks mCallbacks = sDummyCallbacks;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    	super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null) {
-            mSelectedSaleOrderId = savedInstanceState.getString(STATE_SELECTED_ID);
+        final Intent intent = BaseActivity.fragmentArgumentsToIntent(getArguments());
+        mSaleOrderLinesUri = intent.getData();
+        if (mSaleOrderLinesUri == null) {
+            return;
         }
-
+        
         reloadFromArguments(getArguments());
     }
 
     public void reloadFromArguments(Bundle arguments) {
-        // Teardown from previous arguments
+    	// Teardown from previous arguments
         setListAdapter(null);
 
         // Load new arguments
         final Intent intent = BaseActivity.fragmentArgumentsToIntent(arguments);
-        mSaleOrdersUri = intent.getData();
+        mSaleOrderLinesUri = intent.getData();
         final int saleOrdersQueryToken;
 
-        if (mSaleOrdersUri == null) {
+        if (mSaleOrderLinesUri == null) {
             return;
         }
 
         mAdapter = new SaleOrdersAdapter(getActivity());
-        saleOrdersQueryToken = SaleOrdersQuery._TOKEN;
+        saleOrdersQueryToken = SaleOrderLinesQuery._TOKEN;
 
         setListAdapter(mAdapter);
 
@@ -92,7 +90,6 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
         final ListView listView = getListView();
         listView.setSelector(android.R.color.transparent);
         listView.setCacheColorHint(Color.WHITE);
-        
     }
 
     @Override
@@ -134,18 +131,13 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
     /** {@inheritDoc} */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        final Cursor cursor = (Cursor) mAdapter.getItem(position);
-        String saleOrderId = String.valueOf(cursor.getInt(SaleOrdersQuery._ID));
-        if (mCallbacks.onSaleOrderSelected(saleOrderId)) {
-            mSelectedSaleOrderId = saleOrderId;
-            mAdapter.notifyDataSetChanged();
-        }
+    	// TODO no need gor implementation, but can be cool if think something out
     }
     
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		return new CursorLoader(getActivity(), mSaleOrdersUri, SaleOrdersQuery.PROJECTION, null, null,
-				MobileStoreContract.SaleOrders.DEFAULT_SORT);
+		return new CursorLoader(getActivity(), mSaleOrderLinesUri, SaleOrderLinesQuery.PROJECTION, null, null,
+				MobileStoreContract.SaleOrderLines.DEFAULT_SORT);
 	}
 
 	@Override
@@ -154,7 +146,7 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
             return;
         }
         int token = loader.getId();
-        if (token == SaleOrdersQuery._TOKEN) {
+        if (token == SaleOrderLinesQuery._TOKEN) {
             mAdapter.changeCursor(cursor);
         } else {
             cursor.close();
@@ -177,11 +169,9 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
     }
 	
     /**
-     * {@link CursorAdapter} that renders a {@link SaleOrdersQuery}.
+     * {@link CursorAdapter} that renders a {@link SaleOrderLinesQuery}.
      */
     private class SaleOrdersAdapter extends CursorAdapter {
-    	int position = 1;
-    	public Map<Integer, Integer> postionOfId = new HashMap<Integer, Integer>();
         public SaleOrdersAdapter(Context context) {
             super(context, null, false);
         }
@@ -189,7 +179,7 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
         /** {@inheritDoc} */
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            return getActivity().getLayoutInflater().inflate(R.layout.list_item_sale_orders_preview,
+            return getActivity().getLayoutInflater().inflate(R.layout.list_item_sale_order_lines_preview,
                     parent, false);
         }
 
@@ -198,59 +188,46 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
         public void bindView(View view, Context context, Cursor cursor) {
 //            UIUtils.setActivatedCompat(view, cursor.getString(VisitsQuery.VENDOR_ID)
 //                    .equals(mSelectedVendorId));
-            view.setActivated(String.valueOf(cursor.getInt(SaleOrdersQuery._ID))
+            view.setActivated(String.valueOf(cursor.getInt(SaleOrderLinesQuery.SALE_ORDER_ID))
                     .equals(mSelectedSaleOrderId));
-            final int pos = position++;
-            postionOfId.put(cursor.getInt(SaleOrdersQuery._ID), position++);
+            
             final TextView timeView = (TextView) view.findViewById(R.id.block_time);
             final TextView titleView = (TextView) view.findViewById(R.id.block_title);
             final TextView subtitleView = (TextView) view.findViewById(R.id.block_subtitle);
-            final View primaryTouchTargetView = view.findViewById(R.id.list_item_middle_container);
-            View.OnClickListener viewOrderLinesListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //final Uri sessionsUri = ScheduleContract.Blocks.buildSessionsUri(blockId);
-                	SaleOrdersAdapter adap = (SaleOrdersAdapter) mAdapter;
-                    final Cursor cursor = (Cursor) mAdapter.getItem(pos);
-                    String saleOrderId = String.valueOf(cursor.getInt(SaleOrdersQuery._ID));
-                    if (mCallbacks.onSaleOrderSelected(saleOrderId)) {
-                        mSelectedSaleOrderId = saleOrderId;
-                        mAdapter.notifyDataSetChanged();
-                    }
-                }
-            };
-            primaryTouchTargetView.setOnClickListener(viewOrderLinesListener);
-            String salesOrderDate = cursor.getString(SaleOrdersQuery.ORDER_DATE);
-            String salesOrderNo = cursor.getString(SaleOrdersQuery.SALES_ORDER_NO);
-            String salesOrderCust = cursor.getString(SaleOrdersQuery.CUSTOMER_NO) + " " + cursor.getString(SaleOrdersQuery.CUSTOMER_NAME) + " " + cursor.getString(SaleOrdersQuery.CUSTOMER_NAME2);
+            String salesOrderDate = cursor.getString(SaleOrderLinesQuery.LINE_NO);
+            String salesOrderNo = cursor.getString(SaleOrderLinesQuery.ITEM_NO) + " " + cursor.getString(SaleOrderLinesQuery.DESCRIPTION);
+            String salesOrderCust = String.valueOf(cursor.getDouble(SaleOrderLinesQuery.QUANTITY)) + " " + String.valueOf(cursor.getDouble(SaleOrderLinesQuery.PRICE_EUR)) + " " + String.valueOf(cursor.getDouble(SaleOrderLinesQuery.REAL_DISCOUNT));
             timeView.setText(salesOrderDate);
             titleView.setText(salesOrderNo);
             subtitleView.setText(salesOrderCust);
+            mCallbacks.onSaleOrderIdAvailable(mSelectedSaleOrderId);
         }
     }
 	
-	private interface SaleOrdersQuery {
-		int _TOKEN = 0x5;
+	private interface SaleOrderLinesQuery {
+		int _TOKEN = 0x6;
 
         String[] PROJECTION = {
                 BaseColumns._ID,
-                MobileStoreContract.SaleOrders.SALES_PERSON_ID,
-                MobileStoreContract.SaleOrders.SALES_ORDER_NO,
-                MobileStoreContract.SaleOrders.CUSTOMER_ID,
-                MobileStoreContract.SaleOrders.CUSTOMER_NO,
-                MobileStoreContract.SaleOrders.NAME,
-                MobileStoreContract.SaleOrders.NAME_2,
-                MobileStoreContract.SaleOrders.ORDER_DATE
+                MobileStoreContract.SaleOrderLines.SALE_ORDER_ID,
+                MobileStoreContract.SaleOrderLines.ITEM_NO,
+                MobileStoreContract.SaleOrderLines.DESCRIPTION,
+                MobileStoreContract.SaleOrderLines.DESCRIPTION2,
+                MobileStoreContract.SaleOrderLines.LINE_NO,
+                MobileStoreContract.SaleOrderLines.QUANTITY,
+                MobileStoreContract.SaleOrderLines.PRICE_EUR,
+                MobileStoreContract.SaleOrderLines.REAL_DISCOUNT
         };
 
         int _ID = 0;
-        int SALES_PERSON_ID = 1;
-        int SALES_ORDER_NO = 2;
-        int CUSTOMER_ID = 3;
-        int CUSTOMER_NO = 4;
-        int CUSTOMER_NAME = 5;
-        int CUSTOMER_NAME2 = 6;
-        int ORDER_DATE = 7;
+        int SALE_ORDER_ID = 1;
+        int ITEM_NO = 2;
+        int DESCRIPTION = 3;
+        int DESCRIPTION2 = 4;
+        int LINE_NO = 5;
+        int QUANTITY = 6;
+        int PRICE_EUR = 7;
+        int REAL_DISCOUNT = 8;
 	}
 
 }

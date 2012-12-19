@@ -40,7 +40,7 @@ public class PlanOfVisitsLayout extends CustomLinearLayout {
 		callSaleOrders.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				 final Uri saleOrdersUri = MobileStoreContract.SaleOrders.buildSaleOrdersListUri("V.MAKEVIC");
+				 final Uri saleOrdersUri = MobileStoreContract.SaleOrders.buildSaleOrdersListUri("1");
                  final Intent intent = new Intent(Intent.ACTION_VIEW, saleOrdersUri);
                  activity.startActivity(intent);
 			}

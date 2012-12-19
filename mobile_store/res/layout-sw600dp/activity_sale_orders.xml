@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/show_hide_master_layout"
+    android:id="@+id/sales_persons_preview_master_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -18,14 +18,24 @@
             android:background="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/fragment_sale_order_lines_list"
+    
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/multipane_padding"
-        android:background="@drawable/grey_frame_on_white" />
+        android:background="@drawable/grey_frame_on_white" >
+        <TextView 
+            android:id="@+id/fragment_sale_order_lines_list_header"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+	    <FrameLayout
+	        android:id="@+id/fragment_sale_order_lines_list"
+	        android:background="@android:color/white"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" />
+    </LinearLayout>
 
 </rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout>

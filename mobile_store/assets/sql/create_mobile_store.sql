@@ -351,3 +351,5 @@ BEGIN
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
+INSERT INTO `sale_order_lines` VALUES ('1','1','1','1','23','KOM','22.33','10','20','12',null,null,'23456',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('2','1','2','2','23','KOM','222.33','10','20','18',null,null,'23456',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
