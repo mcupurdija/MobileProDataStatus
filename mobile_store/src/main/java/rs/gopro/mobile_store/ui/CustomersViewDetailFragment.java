@@ -54,12 +54,12 @@ public class CustomersViewDetailFragment extends Fragment implements
 	private TextView mNumber_of_grey_coat;
     
 	public interface Callbacks {
-		public void onCustomerIdAvailable(String visitId);
+		public void onCustomerIdAvailable(String customerId);
 	}
 
 	private static Callbacks sDummyCallbacks = new Callbacks() {
 		@Override
-		public void onCustomerIdAvailable(String visitId) {
+		public void onCustomerIdAvailable(String customerId) {
 		}
 	};
 
@@ -147,31 +147,67 @@ public class CustomersViewDetailFragment extends Fragment implements
             return;
         }
         
-        String customerNameString = cursor.getString(CustomerDetailQuery.NAME) + " " + cursor.getString(CustomerDetailQuery.NAME_2);
-        mCustomerName.setText(customerNameString);
+        String customernoString = "Br.                            " + cursor.getString(CustomerDetailQuery.CUSTOMER_NO);
+        String nameString = "Ime                            " + cursor.getString(CustomerDetailQuery.NAME);
+        String name2String = "Ime 2                          " + cursor.getString(CustomerDetailQuery.NAME_2);
+        String addressString = "Adresa                         " + cursor.getString(CustomerDetailQuery.ADDRESS);
+        String cityString = "Grad                           " + cursor.getString(CustomerDetailQuery.CITY);
+        String postcodeString = "Poštanski broj                 " + cursor.getString(CustomerDetailQuery.POST_CODE);
+        String phoneString = "Br. telefona                   " + cursor.getString(CustomerDetailQuery.PHONE);
+        String mobileString = "Br. Mobilnog                   " + cursor.getString(CustomerDetailQuery.MOBILE);
+        String emailString = "E-pošta                        " + cursor.getString(CustomerDetailQuery.EMAIL);
+        String companyidString = "Maticni broj                   " + cursor.getInt(CustomerDetailQuery.COMPANY_ID);
+        String primarycontactidString = "Br. primarnog kontakta         " + cursor.getInt(CustomerDetailQuery.PRIMARY_CONTACT_ID);
+        String varregnoString = "Poreski broj                   " + cursor.getString(CustomerDetailQuery.VAR_REG_NO);
+        String creditlimitlcyString = "Kreditni limit (LVT)           " + String.valueOf(cursor.getDouble(CustomerDetailQuery.CREDIT_LIMIT_LCY));
+        String balancelcyString = "Saldo (LVT)                    " + String.valueOf(cursor.getDouble(CustomerDetailQuery.BALANCE_LCY));
+        String balanceduelcyString = "Dospeli saldo (LVT)            " + String.valueOf(cursor.getDouble(CustomerDetailQuery.BALANCE_DUE_LCY));
+        String paymenttermscodeString = "Šifra uslova placanja          " + cursor.getInt(CustomerDetailQuery.PAYMENT_TERMS_CODE);
+        String priorityString = "Prioritet                      " + cursor.getInt(CustomerDetailQuery.PRIORITY);
+        String globaldimensionString = "Branša                         " + cursor.getString(CustomerDetailQuery.GLOBAL_DIMENSION);
+        String channeloranString = "Kanal (ORAN)                   " + cursor.getString(CustomerDetailQuery.CHANNEL_ORAN);
+        String blockedstatusString = "Status kupca za isporuke       " + cursor.getString(CustomerDetailQuery.BLOCKED_STATUS);
+        String smlString = "SML                            " + cursor.getString(CustomerDetailQuery.SML);
+        String internalbalanceduelcyString = "Dospeli saldo preko i.v. (LVT) " + String.valueOf(cursor.getDouble(CustomerDetailQuery.INTERNAL_BALANCE_DUE_LCY));
+        String adoptedpotentialString = "Usvojeni potencijal            " + String.valueOf(cursor.getDouble(CustomerDetailQuery.ADOPTED_POTENTIAL));
+        String focuscustomerString = "Fokus kupac                    " + cursor.getString(CustomerDetailQuery.FOCUS_CUSTOMER);
+        String divisionString = "Divizija                       " + cursor.getString(CustomerDetailQuery.DIVISION);
+        String numberofbluecoatString = "Br. plavih mantila             " + cursor.getInt(CustomerDetailQuery.NUMBER_OF_BLUE_COAT);
+        String numberofgreycoatString = "Br. Sivih mantila              " + cursor.getInt(CustomerDetailQuery.NUMBER_OF_GREY_COAT);
         
-        String customerNoString = cursor.getString(CustomerDetailQuery.CUSTOMER_NO);
-        mCustomerNo.setText(customerNoString);
-        
-        String visitDate = cursor.getString(CustomerDetailQuery.VISIT_DATE);
-        mVisitDate.setText(visitDate);
-        
-        int odometerVal = cursor.getInt(CustomerDetailQuery.ODOMETER);
-        mOdometer.setText(String.valueOf(odometerVal));
-        
-        String arrivalTime = cursor.getString(CustomerDetailQuery.ARRIVAL_TIME);
-        mArrivalTime.setText(arrivalTime);
-        
-        String departureTime = cursor.getString(CustomerDetailQuery.DEPARTURE_TIME);
-        mDepartureTime.setText(departureTime);
-        
-        String note = cursor.getString(CustomerDetailQuery.NOTE);
-        mNote.setText(note);
+        mCustomer_no.setText(customernoString);
+        mName.setText(nameString);
+        mName_2.setText(name2String);
+        mAddress.setText(addressString);
+        mCity.setText(cityString);
+        mPost_code.setText(postcodeString);
+        mPhone.setText(phoneString);
+        mMobile.setText(mobileString);
+        mEmail.setText(emailString);
+        mCompany_id.setText(companyidString);
+        mPrimary_contact_id.setText(primarycontactidString);
+        mVar_reg_no.setText(varregnoString);
+        mCredit_limit_lcy.setText(creditlimitlcyString);
+        mBalance_lcy.setText(balancelcyString);
+        mBalance_due_lcy.setText(balanceduelcyString);
+        mPayment_terms_code.setText(paymenttermscodeString);
+        mPriority.setText(priorityString);
+        mGlobal_dimension.setText(globaldimensionString);
+        mChannel_oran.setText(channeloranString);
+        mBlocked_status.setText(blockedstatusString);
+        mSml.setText(smlString);
+        mInternal_balance_due_lcy.setText(internalbalanceduelcyString);
+        mAdopted_potential.setText(adoptedpotentialString);
+        mFocus_customer.setText(focuscustomerString);
+        mDivision.setText(divisionString);
+        mNumber_of_blue_coat.setText(numberofbluecoatString);
+        mNumber_of_grey_coat.setText(numberofgreycoatString);
 
-        int visitId = cursor.getInt(CustomerDetailQuery._ID);
-        mCallbacks.onCustomerIdAvailable(String.valueOf(visitId));
+
+        int customerId = cursor.getInt(CustomerDetailQuery._ID);
+        mCallbacks.onCustomerIdAvailable(String.valueOf(customerId));
         
-        LogUtils.LOGI(TAG, "Loaded visit id: " + String.valueOf(visitId));
+        LogUtils.LOGI(TAG, "Loaded customer id: " + String.valueOf(customerId));
     }
     
 	@Override

@@ -8,11 +8,14 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.ui.SaleOrdersPreviewActivity;
 import rs.gopro.mobile_store.ui.LoginActivity.UsersQuery;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.net.Uri;
 import android.net.NetworkInfo.DetailedState;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -41,6 +44,7 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 	private Spinner spinner;
 	private String splitQuerySeparator = ";";
 	private CursorAdapter cursorAdapter;
+	private static String HARDCODED_SALES_PERSON = "1";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -146,5 +150,14 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 	}
-
+	
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		//String customerId = String.valueOf(cursorAdapter.getItem(position));
+		final Uri customerListUri = MobileStoreContract.Customers.getCustomersBySalesPerson(HARDCODED_SALES_PERSON);
+        final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.Customers.buildCustomersUri(String.valueOf(id)));
+        intent.putExtra(SaleOrdersPreviewActivity.EXTRA_MASTER_URI, customerListUri);
+        startActivity(intent);
+	}
 }

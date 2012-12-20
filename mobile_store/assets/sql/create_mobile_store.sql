@@ -83,7 +83,7 @@ INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`s
 -- customers
 CREATE TABLE `customers` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , 
-	`customer_no` INTEGER, 
+	`customer_no` TEXT, 
 	`name` TEXT, 
 	`name2` TEXT, 
 	`address` TEXT, 

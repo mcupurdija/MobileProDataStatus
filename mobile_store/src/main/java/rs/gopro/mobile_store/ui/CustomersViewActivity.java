@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 
 public class CustomersViewActivity extends BaseActivity implements
-	CustomersViewListFragment.Callbacks, VisitDetailFragment.Callbacks {
+	CustomersViewListFragment.Callbacks, CustomersViewDetailFragment.Callbacks {
 
 	public static final String EXTRA_MASTER_URI = "rs.gopro.mobile_store.extra.MASTER_URI";
 
@@ -149,12 +149,12 @@ public class CustomersViewActivity extends BaseActivity implements
 	}
 
 	@Override
-	public void onVisitIdAvailable(String visitId) {
-	}
-
-	@Override
 	public boolean onCustomerSelected(String customerId) {
 		loadCustomersViewDetail(MobileStoreContract.Visits.buildVisitUri(customerId));
 		return true;
+	}
+
+	@Override
+	public void onCustomerIdAvailable(String customerId) {	
 	}
 }
