@@ -1,35 +1,23 @@
 package rs.gopro.mobile_store.ui.fragment;
 
-import org.json.JSONObject;
-import org.json.JSONStringer;
-
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
-import rs.gopro.mobile_store.provider.Tables;
-import rs.gopro.mobile_store.ui.SaleOrdersPreviewActivity;
-import rs.gopro.mobile_store.ui.LoginActivity.UsersQuery;
+import rs.gopro.mobile_store.ui.CustomersViewActivity;
 import rs.gopro.mobile_store.util.LogUtils;
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.net.NetworkInfo.DetailedState;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -157,7 +145,7 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 		//String customerId = String.valueOf(cursorAdapter.getItem(position));
 		final Uri customerListUri = MobileStoreContract.Customers.getCustomersBySalesPerson(HARDCODED_SALES_PERSON);
         final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.Customers.buildCustomersUri(String.valueOf(id)));
-        intent.putExtra(SaleOrdersPreviewActivity.EXTRA_MASTER_URI, customerListUri);
+        intent.putExtra(CustomersViewActivity.EXTRA_MASTER_URI, customerListUri);
         startActivity(intent);
 	}
 }

@@ -70,7 +70,7 @@ public class CustomersViewActivity extends BaseActivity implements
 				}
 			}
 
-		} else if (MobileStoreContract.Visits.CONTENT_ITEM_TYPE
+		} else if (MobileStoreContract.Customers.CONTENT_ITEM_TYPE
 				.equals(mimeType)) {
 			// Load session details
 			if (intent.hasExtra(EXTRA_MASTER_URI)) {
@@ -150,7 +150,7 @@ public class CustomersViewActivity extends BaseActivity implements
 
 	@Override
 	public boolean onCustomerSelected(String customerId) {
-		loadCustomersViewDetail(MobileStoreContract.Visits.buildVisitUri(customerId));
+		loadCustomersViewDetail(MobileStoreContract.Customers.buildCustomersUri(customerId));
 		return true;
 	}
 

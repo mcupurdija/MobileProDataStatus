@@ -82,7 +82,8 @@ INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`s
 
 -- customers
 CREATE TABLE `customers` (
-	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , 
+	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
+	`sales_person_id` INTEGER,
 	`customer_no` TEXT, 
 	`name` TEXT, 
 	`name2` TEXT, 
@@ -111,22 +112,22 @@ CREATE TABLE `customers` (
 	`number_of_blue_coat` INTEGER,
 	`number_of_grey_coat` INTEGER
 );
-INSERT INTO  `customers` (`_id`,`customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
-	(1, '2011-12-12_NO_1', 'Selecetion product', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '1');
-INSERT INTO  `customers` (`_id`,`customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
-	(2, '2011-12-12_NO_1', 'Boys still', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '2');
-INSERT INTO  `customers` (`_id`,`customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
-	(3, '2011-12-12_NO_1', 'Seltor', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '2');
-INSERT INTO  `customers` (`_id`,`customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
-	(4, '2013-12-12_NO_1', 'Boby soon', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '1');
-INSERT INTO  `customers` (`_id`,`customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
-	(5, '2013-12-12_NO_1', 'Senegal industry', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '1');
-INSERT INTO  `customers` (`_id`,`customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
-	(6, '2012-12-12_NO_1', 'Activate company', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '0');
-INSERT INTO  `customers` (`_id`,`customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
-	(7, '2112-12-12_NO_1', 'S&S style', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '0');
-INSERT INTO  `customers` (`_id`,`customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
-	(8, '1999-12-12_NO_1', 'Alpha', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '0');
+INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
+	(1, 1, '2011-12-12_NO_1', 'Selecetion product', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '1');
+INSERT INTO  `customers` (`_id`,`sales_person_id`,`customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
+	(2, 1, '2011-12-12_NO_1', 'Boys still', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '2');
+INSERT INTO  `customers` (`_id`,`sales_person_id`,`customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
+	(3, 1, '2011-12-12_NO_1', 'Seltor', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '2');
+INSERT INTO  `customers` (`_id`,`sales_person_id`,`customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
+	(4, 1, '2013-12-12_NO_1', 'Boby soon', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '1');
+INSERT INTO  `customers` (`_id`,`sales_person_id`,`customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
+	(5, 1, '2013-12-12_NO_1', 'Senegal industry', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '1');
+INSERT INTO  `customers` (`_id`,`sales_person_id`,`customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
+	(6, 1, '2012-12-12_NO_1', 'Activate company', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '0');
+INSERT INTO  `customers` (`_id`,`sales_person_id`,`customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
+	(7, 1, '2112-12-12_NO_1', 'S&S style', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '0');
+INSERT INTO  `customers` (`_id`,`sales_person_id`,`customer_no` , `name` , `name2` , 	`address` , 	`city` , `post_code` , 	`phone` , `mobile` , `email` , `company_id` , `primary_contact_id` , `vat_reg_no` , `credit_limit_lcy` , `balance_lcy` , `balance_due_lcy` , `payment_terms_code` , `priority` , `global_dimension` , `channel_oran`,`blocked_status` ) VALUES 
+	(8, 1, '1999-12-12_NO_1', 'Alpha', 'Selection', 'Prve pruge 1', 'Belgrade', '11000', '+3284545454',  '+3284545454', 'snoop@snoop.com', 121, 21, 'vat', 2122.00, 2211.00, 2121, 21, 2, 21, 'main chanel', '0');
 
 -- contacts
 CREATE TABLE `contacts` (
