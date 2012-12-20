@@ -3,21 +3,22 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:focusable="false"
+    android:background="?activatableItemBackground"
     style="@style/SimpleListItemSmall">
 
     <TextView android:id="@+id/customer_title"
         android:layout_gravity="center_vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="false"
         style="@style/ListItemTitle" />
     
     <TextView android:id="@+id/customer_subtitle"
         android:layout_gravity="center_vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="false"
+        android:gravity="right"
         style="@style/ListItemSubtitle" />
     
 </LinearLayout>

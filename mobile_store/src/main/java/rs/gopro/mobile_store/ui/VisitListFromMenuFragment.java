@@ -114,9 +114,11 @@ public class VisitListFromMenuFragment extends ListFragment implements
         final Cursor cursor = (Cursor) mAdapter.getItem(position);
         String visitId = String.valueOf(cursor.getInt(VisitsQuery._ID));
         mSelectedVisitId = visitId;
+        mAdapter.notifyDataSetChanged();
         final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
-        final Intent intent = new Intent(Intent.ACTION_VIEW, visitsUri);
-		startActivity(intent);
+        final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.Visits.buildVisitUri(visitId));
+        intent.putExtra(VisitsMultipaneActivity.EXTRA_MASTER_URI, visitsUri);
+        startActivity(intent);
     }
     
 	@Override
