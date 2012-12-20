@@ -23,7 +23,7 @@
             android:layout_width="140dp"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
-            android:hint="Search"
+            android:hint="@string/hint_search"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:paddingBottom="5dp" >

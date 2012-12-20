@@ -31,4 +31,7 @@
 	<string name="sale_order_status_spinner_title">Filtriraj po statusu</string>
 	
 	<string name="empty_visits">Nema planiranih poseta.</string>
+	<string name="empty_sale_orders">Liferice nisu pronađene.</string>
+	<string name="empty_customers">Nema detalja za izabranog kupca.</string>
+	<string name="hint_search">Pretraži&#8230;</string>
 </resources>

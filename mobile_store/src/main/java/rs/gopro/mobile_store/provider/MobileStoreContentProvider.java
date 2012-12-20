@@ -370,6 +370,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 			final String salesPersonId = SaleOrders.getSalesPersonId(uri);
 			return builder.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)
 					.mapToTable(SaleOrders._ID, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.SALES_PERSON_ID, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.CUSTOMER_ID, Tables.SALE_ORDERS)

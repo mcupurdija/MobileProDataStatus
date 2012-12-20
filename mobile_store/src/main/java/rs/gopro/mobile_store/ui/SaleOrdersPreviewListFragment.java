@@ -108,7 +108,7 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
         if (!mHasSetEmptyText) {
             // Could be a bug, but calling this twice makes it become visible
             // when it shouldn't be visible.
-            setEmptyText(getString(R.string.empty_visits));
+            setEmptyText(getString(R.string.empty_sale_orders));
             mHasSetEmptyText = true;
         }
     }

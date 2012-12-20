@@ -31,4 +31,7 @@
 	<string name="sale_order_status_spinner_title">Filter by status</string>
 
 	<string name="empty_visits">No planned visits.</string>
+	<string name="empty_sale_orders">No sale orders found.</string>
+	<string name="empty_customers">No customer details found.</string>
+	<string name="hint_search">Search&#8230;</string>
 </resources>

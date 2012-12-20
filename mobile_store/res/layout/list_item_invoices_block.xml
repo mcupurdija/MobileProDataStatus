@@ -32,7 +32,7 @@
         <TextView
             android:id="@+id/block_title"
             style="@style/ListItemTitle"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="@dimen/listPreferredItemPaddingLeft"
@@ -43,8 +43,9 @@
         <TextView
             android:id="@+id/block_subtitle"
             style="@style/ListItemSubtitle"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="right"
             android:layout_alignLeft="@id/block_title"
             android:layout_alignRight="@id/block_title"
             android:layout_below="@id/block_title"

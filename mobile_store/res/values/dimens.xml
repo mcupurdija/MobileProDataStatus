@@ -23,6 +23,7 @@
     
     <!-- sale orders list items -->
     <dimen name="sale_order_time_width">72dp</dimen>
+    <dimen name="list_item_front_menu_head">122dp</dimen>
     <dimen name="listPreferredItemPaddingLeft">8dp</dimen>
     <dimen name="listPreferredItemPaddingRight">8dp</dimen>
 

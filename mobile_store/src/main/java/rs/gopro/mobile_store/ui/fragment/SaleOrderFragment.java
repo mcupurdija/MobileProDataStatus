@@ -215,7 +215,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			return getActivity().getLayoutInflater().inflate(R.layout.list_item_sale_order_block, parent, false);
+			return getActivity().getLayoutInflater().inflate(R.layout.list_item_invoices_block, parent, false);
 		}
 
 		@Override
