@@ -20,15 +20,15 @@
 	<string name="empty_waiting_for_sync">Sacekajte</string>
 	<string name="sale_order_amount_total_template">Iznos je: </string>
 	<string name="customer_search_title">Pronadji kupca: </string>
-	<string name="customer_block_status_spinner_title">Filtriraj po statusu</string>
+	<string name="customer_block_status_spinner_title">Filtriraj po statusu:</string>
 	
 	<string name="item_search_title">Pronadji artikl: </string>
-	<string name="item_block_status_spinner_title">Filtriraj po statusu</string>
+	<string name="item_block_status_spinner_title">Filtriraj po statusu:</string>
 	
 	<string name="invoice_amount_total_template">Iznos je: </string>
 	
 	<string name="sale_order_search_title">Pronadji lifericu: </string>
-	<string name="sale_order_status_spinner_title">Filtriraj po statusu</string>
+	<string name="sale_order_status_spinner_title">Filtriraj po statusu:</string>
 	
 	<string name="empty_visits">Nema planiranih poseta.</string>
 	<string name="empty_sale_orders">Liferice nisu pronađene.</string>

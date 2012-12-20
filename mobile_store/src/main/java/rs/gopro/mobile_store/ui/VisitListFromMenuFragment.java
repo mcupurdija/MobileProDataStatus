@@ -24,10 +24,10 @@ import android.widget.TextView;
 
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 
-public class VisitListFragment extends ListFragment implements
+public class VisitListFromMenuFragment extends ListFragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
 
-	private static final String TAG = makeLogTag(VisitListFragment.class);
+	private static final String TAG = makeLogTag(VisitListFromMenuFragment.class);
 	
 	private static final String STATE_SELECTED_ID = "selectedId";
 	
@@ -35,20 +35,6 @@ public class VisitListFragment extends ListFragment implements
 	private CursorAdapter mAdapter;
 	private String mSelectedVisitId;
 	private boolean mHasSetEmptyText = false;
-	
-	public interface Callbacks {
-        /** Return true to select (activate) the vendor in the list, false otherwise. */
-        public boolean onVisitSelected(String visitId);
-    }
-
-    private static Callbacks sDummyCallbacks = new Callbacks() {
-        @Override
-        public boolean onVisitSelected(String visitId) {
-            return true;
-        }
-    };
-
-    private Callbacks mCallbacks = sDummyCallbacks;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,17 +93,11 @@ public class VisitListFragment extends ListFragment implements
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (!(activity instanceof Callbacks)) {
-            throw new ClassCastException("Activity must implement fragment's callbacks.");
-        }
-
-        mCallbacks = (Callbacks) activity;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallbacks = sDummyCallbacks;
     }
 
     @Override
@@ -133,10 +113,10 @@ public class VisitListFragment extends ListFragment implements
     public void onListItemClick(ListView l, View v, int position, long id) {
         final Cursor cursor = (Cursor) mAdapter.getItem(position);
         String visitId = String.valueOf(cursor.getInt(VisitsQuery._ID));
-        if (mCallbacks.onVisitSelected(visitId)) {
-            mSelectedVisitId = visitId;
-            mAdapter.notifyDataSetChanged();
-        }
+        mSelectedVisitId = visitId;
+        final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
+        final Intent intent = new Intent(Intent.ACTION_VIEW, visitsUri);
+		startActivity(intent);
     }
     
 	@Override
