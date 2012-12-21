@@ -168,8 +168,14 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
+
+	   /* MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.new_menu, menu);
-	    return true;
+	    return true;*/
+
+	    MenuInflater menuInflater = getMenuInflater();
+	    menuInflater.inflate(R.menu.plan_of_visits, menu);
+		return super.onCreateOptionsMenu(menu);
+
 	}
 }

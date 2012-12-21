@@ -53,6 +53,10 @@ public abstract class BaseActivity extends FragmentActivity {
 	            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 	            startActivity(intent);
 	            return true;
+            case R.id.create_insert_visit_activity: 
+            	Intent newVisitIntent = new Intent(getApplicationContext(), AddVisitActivity.class);
+            	startActivity(newVisitIntent);
+            	return true;
         }
         return super.onOptionsItemSelected(item);
     }
