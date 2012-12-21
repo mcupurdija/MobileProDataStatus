@@ -9,7 +9,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 public class VisitsMultipaneActivity extends BaseActivity implements
 		VisitListFragment.Callbacks, VisitDetailFragment.Callbacks {
@@ -114,6 +117,10 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 				return true;
 			}
 			break;
+		 case R.id.newrecord:
+             final Intent intent = new Intent(this, NewVisitActivity.class);
+             startActivity(intent);
+             break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -157,5 +164,12 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 
 	@Override
 	public void onVisitIdAvailable(String visitId) {
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.new_menu, menu);
+	    return true;
 	}
 }

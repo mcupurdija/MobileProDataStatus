@@ -208,7 +208,7 @@ public class CustomersViewListFragment extends ListFragment implements
                 BaseColumns._ID,
                 MobileStoreContract.Customers.CUSTOMER_NO, 
                 MobileStoreContract.Customers.NAME, 
-                MobileStoreContract.Customers.CITY,
+                MobileStoreContract.Customers.POST_CODE,
                 MobileStoreContract.Customers.BLOCKED_STATUS, 
         };
 

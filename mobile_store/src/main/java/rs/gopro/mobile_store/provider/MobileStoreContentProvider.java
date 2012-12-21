@@ -287,7 +287,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case ITEMS_BY_STATUS:
 			String itemStat = Items.getItemStatus(uri);
 			return builder.addTable(Tables.ITEMS).where(
-					Items.CAMPAIGN_STATUS + "= ?", new String[] { itemStat });
+					Items.CAMPAIGN_CODE + "= ?", new String[] { itemStat });
 		case ITEMS_CUSTOM_SEARCH:
 			String itemCustom = Items.getCustomSearchFirstParamQuery(uri);
 			String itemStatus = Items.getCustomSearchSecondParamQuery(uri);
@@ -297,7 +297,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 							+ " like ? ",
 							new String[] { itemCustom + "%",
 									"%" + itemCustom + "%" })
-					.where(Items.CAMPAIGN_STATUS + "= ?",
+					.where(Items.CAMPAIGN_CODE + "= ?",
 							new String[] { itemStatus });
 		case VISITS:
 			return builder.addTable(Tables.VISITS_JOIN_CUSTOMERS)

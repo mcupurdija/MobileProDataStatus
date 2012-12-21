@@ -75,13 +75,12 @@
     </string-array>
     
     <string-array name="item_camp_status_array">
-        <item>Active</item>
-        <item>Blocked One</item>
-        <item>Blocked Two</item>
+        <item>Not on sale</item>
+        <item>Total sale</item>
+        <item>Promotion sale</item>
     </string-array>
     
      <string-array name="sale_order_block_status_array">
-        <item>Sale order</item>
         <item>Order</item>
         <item>Supply</item>
         <item>Spec supply</item>

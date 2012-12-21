@@ -3,6 +3,7 @@ package rs.gopro.mobile_store.ui;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.UIUtils;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -89,7 +90,7 @@ public class VisitDetailFragment extends Fragment implements
             Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_visit_details, null);
         mCustomerName = (TextView) rootView.findViewById(R.id.visit_customer_name);
-        mCustomerNo = (TextView) rootView.findViewById(R.id.visit_customer_no);
+        mCustomerNo =  (TextView) rootView.findViewById(R.id.visit_customer_no);
         mVisitDate = (TextView) rootView.findViewById(R.id.visit_date);
         mOdometer = (TextView) rootView.findViewById(R.id.visit_odometer_value);
         mArrivalTime = (TextView) rootView.findViewById(R.id.visit_arrival_time);
@@ -108,25 +109,25 @@ public class VisitDetailFragment extends Fragment implements
         }
         
         String customerNameString = cursor.getString(VisitsQuery.NAME) + " " + cursor.getString(VisitsQuery.NAME_2);
-        mCustomerName.setText(customerNameString);
+        mCustomerName.setText("Kupac:		" + customerNameString);
         
         String customerNoString = cursor.getString(VisitsQuery.CUSTOMER_NO);
-        mCustomerNo.setText(customerNoString);
+        mCustomerNo.setText("Kupac Br.		" + customerNoString);
         
         String visitDate = cursor.getString(VisitsQuery.VISIT_DATE);
-        mVisitDate.setText(visitDate);
+        mVisitDate.setText("Datum posete:	" + UIUtils.formatDate(UIUtils.getDate(visitDate)));
         
         int odometerVal = cursor.getInt(VisitsQuery.ODOMETER);
-        mOdometer.setText(String.valueOf(odometerVal));
+        mOdometer.setText("Odometar:		 	" + String.valueOf(odometerVal));
         
         String arrivalTime = cursor.getString(VisitsQuery.ARRIVAL_TIME);
-        mArrivalTime.setText(arrivalTime);
+        mArrivalTime.setText("Vreme dolaska: 		"+UIUtils.formatDateTime(UIUtils.getDate(arrivalTime)));
         
         String departureTime = cursor.getString(VisitsQuery.DEPARTURE_TIME);
-        mDepartureTime.setText(departureTime);
+        mDepartureTime.setText("Vreme odlaska: 		"+UIUtils.formatDateTime(UIUtils.getDate(departureTime)));
         
         String note = cursor.getString(VisitsQuery.NOTE);
-        mNote.setText(note);
+        mNote.setText("Beleska:			"+note);
 
         int visitId = cursor.getInt(VisitsQuery._ID);
         mCallbacks.onVisitIdAvailable(String.valueOf(visitId));

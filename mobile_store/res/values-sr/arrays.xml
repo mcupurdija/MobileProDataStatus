@@ -73,13 +73,12 @@
         <item>Blokirano 2</item>
     </string-array>
     <string-array name="item_camp_status_array">
-        <item>Aktivno</item>
-        <item>Blokirano 1</item>
-        <item>Blokirano 2</item>
+        <item>Redovna prodaja</item>
+        <item>OVS prodaja</item>
+        <item>Promotivna prodaja</item>
     </string-array>
     
     <string-array name="sale_order_block_status_array">
-        <item>Liferica</item>
         <item>Porudzbina</item>
         <item>Ponuda</item>
         <item>Spec ponuda</item>

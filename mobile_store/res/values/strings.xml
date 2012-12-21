@@ -34,4 +34,7 @@
 	<string name="empty_sale_orders">No sale orders found.</string>
 	<string name="empty_customers">No customer details found.</string>
 	<string name="hint_search">Search&#8230;</string>
+	<string name="save_button_title">Save</string>
+	<string name="cancel_button_title">Cancel</string>
+	<string name="new_button_title">New</string>
 </resources>

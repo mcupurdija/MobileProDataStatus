@@ -92,6 +92,9 @@
             <meta-data android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
 		</activity>
+		<activity android:exported="false" android:name=".ui.NewVisitActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.VisitsMultipaneActivity"/>
+		</activity>
         <provider
             android:name="rs.gopro.mobile_store.provider.MobileStoreContentProvider"
             android:authorities="rs.gopro.mobile_store.provider.mobile_store_provider" />

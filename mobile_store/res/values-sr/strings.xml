@@ -34,4 +34,7 @@
 	<string name="empty_sale_orders">Liferice nisu pronađene.</string>
 	<string name="empty_customers">Nema detalja za izabranog kupca.</string>
 	<string name="hint_search">Pretraži&#8230;</string>
+	<string name="save_button_title">Sačuvaj</string>
+	<string name="cancel_button_title">Otkaži</string>
+	<string name="new_button_title">Novi rekord</string>
 </resources>
