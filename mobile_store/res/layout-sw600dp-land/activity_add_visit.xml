@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical|center_horizontal"
+    android:baselineAligned="false" >
+
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tableLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dip" >
+
+        <!-- 2 columns -->
+
+        <TableRow
+            android:id="@+id/sales_person_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dip" >
+
+            <TextView
+                android:id="@+id/sales_person_title"
+                android:text="Sales person"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <AutoCompleteTextView
+                android:id="@+id/sale_person_autocomplete"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:completionThreshold="1"
+                android:hint="Sales person"
+                android:textAppearance="?android:attr/textAppearanceMedium"  />
+        </TableRow>
+
+        <!-- edittext span 2 column -->
+
+        <TableRow
+            android:id="@+id/customer_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dip" >
+
+            <TextView
+                android:id="@+id/customer_id_title"
+                android:text="Customer "
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+           
+             <AutoCompleteTextView
+                android:id="@+id/customer_autocomplete"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:completionThreshold="2"
+                android:hint="Customer"
+                android:textAppearance="?android:attr/textAppearanceMedium"  />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/visit_date_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dip" >
+
+            <TextView
+                android:id="@+id/visit_date_title"
+                android:text="Visit date"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/visit_date_value"
+                android:hint="Visit date"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <!-- display this button in 3rd column via layout_column(zero based) -->
+
+        <TableRow
+            android:id="@+id/line_number_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dip" >
+
+            <TextView
+                android:id="@+id/line_number_title"
+                android:text="Line number"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/line_number_value"
+                android:hint="Line number"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <!-- display this button in 2nd column via layout_column(zero based) -->
+
+        <TableRow
+            android:id="@+id/entry_type_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dip" >
+
+            <TextView
+                android:id="@+id/entry_type_title"
+                android:text="Entry type"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/entry_type_value"
+                android:hint="Entry type"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+    </TableLayout>
+
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tableLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dip" >
+
+        <TableRow
+            android:id="@+id/odometer_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dip" >
+
+            <TextView
+                android:id="@+id/odometer_title"
+                android:text="Odometer"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/odometer_value"
+                android:hint="Odometer"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/departure_time_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dip" >
+
+            <TextView
+                android:id="@+id/departure_time_title"
+                android:text="Departure time"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/departure_time_value"
+                android:hint="Departure time"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/arrival_time_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dip" >
+
+            <TextView
+                android:id="@+id/arrival_time_title"
+                android:text="Arrival time"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/arrival_time_value"
+                android:hint="Arrival time"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/visit_result_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dip" >
+
+            <TextView
+                android:id="@+id/visit_result_title"
+                android:text="Visit result"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/visit_result_value"
+                android:hint="Visit result"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/note_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dip" >
+
+            <TextView
+                android:id="@+id/note_title"
+                android:text="Note"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/note_value"
+                android:hint="Note"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

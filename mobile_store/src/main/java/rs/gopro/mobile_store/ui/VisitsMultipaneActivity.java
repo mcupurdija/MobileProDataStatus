@@ -174,7 +174,7 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 	    return true;*/
 
 	    MenuInflater menuInflater = getMenuInflater();
-	    menuInflater.inflate(R.menu.plan_of_visits, menu);
+	    menuInflater.inflate(R.menu.visits_multipane, menu);
 		return super.onCreateOptionsMenu(menu);
 
 	}
