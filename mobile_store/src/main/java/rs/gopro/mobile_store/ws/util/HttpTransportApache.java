@@ -18,6 +18,16 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.Transport;
 import org.xmlpull.v1.XmlPullParserException;
 
+/**
+ * Extension of ksoap lib. It combines apache http protocol with ksoap serialization and NTLM authentication.
+ * 
+ * Code is allmost exact as in ksoap, but transport protocol implementation is changed to apache lib.
+ * 
+ * Only do POST requests!!!
+ * 
+ * @author vladimirm
+ *
+ */
 public class HttpTransportApache extends Transport {
 
 	private ServiceConnectionApache serviceConnection;
@@ -85,14 +95,14 @@ public class HttpTransportApache extends Transport {
             }
         }
         
-        // Already set in connection constructor, not an option allways 
-        //connection.setRequestMethod("POST");
+        // Already set in connection constructor, not an option always 
+        // connection.setRequestMethod("POST");
         serviceConnection.setRequestEntity(httpEntity);
         //this sends request
         serviceConnection.connect();
         //prepare for response
         requestData = null;
-        InputStream is;
+        InputStream is = null;
         List<HeaderProperty> retHeaders = null;
         
         try {
@@ -126,12 +136,14 @@ public class HttpTransportApache extends Transport {
                 is = serviceConnection.openInputStream();
             }
         } catch (IOException e) {
-            is = serviceConnection.getErrorStream();
-
+        	// don't understand this line!!!, if error stream exist it is never used
+        	// because of that line is commented 
+            //is = serviceConnection.getErrorStream();
             if (is == null) {
             	serviceConnection.disconnect();
                 throw (e);
             }
+            is.close();
         }
         
         if (debug) {

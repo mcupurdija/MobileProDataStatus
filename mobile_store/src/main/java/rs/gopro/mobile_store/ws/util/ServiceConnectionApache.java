@@ -21,6 +21,13 @@ import org.apache.http.params.HttpConnectionParams;
 import org.ksoap2.HeaderProperty;
 import org.ksoap2.transport.ServiceConnection;
 
+/**
+ * Connection implementation using Apache lib.
+ * 
+ * Only do POST requests!!!
+ * @author vladimirm
+ *
+ */
 public class ServiceConnectionApache implements ServiceConnection  {
 	
 	private HttpClient httpclient;
