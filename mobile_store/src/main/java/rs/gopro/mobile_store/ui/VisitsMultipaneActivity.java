@@ -4,15 +4,19 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.VisitsColumns;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
+import rs.gopro.mobile_store.ui.widget.VisitContextualMenu;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.ActionMode;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 
 public class VisitsMultipaneActivity extends BaseActivity implements
 		VisitListFragment.Callbacks, VisitDetailFragment.Callbacks {
@@ -22,6 +26,8 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 	private static final String STATE_VIEW_TYPE = "view_type";
 
 	private String mViewType;
+	ActionMode actionMod;
+	
 
 	private Fragment visitsPlanFragmentDetail;
 	private ShowHideMasterLayout mShowHideMasterLayout;
@@ -38,7 +44,7 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 		if (mShowHideMasterLayout != null) {
 			mShowHideMasterLayout.setFlingToExposeMasterEnabled(true);
 		}
-
+		
 		// routes data from intent that called this activity to business logic
 		routeIntent(getIntent(), savedInstanceState != null);
 
@@ -49,6 +55,7 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 					.findFragmentById(R.id.fragment_visitsplan_detail);
 			updateDetailBackground();
 		}
+		
 	}
 
 	private void routeIntent(Intent intent, boolean updateSurfaceOnly) {
@@ -117,10 +124,11 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 				return true;
 			}
 			break;
-		 case R.id.newrecord:
+			
+		/* case R.id.newrecord:
              final Intent intent = new Intent(this, NewVisitActivity.class);
              startActivity(intent);
-             break;
+             break;*/
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -138,6 +146,7 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 						visitsUri)));
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.fragment_visitsplan_list, fragment).commit();
+		
 	}
 
 	private void loadVisitDetail(Uri visitUri) {
@@ -158,18 +167,50 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 
 	@Override
 	public boolean onVisitSelected(String visitsId) {
+		//close action mode if user selected other item
+		if(actionMod != null){
+			actionMod.finish();
+		}
 		loadVisitDetail(MobileStoreContract.Visits.buildVisitUri(visitsId));
 		return true;
 	}
+	
+	
+	@Override
+	public void onVisitLongClick(String visitId) {
+		VisitContextualMenu	contextualMenu = new VisitContextualMenu(this,visitId);
+	  	actionMod = startActionMode(contextualMenu);
+		
+		
+	}  
 
 	@Override
 	public void onVisitIdAvailable(String visitId) {
 	}
 	
+	
+	/*@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		//super.onActivityResult(requestCode, resultCode, data);
+		
+		if(requestCode == ADD_VISIT_REQUEST_CODE.intValue()){
+			if(resultCode == RESULT_OK){
+				String visitId = data.getStringExtra(AddVisitActivity.VISIT_ID);
+				loadVisitDetail(MobileStoreContract.Visits.buildVisitUri(visitId));
+			}
+		}
+	}*/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.new_menu, menu);
-	    return true;
+	    MenuInflater menuInflater = getMenuInflater();
+	    menuInflater.inflate(R.menu.visits_multipane_menu, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
+	
+	
+	
+
+
+
+	
 }

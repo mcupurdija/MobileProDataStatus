@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:id="@+id/upaction">
+    </item>
+    <item
+        android:id="@+id/create_main_activity"
+        android:icon="@drawable/ic_action_next"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/next_button_title"/>
+    
+    <item
+        android:id="@+id/create_insert_visit_activity"
+        android:showAsAction="ifRoom|withText"
+        android:title="Add new ..."/>
+
+</menu>

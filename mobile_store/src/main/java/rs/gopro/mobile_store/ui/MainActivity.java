@@ -14,6 +14,8 @@ import rs.gopro.mobile_store.ui.customlayout.PlanOfVisitsLayout;
 import rs.gopro.mobile_store.ui.customlayout.ReportLayout;
 import rs.gopro.mobile_store.ui.customlayout.SaleOrdersLayout;
 import rs.gopro.mobile_store.ui.fragment.InvoicesFragment;
+import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
+import rs.gopro.mobile_store.ui.widget.VisitContextualMenu;
 import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.DatePickerDialog;
@@ -22,6 +24,7 @@ import android.app.Dialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.ActionMode;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
@@ -37,7 +40,7 @@ import android.widget.TextView;
  * 
  */
 
-public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener, MainContextualActionBarCallback {
 	private static String TAG = "MainActivity";
 	ActionsAdapter actionsAdapter;
 	private Integer currentItemPosition = Integer.valueOf(1);
@@ -165,5 +168,21 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 		}
 		return super.onCreateDialog(id);
 	}
+
+	/**
+	 * Callback method for contextual action bar initialization
+	 */
+	@Override
+	public void onLongClickItem(String identifier) {
+		ActionMode.Callback callback = currentCustomLinearLayout.getContextualActionBar(identifier);
+		if(callback != null){
+			startActionMode(callback);
+		}
+	}
+
+	
+
+
+	
 
 }

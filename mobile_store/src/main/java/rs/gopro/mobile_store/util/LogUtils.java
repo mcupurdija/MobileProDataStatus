@@ -7,7 +7,7 @@ import android.util.Log;
 public class LogUtils {
 	private static final String LOG_PREFIX = "mobile_store_";
 	private static final int LOG_PREFIX_LENGTH = LOG_PREFIX.length();
-	private static final int MAX_LOG_TAG_LENGTH = 40;
+	private static final int MAX_LOG_TAG_LENGTH = 23;
 
 	public static String makeLogTag(String str) {
 		if (str.length() > MAX_LOG_TAG_LENGTH - LOG_PREFIX_LENGTH) {

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -35,6 +36,12 @@ public class ItemsLayout extends CustomLinearLayout {
 			tr.commit();
 			LogUtils.LOGI(TAG, "inflateLayout"+fragment.getId());
 		}
+	}
+
+	@Override
+	public ActionMode.Callback getContextualActionBar(String identifier) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

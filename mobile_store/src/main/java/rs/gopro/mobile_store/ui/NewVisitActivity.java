@@ -50,7 +50,7 @@ public class NewVisitActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
 		Log.i(TAG, "Loga activity created.");
-		setContentView(R.layout.activity_new_visit);
+		//setContentView(R.layout.activity_new_visit);
 	     
     }
     

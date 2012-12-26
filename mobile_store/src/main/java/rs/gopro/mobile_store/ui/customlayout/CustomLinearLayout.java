@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -25,6 +26,8 @@ public abstract class CustomLinearLayout extends LinearLayout implements OnDateS
 	
 	
 	protected abstract void inflateLayout(LayoutInflater layoutInflater);
+	
+	public abstract ActionMode.Callback getContextualActionBar(String identifier);
 	
 	
 	/**
