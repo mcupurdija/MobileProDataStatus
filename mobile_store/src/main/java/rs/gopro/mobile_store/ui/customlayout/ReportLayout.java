@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.res.AssetManager;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -50,6 +51,12 @@ public class ReportLayout extends CustomLinearLayout {
 		}
 
 		return text.toString();
+	}
+
+	@Override
+	public ActionMode.Callback getContextualActionBar(String identifier) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

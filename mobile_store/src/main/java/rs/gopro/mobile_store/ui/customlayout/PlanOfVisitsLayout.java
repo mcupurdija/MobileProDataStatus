@@ -4,6 +4,7 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.VisitListFromMenuFragment;
+import rs.gopro.mobile_store.ui.widget.VisitContextualMenu;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -42,6 +44,12 @@ public class PlanOfVisitsLayout extends CustomLinearLayout {
 			tr.commit();
 			LogUtils.LOGI(TAG, "inflateLayout"+fragment.getId());
 		}
+	}
+
+	@Override
+	public ActionMode.Callback getContextualActionBar(String identifier) {
+		
+		return new VisitContextualMenu(activity, identifier);
 	}
 	
 //	View view = layoutInflater.inflate(R.layout.content_holder_plan_of_visits, null);

@@ -18,14 +18,17 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnLongClickListener;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 
 public class VisitListFragment extends ListFragment implements
-		LoaderManager.LoaderCallbacks<Cursor> {
+		LoaderManager.LoaderCallbacks<Cursor>, OnItemLongClickListener {
 
 	private static final String TAG = makeLogTag(VisitListFragment.class);
 	
@@ -39,6 +42,9 @@ public class VisitListFragment extends ListFragment implements
 	public interface Callbacks {
         /** Return true to select (activate) the vendor in the list, false otherwise. */
         public boolean onVisitSelected(String visitId);
+        
+        /** Pass selected visitId and initialize  contextual menu */
+        public void onVisitLongClick(String visitId);
     }
 
     private static Callbacks sDummyCallbacks = new Callbacks() {
@@ -46,6 +52,14 @@ public class VisitListFragment extends ListFragment implements
         public boolean onVisitSelected(String visitId) {
             return true;
         }
+
+		@Override
+		public void onVisitLongClick(String visitId) {
+			// TODO Auto-generated method stub
+			
+		}
+        
+        
     };
 
     private Callbacks mCallbacks = sDummyCallbacks;
@@ -59,6 +73,7 @@ public class VisitListFragment extends ListFragment implements
         }
 
         reloadFromArguments(getArguments());
+       
     }
 
     public void reloadFromArguments(Bundle arguments) {
@@ -90,6 +105,7 @@ public class VisitListFragment extends ListFragment implements
         final ListView listView = getListView();
         listView.setSelector(android.R.color.transparent);
         listView.setCacheColorHint(Color.WHITE);
+        listView.setOnItemLongClickListener(this);
     }
 
     @Override
@@ -131,6 +147,7 @@ public class VisitListFragment extends ListFragment implements
     /** {@inheritDoc} */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+    	System.out.println("ONCLICK");
         final Cursor cursor = (Cursor) mAdapter.getItem(position);
         String visitId = String.valueOf(cursor.getInt(VisitsQuery._ID));
         if (mCallbacks.onVisitSelected(visitId)) {
@@ -138,6 +155,17 @@ public class VisitListFragment extends ListFragment implements
             mAdapter.notifyDataSetChanged();
         }
     }
+    
+    
+    @Override
+	public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long arg3) {
+		   Cursor  cursor = (Cursor) adapter.getItemAtPosition(position);
+		   String visitId = String.valueOf(cursor.getInt(VisitsQuery._ID));
+		   mCallbacks.onVisitLongClick(visitId);
+		   view.setSelected(true);
+		   return true;
+	}
+    
     
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
@@ -225,5 +253,9 @@ public class VisitListFragment extends ListFragment implements
         int CUSTOMER_NAME2 = 5;
         int VISIT_DATE = 6;
 	}
+
+	
+
+	
 
 }

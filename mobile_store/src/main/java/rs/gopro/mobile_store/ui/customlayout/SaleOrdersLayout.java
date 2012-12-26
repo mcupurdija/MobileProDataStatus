@@ -23,6 +23,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.CursorAdapter;
 import android.text.format.DateUtils;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +75,12 @@ public class SaleOrdersLayout extends CustomLinearLayout implements  OnLongClick
 		 * editText.setText(year + "/" + (++monthOfYear) + "/" + dayOfMonth);
 		 */
 
+	}
+
+	@Override
+	public ActionMode.Callback getContextualActionBar(String identifier) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

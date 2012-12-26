@@ -63,4 +63,8 @@ public class UIUtils {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd. MM. yyyy HH:MM:SS");
 		return dateFormat.format(date);
 	}
+	
+	public static String  formatingDate(int year, int month, int day){
+		    return "" + year + "-" + month + "-" + day;
+	}
 }

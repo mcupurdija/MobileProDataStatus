@@ -37,4 +37,28 @@
 	<string name="save_button_title">Save</string>
 	<string name="cancel_button_title">Cancel</string>
 	<string name="new_button_title">New</string>
+	<!-- add visit --> 
+	<string name="sale_person_title">Sale person</string>
+	<string name="sale_person_hint">Sale Person</string>
+	<string name="customer_title">customer</string>
+	<string name="customer_hint">Customer</string>
+	<string name="visit_date_title">Visit Date</string>
+	<string name="visit_date_hint">Visit date</string>
+	<string name="line_number_title">Line number</string>
+	<string name="line_number_hint">Line number</string>
+	<string name="entry_type_title">Entry type</string>
+	<string name="entry_type_hint">Entry type</string>
+	<string name="odometer_title">Odometer</string>
+	<string name="odometer_hint">Odometer</string>
+	<string name="departure_time_title">Departure time</string>
+	<string name="departure_time_hint">Departure time</string>
+	<string name="arrival_time_title">Arrival time</string>
+	<string name="arrival_time_hint">Arrival time</string>
+	<string name="visit_result_title">Visit result</string>
+	<string name="visit_result_hint">Visit result</string>
+	<string name="note_title">Note</string>
+	<string name="note_hint">Note</string>
+	
+	
+	
 </resources>

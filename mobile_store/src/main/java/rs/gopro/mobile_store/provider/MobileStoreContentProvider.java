@@ -153,7 +153,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-		LogUtils.log(Log.VERBOSE, TAG, "insert(uri = " + uri + ")");
+		//LogUtils.log(Log.VERBOSE, TAG, "insert(uri = " + uri + ")");
+		System.out.println("insert(uri = " + uri + ")");
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
 		int match = mobileStoreURIMatcher.match(uri);
 		long id = 0;

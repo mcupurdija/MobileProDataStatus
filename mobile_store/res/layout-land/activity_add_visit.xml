@@ -22,7 +22,7 @@
 
             <TextView
                 android:id="@+id/sales_person_title"
-                android:text="Sales person"
+                android:text="@string/sale_person_title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <AutoCompleteTextView
@@ -30,7 +30,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:completionThreshold="1"
-                android:hint="Sales person"
+                android:hint="@string/sale_person_hint"
                 android:textAppearance="?android:attr/textAppearanceMedium"  />
         </TableRow>
 
@@ -44,7 +44,7 @@
 
             <TextView
                 android:id="@+id/customer_id_title"
-                android:text="Customer "
+                android:text="@string/customer_title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
            
@@ -52,8 +52,8 @@
                 android:id="@+id/customer_autocomplete"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:completionThreshold="2"
-                android:hint="Customer"
+                android:completionThreshold="1"
+                android:hint="@string/customer_hint"
                 android:textAppearance="?android:attr/textAppearanceMedium"  />
         </TableRow>
 
@@ -65,12 +65,12 @@
 
             <TextView
                 android:id="@+id/visit_date_title"
-                android:text="Visit date"
+                android:text="@string/visit_date_title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/visit_date_value"
-                android:hint="Visit date"
+                android:id="@+id/visit_date_input"
+                android:hint="@string/visit_date_hint"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -84,12 +84,12 @@
 
             <TextView
                 android:id="@+id/line_number_title"
-                android:text="Line number"
+                android:text="@string/line_number_title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/line_number_value"
-                android:hint="Line number"
+                android:id="@+id/line_number_input"
+                android:hint="@string/line_number_hint"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -103,12 +103,12 @@
 
             <TextView
                 android:id="@+id/entry_type_title"
-                android:text="Entry type"
+                android:text="@string/entry_type_title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/entry_type_value"
-                android:hint="Entry type"
+                android:id="@+id/entry_type_input"
+                android:hint="@string/entry_type_hint"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
     </TableLayout>
@@ -128,12 +128,12 @@
 
             <TextView
                 android:id="@+id/odometer_title"
-                android:text="Odometer"
+                android:text="@string/odometer_title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/odometer_value"
-                android:hint="Odometer"
+                android:id="@+id/odometer_input"
+                android:hint="@string/odometer_hint"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -145,12 +145,12 @@
 
             <TextView
                 android:id="@+id/departure_time_title"
-                android:text="Departure time"
+                android:text="@string/departure_time_title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/departure_time_value"
-                android:hint="Departure time"
+                android:id="@+id/departure_time_input"
+                android:hint="@string/departure_time_hint"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -162,12 +162,12 @@
 
             <TextView
                 android:id="@+id/arrival_time_title"
-                android:text="Arrival time"
+                android:text="@string/arrival_time_title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/arrival_time_value"
-                android:hint="Arrival time"
+                android:id="@+id/arrival_time_input"
+                android:hint="@string/arrival_time_hint"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -179,12 +179,12 @@
 
             <TextView
                 android:id="@+id/visit_result_title"
-                android:text="Visit result"
+                android:text="@string/visit_result_title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/visit_result_value"
-                android:hint="Visit result"
+                android:id="@+id/visit_result_input"
+                android:hint="@string/visit_result_hint"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -196,12 +196,12 @@
 
             <TextView
                 android:id="@+id/note_title"
-                android:text="Note"
+                android:text="@string/note_title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/note_value"
-                android:hint="Note"
+                android:id="@+id/note_input"
+                android:hint="@string/note_hint"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
     </TableLayout>

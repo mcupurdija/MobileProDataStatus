@@ -28,7 +28,8 @@ import android.view.MenuItem;
  * A base activity that handles common functionality in the app.
  */
 public abstract class BaseActivity extends FragmentActivity {
-    
+    protected static final Integer ADD_VISIT_REQUEST_CODE = new Integer(1);
+	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,7 @@ public abstract class BaseActivity extends FragmentActivity {
 	            return true;
             case R.id.create_insert_visit_activity: 
             	Intent newVisitIntent = new Intent(getApplicationContext(), AddVisitActivity.class);
-            	startActivity(newVisitIntent);
+            	startActivityForResult(newVisitIntent, ADD_VISIT_REQUEST_CODE);
             	return true;
         }
         return super.onOptionsItemSelected(item);

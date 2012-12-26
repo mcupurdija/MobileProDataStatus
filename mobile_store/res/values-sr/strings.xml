@@ -37,4 +37,26 @@
 	<string name="save_button_title">Sačuvaj</string>
 	<string name="cancel_button_title">Otkaži</string>
 	<string name="new_button_title">Novi rekord</string>
+	
+	<!-- add visit --> 
+	<string name="sale_person_title">Prodavac</string>
+	<string name="sale_person_hint">Prodavac</string>
+	<string name="customer_title">Kupac</string>
+	<string name="customer_hint">Kupac</string>
+	<string name="visit_date_title">Datum posete</string>
+	<string name="visit_date_hint">Datum posete</string>
+	<string name="line_number_title">Broj</string>
+	<string name="line_number_hint">Broj</string>
+	<string name="entry_type_title">Tip</string>
+	<string name="entry_type_hint">Tip</string>
+	<string name="odometer_title">Odometar</string>
+	<string name="odometer_hint">Odometar</string>
+	<string name="departure_time_title">Vreme odlaska</string>
+	<string name="departure_time_hint">Vreme odlaska</string>
+	<string name="arrival_time_title">Vreme dolaska</string>
+	<string name="arrival_time_hint">Vreme dolaska</string>
+	<string name="visit_result_title">Rezultat posete</string>
+	<string name="visit_result_hint">Rezultat posete</string>
+	<string name="note_title">Beleske</string>
+	<string name="note_hint">Beleske</string>
 </resources>
