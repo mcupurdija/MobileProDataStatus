@@ -58,7 +58,7 @@
 	<string name="visit_result_hint">Visit result</string>
 	<string name="note_title">Note</string>
 	<string name="note_hint">Note</string>
-	
+	<string name="action_button_refresh">Refresh</string>
 	
 	
 </resources>

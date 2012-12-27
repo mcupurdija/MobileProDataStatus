@@ -1,15 +1,18 @@
 package rs.gopro.mobile_store.ws.mappings;
 
+import java.util.Date;
 import java.util.Hashtable;
 
 import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.PropertyInfo;
 
+import rs.gopro.mobile_store.util.UIUtils;
+
 public class ItemsRequest implements KvmSerializable {
 
 	private String pCSVString;
 	private String pItemNoa46;
-	private String pDateModified;
+	private Date pDateModified;
 	private Integer pCampaignStatus;
 
 	public ItemsRequest() {
@@ -17,7 +20,7 @@ public class ItemsRequest implements KvmSerializable {
 	}
 
 	public ItemsRequest(String pCSVString, String pItemNoa46,
-			String pDateModified, Integer pCampaignStatus) {
+			Date pDateModified, Integer pCampaignStatus) {
 		super();
 		this.pCSVString = pCSVString;
 		this.pItemNoa46 = pItemNoa46;
@@ -57,7 +60,7 @@ public class ItemsRequest implements KvmSerializable {
         	pItemNoa46 = value.toString();
             break;
         case 2:
-        	pDateModified = value.toString();
+        	pDateModified = UIUtils.getDateTime(value.toString());
             break;
         case 3:
         	pCampaignStatus = Integer.parseInt(value.toString());
@@ -80,7 +83,7 @@ public class ItemsRequest implements KvmSerializable {
 			info.name = "pItemNoa46";
 			break;
 		case 2:
-			info.type = PropertyInfo.STRING_CLASS;
+			info.type = new Date().getClass();;
 			info.name = "pDateModified";
 			break;
 		case 3:
@@ -108,11 +111,11 @@ public class ItemsRequest implements KvmSerializable {
 		this.pItemNoa46 = pItemNoa46;
 	}
 
-	public String getpDateModified() {
+	public Date getpDateModified() {
 		return pDateModified;
 	}
 
-	public void setpDateModified(String pDateModified) {
+	public void setpDateModified(Date pDateModified) {
 		this.pDateModified = pDateModified;
 	}
 

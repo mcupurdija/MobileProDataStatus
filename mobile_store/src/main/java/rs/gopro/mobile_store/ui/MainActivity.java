@@ -18,13 +18,21 @@ import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.ui.widget.VisitContextualMenu;
 import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.ws.NavisionSyncService;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
 import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
@@ -42,12 +50,13 @@ import android.widget.TextView;
 
 public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener, MainContextualActionBarCallback {
 	private static String TAG = "MainActivity";
+	
 	ActionsAdapter actionsAdapter;
 	private Integer currentItemPosition = Integer.valueOf(1);
 	public static final String CURRENT_POSITION_KEY = "current_position";
-
-	CustomLinearLayout currentCustomLinearLayout;
-	Map<String, CustomLinearLayout> savedLayoutInstances = new HashMap<String, CustomLinearLayout>();
+	private ResultReceiver mReceiver;
+	private CustomLinearLayout currentCustomLinearLayout;
+	private Map<String, CustomLinearLayout> savedLayoutInstances = new HashMap<String, CustomLinearLayout>();
 
 	/**
 	 * Create menu as list view on left side of screen. Create content space
@@ -180,9 +189,52 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 		}
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater menuInflater = getMenuInflater();
+	    menuInflater.inflate(R.menu.main_activity_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.synchronize_main_action : 
+			doSynchronization();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
+	private void doSynchronization() {
+		mReceiver = new ResultReceiver(new Handler()) {
 
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                if (resultData != null && resultData.containsKey(NavisionSyncService.SOAP_RESULT)) {
+                	onSOAPResult(resultCode, resultData.getString(NavisionSyncService.SOAP_RESULT));
+                }
+                else {
+                	onSOAPResult(resultCode, null);
+                }
+            }
+            
+        };
+		
+		
+		Intent intent = new Intent(this, NavisionSyncService.class);
+		intent.putExtra(NavisionSyncService.EXTRA_RESULT_RECEIVER, getResultReceiver());
+		this.startService(intent);
+		
+	}
 	
+	public ResultReceiver getResultReceiver() {
+        return mReceiver;
+    }
+	
+	public void onSOAPResult(int code, String result) {
+		System.out.println(result);
+    	return;
+    }
 
 }

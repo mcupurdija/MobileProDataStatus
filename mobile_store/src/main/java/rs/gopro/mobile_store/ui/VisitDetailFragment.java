@@ -115,16 +115,16 @@ public class VisitDetailFragment extends Fragment implements
         mCustomerNo.setText("Kupac Br.		" + customerNoString);
         
         String visitDate = cursor.getString(VisitsQuery.VISIT_DATE);
-        mVisitDate.setText("Datum posete:	" + UIUtils.formatDate(UIUtils.getDate(visitDate)));
+        mVisitDate.setText("Datum posete:	" + UIUtils.formatDate(UIUtils.getDateTime(visitDate)));
         
         int odometerVal = cursor.getInt(VisitsQuery.ODOMETER);
         mOdometer.setText("Odometar:		 	" + String.valueOf(odometerVal));
         
         String arrivalTime = cursor.getString(VisitsQuery.ARRIVAL_TIME);
-        mArrivalTime.setText("Vreme dolaska: 		"+UIUtils.formatDateTime(UIUtils.getDate(arrivalTime)));
+        mArrivalTime.setText("Vreme dolaska: 		"+UIUtils.formatDateTime(UIUtils.getDateTime(arrivalTime)));
         
         String departureTime = cursor.getString(VisitsQuery.DEPARTURE_TIME);
-        mDepartureTime.setText("Vreme odlaska: 		"+UIUtils.formatDateTime(UIUtils.getDate(departureTime)));
+        mDepartureTime.setText("Vreme odlaska: 		"+UIUtils.formatDateTime(UIUtils.getDateTime(departureTime)));
         
         String note = cursor.getString(VisitsQuery.NOTE);
         mNote.setText("Beleska:			"+note);

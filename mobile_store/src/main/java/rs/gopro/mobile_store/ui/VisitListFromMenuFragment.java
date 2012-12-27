@@ -183,7 +183,7 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 			// cursor.getString(VisitsQuery.VENDOR_ID)
 			// .equals(mSelectedVendorId));
 			view.setActivated(String.valueOf(cursor.getInt(VisitsQuery._ID)).equals(mSelectedVisitId));
-			((TextView) view.findViewById(R.id.visit_title)).setText(UIUtils.formatDate(UIUtils.getDate(cursor.getString(VisitsQuery.VISIT_DATE))));
+			((TextView) view.findViewById(R.id.visit_title)).setText(UIUtils.formatDate(UIUtils.getDateTime(cursor.getString(VisitsQuery.VISIT_DATE))));
 			((TextView) view.findViewById(R.id.visit_subtitle1)).setText(cursor.getString(VisitsQuery.CUSTOMER_NO));
 			((TextView) view.findViewById(R.id.visit_subtitle2)).setText(cursor.getString(VisitsQuery.CUSTOMER_NAME) + cursor.getString(VisitsQuery.CUSTOMER_NAME2));
 		}

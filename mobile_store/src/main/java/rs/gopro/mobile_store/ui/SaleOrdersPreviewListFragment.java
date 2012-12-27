@@ -220,7 +220,7 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
             final TextView titleView = (TextView) view.findViewById(R.id.block_title);
             final TextView subtitleView = (TextView) view.findViewById(R.id.block_subtitle);
             String salesOrderDate = cursor.getString(SaleOrdersQuery.ORDER_DATE);
-            String salesOrderFormatDate = UIUtils.formatDate(UIUtils.getDate(salesOrderDate));
+            String salesOrderFormatDate = UIUtils.formatDate(UIUtils.getDateTime(salesOrderDate));
             String salesOrderNo = cursor.getString(SaleOrdersQuery.SALES_ORDER_NO);
             String salesOrderCust = cursor.getString(SaleOrdersQuery.CUSTOMER_NO) + " " + cursor.getString(SaleOrdersQuery.CUSTOMER_NAME) + " " + cursor.getString(SaleOrdersQuery.CUSTOMER_NAME2);
             timeView.setText(salesOrderFormatDate);

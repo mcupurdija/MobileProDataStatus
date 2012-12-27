@@ -112,4 +112,14 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void onStop() {
         super.onStop();
     }
+    
+    /**
+     * Should be abstract but need to implement empty in so many classes.
+     * It will be done eventually.
+     * @param code
+     * @param result
+     */
+    public void onSOAPResult(int code, String result) {
+    	return;
+    }
 }

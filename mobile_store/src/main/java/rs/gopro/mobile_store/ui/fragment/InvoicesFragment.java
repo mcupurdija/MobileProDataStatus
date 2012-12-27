@@ -93,7 +93,7 @@ public class InvoicesFragment  extends ListFragment implements LoaderCallbacks<C
 		long previouspostingDate = -1;
 		long postingDate;
 		while (!cursor.isAfterLast()) {
-			postingDate = UIUtils.getDate(cursor.getString(InvoicesQuery.POSTING_DATE)).getTime();
+			postingDate = UIUtils.getDateTime(cursor.getString(InvoicesQuery.POSTING_DATE)).getTime();
 			if (!UIUtils.isSameDay(previouspostingDate, postingDate)) {
 				String title = DateUtils.formatDateTime(getActivity(), postingDate, DateUtils.FORMAT_ABBREV_MONTH | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
 				sections.add(new SimpleSelectionedListAdapter.Section(cursor.getPosition(), title));
@@ -151,8 +151,8 @@ public class InvoicesFragment  extends ListFragment implements LoaderCallbacks<C
 			final Integer invoicesId = cursor.getInt(InvoicesQuery._ID);
 			final String invoicesNo = cursor.getString(InvoicesQuery.NO);
 			final Integer totalAmount = cursor.getInt(InvoicesQuery.TOTAL);
-			final long dateOfCreation = UIUtils.getDate(cursor.getString(InvoicesQuery.CREATED_DATE)).getTime();
-			final long postingDate = UIUtils.getDate(cursor.getString(InvoicesQuery.POSTING_DATE)).getTime();
+			final long dateOfCreation = UIUtils.getDateTime(cursor.getString(InvoicesQuery.CREATED_DATE)).getTime();
+			final long postingDate = UIUtils.getDateTime(cursor.getString(InvoicesQuery.POSTING_DATE)).getTime();
 			final TextView timeView = (TextView) view.findViewById(R.id.block_time);
 			final TextView titleView = (TextView) view.findViewById(R.id.block_title);
 			final TextView subtitleView = (TextView) view.findViewById(R.id.block_subtitle);

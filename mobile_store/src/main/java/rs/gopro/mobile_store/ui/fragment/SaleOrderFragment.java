@@ -135,7 +135,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 		long previousOrderDate = -1;
 		long orderDate;
 		while (!cursor.isAfterLast()) {
-			orderDate = UIUtils.getDate(cursor.getString(SaleOrderQuery.ORDER_DATE)).getTime();
+			orderDate = UIUtils.getDateTime(cursor.getString(SaleOrderQuery.ORDER_DATE)).getTime();
 			if (!UIUtils.isSameDay(previousOrderDate, orderDate)) {
 				String title = DateUtils.formatDateTime(getActivity(), orderDate, DateUtils.FORMAT_ABBREV_MONTH | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
 				sections.add(new SimpleSelectionedListAdapter.Section(cursor.getPosition(), title));
@@ -223,7 +223,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 			final Integer saleOrderId = cursor.getInt(SaleOrderQuery._ID);
 			final String saleOrderNo = cursor.getString(SaleOrderQuery.NO);
 			final Integer totalAmount = cursor.getInt(SaleOrderQuery.TOTAL);
-			final long orderDate = UIUtils.getDate(cursor.getString(SaleOrderQuery.ORDER_DATE)).getTime();
+			final long orderDate = UIUtils.getDateTime(cursor.getString(SaleOrderQuery.ORDER_DATE)).getTime();
 
 			final TextView timeView = (TextView) view.findViewById(R.id.block_time);
 			final TextView titleView = (TextView) view.findViewById(R.id.block_title);
