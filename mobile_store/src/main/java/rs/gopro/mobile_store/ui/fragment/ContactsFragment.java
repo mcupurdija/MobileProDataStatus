@@ -5,7 +5,9 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
+import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.util.LogUtils;
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -19,15 +21,18 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 
-public class ContactsFragment extends ListFragment implements LoaderCallbacks<Cursor>, TextWatcher {
+public class ContactsFragment extends ListFragment implements LoaderCallbacks<Cursor>, TextWatcher, OnItemLongClickListener {
 
 	private static String TAG = "CustomerFragment";
 	private EditText searchText;
 	private CursorAdapter cursorAdapter;
+	private MainContextualActionBarCallback actionBarCallback;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +56,6 @@ public class ContactsFragment extends ListFragment implements LoaderCallbacks<Cu
 				return cursor;
 			}
 		});
-		System.out.println("ADAPTER SE SETUJE");
 		setListAdapter(cursorAdapter);
 	}
 
@@ -62,8 +66,16 @@ public class ContactsFragment extends ListFragment implements LoaderCallbacks<Cu
 			searchText = (EditText) getActivity().findViewById(R.id.input_search_contacts);
 			searchText.addTextChangedListener(this);
 		}
+		getListView().setOnItemLongClickListener(this);
 	}
 
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		actionBarCallback = (MainContextualActionBarCallback) activity;
+		
+	}
+	
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		CursorLoader cursorLoader = new CursorLoader(getActivity(), MobileStoreContract.Contacts.CONTENT_URI, ContactsQuery.PROJECTION, null, null, MobileStoreContract.Contacts.DEFAULT_SORT);
@@ -84,6 +96,11 @@ public class ContactsFragment extends ListFragment implements LoaderCallbacks<Cu
 
 	private interface ContactsQuery {
 		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Contacts.CONTACT_NO, MobileStoreContract.Contacts.NAME, MobileStoreContract.Contacts.PHONE };
+		int _ID = 0;
+		int CONTACT_NO = 1;
+		int NAME = 2;
+		int PHONE = 3;
+		
 	}
 
 	@Override
@@ -109,6 +126,14 @@ public class ContactsFragment extends ListFragment implements LoaderCallbacks<Cu
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		System.out.println("Onclick");
+	}
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+		final Cursor cursor = (Cursor) cursorAdapter.getItem(position);
+		String contactId = String.valueOf(cursor.getInt(ContactsQuery._ID));
+		actionBarCallback.onLongClickItem(contactId);
+		return true;
 	}
 
 }

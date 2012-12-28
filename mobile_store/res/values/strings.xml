@@ -60,6 +60,7 @@
 	<string name="note_title">Note</string>
 	<string name="note_hint">Note</string>
 	
-	
+	<string name="contextual_deactivate">Delete</string>
+	<string name="contextual_edit">Edit</string>
 	
 </resources>

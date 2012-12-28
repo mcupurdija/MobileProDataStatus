@@ -60,4 +60,8 @@
 	<string name="visit_result_hint">Rezultat posete</string>
 	<string name="note_title">Beleske</string>
 	<string name="note_hint">Beleske</string>
+	
+	<string name="contextual_deactivate">Brisi</string>
+	<string name="contextual_edit">Izmeni</string>
+	
 </resources>
