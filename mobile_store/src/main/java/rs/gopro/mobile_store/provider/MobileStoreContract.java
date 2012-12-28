@@ -24,20 +24,23 @@ public class MobileStoreContract {
 	private static final String PATH_WITH_CUSTOMER = "with_customer";
 	private static final String PATH_SALE_ORDER_SEARCH_CUSTOM = "custom_search";
 
+	private static final String PATH_CONTACTS = "contacts";
+	private static final String PATH_CONTACTS_SEARCH_CUSTOM = "custom_search";
+
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
-		String CREATED_BY = "created_by"; 
+		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
-		String UPDATED_BY = "updated_by"; 
+		String UPDATED_BY = "updated_by";
 	}
-	
+
 	public interface UsersColumns {
 		String USERNAME = "username";
 		String PASSWORD = "pass";
 		String SALES_PERSON_ID = "sales_person_id";
 		String LAST_LOGIN = "last_login";
 	}
-	
+
 	public interface VisitsColumns {
 		// it has sales_person_id
 		String VISIT_DATE = "visit_date";
@@ -52,12 +55,11 @@ public class MobileStoreContract {
 		// it has audit columns
 	}
 
-
 	public interface InvoicesColumns {
 		String INVOICE_NO = "invoice_no";
 		String CUSTOMER_ID = "customer_id";
 		String POSTING_DATE = "posting_date";
-		//String SALES_PERSON_ID = "sales_person_id";
+		// String SALES_PERSON_ID = "sales_person_id";
 		String DUE_DATE = "due_date";
 		String TOTAL = "total";
 		String TOTAL_LEFT = "total_left";
@@ -70,7 +72,7 @@ public class MobileStoreContract {
 	}
 
 	public interface CustomersColumns {
-		//String SALES_PERSON_ID = "sales_person_id";
+		// String SALES_PERSON_ID = "sales_person_id";
 		String CUSTOMER_NO = "customer_no";
 		String NAME = "name";
 		String NAME_2 = "name2";
@@ -91,7 +93,7 @@ public class MobileStoreContract {
 		String GLOBAL_DIMENSION = "global_dimension";
 		String CHANNEL_ORAN = "channel_oran";
 		String BLOCKED_STATUS = "blocked_status";
-		
+
 		String SML = "sml";
 		String INTERNAL_BALANCE_DUE_LCY = "internal_balance_due_lcy";
 		String ADOPTED_POTENTIAL = "adopted_potential";
@@ -120,7 +122,7 @@ public class MobileStoreContract {
 		String UPDATED_DATE = "updated_date";
 		String UPDATED_BY = "updated_by";
 	}
-	
+
 	public interface SaleOrdersColumns {
 		String SALES_ORDER_NO = "sales_order_no";
 		String DOCUMENT_TYPE = "document_type";
@@ -141,7 +143,7 @@ public class MobileStoreContract {
 		String SPECIAL_QUOTE = "special_quote";
 		String QUOTE_VALID_DATE_TO = "quote_valid_date_to";
 		String CUST_USES_TRANSIT_CUST = "cust_uses_transit_cust";
-		//String SALES_PERSON_ID = "sales_person_id";
+		// String SALES_PERSON_ID = "sales_person_id";
 		String CUSTOMER_ADDRESS_ID = "customer_address_id";
 		String CONTACT_PHONE = "contact_phone";
 		String PAYMENT_OPTION = "payment_option";
@@ -156,7 +158,7 @@ public class MobileStoreContract {
 		String NOTE2 = "note2";
 		String NOTE3 = "note3";
 	}
-	
+
 	public interface SaleOrderLinesColumns {
 		String SALE_ORDER_ID = "sale_order_id";
 		String LINE_NO = "line_no";
@@ -175,11 +177,43 @@ public class MobileStoreContract {
 		String PRICE_DISCOUNT_STATUS = "price_discount_status";
 		String QUANTITY_AVAILABLE_STATUS = "quantity_available_status";
 	}
-	
+
+	/**
+	 * Contacts contract
+	 * 
+	 * @author acanikolic
+	 * 
+	 */
+	public interface ContactsColumns {
+		String CONTACT_NO = "contact_no";
+		String CONTACT_TYPE = "contact_type";
+		String NAME = "name";
+		String NAME2 = "name2";
+		String ADDRESS = "address";
+		String CITY = "city";
+		String POST_CODE = "post_code";
+		String PHONE = "phone";
+		String MOBILE_PHONE = "mobile_phone";
+		String EMAIL = "email";
+		String COMPANY_NO = "company_no";
+		String COMPANY_ID = "company_id";
+		String VAT_REGISTRATION = "vat_registration";
+		String SALES_PERSON_ID = "sales_person_id";
+		String DIVISION = "division";
+		String NUMBER_OF_BLUE_COAT = "number_of_blue_coat";
+		String NUMBER_OF_GREY_COAT = "number_of_grey_coat";
+		String JOB_TITLE = "job_title";
+		String CREATED_DATE = "created_date";
+		String CREATED_BY = "created_by";
+		String UPDATED_DATE = "updated_date";
+		String UPDATED_BY = "updated_by";
+
+	}
+
 	public interface SalesPersonsColumns {
 		String SALES_PERSON_ID = "sales_person_id";
 	}
-	
+
 	public static class Users implements UsersColumns, BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_USERS).build();
 
@@ -219,11 +253,9 @@ public class MobileStoreContract {
 
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CUSTOMERS).build();
 
-		public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.customer";
-        public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.customer";
-		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.customer";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.customer";
+
 		public static Uri buildCustomersUri(String customerId) {
 			return CONTENT_URI.buildUpon().appendPath(customerId).build();
 		}
@@ -255,7 +287,7 @@ public class MobileStoreContract {
 		public static String getCustomSearchSecondParamQuery(Uri uri) {
 			return uri.getPathSegments().get(2);
 		}
-		
+
 		public static Uri getCustomersBySalesPerson(String salesPersonId) {
 			return BASE_CONTENT_URI.buildUpon().appendPath(PATH_CUSTOMERS_BY_SALES_PERSON).appendPath(salesPersonId).build();
 		}
@@ -263,7 +295,7 @@ public class MobileStoreContract {
 		public static String getCustomersSalesPersonId(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}
-		
+
 		public static final String DEFAULT_SORT = Customers.CUSTOMER_NO + " ASC";
 	}
 
@@ -278,7 +310,7 @@ public class MobileStoreContract {
 		public static String getItemNo(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}
-		
+
 		public static String getCustomSearchFirstParamQuery(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}
@@ -286,7 +318,6 @@ public class MobileStoreContract {
 		public static String getCustomSearchSecondParamQuery(Uri uri) {
 			return uri.getPathSegments().get(2);
 		}
-		
 
 		public static final String DEFAULT_SORT = ItemsColumns.ITEM_NO + " ASC";
 
@@ -298,72 +329,70 @@ public class MobileStoreContract {
 			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(ITEM_NO).build();
 		}
 	}
-	
+
 	/**
 	 * Visits contract.
+	 * 
 	 * @author vladimirm
-	 *
+	 * 
 	 */
 	public static class Visits implements VisitsColumns, SalesPersonsColumns, CustomersColumns, AuditColumns, BaseColumns {
-		
+
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_VISITS).build();
-		 /** Default "ORDER BY" clause. */
-        public static final String DEFAULT_SORT = "visits." + Visits.CREATED_DATE + " DESC";
-		
-        public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.visit";
-        public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.visit";
-        
-        public static Uri buildVisitUri(String visitsId){
+		/** Default "ORDER BY" clause. */
+		public static final String DEFAULT_SORT = "visits." + Visits.CREATED_DATE + " DESC";
+
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.visit";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.visit";
+
+		public static Uri buildVisitUri(String visitsId) {
 			return CONTENT_URI.buildUpon().appendPath(visitsId).build();
 		}
 
-		public static String getVisitId(Uri uri){
-			return  uri.getPathSegments().get(1);
+		public static String getVisitId(Uri uri) {
+			return uri.getPathSegments().get(1);
 		}
-		
+
 		public static Uri buildWithCustomer() {
-			return  CONTENT_URI.buildUpon().appendPath(PATH_WITH_CUSTOMER).build();
+			return CONTENT_URI.buildUpon().appendPath(PATH_WITH_CUSTOMER).build();
 		}
 	}
-	
+
 	/**
 	 * Sale orders contract
+	 * 
 	 * @author vladimirm
-	 *
+	 * 
 	 */
 	public static class SaleOrders implements SaleOrdersColumns, BaseColumns, CustomersColumns, AuditColumns, SalesPersonsColumns {
-		
+
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDERS).build();
-		 /** Default "ORDER BY" clause. */
-		public static final String DEFAULT_SORT = "sale_orders."+SaleOrders.ORDER_DATE + " DESC";
-		
-		public static final String CONTENT_TYPE =
-				"vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sale_orders";
-		public static final String CONTENT_ITEM_TYPE =
-				"vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sale_orders";
-		
-		public static Uri buildSaleOrderUri(String saleOrderId){
+		/** Default "ORDER BY" clause. */
+		public static final String DEFAULT_SORT = "sale_orders." + SaleOrders.ORDER_DATE + " DESC";
+
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sale_orders";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sale_orders";
+
+		public static Uri buildSaleOrderUri(String saleOrderId) {
 			return CONTENT_URI.buildUpon().appendPath(saleOrderId).build();
 		}
 
 		public static Uri buildSaleOrdersListUri(String salesPersonId) {
 			return BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDERS_LIST).appendPath(salesPersonId).build();
 		}
-		
-		public static String getSalesPersonId(Uri uri){
-			return  uri.getPathSegments().get(1);
+
+		public static String getSalesPersonId(Uri uri) {
+			return uri.getPathSegments().get(1);
 		}
-		
-		public static String getSaleOrderId(Uri uri){
-			return  uri.getPathSegments().get(1);
+
+		public static String getSaleOrderId(Uri uri) {
+			return uri.getPathSegments().get(1);
 		}
 
 		public static Uri buildCustomSearchUri(String text, String status) {
 			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(PATH_SALE_ORDER_SEARCH_CUSTOM).build();
 		}
-		
+
 		public static String getCustomSearchFirstParamQuery(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}
@@ -379,53 +408,77 @@ public class MobileStoreContract {
 
 	/**
 	 * Sale order lines contract
+	 * 
 	 * @author vladimirm
-	 *
+	 * 
 	 */
 	public static class SaleOrderLines implements SaleOrderLinesColumns, BaseColumns, ItemsColumns, AuditColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDER_LINES).build();
-		 /** Default "ORDER BY" clause. */
+		/** Default "ORDER BY" clause. */
 		public static final String DEFAULT_SORT = "sale_order_lines." + AuditColumns.CREATED_DATE + " DESC";
-		
-		public static final String CONTENT_TYPE =
-				"vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sale_order_lines";
-		public static final String CONTENT_ITEM_TYPE =
-				"vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sale_order_lines";
-		
-		public static Uri buildSaleOrderLineUri(String saleOrderLine){
+
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sale_order_lines";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sale_order_lines";
+
+		public static Uri buildSaleOrderLineUri(String saleOrderLine) {
 			return CONTENT_URI.buildUpon().appendPath(saleOrderLine).build();
 		}
 
-		public static String getSaleOrderLineId(Uri uri){
-			return  uri.getPathSegments().get(1);
+		public static String getSaleOrderLineId(Uri uri) {
+			return uri.getPathSegments().get(1);
 		}
-		
-		public static Uri buildSaleOrderLinesUri(String saleOrderId){
+
+		public static Uri buildSaleOrderLinesUri(String saleOrderId) {
 			return BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDER_LINES_FROM_ORDER).appendPath(saleOrderId).build();
 		}
-		
-		public static String getSaleOrderId(Uri uri){
-			return  uri.getPathSegments().get(1);
+
+		public static String getSaleOrderId(Uri uri) {
+			return uri.getPathSegments().get(1);
 		}
 	}
-	
+
+	public static class Contacts implements ContactsColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CONTACTS).build();
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.contacts";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.contacts";
+
+		public static Uri buildContactsUri(String contactId) {
+			return CONTENT_URI.buildUpon().appendPath(contactId).build();
+		}
+
+		public static String getContactsId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+		
+		public static Uri buildCustomSearchUri(String text) {
+			return CONTENT_URI.buildUpon().appendPath(text).build();
+		}
+		
+		public static String getContactsCustomSearch(Uri uri){
+			return uri.getPathSegments().get(1);
+		}
+		
+		public static final String DEFAULT_SORT = Contacts.CONTACT_NO + " ASC";
+	}
+
 	/**
 	 * To mark data inserted/changed/deleted from sync service and not from UI.
+	 * 
 	 * @param uri
 	 * @return
 	 */
-    public static Uri addCallerIsSyncAdapterParameter(Uri uri) {
-        return uri.buildUpon().appendQueryParameter(
-                ContactsContract.CALLER_IS_SYNCADAPTER, "true").build();
-    }
+	public static Uri addCallerIsSyncAdapterParameter(Uri uri) {
+		return uri.buildUpon().appendQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER, "true").build();
+	}
 
-    /**
-     * To check if data is inserted/changed/deleted from sync service and not from UI.
-     * @param uri
-     * @return
-     */
-    public static boolean hasCallerIsSyncAdapterParameter(Uri uri) {
-        return TextUtils.equals("true",
-                uri.getQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER));
-    }
+	/**
+	 * To check if data is inserted/changed/deleted from sync service and not
+	 * from UI.
+	 * 
+	 * @param uri
+	 * @return
+	 */
+	public static boolean hasCallerIsSyncAdapterParameter(Uri uri) {
+		return TextUtils.equals("true", uri.getQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER));
+	}
 }

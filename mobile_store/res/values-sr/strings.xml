@@ -21,6 +21,7 @@
 	<string name="sale_order_amount_total_template">Iznos je: </string>
 	<string name="customer_search_title">Pronadji kupca: </string>
 	<string name="customer_block_status_spinner_title">Filtriraj po statusu:</string>
+	<string name="contact_search_title">Pronadji kontakt: </string>
 	
 	<string name="item_search_title">Pronadji artikl: </string>
 	<string name="item_block_status_spinner_title">Filtriraj po statusu:</string>

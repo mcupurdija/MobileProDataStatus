@@ -1,5 +1,6 @@
 package rs.gopro.mobile_store.provider;
 
+import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
@@ -60,6 +61,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 	
 	private static final int SALE_ORDER_LINES_FROM_ORDER = 300;
 	
+	private static final int CONTACTS = 400;
+	private static final int CONTACTS_NO = 401;
+	private static final int CONTACTS_CUSTOM_SEARCH = 402;
+	private static final int CONTACTS_ALL = 403;
+	
 
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -110,7 +116,13 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "sale_orders/#/*/custom_search", SALE_ORDER_CUSTOM_SEARCH);
 		
 		mobileStoreURIMatcher.addURI(authority, "sale_order_lines_from_order/#", SALE_ORDER_LINES_FROM_ORDER);
-
+		
+		mobileStoreURIMatcher.addURI(authority, "contacts", CONTACTS);
+		mobileStoreURIMatcher.addURI(authority, "contacts/*", CONTACTS_CUSTOM_SEARCH );
+		/*mobileStoreURIMatcher.addURI(authority, "contacts/custom_search", CONTACTS_ALL);
+		mobileStoreURIMatcher.addURI(authority, "contacts/custom_search/*", CONTACTS_CUSTOM_SEARCH);*/
+		//mobileStoreURIMatcher.addURI(authority, "contacts/custom_search/#", CONTACTS_CUSTOM_SEARCH);
+												   
 	}
 
 	@Override
@@ -175,6 +187,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.VISITS, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return Visits.buildVisitUri("" + id);
+		case CONTACTS:
+			id = database.insertOrThrow(Tables.CONTACTS,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return Contacts.buildContactsUri("" + id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -403,6 +419,12 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(SaleOrderLines.PRICE_EUR, Tables.SALE_ORDER_LINES)
 					.mapToTable(SaleOrderLines.REAL_DISCOUNT, Tables.SALE_ORDER_LINES)
 					.where(SaleOrderLines.SALE_ORDER_ID+"=?", salesOrderId);
+		case CONTACTS_CUSTOM_SEARCH:
+			String contactsCustomSearch = Contacts.getContactsCustomSearch(uri);
+			return builder.addTable(Tables.CONTACTS)
+				.where(Contacts.CONTACT_NO + " like ?  or "+ Contacts.NAME +" like ?", new String[] {"%"+contactsCustomSearch+"%", "%"+contactsCustomSearch+"%"});
+		case CONTACTS:
+			return builder.addTable(Tables.CONTACTS);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
