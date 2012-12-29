@@ -1,6 +1,7 @@
 package rs.gopro.mobile_store.ui;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,8 +18,11 @@ import rs.gopro.mobile_store.ui.fragment.InvoicesFragment;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.ui.widget.VisitContextualMenu;
 import rs.gopro.mobile_store.util.ApplicationConstants;
+import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.mappings.ItemsRequest;
+import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
@@ -223,6 +227,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 		
 		
 		Intent intent = new Intent(this, NavisionSyncService.class);
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, new ItemsSyncObject(null, null, DateUtils.getWsDummyDate(), Integer.valueOf(-1)));
 		intent.putExtra(NavisionSyncService.EXTRA_RESULT_RECEIVER, getResultReceiver());
 		this.startService(intent);
 		
