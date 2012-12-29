@@ -423,3 +423,28 @@ INSERT INTO `sale_order_lines` VALUES ('13','4','1','10','2','KOM','23','10','20
 INSERT INTO `sale_order_lines` VALUES ('14','4','2','13','2','KOM','214','10','20','18',null,null,'2233',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
 INSERT INTO `sale_order_lines` VALUES ('15','4','3','14','2','KOM','2023','10','20','12',null,null,'1256',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
 INSERT INTO `sale_order_lines` VALUES ('16','4','4','15','2','KOM','512.33','10','20','18',null,null,'2345',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+
+CREATE TABLE `sync_logs` (
+	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
+	`sync_object` TEXT,
+	`sync_object_id` TEXT,
+	`sync_status` TEXT,
+	`created_date` TEXT,
+	`created_by` TEXT,
+	`updated_date` TEXT,
+	`updated_by` TEXT
+);
+CREATE TRIGGER IF NOT EXISTS "log_new_sync_log" AFTER INSERT ON "sync_logs" 
+BEGIN 
+	update sync_logs set 
+	created_date = datetime('now'),
+	created_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TRIGGER IF NOT EXISTS "log_sync_log_change" AFTER UPDATE ON "sync_logs" 
+BEGIN 
+	update sync_logs set 
+	updated_date = datetime('now'),
+	updated_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;

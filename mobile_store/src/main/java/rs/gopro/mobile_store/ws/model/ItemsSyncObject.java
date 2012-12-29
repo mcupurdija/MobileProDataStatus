@@ -15,12 +15,13 @@ import rs.gopro.mobile_store.util.LogUtils;
 
 public class ItemsSyncObject extends SyncObject {
 	private static String TAG = "ItemsSyncObject";
+	
 	private String mCSVString;
 	private String mItemNoa46;
 	private Date mDateModified;
 	private Integer mOverstockAndCampaignOnly;
 	
-	public static final Parcelable.Creator CREATOR = new Parcelable.Creator<ItemsSyncObject>() {
+	public static final Creator<ItemsSyncObject> CREATOR = new Creator<ItemsSyncObject>() {
 		
 		@Override
 		public ItemsSyncObject createFromParcel(Parcel source) {
@@ -39,6 +40,7 @@ public class ItemsSyncObject extends SyncObject {
 	}
 	
 	public ItemsSyncObject(Parcel source) {
+		// there is reading of properties here
 		super(source);
 		
 		setmCSVString(source.readString());
@@ -94,8 +96,7 @@ public class ItemsSyncObject extends SyncObject {
 	
 	@Override
 	public void logSyncStart(ContentResolver contentResolver) {
-		// TODO Auto-generated method stub
-		LogUtils.LOGI(TAG, "Sync of items started.");
+		contentResolver.insert(null, null);
 	}
 	
 
@@ -151,6 +152,7 @@ public class ItemsSyncObject extends SyncObject {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(getCompany());
+		dest.writeString(getStatusMessage());
 		dest.writeString(getmCSVString());
 		dest.writeString(getmItemNoa46());
 		dest.writeLong(getmDateModified().getTime());

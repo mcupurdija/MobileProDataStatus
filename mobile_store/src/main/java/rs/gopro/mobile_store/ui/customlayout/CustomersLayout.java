@@ -2,11 +2,10 @@ package rs.gopro.mobile_store.ui.customlayout;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.ui.fragment.CustomerFragment;
-import rs.gopro.mobile_store.ui.fragment.SaleOrderFragment;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -20,6 +19,10 @@ public class CustomersLayout extends CustomLinearLayout {
 	private static final String CUSTOMERS_AUTHORITY = "customers";
 	public static final Uri CUSTOMERS_URI = new Uri.Builder().scheme(CUSTOMERS_SCHEME).authority(CUSTOMERS_AUTHORITY).build();
 	private Fragment fragment;
+	
+	public CustomersLayout(Context context) {
+		super(context);
+	}
 	
 	public CustomersLayout(FragmentManager fragmentManager, Activity activity) {
 		super(fragmentManager, activity);

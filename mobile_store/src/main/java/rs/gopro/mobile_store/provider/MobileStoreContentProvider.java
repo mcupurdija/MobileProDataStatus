@@ -1,5 +1,7 @@
 package rs.gopro.mobile_store.provider;
 
+import java.util.ArrayList;
+
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
@@ -10,7 +12,10 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SelectionBuilder;
 import android.content.ContentProvider;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentValues;
+import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -407,4 +412,27 @@ public class MobileStoreContentProvider extends ContentProvider {
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
 	}
+	
+	/**
+     * Apply the given set of {@link ContentProviderOperation}, executing inside
+     * a {@link SQLiteDatabase} transaction. All changes will be rolled back if
+     * any single one fails.
+     */
+    @Override
+    public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation> operations)
+            throws OperationApplicationException {
+        final SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            final int numOperations = operations.size();
+            final ContentProviderResult[] results = new ContentProviderResult[numOperations];
+            for (int i = 0; i < numOperations; i++) {
+                results[i] = operations.get(i).apply(this, results, i);
+            }
+            db.setTransactionSuccessful();
+            return results;
+        } finally {
+            db.endTransaction();
+        }
+    }
 }

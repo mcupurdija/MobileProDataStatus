@@ -21,12 +21,14 @@ public abstract class SyncObject implements Parcelable {
 	protected static String WS_SERVER_ADDRESS = "http://sqlserver.gopro.rs:7047/Wurth/WS";
 	
 	private String mCompany = "Wurth%20-%20Development";
+	private String statusMessage;
 	
 	public SyncObject() {
 	}
 	
 	public SyncObject(Parcel source) {
 		setCompany(source.readString());
+		setStatusMessage(source.readString());
 	}
 	
 	public SyncObject(String company) {
@@ -59,4 +61,12 @@ public abstract class SyncObject implements Parcelable {
 	public abstract List<PropertyInfo> getSOAPRequestProperties();
 	public abstract void saveSOAPResponse(Object response, ContentResolver contentResolver);
 	public abstract void logSyncEnd(ContentResolver contentResolver);
+
+	public String getStatusMessage() {
+		return statusMessage;
+	}
+	
+	protected void setStatusMessage(String statusMessage) {
+		this.statusMessage = statusMessage;
+	}
 }

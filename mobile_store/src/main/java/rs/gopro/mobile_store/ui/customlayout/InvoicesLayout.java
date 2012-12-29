@@ -1,11 +1,10 @@
 package rs.gopro.mobile_store.ui.customlayout;
 
 import rs.gopro.mobile_store.R;
-import rs.gopro.mobile_store.ui.fragment.CustomerFragment;
 import rs.gopro.mobile_store.ui.fragment.InvoicesFragment;
-import rs.gopro.mobile_store.ui.fragment.SaleOrderFragment;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +21,10 @@ public class InvoicesLayout extends CustomLinearLayout {
 	public static final Uri INVOICES_URI = new Uri.Builder().scheme(INVOICES_SCHEME).authority(INVOICES_AUTHORITY).build();
 	private Fragment fragment;
 
+	public InvoicesLayout(Context context) {
+		super(context);
+	}
+	
 	public InvoicesLayout(FragmentManager fragmentManager, Activity activity) {
 		super(fragmentManager, activity);
 	}

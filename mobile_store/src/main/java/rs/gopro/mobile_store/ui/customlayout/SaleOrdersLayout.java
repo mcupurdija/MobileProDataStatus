@@ -1,39 +1,19 @@
 package rs.gopro.mobile_store.ui.customlayout;
 
 import rs.gopro.mobile_store.R;
-import rs.gopro.mobile_store.provider.MobileStoreContract;
-import rs.gopro.mobile_store.ui.SaleOrderListFragment;
-import rs.gopro.mobile_store.ui.fragment.InvoicesFragment;
 import rs.gopro.mobile_store.ui.fragment.SaleOrderFragment;
-import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.LogUtils;
-import rs.gopro.mobile_store.util.UIUtils;
-
 import android.app.Activity;
-import android.app.ListFragment;
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.database.Cursor;
 import android.net.Uri;
-import android.provider.BaseColumns;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.CursorAdapter;
-import android.text.format.DateUtils;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.widget.DatePicker;
 
 public class SaleOrdersLayout extends CustomLinearLayout implements  OnLongClickListener {
 	private static String TAG = "CustomersLayout";
@@ -43,6 +23,10 @@ public class SaleOrdersLayout extends CustomLinearLayout implements  OnLongClick
 
 	private Fragment fragment;
 
+	public SaleOrdersLayout(Context context) {
+		super(context);
+	}
+	
 	public SaleOrdersLayout(FragmentManager fragmentManager, Activity activity) {
 		super(fragmentManager, activity);
 		this.activity = activity;
