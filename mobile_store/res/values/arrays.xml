@@ -89,4 +89,9 @@
         <item>Spec supply</item>
     </string-array>
     
+     <string-array name="contact_type_array">
+         <item>Man</item>
+         <item>Company</item>
+     </string-array>
+    
 </resources>

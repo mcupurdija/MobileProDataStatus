@@ -349,8 +349,8 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 			currentVisitId = resultedUri.getPathSegments().get(1);
 		}
 
-		Intent returnIntent = new Intent();
-		returnIntent.putExtra(VISIT_ID, currentVisitId);
+		/*Intent returnIntent = new Intent();
+		returnIntent.putExtra(VISIT_ID, currentVisitId);*/
 		// setResult(RESULT_OK,returnIntent);
 
 		final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;

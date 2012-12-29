@@ -29,9 +29,14 @@ public class ContactContextualActionBar implements Callback {
 			mode.finish();
 			return true;
 		case R.id.edit_contact:
-			Intent intent = new Intent(activity, AddContactActivity.class);
-			intent.putExtra(AddContactActivity.CONTACT_ID, contactId);
-			activity.startActivity(intent);
+			Intent editContactIntent = new Intent(activity, AddContactActivity.class);
+			editContactIntent.putExtra(AddContactActivity.CONTACT_ID, contactId);
+			activity.startActivity(editContactIntent);
+			mode.finish();
+			return true;
+		case R.id.add_contact:
+			Intent addContactIntent = new Intent(activity, AddContactActivity.class);
+			activity.startActivity(addContactIntent);
 			mode.finish();
 			return true;
 		default:
