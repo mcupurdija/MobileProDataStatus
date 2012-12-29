@@ -54,8 +54,6 @@ public class VisitContextualMenu implements  ActionMode.Callback{
 
 	@Override
 	public void onDestroyActionMode(ActionMode mode) {
-	
-		
 	}
 
 	@Override

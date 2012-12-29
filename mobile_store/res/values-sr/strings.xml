@@ -21,6 +21,7 @@
 	<string name="sale_order_amount_total_template">Iznos je: </string>
 	<string name="customer_search_title">Pronadji kupca: </string>
 	<string name="customer_block_status_spinner_title">Filtriraj po statusu:</string>
+	<string name="contact_search_title">Pronadji kontakt: </string>
 	
 	<string name="item_search_title">Pronadji artikl: </string>
 	<string name="item_block_status_spinner_title">Filtriraj po statusu:</string>
@@ -60,4 +61,42 @@
 	<string name="note_title">Beleške</string>
 	<string name="note_hint">Beleške</string>
 	<string name="action_button_refresh">Osveži</string>
+	
+	<!-- add contact --> 
+	<string name="contact_type_title">Tip</string>
+	<string name="contact_type_hint">Tip</string>
+	<string name="contact_name_title">Ime</string>
+	<string name="contact_name_hint">Ime</string>
+	<string name="contact_name_2_title">Sekundarno ime</string>
+	<string name="contact_name_2_hint">Ime</string>
+	<string name="contact_address_title">Adresa</string>
+	<string name="contact_address_hint">Adresa</string>
+	<string name="contact_city_title">Grad</string>
+	<string name="contact_city_hint">Grad</string>
+	<string name="contact_post_code_title">Postanski broj</string>
+	<string name="contact_post_code_hint">Postanski broj</string>
+	<string name="contact_phone_title">Telefon</string>
+	<string name="contact_phone_hint">Telefon</string>
+	<string name="contact_mobile_phone_title">Mobilni telefon</string>
+	<string name="contact_mobile_phone_hint">Mobilni telefon</string>
+	<string name="contact_email_title">Email</string>
+	<string name="contact_email_hint">Email</string>
+	<string name="contact_company_no_title">Broj kompanije</string>
+	<string name="contact_company_no_hint">Broj kompanije</string>
+	<string name="contact_company_id_title">Maticni broj</string>
+	<string name="contact_company_id_hint">Maticni broj</string>
+	<string name="contact_vat_registration_title">Pib</string>
+	<string name="contact_vat_registration_hint">Pib</string>
+	<string name="contact_division_title">Divizija</string>
+	<string name="contact_division_hint">Divizija</string>
+	<string name="contact_number_of_blue_coat_title">Broj plavih kaputa</string>
+	<string name="contact_number_of_blue_coat_hint">Broj plavih kaputa</string>
+	<string name="contact_number_of_grey_coat_title">Broj sivih kaputa</string>
+	<string name="contact_number_of_grey_coat_hint">Broj sivih kaputa</string>
+	<string name="contact_job_title">Naziv posla</string>
+	<string name="contact_job_title_hint">Naziv posla</string>
+	
+	<string name="contextual_deactivate">Brisi</string>
+	<string name="contextual_edit">Izmeni</string>
+	
 </resources>

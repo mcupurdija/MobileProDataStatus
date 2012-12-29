@@ -21,6 +21,7 @@
 	<string name="sale_order_amount_total_template">Amount is: </string>
 	<string name="customer_search_title">Find customer: </string>
 	<string name="customer_block_status_spinner_title">Filter by status:</string>
+	<string name="contact_search_title">Find contact: </string>
 	
 	<string name="item_search_title">Find item: </string>
 	<string name="item_block_status_spinner_title">Filter by status</string>
@@ -60,5 +61,42 @@
 	<string name="note_hint">Note</string>
 	<string name="action_button_refresh">Refresh</string>
 	
+	<!-- add contact --> 
+	<string name="contact_type_title">Type</string>
+	<string name="contact_type_hint">Type</string>
+	<string name="contact_name_title">Primary name</string>
+	<string name="contact_name_hint">Name</string>
+	<string name="contact_name_2_title">Secondary name</string>
+	<string name="contact_name_2_hint">Secondary name</string>
+	<string name="contact_address_title">Address</string>
+	<string name="contact_address_hint">Address</string>
+	<string name="contact_city_title">City</string>
+	<string name="contact_city_hint">City</string>
+	<string name="contact_post_code_title">Post code</string>
+	<string name="contact_post_code_hint">Post code</string>
+	<string name="contact_phone_title">Phone</string>
+	<string name="contact_phone_hint">Phone</string>
+	<string name="contact_mobile_phone_title">Mobile phone</string>
+	<string name="contact_mobile_phone_hint">Mobile Phone</string>
+	<string name="contact_email_title">Email</string>
+	<string name="contact_email_hint">Email</string>
+	<string name="contact_company_no_title">Company number</string>
+	<string name="contact_company_no_hint">Company number</string>
+	<string name="contact_company_id_title">Company id</string>
+	<string name="contact_company_id_hint">Company id</string>
+	<string name="contact_vat_registration_title">Vat registration</string>
+	<string name="contact_vat_registration_hint">Vat reg</string>
+	<string name="contact_division_title">Division</string>
+	<string name="contact_division_hint">Division</string>
+	<string name="contact_number_of_blue_coat_title">Num of blue coat</string>
+	<string name="contact_number_of_blue_coat_hint">Num of blue coat</string>
+	<string name="contact_number_of_grey_coat_title">Num of gray coat</string>
+	<string name="contact_number_of_grey_coat_hint">Num of blue coat</string>
+	<string name="contact_job_title">Job title</string>
+	<string name="contact_job_title_hint">Job title</string>
 	
+	
+	
+	<string name="contextual_deactivate">Delete</string>
+	<string name="contextual_edit">Edit</string>
 </resources>

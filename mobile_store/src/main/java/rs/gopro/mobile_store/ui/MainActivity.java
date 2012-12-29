@@ -7,6 +7,7 @@ import java.util.Map;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.adapter.ActionsAdapter;
+import rs.gopro.mobile_store.ui.customlayout.ContactsLayout;
 import rs.gopro.mobile_store.ui.customlayout.CustomLinearLayout;
 import rs.gopro.mobile_store.ui.customlayout.CustomersLayout;
 import rs.gopro.mobile_store.ui.customlayout.InvoicesLayout;
@@ -163,6 +164,13 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 			} else {
 				view = new ReportLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(ReportLayout.REPORTS_URI.toString(), view);
+			}
+		}else if(ContactsLayout.CONTACTS_URI.equals(uri)) {
+			if (savedLayoutInstances.containsKey(ContactsLayout.CONTACTS_URI.toString())) {
+				view = savedLayoutInstances.get(ContactsLayout.CONTACTS_URI.toString());
+			} else {
+				view = new ContactsLayout(getSupportFragmentManager(), this);
+				savedLayoutInstances.put(ContactsLayout.CONTACTS_URI.toString(), view);
 			}
 		}
 		currentCustomLinearLayout = view;
