@@ -3,7 +3,6 @@ package rs.gopro.mobile_store.ui;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
-import rs.gopro.mobile_store.ui.SaleOrdersPreviewListFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;

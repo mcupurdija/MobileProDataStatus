@@ -1,17 +1,14 @@
 package rs.gopro.mobile_store.ui.fragment;
 
-import jcifs.dcerpc.msrpc.netdfs;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.BaseColumns;
-
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;

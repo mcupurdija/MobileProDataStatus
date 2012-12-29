@@ -17,7 +17,7 @@ public class LogUtils {
 		return LOG_PREFIX + str;
 	}
 	
-	public static String makeLogTag(Class cls) {
+	public static String makeLogTag(Class<?> cls) {
 		return makeLogTag(cls.getSimpleName());
 	}
 	

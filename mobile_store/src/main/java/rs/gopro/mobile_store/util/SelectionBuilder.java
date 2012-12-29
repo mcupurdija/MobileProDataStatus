@@ -46,7 +46,7 @@ public class SelectionBuilder {
 			builderSelection.append(" AND ");
 		}
 
-		builderSelection.append("(").append(selection).append(")");
+		builderSelection.append('(').append(selection).append(')');
 		if (selectionArgs != null) {
 			Collections.addAll(builderSelectionArgs, selectionArgs);
 		}

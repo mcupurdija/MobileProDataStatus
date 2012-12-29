@@ -1,14 +1,8 @@
 package rs.gopro.mobile_store.provider;
 
 import java.util.ArrayList;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
-import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
-import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
+
+import rs.gopro.mobile_store.provider.MobileStoreContract.*;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SelectionBuilder;
 import android.content.ContentProvider;

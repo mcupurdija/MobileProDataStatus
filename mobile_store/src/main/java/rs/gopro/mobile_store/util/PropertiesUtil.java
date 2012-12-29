@@ -3,9 +3,6 @@ package rs.gopro.mobile_store.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.PropertyResourceBundle;
-
-import rs.gopro.mobile_store.provider.MobileStoreDatabase;
 
 import android.content.res.AssetManager;
 import android.util.Log;

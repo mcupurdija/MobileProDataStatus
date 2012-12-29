@@ -4,7 +4,6 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;

@@ -1,7 +1,6 @@
 package rs.gopro.mobile_store.ui;
 
 
-import rs.gopro.mobile_store.R;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;

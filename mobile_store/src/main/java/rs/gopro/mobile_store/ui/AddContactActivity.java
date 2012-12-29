@@ -7,7 +7,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -105,13 +104,10 @@ public class AddContactActivity extends BaseActivity implements LoaderCallbacks<
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		loadUi(data);
-
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		// TODO Auto-generated method stub
-
 	}
 
 	private void loadUi(Cursor data) {

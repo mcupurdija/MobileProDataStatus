@@ -109,7 +109,7 @@ public class HttpTransportApache extends Transport {
             retHeaders = serviceConnection.getResponseProperties();
             boolean gZippedContent = false;
             for (int i = 0; i < retHeaders.size(); i++) {
-                HeaderProperty hp = (HeaderProperty)retHeaders.get(i);
+                HeaderProperty hp = retHeaders.get(i);
                 // HTTP response code has null key
                 if (null == hp.getKey()) {
                     continue;

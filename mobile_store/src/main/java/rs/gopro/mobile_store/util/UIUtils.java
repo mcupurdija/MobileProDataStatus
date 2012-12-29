@@ -5,13 +5,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 import rs.gopro.mobile_store.BuildConfig;
-//import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.view.View;
+//import android.annotation.TargetApi;
 
 public class UIUtils {
 

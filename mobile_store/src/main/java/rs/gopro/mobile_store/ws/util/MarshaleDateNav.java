@@ -1,8 +1,6 @@
 package rs.gopro.mobile_store.ws.util;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.ksoap2.serialization.Marshal;
@@ -13,27 +11,23 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
 
+import rs.gopro.mobile_store.util.DateUtils;
+
 public class MarshaleDateNav implements Marshal {
-	public static Class DATE_CLASS = Date.class;
 	
-	private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	public static Class<Date> DATE_CLASS = Date.class;
 	
 	@Override
 	public Object readInstance(XmlPullParser parser, String namespace,
 			String name, PropertyInfo expected) throws IOException,
 			XmlPullParserException {
-		try {
-			return simpleDateFormat.parse(parser.nextText());
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
-		}
+			return DateUtils.unMarshaleDate(parser.nextText());
 	}
 
 	@Override
 	public void writeInstance(XmlSerializer writer, Object instance)
 			throws IOException {
-		writer.text(simpleDateFormat.format(((Date) instance)));	
+		writer.text(DateUtils.marshaleDate((Date) instance));	
 	}
 
 	@Override

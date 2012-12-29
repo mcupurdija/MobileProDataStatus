@@ -1,7 +1,6 @@
 package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
-import rs.gopro.mobile_store.ws.CompanyKsoapWs;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,12 +11,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.TextView;
 
 public class HomeScreenActivity extends BaseActivity implements OnClickListener{
     private static String TAG = "HomeScreenActivity";

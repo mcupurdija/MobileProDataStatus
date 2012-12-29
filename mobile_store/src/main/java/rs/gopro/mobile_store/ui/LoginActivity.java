@@ -1,14 +1,10 @@
 package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
-import rs.gopro.mobile_store.provider.MobileStoreContentProvider;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
-
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;

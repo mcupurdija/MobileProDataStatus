@@ -1,13 +1,9 @@
 package rs.gopro.mobile_store.ui;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
+import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.util.UIUtils;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -25,8 +21,6 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 
 public class SaleOrdersPreviewListFragment extends ListFragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {

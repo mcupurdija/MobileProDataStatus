@@ -4,7 +4,6 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.AddVisitActivity;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.view.ActionMode;
 import android.view.Menu;

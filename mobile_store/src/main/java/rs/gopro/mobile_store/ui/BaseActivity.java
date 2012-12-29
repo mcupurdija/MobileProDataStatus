@@ -28,7 +28,7 @@ import android.view.MenuItem;
  * A base activity that handles common functionality in the app.
  */
 public abstract class BaseActivity extends FragmentActivity {
-    protected static final Integer ADD_VISIT_REQUEST_CODE = new Integer(1);
+    protected static final Integer ADD_VISIT_REQUEST_CODE = Integer.valueOf(1);
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +120,5 @@ public abstract class BaseActivity extends FragmentActivity {
      * @param result
      */
     public void onSOAPResult(int code, String result) {
-    	return;
     }
 }

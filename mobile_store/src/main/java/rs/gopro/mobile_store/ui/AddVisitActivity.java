@@ -1,24 +1,15 @@
 package rs.gopro.mobile_store.ui;
 
-import java.net.URI;
 import java.util.Calendar;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
-import rs.gopro.mobile_store.provider.MobileStoreContract.CustomersColumns;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
-import rs.gopro.mobile_store.ui.VisitListFragment.Callbacks;
-
-import rs.gopro.mobile_store.ui.customlayout.PlanOfVisitsLayout;
-import rs.gopro.mobile_store.ui.fragment.CustomerFragment;
-import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.UIUtils;
-
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.TimePickerDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -37,7 +28,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;

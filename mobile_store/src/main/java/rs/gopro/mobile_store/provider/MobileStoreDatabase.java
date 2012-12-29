@@ -89,7 +89,7 @@ public class MobileStoreDatabase extends SQLiteOpenHelper {
 				LogUtils.log(Log.INFO, TAG, "Execute sql file: " + trigger);
 				trigger = "";
 			} else {
-				if (trigger != "") {
+				if (!trigger.equals("")) {
 					trigger += sqlInstruction;
 				} else {
 					db.execSQL(sqlInstruction);

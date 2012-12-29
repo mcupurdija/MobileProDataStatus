@@ -79,7 +79,7 @@ public class SqlParserUtil {
 							}
 						} else if (!line.startsWith("--") && !line.equals("")) {
 							// need to add space because of scripts
-							sqlScritptWithoutComments.append(line).append(" ");
+							sqlScritptWithoutComments.append(line).append(' ');
 						}
 					} else if (multiLineComment.equals("/*")) {
 						if (line.endsWith("*/")) {
@@ -157,10 +157,7 @@ public class SqlParserUtil {
 	public static boolean isScriptForTableCreation(String sqlStatement) {
 		String create = "CREATE TABLE";
 		sqlStatement = sqlStatement.trim();
-		if (sqlStatement.startsWith(create)) {
-			return true;
-		}
-		return false;
+		return sqlStatement.startsWith(create);
 	}
 	
 	/**
@@ -170,10 +167,6 @@ public class SqlParserUtil {
 	 */
 	public static boolean isScriptForTriggerCreation(String sqlStatement) {
 		String create = "CREATE TRIGGER";
-		if (sqlStatement.startsWith(create)) {
-			return true;
-		} else {
-			return false;
-		}
+		return sqlStatement.startsWith(create);
 	}
 }

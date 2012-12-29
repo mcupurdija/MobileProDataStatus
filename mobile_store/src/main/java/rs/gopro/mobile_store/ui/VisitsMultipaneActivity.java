@@ -2,7 +2,6 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
-import rs.gopro.mobile_store.provider.MobileStoreContract.VisitsColumns;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.widget.VisitContextualMenu;
 import android.content.Intent;
@@ -11,12 +10,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.ActionMode;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 
 public class VisitsMultipaneActivity extends BaseActivity implements
 		VisitListFragment.Callbacks, VisitDetailFragment.Callbacks {

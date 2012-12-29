@@ -83,7 +83,7 @@ public class ItemsRequest implements KvmSerializable {
 			info.name = "pItemNoa46";
 			break;
 		case 2:
-			info.type = new Date().getClass();;
+			info.type = new Date().getClass();
 			info.name = "pDateModified";
 			break;
 		case 3:
