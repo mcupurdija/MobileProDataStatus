@@ -36,6 +36,7 @@ public class VisitContextualMenu implements  ActionMode.Callback{
 			intent.putExtra(AddVisitActivity.VISIT_ID, visitId);
 			activity.startActivity(intent);
 			mode.finish();
+			activity.finish();
 			return true;
 		default:
 			break;
@@ -57,7 +58,6 @@ public class VisitContextualMenu implements  ActionMode.Callback{
 
 	@Override
 	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	

@@ -49,8 +49,9 @@ public class UIUtils {
 	 * @return
 	 */
 	public static Date getDateTime(String date){
+		if (date == null) return null;
 		try {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			return dateFormat.parse(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -79,6 +80,7 @@ public class UIUtils {
 	 * @return
 	 */
 	public static String formatDate(Date date){
+		if (date == null) return "";
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd. MM. yyyy");
 		return dateFormat.format(date);
 	}
@@ -89,11 +91,8 @@ public class UIUtils {
 	 * @return
 	 */
 	public static String formatDateTime(Date date){
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd. MM. yyyy HH:MM:SS");
+		if (date == null) return "";
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd. MM. yyyy HH:mm:ss");
 		return dateFormat.format(date);
-	}
-	
-	public static String  formatingDate(int year, int month, int day){
-		    return "" + year + "-" + month + "-" + day;
 	}
 }

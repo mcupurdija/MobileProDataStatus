@@ -9,7 +9,9 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.widget.SimpleSelectionedListAdapter;
 import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.ContentObserver;
@@ -128,7 +130,23 @@ public class InvoicesFragment  extends ListFragment implements LoaderCallbacks<C
 	
 	
 	
-	
+	 @Override
+		public void onListItemClick(ListView l, View v, int position, long id) {
+			super.onListItemClick(l, v, position, id);
+			final Cursor cursor = (Cursor) invoicesAdapter.getItem(position);
+	        final String itemId = String.valueOf(cursor.getString(1));
+			AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+			alertDialog.setTitle("Faktura br:"+itemId);
+			alertDialog.setMessage("Stavke fakture trenutno nisu dostupne.");
+			alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+			   public void onClick(DialogInterface dialog, int which) {
+				   dialog.dismiss();
+			   }
+			});
+			// Set the Icon for the Dialog
+			//alertDialog.setIcon(R.drawable.icon);
+			alertDialog.show();
+		}	
 	
 	
 	

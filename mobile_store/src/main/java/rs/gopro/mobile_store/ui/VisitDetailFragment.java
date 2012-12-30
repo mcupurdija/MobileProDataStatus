@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
 import android.content.Intent;
@@ -120,10 +121,10 @@ public class VisitDetailFragment extends Fragment implements
         mOdometer.setText("Odometar:		 	" + String.valueOf(odometerVal));
         
         String arrivalTime = cursor.getString(VisitsQuery.ARRIVAL_TIME);
-        mArrivalTime.setText("Vreme dolaska: 		"+UIUtils.formatDateTime(UIUtils.getDateTime(arrivalTime)));
+        mArrivalTime.setText("Vreme dolaska: 		"+DateUtils.formatDbTimeForPresentation(arrivalTime));
         
         String departureTime = cursor.getString(VisitsQuery.DEPARTURE_TIME);
-        mDepartureTime.setText("Vreme odlaska: 		"+UIUtils.formatDateTime(UIUtils.getDateTime(departureTime)));
+        mDepartureTime.setText("Vreme odlaska: 		"+DateUtils.formatDbTimeForPresentation(departureTime));
         
         String note = cursor.getString(VisitsQuery.NOTE);
         mNote.setText("Beleska:			"+note);

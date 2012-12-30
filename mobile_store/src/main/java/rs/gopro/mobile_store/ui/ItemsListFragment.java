@@ -4,6 +4,8 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.util.LogUtils;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -20,6 +22,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 public class ItemsListFragment extends ListFragment implements LoaderCallbacks<Cursor>, TextWatcher, OnItemSelectedListener {
@@ -121,5 +124,22 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	private interface ItemsQuery {
 		String[] PROJECTION = { BaseColumns._ID, Items.ITEM_NO, Items.DESCRIPTION, Items.CAMPAIGN_STATUS };
 	}
-
+	
+	 @Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		final Cursor cursor = (Cursor) cursorAdapter.getItem(position);
+        final String itemId = String.valueOf(cursor.getString(1));
+		AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+		alertDialog.setTitle("Artikla na stanju");
+		alertDialog.setMessage("Kolicina na stanju artikla broj "+itemId+": 0");
+		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+		   public void onClick(DialogInterface dialog, int which) {
+			   dialog.dismiss();
+		   }
+		});
+		// Set the Icon for the Dialog
+		//alertDialog.setIcon(R.drawable.icon);
+		alertDialog.show();
+	}
 }

@@ -41,7 +41,7 @@
 	<!-- add visit --> 
 	<string name="sale_person_title">Sale person</string>
 	<string name="sale_person_hint">Sale Person</string>
-	<string name="customer_title">customer</string>
+	<string name="customer_title">Customer</string>
 	<string name="customer_hint">Customer</string>
 	<string name="visit_date_title">Visit Date</string>
 	<string name="visit_date_hint">Visit date</string>

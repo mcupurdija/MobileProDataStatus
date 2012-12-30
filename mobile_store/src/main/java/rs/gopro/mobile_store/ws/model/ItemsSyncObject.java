@@ -11,6 +11,7 @@ import android.content.ContentResolver;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.util.LogUtils;
 
 public class ItemsSyncObject extends SyncObject {
@@ -96,6 +97,7 @@ public class ItemsSyncObject extends SyncObject {
 	
 	@Override
 	public void logSyncStart(ContentResolver contentResolver) {
+		//MobileStoreContract.Items.
 		contentResolver.insert(null, null);
 	}
 	
@@ -157,23 +159,5 @@ public class ItemsSyncObject extends SyncObject {
 		dest.writeString(getmItemNoa46());
 		dest.writeLong(getmDateModified().getTime());
 		dest.writeInt(getmOverstockAndCampaignOnly());
-	}
-
-	public class ItemsParcelable implements Parcelable.Creator<ItemsSyncObject> {
-
-		public ItemsParcelable() {
-			super();
-		}
-		
-		@Override
-		public ItemsSyncObject createFromParcel(Parcel source) {
-			return new ItemsSyncObject(source);
-		}
-
-		@Override
-		public ItemsSyncObject[] newArray(int size) {
-			return new ItemsSyncObject[size];
-		}
-		
 	}
 }

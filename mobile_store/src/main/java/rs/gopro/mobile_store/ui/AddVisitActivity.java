@@ -1,18 +1,20 @@
 package rs.gopro.mobile_store.ui;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
-import rs.gopro.mobile_store.util.UIUtils;
+import rs.gopro.mobile_store.util.DateUtils;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +34,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
+import android.widget.TableRow;
+import android.widget.TimePicker;
 
 public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
 
@@ -41,22 +45,25 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 	private static final int ARRIVAL_DATE_PICKER = 2;
 	private static final int VISIT_DATE_PICKER = 1;
 	private static final String CUSTOMER_TEXT = "customer_text";
-	private AutoCompleteTextView salePersionAutocomplete;
+//	private AutoCompleteTextView salePersionAutocomplete;
 	private AutoCompleteTextView customerAutoComplete;
 	SimpleCursorAdapter customerCursorAdapter;
-	SimpleCursorAdapter salePersonCusrosAdapter;
+//	SimpleCursorAdapter salePersonCusrosAdapter;
 	EditText visitDateEditText;
-	EditText lineNumberEditText;
-	EditText entryTypeEditText;
+//	EditText lineNumberEditText;
+//	EditText entryTypeEditText;
 	EditText odometerEditText;
 	EditText departureTimeEditText;
 	EditText arrivalTimeEditText;
 	EditText visitResultEditText;
 	EditText noteEditText;
 
-	OnDateSetListener arrivalDateSetListener;
+//	OnDateSetListener depaertureDateSetListener;
+	OnTimeSetListener depaertureTimeSetListener;
+//	OnDateSetListener arrivalDateSetListener;
+	OnTimeSetListener arrivalTimeSetListener;
 	OnDateSetListener visitDateSetListener;
-	OnDateSetListener depaertureDateSetListener;
+	
 
 	String selectedVisitId;
 
@@ -74,14 +81,24 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		setContentView(R.layout.activity_add_visit);
 
 		visitDateEditText = (EditText) findViewById(R.id.visit_date_input);
-		lineNumberEditText = (EditText) findViewById(R.id.line_number_input);
-		entryTypeEditText = (EditText) findViewById(R.id.entry_type_input);
+//		lineNumberEditText = (EditText) findViewById(R.id.line_number_input);
+//		entryTypeEditText = (EditText) findViewById(R.id.entry_type_input);
+		
 		odometerEditText = (EditText) findViewById(R.id.odometer_input);
 		departureTimeEditText = (EditText) findViewById(R.id.departure_time_input);
 		arrivalTimeEditText = (EditText) findViewById(R.id.arrival_time_input);
 		visitResultEditText = (EditText) findViewById(R.id.visit_result_input);
 		noteEditText = (EditText) findViewById(R.id.note_input);
 
+		// mode new
+		if (selectedVisitId == null) {
+			((TableRow) findViewById(R.id.arrival_time_row)).setVisibility(View.GONE);
+			((TableRow) findViewById(R.id.departure_time_row)).setVisibility(View.GONE);
+			((TableRow) findViewById(R.id.odometer_row)).setVisibility(View.GONE);
+			((TableRow) findViewById(R.id.visit_result_row)).setVisibility(View.GONE);
+			((TableRow) findViewById(R.id.note_row)).setVisibility(View.GONE);
+		}
+		
 		visitDateEditText.setOnLongClickListener(new OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View v) {
@@ -106,37 +123,33 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 			}
 		});
 
-		arrivalDateSetListener = new OnDateSetListener() {
-
+		arrivalTimeSetListener = new OnTimeSetListener() {
 			@Override
-			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-				String date = UIUtils.formatingDate(year, monthOfYear, dayOfMonth);
-				arrivalTimeEditText.setText(date);
-
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+				DecimalFormat hourMinutFormat = new DecimalFormat("00"); 
+				arrivalTimeEditText.setText(hourMinutFormat.format(hourOfDay)+":"+hourMinutFormat.format(minute));
 			}
 		};
-
+		
 		visitDateSetListener = new OnDateSetListener() {
 
 			@Override
 			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-				String date = UIUtils.formatingDate(year, monthOfYear, dayOfMonth);
+				String date = DateUtils.formatDatePickerDate(year, monthOfYear, dayOfMonth);
 				visitDateEditText.setText(date);
 
 			}
 		};
-
-		depaertureDateSetListener = new OnDateSetListener() {
-
+		
+		depaertureTimeSetListener = new OnTimeSetListener() {
 			@Override
-			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-				String date = UIUtils.formatingDate(year, monthOfYear, dayOfMonth);
-				departureTimeEditText.setText(date);
-
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+				DecimalFormat hourMinutFormat = new DecimalFormat("00"); 
+				departureTimeEditText.setText(hourMinutFormat.format(hourOfDay)+":"+hourMinutFormat.format(minute));
 			}
 		};
 
-		salePersionAutocomplete = (AutoCompleteTextView) findViewById(R.id.sale_person_autocomplete);
+//		salePersionAutocomplete = (AutoCompleteTextView) findViewById(R.id.sale_person_autocomplete);
 		customerAutoComplete = (AutoCompleteTextView) findViewById(R.id.customer_autocomplete);
 		customerCursorAdapter = new CustomerSimpleCusrsorAdapter(this, android.R.layout.simple_dropdown_item_1line, null, CUSTOMER_PROJECTION, new int[] { android.R.id.empty, android.R.id.text1 }, 0);
 
@@ -152,34 +165,33 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		});
 		customerAutoComplete.setAdapter(customerCursorAdapter);
 
-		salePersonCusrosAdapter = new SalePersonCustomSimpleCurorAdapter(this, android.R.layout.simple_dropdown_item_1line, null, SALE_PROJECTION, new int[] { android.R.id.empty, android.R.id.text1 }, 0);
-		salePersonCusrosAdapter.setFilterQueryProvider(new FilterQueryProvider() {
-
-			@Override
-			public Cursor runQuery(CharSequence constraint) {
-				Cursor cursor = null;
-				if (getContentResolver() != null && constraint != null) {
-					cursor = getContentResolver().query(MobileStoreContract.SaleOrders.buildCustomSearchUri(constraint == null ? "" : constraint.toString(), "1"), SALE_PROJECTION, null, null, null);
-				}
-				return cursor;
-			}
-		});
-
-		salePersionAutocomplete.setAdapter(salePersonCusrosAdapter);
+//		salePersonCusrosAdapter = new SalePersonCustomSimpleCurorAdapter(this, android.R.layout.simple_dropdown_item_1line, null, SALE_PROJECTION, new int[] { android.R.id.empty, android.R.id.text1 }, 0);
+//		salePersonCusrosAdapter.setFilterQueryProvider(new FilterQueryProvider() {
+//
+//			@Override
+//			public Cursor runQuery(CharSequence constraint) {
+//				Cursor cursor = null;
+//				if (getContentResolver() != null && constraint != null) {
+//					cursor = getContentResolver().query(MobileStoreContract.SaleOrders.buildCustomSearchUri(constraint == null ? "" : constraint.toString(), "1"), SALE_PROJECTION, null, null, null);
+//				}
+//				return cursor;
+//			}
+//		});
+//
+//		salePersionAutocomplete.setAdapter(salePersonCusrosAdapter);
 
 	}
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		salePersionAutocomplete.addTextChangedListener(new CustomTextWathcer(salePersonCusrosAdapter));
+//		salePersionAutocomplete.addTextChangedListener(new CustomTextWathcer(salePersonCusrosAdapter));
 		customerAutoComplete.addTextChangedListener(new CustomTextWathcer(customerCursorAdapter));
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-
 	}
 
 	@Override
@@ -217,20 +229,21 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-
 	}
 
 	private void loadUI(Cursor data) {
 		data.moveToFirst();
-		arrivalTimeEditText.setText(data.getString(VisitsQuery.ARRIVAL_TIME));
+		arrivalTimeEditText.setText(DateUtils.formatDbTimeForPresentation(data.getString(VisitsQuery.ARRIVAL_TIME)));
 		customerAutoComplete.setText(data.getString(VisitsQuery.NAME));
-		visitDateEditText.setText(data.getString(VisitsQuery.VISIT_DATE));
-		lineNumberEditText.setText(data.getString(VisitsQuery.VISIT_DATE));
-		entryTypeEditText.setText(data.getString(VisitsQuery.ENTRY_TYPE));
-		odometerEditText.setText(data.getString(VisitsQuery.ODOMETER));
-		departureTimeEditText.setText(data.getString(VisitsQuery.DEPARTURE_TIME));
-		visitResultEditText.setText(data.getString(VisitsQuery.VISIT_RESULT));
-		noteEditText.setText(data.getString(VisitsQuery.NOTE));
+		visitDateEditText.setText(DateUtils.formatDbDateForPresentation(data.getString(VisitsQuery.VISIT_DATE)));
+//		lineNumberEditText.setText(data.getString(VisitsQuery.VISIT_DATE));
+//		entryTypeEditText.setText(data.getString(VisitsQuery.ENTRY_TYPE));
+		if (selectedVisitId != null) {
+			odometerEditText.setText(data.getString(VisitsQuery.ODOMETER));
+			departureTimeEditText.setText(DateUtils.formatDbTimeForPresentation(data.getString(VisitsQuery.DEPARTURE_TIME)));
+			visitResultEditText.setText(data.getString(VisitsQuery.VISIT_RESULT));
+			noteEditText.setText(data.getString(VisitsQuery.NOTE)==null ? "":data.getString(VisitsQuery.NOTE));
+		}
 
 	}
 
@@ -249,13 +262,10 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
 		}
 
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			// TODO Auto-generated method stub
-
 		}
 	}
 
@@ -275,21 +285,21 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 
 	}
 
-	private class SalePersonCustomSimpleCurorAdapter extends SimpleCursorAdapter {
-
-		public SalePersonCustomSimpleCurorAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
-			super(context, layout, c, from, to, flags);
-		}
-
-		@Override
-		public CharSequence convertToString(Cursor cursor) {
-			final int columnIndex = cursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_NO);
-			final String str = cursor.getString(columnIndex);
-			return str;
-
-		}
-
-	}
+//	private class SalePersonCustomSimpleCurorAdapter extends SimpleCursorAdapter {
+//
+//		public SalePersonCustomSimpleCurorAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
+//			super(context, layout, c, from, to, flags);
+//		}
+//
+//		@Override
+//		public CharSequence convertToString(Cursor cursor) {
+//			final int columnIndex = cursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_NO);
+//			final String str = cursor.getString(columnIndex);
+//			return str;
+//
+//		}
+//
+//	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -312,22 +322,24 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 			String customerName = customerCursor.getString(customerCursor.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME));
 			System.out.println("Customer id is : " + customerPk + " name is :" + customerName);
 		}
-		Cursor salePersonCursor = (Cursor) salePersionAutocomplete.getAdapter().getItem(0);
-		if (salePersonCursor != null) {
-			Integer id = salePersonCursor.getInt(salePersonCursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrders._ID));
-			String no = salePersonCursor.getString(salePersonCursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_NO));
-		}
+//		Cursor salePersonCursor = (Cursor) salePersionAutocomplete.getAdapter().getItem(0);
+//		if (salePersonCursor != null) {
+//			Integer id = salePersonCursor.getInt(salePersonCursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrders._ID));
+//			String no = salePersonCursor.getString(salePersonCursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_NO));
+//		}
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(Visits.SALES_PERSON_ID, 1);
-		contentValues.put(Visits.VISIT_DATE, visitDateEditText.getText().toString() + " 12:12:12");
+		contentValues.put(Visits.VISIT_DATE, DateUtils.formatPickerInputForDb(visitDateEditText.getText().toString()));
 		contentValues.put(Visits.CUSTOMER_ID, customerPk);
-		contentValues.put(Visits.LINE_NO, lineNumberEditText.getText().toString());
-		contentValues.put(Visits.ENTRY_TYPE, entryTypeEditText.getText().toString());
-		contentValues.put(Visits.ODOMETER, odometerEditText.getText().toString());
-		contentValues.put(Visits.DEPARTURE_TIME, departureTimeEditText.getText().toString() + " 12:12:12");
-		contentValues.put(Visits.ARRIVAL_TIME, arrivalTimeEditText.getText().toString() + " 12:12:12");
-		contentValues.put(Visits.VISIT_RESULT, visitResultEditText.getText().toString());
-		contentValues.put(Visits.NOTE, noteEditText.getText().toString());
+//		contentValues.put(Visits.LINE_NO, lineNumberEditText.getText().toString());
+//		contentValues.put(Visits.ENTRY_TYPE, entryTypeEditText.getText().toString());
+		if (selectedVisitId != null) {
+			contentValues.put(Visits.ODOMETER, odometerEditText.getText().toString());
+			contentValues.put(Visits.DEPARTURE_TIME, DateUtils.formatPickerTimeInputForDb(departureTimeEditText.getText().toString()));
+			contentValues.put(Visits.ARRIVAL_TIME, DateUtils.formatPickerTimeInputForDb(arrivalTimeEditText.getText().toString()));
+			contentValues.put(Visits.VISIT_RESULT, visitResultEditText.getText().toString());
+			contentValues.put(Visits.NOTE, noteEditText.getText().toString());
+		}
 		String currentVisitId;
 		if (selectedVisitId != null) {
 
@@ -343,11 +355,10 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		returnIntent.putExtra(VISIT_ID, currentVisitId);*/
 		// setResult(RESULT_OK,returnIntent);
 
-		final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
-		final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.Visits.buildVisitUri(currentVisitId));
-		intent.putExtra(VisitsMultipaneActivity.EXTRA_MASTER_URI, visitsUri);
-		startActivity(intent);
-
+//		final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
+//		final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.Visits.buildVisitUri(currentVisitId));
+//		intent.putExtra(VisitsMultipaneActivity.EXTRA_MASTER_URI, visitsUri);
+//		startActivity(intent);
 	}
 
 	@Override
@@ -355,14 +366,16 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		Calendar calendar = Calendar.getInstance();
 		switch (id) {
 		case ARRIVAL_DATE_PICKER:
-			DatePickerDialog arrivalDatePicker = new DatePickerDialog(this, arrivalDateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-			return arrivalDatePicker;
+			//DatePickerDialog arrivalDatePicker = new DatePickerDialog(this, arrivalDateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+			TimePickerDialog arrivalTime = new TimePickerDialog(this, arrivalTimeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
+			return arrivalTime;
 		case VISIT_DATE_PICKER:
 			DatePickerDialog visitDatePicker = new DatePickerDialog(this, visitDateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 			return visitDatePicker;
 		case DEPARTURE_DATE_PICKER:
-			DatePickerDialog departureDatePicker = new DatePickerDialog(this, depaertureDateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-			return departureDatePicker;
+			//DatePickerDialog departureDatePicker = new DatePickerDialog(this, depaertureDateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+			TimePickerDialog departureTime = new TimePickerDialog(this, depaertureTimeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
+			return departureTime;
 
 		}
 		return super.onCreateDialog(id);

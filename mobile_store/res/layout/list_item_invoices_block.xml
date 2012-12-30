@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:clickable="true"
-        android:focusable="true" >
+        android:focusable="false" >
 
         <FrameLayout
             android:id="@+id/block_time_container"
@@ -18,7 +18,8 @@
             android:layout_height="match_parent"
             android:background="@drawable/list_border_main_menu"
             android:duplicateParentState="true"
-            android:padding="8dp" >
+            android:padding="8dp" 
+            android:focusable="false">
 
             <TextView
                 android:id="@+id/block_time"
@@ -26,7 +27,8 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/text_size_diff_large_small"
                 android:textColor="@color/body_text_1"
-                android:textSize="@dimen/text_size_small" />
+                android:textSize="@dimen/text_size_small"
+                android:focusable="false" />
         </FrameLayout>
 
         <TextView
@@ -38,7 +40,8 @@
             android:layout_marginLeft="@dimen/listPreferredItemPaddingLeft"
             android:layout_marginRight="@dimen/listPreferredItemPaddingRight"
             android:layout_toRightOf="@id/block_time_container"
-            android:paddingTop="8dp" />
+            android:paddingTop="8dp" 
+            android:focusable="false"/>
 
         <TextView
             android:id="@+id/block_subtitle"
@@ -49,7 +52,8 @@
             android:layout_alignLeft="@id/block_title"
             android:layout_alignRight="@id/block_title"
             android:layout_below="@id/block_title"
-            android:paddingBottom="8dp" />
+            android:paddingBottom="8dp"
+            android:focusable="false" />
     </RelativeLayout>
 
 </LinearLayout>
