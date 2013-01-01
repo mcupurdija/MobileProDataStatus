@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.ws.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapPrimitive;
@@ -12,6 +13,14 @@ import android.content.ContentResolver;
 import android.os.Parcel;
 
 public class ItemQuantitySyncObject extends SyncObject {
+
+	public ItemQuantitySyncObject(String mItemNoa46, String mLocationCode,
+			Integer mCampaignStatus) {
+		super();
+		this.mItemNoa46 = mItemNoa46;
+		this.mLocationCode = mLocationCode;
+		this.mCampaignStatus = mCampaignStatus;
+	}
 
 	private static String TAG = "ItemsSyncObject";
 	
@@ -100,7 +109,8 @@ public class ItemQuantitySyncObject extends SyncObject {
 	@Override
 	public void saveSOAPResponse(Object response,
 			ContentResolver contentResolver) {
-		SoapPrimitive resultSoap = (SoapPrimitive)response;
+		Vector resVector = (Vector)response;
+		SoapPrimitive resultSoap = (SoapPrimitive)resVector.get(0);
 		result = resultSoap.toString();
 		LogUtils.LOGI(TAG, result.toString());
 	}

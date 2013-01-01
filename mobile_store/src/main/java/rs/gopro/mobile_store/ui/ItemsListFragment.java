@@ -3,11 +3,18 @@ package rs.gopro.mobile_store.ui;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
+import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.ItemQuantitySyncObject;
+import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.provider.BaseColumns;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -31,7 +38,8 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	private Spinner spinner;
 	private String splitQuerySeparator = ";";
 	private CursorAdapter cursorAdapter;
-
+	private ResultReceiver mReceiver;
+	private ItemQuantitySyncObject itemQuantitySyncObject;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -125,14 +133,48 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 		String[] PROJECTION = { BaseColumns._ID, Items.ITEM_NO, Items.DESCRIPTION, Items.CAMPAIGN_STATUS };
 	}
 	
-	 @Override
+	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
+		
 		super.onListItemClick(l, v, position, id);
+		
 		final Cursor cursor = (Cursor) cursorAdapter.getItem(position);
         final String itemId = String.valueOf(cursor.getString(1));
+		
+		doSynchronization(itemId);
+	}
+	 
+	private void doSynchronization(final String itemId) {
+		mReceiver = new ResultReceiver(new Handler()) {
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                if (resultData != null && resultData.containsKey(NavisionSyncService.SOAP_RESULT)) {
+                	onSOAPResult(resultCode, resultData.getString(NavisionSyncService.SOAP_RESULT), itemId);
+                }
+                else {
+                	onSOAPResult(resultCode, null, itemId);
+                }
+            }
+            
+        };
+		
+        itemQuantitySyncObject = new ItemQuantitySyncObject(itemId, "300", Integer.valueOf(-1));
+		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQuantitySyncObject);
+		intent.putExtra(NavisionSyncService.EXTRA_RESULT_RECEIVER, getResultReceiver());
+		getActivity().startService(intent);
+		
+	}
+	
+	public ResultReceiver getResultReceiver() {
+        return mReceiver;
+    }
+	
+	public void onSOAPResult(int code, String result, String itemId) {
 		AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
 		alertDialog.setTitle("Artikla na stanju");
-		alertDialog.setMessage("Kolicina na stanju artikla broj "+itemId+": 0");
+		alertDialog.setMessage("Kolicina na stanju artikla broj "+itemId+": "+result);
 		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
 		   public void onClick(DialogInterface dialog, int which) {
 			   dialog.dismiss();
@@ -141,5 +183,5 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 		// Set the Icon for the Dialog
 		//alertDialog.setIcon(R.drawable.icon);
 		alertDialog.show();
-	}
+    }
 }

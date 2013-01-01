@@ -82,7 +82,7 @@ public class NavisionSyncService extends IntentService {
         	//SoapPrimitive result = (SoapPrimitive)envelope.getResponse();
         	//itemsRequest.setpCSVString();
         	Bundle resultData = new Bundle();
-        	resultData.putString(SOAP_RESULT, syncObject.getStatusMessage()); //result.getProperty(1).toString()
+        	resultData.putString(SOAP_RESULT, syncObject.getResult()); //result.getProperty(1).toString()
             receiver.send(1, resultData);
         	syncObject.logSyncEnd(contentResolver);
         } catch (Exception e) {

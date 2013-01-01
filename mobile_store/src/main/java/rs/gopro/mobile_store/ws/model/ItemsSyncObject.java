@@ -160,4 +160,10 @@ public class ItemsSyncObject extends SyncObject {
 		dest.writeLong(getmDateModified().getTime());
 		dest.writeInt(getmOverstockAndCampaignOnly());
 	}
+
+	@Override
+	public String getResult() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

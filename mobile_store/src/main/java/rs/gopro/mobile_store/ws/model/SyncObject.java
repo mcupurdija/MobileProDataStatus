@@ -61,6 +61,7 @@ public abstract class SyncObject implements Parcelable {
 	public abstract List<PropertyInfo> getSOAPRequestProperties();
 	public abstract void saveSOAPResponse(Object response, ContentResolver contentResolver);
 	public abstract void logSyncEnd(ContentResolver contentResolver);
+	public abstract String getResult();
 
 	public String getStatusMessage() {
 		return statusMessage;
