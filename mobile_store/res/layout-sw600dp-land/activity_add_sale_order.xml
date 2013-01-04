@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal|top"
+    android:background="#FFE9E9E9"
+    android:orientation="vertical"
+    android:paddingLeft="80dp"
+    android:paddingRight="80dp" >
+
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
+        android:background="#FFFFFFFF"
+        android:paddingLeft="80dp"
+        android:paddingRight="80dp"
+        android:paddingTop="28dip"
+        android:shrinkColumns="1"
+        android:stretchColumns="1" >
+
+        <TableRow
+            android:id="@+id/edit_sale_order_customer_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/edit_sale_order_customer_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_title" />
+
+            <AutoCompleteTextView
+                android:id="@+id/edit_sale_order_customer_autocomplete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:completionThreshold="1"
+                android:hint="@string/customer_hint"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/edit_sale_order_dokument_type_no_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/edit_dokument_type_no_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/dokument_type_no_title" />
+
+            <LinearLayout
+                android:animateLayoutChanges="false"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/edit_dokument_no_text"
+                    style="@style/AddEdit_Text_Value"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dip"
+                    android:layout_marginRight="16dip"
+                    android:layout_weight="5"
+                    android:gravity="center_vertical"
+                    android:text="@string/document_no" />
+
+                <Spinner
+                    android:id="@+id/edit_dokument_type_spinner"
+                    style="EditEvent_Spinner"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dip"
+                    android:layout_marginRight="16dip"
+                    android:layout_weight="5"
+                    android:gravity="center_vertical" />
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/edit_sale_order_settings_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <LinearLayout
+                android:layout_span="2"
+                android:animateLayoutChanges="false"
+                android:baselineAligned="false"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:animateLayoutChanges="false"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_location_label"
+                        style="@style/AddEdit_Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical"
+                        android:text="@string/location_no" />
+
+                    <Spinner
+                        android:id="@+id/edit_sale_order_location_spinner"
+                        style="EditEvent_Spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:animateLayoutChanges="false"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_slc1_label"
+                        style="@style/AddEdit_Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical"
+                        android:text="@string/shortcut_dimension1_code" />
+
+                    <Spinner
+                        android:id="@+id/edit_sale_order_slc1_spinner"
+                        style="EditEvent_Spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:animateLayoutChanges="false"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_backorder_layout"
+                        style="@style/AddEdit_Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical"
+                        android:text="@string/backorder" />
+
+                    <Spinner
+                        android:id="@+id/edit_sale_order_backorder_spinner"
+                        style="EditEvent_Spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:animateLayoutChanges="false"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_payment_type_label"
+                        style="@style/AddEdit_Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical"
+                        android:text="@string/payment_type" />
+
+                    <Spinner
+                        android:id="@+id/edit_sale_order_payment_type_spinner"
+                        style="EditEvent_Spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/edit_sale_order_settings_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <LinearLayout
+                android:layout_span="2"
+                android:animateLayoutChanges="false"
+                android:baselineAligned="false"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:animateLayoutChanges="false"
+                    android:orientation="vertical" >
+
+                    <CheckBox 
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/hide_discount" />
+
+                    <CheckBox 
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/show_declaration" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:animateLayoutChanges="false"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_slc1_label"
+                        style="@style/AddEdit_Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical"
+                        android:text="@string/shortcut_dimension1_code" />
+
+                    <Spinner
+                        android:id="@+id/edit_sale_order_slc1_spinner"
+                        style="EditEvent_Spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:animateLayoutChanges="false"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_backorder_layout"
+                        style="@style/AddEdit_Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical"
+                        android:text="@string/backorder" />
+
+                    <Spinner
+                        android:id="@+id/edit_sale_order_backorder_spinner"
+                        style="EditEvent_Spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:animateLayoutChanges="false"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_payment_type_label"
+                        style="@style/AddEdit_Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical"
+                        android:text="@string/payment_type" />
+
+                    <Spinner
+                        android:id="@+id/edit_sale_order_payment_type_spinner"
+                        style="EditEvent_Spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/contact_address_ship_section_title" />
+
+            <Spinner
+                android:id="@+id/edit_sale_order_shipping_address_spinner"
+                style="EditEvent_Spinner"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="5"
+                android:gravity="center_vertical" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/edit_sale_order_address_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/edit_sale_order_address_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical" />
+
+            <EditText
+                android:id="@+id/edit_sale_order_address_value"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:hint="@string/contact_address_hint"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/edit_sale_order_address_city_zip_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/edit_sale_order_address_city_zip_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical" />
+
+            <LinearLayout
+                android:animateLayoutChanges="false"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/edit_sale_order_city"
+                    style="AddEdit_Value"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dip"
+                    android:layout_marginRight="16dip"
+                    android:layout_weight="5"
+                    android:gravity="center_vertical"
+                    android:hint="@string/contact_city_hint" />
+
+                <EditText
+                    android:id="@+id/edit_sale_order_zip"
+                    style="AddEdit_Value"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dip"
+                    android:layout_marginRight="16dip"
+                    android:layout_weight="5"
+                    android:gravity="center_vertical"
+                    android:hint="@string/contact_post_code_hint" />
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/edit_sale_order_address_contact_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/edit_sale_order_address_contact_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical" />
+
+            <EditText
+                android:id="@+id/edit_sale_order_address_contact_value"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:hint="@string/contact_hint"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/contact_address_invoice_section_title" />
+
+            <Spinner
+                android:id="@+id/edit_sale_order_billing_address_spinner"
+                style="EditEvent_Spinner"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="5"
+                android:gravity="center_vertical" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/edit_sale_order_address_invoice_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/edit_sale_order_address_invoice_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical" />
+
+            <EditText
+                android:id="@+id/edit_sale_order_address_invoice_value"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:hint="@string/contact_address_hint"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/edit_sale_order_address_invoice_city_zip_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/edit_sale_order_address_invoice_city_zip_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical" />
+
+            <LinearLayout
+                android:animateLayoutChanges="false"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/edit_sale_address_invoice_order_city"
+                    style="AddEdit_Value"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dip"
+                    android:layout_marginRight="16dip"
+                    android:layout_weight="5"
+                    android:gravity="center_vertical"
+                    android:hint="@string/contact_city_hint" />
+
+                <EditText
+                    android:id="@+id/edit_sale_orde_address_invoicer_zip"
+                    style="AddEdit_Value"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dip"
+                    android:layout_marginRight="16dip"
+                    android:layout_weight="5"
+                    android:gravity="center_vertical"
+                    android:hint="@string/contact_post_code_hint" />
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/edit_sale_order_address_invoice_contact_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/edit_sale_order_address_invoice_contact_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical" />
+
+            <EditText
+                android:id="@+id/edit_sale_order_address_invoice_contact_value"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:hint="@string/contact_hint"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

@@ -9,21 +9,23 @@
     <style name="MainMenuListItem" parent="@android:style/Widget.TextView">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:minHeight">?android:attr/listPreferredItemHeight</item>
-<!--         <item name="android:textColor">@android:color/primary_text_dark</item> -->
-<!--         <item name="android:textSize">@dimen/text_size_large</item> -->
-<!--         <item name="android:textStyle">bold</item> -->
-<!--         <item name="android:background">@drawable/list_item_background_main_menu</item> -->
+        <!-- <item name="android:textColor">@android:color/primary_text_dark</item> -->
+        <!-- <item name="android:textSize">@dimen/text_size_large</item> -->
+        <!-- <item name="android:textStyle">bold</item> -->
+        <!-- <item name="android:background">@drawable/list_item_background_main_menu</item> -->
     </style>
-    
+
     <style name="MainMenuListItemCategory" parent="@android:style/Widget.TextView">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-		<item name="android:background">@color/main_menu_category_background</item>
-		<item name="android:textColor">@color/main_menu_category_text</item>
-		<item name="android:singleLine">true</item>
+        <item name="android:background">@color/main_menu_category_background</item>
+        <item name="android:textColor">@color/main_menu_category_text</item>
+        <item name="android:singleLine">true</item>
     </style>
-    
-    <!-- SimpleListItems are items whose containers provides the appropriate padding, and
-         usually the container and content are a single view. -->
+
+    <!--
+         SimpleListItems are items whose containers provides the appropriate padding, and
+         usually the container and content are a single view.
+    -->
     <style name="SimpleListItem" parent="ListItemContainerBase">
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>
@@ -34,7 +36,7 @@
     <style name="SimpleListItemSmall" parent="SimpleListItem">
         <item name="android:minHeight">48dp</item>
     </style>
-	
+
     <!-- List item text -->
     <style name="ListItemTitle">
         <item name="android:textStyle">bold</item>
@@ -55,10 +57,66 @@
         <item name="android:ellipsize">end</item>
         <item name="android:textIsSelectable">true</item>
     </style>
+
     <style name="TextBody">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:lineSpacingMultiplier">1.1</item>
         <item name="android:textColor">@color/body_text_1</item>
         <item name="android:textIsSelectable">true</item>
     </style>
+
+    <style name="AddEdit_Label" parent="android:TextAppearance">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:minHeight">48dip</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginLeft">16dip</item>
+        <item name="android:layout_marginRight">-16dip</item>
+        <item name="android:paddingLeft">8dip</item>
+        <item name="android:paddingRight">8dip</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">top|left</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#FFAAAAAA</item>
+    </style>
+
+    <style name="AddEdit_Text_Value" parent="AddEdit_Label">
+        <item name="android:textColor">#FF333333</item>
+    </style>
+
+    <style name="AddEdit" parent="android:TextAppearance">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#FF333333</item>
+    </style>
+
+    <style name="AddEdit_Value" parent="AddEdit">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginRight">12dip</item>
+        <item name="android:layout_marginLeft">12dip</item>
+    </style>
+
+    <style name="EditEventCalSpinner" parent="android:TextAppearance">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+    </style>
+
+    <style name="EditEvent_CalSpinnerValue" parent="EditEventCalSpinner">
+        <item name="android:paddingLeft">16dip</item>
+        <item name="android:paddingRight">16dip</item>
+    </style>
+
+    <style name="EditEvent_Spinner" parent="android:style/Widget.Holo.Light.Spinner">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#FF333333</item>
+        <item name="android:layout_marginRight">12dp</item>
+        <item name="android:layout_marginLeft">12dp</item>
+    </style>
+
+    <style name="EditEvent_SpinnerButton" parent="EditEvent_Spinner">
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+    </style>
+
 </resources>

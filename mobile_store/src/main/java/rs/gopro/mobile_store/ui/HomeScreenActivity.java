@@ -24,15 +24,6 @@ public class HomeScreenActivity extends BaseActivity implements OnClickListener{
     ThirdSectionFragment thirdSectionFragment;
     Button nextButton;
     
-   /* private OnClickListener btnListener = new OnClickListener() {
-        public void onClick(View v) {
-        	TextView tText = (TextView) findViewById(R.id.textView1);
-        	CompanyKsoapWs companyKsoapWs = new CompanyKsoapWs();
-        	companyKsoapWs.execute((Void)null);
-        	tText.setText(companyKsoapWs.getCompany());
-        }
-    };*/
-    
     /**
      * Called when the activity is first created.
      * @param savedInstanceState If the activity is being re-initialized after 
@@ -52,8 +43,6 @@ public class HomeScreenActivity extends BaseActivity implements OnClickListener{
 	    	Intent loginScreen = new Intent(this, LoginActivity.class);
 	    	startActivity(loginScreen);
 	    }
-		
-	    Log.i(TAG, "Bas da vidim kada je usao ovde!");
 	   
 	    final FragmentManager fm = getSupportFragmentManager();
 	    FragmentTransaction fragmentTransaction = fm.beginTransaction();

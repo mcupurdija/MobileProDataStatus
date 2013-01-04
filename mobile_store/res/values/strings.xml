@@ -38,6 +38,7 @@
 	<string name="save_button_title">Save</string>
 	<string name="cancel_button_title">Cancel</string>
 	<string name="new_button_title">New</string>
+	
 	<!-- add visit --> 
 	<string name="sale_person_title">Sale person</string>
 	<string name="sale_person_hint">Sale Person</string>
@@ -95,8 +96,19 @@
 	<string name="contact_job_title">Job title</string>
 	<string name="contact_job_title_hint">Job title</string>
 	
-	
-	
 	<string name="contextual_deactivate">Delete</string>
 	<string name="contextual_edit">Edit</string>
+	
+	<string name="document_no">Document No</string>
+	<string name="dokument_type_no_title">Document no and type </string>
+	<string name="contact_title">Kontakt</string>
+	<string name="contact_hint">Kontakt</string>
+	<string name="contact_address_ship_section_title">Shipping address</string>
+	<string name="contact_address_invoice_section_title">Billing address</string>
+	<string name="location_no">Location no.</string>
+	<string name="shortcut_dimension1_code">Shortcut dimension 1</string>
+	<string name="backorder">Backorder status</string>
+	<string name="payment_type">Payment</string>
+	<string name="hide_discount">Hide discount</string>
+	<string name="show_declaration">Show declaration</string>
 </resources>
