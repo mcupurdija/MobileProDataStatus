@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.ksoap2.serialization.PropertyInfo;
 
+import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
+
 import android.content.ContentResolver;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -18,10 +20,11 @@ public abstract class SyncObject implements Parcelable {
 
 	protected static String WS_NAVISION_CODEUNIT_NAME = "/Codeunit/MobileDeviceSync";
 	
-	protected static String WS_SERVER_ADDRESS = "http://sqlserver.gopro.rs:7047/Wurth/WS";
+	protected static String WS_SERVER_ADDRESS = "http://10.94.1.5:7047/DynamicsNAV/WS";//"http://sqlserver.gopro.rs:7047/Wurth/WS";
 	
 	private String mCompany = "Wurth%20-%20Development";
 	private String statusMessage;
+	protected String result;
 	
 	public SyncObject() {
 	}
@@ -59,9 +62,12 @@ public abstract class SyncObject implements Parcelable {
 	public abstract String getWebMethodName();
 	public abstract void logSyncStart(ContentResolver contentResolver);
 	public abstract List<PropertyInfo> getSOAPRequestProperties();
-	public abstract void saveSOAPResponse(Object response, ContentResolver contentResolver);
+	public abstract void saveSOAPResponse(Object response, ContentResolver contentResolver) throws SOAPResponseException;
 	public abstract void logSyncEnd(ContentResolver contentResolver);
-	public abstract String getResult();
+	
+	public String getResult() {
+		return result;
+	}
 
 	public String getStatusMessage() {
 		return statusMessage;

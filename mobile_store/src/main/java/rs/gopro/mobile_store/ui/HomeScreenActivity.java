@@ -1,9 +1,12 @@
 package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,11 +18,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class HomeScreenActivity extends BaseActivity implements OnClickListener{
+public class HomeScreenActivity extends BaseActivity implements OnClickListener, MainContextualActionBarCallback{
     private static String TAG = "HomeScreenActivity";
     private static String SESSION_PREFS = "SessionPrefs";
+    public static final Uri VISITS_URI = MobileStoreContract.Visits.CONTENT_URI;
     
-    FirstSectionFragment firstSectionFragment;
+    VisitListFromMenuFragment firstSectionFragment;
     SecondSectionFragment secondSectionFragment;
     ThirdSectionFragment thirdSectionFragment;
     Button nextButton;
@@ -46,10 +50,13 @@ public class HomeScreenActivity extends BaseActivity implements OnClickListener{
 	   
 	    final FragmentManager fm = getSupportFragmentManager();
 	    FragmentTransaction fragmentTransaction = fm.beginTransaction();
-	    firstSectionFragment = (FirstSectionFragment) fm.findFragmentById(R.id.first_section_fragment);
+	    firstSectionFragment = (VisitListFromMenuFragment) fm.findFragmentById(R.id.first_section_fragment);
 	    if(firstSectionFragment == null){
-	    	firstSectionFragment = new FirstSectionFragment();
-	    	 fragmentTransaction.add(R.id.first_section_fragment, firstSectionFragment);
+	    	firstSectionFragment = new VisitListFromMenuFragment();
+	    	firstSectionFragment.setArguments(BaseActivity
+					.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW,
+							VISITS_URI)));
+	    	fragmentTransaction.add(R.id.first_section_fragment, firstSectionFragment);
 	    }
 	    secondSectionFragment = (SecondSectionFragment) fm.findFragmentById(R.id.second_section_fragment);
 	    if(secondSectionFragment == null){
@@ -85,5 +92,9 @@ public class HomeScreenActivity extends BaseActivity implements OnClickListener{
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.action_menu, menu);
 	    return true;
+	}
+
+	@Override
+	public void onLongClickItem(String identifier) {
 	}
 }

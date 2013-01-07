@@ -111,6 +111,7 @@ public class MobileStoreContract {
 		String CATEGORY_CODE = "category_code";
 		String GROUP_CODE = "group_code";
 		String CAMPAIGN_STATUS = "campaign_status";
+		String OVERSTOCK_STATUS = "overstock_status";
 		String CONNECTED_SPEC_SHIP_ITEM = "connected_spec_ship_item";
 		String UNIT_SALES_PRICE_EUR = "unit_sales_price_eur";
 		String UNIT_SALES_PRICE_DIN = "unit_sales_price_din";

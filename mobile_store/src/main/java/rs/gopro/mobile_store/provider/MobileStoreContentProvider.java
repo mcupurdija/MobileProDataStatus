@@ -12,6 +12,7 @@ import android.content.ContentValues;
 import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
@@ -47,7 +48,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int ITEMS_NO = 131;
 	private static final int ITEMS_BY_STATUS = 132;
 	private static final int ITEMS_CUSTOM_SEARCH = 133;
-	
+
 	private static final int SALE_ORDERS = 140;
 	private static final int SALE_ORDER_CUSTOM_SEARCH = 141;
 	private static final int SALE_ORDER_BY_STATUS = 142;
@@ -56,12 +57,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int VISITS = 200;
 	private static final int VISIT_ID = 201;
 	private static final int VISITS_WITH_CUSTOMER = 202;
-	
+
 	private static final int SALE_ORDER_LINES_FROM_ORDER = 300;
-	
+
 	private static final int CONTACTS = 400;
 	private static final int CONTACTS_ID = 401;
-	
 
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -76,7 +76,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "invoices/#", INVOICES_ID);
 
 		mobileStoreURIMatcher.addURI(authority, "customers", CUSTOMERS);
-		mobileStoreURIMatcher.addURI(authority, "customers_by_sales_person/*", CUSTOMERS_BY_SALES_PERSON);
+		mobileStoreURIMatcher.addURI(authority, "customers_by_sales_person/*",
+				CUSTOMERS_BY_SALES_PERSON);
 		mobileStoreURIMatcher.addURI(authority, "customers/#", CUSTOMERS_ID);
 		mobileStoreURIMatcher.addURI(authority, "customers/customer_no",
 				CUSTOMERS_NO);
@@ -101,24 +102,35 @@ public class MobileStoreContentProvider extends ContentProvider {
 
 		mobileStoreURIMatcher.addURI(authority, "visits", VISITS);
 		mobileStoreURIMatcher.addURI(authority, "visits/#", VISIT_ID);
-		mobileStoreURIMatcher.addURI(authority, "visits/with_customer", VISITS_WITH_CUSTOMER);
-		
+		mobileStoreURIMatcher.addURI(authority, "visits/with_customer",
+				VISITS_WITH_CUSTOMER);
+
 		mobileStoreURIMatcher.addURI(authority, "sale_orders", SALE_ORDERS);
-		mobileStoreURIMatcher.addURI(authority, "sale_orders_list/*", SALE_ORDERS_LIST);
-		//custom_search
-		mobileStoreURIMatcher.addURI(authority, "sale_orders/*/custom_search", SALE_ORDER_BY_STATUS);
-		mobileStoreURIMatcher.addURI(authority, "sale_orders/#/custom_search", SALE_ORDER_BY_STATUS);
-		mobileStoreURIMatcher.addURI(authority, "sale_orders/*/#/custom_search", SALE_ORDER_CUSTOM_SEARCH);
-		mobileStoreURIMatcher.addURI(authority, "sale_orders/#/*/custom_search", SALE_ORDER_CUSTOM_SEARCH);
-		
-		mobileStoreURIMatcher.addURI(authority, "sale_order_lines_from_order/#", SALE_ORDER_LINES_FROM_ORDER);
-		
+		mobileStoreURIMatcher.addURI(authority, "sale_orders_list/*",
+				SALE_ORDERS_LIST);
+		// custom_search
+		mobileStoreURIMatcher.addURI(authority, "sale_orders/*/custom_search",
+				SALE_ORDER_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "sale_orders/#/custom_search",
+				SALE_ORDER_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority,
+				"sale_orders/*/#/custom_search", SALE_ORDER_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority,
+				"sale_orders/#/*/custom_search", SALE_ORDER_CUSTOM_SEARCH);
+
+		mobileStoreURIMatcher.addURI(authority,
+				"sale_order_lines_from_order/#", SALE_ORDER_LINES_FROM_ORDER);
+
 		mobileStoreURIMatcher.addURI(authority, "contacts", CONTACTS);
-		mobileStoreURIMatcher.addURI(authority, "contacts/*", CONTACTS_ID );
-		/*mobileStoreURIMatcher.addURI(authority, "contacts/custom_search", CONTACTS_ALL);
-		mobileStoreURIMatcher.addURI(authority, "contacts/custom_search/*", CONTACTS_CUSTOM_SEARCH);*/
-		//mobileStoreURIMatcher.addURI(authority, "contacts/custom_search/#", CONTACTS_CUSTOM_SEARCH);
-												   
+		mobileStoreURIMatcher.addURI(authority, "contacts/*", CONTACTS_ID);
+		/*
+		 * mobileStoreURIMatcher.addURI(authority, "contacts/custom_search",
+		 * CONTACTS_ALL); mobileStoreURIMatcher.addURI(authority,
+		 * "contacts/custom_search/*", CONTACTS_CUSTOM_SEARCH);
+		 */
+		// mobileStoreURIMatcher.addURI(authority, "contacts/custom_search/#",
+		// CONTACTS_CUSTOM_SEARCH);
+
 	}
 
 	@Override
@@ -161,7 +173,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-		//LogUtils.log(Log.VERBOSE, TAG, "insert(uri = " + uri + ")");
+		// LogUtils.log(Log.VERBOSE, TAG, "insert(uri = " + uri + ")");
 		System.out.println("insert(uri = " + uri + ")");
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
 		int match = mobileStoreURIMatcher.match(uri);
@@ -184,7 +196,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 			getContext().getContentResolver().notifyChange(uri, null);
 			return Visits.buildVisitUri("" + id);
 		case CONTACTS:
-			id = database.insertOrThrow(Tables.CONTACTS,null, values);
+			id = database.insertOrThrow(Tables.CONTACTS, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return Contacts.buildContactsUri("" + id);
 		default:
@@ -238,14 +250,14 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.VISITS);
 		case VISIT_ID:
 			final String visitId = Visits.getVisitId(uri);
-			return builder.addTable(Tables.VISITS)
-					.where(Tables.VISITS + "." + Visits._ID + "=?", visitId);
+			return builder.addTable(Tables.VISITS).where(
+					Tables.VISITS + "." + Visits._ID + "=?", visitId);
 		case SALE_ORDERS:
 			return builder.addTable(Tables.SALE_ORDERS);
 		case CONTACTS_ID:
 			final String contactId = Contacts.getContactsId(uri);
-			return builder.addTable(Tables.CONTACTS)
-					.where(Tables.CONTACTS+"." + Contacts._ID + "=?", contactId);
+			return builder.addTable(Tables.CONTACTS).where(
+					Tables.CONTACTS + "." + Contacts._ID + "=?", contactId);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -271,13 +283,14 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.CUSTOMERS).where(
 					Customers.BLOCKED_STATUS + "= ?", new String[] { "1" });
 		case CUSTOMERS_BY_SALES_PERSON:
-			final String salesPersonIdOnCustomer = Customers.getCustomersSalesPersonId(uri);
-			return builder.addTable(Tables.CUSTOMERS)
-					.where(Customers.SALES_PERSON_ID + "=?", salesPersonIdOnCustomer);
+			final String salesPersonIdOnCustomer = Customers
+					.getCustomersSalesPersonId(uri);
+			return builder.addTable(Tables.CUSTOMERS).where(
+					Customers.SALES_PERSON_ID + "=?", salesPersonIdOnCustomer);
 		case CUSTOMERS_ID:
 			String customerId = Customers.getCustomersId(uri);
-			return builder.addTable(Tables.CUSTOMERS)
-					.where(Customers._ID + "=?", customerId);
+			return builder.addTable(Tables.CUSTOMERS).where(
+					Customers._ID + "=?", customerId);
 		case CUSTOMERS_NO:
 			return builder.addTable(Tables.CUSTOMERS);
 		case CUSTOMERS_BY_STATUS:
@@ -294,7 +307,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.where(Customers.CUSTOMER_NO + " like ? OR "
 							+ Customers.NAME + " like ?",
 							new String[] { /* "%" + */
-									customerCustomParam + "%",
+							customerCustomParam + "%",
 									"%" + customerCustomParam + "%" })
 					.where(Customers.BLOCKED_STATUS + "= ?",
 							new String[] { customerStatus });
@@ -345,7 +358,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(Visits.NOTE, Tables.VISITS)
 					.where(Tables.VISITS + "." + Visits._ID + "=?", visitId);
 		case SALE_ORDERS:
-			return builder.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)
+			return builder
+					.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)
 					.mapToTable(SaleOrders._ID, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDERS)
@@ -355,25 +369,38 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(Visits.NAME_2, Tables.CUSTOMERS)
 					.mapToTable(SaleOrders.ORDER_DATE, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.LOCATION_CODE, Tables.SALE_ORDERS)
-					.mapToTable(SaleOrders.SHORTCUT_DIMENSION_1_CODE, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.SHORTCUT_DIMENSION_1_CODE,
+							Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.CURRENCY_CODE, Tables.SALE_ORDERS)
-					.mapToTable(SaleOrders.EXTERNAL_DOCUMENT_NO, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.EXTERNAL_DOCUMENT_NO,
+							Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.QUOTE_NO, Tables.SALE_ORDERS)
-					.mapToTable(SaleOrders.BACKORDER_SHIPMENT_STATUS, Tables.SALE_ORDERS)
-					.mapToTable(SaleOrders.ORDER_STATUS_FOR_SHIPMENT, Tables.SALE_ORDERS)
-					.mapToTable(SaleOrders.FIN_CONTROL_STATUS, Tables.SALE_ORDERS)
-					.mapToTable(SaleOrders.ORDER_CONDITION_STATUS, Tables.SALE_ORDERS)
-					.mapToTable(SaleOrders.USED_CREDIT_LIMIT_BY_EMPLOYEE, Tables.SALE_ORDERS)
-					.mapToTable(SaleOrders.ORDER_VALUE_STATUS, Tables.SALE_ORDERS)
-					.mapToTable(SaleOrders.QUOTE_REALIZED_STATUS, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.BACKORDER_SHIPMENT_STATUS,
+							Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.ORDER_STATUS_FOR_SHIPMENT,
+							Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.FIN_CONTROL_STATUS,
+							Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.ORDER_CONDITION_STATUS,
+							Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.USED_CREDIT_LIMIT_BY_EMPLOYEE,
+							Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.ORDER_VALUE_STATUS,
+							Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.QUOTE_REALIZED_STATUS,
+							Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.SPECIAL_QUOTE, Tables.SALE_ORDERS)
-					.mapToTable(SaleOrders.QUOTE_VALID_DATE_TO, Tables.SALE_ORDERS)
-					.mapToTable(SaleOrders.CUST_USES_TRANSIT_CUST, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.QUOTE_VALID_DATE_TO,
+							Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.CUST_USES_TRANSIT_CUST,
+							Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.SALES_PERSON_ID, Tables.SALE_ORDERS)
-					.mapToTable(SaleOrders.CUSTOMER_ADDRESS_ID, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.CUSTOMER_ADDRESS_ID,
+							Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.CONTACT_PHONE, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.PAYMENT_OPTION, Tables.SALE_ORDERS)
-					.mapToTable(SaleOrders.CHECK_STATUS_PHONE, Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.CHECK_STATUS_PHONE,
+							Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.TOTAL, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.TOTAL_DISCOUNT, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.TOTAL_PDV, Tables.SALE_ORDERS)
@@ -385,7 +412,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(SaleOrders.NOTE3, Tables.SALE_ORDERS);
 		case SALE_ORDERS_LIST:
 			final String salesPersonId = SaleOrders.getSalesPersonId(uri);
-			return builder.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)
+			return builder
+					.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)
 					.mapToTable(SaleOrders._ID, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.SALES_PERSON_ID, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDERS)
@@ -395,61 +423,136 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(Visits.NAME, Tables.CUSTOMERS)
 					.mapToTable(Visits.NAME_2, Tables.CUSTOMERS)
 					.mapToTable(SaleOrders.ORDER_DATE, Tables.SALE_ORDERS)
-					.where(Tables.SALE_ORDERS + "." + SaleOrders.SALES_PERSON_ID+ "=?", salesPersonId);
+					.where(Tables.SALE_ORDERS + "."
+							+ SaleOrders.SALES_PERSON_ID + "=?", salesPersonId);
 		case SALE_ORDER_BY_STATUS:
 			String saleOrderDocType = SaleOrders.getSaleOrderDocType(uri);
-			return builder.addTable(Tables.SALE_ORDERS)
-					.where(SaleOrders.DOCUMENT_TYPE+ "= ? ",new String[] {saleOrderDocType} );
+			return builder.addTable(Tables.SALE_ORDERS).where(
+					SaleOrders.DOCUMENT_TYPE + "= ? ",
+					new String[] { saleOrderDocType });
 		case SALE_ORDER_CUSTOM_SEARCH:
-			String saleCustomParam = SaleOrders.getCustomSearchFirstParamQuery(uri);
-			String saleDocType = SaleOrders.getCustomSearchSecondParamQuery(uri);
-			return builder.addTable(Tables.SALE_ORDERS)
-					.where(SaleOrders.SALES_ORDER_NO + " like ? ", new String[] {"%"+saleCustomParam+ "%"})
-					.where(SaleOrders.DOCUMENT_TYPE+ "= ? ",new String[] {saleDocType} );
+			String saleCustomParam = SaleOrders
+					.getCustomSearchFirstParamQuery(uri);
+			String saleDocType = SaleOrders
+					.getCustomSearchSecondParamQuery(uri);
+			return builder
+					.addTable(Tables.SALE_ORDERS)
+					.where(SaleOrders.SALES_ORDER_NO + " like ? ",
+							new String[] { "%" + saleCustomParam + "%" })
+					.where(SaleOrders.DOCUMENT_TYPE + "= ? ",
+							new String[] { saleDocType });
 		case SALE_ORDER_LINES_FROM_ORDER:
 			final String salesOrderId = SaleOrderLines.getSaleOrderLineId(uri);
-			return builder.addTable(Tables.SALE_ORDER_LINES_JOIN_ITEMS)
+			return builder
+					.addTable(Tables.SALE_ORDER_LINES_JOIN_ITEMS)
 					.mapToTable(SaleOrderLines._ID, Tables.SALE_ORDER_LINES)
-					.mapToTable(SaleOrderLines.SALE_ORDER_ID, Tables.SALE_ORDER_LINES)
+					.mapToTable(SaleOrderLines.SALE_ORDER_ID,
+							Tables.SALE_ORDER_LINES)
 					.mapToTable(SaleOrderLines.ITEM_NO, Tables.ITEMS)
 					.mapToTable(SaleOrderLines.DESCRIPTION, Tables.ITEMS)
 					.mapToTable(SaleOrderLines.DESCRIPTION2, Tables.ITEMS)
 					.mapToTable(SaleOrderLines.LINE_NO, Tables.SALE_ORDER_LINES)
-					.mapToTable(SaleOrderLines.QUANTITY, Tables.SALE_ORDER_LINES)
-					.mapToTable(SaleOrderLines.PRICE_EUR, Tables.SALE_ORDER_LINES)
-					.mapToTable(SaleOrderLines.REAL_DISCOUNT, Tables.SALE_ORDER_LINES)
-					.where(SaleOrderLines.SALE_ORDER_ID+"=?", salesOrderId);
+					.mapToTable(SaleOrderLines.QUANTITY,
+							Tables.SALE_ORDER_LINES)
+					.mapToTable(SaleOrderLines.PRICE_EUR,
+							Tables.SALE_ORDER_LINES)
+					.mapToTable(SaleOrderLines.REAL_DISCOUNT,
+							Tables.SALE_ORDER_LINES)
+					.where(SaleOrderLines.SALE_ORDER_ID + "=?", salesOrderId);
 		case CONTACTS_ID:
 			String contactsCustomSearch = Contacts.getContactsCustomSearch(uri);
-			return builder.addTable(Tables.CONTACTS)
-				.where(Contacts.CONTACT_NO + " like ?  or "+ Contacts.NAME +" like ?", new String[] {"%"+contactsCustomSearch+"%", "%"+contactsCustomSearch+"%"});
+			return builder.addTable(Tables.CONTACTS).where(
+					Contacts.CONTACT_NO + " like ?  or " + Contacts.NAME
+							+ " like ?",
+					new String[] { "%" + contactsCustomSearch + "%",
+							"%" + contactsCustomSearch + "%" });
 		case CONTACTS:
 			return builder.addTable(Tables.CONTACTS);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
 	}
-	
+
 	/**
-     * Apply the given set of {@link ContentProviderOperation}, executing inside
-     * a {@link SQLiteDatabase} transaction. All changes will be rolled back if
-     * any single one fails.
-     */
-    @Override
-    public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation> operations)
-            throws OperationApplicationException {
-        final SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        db.beginTransaction();
-        try {
-            final int numOperations = operations.size();
-            final ContentProviderResult[] results = new ContentProviderResult[numOperations];
-            for (int i = 0; i < numOperations; i++) {
-                results[i] = operations.get(i).apply(this, results, i);
-            }
-            db.setTransactionSuccessful();
-            return results;
-        } finally {
-            db.endTransaction();
-        }
-    }
+	 * Apply the given set of {@link ContentProviderOperation}, executing inside
+	 * a {@link SQLiteDatabase} transaction. All changes will be rolled back if
+	 * any single one fails.
+	 */
+	@Override
+	public ContentProviderResult[] applyBatch(
+			ArrayList<ContentProviderOperation> operations)
+			throws OperationApplicationException {
+		final SQLiteDatabase db = databaseHelper.getWritableDatabase();
+		db.beginTransaction();
+		try {
+			final int numOperations = operations.size();
+			final ContentProviderResult[] results = new ContentProviderResult[numOperations];
+			for (int i = 0; i < numOperations; i++) {
+				results[i] = operations.get(i).apply(this, results, i);
+			}
+			db.setTransactionSuccessful();
+			return results;
+		} catch (Exception e) {
+			LogUtils.LOGE(TAG, "Error during apply batch", e);
+			throw new OperationApplicationException(e);
+		} finally {
+			db.endTransaction();
+		}
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public int bulkInsert(Uri uri, ContentValues[] values) {
+		// TODO possible performance drawback because triggers if there is lot of data, maybe we need another approach than triggers
+		final SQLiteDatabase db = databaseHelper.getWritableDatabase();
+		String selectionPhrase = "";
+		String selectionParam = "";
+		String tableName = "";
+		String[] selectionArgs = null;
+		// one method for all tables that needs this, this is used in whole provider implementation
+		int match = mobileStoreURIMatcher.match(uri);
+		switch (match) {
+		case USERS:
+			tableName = Tables.USERS;
+			selectionParam = Users.USERNAME;
+			selectionPhrase = Users.USERNAME + "=?";
+			break;
+		case ITEMS:
+			tableName = Tables.ITEMS;
+			selectionParam = Items.ITEM_NO;
+			selectionPhrase = Items.ITEM_NO + "=?";
+			break;
+		case CUSTOMERS:
+			tableName = Tables.CUSTOMERS;
+			selectionParam = Customers.CUSTOMER_NO;
+			selectionPhrase = Customers.CUSTOMER_NO + "=?";
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown URI: " + uri);
+		}
+		// bulk insert
+		// idea is that one transaction opens database file only once, 
+		// which gives lot of performance
+		int rowsAdded = 0;
+		long rowId;
+		db.beginTransaction();
+		try {
+			for (ContentValues cv : values) {
+				selectionArgs = new String[] { cv.getAsString(selectionParam) };
+				int affected = db.update(tableName, cv, selectionPhrase,
+						selectionArgs);
+				if (affected == 0) {
+					rowId = db.insert(tableName, null, cv);
+					if (rowId > 0)
+						rowsAdded++;
+				}
+			}
+			db.setTransactionSuccessful();
+		} catch (SQLException ex) {
+			LogUtils.LOGE(TAG, "Error during bulk insert", ex);
+		} finally {
+			db.endTransaction();
+		}
+		return rowsAdded;
+	}
 }

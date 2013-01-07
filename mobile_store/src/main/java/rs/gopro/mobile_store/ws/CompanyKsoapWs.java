@@ -11,6 +11,11 @@ import android.os.AsyncTask;
 
 import rs.gopro.mobile_store.ws.util.HttpTransportApache;
 
+/**
+ * Testing purpose only!
+ * @author vladimirm
+ *
+ */
 public class CompanyKsoapWs extends AsyncTask<Void, Void, Void>  {
 	
 	private static String NAMESPACE = "urn:microsoft-dynamics-schemas/nav/system/";

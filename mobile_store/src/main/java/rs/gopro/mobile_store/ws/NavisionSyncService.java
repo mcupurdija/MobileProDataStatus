@@ -70,12 +70,12 @@ public class NavisionSyncService extends IntentService {
         envelope.dotNet = true;
         envelope.setOutputSoapObject(request);
 
-        HttpTransportApache androidHttpTransport = new HttpTransportApache(syncObject.getUrl(), 5000, new NTCredentials("wurthtest", "remote", "", "gopro"), new AuthScope(null, -1));
+        HttpTransportApache androidHttpTransport = new HttpTransportApache(syncObject.getUrl(), 5000, new NTCredentials("gopro4", "61et9gks", "", "wurth"), new AuthScope(null, -1));//"wurthtest", "remote", "", "gopro"
         ContentResolver contentResolver = getContentResolver();
         androidHttpTransport.debug = true;
         try {            
         	syncObject.logSyncStart(contentResolver);
-            // Here we define our base request object which we will
+            // Here we define our base request object which we will  
             // send to our REST service via HttpClient.
         	androidHttpTransport.call(syncObject.getSoapAction(), envelope);
         	syncObject.saveSOAPResponse(envelope.getResponse(), contentResolver);

@@ -27,7 +27,7 @@ public class DateUtils {
 	
 	public static Date getWsDummyDate() {
 		Calendar calendar = GregorianCalendar.getInstance();
-		calendar.set(1970, 0, 1);
+		calendar.set(1900, 0, 1);
 		return calendar.getTime();
 	}
 	

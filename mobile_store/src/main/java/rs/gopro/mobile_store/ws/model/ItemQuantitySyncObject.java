@@ -2,12 +2,14 @@ package rs.gopro.mobile_store.ws.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
+import org.ksoap2.SoapFault;
+import org.ksoap2.SoapFault12;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
 
 import android.content.ContentResolver;
 import android.os.Parcel;
@@ -27,7 +29,6 @@ public class ItemQuantitySyncObject extends SyncObject {
 	private String mItemNoa46;
 	private String mLocationCode;
 	private Integer mCampaignStatus;
-	private String result;
 	
 	public static final Creator<ItemQuantitySyncObject> CREATOR = new Creator<ItemQuantitySyncObject>() {
 		
@@ -108,11 +109,20 @@ public class ItemQuantitySyncObject extends SyncObject {
 
 	@Override
 	public void saveSOAPResponse(Object response,
-			ContentResolver contentResolver) {
-		Vector resVector = (Vector)response;
-		SoapPrimitive resultSoap = (SoapPrimitive)resVector.get(0);
-		result = resultSoap.toString();
-		LogUtils.LOGI(TAG, result.toString());
+			ContentResolver contentResolver) throws SOAPResponseException {
+		if (response instanceof SoapPrimitive) {
+			SoapPrimitive resultSoap = (SoapPrimitive)response;
+			result = resultSoap.toString();
+			LogUtils.LOGI(TAG, result.toString());
+		} else if (response instanceof SoapFault) {
+			SoapFault result = (SoapFault)response;
+			LogUtils.LOGE(TAG, result.getMessage());
+			throw new SOAPResponseException(result.getMessage());
+		}  else if (response instanceof SoapFault12) {
+			SoapFault12 result = (SoapFault12)response;
+			LogUtils.LOGE(TAG, result.getMessage());
+			throw new SOAPResponseException(result.getMessage());
+		}
 	}
 
 	@Override
@@ -143,13 +153,4 @@ public class ItemQuantitySyncObject extends SyncObject {
 	public void setmLocationCode(String mLocationCode) {
 		this.mLocationCode = mLocationCode;
 	}
-
-	public String getResult() {
-		return result;
-	}
-
-	public void setResult(String result) {
-		this.result = result;
-	}
-
 }

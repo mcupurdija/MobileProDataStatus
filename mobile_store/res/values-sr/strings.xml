@@ -13,7 +13,7 @@
 	<string name="hi_label">Ćaos!</string>
 	<string name="get_company">uzmi podatke o kompaniji</string>
 	<string name="s">* Greška prilikom prijave za rad!</string>
-	<string name="first_section_title">Prva sekcija</string>
+	<string name="first_section_title">Plan poseta na dan</string>
 	<string name="second_section_title">Druga sekcija</string>
 	<string name="third_section_title">Treća sekcija</string>
 	<string name="next_button_title">Dalje</string>

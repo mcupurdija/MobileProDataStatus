@@ -22,6 +22,11 @@ import android.os.AsyncTask;
 
 import rs.gopro.mobile_store.ws.util.NTLMSchemeFactory;
 
+/**
+ * Testing purpose only!
+ * @author vladimirm
+ *
+ */
 public class CompanyWS extends AsyncTask<Void, Void, Void> {
 	
 	private String company;
