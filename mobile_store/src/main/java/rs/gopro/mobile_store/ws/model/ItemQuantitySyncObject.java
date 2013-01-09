@@ -127,7 +127,7 @@ public class ItemQuantitySyncObject extends SyncObject {
 
 	@Override
 	public void logSyncEnd(ContentResolver contentResolver) {
-		
+		// TODO Auto-generated method stub
 	}
 
 	public String getmItemNoa46() {
