@@ -58,6 +58,10 @@ public abstract class BaseActivity extends FragmentActivity {
             	Intent newVisitIntent = new Intent(getApplicationContext(), AddVisitActivity.class);
             	startActivityForResult(newVisitIntent, ADD_VISIT_REQUEST_CODE);
             	return true;
+            case R.id.create_settings_activity:
+            	Intent settingsIntent = new Intent(getApplicationContext(), MobileStoreSettingsActivity.class);
+            	startActivity(settingsIntent);
+            	return true;
         }
         return super.onOptionsItemSelected(item);
     }

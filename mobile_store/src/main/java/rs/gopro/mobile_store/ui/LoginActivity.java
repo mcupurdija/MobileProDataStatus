@@ -94,6 +94,9 @@ public class LoginActivity extends Activity {
 			password = cursor.getString(UsersQuery.PASSWORD);
 			String salePersonId = cursor.getString(UsersQuery.SALES_PERSON_ID);
 			SharedPreferencesUtil.addSalePersonId(getApplicationContext(), salePersonId);
+			String userRole = cursor.getString(UsersQuery.NAME);
+			SharedPreferencesUtil.addUserRole(getApplicationContext(), userRole);
+			
 		} else {
 			Log.i(this.getClass().getName(), "Username " + username + " does not exist");
 		}
@@ -106,13 +109,14 @@ public class LoginActivity extends Activity {
 	 *
 	 */
 	public interface UsersQuery {
-		String[] PROJECTION = { Users._ID, Users.USERNAME, Users.PASSWORD, Users.LAST_LOGIN, Users.SALES_PERSON_ID, };
+		String[] PROJECTION = { Users._ID, Users.USERNAME, Users.PASSWORD, Users.LAST_LOGIN, Users.SALES_PERSON_ID, Users.NAME };
 
 		int _ID = 0;
 		int USERNAME = 1;
 		int PASSWORD = 2;
 		int LAST_LOGIN = 3;
 		int SALES_PERSON_ID = 4;
+		int NAME = 5;
 	}
 
 }

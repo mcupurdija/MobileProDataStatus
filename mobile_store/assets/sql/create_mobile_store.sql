@@ -5,10 +5,29 @@ CREATE TABLE `users` (
 	`pass` TEXT,
 	`sales_person_id` INTEGER,
 	`active` INTEGER NOT NULL  DEFAULT 0,
-	`last_login` TEXT
+	`last_login` TEXT,
+	`users_role_id` INTEGER
 );
-INSERT INTO `users` (_id, username, pass, sales_person_id, last_login) VALUES 
-	(1, 'tica', 'tica', 1, datetime('now'));
+INSERT INTO `users` (_id, username, pass, sales_person_id, last_login, users_role_id) VALUES 
+	(1, 'tica', 'tica', 1, datetime('now'), 1);
+INSERT INTO `users` (_id, username, pass, sales_person_id, last_login, users_role_id) VALUES 
+	(2, 'adm', 'adm', 1, datetime('now'), 2);
+
+	
+-- user role
+
+CREATE TABLE `users_role` (
+	`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`name` TEXT,
+	`desc` TEXT
+
+);
+
+INSERT INTO `users_role` (`_id`, `name`, `desc`) VALUES (1, 'USER', 'Role for sale person');
+INSERT INTO `users_role` (`_id`, `name`, `desc`) VALUES (2, 'ADMIN', 'Role for app administator');
+
+	
+	
 	
 -- sales persons
 CREATE TABLE `sales_persons` ( 
