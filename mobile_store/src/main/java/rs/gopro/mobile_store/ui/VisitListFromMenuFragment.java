@@ -4,6 +4,7 @@ import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
+import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
 import android.content.Context;
@@ -45,7 +46,7 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 		if (savedInstanceState != null) {
 			mSelectedVisitId = savedInstanceState.getString(STATE_SELECTED_ID);
 		}
-
+		
 		reloadFromArguments(getArguments());
 
 	}

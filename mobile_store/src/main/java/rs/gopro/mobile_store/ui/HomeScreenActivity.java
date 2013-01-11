@@ -3,6 +3,7 @@ package rs.gopro.mobile_store.ui;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
+import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,10 +41,12 @@ public class HomeScreenActivity extends BaseActivity implements OnClickListener,
 		Log.i(TAG, "Loga activity created.");
 		setContentView(R.layout.activity_home_screen);
 		
-		SharedPreferences settings = getSharedPreferences(SESSION_PREFS, 0);
-	    boolean userLogged = settings.getBoolean("user_logged", false);
+	/*	SharedPreferences settings = getSharedPreferences(SESSION_PREFS, 0);
+	    boolean userLogged = settings.getBoolean("user_logged", false);*/
+		boolean isUserLogged = SharedPreferencesUtil.isUserLoggedIn(getApplicationContext());
+	    System.out.println("***IS USER LOGED: " +isUserLogged);
 	    
-	    if (userLogged) {
+	    if (!isUserLogged) {
 	    	Intent loginScreen = new Intent(this, LoginActivity.class);
 	    	startActivity(loginScreen);
 	    }
@@ -96,5 +99,14 @@ public class HomeScreenActivity extends BaseActivity implements OnClickListener,
 
 	@Override
 	public void onLongClickItem(String identifier) {
+	}
+	
+	
+	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		SharedPreferencesUtil.cleanSessionPrefs(getApplicationContext());
+	
 	}
 }
