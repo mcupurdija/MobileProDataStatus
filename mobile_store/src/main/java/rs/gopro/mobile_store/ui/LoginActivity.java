@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
+import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.database.Cursor;
@@ -79,6 +80,7 @@ public class LoginActivity extends Activity {
 		 */
 		String passFromDB = getPassword(username);
 		if (passFromDB != null && passFromDB.equals(pass)) {
+			SharedPreferencesUtil.setUserLoginStatus(getApplicationContext(), true);
 			return true;
 		}
 		return false;
@@ -90,6 +92,8 @@ public class LoginActivity extends Activity {
 		boolean hasEntry = cursor.moveToFirst();
 		if (hasEntry) {
 			password = cursor.getString(UsersQuery.PASSWORD);
+			String salePersonId = cursor.getString(UsersQuery.SALES_PERSON_ID);
+			SharedPreferencesUtil.addSalePersonId(getApplicationContext(), salePersonId);
 		} else {
 			Log.i(this.getClass().getName(), "Username " + username + " does not exist");
 		}
