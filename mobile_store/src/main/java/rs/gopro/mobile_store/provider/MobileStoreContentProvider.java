@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.provider;
 
 import java.util.ArrayList;
 
+import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.provider.MobileStoreContract.*;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SelectionBuilder;
@@ -276,7 +277,16 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.USERS).where(Users._ID + "=?",
 					userId);
 		case USERNAME:
-			return builder.addTable(Tables.USERS);
+			return builder.addTable(Tables.USERS_JOIN_USERS_ROLE).
+					mapToTable(Users._ID, Tables.USERS).
+					mapToTable(Users.USERNAME, Tables.USERS).
+					mapToTable(Users.PASSWORD, Tables.USERS).
+					mapToTable(Users.LAST_LOGIN, Tables.USERS).
+					mapToTable(Users.SALES_PERSON_ID, Tables.USERS).		
+					mapToTable(Users.NAME, Tables.USERS_ROLE)
+					
+					;
+			
 		case INVOICES_ID:
 			String invoicesId = Invoices.getInvoicesId(uri);
 			return builder.addTable(Tables.INVOICES).where(Invoices._ID + "=?",

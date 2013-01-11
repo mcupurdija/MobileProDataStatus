@@ -9,6 +9,7 @@ public class SharedPreferencesUtil {
 
 	private static final String SALE_PERSON_ID = "sale_person_id";
 	private static final String USER_LOGIN_STATUS = "user_login_status";
+	private static final String USER_ROLE = "user_role";
 
 	public static String getSalePersonId(Context context) {
 		SharedPreferences sharedPreferences = context.getSharedPreferences(ApplicationConstants.SESSION_PREFS, context.MODE_PRIVATE);
@@ -40,5 +41,17 @@ public class SharedPreferencesUtil {
 		 editor.clear();
 		 editor.commit();
 	}
+	
+	public static void addUserRole(Context context, String userRole){
+		SharedPreferences sharedPreferences = context.getSharedPreferences(ApplicationConstants.SESSION_PREFS, context.MODE_PRIVATE);
+		Editor editor = sharedPreferences.edit();
+		editor.putString(USER_ROLE,userRole);
+		editor.commit();
+	}
 
+	public static String getUserRole(Context context){
+		SharedPreferences sharedPreferences = context.getSharedPreferences(ApplicationConstants.SESSION_PREFS, context.MODE_PRIVATE);
+		return sharedPreferences.getString(USER_ROLE, "USER");
+
+	}
 }

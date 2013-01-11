@@ -8,5 +8,9 @@
         android:icon="@drawable/ic_action_next"
         android:showAsAction="ifRoom|withText"
         android:title="@string/next_button_title"/>
+    <item
+        android:id="@+id/create_settings_activity"
+         android:showAsAction="ifRoom|withText"
+        android:title="Settings"/>
 
 </menu>

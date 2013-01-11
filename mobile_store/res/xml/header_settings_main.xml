@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+    <header 
+        android:fragment="rs.gopro.mobile_store.ui.fragment.WebServiceSettingsFragment"
+        android:title="SERVISI"
+        android:summary="SERVISI SUM" />
+    <header 
+        android:fragment="rs.gopro.mobile_store.ui.fragment.SyncSettingsFragment"
+        android:title="SINHRONIZACIJA"
+        android:summary="SINHRONIZACIJA SUM" >
+        <!-- key/value pairs can be included as arguments for the fragment. -->
+        <extra android:name="someKey" android:value="someHeaderValue" />
+    </header>
+</preference-headers>

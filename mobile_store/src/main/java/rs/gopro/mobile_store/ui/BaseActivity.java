@@ -62,6 +62,10 @@ public abstract class BaseActivity extends FragmentActivity {
             case R.id.new_sale_order_action_menu_option:
             	Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT, MobileStoreContract.SaleOrders.CONTENT_URI);
             	startActivity(newSaleOrderIntent);
+				return true;
+            case R.id.create_settings_activity:
+            	Intent settingsIntent = new Intent(getApplicationContext(), MobileStoreSettingsActivity.class);
+            	startActivity(settingsIntent);
             	return true;
         }
         return super.onOptionsItemSelected(item);

@@ -39,6 +39,12 @@ public class MobileStoreContract {
 		String PASSWORD = "pass";
 		String SALES_PERSON_ID = "sales_person_id";
 		String LAST_LOGIN = "last_login";
+		String USERS_ROLE_ID = "users_role_id";
+	}
+	
+	public interface UsersRoleColumns{
+		String NAME = "name";
+		String DESC = "desc";
 	}
 
 	public interface VisitsColumns {
@@ -215,7 +221,7 @@ public class MobileStoreContract {
 		String SALES_PERSON_ID = "sales_person_id";
 	}
 
-	public static class Users implements UsersColumns, BaseColumns {
+	public static class Users implements UsersColumns, UsersRoleColumns, BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_USERS).build();
 
 		public static Uri buildUsersUri(String userId) {

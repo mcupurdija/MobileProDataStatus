@@ -129,6 +129,15 @@
             </intent-filter>
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.SaleOrdersPreviewActivity"/>
 		</activity>
+		<activity
+            android:name=".ui.MobileStoreSettingsActivity"
+            android:exported="false"
+            android:label="Settings" >
+            <intent-filter>
+                 <action android:name="android.intent.action.MAIN" /> 
+                <category android:name="android.intent.category.PREFERENCE" />
+            </intent-filter>
+        </activity>
         <provider
             android:exported="false"
             android:name="rs.gopro.mobile_store.provider.MobileStoreContentProvider"
