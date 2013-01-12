@@ -111,4 +111,5 @@
 	<string name="payment_type">Plaćanje</string>
 	<string name="hide_discount">Sakrij popust</string>
 	<string name="show_declaration">Deklaracija</string>
+	<string name="quote_no">Referentna porudžbina.</string>
 </resources>

@@ -53,7 +53,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int SALE_ORDER_CUSTOM_SEARCH = 141;
 	private static final int SALE_ORDER_BY_STATUS = 142;
 	private static final int SALE_ORDERS_LIST = 143;
-
+	private static final int SALE_ORDER = 144;
+	
 	private static final int VISITS = 200;
 	private static final int VISIT_ID = 201;
 	private static final int VISITS_WITH_CUSTOMER = 202;
@@ -106,6 +107,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 				VISITS_WITH_CUSTOMER);
 
 		mobileStoreURIMatcher.addURI(authority, "sale_orders", SALE_ORDERS);
+		mobileStoreURIMatcher.addURI(authority, "sale_orders/#", SALE_ORDER);
 		mobileStoreURIMatcher.addURI(authority, "sale_orders_list/*",
 				SALE_ORDERS_LIST);
 		// custom_search
@@ -162,6 +164,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return Visits.CONTENT_ITEM_TYPE;
 		case VISITS_WITH_CUSTOMER:
 			return Visits.CONTENT_TYPE;
+		case SALE_ORDERS:
+			return SaleOrders.CONTENT_TYPE;
 		case SALE_ORDERS_LIST:
 			return SaleOrders.CONTENT_TYPE;
 		case SALE_ORDER_LINES_FROM_ORDER:

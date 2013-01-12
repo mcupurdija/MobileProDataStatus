@@ -111,4 +111,5 @@
 	<string name="payment_type">Payment</string>
 	<string name="hide_discount">Hide discount</string>
 	<string name="show_declaration">Show declaration</string>
+	<string name="quote_no">Quote no.</string>
 </resources>

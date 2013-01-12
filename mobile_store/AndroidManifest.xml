@@ -115,6 +115,15 @@
 		<activity android:exported="false" android:name=".ui.NewVisitActivity">
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.VisitsMultipaneActivity"/>
 		</activity>
+		<activity android:exported="false" android:name=".ui.SaleOrderAddEditActivity">
+		    <intent-filter>
+                <action android:name="android.intent.action.INSERT"/>
+                <action android:name="android.intent.action.EDIT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sale_orders"/>
+            </intent-filter>
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.SaleOrdersPreviewActivity"/>
+		</activity>
         <provider
             android:exported="false"
             android:name="rs.gopro.mobile_store.provider.MobileStoreContentProvider"

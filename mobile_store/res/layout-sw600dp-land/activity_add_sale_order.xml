@@ -85,8 +85,10 @@
             </LinearLayout>
         </TableRow>
 
+        <!-- First line of settings -->
+        
         <TableRow
-            android:id="@+id/edit_sale_order_settings_group"
+            android:id="@+id/edit_sale_order_settings_line1_group"
             android:layout_marginBottom="8dip"
             android:focusable="true"
             android:gravity="center_vertical" >
@@ -211,8 +213,10 @@
             </LinearLayout>
         </TableRow>
 
+        <!-- Second line of settings -->
+        
         <TableRow
-            android:id="@+id/edit_sale_order_settings_group"
+            android:id="@+id/edit_sale_order_settings_line2_group"
             android:layout_marginBottom="8dip"
             android:focusable="true"
             android:gravity="center_vertical" >
@@ -231,6 +235,7 @@
                     android:orientation="vertical" >
 
                     <CheckBox 
+                        android:id="@+id/edit_sale_order_hide_discount_check_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dip"
@@ -238,7 +243,8 @@
                         android:layout_gravity="center_vertical"
                         android:text="@string/hide_discount" />
 
-                    <CheckBox 
+                    <CheckBox
+                        android:id="@+id/edit_sale_order_show_declaration_check_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dip"
@@ -255,18 +261,18 @@
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/edit_sale_order_slc1_label"
+                        android:id="@+id/edit_sale_order_quote_no_label"
                         style="@style/AddEdit_Label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dip"
                         android:layout_marginRight="16dip"
                         android:gravity="center_vertical"
-                        android:text="@string/shortcut_dimension1_code" />
+                        android:text="@string/quote_no" />
 
-                    <Spinner
-                        android:id="@+id/edit_sale_order_slc1_spinner"
-                        style="EditEvent_Spinner"
+                    <EditText
+                        android:id="@+id/edit_sale_order_quote_no_edit_text"
+                        style="AddEdit_Value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -332,7 +338,9 @@
                 </LinearLayout>
             </LinearLayout>
         </TableRow>
-
+        
+		<!-- Shipping address group -->
+		
         <TableRow
             android:layout_marginBottom="8dip"
             android:focusable="true"
@@ -442,7 +450,9 @@
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-
+        
+		<!-- Billing address group -->
+		
         <TableRow
             android:layout_marginBottom="8dip"
             android:focusable="true"
@@ -454,7 +464,7 @@
                 android:text="@string/contact_address_invoice_section_title" />
 
             <Spinner
-                android:id="@+id/edit_sale_order_billing_address_spinner"
+                android:id="@+id/edit_sale_order_address_invoice_spinner"
                 style="EditEvent_Spinner"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
@@ -516,7 +526,7 @@
                     android:hint="@string/contact_city_hint" />
 
                 <EditText
-                    android:id="@+id/edit_sale_orde_address_invoicer_zip"
+                    android:id="@+id/edit_sale_orde_address_invoice_zip"
                     style="AddEdit_Value"
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
