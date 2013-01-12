@@ -117,4 +117,8 @@
 	<string name="quote_date">Rok vazenja porudžbine</string>
 	<string name="quote_status">Status porudžbine</string>
 	<string name="transit_customer">Tranzit kupac</string>
+	
+	<!-- settings -->
+	<string name="title_settings">Podesavanja</string>
+	<string name="title_sync_settings">Sinhronizacija</string>
 </resources>

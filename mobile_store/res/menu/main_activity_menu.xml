@@ -5,4 +5,10 @@
         android:icon="@drawable/ic_action_refresh"
         android:showAsAction="ifRoom|withText"
         android:title="@string/action_button_refresh" />
+    
+    <item
+        android:id="@+id/create_settings_activity"
+        android:icon="@drawable/ic_action_settings"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/title_settings" />
 </menu>
