@@ -114,4 +114,5 @@
 	<string name="quote_no">Quote no.</string>
 	<string name="quote_date">Quote date</string>
 	<string name="quote_status">Quote status</string>
+	<string name="transit_customer">Transit customer</string>
 </resources>

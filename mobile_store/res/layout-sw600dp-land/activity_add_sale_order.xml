@@ -86,7 +86,7 @@
         </TableRow>
 
         <!-- First line of settings -->
-        
+
         <TableRow
             android:id="@+id/edit_sale_order_settings_line1_group"
             android:layout_marginBottom="15dp"
@@ -214,7 +214,7 @@
         </TableRow>
 
         <!-- Second line of settings -->
-        
+
         <TableRow
             android:id="@+id/edit_sale_order_settings_line2_group"
             android:layout_marginBottom="15dp"
@@ -230,27 +230,27 @@
                 <LinearLayout
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="4"
                     android:animateLayoutChanges="false"
                     android:orientation="vertical" >
 
-                    <CheckBox 
+                    <CheckBox
                         android:id="@+id/edit_sale_order_hide_discount_check_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="16dip"
                         android:layout_marginRight="16dip"
-                        android:layout_gravity="center_vertical"
                         android:text="@string/hide_discount" />
 
                     <CheckBox
                         android:id="@+id/edit_sale_order_show_declaration_check_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="16dip"
                         android:layout_marginRight="16dip"
-                        android:layout_gravity="center_vertical"
                         android:text="@string/show_declaration" />
                 </LinearLayout>
 
@@ -285,63 +285,37 @@
                 <LinearLayout
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
+                    android:layout_weight="8"
                     android:animateLayoutChanges="false"
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/edit_sale_order_quote_date_label"
+                        android:id="@+id/edit_sale_order_transit_customer_label"
                         style="@style/AddEdit_Label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dip"
                         android:layout_marginRight="16dip"
                         android:gravity="center_vertical"
-                        android:text="@string/quote_date" />
+                        android:text="@string/transit_customer" />
 
-                    <Button
-                        android:id="@+id/edit_sale_order_quote_date_value"
-                        style="EditEvent_SpinnerButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="16dip"
-                        android:layout_marginRight="16dip"
-                        android:gravity="center_vertical" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:animateLayoutChanges="false"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/edit_sale_order_quote_status_label"
-                        style="@style/AddEdit_Label"
+                    <AutoCompleteTextView
+                        android:id="@+id/edit_sale_order_transit_customer_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dip"
                         android:layout_marginRight="16dip"
-                        android:gravity="center_vertical"
-                        android:text="@string/quote_status" />
-
-                    <Spinner
-                        android:id="@+id/edit_sale_order_quote_status_spinner"
-                        style="EditEvent_Spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="16dip"
-                        android:layout_marginRight="16dip"
-                        android:gravity="center_vertical" />
+                        android:completionThreshold="1"
+                        android:hint="@string/customer_hint"
+                        android:paddingLeft="12dip"
+                        android:paddingRight="12dip"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
                 </LinearLayout>
             </LinearLayout>
         </TableRow>
-        
-		<!-- Shipping address group -->
-		
+
+        <!-- Shipping address group -->
+
         <TableRow
             android:layout_marginBottom="8dip"
             android:focusable="true"
@@ -451,9 +425,9 @@
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-        
-		<!-- Billing address group -->
-		
+
+        <!-- Billing address group -->
+
         <TableRow
             android:layout_marginBottom="8dip"
             android:focusable="true"
