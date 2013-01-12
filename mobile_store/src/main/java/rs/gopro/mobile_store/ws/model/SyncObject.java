@@ -7,6 +7,7 @@ import org.ksoap2.serialization.PropertyInfo;
 import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -25,6 +26,7 @@ public abstract class SyncObject implements Parcelable {
 	private String mCompany = "Wurth%20-%20Development";
 	private String statusMessage;
 	protected String result;
+	protected Context context;
 	
 	public SyncObject() {
 	}
@@ -76,4 +78,14 @@ public abstract class SyncObject implements Parcelable {
 	protected void setStatusMessage(String statusMessage) {
 		this.statusMessage = statusMessage;
 	}
+
+	public Context getContext() {
+		return context;
+	}
+
+	public void setContext(Context context) {
+		this.context = context;
+	}
+	
+	
 }
