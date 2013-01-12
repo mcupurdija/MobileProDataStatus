@@ -44,7 +44,6 @@ public class HomeScreenActivity extends BaseActivity implements OnClickListener,
 	/*	SharedPreferences settings = getSharedPreferences(SESSION_PREFS, 0);
 	    boolean userLogged = settings.getBoolean("user_logged", false);*/
 		boolean isUserLogged = SharedPreferencesUtil.isUserLoggedIn(getApplicationContext());
-	    System.out.println("***IS USER LOGED: " +isUserLogged);
 	    
 	    if (!isUserLogged) {
 	    	Intent loginScreen = new Intent(this, LoginActivity.class);

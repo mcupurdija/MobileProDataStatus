@@ -111,4 +111,26 @@
 	<string name="payment_type">Payment</string>
 	<string name="hide_discount">Hide discount</string>
 	<string name="show_declaration">Show declaration</string>
+	
+	<!-- settings -->
+	<string name="title_settings">Settings</string>
+	
+	<string name="key_ws_entry_point">ws_entry_point</string>
+	<string name="key_ws_schema">ws_schema</string>
+	<string name="key_ws_navisition_codeunit">ws_navisition_codeunit</string>
+	<string name="key_ws_server_address">ws_server_address</string>
+	<string name="key_company">company_address</string>
+	
+	<string name="title_ws_entry_point">Endpoint</string>
+	<string name="title_ws_schema">Web service schema</string>
+	<string name="title_ws_navisition_codeunit">Navision code unit name </string>
+	<string name="title_ws_server_address">Server address</string>
+	<string name="title_company">Company</string>
+	
+	<string name="title_web_service_settings">Web service</string>
+	<string name="title_sync_settings">Synchronization</string>
+	
+	
+	
+	 
 </resources>

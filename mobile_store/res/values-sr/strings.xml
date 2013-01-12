@@ -111,4 +111,8 @@
 	<string name="payment_type">Plaćanje</string>
 	<string name="hide_discount">Sakrij popust</string>
 	<string name="show_declaration">Deklaracija</string>
+	
+	<!-- settings -->
+	<string name="title_settings">Podesavanja</string>
+	<string name="title_sync_settings">Sinhronizacija</string>
 </resources>
