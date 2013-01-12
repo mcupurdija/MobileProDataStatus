@@ -9,6 +9,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCallbacks<Cursor> {
 
@@ -20,7 +24,13 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private Uri mUri;
     private Cursor mCursor;
     private String mViewType;
-	
+    
+    private AutoCompleteTextView customerAutoComplete;
+    private AutoCompleteTextView transitCustomerAutoComplete;
+    private TextView documentNo;
+    private Spinner documentType;
+    private Spinner paymentType;
+    
 	public SaleOrderAddEditActivity() {
 		// TODO Auto-generated constructor stub
 	}
@@ -73,7 +83,12 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	}
 
 	private void initComponents(String action) {
-		
+		customerAutoComplete = (AutoCompleteTextView) findViewById(R.id.edit_sale_order_customer_autocomplete);
+		transitCustomerAutoComplete = (AutoCompleteTextView) findViewById(R.id.edit_sale_order_transit_customer_value);
+		ArrayAdapter<CharSequence> docAdapter = ArrayAdapter.createFromResource(this, R.array.sale_order_block_status_array, android.R.layout.simple_spinner_item);
+		docAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		documentType = (Spinner) findViewById(R.id.edit_dokument_type_spinner);
+		documentType.setAdapter(docAdapter);
 	}
 
 	@Override
