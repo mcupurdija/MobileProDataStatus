@@ -119,6 +119,7 @@
 		    <intent-filter>
                 <action android:name="android.intent.action.INSERT"/>
                 <action android:name="android.intent.action.EDIT"/>
+                <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data android:mimeType="vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sale_orders"/>
             </intent-filter>

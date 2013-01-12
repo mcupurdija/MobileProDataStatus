@@ -4,9 +4,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal|top"
     android:background="#FFE9E9E9"
-    android:orientation="vertical"
-    android:paddingLeft="80dp"
-    android:paddingRight="80dp" >
+    android:orientation="vertical" >
 
     <TableLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -24,7 +22,8 @@
             android:id="@+id/edit_sale_order_customer_group"
             android:layout_marginBottom="8dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/edit_sale_order_customer_label"
@@ -86,23 +85,16 @@
         </TableRow>
 
         <!-- First line of settings -->
-        
+
         <TableRow
-            android:id="@+id/edit_sale_order_settings_line1_group"
-            android:layout_marginBottom="15dp"
+            android:id="@+id/edit_sale_order_settings_line1_part1_group"
+            android:layout_marginBottom="8dp"
             android:focusable="true"
             android:gravity="center_vertical" >
 
-            <LinearLayout
-                android:layout_span="2"
-                android:animateLayoutChanges="false"
-                android:baselineAligned="false"
-                android:orientation="horizontal" >
-
                 <LinearLayout
-                    android:layout_width="0px"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
                     android:animateLayoutChanges="false"
                     android:orientation="vertical" >
 
@@ -128,9 +120,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0px"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
                     android:animateLayoutChanges="false"
                     android:orientation="vertical" >
 
@@ -154,11 +145,17 @@
                         android:layout_marginRight="16dip"
                         android:gravity="center_vertical" />
                 </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/edit_sale_order_settings_line1_part2_group"
+            android:layout_marginBottom="15dp"
+            android:focusable="true"
+            android:gravity="center_vertical" >
 
                 <LinearLayout
-                    android:layout_width="0px"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
                     android:animateLayoutChanges="false"
                     android:orientation="vertical" >
 
@@ -184,9 +181,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0px"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
                     android:animateLayoutChanges="false"
                     android:orientation="vertical" >
 
@@ -210,11 +206,10 @@
                         android:layout_marginRight="16dip"
                         android:gravity="center_vertical" />
                 </LinearLayout>
-            </LinearLayout>
         </TableRow>
 
         <!-- Second line of settings -->
-        
+
         <TableRow
             android:id="@+id/edit_sale_order_settings_line2_group"
             android:layout_marginBottom="15dp"
@@ -230,27 +225,27 @@
                 <LinearLayout
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="4"
                     android:animateLayoutChanges="false"
                     android:orientation="vertical" >
 
-                    <CheckBox 
+                    <CheckBox
                         android:id="@+id/edit_sale_order_hide_discount_check_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="16dip"
                         android:layout_marginRight="16dip"
-                        android:layout_gravity="center_vertical"
                         android:text="@string/hide_discount" />
 
                     <CheckBox
                         android:id="@+id/edit_sale_order_show_declaration_check_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="16dip"
                         android:layout_marginRight="16dip"
-                        android:layout_gravity="center_vertical"
                         android:text="@string/show_declaration" />
                 </LinearLayout>
 
@@ -339,9 +334,9 @@
                 </LinearLayout>
             </LinearLayout>
         </TableRow>
-        
-		<!-- Shipping address group -->
-		
+
+        <!-- Shipping address group -->
+
         <TableRow
             android:layout_marginBottom="8dip"
             android:focusable="true"
@@ -451,9 +446,9 @@
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-        
-		<!-- Billing address group -->
-		
+
+        <!-- Billing address group -->
+
         <TableRow
             android:layout_marginBottom="8dip"
             android:focusable="true"
