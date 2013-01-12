@@ -98,6 +98,8 @@
 	
 	<string name="contextual_deactivate">Delete</string>
 	<string name="contextual_edit">Edit</string>
+	<string name="contextual_add">New</string>
+	<string name="contextual_view">View</string>
 	
 	<string name="document_no">Document No</string>
 	<string name="dokument_type_no_title">Document no and type </string>

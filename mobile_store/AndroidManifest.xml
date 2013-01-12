@@ -117,11 +117,15 @@
 		</activity>
 		<activity android:exported="false" android:name=".ui.SaleOrderAddEditActivity">
 		    <intent-filter>
-                <action android:name="android.intent.action.INSERT"/>
                 <action android:name="android.intent.action.EDIT"/>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data android:mimeType="vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sale_orders"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sale_orders"/>
             </intent-filter>
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.SaleOrdersPreviewActivity"/>
 		</activity>

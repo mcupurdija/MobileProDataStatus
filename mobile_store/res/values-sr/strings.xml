@@ -98,6 +98,8 @@
 	
 	<string name="contextual_deactivate">Briši</string>
 	<string name="contextual_edit">Izmeni</string>
+	<string name="contextual_add">Novi</string>
+	<string name="contextual_view">Pregled</string>
 	
 	<string name="document_no">Broj dokumenta</string>
 	<string name="dokument_type_no_title">Broj i tip dokumenta</string>

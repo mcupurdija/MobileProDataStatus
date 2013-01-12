@@ -17,6 +17,7 @@
 package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.provider.MobileStoreContract;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -57,6 +58,10 @@ public abstract class BaseActivity extends FragmentActivity {
             case R.id.create_insert_visit_activity: 
             	Intent newVisitIntent = new Intent(getApplicationContext(), AddVisitActivity.class);
             	startActivityForResult(newVisitIntent, ADD_VISIT_REQUEST_CODE);
+            	return true;
+            case R.id.new_sale_order_action_menu_option:
+            	Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT, MobileStoreContract.SaleOrders.CONTENT_URI);
+            	startActivity(newSaleOrderIntent);
             	return true;
         }
         return super.onOptionsItemSelected(item);
