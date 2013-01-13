@@ -26,7 +26,7 @@ public abstract class SyncObject implements Parcelable {
 
 	protected static String WS_SERVER_ADDRESS = "http://10.94.1.5:7047/DynamicsNAV/WS";// "http://sqlserver.gopro.rs:7047/Wurth/WS";
 
-	private String mCompany = "Wurth%20-%20Development";
+	//private String mCompany = "Wurth%20-%20Development";
 	private String statusMessage;
 	protected String result;
 	protected Context context;
@@ -35,11 +35,9 @@ public abstract class SyncObject implements Parcelable {
 	}
 
 	public SyncObject(Parcel source) {
-		setCompany(source.readString());
 		setStatusMessage(source.readString());
 	}
 
-	
 
 	public String getNamespace() {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -49,23 +47,17 @@ public abstract class SyncObject implements Parcelable {
 	}
 
 	public String getUrl() {
-		if (getContext() != null) {
 			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 			String serverAddress = sharedPreferences.getString(context.getString(R.string.key_ws_server_address), null);
 			String navisionCodeUnit = sharedPreferences.getString(context.getString(R.string.key_ws_navisition_codeunit), null);
 			return serverAddress + "/"+ getCompany() + navisionCodeUnit;
-		}
-		return null;
 	}
 
 	protected String getCompany() {
 			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 			String company = sharedPreferences.getString(context.getString(R.string.key_company), null);
+			System.out.println("COMPANY: "+company);
 			return company;	
-	}
-
-	public void setCompany(String company) {
-		mCompany = company;
 	}
 
 	public String getSoapAction() {
