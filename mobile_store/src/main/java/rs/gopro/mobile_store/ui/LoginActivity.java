@@ -70,7 +70,10 @@ public class LoginActivity extends Activity {
 		btnLogin.setOnClickListener(btnLoginListener);
 
 	}
-
+	@Override
+	public void onBackPressed() {
+	    // Do Here what ever you want do on back press;
+	}
 	private boolean doLogin(String username, String pass) {
 		/*
 		 * SharedPreferences settings = getSharedPreferences(SESSION_PREFS,

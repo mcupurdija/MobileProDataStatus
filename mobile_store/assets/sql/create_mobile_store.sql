@@ -9,9 +9,9 @@ CREATE TABLE `users` (
 	`users_role_id` INTEGER
 );
 INSERT INTO `users` (_id, username, pass, sales_person_id, last_login, users_role_id) VALUES 
-	(1, 'tica', 'tica', 1, datetime('now'), 1);
+	(1, 'user', '1234', 1, datetime('now'), 1);
 INSERT INTO `users` (_id, username, pass, sales_person_id, last_login, users_role_id) VALUES 
-	(2, 'admin', 'admin', 1, datetime('now'), 2);
+	(2, 'admin', '1234', 1, datetime('now'), 2);
 
 	
 -- user role
