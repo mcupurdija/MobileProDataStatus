@@ -160,6 +160,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
         };
 		
         itemQuantitySyncObject = new ItemQuantitySyncObject(itemId, "300", Integer.valueOf(-1));
+        itemQuantitySyncObject.setContext(getActivity().getApplicationContext());
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQuantitySyncObject);
 		intent.putExtra(NavisionSyncService.EXTRA_RESULT_RECEIVER, getResultReceiver());
