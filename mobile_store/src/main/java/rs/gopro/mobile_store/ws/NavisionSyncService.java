@@ -57,6 +57,7 @@ public class NavisionSyncService extends IntentService {
 		
         // We default to GET if no verb was specified.
         SyncObject     syncObject   = extras.getParcelable(EXTRA_WS_SYNC_OBJECT);
+        syncObject.setContext(getApplicationContext());
         ResultReceiver receiver = extras.getParcelable(EXTRA_RESULT_RECEIVER);
         
         SoapObject request = new SoapObject(syncObject.getNamespace(), syncObject.getWebMethodName());

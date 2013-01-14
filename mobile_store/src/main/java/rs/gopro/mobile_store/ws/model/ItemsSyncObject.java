@@ -211,7 +211,6 @@ public class ItemsSyncObject extends SyncObject {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(getCompany());
 		dest.writeString(getStatusMessage());
 		dest.writeString(getmCSVString());
 		dest.writeString(getmItemNoa46());

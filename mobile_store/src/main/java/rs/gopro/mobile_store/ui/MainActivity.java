@@ -23,10 +23,12 @@ import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.preference.PreferenceManager;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -225,7 +227,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         };
 		
 		Intent intent = new Intent(this, NavisionSyncService.class);
-		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, new ItemsSyncObject(null, null, Integer.valueOf(1), null, DateUtils.getWsDummyDate()));
+		ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(1), null, DateUtils.getWsDummyDate());
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject );
 		intent.putExtra(NavisionSyncService.EXTRA_RESULT_RECEIVER, getResultReceiver());
 		this.startService(intent);
 		
