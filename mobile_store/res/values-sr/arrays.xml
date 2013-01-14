@@ -82,13 +82,13 @@
     </string-array>
     
     <string-array name="sale_order_block_status_array">
-        <item>Porudzbina</item>
+        <item>Porudžbina</item>
         <item>Ponuda</item>
         <item>Spec ponuda</item>
     </string-array>
     
      <string-array name="contact_type_array">
-         <item>Covek</item>
+         <item>Čovek</item>
          <item>Kompanija</item>
      </string-array>
 </resources>
