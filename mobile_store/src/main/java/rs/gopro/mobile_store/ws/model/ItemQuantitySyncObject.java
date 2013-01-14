@@ -64,7 +64,6 @@ public class ItemQuantitySyncObject extends SyncObject {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(getCompany());
 		dest.writeString(getStatusMessage());
 		dest.writeString(getmItemNoa46());
 		dest.writeString(getmLocationCode());

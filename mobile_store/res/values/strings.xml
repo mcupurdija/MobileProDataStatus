@@ -135,4 +135,14 @@
 	
 	<string name="title_web_service_settings">Web service</string>
 	<string name="title_sync_settings">Synchronization</string>
+	<string name="title_sync_category">Sync manage</string>
+	<string name="title_sync_items">Sync items</string>
+	<string name="title_sync_action">Sync</string>
+	
+	<string name = "key_sync_check_box">sync_check_box</string>
+	
+	
+	
+	
+	 
 </resources>

@@ -122,4 +122,7 @@
 	<!-- settings -->
 	<string name="title_settings">Podesavanja</string>
 	<string name="title_sync_settings">Sinhronizacija</string>
+	<string name="title_sync_category">Podesavanje sinhronizacje</string>
+	<string name="title_sync_items">Sinhronizuj artikle</string>
+	<string name="title_sync_action">Sinh</string>
 </resources>
