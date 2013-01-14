@@ -24,6 +24,7 @@ public class MobileStoreSettingsActivity extends PreferenceActivity {
 
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 	
