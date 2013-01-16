@@ -14,7 +14,7 @@ public class MobileStoreContract {
 	private static final String PATH_INVOICES = "invoices";
 	private static final String PATH_CUSTOMERS = "customers";
 	private static final String PATH_CUSTOMERS_BY_SALES_PERSON = "customers_by_sales_person";
-	private static final String PATH_SEARCH = "search";
+	//private static final String PATH_SEARCH = "search";
 	private static final String PATH_ITEMS = "items";
 	private static final String PATH_VISITS = "visits";
 	private static final String PATH_SALE_ORDERS = "sale_orders";
@@ -25,7 +25,9 @@ public class MobileStoreContract {
 	private static final String PATH_SALE_ORDER_SEARCH_CUSTOM = "custom_search";
 
 	private static final String PATH_CONTACTS = "contacts";
-	private static final String PATH_CONTACTS_SEARCH_CUSTOM = "custom_search";
+	private static final String PATH_CUSTOMER_ADDRESSES = "customer_addresses";
+	private static final String PATH_CUSTOMER_NO = "customer_no";
+	//private static final String PATH_CONTACTS_SEARCH_CUSTOM = "custom_search";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -217,6 +219,20 @@ public class MobileStoreContract {
 
 	}
 
+	public interface CustomerAddressesColumns {
+		String ADDRESS_NO = "address_no";
+		String CUSTOMER_NO = "customer_no";
+		String ADDRESS = "address";
+		String CITY = "city";
+		String CONTANCT = "contact";
+		String PHONE_NO = "phone_no";
+		String POST_CODE = "post_code";
+		String CREATED_DATE = "created_date";
+		String CREATED_BY = "created_by";
+		String UPDATED_DATE = "updated_date";
+		String UPDATED_BY = "updated_by";
+	}
+	
 	public interface SalesPersonsColumns {
 		String SALES_PERSON_ID = "sales_person_id";
 	}
@@ -468,6 +484,38 @@ public class MobileStoreContract {
 		public static final String DEFAULT_SORT = Contacts.CONTACT_NO + " ASC";
 	}
 
+	public static class CustomerAddresses implements CustomerAddressesColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CUSTOMER_ADDRESSES).build();
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.customer_addresses";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.customer_addresses";
+
+		public static Uri buildCustomerAddressUri(String addressId) {
+			return CONTENT_URI.buildUpon().appendPath(addressId).build();
+		}
+
+		public static String getCustomerAddressId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+		
+		public static Uri buildCustomSearchUri(String text) {
+			return CONTENT_URI.buildUpon().appendPath(text).build();
+		}
+		
+		public static String getCustomSearch(Uri uri){
+			return uri.getPathSegments().get(1);
+		}
+		
+		public static Uri buildSearchByCustomerNoUri(String customerNo) {
+			return CONTENT_URI.buildUpon().appendPath(PATH_CUSTOMER_NO).appendPath(customerNo).build();
+		}
+		
+		public static String getSearchByCustomerNo(Uri uri){
+			return uri.getPathSegments().get(1);
+		}
+		
+		public static final String DEFAULT_SORT = CustomerAddresses.ADDRESS_NO + " ASC";
+	}
+	
 	/**
 	 * To mark data inserted/changed/deleted from sync service and not from UI.
 	 * 

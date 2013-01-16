@@ -60,6 +60,8 @@ public class CustomerAutocompleteCursorAdapter extends CursorAdapter implements
 		return getResult(cursor);
 	}
 
+	
+	
 	@Override
 	public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
 		Cursor cursor = null;

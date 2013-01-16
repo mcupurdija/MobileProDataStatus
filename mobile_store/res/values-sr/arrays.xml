@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- Actions -->
     <array name="actions_icons">
         <item>@null</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
-         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
-          <item>@drawable/ic_action_settings</item>
+        <item>@drawable/ic_action_settings</item>
+        <item>@drawable/ic_action_settings</item>
         <item>@null</item>
         <item>@drawable/ic_action_settings</item>
     </array>
+
     <string-array name="actions_names">
         <item>Glavni meni</item>
         <item>Plan poseta</item>
         <item>Liferice</item>
         <item>Kupci</item>
-         <item>Kontakti</item>
+        <item>Kontakti</item>
         <item>Artikli</item>
         <item>Fakture</item>
         <item>Izvestaji</item>
@@ -30,9 +32,9 @@
         <item>settings://plan_visits</item>
         <item>settings://sale_orders</item>
         <item>settings://customers</item>
-         <item>settings://contacts</item>
+        <item>settings://contacts</item>
         <item>settings://items</item>
-         <item>settings://invoices</item>
+        <item>settings://invoices</item>
         <item>settings://reports</item>
         <item>category://settings</item>
         <item>settings://settings</item>
@@ -47,10 +49,12 @@
         <item>RO</item>
         <item>AW</item>
     </string-array>
+
     <integer-array name="spacing_types_values">
         <item>0</item>
         <item>1</item>
     </integer-array>
+
     <string-array name="width_strings">
         <item>0</item>
         <item>8</item>
@@ -60,6 +64,7 @@
         <item>48</item>
         <item>64</item>
     </string-array>
+
     <integer-array name="width_values">
         <item>0</item>
         <item>8</item>
@@ -69,7 +74,7 @@
         <item>48</item>
         <item>64</item>
     </integer-array>
-    
+
     <string-array name="customer_block_status_array">
         <item>Aktivno</item>
         <item>Blokirano 1</item>
@@ -80,15 +85,34 @@
         <item>OVS prodaja</item>
         <item>Promotivna prodaja</item>
     </string-array>
-    
     <string-array name="sale_order_block_status_array">
         <item>Porudžbina</item>
         <item>Ponuda</item>
         <item>Spec ponuda</item>
     </string-array>
-    
-     <string-array name="contact_type_array">
-         <item>Čovek</item>
-         <item>Kompanija</item>
-     </string-array>
+    <string-array name="contact_type_array">
+        <item>Čovek</item>
+        <item>Kompanija</item>
+    </string-array>
+    <string-array name="backorder_type_array">
+        <item>Sa zaliha isporuči i izbriši ostatak</item>
+        <item>Parcijalno isporučuj</item>
+        <item>Sačekaj i isporuči sve odjednom</item>
+    </string-array>
+    <string-array name="slc1_type_array">
+        <item>Poseta kupcu</item>
+        <item>Poziv kupcu</item>
+        <item>Poziv kupca</item>
+        <item>Prihvaćena ponuda</item>
+    </string-array>
+    <string-array name="payment_type_array">
+        <item>Račun</item>
+        <item>Komercijalista</item>
+        <item>Transportna služba</item>
+        <item>Pick&amp;Go</item>
+        <item>Platna kartica</item>
+    </string-array>
+    <string-array name="location_type_array">
+        <item>001</item>
+    </string-array>
 </resources>
