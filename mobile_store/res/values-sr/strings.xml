@@ -14,7 +14,7 @@
 	<string name="get_company">uzmi podatke o kompaniji</string>
 	<string name="s">* Greška prilikom prijave za rad!</string>
 	<string name="first_section_title">Plan poseta na dan</string>
-	<string name="second_section_title">Druga sekcija</string>
+	<string name="second_section_title">Informacije o kupcu</string>
 	<string name="third_section_title">Treća sekcija</string>
 	<string name="next_button_title">Dalje</string>
 	<string name="empty_waiting_for_sync">Sacekajte</string>
@@ -118,6 +118,18 @@
 	<string name="quote_date">Rok vazenja porudžbine</string>
 	<string name="quote_status">Status porudžbine</string>
 	<string name="transit_customer">Tranzit kupac</string>
+	
+	<string name="customer_no_label">Br. kupca</string>
+	<string name="customer_address_label">Adresa</string>
+	<string name="customer_city_label">Grad</string>
+	<string name="customer_postal_code_label">Postanski broj</string>
+	<string name="customer_phone_label">Telefon</string>	
+	<string name="customer_phone_mobile_label">Mobilni tel.</string>
+	<string name="customer_email_label">E-posta</string>
+	<string name="customer_blue_coat_label">Br. plavih mantila</string>
+	<string name="customer_gray_coat_label">Br. sivih mantila</string>
+	<string name="customer_note_label">Napomena</string>	
+	
 	
 	<!-- settings -->
 	<string name="title_settings">Podesavanja</string>

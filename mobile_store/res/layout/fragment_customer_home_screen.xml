@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal|top"
+    android:background="#FFFFFFFF"
+    android:paddingLeft="5dp"
+    android:paddingRight="4dp"
+    android:paddingTop="15dip"
+    android:shrinkColumns="1"
+    android:stretchColumns="1" >
+
+    <TableRow
+        android:id="@+id/customer_no_group"
+        android:layout_marginBottom="1dip"
+        android:focusable="true"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/customer_no_label"
+            style="@style/AddEdit_Label"
+            android:gravity="center_vertical"
+            android:text="@string/customer_no_label" />
+
+        <TextView
+            android:id="@+id/customer_no_group_value"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/customer_address_group"
+        android:layout_marginBottom="1dip"
+        android:focusable="true"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/customer_address_label"
+            style="@style/AddEdit_Label"
+            android:gravity="center_vertical"
+            android:text="@string/customer_address_label" />
+
+        <TextView
+            android:id="@+id/customer_address_value"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/customer_city_group"
+        android:layout_marginBottom="1dip"
+        android:focusable="true"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/customer_city_label"
+            style="@style/AddEdit_Label"
+            android:gravity="center_vertical"
+            android:text="@string/customer_city_label" />
+
+        <TextView
+            android:id="@+id/customer_city_value"
+            style="@style/TextBody"
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+    </TableRow>
+    
+    
+     <TableRow
+        android:id="@+id/customer_postal_code_group"
+        android:layout_marginBottom="1dip"
+        android:focusable="true"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/customer_postal_code_label"
+            style="@style/AddEdit_Label"
+            android:gravity="center_vertical"
+            android:text="@string/customer_postal_code_label" />
+
+        <TextView
+            android:id="@+id/customer_postal_code_value"
+            style="@style/TextBody"
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+    </TableRow>
+
+     
+      <TableRow
+        android:id="@+id/customer_phone_group"
+        android:layout_marginBottom="1dip"
+        android:focusable="true"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/customer_phone_label"
+            style="@style/AddEdit_Label"
+            android:gravity="center_vertical"
+            android:text="@string/customer_phone_label" />
+
+        <TextView
+            android:id="@+id/customer_phone_value"
+            style="@style/TextBody"
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+    </TableRow>
+    
+      
+      <TableRow
+        android:id="@+id/customer_phone_mobile_group"
+        android:layout_marginBottom="1dip"
+        android:focusable="true"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/customer_phone_mobile_label"
+            style="@style/AddEdit_Label"
+            android:gravity="center_vertical"
+            android:text="@string/customer_phone_mobile_label" />
+
+        <TextView
+            android:id="@+id/customer_phone_mobile_value"
+            style="@style/TextBody"
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+    </TableRow>
+      <TableRow
+        android:id="@+id/customer_email_group"
+        android:layout_marginBottom="1dip"
+        android:focusable="true"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/customer_email_label"
+            style="@style/AddEdit_Label"
+            android:gravity="center_vertical"
+            android:text="@string/customer_email_label" />
+
+        <TextView
+            android:id="@+id/customer_email_value"
+            style="@style/TextBody"
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+    </TableRow>
+     <TableRow
+        android:id="@+id/customer_blue_coat_group"
+        android:layout_marginBottom="1dip"
+        android:focusable="true"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/customer_blue_coat_label"
+            style="@style/AddEdit_Label"
+            android:gravity="center_vertical"
+            android:text="@string/customer_blue_coat_label" />
+
+        <TextView
+            android:id="@+id/customer_blue_coat_value"
+            style="@style/TextBody"
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+    </TableRow>
+     <TableRow
+        android:id="@+id/customer_gray_coat_group"
+        android:layout_marginBottom="1dip"
+        android:focusable="true"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/customer_gray_coat_label"
+            style="@style/AddEdit_Label"
+            android:gravity="center_vertical"
+            android:text="@string/customer_gray_coat_label" />
+
+        <TextView
+            android:id="@+id/customer_gray_coat_value"
+            style="@style/TextBody"
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+    </TableRow>
+     <TableRow
+        android:id="@+id/customer_note_group"
+        android:layout_marginBottom="1dip"
+        android:focusable="true"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/customer_note_label"
+            style="@style/AddEdit_Label"
+            android:gravity="center_vertical"
+            android:text="@string/customer_note_label" />
+
+        <TextView
+            android:id="@+id/customer_note_value"
+            style="@style/TextBody"
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+    </TableRow>
+</TableLayout>

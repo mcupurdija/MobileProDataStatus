@@ -131,8 +131,8 @@ CREATE TABLE `customers` (
 	`number_of_blue_coat` INTEGER,
 	`number_of_grey_coat` INTEGER
 );
-INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
-values ('1','1','K00001','Šule Inter Trans komerc','','Višnjicki put 22','381112442421','','101','0','10 DANA','0','106200575','11000','','','','','0','No','1','0','0','182,368,864','182,368,864','182,368,864', '0');
+INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`, `city`)
+values ('1','1','K00001','Šule Inter Trans komerc','','Višnjicki put 22','381112442421','381648978987','101','0','10 DANA','0','106200575','11000','sule@gmail.com','','','','0','No','1','0','0','182,368,864','182,368,864','182,368,864', '0', 'Belgrade');
 INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
 values ('2','1','K00002','Greda DOO BEOGRAD','','','','','','0','','0','','11000','','','20481943','L1','0','No','','0','0','10,200','10,200','10,200', '0');
 INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
@@ -311,9 +311,9 @@ BEGIN
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-INSERT INTO `visits` VALUES ('1','1','2012-12-18 00:00:00','1',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('2','1','2012-12-18 00:00:00','2',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('3','1','2012-12-18 00:00:00','3',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('1','1','2013-12-18 00:00:00','1',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('2','1','2013-02-18 00:00:00','2',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('3','1','2013-01-18 00:00:00','3',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
 INSERT INTO `visits` VALUES ('4','1','2012-12-19 00:00:00','4',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
 INSERT INTO `visits` VALUES ('5','1','2012-12-19 00:00:00','5',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
 INSERT INTO `visits` VALUES ('6','1','2012-12-19 00:00:00','6',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');

@@ -59,6 +59,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int VISITS = 200;
 	private static final int VISIT_ID = 201;
 	private static final int VISITS_WITH_CUSTOMER = 202;
+	private static final int VISITS_DATE = 203;
+	
 
 	private static final int SALE_ORDER_LINES_FROM_ORDER = 300;
 
@@ -106,6 +108,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "visits/#", VISIT_ID);
 		mobileStoreURIMatcher.addURI(authority, "visits/with_customer",
 				VISITS_WITH_CUSTOMER);
+		mobileStoreURIMatcher.addURI(authority, "visits/*/visits_date", VISITS_DATE);
 
 		mobileStoreURIMatcher.addURI(authority, "sale_orders", SALE_ORDERS);
 		mobileStoreURIMatcher.addURI(authority, "sale_orders/#", SALE_ORDER);
@@ -371,6 +374,22 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(Visits.ODOMETER, Tables.VISITS)
 					.mapToTable(Visits.NOTE, Tables.VISITS)
 					.where(Tables.VISITS + "." + Visits._ID + "=?", visitId);
+		case VISITS_DATE:
+			String visitDate = Visits.getDateOfVisit(uri); 
+			return builder.addTable(Tables.VISITS_JOIN_CUSTOMERS)
+					.mapToTable(Visits._ID, Tables.VISITS)
+					.mapToTable(Visits.SALES_PERSON_ID, Tables.VISITS)
+					.mapToTable(Visits.CUSTOMER_ID, Tables.VISITS)
+					.mapToTable(Visits.VISIT_DATE, Tables.VISITS)
+					.mapToTable(Visits.CUSTOMER_NO, Tables.CUSTOMERS)
+					.mapToTable(Visits.NAME, Tables.CUSTOMERS)
+					.mapToTable(Visits.NAME_2, Tables.CUSTOMERS)
+					.mapToTable(Visits.ARRIVAL_TIME, Tables.VISITS)
+					.mapToTable(Visits.DEPARTURE_TIME, Tables.VISITS)
+					.mapToTable(Visits.ODOMETER, Tables.VISITS)
+					.mapToTable(Visits.NOTE, Tables.VISITS).where(
+					Visits.VISIT_DATE + " >= ? ",
+					new String[] { visitDate });
 		case SALE_ORDERS:
 			return builder
 					.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)

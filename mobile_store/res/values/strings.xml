@@ -13,8 +13,8 @@
 	<string name="hi_label">Hi!</string>
 	<string name="get_company">get company ws</string>
 	<string name="s">* Error during login!</string>
-	<string name="first_section_title">Plan poseta na dan</string>
-	<string name="second_section_title">Second Section</string>
+	<string name="first_section_title">Plan of visit on day</string>
+	<string name="second_section_title">Customer info</string>
 	<string name="third_section_title">Third Section</string>
 	<string name="next_button_title">Next</string>
 	<string name="empty_waiting_for_sync">Wait sync</string>
@@ -117,6 +117,19 @@
 	<string name="quote_date">Quote date</string>
 	<string name="quote_status">Quote status</string>
 	<string name="transit_customer">Transit customer</string>
+	
+	<string name="customer_no_label">Customer No.</string>
+	<string name="customer_address_label">Adsress</string>
+	<string name="customer_city_label">City</string>
+	<string name="customer_postal_code_label">Postal code</string>
+	<string name="customer_phone_label">Phone</string>	
+	<string name="customer_phone_mobile_label">Mobile phone</string>
+	<string name="customer_email_label">Email</string>
+	<string name="customer_blue_coat_label">Num. of blue coat</string>
+	<string name="customer_gray_coat_label">Num. of gray coat</string>
+	<string name="customer_note_label">Note</string>	
+	
+	
 	
 	<!-- settings -->
 	<string name="title_settings">Settings</string>
