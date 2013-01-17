@@ -18,7 +18,9 @@ public class PropertiesUtil {
 		return getIntegerProperty("DATABASE_VERSION", assetManager);
 	}
 	
-
+	public static boolean getLoginSwitch(AssetManager assetManager) {
+		return getBooleanProperty("DISABLE_LOGIN", assetManager);
+	}
 	/**
 	 * Returns boolean property
 	 * 

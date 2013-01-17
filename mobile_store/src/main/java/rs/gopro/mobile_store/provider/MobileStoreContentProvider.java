@@ -40,13 +40,13 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int CUSTOMERS = 120;
 	private static final int CUSTOMERS_ID = 121;
 	private static final int CUSTOMERS_NO = 122;
-	private static final int CUSTOMERS_SEARCH = 123;
+	//private static final int CUSTOMERS_SEARCH = 123;
 	private static final int CUSTOMERS_CUSTOM_SEARCH = 124;
 	private static final int CUSTOMERS_BY_STATUS = 125;
 	private static final int CUSTOMERS_BY_SALES_PERSON = 126;
 
 	private static final int ITEMS = 130;
-	private static final int ITEMS_NO = 131;
+	//private static final int ITEMS_NO = 131;
 	private static final int ITEMS_BY_STATUS = 132;
 	private static final int ITEMS_CUSTOM_SEARCH = 133;
 
@@ -66,6 +66,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 
 	private static final int CONTACTS = 400;
 	private static final int CONTACTS_ID = 401;
+	
+	private static final int CUSTOMER_ADDRESSES = 500;
+	private static final int CUSTOMER_ADDRESSES_ID = 501;
+	private static final int CUSTOMER_ADDRESSES_CUSTOMER_NO = 502;
 
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -129,6 +133,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 
 		mobileStoreURIMatcher.addURI(authority, "contacts", CONTACTS);
 		mobileStoreURIMatcher.addURI(authority, "contacts/*", CONTACTS_ID);
+		
+		mobileStoreURIMatcher.addURI(authority, "customer_addresses", CUSTOMER_ADDRESSES);
+		mobileStoreURIMatcher.addURI(authority, "customer_addresses/customer_no/*", CUSTOMER_ADDRESSES_CUSTOMER_NO);
+		mobileStoreURIMatcher.addURI(authority, "customer_addresses/*", CUSTOMER_ADDRESSES_ID);
+		
 		/*
 		 * mobileStoreURIMatcher.addURI(authority, "contacts/custom_search",
 		 * CONTACTS_ALL); mobileStoreURIMatcher.addURI(authority,
@@ -170,10 +179,18 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return Visits.CONTENT_TYPE;
 		case SALE_ORDERS:
 			return SaleOrders.CONTENT_TYPE;
+		case SALE_ORDER:
+			return SaleOrders.CONTENT_ITEM_TYPE;
 		case SALE_ORDERS_LIST:
 			return SaleOrders.CONTENT_TYPE;
 		case SALE_ORDER_LINES_FROM_ORDER:
 			return SaleOrderLines.CONTENT_TYPE;
+		case CUSTOMER_ADDRESSES:
+			return CustomerAddresses.CONTENT_TYPE;
+		case CUSTOMER_ADDRESSES_ID:
+			return CustomerAddresses.CONTENT_ITEM_TYPE;
+		case CUSTOMER_ADDRESSES_CUSTOMER_NO:
+			return CustomerAddresses.CONTENT_TYPE;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -207,6 +224,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.CONTACTS, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return Contacts.buildContactsUri("" + id);
+		case CUSTOMER_ADDRESSES:
+			id = database.insertOrThrow(Tables.CUSTOMER_ADDRESSES, null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return CustomerAddresses.buildCustomerAddressUri("" + id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -244,6 +265,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 		return updatedRows;
 	}
 
+	/**
+	 * NOTE: this is for update NOT select.
+	 * @param uri
+	 * @return
+	 */
 	private SelectionBuilder buildSimpleSelection(Uri uri) {
 		final SelectionBuilder builder = new SelectionBuilder();
 		final int match = mobileStoreURIMatcher.match(uri);
@@ -256,21 +282,29 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Invoices._ID);
 		case VISITS:
 			return builder.addTable(Tables.VISITS);
-		case VISIT_ID:
+		case VISIT_ID: // TODO should be fixed, this is place for insert
 			final String visitId = Visits.getVisitId(uri);
 			return builder.addTable(Tables.VISITS).where(
 					Tables.VISITS + "." + Visits._ID + "=?", visitId);
 		case SALE_ORDERS:
 			return builder.addTable(Tables.SALE_ORDERS);
-		case CONTACTS_ID:
+		case CONTACTS_ID: // TODO should be fixed, this is place for insert
 			final String contactId = Contacts.getContactsId(uri);
 			return builder.addTable(Tables.CONTACTS).where(
 					Tables.CONTACTS + "." + Contacts._ID + "=?", contactId);
+		case CUSTOMER_ADDRESSES:
+			return builder.addTable(Tables.CUSTOMER_ADDRESSES);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
 	}
 
+	/**
+	 * This is for select statement.
+	 * @param uri
+	 * @param match
+	 * @return
+	 */
 	private SelectionBuilder buildExpandedSelection(Uri uri, int match) {
 		System.out.println("URI: " + uri);
 		final SelectionBuilder builder = new SelectionBuilder();
@@ -501,6 +535,12 @@ public class MobileStoreContentProvider extends ContentProvider {
 							"%" + contactsCustomSearch + "%" });
 		case CONTACTS:
 			return builder.addTable(Tables.CONTACTS);
+		case CUSTOMER_ADDRESSES:
+			return builder.addTable(Tables.CUSTOMER_ADDRESSES);
+		case CUSTOMER_ADDRESSES_CUSTOMER_NO:
+			final String customerNo = CustomerAddresses.getSearchByCustomerNo(uri);
+			return builder.addTable(Tables.CUSTOMER_ADDRESSES)
+					.where(CustomerAddresses.CUSTOMER_NO + " like ?", new String[] { customerNo });
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

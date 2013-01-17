@@ -22,4 +22,6 @@ public interface Tables {
 	String SALE_ORDER_LINES_JOIN_ITEMS = "sale_order_lines left outer join items on sale_order_lines.item_id = items._id";
 	
 	String USERS_JOIN_USERS_ROLE = "users left outer join users_role on users.users_role_id = users_role._id";
+	
+	String CUSTOMER_ADDRESSES = "customer_addresses";
 }
