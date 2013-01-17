@@ -7,6 +7,7 @@ import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.ws.model.SyncObject;
 import rs.gopro.mobile_store.ws.util.HttpTransportApache;
@@ -31,6 +32,7 @@ public class NavisionSyncService extends IntentService {
     public static final String EXTRA_RESULT_RECEIVER = "rs.gopro.mobile_store.EXTRA_RESULT_RECEIVER";
 
     public static final String SOAP_RESULT = "rs.gopro.mobile_store.extra.SOAP_RESULT";
+    public static final String SOAP_FAULT = "rs.gopro.mobile_store.extra.SOAP_FAULT";
 
     public NavisionSyncService() {
 		super(TAG);
@@ -84,9 +86,12 @@ public class NavisionSyncService extends IntentService {
         	//itemsRequest.setpCSVString();
         	Bundle resultData = new Bundle();
         	resultData.putString(SOAP_RESULT, syncObject.getResult()); //result.getProperty(1).toString()
-            receiver.send(1, resultData);
+            receiver.send(ApplicationConstants.SUCCESS, resultData);
         	syncObject.logSyncEnd(contentResolver);
         } catch (Exception e) {
+        	Bundle resultData = new Bundle();
+        	resultData.putString(SOAP_FAULT, "Error during soap request!"); //result.getProperty(1).toString()
+            receiver.send(ApplicationConstants.FAILURE, resultData);
         	syncObject.logSyncEnd(contentResolver);
         	LogUtils.LOGE(TAG, "Error during soap request!", e);
         }

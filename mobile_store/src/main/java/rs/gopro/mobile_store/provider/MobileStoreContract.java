@@ -28,6 +28,7 @@ public class MobileStoreContract {
 	private static final String PATH_CUSTOMER_ADDRESSES = "customer_addresses";
 	private static final String PATH_CUSTOMER_NO = "customer_no";
 	//private static final String PATH_CONTACTS_SEARCH_CUSTOM = "custom_search";
+	private static final String PATH_VISITS_DATE = "visits_date";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -371,8 +372,14 @@ public class MobileStoreContract {
 		public static Uri buildVisitUri(String visitsId) {
 			return CONTENT_URI.buildUpon().appendPath(visitsId).build();
 		}
+		public static Uri buildDateOfVisitUri(String visitsDate) {
+			return CONTENT_URI.buildUpon().appendPath(visitsDate).appendPath(PATH_VISITS_DATE).build();
+		}
 
 		public static String getVisitId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+		public static String getDateOfVisit(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}
 

@@ -216,12 +216,19 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultData != null && resultData.containsKey(NavisionSyncService.SOAP_RESULT)) {
-                	onSOAPResult(resultCode, resultData.getString(NavisionSyncService.SOAP_RESULT));
-                }
-                else {
-                	onSOAPResult(resultCode, null);
-                }
+            	if (resultCode == ApplicationConstants.SUCCESS) {
+					if (resultData != null) {
+						onSOAPResult(resultCode, resultData.getString(NavisionSyncService.SOAP_RESULT));
+					} else {
+						onSOAPResult(resultCode, null);
+					}
+				} else if (resultCode == ApplicationConstants.FAILURE) {
+					if (resultData != null) {
+						onSOAPResult(resultCode, resultData.getString(NavisionSyncService.SOAP_FAULT));
+					} else {
+						onSOAPResult(resultCode, null);
+					}
+				}
             }
             
         };
