@@ -67,6 +67,7 @@ CREATE TABLE `invoices` (
 	`total` REAL,
 	`total_left` REAL,
 	`due_date_days_left` INTEGER,
+	`sync_object_batch` INTEGER,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
@@ -129,7 +130,8 @@ CREATE TABLE `customers` (
 	`focus_customer` TEXT,
 	`division` TEXT,
 	`number_of_blue_coat` INTEGER,
-	`number_of_grey_coat` INTEGER
+	`number_of_grey_coat` INTEGER,
+	`sync_object_batch` INTEGER
 );
 INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`, `city`)
 values ('1','1','K00001','Šule Inter Trans komerc','','Višnjicki put 22','381112442421','381648978987','101','0','10 DANA','0','106200575','11000','sule@gmail.com','','','','0','No','1','0','0','182,368,864','182,368,864','182,368,864', '0', 'Belgrade');
@@ -170,6 +172,7 @@ CREATE TABLE `contacts` (
 	`number_of_blue_coat` INTEGER,
 	`number_of_grey_coat` INTEGER,
 	`job_title` TEXT,
+	`sync_object_batch` INTEGER,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
@@ -210,6 +213,7 @@ CREATE TABLE `items` (
 	`campaign_code` TEXT,
 	`cmpaign_start_date` TEXT,
 	`campaign_end_date` TEXT,
+	`sync_object_batch` INTEGER,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
@@ -292,6 +296,7 @@ CREATE TABLE `visits` (
 	`arrival_time` TEXT,
 	`visit_result` TEXT,
 	`note` TEXT,
+	`sync_object_batch` INTEGER,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
@@ -311,12 +316,12 @@ BEGIN
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-INSERT INTO `visits` VALUES ('1','1','2013-12-18 00:00:00','1',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('2','1','2013-02-18 00:00:00','2',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('3','1','2013-01-18 00:00:00','3',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('4','1','2012-12-19 00:00:00','4',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('5','1','2012-12-19 00:00:00','5',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('6','1','2012-12-19 00:00:00','6',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada','2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('1','1','2013-12-18 00:00:00','1',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('2','1','2013-02-18 00:00:00','2',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('3','1','2013-01-18 00:00:00','3',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('4','1','2012-12-19 00:00:00','4',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('5','1','2012-12-19 00:00:00','5',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('6','1','2012-12-19 00:00:00','6',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
 
 CREATE TABLE `sale_orders` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
@@ -353,6 +358,7 @@ CREATE TABLE `sale_orders` (
 	`note1` TEXT,
 	`note2` TEXT,
 	`note3` TEXT,
+	`sync_object_batch` INTEGER,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
@@ -405,6 +411,7 @@ CREATE TABLE `sale_order_lines` (
 	`verify_status` INTEGER,
 	`price_discount_status` INTEGER,
 	`quantity_available_status` INTEGER,
+	`sync_object_batch` INTEGER,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
@@ -424,31 +431,32 @@ BEGIN
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-INSERT INTO `sale_order_lines` VALUES ('1','1','1','1','23','KOM','22.33','10','20','12',null,null,'23456',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('2','1','2','2','100','KOM','1000','10','20','18',null,null,'2233',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('3','1','3','3','2','KOM','2023','10','20','12',null,null,'1256',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('4','1','4','4','1','KOM','512.33','10','20','18',null,null,'2345',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('1','1','1','1','23','KOM','22.33','10','20','12',null,null,'23456',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('2','1','2','2','100','KOM','1000','10','20','18',null,null,'2233',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('3','1','3','3','2','KOM','2023','10','20','12',null,null,'1256',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('4','1','4','4','1','KOM','512.33','10','20','18',null,null,'2345',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
 
-INSERT INTO `sale_order_lines` VALUES ('5','2','1','5','2','KOM','23','10','20','12',null,null,'23456',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('6','2','2','6','2','KOM','214','10','20','18',null,null,'2233',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('7','2','3','7','2','KOM','2023','10','20','12',null,null,'1256',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('8','2','4','8','2','KOM','512.33','10','20','18',null,null,'2345',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('5','2','1','5','2','KOM','23','10','20','12',null,null,'23456',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('6','2','2','6','2','KOM','214','10','20','18',null,null,'2233',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('7','2','3','7','2','KOM','2023','10','20','12',null,null,'1256',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('8','2','4','8','2','KOM','512.33','10','20','18',null,null,'2345',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
 
-INSERT INTO `sale_order_lines` VALUES ('9','3','1','1','2','KOM','23','10','20','12',null,null,'23456',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('10','3','2','3','2','KOM','214','10','20','18',null,null,'2233',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('11','3','3','4','2','KOM','2023','10','20','12',null,null,'1256',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('12','3','4','7','2','KOM','512.33','10','20','18',null,null,'2345',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('9','3','1','1','2','KOM','23','10','20','12',null,null,'23456',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('10','3','2','3','2','KOM','214','10','20','18',null,null,'2233',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('11','3','3','4','2','KOM','2023','10','20','12',null,null,'1256',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('12','3','4','7','2','KOM','512.33','10','20','18',null,null,'2345',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
 
-INSERT INTO `sale_order_lines` VALUES ('13','4','1','10','2','KOM','23','10','20','12',null,null,'23456',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('14','4','2','13','2','KOM','214','10','20','18',null,null,'2233',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('15','4','3','14','2','KOM','2023','10','20','12',null,null,'1256',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('16','4','4','15','2','KOM','512.33','10','20','18',null,null,'2345',null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('13','4','1','10','2','KOM','23','10','20','12',null,null,'23456',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('14','4','2','13','2','KOM','214','10','20','18',null,null,'2233',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('15','4','3','14','2','KOM','2023','10','20','12',null,null,'1256',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('16','4','4','15','2','KOM','512.33','10','20','18',null,null,'2345',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
 
 CREATE TABLE `sync_logs` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
-	`sync_object` TEXT,
+	`sync_object_name` TEXT,
 	`sync_object_id` TEXT,
-	`sync_status` TEXT,
+	`sync_object_status` TEXT,
+	`sync_object_batch` INTEGER,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,

@@ -27,6 +27,7 @@ public class MobileStoreContract {
 	private static final String PATH_CONTACTS = "contacts";
 	private static final String PATH_CONTACTS_SEARCH_CUSTOM = "custom_search";
 	private static final String PATH_VISITS_DATE = "visits_date";
+	private static final String PATH_SYNC_LOGS = "sync_logs";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -59,6 +60,7 @@ public class MobileStoreContract {
 		String ARRIVAL_TIME = "arrival_time";
 		String VISIT_RESULT = "visit_result";
 		String NOTE = "note";
+		String SYNC_OBJECT_BATCH = "sync_object_batch";
 		// it has audit columns
 	}
 
@@ -71,6 +73,7 @@ public class MobileStoreContract {
 		String TOTAL = "total";
 		String TOTAL_LEFT = "total_left";
 		String DUE_DATE_DAYS_LEFT = "due_date_days_left";
+		String SYNC_OBJECT_BATCH = "sync_object_batch";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
@@ -108,6 +111,7 @@ public class MobileStoreContract {
 		String DIVISION = "division";
 		String NUMBER_OF_BLUE_COAT = "number_of_blue_coat";
 		String NUMBER_OF_GREY_COAT = "number_of_grey_coat";
+		String SYNC_OBJECT_BATCH = "sync_object_batch";
 	}
 
 	public interface ItemsColumns {
@@ -125,6 +129,7 @@ public class MobileStoreContract {
 		String CAMPAIGN_CODE = "campaign_code";
 		String CMPAIGN_START_DATE = "cmpaign_start_date";
 		String CAMPAIGN_END_DATE = "campaign_end_date";
+		String SYNC_OBJECT_BATCH = "sync_object_batch";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
@@ -211,6 +216,7 @@ public class MobileStoreContract {
 		String NUMBER_OF_BLUE_COAT = "number_of_blue_coat";
 		String NUMBER_OF_GREY_COAT = "number_of_grey_coat";
 		String JOB_TITLE = "job_title";
+		String SYNC_OBJECT_BATCH = "sync_object_batch";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
@@ -218,6 +224,17 @@ public class MobileStoreContract {
 
 	}
 
+	public interface SyncLogsColumns {
+		String SYNC_OBJECT_NAME = "sync_object_name";
+		String SYNC_OBJECT_ID = "sync_object_id";
+		String SYNC_OBJECT_STATUS = "sync_object_status";
+		String SYNC_OBJECT_BATCH = "sync_object_batch";
+		String CREATED_DATE = "created_date";
+		String CREATED_BY = "created_by";
+		String UPDATED_DATE = "updated_date";
+		String UPDATED_BY = "updated_by";
+	}
+	
 	public interface SalesPersonsColumns {
 		String SALES_PERSON_ID = "sales_person_id";
 	}
@@ -475,6 +492,22 @@ public class MobileStoreContract {
 		public static final String DEFAULT_SORT = Contacts.CONTACT_NO + " ASC";
 	}
 
+	public static class SyncLogs implements SyncLogsColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SYNC_LOGS).build();
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sync_logs";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sync_logs";
+
+		public static Uri buildSyncLogsUri(String contactId) {
+			return CONTENT_URI.buildUpon().appendPath(contactId).build();
+		}
+
+		public static String getSyncLogId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+		
+		public static final String DEFAULT_SORT = Contacts.CONTACT_NO + " ASC";
+	}
+	
 	/**
 	 * To mark data inserted/changed/deleted from sync service and not from UI.
 	 * 
