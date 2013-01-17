@@ -179,6 +179,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return Visits.CONTENT_TYPE;
 		case SALE_ORDERS:
 			return SaleOrders.CONTENT_TYPE;
+		case SALE_ORDER:
+			return SaleOrders.CONTENT_ITEM_TYPE;
 		case SALE_ORDERS_LIST:
 			return SaleOrders.CONTENT_TYPE;
 		case SALE_ORDER_LINES_FROM_ORDER:

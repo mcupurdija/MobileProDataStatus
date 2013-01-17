@@ -12,14 +12,11 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,11 +24,11 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 
 	private static final String TAG = "SaleOrderAddEditActivity";
 	
+	public static final String EXTRA_CUSTOMER_ID = "rs.gopro.mobile_store.extra.CUSTOMER_ID";
+	
 	//private static String[] CUSTOMER_PROJECTION = new String[] { MobileStoreContract.Customers._ID, MobileStoreContract.Customers.CUSTOMER_NO, MobileStoreContract.Customers.NAME };
 	
 	private static String[] CUSTOMER_ADDRESS_PROJECTION = new String[] { MobileStoreContract.CustomerAddresses._ID, MobileStoreContract.CustomerAddresses.ADDRESS_NO,  MobileStoreContract.CustomerAddresses.ADDRESS, MobileStoreContract.CustomerAddresses.CITY, MobileStoreContract.CustomerAddresses.POST_CODE, MobileStoreContract.CustomerAddresses.CONTANCT,  MobileStoreContract.CustomerAddresses.PHONE_NO };
-	
-	private static String[] CUSTOMER_ADDRESS_SPINNER_PROJECTION = new String[] {  MobileStoreContract.CustomerAddresses._ID, MobileStoreContract.CustomerAddresses.ADDRESS, MobileStoreContract.CustomerAddresses.CITY };
 	
 	private static String DEFAULT_VIEW_TYPE = MobileStoreContract.SaleOrders.CONTENT_ITEM_TYPE;
 	
@@ -136,6 +133,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		transitCustomerAutoComplete = (AutoCompleteTextView) findViewById(R.id.edit_sale_order_transit_customer_value);
 		
 		customerAutoCompleteAdapter = new CustomerAutocompleteCursorAdapter(this, null);
+		//customerAutoCompleteAdapter.getFilter().filter("ovde ide customer");
 		customerAutoComplete.setAdapter(customerAutoCompleteAdapter);
 		
 		customerAutoComplete.setOnItemClickListener(this);
