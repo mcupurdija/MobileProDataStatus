@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
+import rs.gopro.mobile_store.util.PropertiesUtil;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -81,6 +82,9 @@ public class LoginActivity extends Activity {
 		 * editor.putString("username", username);
 		 * editor.putBoolean("user_logged", true); editor.commit();
 		 */
+		if (PropertiesUtil.getLoginSwitch(getAssets())) {
+			return true;
+		}
 		String passFromDB = getPassword(username);
 		if (passFromDB != null && passFromDB.equals(pass)) {
 			SharedPreferencesUtil.setUserLoginStatus(getApplicationContext(), true);

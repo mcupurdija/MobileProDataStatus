@@ -172,7 +172,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		shippingAddress = (Spinner) findViewById(R.id.edit_sale_order_shipping_address_spinner);
 		shippingAddressAdapter = new CustomerAddressSpinnerAdapter(this, null, 0);
-		shippingAddress.setAdapter(billingAddressAdapter);
+		shippingAddress.setAdapter(shippingAddressAdapter);
 		getSupportLoaderManager().initLoader(SHIPPING_ADDRESS_LOADER, null, this);
 		
 		billingAddress = (Spinner) findViewById(R.id.edit_sale_order_address_invoice_spinner);
@@ -214,10 +214,14 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			
 			break;
 		case SHIPPING_ADDRESS_LOADER:
-			shippingAddressAdapter.swapCursor(data);
+			if (data.moveToFirst()) {
+				shippingAddressAdapter.swapCursor(data);
+			}
 			break;
 		case BILLING_ADDRESS_LOADER:
-			billingAddressAdapter.swapCursor(data);
+			if (data.moveToFirst()) {
+				billingAddressAdapter.swapCursor(data);
+			}
 			break;
 		default:
 			break;

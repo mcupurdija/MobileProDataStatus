@@ -132,8 +132,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "contacts/*", CONTACTS_ID);
 		
 		mobileStoreURIMatcher.addURI(authority, "customer_addresses", CUSTOMER_ADDRESSES);
-		mobileStoreURIMatcher.addURI(authority, "customer_addresses/*", CUSTOMER_ADDRESSES_ID);
 		mobileStoreURIMatcher.addURI(authority, "customer_addresses/customer_no/*", CUSTOMER_ADDRESSES_CUSTOMER_NO);
+		mobileStoreURIMatcher.addURI(authority, "customer_addresses/*", CUSTOMER_ADDRESSES_ID);
+		
 		/*
 		 * mobileStoreURIMatcher.addURI(authority, "contacts/custom_search",
 		 * CONTACTS_ALL); mobileStoreURIMatcher.addURI(authority,
@@ -241,7 +242,6 @@ public class MobileStoreContentProvider extends ContentProvider {
 		int match = mobileStoreURIMatcher.match(uri);
 		switch (match) {
 		default:
-			LogUtils.LOGI(TAG, "SELECT uri:"+uri.toString()+" match:"+match);
 			SelectionBuilder builder = buildExpandedSelection(uri, match);
 			return builder.where(selection, selectionArgs).query(database,
 					projection, sortOrder);
@@ -519,7 +519,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case CUSTOMER_ADDRESSES_CUSTOMER_NO:
 			final String customerNo = CustomerAddresses.getSearchByCustomerNo(uri);
 			return builder.addTable(Tables.CUSTOMER_ADDRESSES)
-					.where(CustomerAddresses.CUSTOMER_NO + "=?", customerNo);
+					.where(CustomerAddresses.CUSTOMER_NO + " like ?", new String[] { customerNo });
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

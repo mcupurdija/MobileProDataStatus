@@ -510,7 +510,7 @@ public class MobileStoreContract {
 		}
 		
 		public static String getSearchByCustomerNo(Uri uri){
-			return uri.getPathSegments().get(1);
+			return uri.getPathSegments().get(2);
 		}
 		
 		public static final String DEFAULT_SORT = CustomerAddresses.ADDRESS_NO + " ASC";

@@ -499,7 +499,7 @@ BEGIN
 END;
 INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('1','AD00001','K00001','Koste Abrasevica 9','Valjevo','Test1','1234567','14000');
 INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('2','AD00002','K00001','Test1 9','Valjevo','Test1','1234567','14000');
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('3','AD00003','K00001','Test2 Abrasevica 9','Valjevo','Test1','1234567','14000');
+INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('3','AD00003','K00002','Test2 Abrasevica 9','Valjevo','Test1','1234567','14000');
 INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('4','AD00004','K00002','Koste Abrasevica 9','Beograd','Test1','1234567','11000');
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('5','AD00005','K00002','Test1 9','Beograd','Test1','1234567','11000');
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('6','AD00006','K00002','Test2 Abrasevica 9','Beograd','Test1','1234567','11000');
+INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('5','AD00005','K00003','Test1 9','Beograd','Test1','1234567','11000');
+INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('6','AD00006','K00003','Test2 Abrasevica 9','Beograd','Test1','1234567','11000');
