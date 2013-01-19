@@ -5,6 +5,8 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.components.CustomerAddressSpinnerAdapter;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.util.LogUtils;
+import android.content.AsyncQueryHandler;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -82,6 +84,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	private static final int SHIPPING_ADDRESS_LOADER = 2;
 	private static final int BILLING_ADDRESS_LOADER = 3;
 	
+	private static final int SALE_ORDER_INSERT_TOKEN = 0x1;
+	
 	private String mAction;
     private Uri mUri;
     private Cursor mCursor;
@@ -94,11 +98,15 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private CustomerAutocompleteCursorAdapter transitCustomerAutoCompleteAdapter;
     private TextView documentNo;
     private Spinner documentType;
+    ArrayAdapter<CharSequence> docAdapter;
     private Spinner paymentType;
-    
+    ArrayAdapter<CharSequence> paymentAdapter;
     private Spinner backorderType;
+    ArrayAdapter<CharSequence> backorderAdapter;
     private Spinner salesType;
+    ArrayAdapter<CharSequence> salesAdapter;
     private Spinner locationType;
+    ArrayAdapter<CharSequence> locationAdapter;
     private Spinner billingAddress;
     private Spinner shippingAddress;
     private CustomerAddressSpinnerAdapter billingAddressAdapter;
@@ -114,7 +122,9 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private EditText billingAddressPostalCode;
     private EditText billingAddressContact;
     
-    private Uri editUri;
+    private Uri loadForEditUri;
+    
+    private StatementHandler statementHandler;
     
 	public SaleOrderAddEditActivity() {
 		// TODO Auto-generated constructor stub
@@ -125,6 +135,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_add_sale_order);
+		
+		statementHandler = new StatementHandler(getContentResolver());
 		
 		// routes data from intent that called this activity to business logic
 		routeIntent(getIntent(), savedInstanceState != null);
@@ -160,18 +172,19 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		// check action and route from there
 		if (Intent.ACTION_EDIT.equals(mAction)) {
 			getSupportLoaderManager().initLoader(SALE_ORDER_HEADER_LOADER, null, this);
-			editUri = mUri;
-			initComponents(mAction, null);
+			loadForEditUri = mUri;
+			initComponents(mAction);
 		} else if (Intent.ACTION_INSERT.equals(mAction)) {
 			int customerId = intent.getIntExtra(EXTRA_CUSTOMER_ID, -1);
 			if (customerId != -1) {
-				initComponents(mAction, Integer.valueOf(customerId));
+				statementHandler.startInsert(SALE_ORDER_INSERT_TOKEN, null, mUri, null);
+				initComponents(mAction);
 			} else {
-				initComponents(mAction, null);
+				initComponents(mAction);
 			}
 		} else if (Intent.ACTION_VIEW.equals(mAction))  {
 			getSupportLoaderManager().initLoader(SALE_ORDER_HEADER_LOADER, null, this);
-			initComponents(mAction, null);
+			initComponents(mAction);
 			disableEditOfComponents();
 		}
 	}
@@ -179,28 +192,36 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	private void loadData(Cursor data, String action) {
 		// TODO Auto-generated method stub
 		
+		int backorder_status = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS));
+		String shortcut_dimension1 = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SHORTCUT_DIMENSION_1_CODE));
+		String payment_option = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.PAYMENT_OPTION));
+		String location_code = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.LOCATION_CODE));
+		int customer_id = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CUSTOMER_ID));
+		int salestypePos = salesType.getSelectedItemPosition();
+		
 	}
 
 	/**
-	 * Disable UI components for edit.
+	 * Disable UI components for edit. Only for view part.
 	 */
 	private void disableEditOfComponents() {
 		documentType.setEnabled(false);
-		paymentType.setEnabled(false);
 
 		backorderType.setEnabled(false);
 		salesType.setEnabled(false);
 		locationType.setEnabled(false);
+		paymentType.setEnabled(false);
 		customerAutoComplete.setEnabled(false);
 		transitCustomerAutoComplete.setEnabled(false);
+		shippingAddress.setEnabled(false);
+		billingAddress.setEnabled(false);
 	}
 
-	private void initComponents(String action, Integer customerId) {
+	private void initComponents(String action) {
 		customerAutoComplete = (AutoCompleteTextView) findViewById(R.id.edit_sale_order_customer_autocomplete);
 		transitCustomerAutoComplete = (AutoCompleteTextView) findViewById(R.id.edit_sale_order_transit_customer_value);
 		
 		customerAutoCompleteAdapter = new CustomerAutocompleteCursorAdapter(this, null);
-		//customerAutoCompleteAdapter.getFilter().filter("ovde ide customer");
 		customerAutoComplete.setAdapter(customerAutoCompleteAdapter);
 		
 		customerAutoComplete.setOnItemClickListener(this);
@@ -208,29 +229,29 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		transitCustomerAutoCompleteAdapter = new CustomerAutocompleteCursorAdapter(this, null);
 		transitCustomerAutoComplete.setAdapter(transitCustomerAutoCompleteAdapter);
 		
-		ArrayAdapter<CharSequence> docAdapter = ArrayAdapter.createFromResource(this, R.array.sale_order_block_status_array, android.R.layout.simple_spinner_item);
+		docAdapter = ArrayAdapter.createFromResource(this, R.array.sale_order_block_status_array, android.R.layout.simple_spinner_item);
 		docAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		documentType = (Spinner) findViewById(R.id.edit_sale_order_dokument_type_spinner);
 		documentType.setAdapter(docAdapter);
 		
 		documentNo = (TextView) findViewById(R.id.edit_sale_order_dokument_no_text);
 		
-		ArrayAdapter<CharSequence> backorderAdapter = ArrayAdapter.createFromResource(this, R.array.backorder_type_array, android.R.layout.simple_spinner_item);
+		backorderAdapter = ArrayAdapter.createFromResource(this, R.array.backorder_type_array, android.R.layout.simple_spinner_item);
 		backorderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		backorderType = (Spinner) findViewById(R.id.edit_sale_order_backorder_spinner);
 		backorderType.setAdapter(backorderAdapter);
 		
-		ArrayAdapter<CharSequence> locationAdapter = ArrayAdapter.createFromResource(this, R.array.location_type_array, android.R.layout.simple_spinner_item);
+		locationAdapter = ArrayAdapter.createFromResource(this, R.array.location_type_array, android.R.layout.simple_spinner_item);
 		locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		locationType = (Spinner) findViewById(R.id.edit_sale_order_location_spinner);
 		locationType.setAdapter(locationAdapter);
 		
-		ArrayAdapter<CharSequence> salesAdapter = ArrayAdapter.createFromResource(this, R.array.slc1_type_array, android.R.layout.simple_spinner_item);
+		salesAdapter = ArrayAdapter.createFromResource(this, R.array.slc1_type_array, android.R.layout.simple_spinner_item);
 		salesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		salesType = (Spinner) findViewById(R.id.edit_sale_order_slc1_spinner);
 		salesType.setAdapter(salesAdapter);
 		
-		ArrayAdapter<CharSequence> paymentAdapter = ArrayAdapter.createFromResource(this, R.array.payment_type_array, android.R.layout.simple_spinner_item);
+		paymentAdapter = ArrayAdapter.createFromResource(this, R.array.payment_type_array, android.R.layout.simple_spinner_item);
 		paymentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		paymentType = (Spinner) findViewById(R.id.edit_sale_order_payment_type_spinner);
 		paymentType.setAdapter(paymentAdapter);
@@ -246,14 +267,22 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		getSupportLoaderManager().initLoader(BILLING_ADDRESS_LOADER, null, this);
 		
 		shippingAddressField = (EditText) findViewById(R.id.edit_sale_order_address_value);
+		shippingAddressField.setEnabled(false);
 	    shippingAddressCity = (EditText) findViewById(R.id.edit_sale_order_city);
+	    shippingAddressCity.setEnabled(false);
 	    shippingAddressPostalCode = (EditText) findViewById(R.id.edit_sale_order_zip);
+	    shippingAddressPostalCode.setEnabled(false);
 	    shippingAddressContact = (EditText) findViewById(R.id.edit_sale_order_address_contact_value);
+	    shippingAddressContact.setEnabled(false);
 	    
 	    billingAddressField = (EditText) findViewById(R.id.edit_sale_order_address_invoice_value);
+	    billingAddressField.setEnabled(false);
 	    billingAddressCity = (EditText) findViewById(R.id.edit_sale_address_invoice_order_city);
+	    billingAddressCity.setEnabled(false);
 	    billingAddressPostalCode = (EditText) findViewById(R.id.edit_sale_orde_address_invoice_zip);
+	    billingAddressPostalCode.setEnabled(false);
 	    billingAddressContact = (EditText) findViewById(R.id.edit_sale_order_address_invoice_contact_value);
+	    billingAddressContact.setEnabled(false);
 		
 		// TODO here after setup load predefined data
 		
@@ -265,7 +294,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		String customerFilter = "dummy";
 		switch (id) {
 		case SALE_ORDER_HEADER_LOADER:
-			cursorLoader = new CursorLoader(this, editUri, SALES_ORDER_PROJECTION, null, null, null);
+			cursorLoader = new CursorLoader(this, loadForEditUri, SALES_ORDER_PROJECTION, null, null, null);
 			return cursorLoader;
 		case SHIPPING_ADDRESS_LOADER:
 			if (selectedCustomerNo != null) {
@@ -303,9 +332,9 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			}
 			break;
 		default:
+			data.close();
 			break;
 		}
-
 	}
 
 	private void loadShippingAddressValues(Cursor data) {
@@ -343,4 +372,36 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		getSupportLoaderManager().restartLoader(BILLING_ADDRESS_LOADER, null, this);
 	}
 
+	private class StatementHandler extends AsyncQueryHandler {
+
+		public StatementHandler(ContentResolver cr) {
+			super(cr);
+			// TODO Auto-generated constructor stub
+		}
+		
+		
+		@Override
+		protected void onInsertComplete(int token, Object cookie, Uri uri) {
+			switch (token) {
+			case SALE_ORDER_INSERT_TOKEN:
+				
+				break;
+
+			default:
+				break;
+			}
+		}
+		
+		@Override
+		protected void onDeleteComplete(int token, Object cookie, int result) {
+			// TODO Auto-generated method stub
+			super.onDeleteComplete(token, cookie, result);
+		}
+		
+		@Override
+		protected void onUpdateComplete(int token, Object cookie, int result) {
+			// TODO Auto-generated method stub
+			super.onUpdateComplete(token, cookie, result);
+		}
+	}
 }

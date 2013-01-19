@@ -343,7 +343,7 @@ CREATE TABLE `sale_orders` (
 	`quote_realized_status` INTEGER,
 	`special_quote` INTEGER,
 	`quote_valid_date_to` TEXT,
-	`cust_uses_transit_cust` TEXT,
+	`cust_uses_transit_cust` INTEGER,
 	`sales_person_id` INTEGER,
 	`customer_address_id` INTEGER,
 	`contact_phone` TEXT,
