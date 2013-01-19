@@ -19,9 +19,6 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 
 	public static final String EXTRA_MASTER_URI = "rs.gopro.mobile_store.extra.MASTER_URI";
 
-	private static final String STATE_VIEW_TYPE = "view_type";
-
-	private String mViewType;
 	ActionMode actionMod;
 	
 

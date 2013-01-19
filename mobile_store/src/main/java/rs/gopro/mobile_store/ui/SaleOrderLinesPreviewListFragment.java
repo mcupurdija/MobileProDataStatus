@@ -3,6 +3,7 @@ package rs.gopro.mobile_store.ui;
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -56,6 +57,8 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
         }
         
         reloadFromArguments(getArguments());
+        
+        LogUtils.LOGI(TAG, "Created SaleOrderLinesPreviewListFragment");
     }
 
     public void reloadFromArguments(Bundle arguments) {
@@ -144,7 +147,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
         }
         int token = loader.getId();
         if (token == SaleOrderLinesQuery._TOKEN) {
-            mAdapter.changeCursor(cursor);
+            mAdapter.swapCursor(cursor);
         } else {
             cursor.close();
         }
@@ -152,6 +155,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
+		 mAdapter.swapCursor(null);
 	}
 	
 	/**
@@ -216,11 +220,11 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
                 MobileStoreContract.SaleOrderLines.REAL_DISCOUNT
         };
 
-        int _ID = 0;
+        //int _ID = 0;
         int SALE_ORDER_ID = 1;
         int ITEM_NO = 2;
         int DESCRIPTION = 3;
-        int DESCRIPTION2 = 4;
+        //int DESCRIPTION2 = 4;
         int LINE_NO = 5;
         int QUANTITY = 6;
         int PRICE_EUR = 7;
