@@ -24,7 +24,7 @@ import android.widget.TextView;
 public class LoginActivity extends Activity {
 
 	private static String TAG = "LoginActivity";
-	private static String SESSION_PREFS = "SessionPrefs";
+//	private static String SESSION_PREFS = "SessionPrefs";
 
 	private OnClickListener btnLoginListener = new OnClickListener() {
 		public void onClick(View v) {

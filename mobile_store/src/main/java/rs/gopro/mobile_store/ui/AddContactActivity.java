@@ -170,8 +170,8 @@ public class AddContactActivity extends BaseActivity implements LoaderCallbacks<
 				MobileStoreContract.Contacts.CITY, MobileStoreContract.Contacts.POST_CODE, MobileStoreContract.Contacts.PHONE, MobileStoreContract.Contacts.MOBILE_PHONE, MobileStoreContract.Contacts.EMAIL, MobileStoreContract.Contacts.COMPANY_NO,
 				MobileStoreContract.Contacts.COMPANY_ID, MobileStoreContract.Contacts.VAT_REGISTRATION, MobileStoreContract.Contacts.SALES_PERSON_ID, MobileStoreContract.Contacts.DIVISION, MobileStoreContract.Contacts.NUMBER_OF_BLUE_COAT,
 				MobileStoreContract.Contacts.NUMBER_OF_GREY_COAT, MobileStoreContract.Contacts.JOB_TITLE, };
-		int _ID = 0;
-		int CONTACT_NO = 1;
+//		int _ID = 0;
+//		int CONTACT_NO = 1;
 		int CONTACT_TYPE = 2;
 		int NAME = 3;
 		int NAME2 = 4;
@@ -184,7 +184,7 @@ public class AddContactActivity extends BaseActivity implements LoaderCallbacks<
 		int COMPANY_NO = 11;
 		int COMPANY_ID = 12;
 		int VAT_REGISTRATION = 13;
-		int SALES_PERSON_ID = 14;
+//		int SALES_PERSON_ID = 14;
 		int DIVISION = 15;
 		int NUMBER_OF_BLUE_COAT = 16;
 		int NUMBER_OF_GREY_COAT = 17;

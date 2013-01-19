@@ -39,12 +39,12 @@ import android.widget.TimePicker;
 
 public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
 
-	private static final int EXIST_VISIT_LOADER = 3;
+	//private static final int EXIST_VISIT_LOADER = 3;
 	public static final String VISIT_ID = "VISIT_ID";
 	private static final int DEPARTURE_DATE_PICKER = 3;
 	private static final int ARRIVAL_DATE_PICKER = 2;
 	private static final int VISIT_DATE_PICKER = 1;
-	private static final String CUSTOMER_TEXT = "customer_text";
+//	private static final String CUSTOMER_TEXT = "customer_text";
 //	private AutoCompleteTextView salePersionAutocomplete;
 	private AutoCompleteTextView customerAutoComplete;
 	SimpleCursorAdapter customerCursorAdapter;
@@ -77,7 +77,7 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		selectedVisitId = visitId;
 		getSupportLoaderManager().initLoader(1, null, this);
 		getSupportLoaderManager().initLoader(2, null, this);
-		getSupportLoaderManager().initLoader(EXIST_VISIT_LOADER, null, this);
+		getSupportLoaderManager().initLoader(VisitsQuery._TOKEN, null, this);
 		setContentView(R.layout.activity_add_visit);
 
 		visitDateEditText = (EditText) findViewById(R.id.visit_date_input);
@@ -204,7 +204,7 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		switch (id) {
-		case EXIST_VISIT_LOADER:
+		case VisitsQuery._TOKEN:
 			CursorLoader cursorLoader = null;
 			if (selectedVisitId != null) {
 				cursorLoader = new CursorLoader(this, Visits.buildVisitUri(selectedVisitId), VisitsQuery.PROJECTION, null, null, MobileStoreContract.Visits.DEFAULT_SORT);
@@ -220,9 +220,10 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		switch (loader.getId()) {
-		case EXIST_VISIT_LOADER:
+		case VisitsQuery._TOKEN:
 			loadUI(data);
 		default:
+			data.close();
 			break;
 		}
 	}
@@ -340,7 +341,7 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 			contentValues.put(Visits.VISIT_RESULT, visitResultEditText.getText().toString());
 			contentValues.put(Visits.NOTE, noteEditText.getText().toString());
 		}
-		String currentVisitId;
+		String currentVisitId = null;
 		if (selectedVisitId != null) {
 
 			getContentResolver().update(MobileStoreContract.Visits.buildVisitUri(selectedVisitId), contentValues, null, null);
@@ -382,20 +383,20 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 	}
 
 	private interface VisitsQuery {
-		int _TOKEN = 0x4;
+		int _TOKEN = 3;
 
 		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Visits.SALES_PERSON_ID, MobileStoreContract.Visits.CUSTOMER_ID, MobileStoreContract.Visits.VISIT_DATE, MobileStoreContract.Visits.CUSTOMER_NO, MobileStoreContract.Visits.NAME,
 				MobileStoreContract.Visits.LINE_NO, MobileStoreContract.Visits.ENTRY_TYPE, MobileStoreContract.Visits.ARRIVAL_TIME, MobileStoreContract.Visits.DEPARTURE_TIME, MobileStoreContract.Visits.ODOMETER, MobileStoreContract.Visits.NOTE,
 				MobileStoreContract.Visits.VISIT_RESULT, };
 
-		int _ID = 0;
-		int SALES_PERSON_ID = 1;
-		int CUSTOMER_ID = 2;
+		//int _ID = 0;
+		//int SALES_PERSON_ID = 1;
+		//int CUSTOMER_ID = 2;
 		int VISIT_DATE = 3;
-		int CUSTOMER_NO = 4;
+		//int CUSTOMER_NO = 4;
 		int NAME = 5;
-		int LINE_NO = 6;
-		int ENTRY_TYPE = 7;
+		//int LINE_NO = 6;
+		//int ENTRY_TYPE = 7;
 		int ARRIVAL_TIME = 8;
 		int DEPARTURE_TIME = 9;
 		int ODOMETER = 10;
