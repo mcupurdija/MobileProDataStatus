@@ -16,6 +16,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class CustomersViewDetailFragment extends Fragment implements
@@ -26,32 +27,35 @@ public class CustomersViewDetailFragment extends Fragment implements
 	private Uri mCustomerdetailUri;
 	
 	private TextView mCustomer_no;
-	private TextView mName;
-	private TextView mName_2;
-	private TextView mAddress;
+	private EditText mName;
+	private EditText mName2;
+	private EditText mAddress;
 	private TextView mCity;
-	private TextView mPost_code;
-	private TextView mPhone;
-	private TextView mMobile;
-	private TextView mEmail;
-	private TextView mCompany_id;
-	private TextView mPrimary_contact_id;
-	private TextView mVar_reg_no;
-	private TextView mCredit_limit_lcy;
-	private TextView mBalance_lcy;
-	private TextView mBalance_due_lcy;
-	private TextView mPayment_terms_code;
+	private EditText mPostCode;
+	private EditText mPhone;
+	private EditText mMobile;
+	private EditText mEmail;
+	private EditText mCompanyId;
+	private EditText mPrimaryContactId;
+	private EditText mVarRegNo;
+	private TextView mCreditLimitLcy;
+	private TextView mBalanceLcy;
+	private TextView mBalanceDueLcy;
+	private TextView mPaymentTermsCode;
 	private TextView mPriority;
-	private TextView mGlobal_dimension;
-	private TextView mChannel_oran;
-	private TextView mBlocked_status;
+	private TextView mGlobalDimension;
+	private TextView mChannelOran;
+	private TextView mBlockedStatus;
 	private TextView mSml;
-	private TextView mInternal_balance_due_lcy;
-	private TextView mAdopted_potential;
-	private TextView mFocus_customer;
+	private TextView mInternalBalanceDueLcy;
+	private TextView mAdoptedPotential;
+	private TextView mFocusCustomer;
 	private TextView mDivision;
-	private TextView mNumber_of_blue_coat;
-	private TextView mNumber_of_grey_coat;
+	private TextView mNumberOfBlueCoat;
+	private EditText mNumberOfGreyCoat;
+	
+	
+	
     
 	public interface Callbacks {
 		public void onCustomerIdAvailable(String customerId);
@@ -108,33 +112,34 @@ public class CustomersViewDetailFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_customer_view_details, null);
-        mCustomer_no = (TextView) rootView.findViewById(R.id.customer_no);
-        mName = (TextView) rootView.findViewById(R.id.name);
-        mName_2 = (TextView) rootView.findViewById(R.id.name_2);
-        mAddress = (TextView) rootView.findViewById(R.id.address);
-        mCity = (TextView) rootView.findViewById(R.id.city);
-        mPost_code = (TextView) rootView.findViewById(R.id.post_code);
-        mPhone = (TextView) rootView.findViewById(R.id.phone);
-        mMobile = (TextView) rootView.findViewById(R.id.mobile);
-        mEmail = (TextView) rootView.findViewById(R.id.email);
-        mCompany_id = (TextView) rootView.findViewById(R.id.company_id);
-        mPrimary_contact_id = (TextView) rootView.findViewById(R.id.primary_contact_id);
-        mVar_reg_no = (TextView) rootView.findViewById(R.id.var_reg_no);
-        mCredit_limit_lcy = (TextView) rootView.findViewById(R.id.credit_limit_lcy);
-        mBalance_lcy = (TextView) rootView.findViewById(R.id.balance_lcy);
-        mBalance_due_lcy = (TextView) rootView.findViewById(R.id.balance_due_lcy);
-        mPayment_terms_code = (TextView) rootView.findViewById(R.id.payment_terms_code);
-        mPriority = (TextView) rootView.findViewById(R.id.priority);
-        mGlobal_dimension = (TextView) rootView.findViewById(R.id.global_dimension);
-        mChannel_oran = (TextView) rootView.findViewById(R.id.channel_oran);
-        mBlocked_status = (TextView) rootView.findViewById(R.id.blocked_status);
-        mSml = (TextView) rootView.findViewById(R.id.sml);
-        mInternal_balance_due_lcy = (TextView) rootView.findViewById(R.id.internal_balance_due_lcy);
-        mAdopted_potential = (TextView) rootView.findViewById(R.id.adopted_potential);
-        mFocus_customer = (TextView) rootView.findViewById(R.id.focus_customer);
-        mDivision = (TextView) rootView.findViewById(R.id.division);
-        mNumber_of_blue_coat = (TextView) rootView.findViewById(R.id.number_of_blue_coat);
-        mNumber_of_grey_coat = (TextView) rootView.findViewById(R.id.number_of_grey_coat);
+        mCustomer_no = (TextView) rootView.findViewById(R.id.customer_no_group_value);
+        mName = (EditText) rootView.findViewById(R.id.customer_name_value);
+        mName2 = (EditText) rootView.findViewById(R.id.customer_name_value);
+        mAddress = (EditText) rootView.findViewById(R.id.customer_address_value);
+        mCity = (TextView) rootView.findViewById(R.id.customer_city_value);
+        mPostCode = (EditText) rootView.findViewById(R.id.customer_postal_code_value);
+        mPhone = (EditText) rootView.findViewById(R.id.customer_phone_value);
+        mMobile = (EditText) rootView.findViewById(R.id.customer_phone_mobile_value);
+        mEmail = (EditText) rootView.findViewById(R.id.customer_email_value);
+        mCompanyId = (EditText) rootView.findViewById(R.id.customer_company_id_value);
+        mPrimaryContactId = (EditText) rootView.findViewById(R.id.customer_primary_contact_id_value);
+        mVarRegNo = (EditText) rootView.findViewById(R.id.customer_vat_reg_no_value);
+        mCreditLimitLcy = (TextView) rootView.findViewById(R.id.customer_credit_limit_lcy_value);
+        mBalanceLcy = (TextView) rootView.findViewById(R.id.customer_balance_lcy_value);
+        mBalanceDueLcy = (TextView) rootView.findViewById(R.id.customer_balance_due_lcy_value);
+        mPaymentTermsCode = (TextView) rootView.findViewById(R.id.customer_payment_terms_code_value);
+        mPriority = (TextView) rootView.findViewById(R.id.customer_priority_value);
+        mGlobalDimension = (TextView) rootView.findViewById(R.id.customer_global_dimension_value);
+        mChannelOran = (TextView) rootView.findViewById(R.id.customer_channel_oran_value);
+        mBlockedStatus = (TextView) rootView.findViewById(R.id.customer_blocked_status_value);
+        mSml = (TextView) rootView.findViewById(R.id.customer_sml_value);
+        mInternalBalanceDueLcy = (TextView) rootView.findViewById(R.id.customer_internal_balance_due_lcy_value);
+        mAdoptedPotential = (TextView) rootView.findViewById(R.id.customer_adopted_potential_value);
+        mFocusCustomer = (TextView) rootView.findViewById(R.id.customer_focus_customer_value);
+        mDivision = (TextView) rootView.findViewById(R.id.customer_division_value);
+        mNumberOfBlueCoat = (TextView) rootView.findViewById(R.id.customer_blue_coat_value);
+        mNumberOfGreyCoat = (EditText) rootView.findViewById(R.id.customer_gray_coat_value);
+        setFocusable(false);
         return rootView;
     }
 	
@@ -147,63 +152,61 @@ public class CustomersViewDetailFragment extends Fragment implements
             return;
         }
         
-        String customernoString = 				"Br. kupca                          " + cursor.getString(CustomerDetailQuery.CUSTOMER_NO);
-        String nameString = 					"Ime                                " + cursor.getString(CustomerDetailQuery.NAME);
-        String name2String = 					"Ime 2                              " + cursor.getString(CustomerDetailQuery.NAME_2);
-        String addressString = 					"Adresa                             " + cursor.getString(CustomerDetailQuery.ADDRESS);
-        String cityString = 					"Grad                               " + cursor.getString(CustomerDetailQuery.CITY);
-        String postcodeString = 				"Poštanski broj                     " + cursor.getString(CustomerDetailQuery.POST_CODE);
-        String phoneString = 					"Br. telefona                       " + cursor.getString(CustomerDetailQuery.PHONE);
-        String mobileString = 					"Br. Mobilnog                       " + cursor.getString(CustomerDetailQuery.MOBILE);
-        String emailString = 					"E-pošta                            " + cursor.getString(CustomerDetailQuery.EMAIL);
-        String companyidString = 				"Maticni broj                       " + cursor.getInt(CustomerDetailQuery.COMPANY_ID);
-        String primarycontactidString = 		"Br. primarnog kontakta             " + cursor.getInt(CustomerDetailQuery.PRIMARY_CONTACT_ID);
-        String varregnoString = 				"Poreski broj                       " + cursor.getString(CustomerDetailQuery.VAR_REG_NO);
-        String creditlimitlcyString = 			"Kreditni limit (LVT)               " + String.valueOf(cursor.getDouble(CustomerDetailQuery.CREDIT_LIMIT_LCY));
-        String balancelcyString = 				"Saldo (LVT)                        " + String.valueOf(cursor.getDouble(CustomerDetailQuery.BALANCE_LCY));
-        String balanceduelcyString = 			"Dospeli saldo (LVT)                " + String.valueOf(cursor.getDouble(CustomerDetailQuery.BALANCE_DUE_LCY));
-        String internalbalanceduelcyString = 	"Dospeli saldo preko i.v. (LVT)     " + String.valueOf(cursor.getDouble(CustomerDetailQuery.INTERNAL_BALANCE_DUE_LCY));
-        String paymenttermscodeString = 		"Šifra uslova placanja              " + cursor.getInt(CustomerDetailQuery.PAYMENT_TERMS_CODE);
-        String priorityString = 				"Prioritet                          " + cursor.getInt(CustomerDetailQuery.PRIORITY);
-        String globaldimensionString = 			"Branša                             " + cursor.getString(CustomerDetailQuery.GLOBAL_DIMENSION);
-        String channeloranString = 				"Kanal (ORAN)                       " + cursor.getString(CustomerDetailQuery.CHANNEL_ORAN);
-        
-        String smlString = 						"SML                                " + cursor.getString(CustomerDetailQuery.SML);
-        String adoptedpotentialString = 		"Usvojeni potencijal                " + String.valueOf(cursor.getDouble(CustomerDetailQuery.ADOPTED_POTENTIAL));
-        String focuscustomerString = 			"Fokus kupac                        " + cursor.getString(CustomerDetailQuery.FOCUS_CUSTOMER);
-        String divisionString = 				"Divizija                           " + cursor.getString(CustomerDetailQuery.DIVISION);
-        String numberofbluecoatString = 		"Br. plavih mantila                 " + cursor.getInt(CustomerDetailQuery.NUMBER_OF_BLUE_COAT);
-        String numberofgreycoatString = 		"Br. Sivih mantila                  " + cursor.getInt(CustomerDetailQuery.NUMBER_OF_GREY_COAT);
-        String blockedstatusString = 			"Status kupca za isporuke           " + cursor.getString(CustomerDetailQuery.BLOCKED_STATUS);
+		String customernoString = cursor.getString(CustomerDetailQuery.CUSTOMER_NO);
+		String nameString = cursor.getString(CustomerDetailQuery.NAME);
+		String name2String = cursor.getString(CustomerDetailQuery.NAME_2);
+		String addressString = cursor.getString(CustomerDetailQuery.ADDRESS);
+		String cityString = cursor.getString(CustomerDetailQuery.CITY);
+		String postcodeString = cursor.getString(CustomerDetailQuery.POST_CODE);
+		String phoneString = cursor.getString(CustomerDetailQuery.PHONE);
+		String mobileString = cursor.getString(CustomerDetailQuery.MOBILE);
+		String emailString = cursor.getString(CustomerDetailQuery.EMAIL);
+		String companyidString =String.valueOf(cursor.getInt(CustomerDetailQuery.COMPANY_ID)) ;
+		String primarycontactidString = String.valueOf(cursor.getInt(CustomerDetailQuery.PRIMARY_CONTACT_ID));
+		String varregnoString = cursor.getString(CustomerDetailQuery.VAR_REG_NO);
+		String creditlimitlcyString = String.valueOf(cursor.getDouble(CustomerDetailQuery.CREDIT_LIMIT_LCY));
+		String balancelcyString = String.valueOf(cursor.getDouble(CustomerDetailQuery.BALANCE_LCY));
+		String balanceduelcyString = String.valueOf(cursor.getDouble(CustomerDetailQuery.BALANCE_DUE_LCY));
+		String internalbalanceduelcyString = String.valueOf(cursor.getDouble(CustomerDetailQuery.INTERNAL_BALANCE_DUE_LCY));
+		String paymenttermscodeString = String.valueOf(cursor.getInt(CustomerDetailQuery.PAYMENT_TERMS_CODE));
+		String priorityString = String.valueOf(cursor.getInt(CustomerDetailQuery.PRIORITY));
+		String globaldimensionString = cursor.getString(CustomerDetailQuery.GLOBAL_DIMENSION);
+		String channeloranString = cursor.getString(CustomerDetailQuery.CHANNEL_ORAN);
+		String smlString = cursor.getString(CustomerDetailQuery.SML);
+		String adoptedpotentialString = String.valueOf(cursor.getDouble(CustomerDetailQuery.ADOPTED_POTENTIAL));
+		String focuscustomerString = cursor.getString(CustomerDetailQuery.FOCUS_CUSTOMER);
+		String divisionString = cursor.getString(CustomerDetailQuery.DIVISION);
+		String numberofbluecoatString = String.valueOf(cursor.getInt(CustomerDetailQuery.NUMBER_OF_BLUE_COAT));
+		String numberofgreycoatString = String.valueOf(cursor.getInt(CustomerDetailQuery.NUMBER_OF_GREY_COAT));
+		String blockedstatusString = cursor.getString(CustomerDetailQuery.BLOCKED_STATUS);
         
         mCustomer_no.setText(customernoString);
         mName.setText(nameString);
-        mName_2.setText(name2String);
+        mName2.setText(name2String);
         mAddress.setText(addressString);
         mCity.setText(cityString);
-        mPost_code.setText(postcodeString);
+        mPostCode.setText(postcodeString);
         mPhone.setText(phoneString);
         mMobile.setText(mobileString);
         mEmail.setText(emailString);
-        mCompany_id.setText(companyidString);
-        mPrimary_contact_id.setText(primarycontactidString);
-        mVar_reg_no.setText(varregnoString);
-        mCredit_limit_lcy.setText(creditlimitlcyString);
-        mBalance_lcy.setText(balancelcyString);
-        mBalance_due_lcy.setText(balanceduelcyString);
-        mPayment_terms_code.setText(paymenttermscodeString);
+        mCompanyId.setText(companyidString);
+        mPrimaryContactId.setText(primarycontactidString);
+        mVarRegNo.setText(varregnoString);
+        mCreditLimitLcy.setText(creditlimitlcyString);
+        mBalanceLcy.setText(balancelcyString);
+        mBalanceDueLcy.setText(balanceduelcyString);
+        mPaymentTermsCode.setText(paymenttermscodeString);
         mPriority.setText(priorityString);
-        mGlobal_dimension.setText(globaldimensionString);
-        mChannel_oran.setText(channeloranString);
-        mBlocked_status.setText(blockedstatusString);
+        mGlobalDimension.setText(globaldimensionString);
+        mChannelOran.setText(channeloranString);
+        mBlockedStatus.setText(blockedstatusString);
         mSml.setText(smlString);
-        mInternal_balance_due_lcy.setText(internalbalanceduelcyString);
-        mAdopted_potential.setText(adoptedpotentialString);
-        mFocus_customer.setText(focuscustomerString);
+        mInternalBalanceDueLcy.setText(internalbalanceduelcyString);
+        mAdoptedPotential.setText(adoptedpotentialString);
+        mFocusCustomer.setText(focuscustomerString);
         mDivision.setText(divisionString);
-        mNumber_of_blue_coat.setText(numberofbluecoatString);
-        mNumber_of_grey_coat.setText(numberofgreycoatString);
-
+        mNumberOfBlueCoat.setText(numberofbluecoatString);
+        mNumberOfGreyCoat.setText(numberofgreycoatString);
 
         int customerId = cursor.getInt(CustomerDetailQuery._ID);
         mCallbacks.onCustomerIdAvailable(String.valueOf(customerId));
@@ -226,6 +229,21 @@ public class CustomersViewDetailFragment extends Fragment implements
 	public void onLoaderReset(Loader<Cursor> loader) {
 	}
 	
+	
+	
+	private void setFocusable(boolean disable){
+		mAddress.setFocusable(disable);
+		mName.setFocusable(disable);
+		mName2.setFocusable(disable);
+		mEmail.setFocusable(disable);
+		mPostCode.setFocusable(disable);
+		mMobile.setFocusable(disable);
+		mCompanyId.setFocusable(disable);
+		mPrimaryContactId.setFocusable(disable);
+		mVarRegNo.setFocusable(disable);
+		mPhone.setFocusable(disable);
+		mNumberOfGreyCoat.setFocusable(disable);
+	}
 	private interface CustomerDetailQuery {
 		int _TOKEN = 0x8;
 

@@ -127,8 +127,26 @@
 	<string name="customer_email_label">Email</string>
 	<string name="customer_blue_coat_label">Num. of blue coat</string>
 	<string name="customer_gray_coat_label">Num. of gray coat</string>
-	<string name="customer_note_label">Note</string>	
+	<string name="customer_note_label">Note</string>
 	
+	<string name="customer_name_label">Name</string>
+	<string name="customer_name2_label">Name 2</string>
+	<string name="customer_company_id_label">Company id</string>
+	<string name="customer_primary_contact_id_label">Primary contact id</string>
+	<string name="customer_vat_reg_no_label">Var reg NO</string>	
+	<string name="customer_credit_limit_lcy_label">Credit limit (LVT)</string>
+	<string name="customer_balance_lcy_label">Balance (LVT))</string>
+	<string name="customer_balance_due_lcy_label">Balance due (LVT</string>
+	<string name="customer_internal_balance_lcy_label">Internal balance (LVT)</string>
+	<string name="customer_payment_terms_code_label">Payment term code</string>		
+	<string name="customer_priority_label">Priority</string>
+	<string name="customer_global_dimension_label">Global dimension</string>
+	<string name="customer_channel_oran_label">Channel (ORAN)</string>
+	<string name="customer_blocked_status_label">Blocked status</string>
+	<string name="customer_sml_label">SML</string>	
+	<string name="customer_adopted_potential_label">Adopted potential</string>
+	<string name="customer_focus_customer_label">Focus customer</string>
+	<string name="customer_division_label">Division</string>
 	
 	
 	<!-- settings -->
