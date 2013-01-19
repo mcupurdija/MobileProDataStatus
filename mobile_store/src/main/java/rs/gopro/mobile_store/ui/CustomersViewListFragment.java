@@ -3,6 +3,7 @@ package rs.gopro.mobile_store.ui;
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -56,6 +57,8 @@ public class CustomersViewListFragment extends ListFragment implements
         }
 
         reloadFromArguments(getArguments());
+        
+        LogUtils.LOGI(TAG, "Fragment created.");
     }
 
     public void reloadFromArguments(Bundle arguments) {

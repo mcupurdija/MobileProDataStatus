@@ -92,11 +92,16 @@ public class ContactsFragment extends ListFragment implements LoaderCallbacks<Cu
 	}
 
 	private interface ContactsQuery {
-		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Contacts.CONTACT_NO, MobileStoreContract.Contacts.NAME, MobileStoreContract.Contacts.PHONE };
+		String[] PROJECTION = { 
+			BaseColumns._ID, 
+			MobileStoreContract.Contacts.CONTACT_NO, 
+			MobileStoreContract.Contacts.NAME, 
+			MobileStoreContract.Contacts.PHONE 
+		};
 		int _ID = 0;
-		int CONTACT_NO = 1;
-		int NAME = 2;
-		int PHONE = 3;
+//		int CONTACT_NO = 1;
+//		int NAME = 2;
+//		int PHONE = 3;
 		
 	}
 

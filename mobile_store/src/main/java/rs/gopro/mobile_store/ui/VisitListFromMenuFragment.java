@@ -4,7 +4,7 @@ import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
-import rs.gopro.mobile_store.util.SharedPreferencesUtil;
+import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
 import android.content.Context;
@@ -48,7 +48,8 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 		}
 		
 		reloadFromArguments(getArguments());
-
+		
+		LogUtils.LOGI(TAG, "Fragment created");
 	}
 
 	public void reloadFromArguments(Bundle arguments) {
@@ -195,8 +196,8 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 				MobileStoreContract.Visits.VISIT_DATE };
 
 		int _ID = 0;
-		int SALES_PERSON_ID = 1;
-		int CUSTOMER_ID = 2;
+//		int SALES_PERSON_ID = 1;
+//		int CUSTOMER_ID = 2;
 		int CUSTOMER_NO = 3;
 		int CUSTOMER_NAME = 4;
 		int CUSTOMER_NAME2 = 5;

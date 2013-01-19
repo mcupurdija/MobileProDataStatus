@@ -168,8 +168,8 @@ public class VisitDetailFragment extends Fragment implements
         };
 
         int _ID = 0;
-        int SALES_PERSON_ID = 1;
-        int CUSTOMER_ID = 2;
+//        int SALES_PERSON_ID = 1;
+//        int CUSTOMER_ID = 2;
         int VISIT_DATE = 3;
         int CUSTOMER_NO = 4;
         int NAME = 5;

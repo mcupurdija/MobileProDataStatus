@@ -3,6 +3,7 @@ package rs.gopro.mobile_store.ui;
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
 import android.content.Context;
@@ -61,17 +62,18 @@ public class VisitListFragment extends ListFragment implements
 
     private Callbacks mCallbacks = sDummyCallbacks;
 	
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null) {
-            mSelectedVisitId = savedInstanceState.getString(STATE_SELECTED_ID);
-        }
+		if (savedInstanceState != null) {
+			mSelectedVisitId = savedInstanceState.getString(STATE_SELECTED_ID);
+		}
 
-        reloadFromArguments(getArguments());
-       
-    }
+		reloadFromArguments(getArguments());
+		
+		LogUtils.LOGI(TAG, "Fragment created.");
+	}
 
     public void reloadFromArguments(Bundle arguments) {
         // Teardown from previous arguments
@@ -185,6 +187,7 @@ public class VisitListFragment extends ListFragment implements
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
+		mAdapter.swapCursor(null);
 	}
 	
 	/**
@@ -243,8 +246,8 @@ public class VisitListFragment extends ListFragment implements
         };
 
         int _ID = 0;
-        int SALES_PERSON_ID = 1;
-        int CUSTOMER_ID = 2;
+        //int SALES_PERSON_ID = 1;
+        //int CUSTOMER_ID = 2;
         int CUSTOMER_NO = 3;
         int CUSTOMER_NAME = 4;
         int CUSTOMER_NAME2 = 5;

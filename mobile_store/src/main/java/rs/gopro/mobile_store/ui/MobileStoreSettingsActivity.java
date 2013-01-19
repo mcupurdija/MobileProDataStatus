@@ -4,14 +4,8 @@ import java.util.List;
 
 import rs.gopro.mobile_store.R;
 
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.preference.EditTextPreference;
-import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class MobileStoreSettingsActivity extends PreferenceActivity {

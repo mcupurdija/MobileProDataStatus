@@ -169,7 +169,7 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
         
         int token = loader.getId();
         if (token == SaleOrdersQuery._TOKEN) {
-            mAdapter.changeCursor(cursor);
+            mAdapter.swapCursor(cursor);
         } else {
             cursor.close();
         }
@@ -177,6 +177,7 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
+		 mAdapter.swapCursor(null);
 	}
 	
 	/**

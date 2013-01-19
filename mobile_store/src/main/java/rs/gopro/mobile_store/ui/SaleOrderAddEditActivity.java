@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -28,8 +29,51 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	
 	//private static String[] CUSTOMER_PROJECTION = new String[] { MobileStoreContract.Customers._ID, MobileStoreContract.Customers.CUSTOMER_NO, MobileStoreContract.Customers.NAME };
 	
-	private static String[] CUSTOMER_ADDRESS_PROJECTION = new String[] { MobileStoreContract.CustomerAddresses._ID, MobileStoreContract.CustomerAddresses.ADDRESS_NO,  MobileStoreContract.CustomerAddresses.ADDRESS, MobileStoreContract.CustomerAddresses.CITY, MobileStoreContract.CustomerAddresses.POST_CODE, MobileStoreContract.CustomerAddresses.CONTANCT,  MobileStoreContract.CustomerAddresses.PHONE_NO };
-	
+	private static String[] CUSTOMER_ADDRESS_PROJECTION = new String[] { 
+		MobileStoreContract.CustomerAddresses._ID, 
+		MobileStoreContract.CustomerAddresses.ADDRESS_NO,  
+		MobileStoreContract.CustomerAddresses.ADDRESS, 
+		MobileStoreContract.CustomerAddresses.CITY, 
+		MobileStoreContract.CustomerAddresses.POST_CODE, 
+		MobileStoreContract.CustomerAddresses.CONTANCT,  
+		MobileStoreContract.CustomerAddresses.PHONE_NO 
+	};
+	private static String[]  SALES_ORDER_PROJECTION = new String[] { 
+		MobileStoreContract.SaleOrders._ID,
+		MobileStoreContract.SaleOrders.SALES_PERSON_ID,
+		MobileStoreContract.SaleOrders.SALES_ORDER_NO,
+		MobileStoreContract.SaleOrders.DOCUMENT_TYPE,
+		MobileStoreContract.SaleOrders.CUSTOMER_ID,
+		MobileStoreContract.SaleOrders.ORDER_DATE,
+		MobileStoreContract.SaleOrders.LOCATION_CODE,
+		MobileStoreContract.SaleOrders.SHORTCUT_DIMENSION_1_CODE,
+		MobileStoreContract.SaleOrders.CURRENCY_CODE,
+		MobileStoreContract.SaleOrders.EXTERNAL_DOCUMENT_NO,
+		MobileStoreContract.SaleOrders.QUOTE_NO,
+		MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS,
+		MobileStoreContract.SaleOrders.ORDER_STATUS_FOR_SHIPMENT,
+		MobileStoreContract.SaleOrders.FIN_CONTROL_STATUS,
+		MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS,
+		MobileStoreContract.SaleOrders.USED_CREDIT_LIMIT_BY_EMPLOYEE,
+		MobileStoreContract.SaleOrders.ORDER_VALUE_STATUS,
+		MobileStoreContract.SaleOrders.QUOTE_REALIZED_STATUS,
+		MobileStoreContract.SaleOrders.SPECIAL_QUOTE,
+		MobileStoreContract.SaleOrders.QUOTE_VALID_DATE_TO,
+		MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST,
+		MobileStoreContract.SaleOrders.CUSTOMER_ADDRESS_ID,
+		MobileStoreContract.SaleOrders.CONTACT_PHONE,
+		MobileStoreContract.SaleOrders.PAYMENT_OPTION,
+		MobileStoreContract.SaleOrders.CHECK_STATUS_PHONE,
+		MobileStoreContract.SaleOrders.TOTAL,
+		MobileStoreContract.SaleOrders.TOTAL_DISCOUNT,
+		MobileStoreContract.SaleOrders.TOTAL_PDV,
+		MobileStoreContract.SaleOrders.TOTAL_ITEMS,
+		MobileStoreContract.SaleOrders.HIDE_REBATE,
+		MobileStoreContract.SaleOrders.FURTHER_SALE,
+		MobileStoreContract.SaleOrders.NOTE1,
+		MobileStoreContract.SaleOrders.NOTE2,
+		MobileStoreContract.SaleOrders.NOTE3
+	};
 	private static String DEFAULT_VIEW_TYPE = MobileStoreContract.SaleOrders.CONTENT_ITEM_TYPE;
 	
 	private static String DEFAULT_INSERT_EDIT_TYPE = MobileStoreContract.SaleOrders.CONTENT_TYPE;
@@ -38,7 +82,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	private static final int SHIPPING_ADDRESS_LOADER = 2;
 	private static final int BILLING_ADDRESS_LOADER = 3;
 	
-	private int mState;
+	private String mAction;
     private Uri mUri;
     private Cursor mCursor;
     private String mViewType;
@@ -59,6 +103,18 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private Spinner shippingAddress;
     private CustomerAddressSpinnerAdapter billingAddressAdapter;
     private CustomerAddressSpinnerAdapter shippingAddressAdapter;
+    
+    private EditText shippingAddressField;
+    private EditText shippingAddressCity;
+    private EditText shippingAddressPostalCode;
+    private EditText shippingAddressContact;
+    
+    private EditText billingAddressField;
+    private EditText billingAddressCity;
+    private EditText billingAddressPostalCode;
+    private EditText billingAddressContact;
+    
+    private Uri editUri;
     
 	public SaleOrderAddEditActivity() {
 		// TODO Auto-generated constructor stub
@@ -82,36 +138,47 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	 */
 	private void routeIntent(Intent intent, boolean b) {
 		// get action from intent
-		String action = intent.getAction();
-		if (action == null) {
+		mAction = intent.getAction();
+		if (mAction == null) {
 			LogUtils.LOGE(TAG, "Activity called without action!");
 			return;
 		}
 		// get URI from intent
-		Uri uri = intent.getData();
-		if (uri == null) {
+		mUri = intent.getData();
+		if (mUri == null) {
 			LogUtils.LOGE(TAG, "Activity called without URI!");
 			return;
 		}
 		// check uri mime type
-		mViewType = getContentResolver().getType(uri);
+		mViewType = getContentResolver().getType(mUri);
 		// wrong uri, only working with single item
 		if (!mViewType.equals(DEFAULT_VIEW_TYPE) && !mViewType.equals(DEFAULT_INSERT_EDIT_TYPE)) {
-			LogUtils.LOGE(TAG, "Activity called with wrong URI! URI:"+uri.toString());
+			LogUtils.LOGE(TAG, "Activity called with wrong URI! URI:"+mUri.toString());
 			return;
 		}
 		
 		// check action and route from there
-		if (Intent.ACTION_EDIT.equals(action)) {
+		if (Intent.ACTION_EDIT.equals(mAction)) {
 			getSupportLoaderManager().initLoader(SALE_ORDER_HEADER_LOADER, null, this);
-			initComponents(action);
-		} else if (Intent.ACTION_INSERT.equals(action)) {
-			initComponents(action);
-		} else if (Intent.ACTION_VIEW.equals(action))  {
+			editUri = mUri;
+			initComponents(mAction, null);
+		} else if (Intent.ACTION_INSERT.equals(mAction)) {
+			int customerId = intent.getIntExtra(EXTRA_CUSTOMER_ID, -1);
+			if (customerId != -1) {
+				initComponents(mAction, Integer.valueOf(customerId));
+			} else {
+				initComponents(mAction, null);
+			}
+		} else if (Intent.ACTION_VIEW.equals(mAction))  {
 			getSupportLoaderManager().initLoader(SALE_ORDER_HEADER_LOADER, null, this);
-			initComponents(action);
+			initComponents(mAction, null);
 			disableEditOfComponents();
 		}
+	}
+
+	private void loadData(Cursor data, String action) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**
@@ -128,7 +195,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		transitCustomerAutoComplete.setEnabled(false);
 	}
 
-	private void initComponents(String action) {
+	private void initComponents(String action, Integer customerId) {
 		customerAutoComplete = (AutoCompleteTextView) findViewById(R.id.edit_sale_order_customer_autocomplete);
 		transitCustomerAutoComplete = (AutoCompleteTextView) findViewById(R.id.edit_sale_order_transit_customer_value);
 		
@@ -178,6 +245,18 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		billingAddress.setAdapter(billingAddressAdapter);
 		getSupportLoaderManager().initLoader(BILLING_ADDRESS_LOADER, null, this);
 		
+		shippingAddressField = (EditText) findViewById(R.id.edit_sale_order_address_value);
+	    shippingAddressCity = (EditText) findViewById(R.id.edit_sale_order_city);
+	    shippingAddressPostalCode = (EditText) findViewById(R.id.edit_sale_order_zip);
+	    shippingAddressContact = (EditText) findViewById(R.id.edit_sale_order_address_contact_value);
+	    
+	    billingAddressField = (EditText) findViewById(R.id.edit_sale_order_address_invoice_value);
+	    billingAddressCity = (EditText) findViewById(R.id.edit_sale_address_invoice_order_city);
+	    billingAddressPostalCode = (EditText) findViewById(R.id.edit_sale_orde_address_invoice_zip);
+	    billingAddressContact = (EditText) findViewById(R.id.edit_sale_order_address_invoice_contact_value);
+		
+		// TODO here after setup load predefined data
+		
 	}
 
 	@Override
@@ -186,8 +265,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		String customerFilter = "dummy";
 		switch (id) {
 		case SALE_ORDER_HEADER_LOADER:
-			
-			return null;
+			cursorLoader = new CursorLoader(this, editUri, SALES_ORDER_PROJECTION, null, null, null);
+			return cursorLoader;
 		case SHIPPING_ADDRESS_LOADER:
 			if (selectedCustomerNo != null) {
 				customerFilter = selectedCustomerNo;
@@ -209,22 +288,34 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		switch (loader.getId()) {
 		case SALE_ORDER_HEADER_LOADER:
-			
+			loadData(data, null);
 			break;
 		case SHIPPING_ADDRESS_LOADER:
 			if (data.moveToFirst()) {
 				shippingAddressAdapter.swapCursor(data);
+				loadShippingAddressValues(data);
 			}
 			break;
 		case BILLING_ADDRESS_LOADER:
 			if (data.moveToFirst()) {
 				billingAddressAdapter.swapCursor(data);
+				loadBillingAddressValues(data);
 			}
 			break;
 		default:
 			break;
 		}
 
+	}
+
+	private void loadShippingAddressValues(Cursor data) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void loadBillingAddressValues(Cursor data) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
