@@ -159,7 +159,10 @@ public class MobileStoreContract {
 		String QUOTE_VALID_DATE_TO = "quote_valid_date_to";
 		String CUST_USES_TRANSIT_CUST = "cust_uses_transit_cust";
 		// String SALES_PERSON_ID = "sales_person_id";
-		String CUSTOMER_ADDRESS_ID = "customer_address_id";
+		String SELL_TO_ADDRESS_ID = "sell_to_address_id";
+		String SHIPP_TO_ADDRESS_ID = "shipp_to_address_id";
+		String CONTACT_ID = "contact_id";
+		String CONTACT_NAME = "contact_name";
 		String CONTACT_PHONE = "contact_phone";
 		String PAYMENT_OPTION = "payment_option";
 		String CHECK_STATUS_PHONE = "check_status_phone";

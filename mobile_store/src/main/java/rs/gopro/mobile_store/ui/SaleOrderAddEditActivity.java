@@ -62,7 +62,10 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		MobileStoreContract.SaleOrders.SPECIAL_QUOTE,
 		MobileStoreContract.SaleOrders.QUOTE_VALID_DATE_TO,
 		MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST,
-		MobileStoreContract.SaleOrders.CUSTOMER_ADDRESS_ID,
+		MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID,
+		MobileStoreContract.SaleOrders.SHIPP_TO_ADDRESS_ID,
+		MobileStoreContract.SaleOrders.CONTACT_ID,
+		MobileStoreContract.SaleOrders.CONTACT_NAME,
 		MobileStoreContract.SaleOrders.CONTACT_PHONE,
 		MobileStoreContract.SaleOrders.PAYMENT_OPTION,
 		MobileStoreContract.SaleOrders.CHECK_STATUS_PHONE,
@@ -197,6 +200,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		String payment_option = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.PAYMENT_OPTION));
 		String location_code = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.LOCATION_CODE));
 		int customer_id = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CUSTOMER_ID));
+		int sell_to_address_id = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID));
+		int shipp_to_address_id = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SHIPP_TO_ADDRESS_ID));
 		int salestypePos = salesType.getSelectedItemPosition();
 		
 	}
