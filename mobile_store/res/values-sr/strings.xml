@@ -130,6 +130,25 @@
 	<string name="customer_gray_coat_label">Br. sivih mantila</string>
 	<string name="customer_note_label">Napomena</string>	
 	
+	<string name="customer_name_label">Ime</string>
+	<string name="customer_name2_label">Ime 2</string>
+	<string name="customer_company_id_label">Maticni borj</string>
+	<string name="customer_primary_contact_id_label">Br. primarnog kontakta</string>
+	<string name="customer_vat_reg_no_label">Poreski broj</string>	
+	<string name="customer_credit_limit_lcy_label">Kreditni limit (LVT)</string>
+	<string name="customer_balance_lcy_label">Saldo (LVT)</string>
+	<string name="customer_balance_due_lcy_label">Dospeli saldo (LVT)</string>
+	<string name="customer_internal_balance_lcy_label">Dospeli saldo preko i.v. (LVT)</string>
+	<string name="customer_payment_terms_code_label">Šifra uslova placanja</string>		
+	<string name="customer_priority_label">Prioritet</string>
+	<string name="customer_global_dimension_label">Branša</string>
+	<string name="customer_channel_oran_label">Kanal (ORAN)</string>
+	<string name="customer_blocked_status_label">Status kupca za isporuke</string>
+	<string name="customer_sml_label">SML</string>	
+	<string name="customer_adopted_potential_label">Usvojeni potencijal </string>
+	<string name="customer_focus_customer_label">Fokus kupac</string>
+	<string name="customer_division_label">Divizija</string>
+	
 	
 	<!-- settings -->
 	<string name="title_settings">Podesavanja</string>

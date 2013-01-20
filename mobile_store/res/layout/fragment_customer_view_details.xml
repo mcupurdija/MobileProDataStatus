@@ -5,251 +5,746 @@
     android:layout_height="match_parent"
     tools:context=".ui.CustomersViewActivity" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/content_padding_normal"
-        android:paddingLeft="@dimen/content_padding_normal"
-        android:paddingRight="@dimen/content_padding_normal"
-        android:paddingTop="@dimen/content_padding_normal" >
+        android:layout_gravity="center_horizontal|top"
+        android:background="#FFFFFFFF"
+        android:paddingLeft="5dp"
+        android:paddingRight="4dp"
+        android:paddingTop="15dip"
+        android:shrinkColumns="1"
+        android:stretchColumns="1" >
 
-        <TextView
-            android:id="@+id/customer_no"
-            style="@style/TextHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <TableRow
+            android:id="@+id/customer_no_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
 
-        <TextView
-            android:id="@+id/name"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            <TextView
+                android:id="@+id/customer_no_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_no_label" />
 
-        <TextView
-            android:id="@+id/name_2"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            <TextView
+                android:id="@+id/customer_no_group_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#DADADA" />
+        <TableRow
+            android:id="@+id/customer_name_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
 
-        <TextView
-            android:id="@+id/address"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            <TextView
+                android:id="@+id/customer_name_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_name_label" />
 
-        <TextView
-            android:id="@+id/city"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            <EditText
+                android:id="@+id/customer_name_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:inputType="text"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/post_code"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+        <TableRow
+            android:id="@+id/customer_name2_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
 
-        <TextView
-            android:id="@+id/phone"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            <TextView
+                android:id="@+id/customer_name2_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_name2_label" />
 
-        <TextView
-            android:id="@+id/mobile"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            <EditText
+                android:id="@+id/customer_name2_value"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:inputType="text"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/email"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#DADADA" />
-
-        <TextView
-            android:id="@+id/company_id"
-            style="@style/TextBody"
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp" >
 
-        <TextView
-            android:id="@+id/primary_contact_id"
-            style="@style/TextBody"
+            <View
+                android:id="@+id/line1"
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:layout_weight="1"
+                android:background="#FF909090"
+                android:padding="2dip" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_address_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_address_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_address_label" />
+
+            <EditText
+                android:id="@+id/customer_address_value"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:inputType="text"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_city_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_city_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_city_label" />
+
+            <TextView
+                android:id="@+id/customer_city_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_postal_code_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_postal_code_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_postal_code_label" />
+
+            <EditText
+                android:id="@+id/customer_postal_code_value"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:inputType="text"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_phone_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_phone_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_phone_label" />
+
+            <EditText
+                android:id="@+id/customer_phone_value"
+                 style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:inputType="text"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_phone_mobile_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_phone_mobile_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_phone_mobile_label" />
+
+            <EditText
+                android:id="@+id/customer_phone_mobile_value"
+                 style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:inputType="text"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/customer_email_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_email_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_email_label" />
+
+            <EditText
+                android:id="@+id/customer_email_value"
+                android:inputType="textEmailAddress"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp" >
 
-        <TextView
-            android:id="@+id/var_reg_no"
-            style="@style/TextBody"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:layout_weight="1"
+                android:background="#FF909090"
+                android:padding="2dip" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_company_id_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_company_id_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_company_id_label" />
+
+            <EditText
+                android:id="@+id/customer_company_id_value"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:inputType="text"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_primary_contact_id_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_primary_contact_id_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_primary_contact_id_label" />
+
+            <EditText
+                android:id="@+id/customer_primary_contact_id_value"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:inputType="text"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_vat_reg_no_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_vat_reg_no_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_vat_reg_no_label" />
+
+            <EditText
+                android:id="@+id/customer_vat_reg_no_value"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:inputType="text"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp" >
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#DADADA" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:layout_weight="1"
+                android:background="#FF909090"
+                android:padding="2dip" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/credit_limit_lcy"
-            style="@style/TextBody"
+        <TableRow
+            android:id="@+id/customer_credit_limit_lcy_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_credit_limit_lcy_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_credit_limit_lcy_label" />
+
+            <TextView
+                android:id="@+id/customer_credit_limit_lcy_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_balance_lcy_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_balance_lcy_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_balance_lcy_label" />
+
+            <TextView
+                android:id="@+id/customer_balance_lcy_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_balance_due_lcy_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_balance_due_lcy_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_balance_due_lcy_label" />
+
+            <TextView
+                android:id="@+id/customer_balance_due_lcy_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_internal_balance_due_lcy_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_internal_balance_due_lcy_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_internal_balance_lcy_label" />
+
+            <TextView
+                android:id="@+id/customer_internal_balance_due_lcy_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp" >
 
-        <TextView
-            android:id="@+id/balance_lcy"
-            style="@style/TextBody"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:layout_weight="1"
+                android:background="#FF909090"
+                android:padding="2dip" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_payment_terms_code_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_payment_terms_code_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_payment_terms_code_label" />
+
+            <TextView
+                android:id="@+id/customer_payment_terms_code_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_priority_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_priority_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_priority_label" />
+
+            <TextView
+                android:id="@+id/customer_priority_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_global_dimension_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_global_dimension_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_global_dimension_label" />
+
+            <TextView
+                android:id="@+id/customer_global_dimension_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_channel_oran_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_channel_oran_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_channel_oran_label" />
+
+            <TextView
+                android:id="@+id/customer_channel_oran_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_blocked_status_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_blocked_status_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_blocked_status_label" />
+
+            <TextView
+                android:id="@+id/customer_blocked_status_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp" >
 
-        <TextView
-            android:id="@+id/balance_due_lcy"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:layout_weight="1"
+                android:background="#FF909090"
+                android:padding="2dip" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/internal_balance_due_lcy"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+        <TableRow
+            android:id="@+id/customer_sml_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#DADADA" />
+            <TextView
+                android:id="@+id/customer_sml_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_sml_label" />
 
-        <TextView
-            android:id="@+id/payment_terms_code"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            <TextView
+                android:id="@+id/customer_sml_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/priority"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+        <TableRow
+            android:id="@+id/customer_adopted_potential_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
 
-        <TextView
-            android:id="@+id/global_dimension"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            <TextView
+                android:id="@+id/customer_adopted_potential_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_adopted_potential_label" />
 
-        <TextView
-            android:id="@+id/channel_oran"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            <TextView
+                android:id="@+id/customer_adopted_potential_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/blocked_status"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
-		<View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#DADADA" />
-        <TextView
-            android:id="@+id/sml"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+        <TableRow
+            android:id="@+id/customer_focus_customer_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
 
-        <TextView
-            android:id="@+id/adopted_potential"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            <TextView
+                android:id="@+id/customer_focus_customer_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_focus_customer_label" />
 
-        <TextView
-            android:id="@+id/focus_customer"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            <TextView
+                android:id="@+id/customer_focus_customer_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/division"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+        <TableRow
+            android:id="@+id/customer_division_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
 
-        <TextView
-            android:id="@+id/number_of_blue_coat"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
+            <TextView
+                android:id="@+id/customer_division_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_division_label" />
 
-        <TextView
-            android:id="@+id/number_of_grey_coat"
-            style="@style/TextBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:paddingTop="@dimen/element_spacing_normal" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/customer_division_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_blue_coat_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_blue_coat_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_blue_coat_label" />
+
+            <TextView
+                android:id="@+id/customer_blue_coat_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_gray_coat_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_gray_coat_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_gray_coat_label" />
+
+            <EditText
+                android:id="@+id/customer_gray_coat_value"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:inputType="text"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+    </TableLayout>
 
 </ScrollView>
