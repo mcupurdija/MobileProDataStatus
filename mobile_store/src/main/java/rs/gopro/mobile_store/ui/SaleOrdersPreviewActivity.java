@@ -3,11 +3,13 @@ package rs.gopro.mobile_store.ui;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
+import rs.gopro.mobile_store.ui.widget.SaleOrderContextualMenu;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +20,8 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 
 	public static final String EXTRA_MASTER_URI = "rs.gopro.mobile_store.extra.MASTER_URI";
 
+	ActionMode actionMod;
+	
 	private Fragment saleOrderLinesFragment;
 	private ShowHideMasterLayout mShowHideMasterLayout;
 
@@ -149,6 +153,9 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 	
 	@Override
 	public boolean onSaleOrderSelected(String saleOrderId) {
+		if(actionMod != null){
+			actionMod.finish();
+		}
 		loadSaleOrderLines(MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(saleOrderId));
 		return true;
 	}
@@ -162,5 +169,11 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 	    MenuInflater menuInflater = getMenuInflater();
 	    menuInflater.inflate(R.menu.sale_order_add_edit_menu, menu);
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public void onSaleOrderLongClick(String saleOrderId) {
+		SaleOrderContextualMenu	contextualMenu = new SaleOrderContextualMenu(this, saleOrderId);
+	  	actionMod = startActionMode(contextualMenu);
 	}
 }

@@ -173,8 +173,6 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 	public void onVisitLongClick(String visitId) {
 		VisitContextualMenu	contextualMenu = new VisitContextualMenu(this,visitId);
 	  	actionMod = startActionMode(contextualMenu);
-		
-		
 	}  
 
 	@Override
@@ -199,11 +197,5 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 	    menuInflater.inflate(R.menu.visits_multipane_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
-	
-	
-
-
-
 	
 }

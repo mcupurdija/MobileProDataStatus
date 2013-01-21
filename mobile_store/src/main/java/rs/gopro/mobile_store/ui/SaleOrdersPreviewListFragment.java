@@ -34,14 +34,17 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
 	private String mSelectedSaleOrderId;
 	private boolean mHasSetEmptyText = false;
 	
-	private TextView mHeader1;
-	private TextView mHeader2;
-	private TextView mHeader3;
-	private TextView mHeader4;
+//	private TextView mHeader1;
+//	private TextView mHeader2;
+//	private TextView mHeader3;
+//	private TextView mHeader4;
 	
 	public interface Callbacks {
         /** Return true to select (activate) the vendor in the list, false otherwise. */
         public boolean onSaleOrderSelected(String saleOrderId);
+        
+        /** Pass selected visitId and initialize  contextual menu */
+        public void onSaleOrderLongClick(String saleOrderId);
     }
 
     private static Callbacks sDummyCallbacks = new Callbacks() {
@@ -49,6 +52,10 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
         public boolean onSaleOrderSelected(String saleOrderId) {
             return true;
         }
+
+		@Override
+		public void onSaleOrderLongClick(String saleOrderId) {
+		}
     };
 
     private Callbacks mCallbacks = sDummyCallbacks;
@@ -239,9 +246,9 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
         };
 
         int _ID = 0;
-        int SALES_PERSON_ID = 1;
+//        int SALES_PERSON_ID = 1;
         int SALES_ORDER_NO = 2;
-        int CUSTOMER_ID = 3;
+//        int CUSTOMER_ID = 3;
         int CUSTOMER_NO = 4;
         int CUSTOMER_NAME = 5;
         int CUSTOMER_NAME2 = 6;

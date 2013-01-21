@@ -16,9 +16,12 @@ public class CustomerAutocompleteCursorAdapter extends CursorAdapter implements
 		Filterable {
 
 	private static final String[] CUSTOMER_PROJECTION = new String[] {
-			MobileStoreContract.Customers._ID,
-			MobileStoreContract.Customers.CUSTOMER_NO,
-			MobileStoreContract.Customers.NAME };
+		MobileStoreContract.Customers._ID,
+		MobileStoreContract.Customers.CUSTOMER_NO,
+		MobileStoreContract.Customers.NAME,
+		MobileStoreContract.Customers.PRIMARY_CONTACT_ID,
+		MobileStoreContract.Customers.PHONE
+	};
 
 	private Context mContext;
 	private LayoutInflater mInflater;

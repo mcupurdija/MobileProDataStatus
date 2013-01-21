@@ -53,8 +53,6 @@ public class VisitListFragment extends ListFragment implements
 
 		@Override
 		public void onVisitLongClick(String visitId) {
-			// TODO Auto-generated method stub
-			
 		}
         
         
