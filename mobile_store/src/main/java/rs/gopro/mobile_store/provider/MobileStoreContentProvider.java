@@ -462,7 +462,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(SaleOrders.CUST_USES_TRANSIT_CUST,
 							Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.SALES_PERSON_ID, Tables.SALE_ORDERS)
-					.mapToTable(SaleOrders.CUSTOMER_ADDRESS_ID,
+					.mapToTable(SaleOrders.SELL_TO_ADDRESS_ID,
+							Tables.SALE_ORDERS)
+					.mapToTable(SaleOrders.SHIPP_TO_ADDRESS_ID,
 							Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.CONTACT_PHONE, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.PAYMENT_OPTION, Tables.SALE_ORDERS)

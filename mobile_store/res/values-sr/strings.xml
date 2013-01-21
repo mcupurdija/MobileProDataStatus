@@ -152,8 +152,25 @@
 	
 	<!-- settings -->
 	<string name="title_settings">Podesavanja</string>
+	<string name="key_ws_entry_point">ws_entry_point</string>
+	<string name="key_ws_schema">ws_schema</string>
+	<string name="key_ws_navisition_codeunit">ws_navisition_codeunit</string>
+	<string name="key_ws_server_address">ws_server_address</string>
+	<string name="key_company">company_address</string>
+	
+	<string name="title_ws_entry_point">Endpoint</string>
+	<string name="title_ws_schema">Web service schema</string>
+	<string name="title_ws_navisition_codeunit">Navision code unit name </string>
+	<string name="title_ws_server_address">Server address</string>
+	<string name="title_company">Company</string>
+	
+	<string name="title_web_service_settings">Web service</string>
 	<string name="title_sync_settings">Sinhronizacija</string>
 	<string name="title_sync_category">Podesavanje sinhronizacje</string>
 	<string name="title_sync_items">Sinhronizuj artikle</string>
 	<string name="title_sync_action">Sinh</string>
+	
+	<string name = "key_sync_check_box">sync_check_box</string>
+	<string name="contact_name_phone_title">Ime i telefon kontakta</string>
+	<string name="contact_no_label">Kontakt br.</string>
 </resources>

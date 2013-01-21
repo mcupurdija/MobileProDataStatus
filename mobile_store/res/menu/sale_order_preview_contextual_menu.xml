@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
-        android:id="@+id/deactivate_visit"
+        android:id="@+id/deactivate_sale_order_header"
         android:title="@string/contextual_deactivate"
         android:showAsAction="ifRoom|withText"/>
     <item
-        android:id="@+id/edit_visit"
+        android:id="@+id/edit_sale_order_header"
+        android:title="@string/contextual_edit"
+        android:showAsAction="ifRoom|withText"/>
+     <item
+        android:id="@+id/view_sale_order_header"
         android:title="@string/contextual_edit"
         android:showAsAction="ifRoom|withText"/>
 </menu>

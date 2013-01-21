@@ -85,6 +85,71 @@
             </LinearLayout>
         </TableRow>
 
+        <!-- Contact part -->
+        
+        <TableRow
+            android:id="@+id/edit_sale_order_contact_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/edit_sale_order_contact_no_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/contact_no_label" />
+
+            <TextView
+                android:id="@+id/edit_sale_order_contact_no_text"
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:gravity="center_vertical"
+                android:text="@string/contact_title" />
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/edit_sale_order_contact_edit_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/edit_sale_order_contact_name_phone_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/contact_name_phone_title" />
+
+            <LinearLayout
+                android:animateLayoutChanges="false"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/edit_sale_order_contact_name_text"
+                    style="@style/AddEdit_Text_Value"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dip"
+                    android:layout_marginRight="16dip"
+                    android:layout_weight="5"
+                    android:gravity="center_vertical"
+                    android:text="@string/contact_name_title" />
+
+                <EditText
+                    android:id="@+id/edit_sale_order_contact_phone_text"
+                    style="@style/AddEdit_Text_Value"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dip"
+                    android:layout_marginRight="16dip"
+                    android:layout_weight="5"
+                    android:gravity="center_vertical"
+                    android:text="@string/contact_phone_title" />
+            </LinearLayout>
+        </TableRow>
+        
         <!-- First line of settings -->
 
         <TableRow

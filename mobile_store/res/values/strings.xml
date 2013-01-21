@@ -171,9 +171,6 @@
 	<string name="title_sync_action">Sync</string>
 	
 	<string name = "key_sync_check_box">sync_check_box</string>
-	
-	
-	
-	
-	 
+	<string name="contact_name_phone_title">Contact name and phone</string>
+	<string name="contact_no_label">Contact no.</string>
 </resources>
