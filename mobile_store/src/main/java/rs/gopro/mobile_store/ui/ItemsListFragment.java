@@ -3,6 +3,8 @@ package rs.gopro.mobile_store.ui;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
+import rs.gopro.mobile_store.ui.SaleOrderLinesPreviewListFragment.Callbacks;
+import rs.gopro.mobile_store.ui.fragment.ItemPreviewDialogFragment;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.ItemQuantitySyncObject;
@@ -10,10 +12,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.provider.BaseColumns;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -29,6 +34,7 @@ import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class ItemsListFragment extends ListFragment implements LoaderCallbacks<Cursor>, TextWatcher, OnItemSelectedListener {
 	private static String TAG = "ItemsListFragment";
@@ -36,8 +42,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	private Spinner spinner;
 	private String splitQuerySeparator = ";";
 	private CursorAdapter cursorAdapter;
-	private ResultReceiver mReceiver;
-	private ItemQuantitySyncObject itemQuantitySyncObject;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -133,53 +138,25 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		
 		super.onListItemClick(l, v, position, id);
-		
 		final Cursor cursor = (Cursor) cursorAdapter.getItem(position);
         final String itemId = String.valueOf(cursor.getString(1));
-		
-		doSynchronization(itemId);
+	   showDialog(MobileStoreContract.Items.buildItemUri(itemId), itemId); 
 	}
 	 
-	private void doSynchronization(final String itemId) {
-		mReceiver = new ResultReceiver(new Handler()) {
+	
+	private void showDialog(Uri itemUri, String itemId){
+		 FragmentTransaction ft =  getActivity().getSupportFragmentManager().beginTransaction();
+		    Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+		    if (prev != null) {
+		        ft.remove(prev);
+		    }
+		    ft.addToBackStack(null);
 
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultData != null && resultData.containsKey(NavisionSyncService.SOAP_RESULT)) {
-                	onSOAPResult(resultCode, resultData.getString(NavisionSyncService.SOAP_RESULT), itemId);
-                }
-                else {
-                	onSOAPResult(resultCode, null, itemId);
-                }
-            }
-            
-        };
-		
-        itemQuantitySyncObject = new ItemQuantitySyncObject(itemId, "300", Integer.valueOf(-1));
-		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQuantitySyncObject);
-		intent.putExtra(NavisionSyncService.EXTRA_RESULT_RECEIVER, getResultReceiver());
-		getActivity().startService(intent);
-		
+		    // Create and show the dialog.
+		   ItemPreviewDialogFragment fragment = new ItemPreviewDialogFragment();
+		   fragment.setArguments(BaseActivity.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW,itemUri)));
+		    fragment.show(ft, "dialog");
 	}
 	
-	public ResultReceiver getResultReceiver() {
-        return mReceiver;
-    }
-	
-	public void onSOAPResult(int code, String result, String itemId) {
-		AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-		alertDialog.setTitle("Artikla na stanju");
-		alertDialog.setMessage("Kolicina na stanju artikla broj "+itemId+": "+result);
-		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-		   public void onClick(DialogInterface dialog, int which) {
-			   dialog.dismiss();
-		   }
-		});
-		// Set the Icon for the Dialog
-		//alertDialog.setIcon(R.drawable.icon);
-		alertDialog.show();
-    }
 }

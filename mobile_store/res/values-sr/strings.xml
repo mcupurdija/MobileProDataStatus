@@ -149,6 +149,23 @@
 	<string name="customer_focus_customer_label">Fokus kupac</string>
 	<string name="customer_division_label">Divizija</string>
 	
+	<!-- item -->
+	<string name="item_no_label">Br. artikla</string>
+	<string name="item_desc_label">Objasnjenje</string>
+	<string name="item_stock_status_label">Kolicina na stanju</string>		
+	<string name="item_category_code_label">Kod kategorije</string>
+	<string name="item_group_code_label">Kod grupe</string>
+	<string name="item_unit_sales_price_eur_label">Prodajna cena EUR</string>
+	<string name="item_unit_sales_price_din_label">Prodajna cena DIN</string>
+	<string name="item_unit_of_measure_label">Jedinica mere</string>	
+	<string name="item_campaign_status_label">Status kampanje</string>
+	<string name="item_overstock_status_label">Status viska robe</string>
+	<string name="item_connected_spec_ship_item_label">Connected spec ship item</string>
+	<string name="item_campaign_code_label">Kod kampanje</string>	
+	<string name="item_campaign_start_date_label">Pocetak kampanje</string>
+	<string name="item_campaign_end_date_label">Kraj kampanje</string>
+	<string name="item_dialog_title">Informacije o artiklu</string>
+	
 	
 	<!-- settings -->
 	<string name="title_settings">Podesavanja</string>

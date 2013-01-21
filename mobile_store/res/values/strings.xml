@@ -148,6 +148,22 @@
 	<string name="customer_focus_customer_label">Focus customer</string>
 	<string name="customer_division_label">Division</string>
 	
+	<!-- item -->
+	<string name="item_no_label">Item no</string>
+	<string name="item_desc_label">Description</string>
+	<string name="item_stock_status_label">Stock status</string>		
+	<string name="item_category_code_label">Category code</string>
+	<string name="item_group_code_label">Group code</string>
+	<string name="item_unit_sales_price_eur_label">Unit sale price EUR</string>
+	<string name="item_unit_sales_price_din_label">Unit sale price DIN</string>
+	<string name="item_unit_of_measure_label">Unit of measure</string>	
+	<string name="item_campaign_status_label">Campaign status</string>
+	<string name="item_overstock_status_label">Overstock status</string>
+	<string name="item_connected_spec_ship_item_label">Connected spec ship item</string>
+	<string name="item_campaign_code_label">Campaign code</string>	
+	<string name="item_campaign_start_date_label">Campaign start date</string>
+	<string name="item_campaign_end_date_label">Campaign end date</string>
+	<string name="item_dialog_title">Item information</string>
 	
 	<!-- settings -->
 	<string name="title_settings">Settings</string>

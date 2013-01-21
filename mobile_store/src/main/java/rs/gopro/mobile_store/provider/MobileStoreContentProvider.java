@@ -49,6 +49,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	//private static final int ITEMS_NO = 131;
 	private static final int ITEMS_BY_STATUS = 132;
 	private static final int ITEMS_CUSTOM_SEARCH = 133;
+	private static final int ITEM_ID = 134;
 
 	private static final int SALE_ORDERS = 140;
 	private static final int SALE_ORDER_CUSTOM_SEARCH = 141;
@@ -107,6 +108,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 				ITEMS_CUSTOM_SEARCH);
 		mobileStoreURIMatcher.addURI(authority, "items/#/*/item_no",
 				ITEMS_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "items/*", ITEM_ID);
 
 		mobileStoreURIMatcher.addURI(authority, "visits", VISITS);
 		mobileStoreURIMatcher.addURI(authority, "visits/#", VISIT_ID);
@@ -380,6 +382,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 									"%" + itemCustom + "%" })
 					.where(Items.CAMPAIGN_CODE + "= ?",
 							new String[] { itemStatus });
+		case ITEM_ID:
+			String itemId = Items.getItemId(uri);
+			return builder.addTable(Tables.ITEMS)
+					.where(Items.ITEM_NO + "=?",itemId);
 		case VISITS:
 			return builder.addTable(Tables.VISITS_JOIN_CUSTOMERS)
 					.mapToTable(Visits._ID, Tables.VISITS)
