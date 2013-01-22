@@ -20,6 +20,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -203,12 +204,15 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		} else if (Intent.ACTION_INSERT.equals(mAction)) {
 			initComponents(mAction);
 			int customerId = intent.getIntExtra(EXTRA_CUSTOMER_ID, -1);
-			ContentValues contentValues = null;
+			ContentValues contentValues = new ContentValues();
 			if (customerId != -1) {
-				contentValues = new ContentValues();
 				contentValues.put(MobileStoreContract.SaleOrders.CUSTOMER_ID, Integer.valueOf(customerId));
+			} else {
+				contentValues.putNull(MobileStoreContract.SaleOrders.CUSTOMER_ID);
 			}
 			statementHandler.startInsert(SALE_ORDER_INSERT_TOKEN, null, mUri, contentValues);
+//			mUri = getContentResolver().insert(mUri, contentValues);
+//			getSupportLoaderManager().initLoader(SALE_ORDER_HEADER_LOADER, null, this);
 		} else if (Intent.ACTION_VIEW.equals(mAction))  {
 			initComponents(mAction);
 			disableEditOfComponents();
@@ -395,12 +399,17 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		shippingAddressAdapter = new CustomerAddressSpinnerAdapter(this, null, 0);
 		shippingAddress.setAdapter(shippingAddressAdapter);
 		getSupportLoaderManager().initLoader(SHIPPING_ADDRESS_LOADER, null, this);
-		shippingAddress.setOnItemClickListener(new OnItemClickListener() {
+		shippingAddress.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
 				Cursor selectedData = (Cursor) shippingAddressAdapter.getItem(arg2);
 				loadShippingAddressValues(selectedData);
-				//getSupportLoaderManager().restartLoader(SHIPPING_ADDRESS_LOADER, null, SaleOrderAddEditActivity.this);	
+				//getSupportLoaderManager().restartLoader(SHIPPING_ADDRESS_LOADER, null, SaleOrderAddEditActivity.this);		
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 		});
 		
@@ -408,12 +417,17 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		billingAddressAdapter = new CustomerAddressSpinnerAdapter(this, null, 0);
 		billingAddress.setAdapter(billingAddressAdapter);
 		getSupportLoaderManager().initLoader(BILLING_ADDRESS_LOADER, null, this);
-		billingAddress.setOnItemClickListener(new OnItemClickListener() {
+		billingAddress.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
 				Cursor selectedData = (Cursor) billingAddressAdapter.getItem(arg2);
 				loadBillingAddressValues(selectedData);
 				//getSupportLoaderManager().restartLoader(BILLING_ADDRESS_LOADER, null, SaleOrderAddEditActivity.this);	
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 		});
 		
@@ -473,29 +487,41 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		switch (loader.getId()) {
 		case SALE_ORDER_HEADER_LOADER:
-			loadData(data, null);
+			if (data != null && data.moveToFirst()) {
+				loadData(data, null);
+			} else {
+				LogUtils.LOGE(TAG, "Cursor empty for URI:"+mUri.toString());
+			}
 			break;
 		case SHIPPING_ADDRESS_LOADER:
 			if (data != null && data.moveToFirst()) {
 				shippingAddressAdapter.swapCursor(data);
 				loadShippingAddressValues(data);
+			} else {
+				LogUtils.LOGE(TAG, "Cursor empty for SHIPPING_ADDRESS_LOADER!");
 			}
 			break;
 		case BILLING_ADDRESS_LOADER:
 			if (data != null && data.moveToFirst()) {
 				billingAddressAdapter.swapCursor(data);
 				loadBillingAddressValues(data);
+			} else {
+				LogUtils.LOGE(TAG, "Cursor empty for BILLING_ADDRESS_LOADER!");
 			}
 			break;
 		case CONTACT_HEADER_LOADER:
 			if (data != null && data.moveToFirst()) {
 				loadContactValues(data);
+			} else {
+				LogUtils.LOGE(TAG, "Cursor empty for CONTACT_HEADER_LOADER!");
 			}
 			break;
 		case CUSTOMER_HEADER_LOADER:
 			if (data != null && data.moveToFirst()) {
 				loadCustomer(data);
-			}
+			} else {
+				LogUtils.LOGE(TAG, "Cursor empty for CUSTOMER_HEADER_LOADER!");
+			} 
 		default:
 			data.close();
 			break;
@@ -510,7 +536,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		final int codeIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
 		final int nameIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
 		final String result = data.getString(codeIndex) + " - " + data.getString(nameIndex);
-		customerAutoComplete.setAdapter(null);
+		CustomerAutocompleteCursorAdapter dummyAdapter = null;
+		customerAutoComplete.setAdapter(dummyAdapter);
 		customerAutoComplete.setText(result);
 		customerAutoComplete.setAdapter(customerAutoCompleteAdapter);
 	}

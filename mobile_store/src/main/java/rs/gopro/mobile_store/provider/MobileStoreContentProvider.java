@@ -230,6 +230,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.CUSTOMER_ADDRESSES, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return CustomerAddresses.buildCustomerAddressUri("" + id);
+		case SALE_ORDERS:
+			id = database.insertOrThrow(Tables.SALE_ORDERS, null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return SaleOrders.buildSaleOrderUri("" + id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -430,6 +434,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(Visits.NOTE, Tables.VISITS).where(
 					Visits.VISIT_DATE + " >= ? ",
 					new String[] { visitDate });
+		case SALE_ORDER:
+			String saleOrderId = SaleOrders.getSaleOrderId(uri);
+			return builder.addTable(Tables.SALE_ORDERS)
+					.where(Tables.SALE_ORDERS + "." + SaleOrders._ID + "=?", saleOrderId);
 		case SALE_ORDERS:
 			return builder
 					.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)
