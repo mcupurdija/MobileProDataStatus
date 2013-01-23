@@ -16,17 +16,23 @@ import rs.gopro.mobile_store.ui.customlayout.ReportLayout;
 import rs.gopro.mobile_store.ui.customlayout.SaleOrdersLayout;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.util.ApplicationConstants;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
+import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,7 +56,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	ActionsAdapter actionsAdapter;
 	private Integer currentItemPosition = Integer.valueOf(1);
 	public static final String CURRENT_POSITION_KEY = "current_position";
-	private ResultReceiver mReceiver;
 	private CustomLinearLayout currentCustomLinearLayout;
 	private Map<String, CustomLinearLayout> savedLayoutInstances = new HashMap<String, CustomLinearLayout>();
 
@@ -208,42 +213,43 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	@Override
+	protected void onResume() {
+		
+		
+		super.onResume();
+		IntentFilter navSyncFilter = new IntentFilter(NavisionSyncService.NAVISION_SYNC_ACTION);
+		//registering broadcast receiver to listen NAVISION_SYNC broadcast 
+		LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, navSyncFilter);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(onNotice);
+		System.out.println("MAIN ACTIVITY IDE U PAUZU");
+	}
+	
+	private BroadcastReceiver onNotice= new BroadcastReceiver() {
+        
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
+            onSOAPResult(syncResult.getStatus(), syncResult.getResult());
+        }
+    };
+	
 
 	private void doSynchronization() {
-		mReceiver = new ResultReceiver(new Handler()) {
-
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-            	if (resultCode == ApplicationConstants.SUCCESS) {
-					if (resultData != null) {
-						onSOAPResult(resultCode, resultData.getString(NavisionSyncService.SOAP_RESULT));
-					} else {
-						onSOAPResult(resultCode, null);
-					}
-				} else if (resultCode == ApplicationConstants.FAILURE) {
-					if (resultData != null) {
-						onSOAPResult(resultCode, resultData.getString(NavisionSyncService.SOAP_FAULT));
-					} else {
-						onSOAPResult(resultCode, null);
-					}
-				}
-            }
-            
-        };
-		
 		Intent intent = new Intent(this, NavisionSyncService.class);
 		ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(1), null, DateUtils.getWsDummyDate());
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject );
-		intent.putExtra(NavisionSyncService.EXTRA_RESULT_RECEIVER, getResultReceiver());
 		this.startService(intent);
 		
 	}
 	
-	public ResultReceiver getResultReceiver() {
-        return mReceiver;
-    }
-	
-	public void onSOAPResult(int code, String result) {
+	public void onSOAPResult(SyncStatus syncStatus, String result) {
 		System.out.println(result);
     	return;
     }

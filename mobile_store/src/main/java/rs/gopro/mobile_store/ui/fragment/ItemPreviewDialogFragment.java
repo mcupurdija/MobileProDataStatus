@@ -3,35 +3,30 @@ package rs.gopro.mobile_store.ui.fragment;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
-import rs.gopro.mobile_store.provider.MobileStoreContract.ItemsColumns;
 import rs.gopro.mobile_store.ui.BaseActivity;
-import rs.gopro.mobile_store.ui.ItemsListFragment;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.ItemQuantitySyncObject;
-
-
+import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.os.ResultReceiver;
 import android.provider.BaseColumns;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;	
+import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class ItemPreviewDialogFragment extends DialogFragment implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -45,7 +40,7 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	private String stockStatusValue;
 	private boolean isStockSyncCompleted = false;
 	private boolean isStockSyncStarted = false;
-	
+
 	private TextView itemNo;
 	private TextView description;
 	private FrameLayout stockStatusFrame;
@@ -60,49 +55,43 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	private TextView campaignCode;
 	private TextView campaignStartDate;
 	private TextView campaingEndDate;
-	
-	private ResultReceiver mReceiver;
+
+	// private ResultReceiver mReceiver;
 	private ItemQuantitySyncObject itemQuantitySyncObject;
 	private Activity activity;
-	
-	
-	
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		 final Intent intent = BaseActivity.fragmentArgumentsToIntent(getArguments());
-		 mItemUri = intent.getData();
-	        if (mItemUri == null) {
-	            return;
-	        }
-	        
-	        if(savedInstanceState != null){
-	        	stockStatusValue = savedInstanceState.getString(STOCK_STATUS);
-	        	isStockSyncCompleted = savedInstanceState.getBoolean(IS_STOCK_SYNC_COMPLETED);
-	        	isStockSyncStarted = savedInstanceState.getBoolean(IS_STOCK_SYNC_STARTED);
-	        }
-	        
-	        if(!isStockSyncStarted){
-	        	String itemId =	MobileStoreContract.Items.getItemId(mItemUri);
-	        	doSynchronization(itemId);
-	        }
-	     
+		final Intent intent = BaseActivity.fragmentArgumentsToIntent(getArguments());
+		mItemUri = intent.getData();
+		if (mItemUri == null) {
+			return;
+		}
+
+		if (savedInstanceState != null) {
+			stockStatusValue = savedInstanceState.getString(STOCK_STATUS);
+			isStockSyncCompleted = savedInstanceState.getBoolean(IS_STOCK_SYNC_COMPLETED);
+			isStockSyncStarted = savedInstanceState.getBoolean(IS_STOCK_SYNC_STARTED);
+		}
+
+		if (!isStockSyncStarted) {
+			String itemId = MobileStoreContract.Items.getItemId(mItemUri);
+			doSynchronization(itemId);
+		}
+
 	}
-	
-	
-	
+
 	@Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (mItemUri == null) {
-            return;
-        }
-        // Start background query to load vendor details
-        getLoaderManager().initLoader(0, null, this);
-    }
-	
-	
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		if (mItemUri == null) {
+			return;
+		}
+		// Start background query to load vendor details
+		getLoaderManager().initLoader(0, null, this);
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.dialog_fragment_item, container);
@@ -120,15 +109,14 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		campaignStartDate = (TextView) view.findViewById(R.id.item_campaign_start_date_value);
 		campaingEndDate = (TextView) view.findViewById(R.id.item_campaign_end_date_value);
 		stockStatusFrame = (FrameLayout) view.findViewById(R.id.item_stock_status_holder);
-		if(!isStockSyncCompleted){
+		if (!isStockSyncCompleted) {
 			addWaitingLayoutToFrame();
-		}else{
+		} else {
 			addStockStatusToFrame(stockStatusValue);
 		}
 		return view;
 	}
 
-	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -136,8 +124,22 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		dialog.setTitle(getString(R.string.item_dialog_title));
 		return dialog;
 	}
-	
-	
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		IntentFilter intentFilter = new IntentFilter(NavisionSyncService.NAVISION_SYNC_ACTION);
+		//registering broadcast receiver to listen NAVISION_SYNC broadcast 
+		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, intentFilter);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(onNotice);
+	}
+
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		return new CursorLoader(getActivity(), mItemUri, ItemsQuery.PROJECTION, null, null, null);
@@ -146,18 +148,15 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		buildUiFromCursor(data);
-		
-	}
 
+	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	
-	
+
 	public void buildUiFromCursor(Cursor cursor) {
 		if (getActivity() == null) {
 			return;
@@ -191,81 +190,63 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		conntectedSpecShipItem.setText(connetectedSpecShipItemString);
 		unitSalePriceDin.setText(unitSalesPriceDinString);
 		unitSalePriceEur.setText(unitSalesPriceEurString);
-	}    
-	
-	/*@Override
-	public void stockStatusUpdate(String stockStatus) {
-		this.stockStatusValue = stockStatus;
-		addStockStatusToFrame(stockStatus);
-	}*/
+	}
 
-@Override
-public void onAttach(Activity activity) {
-	super.onAttach(activity);
-	this.activity = activity;
-}
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		this.activity = activity;
+	}
 
 	private void addStockStatusToFrame(String stockStatus) {
 		isStockSyncCompleted = true;
-		if(activity == null){
+		if (activity == null) {
 			return;
 		}
 		stockStatusFrame.removeAllViews();
-		TextView textView  = (TextView) activity.getLayoutInflater().inflate(R.layout.text_view_sotck_status, null);
+		TextView textView = (TextView) activity.getLayoutInflater().inflate(R.layout.text_view_sotck_status, null);
 		textView.setText(stockStatus);
 		stockStatusFrame.addView(textView);
 	}
-	
+
 	private void addWaitingLayoutToFrame() {
-		View waitingSync =  activity.getLayoutInflater().inflate(R.layout.content_empty_waiting_sync, null);
+		View waitingSync = activity.getLayoutInflater().inflate(R.layout.content_empty_waiting_sync, null);
 		stockStatusFrame.addView(waitingSync);
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-	    outState.putString(STOCK_STATUS, stockStatusValue);
-	    outState.putBoolean(IS_STOCK_SYNC_COMPLETED, isStockSyncCompleted);
-	    outState.putBoolean(IS_STOCK_SYNC_STARTED, isStockSyncStarted);
+		outState.putString(STOCK_STATUS, stockStatusValue);
+		outState.putBoolean(IS_STOCK_SYNC_COMPLETED, isStockSyncCompleted);
+		outState.putBoolean(IS_STOCK_SYNC_STARTED, isStockSyncStarted);
 		super.onSaveInstanceState(outState);
 	}
 
-	
-	private void doSynchronization(final String itemId) {
-		mReceiver = new ResultReceiver(new Handler()) {
+	private BroadcastReceiver onNotice = new BroadcastReceiver() {
 
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultData != null && resultData.containsKey(NavisionSyncService.SOAP_RESULT)) {
-                	onSOAPResult(resultCode, resultData.getString(NavisionSyncService.SOAP_RESULT), itemId);
-                }
-                else {
-                	if(activity != null){
-                		Toast toast = Toast.makeText(activity, "Stock status is not sync!",Toast.LENGTH_SHORT );
-                		toast.show();
-                	}
-                	onSOAPResult(resultCode, null, itemId);
-                }
-            }
-            
-        };
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
+			stockStatusValue = syncResult.getResult();
+			addStockStatusToFrame(syncResult.getResult());
+
+		}
+	};
+
+	private void doSynchronization(final String itemId) {
+		System.out.println("KRECE U SUNC");
 		isStockSyncStarted = true;
-        itemQuantitySyncObject = new ItemQuantitySyncObject(itemId, "300", Integer.valueOf(-1));
+		itemQuantitySyncObject = new ItemQuantitySyncObject(itemId, "300", Integer.valueOf(-1));
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQuantitySyncObject);
-		intent.putExtra(NavisionSyncService.EXTRA_RESULT_RECEIVER, getResultReceiver());
 		getActivity().startService(intent);
-		
+
 	}
-	
-	public ResultReceiver getResultReceiver() {
-        return mReceiver;
-    }
-	
-	
+
 	public void onSOAPResult(int code, String result, String itemId) {
 		stockStatusValue = result;
 		addStockStatusToFrame(result);
-	    }
+	}
 	
 	
 	private interface ItemsQuery {

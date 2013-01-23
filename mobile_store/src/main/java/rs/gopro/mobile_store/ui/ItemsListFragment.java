@@ -104,6 +104,12 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 		cursorAdapter.swapCursor(null);
 
 	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		System.out.println("ITEM FRAGMENT IDE U PAUZU");
+	}
 
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count, int after) {

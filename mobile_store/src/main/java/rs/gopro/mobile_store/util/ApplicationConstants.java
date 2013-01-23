@@ -15,4 +15,8 @@ public class ApplicationConstants {
 		ADMIN, USER
 	}
 
+	public static enum SyncStatus{
+		SUCCESSED, FAILURE
+		
+	}
 }
