@@ -219,7 +219,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 		
 		
 		super.onResume();
-		IntentFilter navSyncFilter = new IntentFilter(NavisionSyncService.NAVISION_SYNC_ACTION);
+		IntentFilter navSyncFilter = new IntentFilter(NavisionSyncService.NAVISION_SYNC_ACTION_2);
 		//registering broadcast receiver to listen NAVISION_SYNC broadcast 
 		LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, navSyncFilter);
 	}
