@@ -5,13 +5,8 @@
         android:id="@+id/new_sale_order_action_menu_option"
         android:showAsAction="ifRoom|withText"
         android:title="@string/contextual_add"/>
-    <item
-        android:id="@+id/edit_sale_order_action_menu_option"
+     <item
+        android:id="@+id/edit_lines_sale_order_action_menu_option"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/contextual_edit"/>
-    <item
-        android:id="@+id/view_sale_order_action_menu_option"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/contextual_view"/>
-
+        android:title="@string/contextual_edit_lines"/>
 </menu>

@@ -105,22 +105,6 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			if (mShowHideMasterLayout != null
-					&& !mShowHideMasterLayout.isMasterVisible()) {
-				// If showing the detail view, pressing Up should show the
-				// master pane.
-				mShowHideMasterLayout.showMaster(true, 0);
-				return true;
-			}
-			break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 	}
@@ -167,10 +151,38 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater menuInflater = getMenuInflater();
-	    menuInflater.inflate(R.menu.sale_order_add_edit_menu, menu);
+	    menuInflater.inflate(R.menu.sale_order_preview_main_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			if (mShowHideMasterLayout != null
+					&& !mShowHideMasterLayout.isMasterVisible()) {
+				// If showing the detail view, pressing Up should show the
+				// master pane.
+				mShowHideMasterLayout.showMaster(true, 0);
+				return true;
+			}
+			break;
+		case R.id.new_sale_order_action_menu_option:
+			Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT,
+					MobileStoreContract.SaleOrders.CONTENT_URI);
+			startActivity(newSaleOrderIntent);
+			return true;
+		case R.id.edit_lines_sale_order_action_menu_option:
+			// TODO sale order lines goes here
+//			Intent edotSaleOrderIntent = new Intent(Intent.ACTION_INSERT,
+//					MobileStoreContract.SaleOrders.CONTENT_URI);
+//			startActivity(edotSaleOrderIntent);
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+	
 	@Override
 	public void onSaleOrderLongClick(String saleOrderId) {
 		SaleOrderContextualMenu	contextualMenu = new SaleOrderContextualMenu(this, saleOrderId);

@@ -18,12 +18,14 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class SaleOrdersPreviewListFragment extends ListFragment implements
-		LoaderManager.LoaderCallbacks<Cursor> {
+		LoaderManager.LoaderCallbacks<Cursor>, OnItemLongClickListener {
 
 	private static final String TAG = makeLogTag(SaleOrdersPreviewListFragment.class);
 	
@@ -100,6 +102,7 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
         final ListView listView = getListView();
         listView.setSelector(android.R.color.transparent);
         listView.setCacheColorHint(Color.WHITE);
+        listView.setOnItemLongClickListener(this);
     }
 
     @Override
@@ -161,6 +164,15 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
             mAdapter.notifyDataSetChanged();
         }
     }
+    
+	@Override
+	public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long arg3) {
+		Cursor cursor = (Cursor) adapter.getItemAtPosition(position);
+		String saleOrderId = String.valueOf(cursor.getInt(SaleOrdersQuery._ID));
+		mCallbacks.onSaleOrderLongClick(saleOrderId);
+		view.setSelected(true);
+		return true;
+	}
     
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
@@ -254,5 +266,7 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
         int CUSTOMER_NAME2 = 6;
         int ORDER_DATE = 7;
 	}
+
+
 
 }
