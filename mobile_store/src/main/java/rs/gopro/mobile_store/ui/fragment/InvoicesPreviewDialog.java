@@ -49,7 +49,9 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.dialog_fragment_invoice, container);
 		ListView listView=(ListView) view.findViewById(R.id.invoice_dialog_list);
+		ListView  listView2 = new ListView(getActivity());
 		listView.setAdapter(mAdapter);
+		
 		return view;
 	}
 	
@@ -62,9 +64,13 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
-		dialog.setTitle(getString(R.string.invoice_line_dialog_title));
-		System.out.println("DIAJ:OG");
+		dialog.setTitle(getString(R.string.invoice_line_dialog_alternative_title));
 		return dialog;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
 	}
 	
 	@Override
@@ -93,7 +99,6 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 			super(context, null,false);
 		}
 		
-		
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
 			Integer  integer =  cursor.getInt(InvoiceLineQuery.TYPE);
@@ -113,6 +118,7 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
+			InvoicesPreviewDialog.this.getDialog().setTitle(getString(R.string.invoice_line_dialog_title));
 			return	getActivity().getLayoutInflater().inflate(R.layout.list_item_invoice_line, parent, false);
 		}
 		

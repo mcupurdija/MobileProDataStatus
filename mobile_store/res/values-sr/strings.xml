@@ -171,6 +171,7 @@
 	<string name="invoice_line_unit_price">Cena po jedinici</string>
 	<string name="invoice_line_discount_amount">Popust</string>
 	<string name="invoice_line_dialog_title">Stavke fakture</string>
+	<string name="invoice_line_dialog_alternative_title">Nema stavki fakture</string>
 	
 	<!-- settings -->
 	<string name="title_settings">Podesavanja</string>

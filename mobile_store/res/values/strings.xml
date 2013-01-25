@@ -170,6 +170,7 @@
 	<string name="invoice_line_unit_price">Unti price</string>
 	<string name="invoice_line_discount_amount">Discount</string>
 	<string name="invoice_line_dialog_title">Invoice items</string>
+	<string name="invoice_line_dialog_alternative_title">No invoice items</string>
 		
 	<!-- settings -->
 	<string name="title_settings">Settings</string>
