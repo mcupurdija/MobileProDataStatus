@@ -98,7 +98,7 @@
         <item>Order</item>
         <item>Reserve and order</item>
     </string-array>
-	<string-array name="slc1_type_array">
+    <string-array name="slc1_type_array">
         <item>Wisit to customer</item>
         <item>Call to customer</item>
         <item>Customer call</item>
@@ -114,4 +114,12 @@
     <string-array name="location_type_array">
         <item>001</item>
     </string-array>
+    <string-array name="invoice_line_type_array">
+        <item>Account GK</item>
+        <item>Article</item>
+        <item>Resource</item>
+        <item>Primary means</item>
+        <item>Expence (article)</item>
+    </string-array>
+
 </resources>

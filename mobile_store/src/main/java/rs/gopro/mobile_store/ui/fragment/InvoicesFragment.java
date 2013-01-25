@@ -6,6 +6,7 @@ import java.util.List;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 
+import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.widget.SimpleSelectionedListAdapter;
 import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
@@ -21,6 +22,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.BaseColumns;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
@@ -184,9 +187,13 @@ public class InvoicesFragment  extends ListFragment implements LoaderCallbacks<C
 			View.OnClickListener allSessionsListener = new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					final Uri sessionsUri = MobileStoreContract.Invoices.buildInvoicesUri(invoicesId.toString());
-					final Intent intent = new Intent(Intent.ACTION_VIEW, sessionsUri);
-					// startActivity(intent);
+					//final Uri sessionsUri = MobileStoreContract.Invoices.buildInvoicesUri(invoicesId.toString());
+					final Uri invoiceLineUri =  MobileStoreContract.InvoiceLine.buildInvoiceLinesUri(invoicesId.toString());
+					/*final Intent intent = new Intent(Intent.ACTION_VIEW, invoiceLineUri);
+					 startActivity(intent);*/
+					System.out.println("KLIKUNO SAM ITEM  "+invoiceLineUri);
+					showDialog(invoiceLineUri);
+					
 				}
 			};
 
@@ -200,6 +207,22 @@ public class InvoicesFragment  extends ListFragment implements LoaderCallbacks<C
 		}
 
 	}
+	
+	
+	private void showDialog(Uri invoiceLineUri){
+		 FragmentTransaction ft =  getActivity().getSupportFragmentManager().beginTransaction();
+		    Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+		    if (prev != null) {
+		        ft.remove(prev);
+		    }
+		    ft.addToBackStack(null);
+
+		    // Create and show the dialog.
+		   InvoicesPreviewDialog fragment = new InvoicesPreviewDialog();
+		   fragment.setArguments(BaseActivity.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW,invoiceLineUri)));
+		   fragment.show(ft, "invoice_dialog");
+	}
+	
 	
 	private interface InvoicesQuery {
 

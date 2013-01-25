@@ -514,3 +514,50 @@ INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`,
 INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('4','AD00004','K00002','Koste Abrasevica 9','Beograd','Test1','1234567','11000');
 INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('5','AD00005','K00003','Test1 9','Beograd','Test1','1234567','11000');
 INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('6','AD00006','K00003','Test2 Abrasevica 9','Beograd','Test1','1234567','11000');
+
+
+CREATE TABLE `invoice_lines` (
+	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
+	`invoices_id` INTEGER,
+	`line_no` INTEGER,
+	`customer_id` INTEGER,
+	`type` INTEGER,
+	`no` INTEGER,
+	`location_code` TEXT,
+	`description` TEXT,
+	`quantity` REAL,
+	`unit_price` REAL,
+	`vat_percent` REAL,
+	`line_discount_percent` REAL,
+	`line_discount_amount` REAL,
+	`amount_including_vat` REAL,
+	`inv_discount_amount` REAL,
+	`unit_of_measure_code` REAL,
+	`price_include_vat` INTEGER,
+	`created_date` TEXT,
+	`created_by` TEXT,
+	`updated_date` TEXT,
+	`updated_by` TEXT
+);
+
+CREATE TRIGGER IF NOT EXISTS "log_new_invoice_line" AFTER INSERT ON "invoice_lines" 
+BEGIN 
+	update invoice_lines set 
+	created_date = datetime('now'),
+	created_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TRIGGER IF NOT EXISTS "log_invoice_line_change" AFTER UPDATE ON "invoice_lines" 
+BEGIN 
+	update invoice_lines set 
+	updated_date = datetime('now'),
+	updated_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+
+INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
+(1, 1, 3, 1, 1, 'noo', 'location_code', 'Description', '123', '213', '32', '215', '21', '222', '123', '1', '1' );
+INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
+(2, 1, 4, 1, 2, 'noo 2', 'location_code second', 'Description', '12', '122', '32', '21', '21', '222', '123', '1', '1' );
+
+

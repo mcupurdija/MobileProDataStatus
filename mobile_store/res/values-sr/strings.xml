@@ -166,6 +166,11 @@
 	<string name="item_campaign_end_date_label">Kraj kampanje</string>
 	<string name="item_dialog_title">Informacije o artiklu</string>
 	
+	<!-- invoice_line -->
+	<string name="invoice_line_quantity">Kolicina</string>
+	<string name="invoice_line_unit_price">Cena po jedinici</string>
+	<string name="invoice_line_discount_amount">Popust</string>
+	<string name="invoice_line_dialog_title">Stavke fakture</string>
 	
 	<!-- settings -->
 	<string name="title_settings">Podesavanja</string>

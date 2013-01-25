@@ -115,4 +115,11 @@
     <string-array name="location_type_array">
         <item>001</item>
     </string-array>
+     <string-array name="invoice_line_type_array">
+        <item>Konto GK</item>
+        <item>Artikal</item>
+        <item>Resurs</item>
+        <item>Osnovno sredstvo</item>
+        <item>Trosak (artikal)</item>
+    </string-array>
 </resources>

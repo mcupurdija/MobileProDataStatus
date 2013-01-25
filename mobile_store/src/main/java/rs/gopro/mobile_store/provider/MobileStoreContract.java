@@ -30,6 +30,8 @@ public class MobileStoreContract {
 	//private static final String PATH_CONTACTS_SEARCH_CUSTOM = "custom_search";
 	private static final String PATH_VISITS_DATE = "visits_date";
 	private static final String PATH_SYNC_LOGS = "sync_logs";
+	private static final String PATH_INVOICE_LINES = "invoice_lines";
+	private static final String PATH_INVOICE_LINES_FROM_ORDER = "invoice_lines_from_order";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -254,6 +256,31 @@ public class MobileStoreContract {
 		String UPDATED_BY = "updated_by";
 	}
 	
+	public interface InvoiceLineColumns {
+
+		
+		String INVOICES_ID = "invoices_id";
+		String LINE_NO = "line_no";
+		String CUSTOMER_ID = "customer_id";
+		String TYPE = "type";
+		String NO = "no";
+		String LOCATION_CODE = "location_code";
+		String DESCRIPTION = "description";
+		String QUANTITY = "quantity";
+		String UNIT_PRICE = "unit_price";
+		String VAT_PERCENT = "vat_percent";
+		String LINE_DISCOUNT_PERCENT = "line_discount_percent";
+		String LINE_DISCOUNT_AMOUNT = "line_discount_amount";
+		String AMOUNT_INCLUDING_VAT = "amount_including_vat";
+		String INV_DISCOUNT_AMOUNT = "inv_discount_amount";
+		String UNIT_OF_MEASURE_CODE = "unit_of_measure_code";
+		String PRICE_INCLUDE_VAT = "price_include_vat";
+		String CREATED_DATE = "created_date";
+		String CREATED_BY = "created_by";
+		String UPDATED_DATE = "updated_date";
+		String UPDATED_BY = "updated_by";
+	}
+	
 	public interface SalesPersonsColumns {
 		String SALES_PERSON_ID = "sales_person_id";
 	}
@@ -292,6 +319,30 @@ public class MobileStoreContract {
 		/** Default "ORDER BY" clause. */
 		public static final String DEFAULT_SORT = Invoices.POSTING_DATE + " ASC";
 	}
+	
+	/**
+	 * 
+	 * @author Administrator
+	 *
+	 */
+	public static class InvoiceLine implements InvoiceLineColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_INVOICE_LINES).build();
+		/** Default "ORDER BY" clause. */
+		public static final String DEFAULT_SORT = "invoice_lines." + AuditColumns.CREATED_DATE + " DESC";
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.invoice_lines";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.invoice_lines";
+		
+		public static Uri buildInvoiceLinesUri(String invoiceId) {
+			return BASE_CONTENT_URI.buildUpon().appendPath(PATH_INVOICE_LINES_FROM_ORDER).appendPath(invoiceId).build();
+		}
+
+		public static String getInvoiceId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+	}
+	
+	
 
 	public static class Customers implements CustomersColumns, BaseColumns, SalesPersonsColumns {
 

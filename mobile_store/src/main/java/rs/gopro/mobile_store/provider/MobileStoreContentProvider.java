@@ -36,6 +36,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 
 	private static final int INVOICES = 110;
 	private static final int INVOICES_ID = 111;
+	private static final int INVOICE_LINES_FROM_ORDER = 112;
 
 	private static final int CUSTOMERS = 120;
 	private static final int CUSTOMERS_ID = 121;
@@ -83,6 +84,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 
 		mobileStoreURIMatcher.addURI(authority, "invoices", INVOICES);
 		mobileStoreURIMatcher.addURI(authority, "invoices/#", INVOICES_ID);
+		mobileStoreURIMatcher.addURI(authority, "invoice_lines_from_order/#", INVOICE_LINES_FROM_ORDER);
 
 		mobileStoreURIMatcher.addURI(authority, "customers", CUSTOMERS);
 		mobileStoreURIMatcher.addURI(authority, "customers_by_sales_person/*",
@@ -193,6 +195,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return CustomerAddresses.CONTENT_ITEM_TYPE;
 		case CUSTOMER_ADDRESSES_CUSTOMER_NO:
 			return CustomerAddresses.CONTENT_TYPE;
+		case INVOICE_LINES_FROM_ORDER:
+			return InvoiceLine.CONTENT_TYPE;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -336,6 +340,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 					invoicesId);
 		case INVOICES:
 			return builder.addTable(Tables.INVOICES);
+		case INVOICE_LINES_FROM_ORDER:
+			String invoiceid = InvoiceLine.getInvoiceId(uri);
+			return builder.addTable(Tables.INVOICE_LINES)
+					.where(InvoiceLine.INVOICES_ID + "=?", new String[] {invoiceid});
 		case CUSTOMERS:
 			return builder.addTable(Tables.CUSTOMERS).where(
 					Customers.BLOCKED_STATUS + "= ?", new String[] { "1" });
