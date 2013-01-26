@@ -104,6 +104,12 @@
         <item>Customer call</item>
         <item>Accepted offer</item>
     </string-array>
+    <string-array name="slc1_array">
+        <item>SA1</item>
+        <item>SA2</item>
+        <item>SA3</item>
+        <item>SA4</item>
+    </string-array>
     <string-array name="payment_type_array">
         <item>No cash</item>
         <item>Sales person</item>

@@ -308,8 +308,10 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		case R.id.submit_visit_form:
 			submitForm();
 			finish();
+			return true;
 		case R.id.canel_visit_form:
 			finish();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

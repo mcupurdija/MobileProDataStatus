@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sales_order_lines_add_edit_master_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="@dimen/left_pane_width_portrait"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/multipane_padding"
+        android:layout_marginTop="@dimen/multipane_padding"
+        android:layout_marginBottom="@dimen/multipane_padding"
+        android:background="@drawable/grey_frame" >
+        
+        <FrameLayout android:id="@+id/fragment_sale_order_lines_lines_list"
+            android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/multipane_padding"
+        android:background="@drawable/grey_frame_on_white" >
+	    <FrameLayout
+	        android:id="@+id/fragment_sale_order_line_add_edit"
+	        android:background="@android:color/white"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" 
+	        style="@style/TextBody" />
+    </LinearLayout>
+
+</rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout>

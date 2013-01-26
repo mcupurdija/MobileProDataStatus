@@ -258,8 +258,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 		switch (match) {
 		default:
 			SelectionBuilder builder = buildExpandedSelection(uri, match);
-			return builder.where(selection, selectionArgs).query(database,
+			Cursor cursor = builder.where(selection, selectionArgs).query(database,
 					projection, sortOrder);
+			cursor.setNotificationUri(getContext().getContentResolver(), uri);
+			return cursor;
 		}
 	}
 
@@ -271,7 +273,17 @@ public class MobileStoreContentProvider extends ContentProvider {
 		SelectionBuilder builder = buildSimpleSelection(uri);
 		int updatedRows = builder.where(selection, selectionArgs).update(
 				database, values);
-		getContext().getContentResolver().notifyChange(uri, null);
+		int match = mobileStoreURIMatcher.match(uri);
+		switch (match) {
+		case SALE_ORDER:
+			/**
+			 * This Uri is used for select so we must use the same to do notification
+			 */
+			getContext().getContentResolver().notifyChange(SaleOrders.CONTENT_URI, null);
+		default:
+			getContext().getContentResolver().notifyChange(uri, null);
+		}
+		
 		return updatedRows;
 	}
 
@@ -292,12 +304,16 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Invoices._ID);
 		case VISITS:
 			return builder.addTable(Tables.VISITS);
-		case VISIT_ID: // TODO should be fixed, this is place for insert
+		case VISIT_ID: // TODO should be fixed, this is place for insert, maybe NOT, it could send item uri for filter
 			final String visitId = Visits.getVisitId(uri);
 			return builder.addTable(Tables.VISITS).where(
 					Tables.VISITS + "." + Visits._ID + "=?", visitId);
 		case SALE_ORDERS:
 			return builder.addTable(Tables.SALE_ORDERS);
+		case SALE_ORDER: // TODO  maybe NOT, it could send item uri for filter
+			final String saleOrderId = SaleOrders.getSaleOrderId(uri);
+			return builder.addTable(Tables.SALE_ORDERS).where(
+					Tables.SALE_ORDERS + "." + SaleOrders._ID + "=?", saleOrderId);
 		case CONTACTS_ID: // TODO should be fixed, this is place for insert
 			final String contactId = Contacts.getContactsId(uri);
 			return builder.addTable(Tables.CONTACTS).where(

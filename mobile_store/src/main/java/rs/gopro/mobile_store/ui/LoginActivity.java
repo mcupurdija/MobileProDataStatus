@@ -83,6 +83,7 @@ public class LoginActivity extends Activity {
 		 * editor.putBoolean("user_logged", true); editor.commit();
 		 */
 		if (PropertiesUtil.getLoginSwitch(getAssets())) {
+			SharedPreferencesUtil.addSalePersonId(getApplicationContext(), "1");
 			return true;
 		}
 		String passFromDB = getPassword(username);

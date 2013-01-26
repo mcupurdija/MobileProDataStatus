@@ -3,7 +3,9 @@ package rs.gopro.mobile_store.ui;
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -26,13 +28,15 @@ public class CustomersViewListFragment extends ListFragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
 
 	private static final String TAG = makeLogTag(CustomersViewListFragment.class);
-	
+	private static final String STANDARD_FILTER = Tables.CUSTOMERS + "." + MobileStoreContract.Customers.SALES_PERSON_ID+"=?";
+
 	private static final String STATE_SELECTED_ID = "selectedId";
 	
 	private Uri mCustomersListUri;
 	private CursorAdapter mAdapter;
 	private String mSelectedCustomerId;
 	private boolean mHasSetEmptyText = false;
+	private String salesPersonId = "-1";
 	
 	public interface Callbacks {
         /** Return true to select (activate) the vendor in the list, false otherwise. */
@@ -52,6 +56,8 @@ public class CustomersViewListFragment extends ListFragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        salesPersonId = SharedPreferencesUtil.getSalePersonId(getActivity());
+        
         if (savedInstanceState != null) {
             mSelectedCustomerId = savedInstanceState.getString(STATE_SELECTED_ID);
         }
@@ -141,7 +147,7 @@ public class CustomersViewListFragment extends ListFragment implements
     
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		return new CursorLoader(getActivity(), mCustomersListUri, CustomersQuery.PROJECTION, null, null,
+		return new CursorLoader(getActivity(), mCustomersListUri, CustomersQuery.PROJECTION, STANDARD_FILTER, new String[] { salesPersonId },
                 MobileStoreContract.Customers.DEFAULT_SORT);
 	}
 

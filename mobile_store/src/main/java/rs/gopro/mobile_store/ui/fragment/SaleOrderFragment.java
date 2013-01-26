@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,7 +36,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Filter.FilterListener;
 import android.widget.FilterQueryProvider;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -48,7 +46,6 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 	private SaleOrdersListAdapter saleAdapter;
 	private EditText searchText;
 	private Spinner spinner;
-	private static String HARDCODED_SALES_PERSON = "1";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -238,7 +235,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 			View.OnClickListener allSessionsListener = new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					final Uri saleOrdersUri = MobileStoreContract.SaleOrders.buildSaleOrdersListUri(HARDCODED_SALES_PERSON);
+					final Uri saleOrdersUri = MobileStoreContract.SaleOrders.CONTENT_URI;
                     final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(String.valueOf(saleOrderId.intValue())));
                     intent.putExtra(SaleOrdersPreviewActivity.EXTRA_MASTER_URI, saleOrdersUri);
                     startActivity(intent);

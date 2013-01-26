@@ -1,5 +1,8 @@
 package rs.gopro.mobile_store.ui.components;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
@@ -25,6 +28,7 @@ public class CustomerAutocompleteCursorAdapter extends CursorAdapter implements
 
 	private Context mContext;
 	private LayoutInflater mInflater;
+	private Map<String, Integer> dataPositions = new HashMap<String, Integer>();
 	
 	public CustomerAutocompleteCursorAdapter(Context context, Cursor c) {
 		super(context, c, 0);
@@ -84,6 +88,18 @@ public class CustomerAutocompleteCursorAdapter extends CursorAdapter implements
 				.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
 		final String result = cursor.getString(codeIndex) + " - "
 				+ cursor.getString(nameIndex);
+		dataPositions.put(result, Integer.valueOf(cursor.getInt(cursor
+				.getColumnIndexOrThrow(MobileStoreContract.Customers._ID))));
 		return result;
+	}
+	
+	public int getIdForTitle(String data) {
+		if (dataPositions.containsKey(data)) {
+			return dataPositions.get(data);
+		} else return -1; 
+	}
+	
+	public void setIdForTitle(String data, int id) {
+		dataPositions.put(data, Integer.valueOf(id));
 	}
 }

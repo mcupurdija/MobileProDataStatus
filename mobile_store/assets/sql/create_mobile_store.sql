@@ -331,7 +331,7 @@ CREATE TABLE `sale_orders` (
 	`order_date` TEXT,
 	`location_code` TEXT,
 	`shortcut_dimension_1_code` TEXT,
-	`currency_code` TEXT,
+	`currency_code` INTEGER,
 	`external_document_no` TEXT,
 	`quote_no` TEXT,
 	`backorder_shipment_status` INTEGER,
@@ -350,7 +350,7 @@ CREATE TABLE `sale_orders` (
 	`contact_id` INTEGER,
 	`contact_name` TEXT,
 	`contact_phone` TEXT,
-	`payment_option` TEXT,
+	`payment_option` INTEGER,
 	`check_status_phone` TEXT,
 	`total` REAL,
 	`total_discount` REAL,
@@ -369,17 +369,17 @@ CREATE TABLE `sale_orders` (
 );
 
 INSERT INTO `sale_orders` (	`_id` ,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
-(1, 'POR12-00001', 0,2, '2012-06-12 20:20:20', 'location code', 'shorecut', 'cuurent_code', 'ext doc', 'quote no', 2,2,2,2,'used limitation', 2,2,2, '2012-12-12 20:20:20', 2, 1, 2, 2,2,'contact name','06457575','payment op', 'startus phone', 2000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
+(1, 'POR12-00001', 0,2, '2012-06-12 20:20:20', '001', 'SA1', 1, 'ext doc', 'quote no', 2,2,2,2,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 3, null,2,'contact name','06457575',0, 'startus phone', 2000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
 INSERT INTO `sale_orders` (	`_id` ,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
-(2, 'POR12-00002', 0,2, '2012-12-12 10:20:20', 'location code', 'shorecut', 'cuurent_code', 'ext doc', 'quote no', 2,2,2,2,'used limitation', 2,2,2, '2012-12-12 20:20:20', 2, 1, 2, 2,2,'contact name','06457575','payment op', 'startus phone', 2500, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
+(2, 'POR12-00002', 0,2, '2012-12-12 10:20:20', '001', 'SA1', 1, 'ext doc', 'quote no', 2,2,2,2,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 3, null,2,'contact name','06457575',0, 'startus phone', 2500, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
 INSERT INTO `sale_orders` (	`_id` ,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
-(3, 'POR12-00003', 1,2, '2010-10-12 10:20:20', 'location code', 'shorecut', 'cuurent_code', 'ext doc', 'quote no', 2,2,2,2,'used limitation', 2,2,2, '2012-12-12 20:20:20', 2, 1, 2, 2,2,'contact name','06457575','payment op', 'startus phone', 1000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
+(3, 'POR12-00003', 1,2, '2010-10-12 10:20:20', '001', 'SA1', 1, 'ext doc', 'quote no', 2,2,2,2,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 3, null,2,'contact name','06457575',0, 'startus phone', 1000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
 INSERT INTO `sale_orders` (	`_id` ,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
-(4, 'POR12-00004', 1,1, '2012-12-12 00:20:20', 'location code', 'shorecut', 'cuurent_code', 'ext doc', 'quote no', 2,2,2,2,'used limitation', 2,2,2, '2012-12-12 20:20:20', 1, 1, 1, 1,1,'contact name','06457575','payment op', 'startus phone', 22000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
+(4, 'POR12-00004', 1,1, '2012-12-12 00:20:20', '001', 'SA2', 1, 'ext doc', 'quote no', 2,2,2,2,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 1, null,1,'contact name','06457575',1, 'startus phone', 22000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
 INSERT INTO `sale_orders` (	`_id` ,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
-(5, 'POR12-00005', 1,1, '2010-12-12 08:20:20', 'location code', 'shorecut', 'cuurent_code', 'ext doc', 'quote no', 2,2,2,2,'used limitation', 2,2,2, '2012-12-12 20:20:20', 1, 1, 1, 1,1,'contact name','06457575','payment op', 'startus phone', 8000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
+(5, 'POR12-00005', 1,1, '2010-12-12 08:20:20', '001', 'SA2', 0, 'ext doc', 'quote no', 2,2,2,2,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 1, null,1,'contact name','06457575',1, 'startus phone', 8000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
 INSERT INTO `sale_orders` (	`_id` ,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
-(6, 'POR12-00006', 1,1, '2011-12-12 09:20:20', 'location code', 'shorecut', 'cuurent_code', 'ext doc', 'quote no', 2,2,2,2,'used limitation', 2,2,2, '2012-12-12 20:20:20', 1, 1, 1, 1,1,'contact name','06457575','payment op', 'startus phone', 6000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
+(6, 'POR12-00006', 1,1, '2011-12-12 09:20:20', '001', 'SA2', 0, 'ext doc', 'quote no', 2,2,2,2,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 1, null,1,'contact name','06457575',1, 'startus phone', 6000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
 
 
 CREATE TRIGGER IF NOT EXISTS "log_new_sale_order" AFTER INSERT ON "sale_orders" 
@@ -508,13 +508,13 @@ BEGIN
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('1','AD00001','K00001','Koste Abrasevica 9','Valjevo','Test1','1234567','14000');
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('2','AD00002','K00001','Test1 9','Valjevo','Test1','1234567','14000');
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('3','AD00003','K00002','Test2 Abrasevica 9','Valjevo','Test1','1234567','14000');
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('4','AD00004','K00002','Koste Abrasevica 9','Beograd','Test1','1234567','11000');
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('5','AD00005','K00003','Test1 9','Beograd','Test1','1234567','11000');
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('6','AD00006','K00003','Test2 Abrasevica 9','Beograd','Test1','1234567','11000');
-
+INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('1','AD00001','K00001','Koste Aba 9','Valjevo','Test1','1234567','14000');
+INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('2','AD00002','K00001','Test2 Abrasevica 9','Beograd','Test1','1234567','11000');
+INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('3','AD00003','K00002','Test1 9','Valjevo','Test1','1234567','14000');
+INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('4','AD00004','K00002','Test2 vica 9','Valjevo','Test1','1234567','14000');
+INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('5','AD00005','K00003','Koste Abrasevica 9','Beograd','Test1','1234567','11000');
+INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('6','AD00006','K00004','Test1 9','Beograd','Test1','1234567','11000');
+INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('7','AD00007','K00005','Test2 Abrasevica 9','Beograd','Test1','1234567','11000');
 
 CREATE TABLE `invoice_lines` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
@@ -567,6 +567,3 @@ INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type
 (5, 1, 4, 1, 2, 'noo 2', 'location_code second', 'Description', '12', '122', '32', '21', '21', '222', '123', '1', '1' );
 INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
 (6, 2, 6, 1, 2, 'noo 2', 'location_code second', 'Description', '12', '2434', '32', '21', '21', '222', '123', '1', '1' );
-
-
-
