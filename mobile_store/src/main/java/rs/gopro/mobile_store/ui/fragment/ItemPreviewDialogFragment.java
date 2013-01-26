@@ -226,7 +226,6 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			System.out.println("SSSSS");
 			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
 			stockStatusValue = syncResult.getResult();
 			addStockStatusToFrame(syncResult.getResult());
@@ -235,7 +234,6 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	};
 
 	private void doSynchronization(final String itemId) {
-		System.out.println("KRECE U SUNC");
 		isStockSyncStarted = true;
 		itemQuantitySyncObject = new ItemQuantitySyncObject(itemId, "300", Integer.valueOf(-1));
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
