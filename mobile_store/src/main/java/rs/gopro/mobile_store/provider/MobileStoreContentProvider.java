@@ -310,7 +310,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 					Tables.VISITS + "." + Visits._ID + "=?", visitId);
 		case SALE_ORDERS:
 			return builder.addTable(Tables.SALE_ORDERS);
-		case SALE_ORDER: // TODO  maybe NOT, it could send item uri for filter
+		case SALE_ORDER:
 			final String saleOrderId = SaleOrders.getSaleOrderId(uri);
 			return builder.addTable(Tables.SALE_ORDERS).where(
 					Tables.SALE_ORDERS + "." + SaleOrders._ID + "=?", saleOrderId);
@@ -362,7 +362,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.where(InvoiceLine.INVOICES_ID + "=?", new String[] {invoiceid});
 		case CUSTOMERS:
 			return builder.addTable(Tables.CUSTOMERS).where(
-					Customers.BLOCKED_STATUS + "= ?", new String[] { "1" });
+					Customers.BLOCKED_STATUS + "= ?", new String[] { "0" }); // TODO delete this!
 		case CUSTOMERS_BY_SALES_PERSON:
 			final String salesPersonIdOnCustomer = Customers
 					.getCustomersSalesPersonId(uri);
