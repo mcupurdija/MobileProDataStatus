@@ -36,15 +36,7 @@ public class NavisionSyncService extends IntentService {
 	private static final String TAG = LogUtils.makeLogTag(NavisionSyncService.class);
 
 	public static final String EXTRA_WS_SYNC_OBJECT = "rs.gopro.mobile_store.EXTRA_WS_SYNC_OBJECT";
-	 public static final String SYNC_RESULT = "rs.gopro.mobile_store.sync_result";
-
-	// public static final String EXTRA_RESULT_RECEIVER =
-	// "rs.gopro.mobile_store.EXTRA_RESULT_RECEIVER";
-
-	// public static final String SOAP_RESULT =
-	// "rs.gopro.mobile_store.extra.SOAP_RESULT";
-	// public static final String SOAP_FAULT =
-	// "rs.gopro.mobile_store.extra.SOAP_FAULT";
+	public static final String SYNC_RESULT = "rs.gopro.mobile_store.sync_result";
 
 	public NavisionSyncService() {
 		super(TAG);
@@ -60,16 +52,6 @@ public class NavisionSyncService extends IntentService {
 		// is called on a new thread.
 		// Uri action = intent.getData();
 		Bundle extras = intent.getExtras();
-
-		/*
-		 * if (extras == null || !extras.containsKey(EXTRA_RESULT_RECEIVER)) {
-		 * //|| action == null // Extras contain our ResultReceiver and data is
-		 * our REST action. // So, without these components we can't do anything
-		 * useful. LogUtils.LOGE(TAG,
-		 * "You did not pass extras or data with the Intent.");
-		 * 
-		 * return; }
-		 */
 
 		// We default to GET if no verb was specified.
 		SyncObject syncObject = extras.getParcelable(EXTRA_WS_SYNC_OBJECT);
@@ -110,10 +92,6 @@ public class NavisionSyncService extends IntentService {
 		}
 
 		Intent resultIntent = new Intent(syncObject.getBroadcastAction());
-	/*	if(syncObject instanceof ItemsSyncObject){
-			resultIntent = new Intent(NAVISION_SYNC_ACTION_2);
-		}
-		*/
 		resultIntent.putExtra(SYNC_RESULT, syncResult);
 
 		LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
