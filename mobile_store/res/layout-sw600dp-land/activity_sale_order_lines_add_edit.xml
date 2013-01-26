@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:padding="@dimen/multipane_half_padding" >
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/multipane_half_padding"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+        
+        <FrameLayout android:id="@+id/fragment_sale_order_lines_lines_list"
+            android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/multipane_half_padding"
+        android:layout_weight="2"
+        android:orientation="vertical" >
+        
+	    <FrameLayout
+	        android:id="@+id/fragment_sale_order_line_add_edit"
+	        android:background="@android:color/white"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" />
+	</LinearLayout>
+</LinearLayout>

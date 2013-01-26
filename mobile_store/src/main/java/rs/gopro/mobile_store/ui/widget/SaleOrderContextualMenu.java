@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.ui.widget;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.ui.SaleOrdersPreviewActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.ActionMode;
@@ -38,16 +39,17 @@ public class SaleOrderContextualMenu implements ActionMode.Callback {
 		case R.id.edit_sale_order_header:
 			Intent editIntent = new Intent(Intent.ACTION_EDIT, MobileStoreContract.SaleOrders.buildSaleOrderUri(saleOrderId));
 			//intent.putExtra(SaleOrderAddEditActivity.EXTRA_CUSTOMER_ID, saleOrderId);
+//			activity.startActivityForResult(editIntent, SaleOrdersPreviewActivity.CALL_EDIT);
 			activity.startActivity(editIntent);
 			mode.finish();
-			activity.finish();
+			//activity.finish();
 			return true;
 		case R.id.view_sale_order_header:
 			Intent viewIntent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.SaleOrders.buildSaleOrderUri(saleOrderId));
 			//intent.putExtra(SaleOrderAddEditActivity.EXTRA_CUSTOMER_ID, saleOrderId);
 			activity.startActivity(viewIntent);
 			mode.finish();
-			activity.finish();
+			//activity.finish();
 			return true;
 		default:
 			break;

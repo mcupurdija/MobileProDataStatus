@@ -20,6 +20,9 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 
 	public static final String EXTRA_MASTER_URI = "rs.gopro.mobile_store.extra.MASTER_URI";
 
+//	public static final int CALL_INSERT = 1;
+//	public static final int CALL_EDIT = 2;
+	
 	ActionMode actionMod;
 	
 	private Fragment saleOrderLinesFragment;
@@ -170,6 +173,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		case R.id.new_sale_order_action_menu_option:
 			Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT,
 					MobileStoreContract.SaleOrders.CONTENT_URI);
+//			startActivityForResult(newSaleOrderIntent, CALL_INSERT);
 			startActivity(newSaleOrderIntent);
 			return true;
 		case R.id.edit_lines_sale_order_action_menu_option:
@@ -188,4 +192,13 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		SaleOrderContextualMenu	contextualMenu = new SaleOrderContextualMenu(this, saleOrderId);
 	  	actionMod = startActionMode(contextualMenu);
 	}
+	
+//	@Override
+//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		if (requestCode == CALL_EDIT || requestCode == CALL_INSERT) {
+//			if (requestCode == RESULT_OK) {
+//				
+//			}
+//		}
+//	}
 }

@@ -254,8 +254,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 		switch (match) {
 		default:
 			SelectionBuilder builder = buildExpandedSelection(uri, match);
-			return builder.where(selection, selectionArgs).query(database,
+			Cursor cursor = builder.where(selection, selectionArgs).query(database,
 					projection, sortOrder);
+			cursor.setNotificationUri(getContext().getContentResolver(), uri);
+			return cursor;
 		}
 	}
 
@@ -267,7 +269,17 @@ public class MobileStoreContentProvider extends ContentProvider {
 		SelectionBuilder builder = buildSimpleSelection(uri);
 		int updatedRows = builder.where(selection, selectionArgs).update(
 				database, values);
-		getContext().getContentResolver().notifyChange(uri, null);
+		int match = mobileStoreURIMatcher.match(uri);
+		switch (match) {
+		case SALE_ORDER:
+			/**
+			 * This Uri is used for select so we must use the same to do notification
+			 */
+			getContext().getContentResolver().notifyChange(SaleOrders.CONTENT_URI, null);
+		default:
+			getContext().getContentResolver().notifyChange(uri, null);
+		}
+		
 		return updatedRows;
 	}
 

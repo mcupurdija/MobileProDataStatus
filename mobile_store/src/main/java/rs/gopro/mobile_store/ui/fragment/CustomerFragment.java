@@ -32,7 +32,6 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 	private Spinner spinner;
 	private String splitQuerySeparator = ";";
 	private CursorAdapter cursorAdapter;
-	private static String HARDCODED_SALES_PERSON = "1";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -143,7 +142,7 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		//String customerId = String.valueOf(cursorAdapter.getItem(position));
-		final Uri customerListUri = MobileStoreContract.Customers.getCustomersBySalesPerson(HARDCODED_SALES_PERSON);
+		final Uri customerListUri = MobileStoreContract.Customers.CONTENT_URI;
         final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.Customers.buildCustomersUri(String.valueOf(id)));
         intent.putExtra(CustomersViewActivity.EXTRA_MASTER_URI, customerListUri);
         startActivity(intent);

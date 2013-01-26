@@ -3,12 +3,15 @@ package rs.gopro.mobile_store.ui;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.components.CustomerAddressSpinnerAdapter;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
+import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.util.exceptions.SaleOrderValidationException;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
@@ -184,6 +187,9 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private int shippingAddressId = -1;
     private int billingAddressId = -1;
     
+    private String salesPersonId;
+    private String orderDate = null;
+    
     private StatementHandler statementHandler;
     
     /**
@@ -199,6 +205,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_add_sale_order);
+		
+		salesPersonId = SharedPreferencesUtil.getSalePersonId(this);
 		
 		statementHandler = new StatementHandler(this);
 		
@@ -378,7 +386,16 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			transit_customer_id = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST));
 		}
 		
-		String document_no = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_NO));
+		String document_no = null;
+		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_NO))) {	
+			document_no = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_NO));
+		} else {
+			document_no = "LIF-"+ data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders._ID));
+		}
+		
+		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.ORDER_DATE))) {	
+			orderDate = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.ORDER_DATE));
+		}
 		
 		int document_type = -1;
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.DOCUMENT_TYPE))) {
@@ -869,7 +886,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			int customer_id = customerAutoCompleteAdapter.getIdForTitle(customer_auto_complete);//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
 			localValues.put(MobileStoreContract.SaleOrders.CUSTOMER_ID, Integer.valueOf(customer_id));
 		} else {
-			throw new SaleOrderValidationException("");
+			localValues.putNull(MobileStoreContract.SaleOrders.CUSTOMER_ID);
 		}
 		
 		String transfer_customer_auto_complete = transitCustomerAutoComplete.getText().toString().trim();
@@ -877,10 +894,19 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			//Cursor customerItemCursor = (Cursor) transitCustomerAutoCompleteAdapter.getItem(transitCustomerAutoCompleteAdapter.getIdForTitle(transfer_customer_auto_complete));
 			int transit_customer_id = transitCustomerAutoCompleteAdapter.getIdForTitle(transfer_customer_auto_complete);//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
 			localValues.put(MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST, Integer.valueOf(transit_customer_id));
-		} 
+		}  else {
+			localValues.putNull(MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST);
+		}
 		
 		String document_no = documentNo.getText().toString();
 		localValues.put(MobileStoreContract.SaleOrders.SALES_ORDER_NO, document_no);
+		
+		if (orderDate == null) {
+			orderDate = DateUtils.formatDbDate(new Date());
+		}
+		localValues.put(MobileStoreContract.SaleOrders.ORDER_DATE, orderDate);
+		
+		localValues.put(MobileStoreContract.SaleOrders.SALES_PERSON_ID, Integer.valueOf(salesPersonId));
 		
 		int document_type = documentType.getSelectedItemPosition();
 		localValues.put(MobileStoreContract.SaleOrders.DOCUMENT_TYPE, Integer.valueOf(document_type));
@@ -901,11 +927,15 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		long sell_address_id = billingAddress.getSelectedItemId();
 		if (sell_address_id != AdapterView.INVALID_ROW_ID) {
 			localValues.put(MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID, Long.valueOf(sell_address_id));
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID);
 		}
 		
 		long shipp_address_id = shippingAddress.getSelectedItemId();
 		if (shipp_address_id != AdapterView.INVALID_ROW_ID) {
 			localValues.put(MobileStoreContract.SaleOrders.SHIPP_TO_ADDRESS_ID, Long.valueOf(shipp_address_id));
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrders.SHIPP_TO_ADDRESS_ID);
 		}
 		
 		if (customerContactId != null) {
@@ -915,13 +945,17 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		}
 		
 		String contact_phone = contactPhone.getText().toString().trim();
-		if (contact_phone != null) {
+		if (contact_phone != null && !contact_phone.equals("")) {
 			localValues.put(MobileStoreContract.SaleOrders.CONTACT_PHONE, contact_phone);
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrders.CONTACT_PHONE);
 		}
 		
 		String contact_name = contactName.getText().toString().trim();
-		if (contact_name != null) {
+		if (contact_name != null && !contact_name.equals("")) {
 			localValues.put(MobileStoreContract.SaleOrders.CONTACT_NAME, contact_name);
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrders.CONTACT_NAME);
 		}
 		
 		localValues.put(MobileStoreContract.SaleOrders.HIDE_REBATE, hideDiscount.isChecked() ? 1 : 0);
@@ -929,8 +963,10 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		localValues.put(MobileStoreContract.SaleOrders.FURTHER_SALE, showDeclaration.isChecked() ? 1 : 0);
 		
 		String order_no = orderNo.getText().toString().trim();
-		if (order_no != null) {
+		if (order_no != null && !contact_name.equals("")) {
 			localValues.put(MobileStoreContract.SaleOrders.QUOTE_NO, order_no);
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrders.QUOTE_NO);
 		}
 		
 		return localValues;
@@ -947,7 +983,11 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.cancel_sale_order_main_menu_option:
-			getContentResolver().update(mUri, initialLoadedContentValues, null, null);
+			if (mAction.equals(Intent.ACTION_INSERT)) {
+				getContentResolver().delete(mUri, null, null);
+			} else {
+				getContentResolver().update(mUri, initialLoadedContentValues, null, null);
+			}
 			finish();
 			return true;
 		case R.id.save_sale_order_main_menu_option:
