@@ -53,8 +53,8 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 	@Override
 	public void onResume() {
 		super.onResume();
-		IntentFilter navSyncFilter = new IntentFilter(NavisionSyncService.NAVISION_SYNC_ACTION);
-		//registering broadcast receiver to listen NAVISION_SYNC broadcast 
+		IntentFilter navSyncFilter = new IntentFilter(ItemsSyncObject.BROADCAST_SYNC_ACTION);
+		//registering broadcast receiver to listen BROADCAST_SYNC_ACTION broadcast 
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, navSyncFilter);
 		itemSyncCheckBox.setSummary(DateUtils.formatDbDate(new Date()));
 		
@@ -105,7 +105,6 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 		public void onReceive(Context context, Intent intent) {
 			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
 			onSOAPResult(syncResult.getStatus(), syncResult.getResult());
-
 		}
 	};
 	
@@ -119,7 +118,6 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 	}
 
 	public void onSOAPResult(SyncStatus syncStatus, String result) {
-		System.out.println(result);
 		if(syncStatus.equals(SyncStatus.SUCCESSED)){
 			itemSyncCheckBox.setSummary(DateUtils.formatDbDate(new Date()));
 		}

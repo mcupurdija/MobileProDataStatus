@@ -129,8 +129,8 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	public void onResume() {
 		super.onResume();
 
-		IntentFilter intentFilter = new IntentFilter(NavisionSyncService.NAVISION_SYNC_ACTION);
-		//registering broadcast receiver to listen NAVISION_SYNC broadcast 
+		IntentFilter intentFilter = new IntentFilter(ItemQuantitySyncObject.BROADCAST_SYNC_ACTION);
+		//registering broadcast receiver to listen BROADCAST_SYNC_ACTION broadcast 
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, intentFilter);
 	}
 
@@ -226,6 +226,7 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			System.out.println("SSSSS");
 			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
 			stockStatusValue = syncResult.getResult();
 			addStockStatusToFrame(syncResult.getResult());

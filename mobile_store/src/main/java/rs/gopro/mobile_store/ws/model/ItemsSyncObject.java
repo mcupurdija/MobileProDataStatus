@@ -22,6 +22,7 @@ import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
 
 public class ItemsSyncObject extends SyncObject {
 	private static String TAG = "ItemsSyncObject";
+	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.ITEM_SYNC_ACTION";
 	
 	private String mCSVString;
 	private String mItemNoa46;
@@ -226,5 +227,11 @@ public class ItemsSyncObject extends SyncObject {
 
 	public void setmSalespersonCode(String mSalespersonCode) {
 		this.mSalespersonCode = mSalespersonCode;
+	}
+
+	@Override
+	public String getBroadcastAction() {
+		// TODO Auto-generated method stub
+		return BROADCAST_SYNC_ACTION;
 	}
 }

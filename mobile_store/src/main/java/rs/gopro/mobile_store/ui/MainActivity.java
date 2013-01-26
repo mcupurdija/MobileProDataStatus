@@ -216,11 +216,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	
 	@Override
 	protected void onResume() {
-		
-		
 		super.onResume();
-		IntentFilter navSyncFilter = new IntentFilter(NavisionSyncService.NAVISION_SYNC_ACTION_2);
-		//registering broadcast receiver to listen NAVISION_SYNC broadcast 
+		IntentFilter navSyncFilter = new IntentFilter(ItemsSyncObject.BROADCAST_SYNC_ACTION);
+		//registering broadcast receiver to listen BROADCAST_SYNC_ACTION broadcast 
 		LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, navSyncFilter);
 	}
 	
@@ -228,7 +226,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	protected void onPause() {
 		super.onPause();
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(onNotice);
-		System.out.println("MAIN ACTIVITY IDE U PAUZU");
 	}
 	
 	private BroadcastReceiver onNotice= new BroadcastReceiver() {
@@ -250,7 +247,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	}
 	
 	public void onSOAPResult(SyncStatus syncStatus, String result) {
-		System.out.println(result);
+		System.out.println("Status: "+syncStatus);
     	return;
     }
 

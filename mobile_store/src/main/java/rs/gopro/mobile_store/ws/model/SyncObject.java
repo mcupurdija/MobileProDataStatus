@@ -77,6 +77,9 @@ public abstract class SyncObject implements Parcelable {
 	public String getResult() {
 		return result;
 	}
+	
+	
+	public abstract String getBroadcastAction();
 
 	public String getStatusMessage() {
 		return statusMessage;

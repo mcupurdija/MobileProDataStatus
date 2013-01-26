@@ -167,6 +167,7 @@
 	<string name="item_dialog_title">Informacije o artiklu</string>
 	
 	
+	<string name="sync_failed_title">Sinhronizacija nije uspesno izvrsena</string>
 	<!-- settings -->
 	<string name="title_settings">Podesavanja</string>
 	<string name="key_ws_entry_point">ws_entry_point</string>

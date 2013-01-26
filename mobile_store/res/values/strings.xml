@@ -165,6 +165,8 @@
 	<string name="item_campaign_end_date_label">Campaign end date</string>
 	<string name="item_dialog_title">Item information</string>
 	
+	
+	<string name="sync_failed_title">Sync is failed</string>
 	<!-- settings -->
 	<string name="title_settings">Settings</string>
 	
