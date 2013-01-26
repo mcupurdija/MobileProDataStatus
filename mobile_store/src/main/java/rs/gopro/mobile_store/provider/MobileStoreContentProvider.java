@@ -72,6 +72,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int CUSTOMER_ADDRESSES = 500;
 	private static final int CUSTOMER_ADDRESSES_ID = 501;
 	private static final int CUSTOMER_ADDRESSES_CUSTOMER_NO = 502;
+	
+	private static final int SYNC_LOGS_MAX = 600;
+	private static final int SYNC_LOGS = 601;
+	private static final int SYNC_LOGS_ID = 602;
 
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -142,6 +146,12 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "customer_addresses/customer_no/*", CUSTOMER_ADDRESSES_CUSTOMER_NO);
 		mobileStoreURIMatcher.addURI(authority, "customer_addresses/*", CUSTOMER_ADDRESSES_ID);
 		
+		mobileStoreURIMatcher.addURI(authority, "sync_logs/#", SYNC_LOGS_ID);
+		mobileStoreURIMatcher.addURI(authority, "sync_logs", SYNC_LOGS);
+		
+		mobileStoreURIMatcher.addURI(authority, "sync_logs/*/sync_logs_obejct_id", SYNC_LOGS_MAX);
+		
+			
 		/*
 		 * mobileStoreURIMatcher.addURI(authority, "contacts/custom_search",
 		 * CONTACTS_ALL); mobileStoreURIMatcher.addURI(authority,
@@ -238,6 +248,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.SALE_ORDERS, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return SaleOrders.buildSaleOrderUri("" + id);
+		case SYNC_LOGS:
+			id = database.insertOrThrow(Tables.SYNC_LOGS,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return SyncLogs.buildSyncLogsUri(""+id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -266,6 +280,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
+		System.out.println("update(uri = " + uri + ")");
 		LogUtils.log(Log.VERBOSE, TAG, "update(uri = " + uri + ")");
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
 		SelectionBuilder builder = buildSimpleSelection(uri);
@@ -304,6 +319,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 					Tables.CONTACTS + "." + Contacts._ID + "=?", contactId);
 		case CUSTOMER_ADDRESSES:
 			return builder.addTable(Tables.CUSTOMER_ADDRESSES);
+		case SYNC_LOGS_ID:
+			String syncId = SyncLogs.getSyncLogId(uri);
+			return builder.addTable(Tables.SYNC_LOGS)
+				.where(SyncLogs._ID + "=?", new String[]{syncId} );
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -565,6 +584,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			final String customerNo = CustomerAddresses.getSearchByCustomerNo(uri);
 			return builder.addTable(Tables.CUSTOMER_ADDRESSES)
 					.where(CustomerAddresses.CUSTOMER_NO + " like ?", new String[] { customerNo });
+		case SYNC_LOGS_MAX:
+			final String  syncObjectId = SyncLogs.getSyncLogObjectId(uri);
+			return builder.addTable(Tables.SYNC_LOGS)
+					.where(SyncLogs.SYNC_OBJECT_ID + "=?", new String[]{syncObjectId});
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

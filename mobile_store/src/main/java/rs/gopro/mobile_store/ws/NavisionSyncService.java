@@ -83,11 +83,11 @@ public class NavisionSyncService extends IntentService {
 			syncObject.saveSOAPResponse(envelope.getResponse(), contentResolver);
 			syncResult.setStatus(SyncStatus.SUCCESSED);
 			syncResult.setResult(syncObject.getResult());
-			syncObject.logSyncEnd(contentResolver);
+			syncObject.logSyncEnd(contentResolver, SyncStatus.SUCCESSED);
 		} catch (Exception e) {
 			syncResult.setStatus(SyncStatus.FAILURE);
 			syncResult.setResult(syncObject.getResult());
-			syncObject.logSyncEnd(contentResolver);
+			syncObject.logSyncEnd(contentResolver, SyncStatus.FAILURE);
 			LogUtils.LOGE(TAG, "Error during soap request!", e);
 		}
 

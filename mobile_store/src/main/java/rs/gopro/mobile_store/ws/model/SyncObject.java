@@ -5,11 +5,17 @@ import java.util.List;
 import org.ksoap2.serialization.PropertyInfo;
 
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
+import rs.gopro.mobile_store.util.ApplicationConstants;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
@@ -26,7 +32,8 @@ public abstract class SyncObject implements Parcelable {
 
 	protected static String WS_SERVER_ADDRESS = "http://10.94.1.5:7047/DynamicsNAV/WS";// "http://sqlserver.gopro.rs:7047/Wurth/WS";
 
-	//private String mCompany = "Wurth%20-%20Development";
+	//uri for update, no need in Parcel
+	protected Uri currentUri;
 	private String statusMessage;
 	protected String result;
 	protected Context context;
@@ -66,20 +73,48 @@ public abstract class SyncObject implements Parcelable {
 
 	public abstract String getWebMethodName();
 
-	public abstract void logSyncStart(ContentResolver contentResolver);
-
 	public abstract List<PropertyInfo> getSOAPRequestProperties();
 
 	public abstract void saveSOAPResponse(Object response, ContentResolver contentResolver) throws SOAPResponseException;
 
-	public abstract void logSyncEnd(ContentResolver contentResolver);
+	/**
+	 * Tag represent name of class
+	 * @return
+	 */
+	public abstract String getTag();
+	
+	public abstract String getBroadcastAction();
+
+	public void logSyncStart(ContentResolver contentResolver) {
+		Integer maxBatch = Integer.valueOf(0);
+		Cursor cursor = contentResolver.query(SyncLogs.buildSyncLogsObjectIdUri(getTag()), new String[] { "MAX("+SyncLogs.SYNC_OBJECT_BATCH+")" }, null, null, null);
+		if (cursor.moveToFirst()) {
+			maxBatch = cursor.getInt(0);
+		}
+		System.out.println("Max batch is " + maxBatch);
+		maxBatch = maxBatch + 1;
+		ContentValues values = new ContentValues();
+		values.put(SyncLogs.SYNC_OBJECT_NAME, getTag());
+		values.put(SyncLogs.SYNC_OBJECT_ID, getTag());
+		values.put(SyncLogs.SYNC_OBJECT_STATUS, ApplicationConstants.SyncStatus.IN_PROCCESS.toString());
+		values.put(SyncLogs.SYNC_OBJECT_BATCH, maxBatch);
+		currentUri = contentResolver.insert(SyncLogs.CONTENT_URI, values);
+	}
+	
+	
+	public void logSyncEnd(ContentResolver contentResolver, SyncStatus syncStatus) {
+		ContentValues values = new ContentValues();
+		values.put(SyncLogs.SYNC_OBJECT_STATUS, syncStatus.toString());
+		contentResolver.update(currentUri, values, null, null);
+	}
+
 
 	public String getResult() {
 		return result;
 	}
 	
 	
-	public abstract String getBroadcastAction();
+
 
 	public String getStatusMessage() {
 		return statusMessage;
