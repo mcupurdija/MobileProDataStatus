@@ -32,6 +32,7 @@ public class MobileStoreContract {
 	private static final String PATH_SYNC_LOGS = "sync_logs";
 	private static final String PATH_INVOICE_LINES = "invoice_lines";
 	private static final String PATH_INVOICE_LINES_FROM_ORDER = "invoice_lines_from_order";
+	private static final String PATH_SYNC_LOGS_ID = "sync_logs_obejct_id";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -575,11 +576,19 @@ public class MobileStoreContract {
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sync_logs";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sync_logs";
 
-		public static Uri buildSyncLogsUri(String contactId) {
-			return CONTENT_URI.buildUpon().appendPath(contactId).build();
+		public static Uri buildSyncLogsUri(String syncId) {
+			return CONTENT_URI.buildUpon().appendPath(syncId).build();
+		}
+		
+		public static Uri buildSyncLogsObjectIdUri(String syncObjectId) {
+			return CONTENT_URI.buildUpon().appendPath(syncObjectId).appendPath(PATH_SYNC_LOGS_ID).build();
 		}
 
 		public static String getSyncLogId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+		
+		public static String getSyncLogObjectId(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}
 		

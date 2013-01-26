@@ -12,7 +12,7 @@ public interface Tables {
 	String VISITS = "visits";
 	String USERS_ROLE = "users_role";
 	String VISITS_JOIN_CUSTOMERS = "visits left outer join customers on visits.customer_id = customers._id";
-	
+	String SYNC_LOGS = "sync_logs";
 	
 	String INVOICES = "invoices";
 	String INVOICE_LINES = "invoice_lines";
