@@ -4,10 +4,15 @@ import java.util.Date;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.util.ApplicationConstants;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
+import rs.gopro.mobile_store.ws.model.SyncResult;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.drawable.Drawable;
@@ -19,6 +24,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,7 +36,7 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 
 	CheckBoxPreference itemSyncCheckBox;
 	ProgressBar syncItemsProgresbar;
-	private ResultReceiver mReceiver;
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +53,17 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 	@Override
 	public void onResume() {
 		super.onResume();
+		IntentFilter navSyncFilter = new IntentFilter(ItemsSyncObject.BROADCAST_SYNC_ACTION);
+		//registering broadcast receiver to listen BROADCAST_SYNC_ACTION broadcast 
+		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, navSyncFilter);
 		itemSyncCheckBox.setSummary(DateUtils.formatDbDate(new Date()));
+		
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(onNotice);
 	}
 
 	@Override
@@ -82,44 +98,27 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 		}
 	}
 
+	
+	private BroadcastReceiver onNotice = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
+			onSOAPResult(syncResult.getStatus(), syncResult.getResult());
+		}
+	};
+	
+	
 	private void doItemsSync() {
-		mReceiver = new ResultReceiver(new Handler()) {
-
-			@Override
-			protected void onReceiveResult(int resultCode, Bundle resultData) {
-				if (resultCode == ApplicationConstants.SUCCESS) {
-					if (resultData != null) {
-						onSOAPResult(resultCode, resultData.getString(NavisionSyncService.SOAP_RESULT));
-					} else {
-						onSOAPResult(resultCode, null);
-					}
-				} else if (resultCode == ApplicationConstants.FAILURE) {
-					if (resultData != null) {
-						onSOAPResult(resultCode, resultData.getString(NavisionSyncService.SOAP_FAULT));
-					} else {
-						onSOAPResult(resultCode, null);
-					}
-				}
-
-			}
-
-		};
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 		ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(1), null, DateUtils.getWsDummyDate());
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
-		intent.putExtra(NavisionSyncService.EXTRA_RESULT_RECEIVER, getResultReceiver());
 		getActivity().startService(intent);
 
 	}
 
-	public ResultReceiver getResultReceiver() {
-		return mReceiver;
-	}
-
-	public void onSOAPResult(int code, String result) {
-		System.out.println(result);
-		//TODO Change negation in if statement
-		if(ApplicationConstants.SUCCESS != code){
+	public void onSOAPResult(SyncStatus syncStatus, String result) {
+		if(syncStatus.equals(SyncStatus.SUCCESSED)){
 			itemSyncCheckBox.setSummary(DateUtils.formatDbDate(new Date()));
 		}
 	}

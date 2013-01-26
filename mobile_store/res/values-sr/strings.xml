@@ -165,14 +165,15 @@
 	<string name="item_campaign_start_date_label">Pocetak kampanje</string>
 	<string name="item_campaign_end_date_label">Kraj kampanje</string>
 	<string name="item_dialog_title">Informacije o artiklu</string>
-	
+
 	<!-- invoice_line -->
 	<string name="invoice_line_quantity">Kolicina</string>
 	<string name="invoice_line_unit_price">Cena po jedinici</string>
 	<string name="invoice_line_discount_amount">Popust</string>
 	<string name="invoice_line_dialog_title">Stavke fakture</string>
 	<string name="invoice_line_dialog_alternative_title">Nema stavki fakture</string>
-	
+
+	<string name="sync_failed_title">Sinhronizacija nije uspesno izvrsena</string>
 	<!-- settings -->
 	<string name="title_settings">Podesavanja</string>
 	<string name="key_ws_entry_point">ws_entry_point</string>

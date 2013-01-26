@@ -25,6 +25,7 @@ public class ItemQuantitySyncObject extends SyncObject {
 	}
 
 	private static String TAG = "ItemsSyncObject";
+	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.ITEM_QUANTITY_SYNC_ACTION";
 	
 	private String mItemNoa46;
 	private String mLocationCode;
@@ -151,5 +152,10 @@ public class ItemQuantitySyncObject extends SyncObject {
 
 	public void setmLocationCode(String mLocationCode) {
 		this.mLocationCode = mLocationCode;
+	}
+
+	@Override
+	public String getBroadcastAction() {
+		return BROADCAST_SYNC_ACTION;
 	}
 }
