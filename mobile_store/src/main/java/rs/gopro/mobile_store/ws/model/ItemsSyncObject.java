@@ -22,7 +22,7 @@ import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
 
 public class ItemsSyncObject extends SyncObject {
-	private static String TAG = "ItemsSyncObject";
+	public static String TAG = "ItemsSyncObject";
 	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.ITEM_SYNC_ACTION";
 
 	private String mCSVString;

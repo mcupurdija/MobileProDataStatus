@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.provider.MobileStoreContract.*;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SelectionBuilder;
 import android.content.ContentProvider;
@@ -147,6 +148,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "customer_addresses/*", CUSTOMER_ADDRESSES_ID);
 		
 		mobileStoreURIMatcher.addURI(authority, "sync_logs/#", SYNC_LOGS_ID);
+		mobileStoreURIMatcher.addURI(authority, "sync_logs/*", SYNC_LOGS_ID);
 		mobileStoreURIMatcher.addURI(authority, "sync_logs", SYNC_LOGS);
 		
 		mobileStoreURIMatcher.addURI(authority, "sync_logs/*/sync_logs_obejct_id", SYNC_LOGS_MAX);
@@ -289,12 +291,15 @@ public class MobileStoreContentProvider extends ContentProvider {
 		int updatedRows = builder.where(selection, selectionArgs).update(
 				database, values);
 		int match = mobileStoreURIMatcher.match(uri);
+		System.out.println("UPDATE MATHCER " +match);
 		switch (match) {
 		case SALE_ORDER:
 			/**
 			 * This Uri is used for select so we must use the same to do notification
 			 */
 			getContext().getContentResolver().notifyChange(SaleOrders.CONTENT_URI, null);
+		case SYNC_LOGS_ID:
+			getContext().getContentResolver().notifyChange(SyncLogs.CONTENT_URI, null);
 		default:
 			getContext().getContentResolver().notifyChange(uri, null);
 		}
@@ -352,6 +357,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	 */
 	private SelectionBuilder buildExpandedSelection(Uri uri, int match) {
 		System.out.println("URI: " + uri);
+		System.out.println(match);
 		final SelectionBuilder builder = new SelectionBuilder();
 		switch (match) {
 		case USERS_ID:
@@ -604,6 +610,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			final String  syncObjectId = SyncLogs.getSyncLogObjectId(uri);
 			return builder.addTable(Tables.SYNC_LOGS)
 					.where(SyncLogs.SYNC_OBJECT_ID + "=?", new String[]{syncObjectId});
+		case SYNC_LOGS :
+			return builder.addTable(Tables.SYNC_LOGS);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

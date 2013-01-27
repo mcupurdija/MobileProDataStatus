@@ -81,9 +81,9 @@ public class NavisionSyncService extends IntentService {
 			// send to our REST service via HttpClient.
 			androidHttpTransport.call(syncObject.getSoapAction(), envelope);
 			syncObject.saveSOAPResponse(envelope.getResponse(), contentResolver);
-			syncResult.setStatus(SyncStatus.SUCCESSED);
+			syncResult.setStatus(SyncStatus.SUCCESS);
 			syncResult.setResult(syncObject.getResult());
-			syncObject.logSyncEnd(contentResolver, SyncStatus.SUCCESSED);
+			syncObject.logSyncEnd(contentResolver, SyncStatus.SUCCESS);
 		} catch (Exception e) {
 			syncResult.setStatus(SyncStatus.FAILURE);
 			syncResult.setResult(syncObject.getResult());

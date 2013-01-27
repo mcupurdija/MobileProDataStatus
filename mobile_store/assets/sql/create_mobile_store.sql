@@ -480,12 +480,12 @@ BEGIN
 	where _id = new._id; 
 END;
 
-INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch` ) VALUES
-(1, 'ItemsSyncObject', 'ItemsSyncObject', 'FAILED', 2);
-INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch` ) VALUES
-(2, 'ItemsSyncObject', 'ItemsSyncObject', 'FAILED', 5);
-INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch` ) VALUES
-(3, 'ItemsSyncObject', 'ItemsSyncObject', 'FAILED', 3);
+INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch`, `updated_date` ) VALUES
+(1, 'ItemsSyncObject', 'ItemsSyncObject', 'FAILED', 2,'2012-12-19 15:29:42' );
+INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch`, `updated_date` ) VALUES
+(2, 'ItemsSyncObject', 'ItemsSyncObject', 'FAILED', 5, '2012-12-19 15:29:42');
+INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch`, `updated_date` ) VALUES
+(3, 'ItemsSyncObject', 'ItemsSyncObject', 'SUCCESS', 50, '2012-12-19 15:29:42');
 
 CREATE TABLE `customer_addresses` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
