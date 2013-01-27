@@ -116,7 +116,6 @@ public class ItemsSyncObject extends SyncObject {
 	public void saveSOAPResponse(Object response, ContentResolver contentResolver) throws SOAPResponseException {
 		if (response instanceof SoapPrimitive) {
 			SoapPrimitive soapresult = (SoapPrimitive) response;
-
 			int inserted = 0;
 			try {
 				inserted = parseAndSave(contentResolver, soapresult);
