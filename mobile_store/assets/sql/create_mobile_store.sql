@@ -297,6 +297,7 @@ CREATE TABLE `visits` (
 	`visit_result` TEXT,
 	`note` TEXT,
 	`sync_object_batch` INTEGER,
+	`is_realized` INTEGER,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,

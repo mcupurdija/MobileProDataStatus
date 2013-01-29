@@ -33,6 +33,7 @@ public class MobileStoreContract {
 	private static final String PATH_INVOICE_LINES = "invoice_lines";
 	private static final String PATH_INVOICE_LINES_FROM_ORDER = "invoice_lines_from_order";
 	private static final String PATH_SYNC_LOGS_ID = "sync_logs_obejct_id";
+	private static final String PATH_SALES_PERSON = "sales_person";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -66,6 +67,7 @@ public class MobileStoreContract {
 		String VISIT_RESULT = "visit_result";
 		String NOTE = "note";
 		String SYNC_OBJECT_BATCH = "sync_object_batch";
+		String IS_REALIZED = "is_realized";
 		// it has audit columns
 	}
 
@@ -284,8 +286,22 @@ public class MobileStoreContract {
 	
 	public interface SalesPersonsColumns {
 		String SALES_PERSON_ID = "sales_person_id";
+		String SALE_PERSON_No = "sales_person_no";
+		String SALE_PERSON_NAME = "name";
+		String SALE_PERSON_NAME_2 = "name2";
+		
+		String CREATED_BY = "created_by";
+		String UPDATED_DATE = "updated_date";
+		String UPDATED_BY = "updated_by";
+		
+		
 	}
 
+	
+	public static class SalesPerson implements BaseColumns{
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALES_PERSON).build();
+	}
+	
 	public static class Users implements UsersColumns, UsersRoleColumns, BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_USERS).build();
 
