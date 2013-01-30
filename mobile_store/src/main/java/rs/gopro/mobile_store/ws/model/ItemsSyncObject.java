@@ -142,18 +142,10 @@ public class ItemsSyncObject extends SyncObject {
 
 	}
 
-	private int parseAndSave(ContentResolver contentResolver, SoapPrimitive result) throws CSVParseException {
+	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive result) throws CSVParseException {
 		List<ItemsDomain> parsedItems = CSVDomainReader.parse(new StringReader(result.toString()), ItemsDomain.class);
-
-		List<ContentValues> valuesForDb = new ArrayList<ContentValues>();
-		for (ItemsDomain item : parsedItems) {
-			valuesForDb.add(item.getContentValues());
-		}
-
-		ContentValues[] valuesForInsert = valuesForDb.toArray(new ContentValues[valuesForDb.size()]);
-
+		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedItems);
 		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.Items.CONTENT_URI, valuesForInsert);
-
 		return numOfInserted;
 	}
 

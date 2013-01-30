@@ -12,14 +12,20 @@ import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Generic;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
+import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
+import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable.Creator;
+import android.provider.BaseColumns;
 
 public class PlannedVisitsToCustomersSyncObject extends SyncObject {
 
@@ -127,43 +133,9 @@ public class PlannedVisitsToCustomersSyncObject extends SyncObject {
 		return properties;
 	}
 
-	@Override
-	public void saveSOAPResponse(Object response, ContentResolver contentResolver) throws SOAPResponseException {
-		if (response instanceof SoapPrimitive) {
-			SoapPrimitive soapresult = (SoapPrimitive) response;
-			int inserted = 0;
-			try {
-				inserted = parseAndSave(contentResolver, soapresult);
-			} catch (CSVParseException e) {
-				throw new SOAPResponseException(e);
-			}
-			result = String.valueOf(inserted);
-			LogUtils.LOGI(TAG, "New Items inserted:" + inserted);
-		} else if (response instanceof Vector<?>) {
-			Vector<SoapPrimitive> result = (Vector<SoapPrimitive>) response;
-			for (SoapPrimitive primitive : result) {
-				LogUtils.LOGI(TAG, primitive.toString());
-			}
-			// LogUtils.LOGI(TAG, result.toString());
-		} else if (response instanceof SoapFault) {
-			SoapFault result = (SoapFault) response;
-			LogUtils.LOGE(TAG, result.faultstring);
-			throw new SOAPResponseException(result.getMessage());
-		} else if (response instanceof SoapFault12) {
-			SoapFault12 result = (SoapFault12) response;
-			LogUtils.LOGE(TAG, result.faultstring);
-			throw new SOAPResponseException(result.getMessage());
-		}
-
-	}
-
-	private int parseAndSave(ContentResolver contentResolver, SoapPrimitive result) throws CSVParseException {
+	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive result) throws CSVParseException {
 		List<PlannedVisitsDomain> parsedDomains = CSVDomainReader.parse(new StringReader(result.toString()), PlannedVisitsDomain.class);
-		List<ContentValues> valuesForDb = new ArrayList<ContentValues>();
-		for (PlannedVisitsDomain plannedVisits : parsedDomains) {
-			valuesForDb.add(plannedVisits.getContentValues());
-		}
-		ContentValues[] valuesForInsert = valuesForDb.toArray(new ContentValues[valuesForDb.size()]);
+		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedDomains);
 		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.Visits.CONTENT_URI, valuesForInsert);
 		return numOfInserted;
 	}

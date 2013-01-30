@@ -77,6 +77,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int SYNC_LOGS_MAX = 600;
 	private static final int SYNC_LOGS = 601;
 	private static final int SYNC_LOGS_ID = 602;
+	
+	private static final int GENERIC = 700;
 
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -153,6 +155,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		
 		mobileStoreURIMatcher.addURI(authority, "sync_logs/*/sync_logs_obejct_id", SYNC_LOGS_MAX);
 		
+		mobileStoreURIMatcher.addURI(authority, "generic/*",GENERIC);
 			
 		/*
 		 * mobileStoreURIMatcher.addURI(authority, "contacts/custom_search",
@@ -612,6 +615,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.where(SyncLogs.SYNC_OBJECT_ID + "=?", new String[]{syncObjectId});
 		case SYNC_LOGS :
 			return builder.addTable(Tables.SYNC_LOGS);
+		case GENERIC :
+			final String tableName = Generic.getTableName(uri);
+			return builder.addTable(tableName);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

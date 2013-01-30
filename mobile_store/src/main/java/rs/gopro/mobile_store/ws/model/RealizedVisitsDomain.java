@@ -1,23 +1,26 @@
 package rs.gopro.mobile_store.ws.model;
 
+import java.util.List;
+
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
+import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 import android.content.ContentValues;
 
 public class RealizedVisitsDomain extends Domain {
 
-	private String sales_person_no; 
+	private String sales_person_no;
 	private String visit_date;
 	public int potental_customer;
-	private String customer_no; 
-	private String arrival_time; 
-	private String departure_time; 
+	private String customer_no;
+	private String arrival_time;
+	private String departure_time;
 	private String entry_type;
 	private String odometer;
 	private String visit_result;
-	public String note; 
-	
-	private static final String[] COLUMNS = new String[]{"salesPerson_no", "visit_date","potental_customer", "customer_no", "arrival_time", "departure_time", "entry_type","odometer","visit_result", "note"}; 
-	
+	public String note;
+
+	private static final String[] COLUMNS = new String[] { "salesPerson_no", "visit_date", "potental_customer", "customer_no", "arrival_time", "departure_time", "entry_type", "odometer", "visit_result", "note" };
+
 	@Override
 	public String[] getCSVMappingStrategy() {
 		return COLUMNS;
@@ -28,7 +31,7 @@ public class RealizedVisitsDomain extends Domain {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(Visits.SALES_PERSON_ID, getSales_person_no());
 		contentValues.put(Visits.VISIT_DATE, getVisit_date());
-		
+
 		contentValues.put(Visits.CUSTOMER_NO, getCustomer_no());
 		contentValues.put(Visits.ARRIVAL_TIME, getArrival_time());
 		contentValues.put(Visits.DEPARTURE_TIME, getDeparture_time());
@@ -38,6 +41,12 @@ public class RealizedVisitsDomain extends Domain {
 		contentValues.put(Visits.IS_REALIZED, Integer.valueOf(1));
 		contentValues.put(Visits.NOTE, getNote());
 		return contentValues;
+	}
+
+	@Override
+	public List<RowItemDataHolder> getRowItemsForRepalce() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public String getSales_person_no() {
@@ -120,8 +129,4 @@ public class RealizedVisitsDomain extends Domain {
 		this.note = note;
 	}
 
-	
-	
-	
-	
 }

@@ -5,7 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapPrimitive;
 
+import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
 import android.content.ContentResolver;
 import android.os.Parcel;
@@ -46,7 +48,7 @@ public class RealizedVisitsToCustomersSyncObject extends SyncObject {
 		setVisitDateFrom(new Date(parcel.readLong()));
 		setVisitDateTo(new Date(parcel.readLong()));
 		setCustomerNoa46(parcel.readString());
-		
+
 	}
 
 	public RealizedVisitsToCustomersSyncObject(String cSVString, String salespersonCode, Date visitDateFrom, Date visitDateTo, String customerNoa46) {
@@ -117,9 +119,9 @@ public class RealizedVisitsToCustomersSyncObject extends SyncObject {
 	}
 
 	@Override
-	public void saveSOAPResponse(Object response, ContentResolver contentResolver) throws SOAPResponseException {
+	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException {
 		// TODO Auto-generated method stub
-
+		return 0;
 	}
 
 	@Override

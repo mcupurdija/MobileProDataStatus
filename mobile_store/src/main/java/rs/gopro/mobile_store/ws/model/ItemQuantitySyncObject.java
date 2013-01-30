@@ -10,6 +10,7 @@ import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
 
 import android.content.ContentResolver;
@@ -105,20 +106,9 @@ public class ItemQuantitySyncObject extends SyncObject {
 	}
 
 	@Override
-	public void saveSOAPResponse(Object response, ContentResolver contentResolver) throws SOAPResponseException {
-		if (response instanceof SoapPrimitive) {
-			SoapPrimitive resultSoap = (SoapPrimitive) response;
-			result = resultSoap.toString();
-			LogUtils.LOGI(TAG, result.toString());
-		} else if (response instanceof SoapFault) {
-			SoapFault result = (SoapFault) response;
-			LogUtils.LOGE(TAG, result.getMessage());
-			throw new SOAPResponseException(result.getMessage());
-		} else if (response instanceof SoapFault12) {
-			SoapFault12 result = (SoapFault12) response;
-			LogUtils.LOGE(TAG, result.getMessage());
-			throw new SOAPResponseException(result.getMessage());
-		}
+	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	public String getmItemNoa46() {

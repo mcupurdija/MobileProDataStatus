@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapPrimitive;
 
+import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
 import android.content.ContentResolver;
 import android.os.Parcel;
@@ -67,9 +69,6 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		setpDiscountPctAsTxt(parcel.readString());
 	}
 
-	
-	
-	
 	public ItemQtySalesPriceAndDiscSyncObject(String pItemNoa46, String pLocationCode, Integer pCampaignStatus, String pCustomerNoa46, String pPotentialCustomerNoa46, Double pQuantityOnSalesLine, String pSalespersonCode,
 			Integer pDocumentType, Integer pAvailableToWholeShip, String pQuantityAsTxt, String pSalesPriceRSDAsTxt, String pSalesPriceEURAsTxt, String pMinimumDiscountPctAsTxt, String pMaximumDiscountPctAsTxt, String pDiscountPctAsTxt) {
 		super();
@@ -127,97 +126,97 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		itemNoa46Info.setValue(pItemNoa46);
 		itemNoa46Info.setType(String.class);
 		properies.add(itemNoa46Info);
-		
-		PropertyInfo locationCodeInfo =  new PropertyInfo();
+
+		PropertyInfo locationCodeInfo = new PropertyInfo();
 		locationCodeInfo.setName("pLocationCode");
 		locationCodeInfo.setValue(pLocationCode);
-	    locationCodeInfo.setType(String.class);
-	    properies.add(locationCodeInfo);
-		
-	    PropertyInfo campaignStatusInfo = new PropertyInfo();
-	    campaignStatusInfo.setName("pCampaignStatus");
-	    campaignStatusInfo.setValue(pCampaignStatus);
-	    campaignStatusInfo.setType(Integer.class);
-	    properies.add(campaignStatusInfo);
-	    
-	    PropertyInfo customerNoa46Info = new PropertyInfo();
-	    customerNoa46Info.setName("pCustomerNoa46");
-	    customerNoa46Info.setValue(pCustomerNoa46);
-	    customerNoa46Info.setType(String.class);
-	    properies.add(customerNoa46Info);
-	    
-	    PropertyInfo potentialCustomerNoa46Info = new PropertyInfo();
-	    potentialCustomerNoa46Info.setName("pPotentialCustomerNoa46");
-	    potentialCustomerNoa46Info.setValue(pPotentialCustomerNoa46);
-	    potentialCustomerNoa46Info.setType(String.class);
-	    properies.add(potentialCustomerNoa46Info);
-	    
-	    PropertyInfo quantityOnSalesLineInfo = new PropertyInfo();
-	    quantityOnSalesLineInfo.setName("pQuantityOnSalesLine");
-	    quantityOnSalesLineInfo.setValue(pQuantityOnSalesLine);
-	    quantityOnSalesLineInfo.setType(Double.class);
-	    properies.add(quantityOnSalesLineInfo);
-	    
-	    PropertyInfo salespersonCode = new PropertyInfo();
-	    salespersonCode.setName("pSalespersonCode");
-	    salespersonCode.setValue(pSalespersonCode);
-	    salespersonCode.setType(String.class);
-	    properies.add(salespersonCode);
-	    
-	    PropertyInfo documentTypeInfo = new PropertyInfo();
-	    documentTypeInfo.setName("pDocumentType");
-	    documentTypeInfo.setValue(pDocumentType);
-	    documentTypeInfo.setType(Integer.class);
-	    properies.add(documentTypeInfo);
-	    
-	    PropertyInfo availableToWholeShipInfo = new PropertyInfo();
-	    availableToWholeShipInfo.setName("pAvailableToWholeShip");
-	    availableToWholeShipInfo.setValue(pAvailableToWholeShip);
-	    availableToWholeShipInfo.setType(Integer.class);
-	    properies.add(availableToWholeShipInfo);
-	    
-	    PropertyInfo quantityAsTxtInfo = new PropertyInfo();
-	    quantityAsTxtInfo.setName("pQuantityAsTxt");
-	    quantityAsTxtInfo.setValue(pQuantityAsTxt);
-	    quantityAsTxtInfo.setType(String.class);
-	    properies.add(quantityAsTxtInfo);
-	    
-	    PropertyInfo salesPriceRSDAsTxtInfo = new PropertyInfo();
-	    salesPriceRSDAsTxtInfo.setName("pSalesPriceRSDAsTxt");
-	    salesPriceRSDAsTxtInfo.setValue(pSalesPriceRSDAsTxt);
-	    salesPriceRSDAsTxtInfo.setType(String.class);
-	    properies.add(salesPriceRSDAsTxtInfo);
-	    
-	    PropertyInfo salesPriceEURAsTxtInfo = new PropertyInfo();
-	    salesPriceEURAsTxtInfo.setName("pSalesPriceEURAsTxt");
-	    salesPriceEURAsTxtInfo.setValue(pSalesPriceEURAsTxt);
-	    salesPriceEURAsTxtInfo.setType(String.class);
-	    properies.add(salesPriceEURAsTxtInfo);
-	    
-	    PropertyInfo  minimumDiscountPctAsTxtInfo = new PropertyInfo();
-	    minimumDiscountPctAsTxtInfo.setName("pMinimumDiscountPctAsTxt");
-	    minimumDiscountPctAsTxtInfo.setValue(pMinimumDiscountPctAsTxt);
-	    minimumDiscountPctAsTxtInfo.setType(String.class);
-	    properies.add(minimumDiscountPctAsTxtInfo);
-	    
-	    PropertyInfo maximumDiscountPctAsTxtInfo = new PropertyInfo();
-	    maximumDiscountPctAsTxtInfo.setName("pMaximumDiscountPctAsTxt");
-	    maximumDiscountPctAsTxtInfo.setValue(maximumDiscountPctAsTxtInfo);
-	    maximumDiscountPctAsTxtInfo.setType(String.class);
-	    properies.add(maximumDiscountPctAsTxtInfo);
-	    
-	    PropertyInfo discountPctAsTxtInfo = new PropertyInfo();
-	    discountPctAsTxtInfo.setName("pDiscountPctAsTxt");
-	    discountPctAsTxtInfo.setValue(pDiscountPctAsTxt);
-	    discountPctAsTxtInfo.setType(String.class);
-	    properies.add(discountPctAsTxtInfo);
+		locationCodeInfo.setType(String.class);
+		properies.add(locationCodeInfo);
+
+		PropertyInfo campaignStatusInfo = new PropertyInfo();
+		campaignStatusInfo.setName("pCampaignStatus");
+		campaignStatusInfo.setValue(pCampaignStatus);
+		campaignStatusInfo.setType(Integer.class);
+		properies.add(campaignStatusInfo);
+
+		PropertyInfo customerNoa46Info = new PropertyInfo();
+		customerNoa46Info.setName("pCustomerNoa46");
+		customerNoa46Info.setValue(pCustomerNoa46);
+		customerNoa46Info.setType(String.class);
+		properies.add(customerNoa46Info);
+
+		PropertyInfo potentialCustomerNoa46Info = new PropertyInfo();
+		potentialCustomerNoa46Info.setName("pPotentialCustomerNoa46");
+		potentialCustomerNoa46Info.setValue(pPotentialCustomerNoa46);
+		potentialCustomerNoa46Info.setType(String.class);
+		properies.add(potentialCustomerNoa46Info);
+
+		PropertyInfo quantityOnSalesLineInfo = new PropertyInfo();
+		quantityOnSalesLineInfo.setName("pQuantityOnSalesLine");
+		quantityOnSalesLineInfo.setValue(pQuantityOnSalesLine);
+		quantityOnSalesLineInfo.setType(Double.class);
+		properies.add(quantityOnSalesLineInfo);
+
+		PropertyInfo salespersonCode = new PropertyInfo();
+		salespersonCode.setName("pSalespersonCode");
+		salespersonCode.setValue(pSalespersonCode);
+		salespersonCode.setType(String.class);
+		properies.add(salespersonCode);
+
+		PropertyInfo documentTypeInfo = new PropertyInfo();
+		documentTypeInfo.setName("pDocumentType");
+		documentTypeInfo.setValue(pDocumentType);
+		documentTypeInfo.setType(Integer.class);
+		properies.add(documentTypeInfo);
+
+		PropertyInfo availableToWholeShipInfo = new PropertyInfo();
+		availableToWholeShipInfo.setName("pAvailableToWholeShip");
+		availableToWholeShipInfo.setValue(pAvailableToWholeShip);
+		availableToWholeShipInfo.setType(Integer.class);
+		properies.add(availableToWholeShipInfo);
+
+		PropertyInfo quantityAsTxtInfo = new PropertyInfo();
+		quantityAsTxtInfo.setName("pQuantityAsTxt");
+		quantityAsTxtInfo.setValue(pQuantityAsTxt);
+		quantityAsTxtInfo.setType(String.class);
+		properies.add(quantityAsTxtInfo);
+
+		PropertyInfo salesPriceRSDAsTxtInfo = new PropertyInfo();
+		salesPriceRSDAsTxtInfo.setName("pSalesPriceRSDAsTxt");
+		salesPriceRSDAsTxtInfo.setValue(pSalesPriceRSDAsTxt);
+		salesPriceRSDAsTxtInfo.setType(String.class);
+		properies.add(salesPriceRSDAsTxtInfo);
+
+		PropertyInfo salesPriceEURAsTxtInfo = new PropertyInfo();
+		salesPriceEURAsTxtInfo.setName("pSalesPriceEURAsTxt");
+		salesPriceEURAsTxtInfo.setValue(pSalesPriceEURAsTxt);
+		salesPriceEURAsTxtInfo.setType(String.class);
+		properies.add(salesPriceEURAsTxtInfo);
+
+		PropertyInfo minimumDiscountPctAsTxtInfo = new PropertyInfo();
+		minimumDiscountPctAsTxtInfo.setName("pMinimumDiscountPctAsTxt");
+		minimumDiscountPctAsTxtInfo.setValue(pMinimumDiscountPctAsTxt);
+		minimumDiscountPctAsTxtInfo.setType(String.class);
+		properies.add(minimumDiscountPctAsTxtInfo);
+
+		PropertyInfo maximumDiscountPctAsTxtInfo = new PropertyInfo();
+		maximumDiscountPctAsTxtInfo.setName("pMaximumDiscountPctAsTxt");
+		maximumDiscountPctAsTxtInfo.setValue(maximumDiscountPctAsTxtInfo);
+		maximumDiscountPctAsTxtInfo.setType(String.class);
+		properies.add(maximumDiscountPctAsTxtInfo);
+
+		PropertyInfo discountPctAsTxtInfo = new PropertyInfo();
+		discountPctAsTxtInfo.setName("pDiscountPctAsTxt");
+		discountPctAsTxtInfo.setValue(pDiscountPctAsTxt);
+		discountPctAsTxtInfo.setType(String.class);
+		properies.add(discountPctAsTxtInfo);
 		return properies;
 	}
 
 	@Override
-	public void saveSOAPResponse(Object response, ContentResolver contentResolver) throws SOAPResponseException {
-	
-
+	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override

@@ -34,6 +34,7 @@ public class MobileStoreContract {
 	private static final String PATH_INVOICE_LINES_FROM_ORDER = "invoice_lines_from_order";
 	private static final String PATH_SYNC_LOGS_ID = "sync_logs_obejct_id";
 	private static final String PATH_SALES_PERSON = "sales_person";
+	private static final String PATH_GENRIC = "generic";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -56,7 +57,8 @@ public class MobileStoreContract {
 	}
 
 	public interface VisitsColumns {
-		// it has sales_person_id
+		// it pick sales_person_id from customer
+		
 		String VISIT_DATE = "visit_date";
 		String CUSTOMER_ID = "customer_id";
 		String LINE_NO = "line_no";
@@ -75,7 +77,7 @@ public class MobileStoreContract {
 		String INVOICE_NO = "invoice_no";
 		String CUSTOMER_ID = "customer_id";
 		String POSTING_DATE = "posting_date";
-		// String SALES_PERSON_ID = "sales_person_id";
+		String SALES_PERSON_ID = "sales_person_id";
 		String DUE_DATE = "due_date";
 		String TOTAL = "total";
 		String TOTAL_LEFT = "total_left";
@@ -119,6 +121,7 @@ public class MobileStoreContract {
 		String NUMBER_OF_BLUE_COAT = "number_of_blue_coat";
 		String NUMBER_OF_GREY_COAT = "number_of_grey_coat";
 		String SYNC_OBJECT_BATCH = "sync_object_batch";
+		String SALES_PERSON_ID = "sales_person_id";
 	}
 
 	public interface ItemsColumns {
@@ -285,20 +288,26 @@ public class MobileStoreContract {
 	}
 	
 	public interface SalesPersonsColumns {
-		String SALES_PERSON_ID = "sales_person_id";
-		String SALE_PERSON_No = "sales_person_no";
+		String SALE_PERSON_NO = "sales_person_no";
 		String SALE_PERSON_NAME = "name";
 		String SALE_PERSON_NAME_2 = "name2";
 		
-		String CREATED_BY = "created_by";
-		String UPDATED_DATE = "updated_date";
-		String UPDATED_BY = "updated_by";
+	}
+	
+	public static class Generic implements BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_GENRIC).build();
 		
+		public static Uri buildTableUri(String table) {
+			return CONTENT_URI.buildUpon().appendPath(table).build();
+		}
 		
+		public static String getTableName(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
 	}
 
 	
-	public static class SalesPerson implements BaseColumns{
+	public static class SalesPerson implements SalesPersonsColumns, BaseColumns{
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALES_PERSON).build();
 	}
 	
