@@ -67,10 +67,7 @@ public class NavisionSyncService extends IntentService {
 		new MarshaleDateNav().register(envelope);
 		envelope.dotNet = true;
 		envelope.setOutputSoapObject(request);
-
-		HttpTransportApache androidHttpTransport = new HttpTransportApache(syncObject.getUrl(), 5000, new NTCredentials("wurthtest", "remote", "", "gopro"), new AuthScope(null, -1));// "wurthtest",
-																																														// "remote",
-																																														// "",
+		HttpTransportApache androidHttpTransport = new HttpTransportApache(syncObject.getUrl(), 15000, new NTCredentials("wurthtest", "remote", "", "gopro"), new AuthScope(null, -1));// "wurthtest",
 																																														// "gopro"
 		ContentResolver contentResolver = getContentResolver();
 		androidHttpTransport.debug = true;

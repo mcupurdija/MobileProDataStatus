@@ -9,7 +9,9 @@ import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
+import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
+import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -32,10 +34,10 @@ import android.view.MenuItem;
 public class SyncSettingsFragment extends PreferenceFragment implements OnPreferenceChangeListener, LoaderCallbacks<Cursor> {
 
 	private final int SYNC_ITEM_LOADER = 0;
-	
+	private final int SYNC_PLANNED_VISIT_LOADER = 1;
+
 	private CheckBoxPreference itemSyncCheckBox;
-	
-	
+	private CheckBoxPreference plannedVisitSyncCheckBox;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,12 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 		itemSyncCheckBox = (CheckBoxPreference) getPreferenceScreen().findPreference(getString(R.string.key_sync_check_box));
 		itemSyncCheckBox.setOnPreferenceChangeListener(this);
 		itemSyncCheckBox.setIcon(R.drawable.ic_action_refresh);
+		plannedVisitSyncCheckBox = (CheckBoxPreference) getPreferenceScreen().findPreference(getString(R.string.key_sync_planned_visits_check_box));
+		plannedVisitSyncCheckBox.setOnPreferenceChangeListener(this);
+
 		setHasOptionsMenu(true);
 		getLoaderManager().initLoader(SYNC_ITEM_LOADER, null, this);
+		getLoaderManager().initLoader(SYNC_PLANNED_VISIT_LOADER, null, this);
 
 	}
 
@@ -53,12 +59,13 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 	public void onResume() {
 		super.onResume();
 		IntentFilter navSyncFilter = new IntentFilter(ItemsSyncObject.BROADCAST_SYNC_ACTION);
-		//registering broadcast receiver to listen BROADCAST_SYNC_ACTION broadcast 
+		// registering broadcast receiver to listen BROADCAST_SYNC_ACTION
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, navSyncFilter);
-		//itemSyncCheckBox.setSummary(DateUtils.formatDbDate(new Date()));
-		
+
+		IntentFilter plannedVisitSyncIntent = new IntentFilter(PlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION);
+		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, plannedVisitSyncIntent);
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -75,7 +82,7 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.synchronize_all_items:
-			doSync();
+			syncAllActive();
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -85,86 +92,112 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 		if (preference instanceof CheckBoxPreference) {
 			Boolean status = (Boolean) newValue;
 			if (status) {
-				doItemsSync();
+				if (getString(R.string.key_sync_check_box).equalsIgnoreCase(preference.getKey())) {
+					doItemsSync();
+				} else if (getString(R.string.key_sync_planned_visits_check_box).equalsIgnoreCase(preference.getKey())) {
+					doPlannedVisitSync();
+				}
 			}
 		}
 		return true;
 	}
 
-	private void doSync() {
+	public void syncAllActive() {
 		if (itemSyncCheckBox.isChecked()) {
 			doItemsSync();
 		}
+		if (plannedVisitSyncCheckBox.isChecked()) {
+			doPlannedVisitSync();
+		}
 	}
 
-	
 	private BroadcastReceiver onNotice = new BroadcastReceiver() {
-
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
-			onSOAPResult(syncResult.getStatus(), syncResult.getResult());
+			onSOAPResult(syncResult.getStatus(), syncResult.getResult(), intent.getAction());
 		}
 	};
-	
-	
+
+	private void doPlannedVisitSync() {
+		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
+		PlannedVisitsToCustomersSyncObject plannedVisitsToCustomersSyncObject = new PlannedVisitsToCustomersSyncObject("", "V.MAKEVIC", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), "");
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, plannedVisitsToCustomersSyncObject);
+		getActivity().startService(intent);
+	}
+
 	private void doItemsSync() {
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 		ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(1), null, DateUtils.getWsDummyDate());
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
 		getActivity().startService(intent);
-		
+
 	}
 
-	public void onSOAPResult(SyncStatus syncStatus, String result) {
-		if(syncStatus.equals(SyncStatus.SUCCESS)){
-			itemSyncCheckBox.setSummary(DateUtils.formatDbDate(new Date()));
+	public void onSOAPResult(SyncStatus syncStatus, String result, String broadcastAction) {
+		System.out.println("STATUS IS: " + syncStatus);
+		if (syncStatus.equals(SyncStatus.SUCCESS)) {
+			if (ItemsSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				itemSyncCheckBox.setSummary(DateUtils.formatDbDate(new Date()));
+			} else if (PlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				plannedVisitSyncCheckBox.setSummary(DateUtils.formatDbDate(new Date()));
+			}
 		}
 	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		return new CursorLoader(getActivity(), SyncLogs.CONTENT_URI, SyncLogsQuery.PROJECTION, SyncLogs.SYNC_OBJECT_ID + "=?  AND "+SyncLogs.SYNC_OBJECT_BATCH+" = (select MAX("+SyncLogs.SYNC_OBJECT_BATCH+") from "+Tables.SYNC_LOGS+" where "+SyncLogs.SYNC_OBJECT_ID+"= ? AND "+SyncLogs.SYNC_OBJECT_STATUS+"='"+SyncStatus.SUCCESS+"')", new String[] {ItemsSyncObject.TAG, ItemsSyncObject.TAG}, null);
+		switch (id) {
+		case SYNC_ITEM_LOADER:
+			return new CursorLoader(getActivity(), SyncLogs.CONTENT_URI, SyncLogsQuery.PROJECTION, SyncLogs.SYNC_OBJECT_ID + "=?  AND " + SyncLogs.SYNC_OBJECT_BATCH + " = (select MAX(" + SyncLogs.SYNC_OBJECT_BATCH + ") from "
+					+ Tables.SYNC_LOGS + " where " + SyncLogs.SYNC_OBJECT_ID + "= ? AND " + SyncLogs.SYNC_OBJECT_STATUS + "='" + SyncStatus.SUCCESS + "')", new String[] { ItemsSyncObject.TAG, ItemsSyncObject.TAG }, null);
+
+		case SYNC_PLANNED_VISIT_LOADER:
+			return new CursorLoader(getActivity(), SyncLogs.CONTENT_URI, SyncLogsQuery.PROJECTION, SyncLogs.SYNC_OBJECT_ID + "=?  AND " + SyncLogs.SYNC_OBJECT_BATCH + " = (select MAX(" + SyncLogs.SYNC_OBJECT_BATCH + ") from "
+					+ Tables.SYNC_LOGS + " where " + SyncLogs.SYNC_OBJECT_ID + "= ? AND " + SyncLogs.SYNC_OBJECT_STATUS + "='" + SyncStatus.SUCCESS + "')", new String[] { PlannedVisitsToCustomersSyncObject.TAG,
+					PlannedVisitsToCustomersSyncObject.TAG }, null);
+
+		default:
+			return null;
+		}
 	}
 
 	@Override
-	public void onLoadFinished(Loader<Cursor> arg0, Cursor data) {
-		if(data.moveToNext()){
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		if (data.moveToNext()) {
 			String updatedDate = data.getString(SyncLogsQuery.UPDATED_DATE);
-			itemSyncCheckBox.setSummary(updatedDate);
+			switch (loader.getId()) {
+			case SYNC_ITEM_LOADER:
+				itemSyncCheckBox.setSummary(updatedDate);
+				break;
+			case SYNC_PLANNED_VISIT_LOADER:
+				plannedVisitSyncCheckBox.setSummary(updatedDate);
+			default:
+				break;
+			}
+
 		}
-		
+
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> arg0) {
-	
-		
+
 	}
 
-	
-	public interface SyncLogsQuery{
-		String[] PROJECTION  = {
-				BaseColumns._ID, 
-				SyncLogs.SYNC_OBJECT_NAME, 
-				SyncLogs.SYNC_OBJECT_ID, 
-				SyncLogs.SYNC_OBJECT_STATUS, 
-				SyncLogs.SYNC_OBJECT_BATCH, 
-				SyncLogs.CREATED_DATE, 
-				SyncLogs.CREATED_BY, 
-				SyncLogs.UPDATED_DATE, 
-				SyncLogs.UPDATED_BY 
-		};
-		
-		int _ID =  0 ; 
-		int SYNC_OBJECT_NAME = 1 ; 
-		int SYNC_OBJECT_ID = 2 ; 
-		int SYNC_OBJECT_STATUS = 3 ; 
-		int SYNC_OBJECT_BATCH = 4 ; 
-		int CREATED_DATE = 5 ; 
-		int CREATED_BY = 6 ; 
-		int UPDATED_DATE = 7 ; 
-		int UPDATED_BY = 8 ;
+	public interface SyncLogsQuery {
+		String[] PROJECTION = { BaseColumns._ID, SyncLogs.SYNC_OBJECT_NAME, SyncLogs.SYNC_OBJECT_ID, SyncLogs.SYNC_OBJECT_STATUS, SyncLogs.SYNC_OBJECT_BATCH, SyncLogs.CREATED_DATE, SyncLogs.CREATED_BY, SyncLogs.UPDATED_DATE,
+				SyncLogs.UPDATED_BY };
+
+		int _ID = 0;
+		int SYNC_OBJECT_NAME = 1;
+		int SYNC_OBJECT_ID = 2;
+		int SYNC_OBJECT_STATUS = 3;
+		int SYNC_OBJECT_BATCH = 4;
+		int CREATED_DATE = 5;
+		int CREATED_BY = 6;
+		int UPDATED_DATE = 7;
+		int UPDATED_BY = 8;
 	}
-	
+
 }

@@ -13,6 +13,7 @@ import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Generic;
+import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
@@ -83,6 +84,7 @@ public class PlannedVisitsToCustomersSyncObject extends SyncObject {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(getStatusMessage());
 		dest.writeString(getcSVString());
 		dest.writeString(getSalespersonCode());
 		dest.writeLong(getVisitDateFrom().getTime());
@@ -111,7 +113,7 @@ public class PlannedVisitsToCustomersSyncObject extends SyncObject {
 		salespersonCodeInfo.setValue(salespersonCode);
 		salespersonCodeInfo.setType(String.class);
 		properties.add(salespersonCodeInfo);
-
+		
 		PropertyInfo visitDateFromInfo = new PropertyInfo();
 		visitDateFromInfo.setName("pVisitDateFrom");
 		visitDateFromInfo.setValue(visitDateFrom);

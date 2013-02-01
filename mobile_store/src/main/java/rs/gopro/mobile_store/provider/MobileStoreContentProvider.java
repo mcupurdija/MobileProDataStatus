@@ -15,6 +15,7 @@ import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
@@ -656,7 +657,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		// TODO possible performance drawback because triggers if there is lot of data, maybe we need another approach than triggers
 		final SQLiteDatabase db = databaseHelper.getWritableDatabase();
 		String selectionPhrase = "";
-		String selectionParam = "";
+		String[] selectionParam = null;
 		String tableName = "";
 		String[] selectionArgs = null;
 		// one method for all tables that needs this, this is used in whole provider implementation
@@ -664,18 +665,23 @@ public class MobileStoreContentProvider extends ContentProvider {
 		switch (match) {
 		case USERS:
 			tableName = Tables.USERS;
-			selectionParam = Users.USERNAME;
+			selectionParam = new String[] { Users.USERNAME };
 			selectionPhrase = Users.USERNAME + "=?";
 			break;
 		case ITEMS:
 			tableName = Tables.ITEMS;
-			selectionParam = Items.ITEM_NO;
+			selectionParam = new String[] { Items.ITEM_NO};
 			selectionPhrase = Items.ITEM_NO + "=?";
 			break;
 		case CUSTOMERS:
 			tableName = Tables.CUSTOMERS;
-			selectionParam = Customers.CUSTOMER_NO;
+			selectionParam = new String[] { Customers.CUSTOMER_NO};
 			selectionPhrase = Customers.CUSTOMER_NO + "=?";
+			break;
+		case VISITS:
+			tableName = Tables.VISITS;
+			selectionParam =  new String[] {Visits.CUSTOMER_ID, Visits.SALES_PERSON_ID, Visits.VISIT_DATE};
+			selectionPhrase =  Visits.CUSTOMER_ID + "=? and "+ Visits.SALES_PERSON_ID + "=? and "+ Visits.VISIT_DATE + "=?";
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
@@ -688,9 +694,17 @@ public class MobileStoreContentProvider extends ContentProvider {
 		db.beginTransaction();
 		try {
 			for (ContentValues cv : values) {
-				selectionArgs = new String[] { cv.getAsString(selectionParam) };
-				int affected = db.update(tableName, cv, selectionPhrase,
-						selectionArgs);
+				selectionArgs = new String[selectionParam.length];
+				for(int i  = 0; i<selectionArgs.length; i++){
+					selectionArgs[i] = cv.getAsString(selectionParam[i]);
+				}
+				int affected = 0;
+				try {
+					affected = db.update(tableName, cv, selectionPhrase,
+							selectionArgs);
+				} catch (SQLiteConstraintException e) {
+					LogUtils.LOGE(TAG, "Error during bulk update", e);
+				}
 				if (affected == 0) {
 					rowId = db.insert(tableName, null, cv);
 					if (rowId > 0)

@@ -28,11 +28,11 @@ import android.preference.PreferenceManager;
 
 public abstract class SyncObject implements Parcelable {
 
-	protected static String WS_ENTRY_POINT = "/codeunit/MobileDeviceSync";
+	protected static String WS_ENTRY_POINT = "/Codeunit/MobileDeviceSync";
 	protected static String WS_SCHEME = "urn:microsoft-dynamics-schemas";
 	protected static String WS_NAMESPACE = WS_SCHEME + WS_ENTRY_POINT;
 	protected static String WS_NAVISION_CODEUNIT_NAME = "/Codeunit/MobileDeviceSync";
-	protected static String WS_SERVER_ADDRESS = "http://10.94.1.5:7047/DynamicsNAV/WS";// "http://sqlserver.gopro.rs:7047/Wurth/WS";
+	protected static String WS_SERVER_ADDRESS = "http://sqlserver.gopro.rs:7047/Wurth/WS";// "http://sqlserver.gopro.rs:7047/Wurth/WS";
 
 	// uri for update, no need in Parcel
 	protected Uri currentUri;

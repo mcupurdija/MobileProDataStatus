@@ -24,6 +24,10 @@ public class DateUtils {
 	// no need for warning here
 	@SuppressLint("SimpleDateFormat")
 	private final static SimpleDateFormat localDbDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	@SuppressLint("SimpleDateFormat")
+	private final static SimpleDateFormat navisionDbDate = new SimpleDateFormat("MM/dd/yy");
+	@SuppressLint("SimpleDateFormat")
+	private final static SimpleDateFormat navisionDbDateTime = new SimpleDateFormat("MM/dd/yy hh:mm:ss aaa");
 	
 	public static Date getWsDummyDate() {
 		Calendar calendar = GregorianCalendar.getInstance();
@@ -81,6 +85,19 @@ public class DateUtils {
 		return pickerDate.format(localDbDate);
 	}
 	
+	public static String formatDateFromNavisionToDB(String dbDate) {
+		if (dbDate == null) return "";
+		Date localDbDate = getNavisionDate(dbDate);
+		//return pickerDate.format(localDbDate);
+		return formatDbDate(localDbDate);
+	}
+	
+	public static String formatDateTimeFromNavisionToDB(String dbDate, String time) {
+		if (dbDate == null) return "";
+		Date localDbDate = getNavisionDateTime(dbDate + " " + time);
+		return formatDbDate(localDbDate);
+	}
+	
 	public static Date getLocalDbDate(String dbDateString) {
 		try {
 			return localDbDate.parse(dbDateString);
@@ -89,6 +106,26 @@ public class DateUtils {
 			return null;
 		}
 	}
+	
+	public static Date getNavisionDate(String dbDateString) {
+		try {
+			return navisionDbDate.parse(dbDateString);
+		} catch (ParseException e) {
+			LogUtils.LOGE(TAG, "Bad date format", e);
+			return null;
+		}
+	}
+	
+	public static Date getNavisionDateTime(String dbDateString) {
+		try {
+			return navisionDbDateTime.parse(dbDateString);
+		} catch (ParseException e) {
+			LogUtils.LOGE(TAG, "Bad date format", e);
+			return null;
+		}
+	}
+	
+	
 	
 	public static String formatDbDate(Date dbDate) {
 		// it can be passed null by another parser that caught error

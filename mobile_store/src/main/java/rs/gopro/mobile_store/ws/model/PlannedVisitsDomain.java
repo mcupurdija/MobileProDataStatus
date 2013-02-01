@@ -6,6 +6,7 @@ import java.util.List;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SalesPersonsColumns;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 import android.content.ContentValues;
 
@@ -31,11 +32,11 @@ public class PlannedVisitsDomain extends Domain {
 	public ContentValues getContentValues() {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(Visits.SALE_PERSON_NO, getSales_person_no());
-		contentValues.put(Visits.VISIT_DATE, getVisit_date());
+		contentValues.put(Visits.VISIT_DATE, DateUtils.formatDateFromNavisionToDB(getVisit_date()));
 
 		contentValues.put(Visits.CUSTOMER_NO, getCustomer_no());
-		contentValues.put(Visits.ARRIVAL_TIME, getArrival_time());
-		contentValues.put(Visits.DEPARTURE_TIME, getDeparture_time());
+		contentValues.put(Visits.ARRIVAL_TIME,  DateUtils.formatDateTimeFromNavisionToDB(getVisit_date(), getArrival_time()));
+		contentValues.put(Visits.DEPARTURE_TIME,  DateUtils.formatDateTimeFromNavisionToDB(getVisit_date(), getDeparture_time()));
 		contentValues.put(Visits.NOTE, getNote());
 		contentValues.put(Visits.IS_REALIZED, Integer.valueOf(1));
 
