@@ -81,8 +81,8 @@
     </string-array>
     <string-array name="item_camp_status_array">
         <item>Not on sale</item>
-        <item>Total sale</item>
-        <item>Promotion sale</item>
+        <item>OverStock</item>
+        <item>Action</item>
     </string-array>
     <string-array name="sale_order_block_status_array">
         <item>Order</item>
@@ -127,5 +127,9 @@
         <item>Primary means</item>
         <item>Expence (article)</item>
     </string-array>
-
+	<string-array name="quote_refused_type_array">
+        <item>Not refused</item>
+        <item>Price</item>
+        <item>Quality</item>
+    </string-array>
 </resources>

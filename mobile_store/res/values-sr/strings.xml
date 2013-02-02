@@ -34,6 +34,7 @@
 	<string name="empty_visits">Nema planiranih poseta.</string>
 	<string name="empty_sale_orders">Liferice nisu pronađene.</string>
 	<string name="empty_customers">Nema detalja za izabranog kupca.</string>
+	<string name="empty_sale_order_lines">Nema stavki za izabranu lifericu</string>
 	<string name="hint_search">Pretraži&#8230;</string>
 	<string name="save_button_title">Sačuvaj</string>
 	<string name="cancel_button_title">Otkaži</string>
@@ -152,6 +153,7 @@
 	
 	<!-- item -->
 	<string name="item_no_label">Br. artikla</string>
+	<string name="item_no_hint">Pronadji artikal&#8230;</string>
 	<string name="item_desc_label">Objasnjenje</string>
 	<string name="item_stock_status_label">Kolicina na stanju</string>		
 	<string name="item_category_code_label">Kod kategorije</string>
@@ -199,4 +201,11 @@
 	<string name="contact_name_phone_title">Ime i telefon kontakta</string>
 	<string name="contact_no_label">Kontakt br.</string>
 	<string name="toast_update_success">Podaci sačuvani</string>
+	<string name="header_label">Podaci o dokumentu</string>
+	<string name="load_item_data_button">Preuzmi podatke o artiklu</string>
+	<string name="so_line_item_quantities_text">Količina - izabrana i na stanju</string>
+	<string name="so_line_item_prices_text">Cene - izabrana i u sistemu</string>
+	<string name="so_line_item_discounts_text">Popusti - izabrani, min i max</string>
+	<string name="so_line_quote_refused_text">Status odbijanja ponude</string>
+	<string name="so_line_avail_to_whole_ship_check_box_text">Dostupno za isporuku u celosti</string>
 </resources>

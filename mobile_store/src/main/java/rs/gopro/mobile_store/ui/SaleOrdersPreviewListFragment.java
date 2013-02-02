@@ -153,18 +153,6 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
     public void onListItemClick(ListView l, View v, int position, long id) {
         final Cursor cursor = (Cursor) mAdapter.getItem(position);
         
-//        mHeader1 = (TextView) v.findViewById(R.id.fragment_sale_order_lines_list_header1);
-//        mHeader2 = (TextView) v.findViewById(R.id.fragment_sale_order_lines_list_header2);
-//        mHeader3 = (TextView) v.findViewById(R.id.fragment_sale_order_lines_list_header3);
-//        mHeader4 = (TextView) v.findViewById(R.id.fragment_sale_order_lines_list_header4);
-//           
-//        String salesOrderDate = cursor.getString(SaleOrdersQuery.ORDER_DATE);
-//        String salesOrderNo = cursor.getString(SaleOrdersQuery.SALES_ORDER_NO);
-//        String customer = cursor.getString(SaleOrdersQuery.CUSTOMER_NO) + " " + cursor.getString(SaleOrdersQuery.CUSTOMER_NAME) + " " + cursor.getString(SaleOrdersQuery.CUSTOMER_NAME2);
-//        
-//        mHeader1.setText(salesOrderDate + " - " + salesOrderNo);
-//        mHeader2.setText(customer);
-        
         String saleOrderId = String.valueOf(cursor.getInt(SaleOrdersQuery._ID));
         if (mCallbacks.onSaleOrderSelected(saleOrderId)) {
             mSelectedSaleOrderId = saleOrderId;

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/so_line_header_label"
+            style="@style/AddEdit_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/header_label" />
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/so_line_header_document_no_label"
+                style="@style/AddEdit_Label"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="3"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:id="@+id/so_line_header_document_type_label"
+                style="@style/AddEdit_Label"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="3"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:id="@+id/so_line_header_document_customer_label"
+                style="@style/AddEdit_Label"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="3"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/so_line_item_no_label"
+            style="@style/AddEdit_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_no_label" />
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <AutoCompleteTextView
+                android:id="@+id/so_line_item_no_value"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="7"
+                android:completionThreshold="1"
+                android:hint="@string/item_no_hint"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <Button
+                android:id="@+id/so_line_read_item_data_button"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="3"
+                android:gravity="center_vertical"
+                android:text="@string/load_item_data_button" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/so_line_item_quantities_label"
+            style="@style/AddEdit_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/so_line_item_quantities_text" />
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/so_line_item_quantity_value"
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="7" />
+
+            <EditText
+                android:id="@+id/so_line_item_max_quantity_value"
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="3" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/so_line_avail_to_whole_ship_check_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="8dip"
+            android:layout_marginBottom="8dip"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:text="@string/so_line_avail_to_whole_ship_check_box_text" />
+
+        <TextView
+            android:id="@+id/so_line_item_prices_label"
+            style="@style/AddEdit_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/so_line_item_prices_text" />
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/so_line_item_price_value"
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="7"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/so_line_item_sugg_price_value"
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="3"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/so_line_item_discounts_label"
+            style="@style/AddEdit_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/so_line_item_discounts_text" />
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/so_line_item_discount_value"
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="5"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/so_line_item_min_discount_value"
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="3"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/so_line_item_max_discount_value"
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="3"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/so_line_item_campaign_label"
+                    style="@style/AddEdit_Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/item_campaign_status_label" />
+
+                <Spinner
+                    android:id="@+id/so_line_item_campaign_spinner"
+                    style="EditEvent_Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dip"
+                    android:layout_marginRight="16dip" />
+            </LinearLayout>
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/so_line_quote_refused_label"
+                    style="@style/AddEdit_Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/so_line_quote_refused_text" />
+
+                <Spinner
+                    android:id="@+id/so_line_quote_refused_spinner"
+                    style="EditEvent_Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dip"
+                    android:layout_marginRight="16dip" />
+            </LinearLayout>
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/so_line_backorder_label"
+                    style="@style/AddEdit_Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/backorder" />
+
+                <Spinner
+                    android:id="@+id/so_line_backorder_spinner"
+                    style="EditEvent_Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dip"
+                    android:layout_marginRight="16dip" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

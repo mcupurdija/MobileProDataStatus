@@ -74,7 +74,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
             return;
         }
 
-        mAdapter = new SaleOrdersAdapter(getActivity());
+        mAdapter = new SaleOrderLinesAdapter(getActivity());
         saleOrdersQueryToken = SaleOrderLinesQuery._TOKEN;
 
         setListAdapter(mAdapter);
@@ -99,7 +99,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
         if (!mHasSetEmptyText) {
             // Could be a bug, but calling this twice makes it become visible
             // when it shouldn't be visible.
-            setEmptyText(getString(R.string.empty_visits));
+            setEmptyText(getString(R.string.empty_sale_order_lines));
             mHasSetEmptyText = true;
         }
     }
@@ -172,8 +172,8 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
     /**
      * {@link CursorAdapter} that renders a {@link SaleOrderLinesQuery}.
      */
-    private class SaleOrdersAdapter extends CursorAdapter {
-        public SaleOrdersAdapter(Context context) {
+    private class SaleOrderLinesAdapter extends CursorAdapter {
+        public SaleOrderLinesAdapter(Context context) {
             super(context, null, false);
         }
 

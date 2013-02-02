@@ -27,6 +27,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 	
 	private Fragment saleOrderLinesFragment;
 	private ShowHideMasterLayout mShowHideMasterLayout;
+	private String saleOrderId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +145,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			actionMod.finish();
 		}
 		loadSaleOrderLines(MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(saleOrderId));
+		this.saleOrderId = saleOrderId;
 		return true;
 	}
 
@@ -178,10 +180,13 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			return true;
 		case R.id.edit_lines_sale_order_action_menu_option:
 			// TODO sale order lines goes here
-//			Intent edotSaleOrderIntent = new Intent(Intent.ACTION_INSERT,
-//					MobileStoreContract.SaleOrders.CONTENT_URI);
-//			startActivity(edotSaleOrderIntent);
-			return true;
+			if (saleOrderId == null) {
+				return true;
+			}
+			Intent editSaleOrderIntent = new Intent(Intent.ACTION_EDIT,
+					MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(saleOrderId));
+			startActivity(editSaleOrderIntent);
+			return true;	
 		}
 		
 		return super.onOptionsItemSelected(item);

@@ -82,8 +82,8 @@
     </string-array>
     <string-array name="item_camp_status_array">
         <item>Redovna prodaja</item>
-        <item>OVS prodaja</item>
-        <item>Promotivna prodaja</item>
+        <item>OverStock</item>
+        <item>Akcija</item>
     </string-array>
     <string-array name="sale_order_block_status_array">
         <item>Porudžbina</item>
@@ -121,5 +121,10 @@
         <item>Resurs</item>
         <item>Osnovno sredstvo</item>
         <item>Trosak (artikal)</item>
+    </string-array>
+    <string-array name="quote_refused_type_array">
+        <item>Prihvaćeno</item>
+        <item>Cena</item>
+        <item>Kvalitet</item>
     </string-array>
 </resources>

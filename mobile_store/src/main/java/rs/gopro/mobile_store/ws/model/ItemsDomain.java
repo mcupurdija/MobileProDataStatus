@@ -58,10 +58,10 @@ public class ItemsDomain extends Domain {
 		contentValues.put(Items.CAMPAIGN_STATUS, getCampaign_status());
 		contentValues.put(Items.OVERSTOCK_STATUS, getOverstock_status());
 		contentValues.put(Items.CONNECTED_SPEC_SHIP_ITEM, getConnected_spec_ship_item());
-		// TODO
+		// TODO data conversion
 		contentValues.put(Items.UNIT_SALES_PRICE_DIN, getUnit_sales_price_din());
 		contentValues.put(Items.CAMPAIGN_CODE, getCampaign_code());
-		// TODO
+		// TODO data conversion
 		contentValues.put(Items.CMPAIGN_START_DATE, getCmpaign_start_date());
 		contentValues.put(Items.CAMPAIGN_END_DATE, getCampaign_end_date());
 		return contentValues;

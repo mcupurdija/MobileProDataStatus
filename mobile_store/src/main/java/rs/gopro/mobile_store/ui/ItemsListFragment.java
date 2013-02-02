@@ -146,8 +146,8 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		final Cursor cursor = (Cursor) cursorAdapter.getItem(position);
-        final String itemId = String.valueOf(cursor.getString(1));
-	   showDialog(MobileStoreContract.Items.buildItemUri(itemId), itemId); 
+        final String itemNo = String.valueOf(cursor.getString(1));
+	   showDialog(MobileStoreContract.Items.buildItemNoUri(itemNo), itemNo); 
 	}
 	 
 	

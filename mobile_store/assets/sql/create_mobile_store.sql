@@ -402,6 +402,7 @@ CREATE TABLE `sale_order_lines` (
 	`line_no` INTEGER,
 	`item_id` INTEGER,
 	`quantity` REAL,
+	`quantity_available` REAL,
 	`unit_of_measure` TEXT,
 	`price` REAL,
 	`min_discount` REAL,
@@ -410,10 +411,13 @@ CREATE TABLE `sale_order_lines` (
 	`line_total` REAL,
 	`line_origin` TEXT,
 	`price_eur` REAL,
+	`quote_refused_status` INTEGER,
 	`campaign_status` INTEGER,
 	`verify_status` INTEGER,
 	`price_discount_status` INTEGER,
 	`quantity_available_status` INTEGER,
+	`backorder_status` INTEGER,
+	`available_to_whole_shipment` INTEGER,
 	`sync_object_batch` INTEGER,
 	`created_date` TEXT,
 	`created_by` TEXT,
@@ -434,25 +438,25 @@ BEGIN
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-INSERT INTO `sale_order_lines` VALUES ('1','1','1','1','23','KOM','22.33','10','20','12',null,null,'23456',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('2','1','2','2','100','KOM','1000','10','20','18',null,null,'2233',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('3','1','3','3','2','KOM','2023','10','20','12',null,null,'1256',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('4','1','4','4','1','KOM','512.33','10','20','18',null,null,'2345',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('1','1','1','1','23','25.8','KOM','22.33','10','20','12',null,null,'23456','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('2','1','2','2','100','41','KOM','1000','10','20','18',null,null,'2233','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('3','1','3','3','2','21.8','KOM','2023','10','20','12',null,null,'1256','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('4','1','4','4','1','130','KOM','512.33','10','20','18',null,null,'2345','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
 
-INSERT INTO `sale_order_lines` VALUES ('5','2','1','5','2','KOM','23','10','20','12',null,null,'23456',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('6','2','2','6','2','KOM','214','10','20','18',null,null,'2233',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('7','2','3','7','2','KOM','2023','10','20','12',null,null,'1256',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('8','2','4','8','2','KOM','512.33','10','20','18',null,null,'2345',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('5','2','1','5','2','130','KOM','23','10','20','12',null,null,'23456','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('6','2','2','6','2','130','KOM','214','10','20','18',null,null,'2233','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('7','2','3','7','2','130','KOM','2023','10','20','12',null,null,'1256','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('8','2','4','8','2','130','KOM','512.33','10','20','18',null,null,'2345','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
 
-INSERT INTO `sale_order_lines` VALUES ('9','3','1','1','2','KOM','23','10','20','12',null,null,'23456',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('10','3','2','3','2','KOM','214','10','20','18',null,null,'2233',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('11','3','3','4','2','KOM','2023','10','20','12',null,null,'1256',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('12','3','4','7','2','KOM','512.33','10','20','18',null,null,'2345',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('9','3','1','1','2','130','KOM','23','10','20','12',null,null,'23456','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('10','3','2','3','2','130','KOM','214','10','20','18',null,null,'2233','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('11','3','3','4','2','130','KOM','2023','10','20','12',null,null,'1256','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('12','3','4','7','2','130','KOM','512.33','10','20','18',null,null,'2345','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
 
-INSERT INTO `sale_order_lines` VALUES ('13','4','1','10','2','KOM','23','10','20','12',null,null,'23456',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('14','4','2','13','2','KOM','214','10','20','18',null,null,'2233',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('15','4','3','14','2','KOM','2023','10','20','12',null,null,'1256',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('16','4','4','15','2','KOM','512.33','10','20','18',null,null,'2345',null,null,null,null,null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('13','4','1','10','2','130','KOM','23','10','20','12',null,null,'23456','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('14','4','2','13','2','130','KOM','214','10','20','18',null,null,'2233','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('15','4','3','14','2','130','KOM','2023','10','20','12',null,null,'1256','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+INSERT INTO `sale_order_lines` VALUES ('16','4','4','15','2','130','KOM','512.33','10','20','18',null,null,'2345','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
 
 CREATE TABLE `sync_logs` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,

@@ -34,6 +34,7 @@
 	<string name="empty_visits">No planned visits.</string>
 	<string name="empty_sale_orders">No sale orders found.</string>
 	<string name="empty_customers">No customer details found.</string>
+	<string name="empty_sale_order_lines">No sale order lines found.</string>
 	<string name="hint_search">Search&#8230;</string>
 	<string name="save_button_title">Save</string>
 	<string name="cancel_button_title">Cancel</string>
@@ -151,6 +152,7 @@
 	
 	<!-- item -->
 	<string name="item_no_label">Item no</string>
+	<string name="item_no_hint">Search for item</string>
 	<string name="item_desc_label">Description</string>
 	<string name="item_stock_status_label">Stock status</string>		
 	<string name="item_category_code_label">Category code</string>
@@ -199,4 +201,11 @@
 	<string name="contact_name_phone_title">Contact name and phone</string>
 	<string name="contact_no_label">Contact no.</string>
 	<string name="toast_update_success">Data saved</string>
+	<string name="header_label">Document header data</string>
+	<string name="load_item_data_button">Load item data</string>
+	<string name="so_line_item_quantities_text">Quantities, selected and available</string>
+	<string name="so_line_item_prices_text">Prices, selected and system</string>
+	<string name="so_line_item_discounts_text">Discounts, selected, min and max</string>
+	<string name="so_line_quote_refused_text">Refused status</string>
+	<string name="so_line_avail_to_whole_ship_check_box_text">Available to whole shippment</string>
 </resources>

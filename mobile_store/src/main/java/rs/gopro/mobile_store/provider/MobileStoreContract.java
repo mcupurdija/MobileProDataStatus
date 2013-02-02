@@ -16,6 +16,8 @@ public class MobileStoreContract {
 	private static final String PATH_CUSTOMERS_BY_SALES_PERSON = "customers_by_sales_person";
 	//private static final String PATH_SEARCH = "search";
 	private static final String PATH_ITEMS = "items";
+	private static final String PATH_ITEM_SEARCH = "item_search";
+	private static final String PATH_ITEM_NO = "item_no";
 	private static final String PATH_VISITS = "visits";
 	private static final String PATH_SALE_ORDERS = "sale_orders";
 	private static final String PATH_SALE_ORDERS_LIST = "sale_orders_list";
@@ -184,6 +186,7 @@ public class MobileStoreContract {
 		String LINE_NO = "line_no";
 		String ITEM_ID = "item_id";
 		String QUANTITY = "quantity";
+		String QUANTITY_AVAILABLE = "quantity_available";
 		String UNIT_OF_MEASURE = "unit_of_measure";
 		String PRICE = "price";
 		String MIN_DISCOUNT = "min_discount";
@@ -192,10 +195,13 @@ public class MobileStoreContract {
 		String LINE_TOTAL = "line_total";
 		String LINE_ORIGIN = "line_origin";
 		String PRICE_EUR = "price_eur";
-		String CAMPAIGN_STATUS = "campaign_status";
+		String LINE_CAMPAIGN_STATUS = "campaign_status";
 		String VERIFY_STATUS = "verify_status";
+		String QUOTE_REFUSED_STATUS = "quote_refused_status";
 		String PRICE_DISCOUNT_STATUS = "price_discount_status";
 		String QUANTITY_AVAILABLE_STATUS = "quantity_available_status";
+		String BACKORDER_STATUS = "backorder_status";
+		String AVAILABLE_TO_WHOLE_SHIPMENT = "available_to_whole_shipment";
 	}
 
 	/**
@@ -405,13 +411,15 @@ public class MobileStoreContract {
 		public static Uri buildItemUri(String itemId) {
 			return CONTENT_URI.buildUpon().appendPath(itemId).build();
 		}
-		
+		public static Uri buildItemNoUri(String itemNo) {
+			return CONTENT_URI.buildUpon().appendEncodedPath(PATH_ITEM_NO).appendPath(itemNo).build();
+		}
 		public static String getItemId(Uri uri){
 			return uri.getPathSegments().get(1);
 		}
 		
 		public static String getItemNo(Uri uri) {
-			return uri.getPathSegments().get(1);
+			return uri.getPathSegments().get(2);
 		}
 
 		public static String getCustomSearchFirstParamQuery(Uri uri) {
@@ -430,6 +438,9 @@ public class MobileStoreContract {
 
 		public static Uri buildCustomSearchUri(String text, String status) {
 			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(ITEM_NO).build();
+		}
+		public static Uri buildAutocompleteSearchUri(String text) {
+			return CONTENT_URI.buildUpon().appendPath(text).appendPath(PATH_ITEM_SEARCH).build();
 		}
 	}
 

@@ -50,7 +50,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 	//private static final int ITEMS_NO = 131;
 	private static final int ITEMS_BY_STATUS = 132;
 	private static final int ITEMS_CUSTOM_SEARCH = 133;
-	private static final int ITEM_ID = 134;
+	private static final int ITEM_NO = 134;
+	private static final int ITEMS_AUTOCOMPLETE_SEARCH = 135;
+	private static final int ITEM_ID = 136;
 
 	private static final int SALE_ORDERS = 140;
 	private static final int SALE_ORDER_CUSTOM_SEARCH = 141;
@@ -65,7 +67,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 	
 
 	private static final int SALE_ORDER_LINES_FROM_ORDER = 300;
-
+	private static final int SALE_ORDER_LINE = 301;
+	private static final int SALE_ORDER_LINES = 302;
+	
 	private static final int CONTACTS = 400;
 	private static final int CONTACTS_ID = 401;
 	
@@ -102,6 +106,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 				CUSTOMERS_CUSTOM_SEARCH);
 
 		mobileStoreURIMatcher.addURI(authority, "items", ITEMS);
+		mobileStoreURIMatcher.addURI(authority, "items/*/item_search",
+				ITEMS_AUTOCOMPLETE_SEARCH);
 		mobileStoreURIMatcher.addURI(authority, "items/*/item_no",
 				ITEMS_BY_STATUS);
 		mobileStoreURIMatcher.addURI(authority, "items/#/item_no",
@@ -110,8 +116,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 				ITEMS_CUSTOM_SEARCH);
 		mobileStoreURIMatcher.addURI(authority, "items/#/*/item_no",
 				ITEMS_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "items/item_no/*", ITEM_NO);
 		mobileStoreURIMatcher.addURI(authority, "items/*", ITEM_ID);
-
+		
 		mobileStoreURIMatcher.addURI(authority, "visits", VISITS);
 		mobileStoreURIMatcher.addURI(authority, "visits/#", VISIT_ID);
 		mobileStoreURIMatcher.addURI(authority, "visits/with_customer",
@@ -132,6 +139,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_orders/#/*/custom_search", SALE_ORDER_CUSTOM_SEARCH);
 
+		mobileStoreURIMatcher.addURI(authority,
+				"sale_order_lines", SALE_ORDER_LINES);
+		mobileStoreURIMatcher.addURI(authority,
+				"sale_order_lines/*", SALE_ORDER_LINE);
+		
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_order_lines_from_order/#", SALE_ORDER_LINES_FROM_ORDER);
 
@@ -188,6 +200,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case SALE_ORDERS_LIST:
 			return SaleOrders.CONTENT_TYPE;
 		case SALE_ORDER_LINES_FROM_ORDER:
+			return SaleOrderLines.CONTENT_TYPE;
+		case SALE_ORDER_LINE:
+			return SaleOrderLines.CONTENT_ITEM_TYPE;
+		case SALE_ORDER_LINES:
 			return SaleOrderLines.CONTENT_TYPE;
 		case CUSTOMER_ADDRESSES:
 			return CustomerAddresses.CONTENT_TYPE;
@@ -410,10 +426,22 @@ public class MobileStoreContentProvider extends ContentProvider {
 									"%" + itemCustom + "%" })
 					.where(Items.CAMPAIGN_CODE + "= ?",
 							new String[] { itemStatus });
+		case ITEMS_AUTOCOMPLETE_SEARCH:
+			String itemCustomSearch = Items.getCustomSearchFirstParamQuery(uri);
+			return builder
+					.addTable(Tables.ITEMS)
+					.where(Items.ITEM_NO + " like ? OR " + Items.DESCRIPTION
+							+ " like ? ",
+							new String[] { itemCustomSearch + "%",
+									"%" + itemCustomSearch + "%" });
+		case ITEM_NO:
+			String itemNo = Items.getItemNo(uri);
+			return builder.addTable(Tables.ITEMS)
+					.where(Items.ITEM_NO + "=?",itemNo);
 		case ITEM_ID:
 			String itemId = Items.getItemId(uri);
 			return builder.addTable(Tables.ITEMS)
-					.where(Items.ITEM_NO + "=?",itemId);
+					.where(Items._ID + "=?",itemId);
 		case VISITS:
 			return builder.addTable(Tables.VISITS_JOIN_CUSTOMERS)
 					.mapToTable(Visits._ID, Tables.VISITS)
@@ -548,6 +576,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 							new String[] { "%" + saleCustomParam + "%" })
 					.where(SaleOrders.DOCUMENT_TYPE + "= ? ",
 							new String[] { saleDocType });
+		case SALE_ORDER_LINE:
+			final String salesOrderlineId = SaleOrderLines.getSaleOrderLineId(uri);
+			return builder
+					.addTable(Tables.SALE_ORDER_LINES)
+					.where(SaleOrderLines._ID + "=?", salesOrderlineId);
 		case SALE_ORDER_LINES_FROM_ORDER:
 			final String salesOrderId = SaleOrderLines.getSaleOrderLineId(uri);
 			return builder
