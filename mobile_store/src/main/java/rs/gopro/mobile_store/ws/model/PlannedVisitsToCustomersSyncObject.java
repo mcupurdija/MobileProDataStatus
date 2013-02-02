@@ -4,33 +4,20 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 
-import org.ksoap2.SoapFault;
-import org.ksoap2.SoapFault12;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Generic;
-import rs.gopro.mobile_store.util.DateUtils;
-import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
-import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
-import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
-import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Parcel;
-import android.os.Parcelable.Creator;
-import android.provider.BaseColumns;
 
-public class PlannedVisitsToCustomersSyncObject extends SyncObject {
+public abstract class PlannedVisitsToCustomersSyncObject extends SyncObject {
 
-	public static String TAG = "PlannedVisitsToCustomersSyncObject";
+	
 	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.PLANNED_VISITS_TO_CUS_SYNC_ACTION";
 
 	private String cSVString;
@@ -38,20 +25,6 @@ public class PlannedVisitsToCustomersSyncObject extends SyncObject {
 	private Date visitDateFrom;
 	private Date visitDateTo;
 	private String customerNoa46;
-
-	public static final Creator<PlannedVisitsToCustomersSyncObject> CREATOR = new Creator<PlannedVisitsToCustomersSyncObject>() {
-
-		@Override
-		public PlannedVisitsToCustomersSyncObject createFromParcel(Parcel source) {
-			return new PlannedVisitsToCustomersSyncObject(source);
-		}
-
-		@Override
-		public PlannedVisitsToCustomersSyncObject[] newArray(int size) {
-			return new PlannedVisitsToCustomersSyncObject[size];
-		}
-
-	};
 
 	public PlannedVisitsToCustomersSyncObject() {
 		super();
@@ -140,11 +113,6 @@ public class PlannedVisitsToCustomersSyncObject extends SyncObject {
 		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedDomains);
 		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.Visits.CONTENT_URI, valuesForInsert);
 		return numOfInserted;
-	}
-
-	@Override
-	public String getTag() {
-		return TAG;
 	}
 
 	@Override

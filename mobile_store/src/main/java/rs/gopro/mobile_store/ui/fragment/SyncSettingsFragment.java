@@ -10,8 +10,8 @@ import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
 import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObject;
+import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObjectOut;
 import rs.gopro.mobile_store.ws.model.SyncResult;
-import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -120,7 +120,7 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 
 	private void doPlannedVisitSync() {
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		PlannedVisitsToCustomersSyncObject plannedVisitsToCustomersSyncObject = new PlannedVisitsToCustomersSyncObject("", "V.MAKEVIC", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), "");
+		PlannedVisitsToCustomersSyncObject plannedVisitsToCustomersSyncObject = new PlannedVisitsToCustomersSyncObjectOut("", "V.MAKEVIC", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, plannedVisitsToCustomersSyncObject);
 		getActivity().startService(intent);
 	}
@@ -153,8 +153,8 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 
 		case SYNC_PLANNED_VISIT_LOADER:
 			return new CursorLoader(getActivity(), SyncLogs.CONTENT_URI, SyncLogsQuery.PROJECTION, SyncLogs.SYNC_OBJECT_ID + "=?  AND " + SyncLogs.SYNC_OBJECT_BATCH + " = (select MAX(" + SyncLogs.SYNC_OBJECT_BATCH + ") from "
-					+ Tables.SYNC_LOGS + " where " + SyncLogs.SYNC_OBJECT_ID + "= ? AND " + SyncLogs.SYNC_OBJECT_STATUS + "='" + SyncStatus.SUCCESS + "')", new String[] { PlannedVisitsToCustomersSyncObject.TAG,
-					PlannedVisitsToCustomersSyncObject.TAG }, null);
+					+ Tables.SYNC_LOGS + " where " + SyncLogs.SYNC_OBJECT_ID + "= ? AND " + SyncLogs.SYNC_OBJECT_STATUS + "='" + SyncStatus.SUCCESS + "')", new String[] { PlannedVisitsToCustomersSyncObjectOut.TAG,
+					PlannedVisitsToCustomersSyncObjectOut.TAG }, null);
 
 		default:
 			return null;

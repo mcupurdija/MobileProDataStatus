@@ -4,10 +4,10 @@
     <item android:id="@+id/upaction">
     </item>
     <item
-        android:id="@+id/create_main_activity"
-        android:icon="@drawable/ic_action_next"
+        android:id="@+id/sync_visits"
+        android:icon="@drawable/ic_action_refresh"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/next_button_title"/>
+        android:title="@string/action_button_refresh"/>
     
     <item
         android:id="@+id/create_insert_visit_activity"

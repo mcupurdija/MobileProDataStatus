@@ -717,6 +717,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		} finally {
 			db.endTransaction();
 		}
+		getContext().getContentResolver().notifyChange(uri, null);
 		return rowsAdded;
 	}
 }
