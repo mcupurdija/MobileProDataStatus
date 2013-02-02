@@ -1,25 +1,27 @@
 package rs.gopro.mobile_store.ws.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 import android.content.ContentValues;
 
 public class RealizedVisitsDomain extends Domain {
 
-	private String sales_person_no;
-	private String visit_date;
-	public int potental_customer;
-	private String customer_no;
-	private String arrival_time;
-	private String departure_time;
-	private String entry_type;
-	private String odometer;
-	private String visit_result;
+	public String sales_person_no;
+	public String visit_date;
+	public String potental_customer;
+	public String customer_no;
+	public String arrival_time;
+	public String departure_time;
+	public String entry_type;
+	public String odometer;
+	public String visit_result;
 	public String note;
 
-	private static final String[] COLUMNS = new String[] { "salesPerson_no", "visit_date", "potental_customer", "customer_no", "arrival_time", "departure_time", "entry_type", "odometer", "visit_result", "note" };
+	private static final String[] COLUMNS = new String[] { "sales_person_no", "visit_date", "potental_customer", "customer_no", "arrival_time", "departure_time", "entry_type", "odometer", "visit_result", "note" };
 
 	@Override
 	public String[] getCSVMappingStrategy() {
@@ -46,8 +48,11 @@ public class RealizedVisitsDomain extends Domain {
 
 	@Override
 	public List<RowItemDataHolder> getRowItemsForRepalce() {
-		// TODO Auto-generated method stub
-		return null;
+		List<RowItemDataHolder> transferNoToIdList = new ArrayList<RowItemDataHolder>();
+		transferNoToIdList.add(new RowItemDataHolder(Tables.SALES_PERSONS, Visits.SALE_PERSON_NO, getSales_person_no(), Visits.SALES_PERSON_ID));
+		transferNoToIdList.add(new RowItemDataHolder(Tables.CUSTOMERS, Visits.CUSTOMER_NO, getCustomer_no(), Visits.CUSTOMER_ID));
+
+		return transferNoToIdList;
 	}
 
 	public String getSales_person_no() {
@@ -114,11 +119,11 @@ public class RealizedVisitsDomain extends Domain {
 		this.customer_no = customer_no;
 	}
 
-	public int getPotental_customer() {
+	public String getPotental_customer() {
 		return potental_customer;
 	}
 
-	public void setPotental_customer(int potental_customer) {
+	public void setPotental_customer(String potental_customer) {
 		this.potental_customer = potental_customer;
 	}
 

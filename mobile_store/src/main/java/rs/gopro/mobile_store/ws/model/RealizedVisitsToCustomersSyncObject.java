@@ -1,5 +1,6 @@
 package rs.gopro.mobile_store.ws.model;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,14 +8,17 @@ import java.util.List;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapPrimitive;
 
+import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable.Creator;
 
-public class RealizedVisitsToCustomersSyncObject extends SyncObject {
-	public static String TAG = "RealizedVisitsToCustomersSyncObject";
+public abstract class RealizedVisitsToCustomersSyncObject extends SyncObject {
+
 	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.REALIZED_VISITS_TO_CUS_SYNC_ACTION";
 
 	private String cSVString;
@@ -23,19 +27,6 @@ public class RealizedVisitsToCustomersSyncObject extends SyncObject {
 	private Date visitDateTo;
 	private String customerNoa46;
 
-	public static final Creator<RealizedVisitsToCustomersSyncObject> CREATOR = new Creator<RealizedVisitsToCustomersSyncObject>() {
-
-		@Override
-		public RealizedVisitsToCustomersSyncObject createFromParcel(Parcel source) {
-			return new RealizedVisitsToCustomersSyncObject(source);
-		}
-
-		@Override
-		public RealizedVisitsToCustomersSyncObject[] newArray(int size) {
-			return new RealizedVisitsToCustomersSyncObject[size];
-		}
-
-	};
 
 	public RealizedVisitsToCustomersSyncObject() {
 		super();
@@ -68,6 +59,7 @@ public class RealizedVisitsToCustomersSyncObject extends SyncObject {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(getStatusMessage());
 		dest.writeString(getcSVString());
 		dest.writeString(getSalespersonCode());
 		dest.writeLong(getVisitDateFrom().getTime());
@@ -78,7 +70,7 @@ public class RealizedVisitsToCustomersSyncObject extends SyncObject {
 
 	@Override
 	public String getWebMethodName() {
-		return "RealizedVisitsToCustomersSyncObject";
+		return "GetRealizedVisitsToCustomers";
 	}
 
 	@Override
@@ -120,14 +112,13 @@ public class RealizedVisitsToCustomersSyncObject extends SyncObject {
 
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException {
-		// TODO Auto-generated method stub
-		return 0;
+		List<RealizedVisitsDomain> domains = CSVDomainReader.parse(new StringReader(soapResponse.toString()), RealizedVisitsDomain.class);
+		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, domains);
+		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.Visits.CONTENT_URI, valuesForInsert);
+		return numOfInserted;
 	}
 
-	@Override
-	public String getTag() {
-		return TAG;
-	}
+	
 
 	@Override
 	public String getBroadcastAction() {
