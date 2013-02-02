@@ -38,7 +38,8 @@ public class RealizedVisitsDomain extends Domain {
 		contentValues.put(Visits.ENTRY_TYPE, getEntry_type());
 		contentValues.put(Visits.ODOMETER, getOdometer());
 		contentValues.put(Visits.VISIT_RESULT, getVisit_result());
-		contentValues.put(Visits.IS_REALIZED, Integer.valueOf(1));
+		contentValues.put(Visits.VISIT_TYPE, Integer.valueOf(1));
+		contentValues.put(Visits.IS_SENT, Integer.valueOf(1));
 		contentValues.put(Visits.NOTE, getNote());
 		return contentValues;
 	}

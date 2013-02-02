@@ -196,6 +196,7 @@
 	<string name="title_sync_action">Sinh</string>
 	<string name="title_sync_planned_visits">Sinhronizuj planirane posete</string>
 	
+	<string name = "sync_summary_label">Poslednja uspesna sinh:</string>
 	<string name = "key_sync_check_box">sync_check_box</string>
 	<string name="contact_name_phone_title">Ime i telefon kontakta</string>
 	<string name="contact_no_label">Kontakt br.</string>

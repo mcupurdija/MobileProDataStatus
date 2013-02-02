@@ -52,7 +52,6 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 		setHasOptionsMenu(true);
 		getLoaderManager().initLoader(SYNC_ITEM_LOADER, null, this);
 		getLoaderManager().initLoader(SYNC_PLANNED_VISIT_LOADER, null, this);
-
 	}
 
 	@Override
@@ -138,9 +137,9 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 		System.out.println("STATUS IS: " + syncStatus);
 		if (syncStatus.equals(SyncStatus.SUCCESS)) {
 			if (ItemsSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
-				itemSyncCheckBox.setSummary(DateUtils.formatDbDate(new Date()));
+				itemSyncCheckBox.setSummary(getString(R.string.sync_summary_label) + " " + DateUtils.formatDbDate(new Date()));
 			} else if (PlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
-				plannedVisitSyncCheckBox.setSummary(DateUtils.formatDbDate(new Date()));
+				plannedVisitSyncCheckBox.setSummary(getString(R.string.sync_summary_label) + " " + DateUtils.formatDbDate(new Date()));
 			}
 		}
 	}
@@ -168,10 +167,10 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 			String updatedDate = data.getString(SyncLogsQuery.UPDATED_DATE);
 			switch (loader.getId()) {
 			case SYNC_ITEM_LOADER:
-				itemSyncCheckBox.setSummary(updatedDate);
+				itemSyncCheckBox.setSummary(getString(R.string.sync_summary_label) + " " + updatedDate);
 				break;
 			case SYNC_PLANNED_VISIT_LOADER:
-				plannedVisitSyncCheckBox.setSummary(updatedDate);
+				plannedVisitSyncCheckBox.setSummary(getString(R.string.sync_summary_label) + " " + updatedDate);
 			default:
 				break;
 			}

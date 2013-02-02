@@ -297,7 +297,8 @@ CREATE TABLE `visits` (
 	`visit_result` TEXT,
 	`note` TEXT,
 	`sync_object_batch` INTEGER,
-	`is_realized` INTEGER,
+	`visit_type` INTEGER,
+	`is_sent` INTEGER,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
@@ -318,12 +319,12 @@ BEGIN
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-INSERT INTO `visits` VALUES ('1','1','2013-12-18 00:00:00','1',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,1,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('2','1','2013-02-18 00:00:00','2',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,1,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('3','1','2013-01-18 00:00:00','3',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,1,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('4','1','2012-12-19 00:00:00','4',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,1, '2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('5','1','2012-12-17 00:00:00','5',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,1, '2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('6','1','2012-12-11 00:00:00','6',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,1,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('1','1','2013-12-18 00:00:00','1',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,1,1, '2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('2','1','2013-02-18 00:00:00','2',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,1,1,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('3','1','2013-01-18 00:00:00','3',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,1,1,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('4','1','2012-12-19 00:00:00','4',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,1,1, '2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('5','1','2012-12-17 00:00:00','5',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,1,1, '2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+INSERT INTO `visits` VALUES ('6','1','2012-12-11 00:00:00','6',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,1,1, '2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
 
 CREATE TABLE `sale_orders` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,

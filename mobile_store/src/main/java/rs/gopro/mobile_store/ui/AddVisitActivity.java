@@ -334,6 +334,8 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		contentValues.put(Visits.SALES_PERSON_ID, 1);
 		contentValues.put(Visits.VISIT_DATE, DateUtils.formatPickerInputForDb(visitDateEditText.getText().toString()));
 		contentValues.put(Visits.CUSTOMER_ID, customerPk);
+		contentValues.put(MobileStoreContract.Visits.VISIT_TYPE, "0");
+		contentValues.put(MobileStoreContract.Visits.IS_SENT, Integer.valueOf(0));
 //		contentValues.put(Visits.LINE_NO, lineNumberEditText.getText().toString());
 //		contentValues.put(Visits.ENTRY_TYPE, entryTypeEditText.getText().toString());
 		if (selectedVisitId != null) {

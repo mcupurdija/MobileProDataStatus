@@ -38,7 +38,8 @@ public class PlannedVisitsDomain extends Domain {
 		contentValues.put(Visits.ARRIVAL_TIME,  DateUtils.formatDateTimeFromNavisionToDB(getVisit_date(), getArrival_time()));
 		contentValues.put(Visits.DEPARTURE_TIME,  DateUtils.formatDateTimeFromNavisionToDB(getVisit_date(), getDeparture_time()));
 		contentValues.put(Visits.NOTE, getNote());
-		contentValues.put(Visits.IS_REALIZED, Integer.valueOf(1));
+		contentValues.put(Visits.VISIT_TYPE, Integer.valueOf(0));
+		contentValues.put(Visits.IS_SENT, Integer.valueOf(1));
 
 		return contentValues;
 	}

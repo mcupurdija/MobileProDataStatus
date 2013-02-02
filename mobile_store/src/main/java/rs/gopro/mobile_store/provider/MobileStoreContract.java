@@ -69,7 +69,8 @@ public class MobileStoreContract {
 		String VISIT_RESULT = "visit_result";
 		String NOTE = "note";
 		String SYNC_OBJECT_BATCH = "sync_object_batch";
-		String IS_REALIZED = "is_realized";
+		String VISIT_TYPE = "visit_type";
+		String IS_SENT = "is_sent";
 		// it has audit columns
 	}
 
