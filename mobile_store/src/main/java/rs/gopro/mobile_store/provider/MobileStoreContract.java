@@ -35,6 +35,7 @@ public class MobileStoreContract {
 	private static final String PATH_SYNC_LOGS_ID = "sync_logs_obejct_id";
 	private static final String PATH_SALES_PERSON = "sales_person";
 	private static final String PATH_GENRIC = "generic";
+	private static final String PATH_ELECT_CARD_CUSTOMER = "electronic_card_customer";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -295,6 +296,33 @@ public class MobileStoreContract {
 		
 	}
 	
+	public interface ElectronicCardCustomerColumns {
+		String CUSTOMER_ID = "customer_id";
+		String ITEM_ID = "item_id";
+		String JANUARY_QTY = "january_qty";
+		String FEBRUARY_QTY = "february_qty";
+		String MARCH_QTY = "march_qty";
+		String APRIL_QTY = "april_qty";
+		String MAY_QTY = "may_qty";
+		String JUNE_QTY = "june_qty";
+		String JULY_QTY = "july_qty";
+		String AUGUST_QTY = "august_qty";
+		String SEPTEMBER_QTY = "september_qty";
+		String OCTOBER_QTY = "october_qty";
+		String NOVEMBER_QTY = "november_qty";
+		String DECEMBER_QTY = "december_qty";
+		String TOTAL_SALE_QTY_CURRENT_YEAR = "total_sale_qty_current_year";
+		String TOTAL_SALE_QTY_PRIOR_YEAR = "total_sale_qty_prior_year";
+		String TOTAL_TURNOVER_CURRENT_YEAR = "total_turnover_current_year";
+		String TOTAL_TURNOVER_PRIOR_YEAR = "total_turnover_prior_year";
+		String SALES_LINE_COUNTS_CURRENT_YEAR = "sales_line_counts_current_year";
+		String SALES_LINE_COUNTS_PRIOR_YEAR = "sales_line_counts_prior_year";
+		String CREATED_DATE = "created_date";
+		String CREATED_BY = "created_by";
+		String UPDATED_DATE = "updated_date";
+		String UPDATED_BY = "updated_by";
+	}
+
 	public static class Generic implements BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_GENRIC).build();
 		
@@ -307,6 +335,26 @@ public class MobileStoreContract {
 		}
 	}
 
+	
+	public static class ElectronicCardCustomer implements ElectronicCardCustomerColumns, ItemsColumns, CustomersColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_ELECT_CARD_CUSTOMER).build();
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.electronic_card_customer";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.electronic_card_customer";
+		
+		public static Uri buildUri(String id) {
+			return CONTENT_URI.buildUpon().appendPath(id).build();
+		}
+		
+		public static String getECCId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+		
+		public static final String DEFAULT_SORT = Tables.ELECTRONIC_CARD_CUSTOMER + "." + ElectronicCardCustomerColumns.CREATED_DATE + " ASC";
+	}
+
+	
+	
 	
 	public static class SalesPerson implements SalesPersonsColumns, BaseColumns{
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALES_PERSON).build();

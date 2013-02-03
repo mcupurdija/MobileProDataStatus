@@ -1,0 +1,147 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:baselineAligned="false"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/el_card_customer_no"
+        style="@style/table_cell_text_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Customer No." />
+
+    <TextView
+        android:id="@+id/el_card_item_no"
+        style="@style/table_cell_text_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Item No." />
+
+    <TextView
+        android:id="@+id/el_card_jan_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="January (Qty)" />
+
+    <TextView
+        android:id="@+id/el_card_feb_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="February(Qty)" />
+
+    <TextView
+        android:id="@+id/el_card_mart_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="March(Qty)" />
+
+    <TextView
+        android:id="@+id/el_card_apr_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="April(Qty)" />
+
+    <TextView
+        android:id="@+id/el_card_may_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="May(Qty)" />
+
+    <TextView
+        android:id="@+id/el_card_june_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="June(Qty)" />
+
+    <TextView
+        android:id="@+id/el_card_july_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="July(Qty)" />
+
+    <TextView
+        android:id="@+id/el_card_aug_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="August(Qty)" />
+
+    <TextView
+        android:id="@+id/el_card_sep_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="September(Qty)" />
+
+    <TextView
+        android:id="@+id/el_card_oct_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="October(Qty)" />
+
+    <TextView
+        android:id="@+id/el_card_nov_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="November(Qty)" />
+
+    <TextView
+        android:id="@+id/el_card_dec_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="December(Qty)" />
+
+    <TextView
+        android:id="@+id/el_card_total_sale_curr_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Total Sale (Qty) In This Year" />
+
+    <TextView
+        android:id="@+id/el_card_total_sale_prior_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Total Sale (Qty) In Last Year" />
+
+    <TextView
+        android:id="@+id/el_card_turnover_curr_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Total Turnover In This Year" />
+
+    <TextView
+        android:id="@+id/el_card_turnover_prior_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Total Turnover In Last Year" />
+
+    <TextView
+        android:id="@+id/el_card_sales_line_counts_curr_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Sales Line Counts This Year" />
+
+    <TextView
+        android:id="@+id/el_card_sales_line_counts_prior_qty"
+        style="@style/table_cell_text_view"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Sales Line Counts In Last Year" />
+
+</LinearLayout>

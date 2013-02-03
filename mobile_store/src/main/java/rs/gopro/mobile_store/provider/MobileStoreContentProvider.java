@@ -80,6 +80,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int SYNC_LOGS_ID = 602;
 	
 	private static final int GENERIC = 700;
+	
+	private static final int ELECTRONIC_CARD_CUSTOMER = 800;
+	private static final int ELECTRONIC_CARD_CUSTOMER_ID = 801;
 
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -157,6 +160,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "sync_logs/*/sync_logs_obejct_id", SYNC_LOGS_MAX);
 		
 		mobileStoreURIMatcher.addURI(authority, "generic/*",GENERIC);
+		mobileStoreURIMatcher.addURI(authority, "electronic_card_customer", ELECTRONIC_CARD_CUSTOMER);
+		mobileStoreURIMatcher.addURI(authority, "electronic_card_customer/#", ELECTRONIC_CARD_CUSTOMER_ID);
+		
 			
 		/*
 		 * mobileStoreURIMatcher.addURI(authority, "contacts/custom_search",
@@ -213,6 +219,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return CustomerAddresses.CONTENT_TYPE;
 		case INVOICE_LINES_FROM_ORDER:
 			return InvoiceLine.CONTENT_TYPE;
+		case ELECTRONIC_CARD_CUSTOMER_ID:
+			return ElectronicCardCustomer.CONTENT_TYPE;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -427,7 +435,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case ITEMS_BY_STATUS:
 			String itemStat = Items.getItemStatus(uri);
 			return builder.addTable(Tables.ITEMS).where(
-					Items.CAMPAIGN_CODE + "= ?", new String[] { itemStat });
+					Items.CAMPAIGN_STATUS + "= ?", new String[] { itemStat });
 		case ITEMS_CUSTOM_SEARCH:
 			String itemCustom = Items.getCustomSearchFirstParamQuery(uri);
 			String itemStatus = Items.getCustomSearchSecondParamQuery(uri);
@@ -437,7 +445,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 							+ " like ? ",
 							new String[] { itemCustom + "%",
 									"%" + itemCustom + "%" })
-					.where(Items.CAMPAIGN_CODE + "= ?",
+					.where(Items.CAMPAIGN_STATUS + "= ?",
 							new String[] { itemStatus });
 		case ITEM_ID:
 			String itemId = Items.getItemId(uri);
@@ -619,6 +627,32 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case GENERIC :
 			final String tableName = Generic.getTableName(uri);
 			return builder.addTable(tableName);
+		case ELECTRONIC_CARD_CUSTOMER :
+			return builder.addTable(Tables.EL_CARD_CUSTOMER_JOIN_CUSTOMER_JOIN_ITEM)
+					.mapToTable(ElectronicCardCustomer._ID, Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.CUSTOMER_ID , Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.CUSTOMER_NO, Tables.CUSTOMERS)
+					.mapToTable(ElectronicCardCustomer.ITEM_ID , Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.ITEM_NO, Tables.ITEMS)
+					.mapToTable(ElectronicCardCustomer.JANUARY_QTY, Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.FEBRUARY_QTY, Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.MARCH_QTY, Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.APRIL_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.MAY_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.JUNE_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.JULY_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.AUGUST_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.SEPTEMBER_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.OCTOBER_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.NOVEMBER_QTY, Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.DECEMBER_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.TOTAL_SALE_QTY_CURRENT_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.TOTAL_SALE_QTY_PRIOR_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.TOTAL_TURNOVER_CURRENT_YEAR, Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.TOTAL_TURNOVER_PRIOR_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.SALES_LINE_COUNTS_CURRENT_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
+					.mapToTable(ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
+					 ;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -682,6 +716,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 			tableName = Tables.VISITS;
 			selectionParam =  new String[] {Visits.CUSTOMER_ID, Visits.SALES_PERSON_ID, Visits.VISIT_DATE};
 			selectionPhrase =  Visits.CUSTOMER_ID + "=? and "+ Visits.SALES_PERSON_ID + "=? and "+ Visits.VISIT_DATE + "=?";
+			break;
+		case ELECTRONIC_CARD_CUSTOMER:
+			tableName = Tables.ELECTRONIC_CARD_CUSTOMER;
+			selectionParam = new String[]{ElectronicCardCustomer.CUSTOMER_ID, ElectronicCardCustomer.ITEM_ID};
+			selectionPhrase = ElectronicCardCustomer.CUSTOMER_ID + "=? AND "+ ElectronicCardCustomer.ITEM_ID + "=?";
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);

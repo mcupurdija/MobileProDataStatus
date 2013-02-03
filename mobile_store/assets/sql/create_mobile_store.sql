@@ -234,55 +234,55 @@ BEGIN
 	where _id = new._id; 
 END;
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('1','0 376 8  12','Navrtka udarna M8 X H11mm','KOM','ALAT','ELEKTROOPR',' ','0','');
+values ('1','0 376 8  12','Navrtka udarna M8 X H11mm','KOM','ALAT','ELEKTROOPR','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('2','0 456 11','Vezica','KOM','VEZICE','MALE',' ','0','');
+values ('2','0 456 11','Vezica','KOM','VEZICE','MALE','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('3','0 456 111','Set kljuceva','KOM','ALAT','SETOVI',' ','0','');
+values ('3','0 456 111','Set kljuceva','KOM','ALAT','SETOVI','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('4','0 456 222','Francuski kljuc','KOM','ALAT','ELEKTROOPR',' ','0','');
+values ('4','0 456 222','Francuski kljuc','KOM','ALAT','ELEKTROOPR','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('5','0 587 760150','Lepezasti brusni tockic, G1500','KOM','','',' ','1','');
+values ('5','0 587 760150','Lepezasti brusni tockic, G1500','KOM','','','1','1','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('6','0 614 787305','Umetak 5/16, TX30, L50mm','KOM','','',' ','0','');
+values ('6','0 614 787305','Umetak 5/16, TX30, L50mm','KOM','','','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('7','0 614 788250','Umetak, 10mm, TX50, L120mm','KOM','','',' ','0','');
+values ('7','0 614 788250','Umetak, 10mm, TX50, L120mm','KOM','','','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('8','0 681 001001','Paropropusna folija WUTOP TRIO','KOM','','',' ','0','');
+values ('8','0 681 001001','Paropropusna folija WUTOP TRIO','KOM','','','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('9','0 893 5562','Cistac hladnjaka, 250ml','KOM','','',' ','0','');
+values ('9','0 893 5562','Cistac hladnjaka, 250ml','KOM','','','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('10','0 893 567','Diesel aditiv CR, 300 ml','KOM','','',' ','0','');
+values ('10','0 893 567','Diesel aditiv CR, 300 ml','KOM','','','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('11','0 984 160110','Mesavina ulja akcija','KOM','MAZIVA','MAZHID',' ','0','');
+values ('11','0 984 160110','Mesavina ulja akcija','KOM','MAZIVA','MAZHID','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('12','0 991 4546','Ulje za hidrauliku 20L','KOM','MAZIVA','MAZHID',' ','0','');
+values ('12','0 991 4546','Ulje za hidrauliku 20L','KOM','MAZIVA','MAZHID','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('13','0 992 3546','Ulje za kocnice','KOM','MAZIVA','MAZHID',' ','0','');
+values ('13','0 992 3546','Ulje za kocnice','KOM','MAZIVA','MAZHID','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('14','0 992 9001','Sijalica za farove','KOM','RASVETA','AUTOSIJA',' ','0','');
+values ('14','0 992 9001','Sijalica za farove','KOM','RASVETA','AUTOSIJA','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('15','007 007','Nestandardan artikal','KOM','','',' ','0','');
+values ('15','007 007','Nestandardan artikal','KOM','','','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('16','007 008','Min kolicina artikal','KOM','ALAT','ELEKTROOPR',' ','0','');
+values ('16','007 008','Min kolicina artikal','KOM','ALAT','ELEKTROOPR','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('17','1111','Olovka','KOM','','',' ','1','0 376 8  12');
+values ('17','1111','Olovka','KOM','','','1','1','0 376 8  12');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('18','20','Artikal 20 za dodatni trosak','','','',' ','0','');
+values ('18','20','Artikal 20 za dodatni trosak','','','','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('19','2112','Gume','KOM','ALAT','ELEKTROOPR',' ','0','');
+values ('19','2112','Gume','KOM','ALAT','ELEKTROOPR','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('20','345','dsfadf dfasfd','KOM','ALAT','SETOVI',' ','0','');
+values ('20','345','dsfadf dfasfd','KOM','ALAT','SETOVI','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('21','60','Artikal 60 za dodatni trosak','','','',' ','0','');
+values ('21','60','Artikal 60 za dodatni trosak','','','','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('22','612','tocak','KOM','','',' ','0','');
+values ('22','612','tocak','KOM','','','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('23','83','Gume','KOM','','',' ','0','');
+values ('23','83','Gume','KOM','','','0','0','');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('24','JKL','Min kolicina artikal','KOM','MAZIVA','MAZHID',' ','1','0 456 11');
+values ('24','JKL','Min kolicina artikal','KOM','MAZIVA','MAZHID','1','1','0 456 11');
 INSERT INTO `items` (`_id` ,`item_no` , `description`, `unit_of_measure` ,`category_code` ,`group_code` ,`campaign_status` , `campaign_code` ,`connected_spec_ship_item`)
-values ('25','V123','Brankov artikal','KOM','MAZIVA','PENA',' ','2','');
+values ('25','V123','Brankov artikal','KOM','MAZIVA','PENA','2','2','');
 -- visits
 CREATE TABLE `visits` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL ,
@@ -577,3 +577,47 @@ INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type
 (5, 1, 4, 1, 2, 'noo 2', 'location_code second', 'Description', '12', '122', '32', '21', '21', '222', '123', '1', '1' );
 INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
 (6, 2, 6, 1, 2, 'noo 2', 'location_code second', 'Description', '12', '2434', '32', '21', '21', '222', '123', '1', '1' );
+
+
+CREATE TABLE `electronic_card_customer` (
+	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
+	`customer_id` INTEGER,
+	`item_id` INTEGER,
+	`january_qty` REAL,
+	`february_qty` REAL,
+	`march_qty` REAL,
+	`april_qty` REAL,
+	`may_qty` REAL,
+	`june_qty` REAL,
+	`july_qty` REAL,
+	`august_qty` REAL,
+	`september_qty` REAL,
+	`october_qty` REAL,
+	`november_qty` REAL,
+	`december_qty` REAL,
+	`total_sale_qty_current_year` REAL,
+	`total_sale_qty_prior_year` REAL,
+	`total_turnover_current_year` REAL,
+	`total_turnover_prior_year` REAL,
+	`sales_line_counts_current_year` REAL,
+	`sales_line_counts_prior_year` REAL,
+	`created_date` TEXT,
+	`created_by` TEXT,
+	`updated_date` TEXT,
+	`updated_by` TEXT
+);
+
+CREATE TRIGGER IF NOT EXISTS "log_new_electronic_card_customer" AFTER INSERT ON "electronic_card_customer" 
+BEGIN 
+	update electronic_card_customer set 
+	created_date = datetime('now'),
+	created_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TRIGGER IF NOT EXISTS "log_electronic_card_customer_change" AFTER UPDATE ON "electronic_card_customer" 
+BEGIN 
+	update electronic_card_customer set 
+	updated_date = datetime('now'),
+	updated_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;

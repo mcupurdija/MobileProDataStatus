@@ -2,25 +2,29 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class CustomersViewActivity extends BaseActivity implements
-	CustomersViewListFragment.Callbacks, CustomersViewDetailFragment.Callbacks {
+public class CustomersViewActivity extends BaseActivity implements CustomersViewListFragment.Callbacks, CustomersViewDetailFragment.Callbacks {
 
 	public static final String EXTRA_MASTER_URI = "rs.gopro.mobile_store.extra.MASTER_URI";
 
-//	private static final String STATE_VIEW_TYPE = "view_type";
-//	TODO this is implementation for multiple types in view, maybe should implement later on
-//	private String mViewType;
+	// private static final String STATE_VIEW_TYPE = "view_type";
+	// TODO this is implementation for multiple types in view, maybe should
+	// implement later on
+	// private String mViewType;
 
 	private Fragment customersViewFragmentDetail;
 	private ShowHideMasterLayout mShowHideMasterLayout;
+	private String customerId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +45,7 @@ public class CustomersViewActivity extends BaseActivity implements
 		if (savedInstanceState != null) {
 			// @TODO needs to handle this
 
-			customersViewFragmentDetail = fm
-					.findFragmentById(R.id.fragment_customer_detail);
+			customersViewFragmentDetail = fm.findFragmentById(R.id.fragment_customer_detail);
 			updateDetailBackground();
 		}
 	}
@@ -53,7 +56,7 @@ public class CustomersViewActivity extends BaseActivity implements
 		if (uri == null) {
 			return;
 		}
-
+		this.customerId = MobileStoreContract.Customers.getCustomersId(uri);
 		if (intent.hasExtra(Intent.EXTRA_TITLE)) {
 			setTitle(intent.getStringExtra(Intent.EXTRA_TITLE));
 		}
@@ -65,19 +68,15 @@ public class CustomersViewActivity extends BaseActivity implements
 			if (!updateSurfaceOnly) {
 				loadCustomersViewList(uri, null);
 				if (mShowHideMasterLayout != null) {
-					mShowHideMasterLayout.showMaster(true,
-							ShowHideMasterLayout.FLAG_IMMEDIATE);
+					mShowHideMasterLayout.showMaster(true, ShowHideMasterLayout.FLAG_IMMEDIATE);
 				}
 			}
 
-		} else if (MobileStoreContract.Customers.CONTENT_ITEM_TYPE
-				.equals(mimeType)) {
+		} else if (MobileStoreContract.Customers.CONTENT_ITEM_TYPE.equals(mimeType)) {
 			// Load session details
 			if (intent.hasExtra(EXTRA_MASTER_URI)) {
 				if (!updateSurfaceOnly) {
-					loadCustomersViewList(
-							(Uri) intent.getParcelableExtra(EXTRA_MASTER_URI),
-							MobileStoreContract.Customers.getCustomersId(uri));
+					loadCustomersViewList((Uri) intent.getParcelableExtra(EXTRA_MASTER_URI), MobileStoreContract.Customers.getCustomersId(uri));
 					loadCustomersViewDetail(uri);
 				}
 			} else {
@@ -92,12 +91,9 @@ public class CustomersViewActivity extends BaseActivity implements
 
 	private void updateDetailBackground() {
 		if (customersViewFragmentDetail == null) {
-			findViewById(R.id.fragment_customer_detail)
-					.setBackgroundResource(
-							R.drawable.grey_frame_on_white_empty_sandbox);
+			findViewById(R.id.fragment_customer_detail).setBackgroundResource(R.drawable.grey_frame_on_white_empty_sandbox);
 		} else {
-			findViewById(R.id.fragment_customer_detail)
-					.setBackgroundResource(R.drawable.grey_frame_on_white);
+			findViewById(R.id.fragment_customer_detail).setBackgroundResource(R.drawable.grey_frame_on_white);
 		}
 	}
 
@@ -105,14 +101,17 @@ public class CustomersViewActivity extends BaseActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			if (mShowHideMasterLayout != null
-					&& !mShowHideMasterLayout.isMasterVisible()) {
+			if (mShowHideMasterLayout != null && !mShowHideMasterLayout.isMasterVisible()) {
 				// If showing the detail view, pressing Up should show the
 				// master pane.
 				mShowHideMasterLayout.showMaster(true, 0);
 				return true;
 			}
 			break;
+		case R.id.create_ecc_activity:
+			Intent eccIntent = new Intent(Intent.ACTION_VIEW, ElectronicCardCustomer.buildUri(customerId));
+			startActivity(eccIntent);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -125,20 +124,14 @@ public class CustomersViewActivity extends BaseActivity implements
 	private void loadCustomersViewList(Uri customersListUri, String customerId) {
 		CustomersViewListFragment fragment = new CustomersViewListFragment();
 		fragment.setSelectedCustomerId(customerId);
-		fragment.setArguments(BaseActivity
-				.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW,
-						customersListUri)));
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.fragment_customers_list, fragment).commit();
+		fragment.setArguments(BaseActivity.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW, customersListUri)));
+		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_customers_list, fragment).commit();
 	}
 
 	private void loadCustomersViewDetail(Uri customersDetailUri) {
 		CustomersViewDetailFragment fragment = new CustomersViewDetailFragment();
-		fragment.setArguments(BaseActivity
-				.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW,
-						customersDetailUri)));
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.fragment_customer_detail, fragment).commit();
+		fragment.setArguments(BaseActivity.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW, customersDetailUri)));
+		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_customer_detail, fragment).commit();
 		customersViewFragmentDetail = fragment;
 		updateDetailBackground();
 
@@ -150,11 +143,20 @@ public class CustomersViewActivity extends BaseActivity implements
 
 	@Override
 	public boolean onCustomerSelected(String customerId) {
+		this.customerId = customerId;
 		loadCustomersViewDetail(MobileStoreContract.Customers.buildCustomersUri(customerId));
 		return true;
 	}
 
 	@Override
-	public void onCustomerIdAvailable(String customerId) {	
+	public void onCustomerIdAvailable(String customerId) {
 	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.customer_activity_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
 }

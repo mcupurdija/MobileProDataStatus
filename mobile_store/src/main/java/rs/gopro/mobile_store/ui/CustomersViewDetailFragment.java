@@ -2,6 +2,8 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
+import rs.gopro.mobile_store.ui.fragment.ElectronicCardCustomerFragment;
 import rs.gopro.mobile_store.util.LogUtils;
 
 import android.content.Intent;
@@ -14,6 +16,9 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -244,6 +249,14 @@ public class CustomersViewDetailFragment extends Fragment implements
 		mPhone.setFocusable(disable);
 		mNumberOfGreyCoat.setFocusable(disable);
 	}
+	
+	
+	
+	
+
+	
+	
+	
 	private interface CustomerDetailQuery {
 		int _TOKEN = 0x8;
 
