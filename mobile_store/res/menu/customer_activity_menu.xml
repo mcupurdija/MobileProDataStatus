@@ -2,8 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
         android:id="@+id/create_ecc_activity"
-        android:icon="@drawable/ic_action_refresh"
         android:showAsAction="ifRoom|withText"
-        android:title="EL CARD" />
+        android:title="@string/ecc_menu_title" />
 
 </menu>
