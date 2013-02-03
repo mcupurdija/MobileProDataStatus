@@ -221,4 +221,5 @@
 	<string name="so_line_item_discounts_text">Discounts, selected, min and max</string>
 	<string name="so_line_quote_refused_text">Refused status</string>
 	<string name="so_line_avail_to_whole_ship_check_box_text">Available to whole shippment</string>
+	<string name="so_line_save_button_text">Save order line</string>
 </resources>

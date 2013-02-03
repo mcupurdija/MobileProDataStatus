@@ -189,6 +189,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
         public void bindView(View view, Context context, Cursor cursor) {
 //            UIUtils.setActivatedCompat(view, cursor.getString(VisitsQuery.VENDOR_ID)
 //                    .equals(mSelectedVendorId));
+        	//mSelectedSaleOrderId = cursor.getString(SaleOrderLinesQuery.SALE_ORDER_ID);
             view.setActivated(String.valueOf(cursor.getInt(SaleOrderLinesQuery.SALE_ORDER_ID))
                     .equals(mSelectedSaleOrderId));
             
@@ -201,7 +202,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
             timeView.setText(salesOrderDate);
             titleView.setText(salesOrderNo);
             subtitleView.setText(salesOrderCust);
-            mCallbacks.onSaleOrderIdAvailable(mSelectedSaleOrderId);
+            mCallbacks.onSaleOrderIdAvailable(cursor.getString(SaleOrderLinesQuery.SALE_ORDER_ID));
         }
     }
 	
@@ -220,7 +221,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
                 MobileStoreContract.SaleOrderLines.REAL_DISCOUNT
         };
 
-        //int _ID = 0;
+        int _ID = 0;
         int SALE_ORDER_ID = 1;
         int ITEM_NO = 2;
         int DESCRIPTION = 3;

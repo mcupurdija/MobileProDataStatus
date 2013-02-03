@@ -963,7 +963,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		localValues.put(MobileStoreContract.SaleOrders.FURTHER_SALE, showDeclaration.isChecked() ? 1 : 0);
 		
 		String order_no = orderNo.getText().toString().trim();
-		if (order_no != null && !contact_name.equals("")) {
+		if (order_no != null && !order_no.equals("")) {
 			localValues.put(MobileStoreContract.SaleOrders.QUOTE_NO, order_no);
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrders.QUOTE_NO);

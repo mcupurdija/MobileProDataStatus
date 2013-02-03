@@ -8,6 +8,7 @@ import rs.gopro.mobile_store.ui.components.ItemAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.ui.fragment.SaleOrderLinesAddEditPreviewListFragment.Callbacks;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,9 +20,11 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -34,6 +37,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	
 	private Uri mSaleOrderLinesUri;
 	private int mSelectedSaleOrderLineId;
+	private int mSelectedSaleOrderId;
 	private int salesPersonId;
 	private int documentId;
 	private String documentNo;
@@ -67,16 +71,26 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	private Spinner mQuoteRefused;
 	private Spinner mCampaignStatus;
 	
+	private Button loadItemData;
+	private Button saveData;
+	
 	
 	
 	public interface Callbacks {
 		public void onSaleOrderLineIdAvailable(String saleOrderLineId);
+		
+		public void onSaleOrderLineSaved();
 	}
 	
 	private static Callbacks sDummyCallbacks = new Callbacks() {
 		@Override
 		public void onSaleOrderLineIdAvailable(String saleOrderLineId) {} {
 		}
+		
+		@Override
+		public void onSaleOrderLineSaved() {
+		}
+		
 	};
 	
 	private Callbacks mCallbacks = sDummyCallbacks;
@@ -149,8 +163,94 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         mQuoteRefused = (Spinner) rootView.findViewById(R.id.so_line_quote_refused_spinner);
         mQuoteRefused.setAdapter(quoteRefusedAdapter);
         
+        loadItemData = (Button)rootView.findViewById(R.id.so_line_read_item_data_button);
+        saveData = (Button)rootView.findViewById(R.id.so_line_save_button);
+        
+        saveData.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				saveForm();
+			}
+		});
+        
         return rootView;
     }
+
+	protected void saveForm() {
+		ContentValues localValues = new ContentValues();
+		
+		String item_auto_complete = mItemAutocomplete.getText().toString().trim();
+		if (itemAutocompleteAdapter.getIdForTitle(item_auto_complete) != -1) {
+			//Cursor customerItemCursor = (Cursor) customerAutoCompleteAdapter.getItem(customerAutoCompleteAdapter.getIdForTitle(customer_auto_complete));
+			int item_id = itemAutocompleteAdapter.getIdForTitle(item_auto_complete);//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
+			localValues.put(MobileStoreContract.SaleOrderLines.ITEM_ID, Integer.valueOf(item_id));
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrderLines.ITEM_ID);
+		}
+
+		String quantity = mQuantity.getText().toString().trim();
+		if (quantity != null && !quantity.equals("")) {
+			localValues.put(MobileStoreContract.SaleOrderLines.QUANTITY, Double.valueOf(quantity));
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrderLines.QUANTITY);
+		}
+		
+		String quantity_available = mQuantityAvailable.getText().toString().trim();
+		if (quantity_available != null && !quantity_available.equals("")) {
+			localValues.put(MobileStoreContract.SaleOrderLines.QUANTITY_AVAILABLE, Double.valueOf(quantity_available));
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrderLines.QUANTITY_AVAILABLE);
+		}
+		
+		String price = mPrice.getText().toString().trim();
+		if (price != null && !price.equals("")) {
+			localValues.put(MobileStoreContract.SaleOrderLines.PRICE, Double.valueOf(price));
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrderLines.PRICE);
+		}
+		
+		String price_eur = mPriceEur.getText().toString().trim();
+		if (price_eur != null && !price_eur.equals("")) {
+			localValues.put(MobileStoreContract.SaleOrderLines.PRICE_EUR, Double.valueOf(price_eur));
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrderLines.PRICE_EUR);
+		}
+		
+		String discount = mDiscount.getText().toString().trim();
+		if (discount != null && !discount.equals("")) {
+			localValues.put(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT, Double.valueOf(discount));
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT);
+		}
+		
+		String discountMin = mDiscountMin.getText().toString().trim();
+		if (discountMin != null && !discountMin.equals("")) {
+			localValues.put(MobileStoreContract.SaleOrderLines.MIN_DISCOUNT, Double.valueOf(discountMin));
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrderLines.MIN_DISCOUNT);
+		}
+		
+		String discountMax = mDiscountMax.getText().toString().trim();
+		if (discountMax != null && !discountMax.equals("")) {
+			localValues.put(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT, Double.valueOf(discountMax));
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT);
+		}
+		
+		int backorder_status = mBackorderStatus.getSelectedItemPosition();
+		localValues.put(MobileStoreContract.SaleOrderLines.BACKORDER_STATUS, Integer.valueOf(backorder_status));
+		
+		int campaign_status = mCampaignStatus.getSelectedItemPosition();
+		localValues.put(MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS, Integer.valueOf(campaign_status));
+		
+		int quote_refused = mQuoteRefused.getSelectedItemPosition();
+		localValues.put(MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS, Integer.valueOf(quote_refused));
+		
+		getActivity().getContentResolver().update(MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(String.valueOf(mSelectedSaleOrderId)), localValues, MobileStoreContract.SaleOrderLines._ID+"=?", new String[] { String.valueOf(mSelectedSaleOrderLineId) });
+		
+		mCallbacks.onSaleOrderLineSaved();
+	}
 
 	@Override
     public void onAttach(Activity activity) {
@@ -218,6 +318,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	    		final String result = c.getString(codeIndex) + " - "
 	    				+ c.getString(nameIndex);
 	        	mItemAutocomplete.setText(result);
+	        	itemAutocompleteAdapter.setIdForTitle(result, cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrderLines.ITEM_ID)));
         	}
         }
         
@@ -284,10 +385,11 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		int capaign_status = -1;
 		if (!cursor.isNull(SaleOrderLinesQuery.LINE_CAMPAIGN_STATUS)) {
 			capaign_status = cursor.getInt(SaleOrderLinesQuery.LINE_CAMPAIGN_STATUS);
-			mBackorderStatus.setSelection(capaign_status);
+			mCampaignStatus.setSelection(capaign_status);
 		}
 		
 		mSelectedSaleOrderLineId = cursor.getInt(SaleOrderLinesQuery._ID);
+		mSelectedSaleOrderId = cursor.getInt(SaleOrderLinesQuery.SALE_ORDER_ID);
         mCallbacks.onSaleOrderLineIdAvailable(String.valueOf(mSelectedSaleOrderLineId));
         
         LogUtils.LOGI(TAG, "Loaded sale order line id: " + String.valueOf(mSelectedSaleOrderLineId));

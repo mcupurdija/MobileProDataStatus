@@ -302,6 +302,15 @@
                     android:layout_marginRight="16dip" />
             </LinearLayout>
         </LinearLayout>
+        <Button
+             android:id="@+id/so_line_save_button"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_vertical"
+             android:layout_marginLeft="16dip"
+             android:layout_marginRight="16dip"
+             android:gravity="center_vertical"
+             android:text="@string/so_line_save_button_text" />
     </LinearLayout>
 
 </ScrollView>

@@ -194,4 +194,9 @@ public class SaleOrderLinesAddEditActivity extends BaseActivity implements
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	@Override
+	public void onSaleOrderLineSaved() {
+	
+	}
 }

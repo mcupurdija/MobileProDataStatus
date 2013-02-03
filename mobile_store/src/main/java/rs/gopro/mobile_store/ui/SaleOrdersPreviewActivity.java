@@ -145,7 +145,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			actionMod.finish();
 		}
 		loadSaleOrderLines(MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(saleOrderId));
-		
+		this.saleOrderId = saleOrderId;
 		return true;
 	}
 

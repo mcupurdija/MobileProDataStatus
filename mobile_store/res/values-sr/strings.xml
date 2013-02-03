@@ -219,4 +219,5 @@
 	<string name="so_line_item_discounts_text">Popusti - izabrani, min i max</string>
 	<string name="so_line_quote_refused_text">Status odbijanja ponude</string>
 	<string name="so_line_avail_to_whole_ship_check_box_text">Dostupno za isporuku u celosti</string>
+	<string name="so_line_save_button_text">Sačuvaj promene</string>
 </resources>
