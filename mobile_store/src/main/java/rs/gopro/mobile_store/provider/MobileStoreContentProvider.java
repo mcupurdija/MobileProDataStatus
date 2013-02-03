@@ -2,8 +2,16 @@ package rs.gopro.mobile_store.provider;
 
 import java.util.ArrayList;
 
+import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
+import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerAddresses;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
+import rs.gopro.mobile_store.provider.MobileStoreContract.InvoiceLine;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
-import rs.gopro.mobile_store.provider.MobileStoreContract.*;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SelectionBuilder;
 import android.content.ContentProvider;
@@ -106,6 +114,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 				CUSTOMERS_CUSTOM_SEARCH);
 
 		mobileStoreURIMatcher.addURI(authority, "items", ITEMS);
+		mobileStoreURIMatcher.addURI(authority, "items/item_no/*", ITEM_NO);
 		mobileStoreURIMatcher.addURI(authority, "items/*/item_search",
 				ITEMS_AUTOCOMPLETE_SEARCH);
 		mobileStoreURIMatcher.addURI(authority, "items/*/item_no",
@@ -116,7 +125,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 				ITEMS_CUSTOM_SEARCH);
 		mobileStoreURIMatcher.addURI(authority, "items/#/*/item_no",
 				ITEMS_CUSTOM_SEARCH);
-		mobileStoreURIMatcher.addURI(authority, "items/item_no/*", ITEM_NO);
+		
 		mobileStoreURIMatcher.addURI(authority, "items/*", ITEM_ID);
 		
 		mobileStoreURIMatcher.addURI(authority, "visits", VISITS);
@@ -254,6 +263,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.SALE_ORDERS, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return SaleOrders.buildSaleOrderUri("" + id);
+		case SALE_ORDER_LINES_FROM_ORDER:
+			id = database.insertOrThrow(Tables.SALE_ORDER_LINES, null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return SaleOrderLines.buildSaleOrderLineUri("" + id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -336,6 +349,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 					Tables.CONTACTS + "." + Contacts._ID + "=?", contactId);
 		case CUSTOMER_ADDRESSES:
 			return builder.addTable(Tables.CUSTOMER_ADDRESSES);
+		case SALE_ORDER_LINES_FROM_ORDER:
+			final String saleOrderIdFromLine = SaleOrderLines.getSaleOrderId(uri);
+			return builder.addTable(Tables.SALE_ORDER_LINES).where(
+					Tables.SALE_ORDER_LINES + "." + SaleOrderLines.SALE_ORDER_ID + "=?", saleOrderIdFromLine);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

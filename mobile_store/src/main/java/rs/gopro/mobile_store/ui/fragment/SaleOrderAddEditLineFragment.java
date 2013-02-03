@@ -5,7 +5,9 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.components.ItemAutocompleteCursorAdapter;
+import rs.gopro.mobile_store.ui.fragment.SaleOrderLinesAddEditPreviewListFragment.Callbacks;
 import rs.gopro.mobile_store.util.LogUtils;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -52,6 +54,9 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	
 	private EditText mQuantity;
 	private EditText mQuantityAvailable;
+	
+	private EditText mPrice;
+	private EditText mPriceEur;
 	
 	private EditText mDiscount;
 	private EditText mDiscountMin;
@@ -116,6 +121,11 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         mQuantityAvailable = (EditText) rootView.findViewById(R.id.so_line_item_max_quantity_value);
         mQuantityAvailable.setFocusable(false);
         
+        mPrice = (EditText) rootView.findViewById(R.id.so_line_item_price_value);
+        mPriceEur = (EditText) rootView.findViewById(R.id.so_line_item_sugg_price_value);
+        mPrice.setFocusable(false);
+        mPriceEur.setFocusable(false);
+        
         mDiscount = (EditText) rootView.findViewById(R.id.so_line_item_discount_value);
         mDiscountMin = (EditText) rootView.findViewById(R.id.so_line_item_min_discount_value);
         mDiscountMin.setFocusable(false);
@@ -142,6 +152,16 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         return rootView;
     }
 
+	@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (!(activity instanceof Callbacks)) {
+            throw new ClassCastException("Activity must implement fragment's callbacks.");
+        }
+
+        mCallbacks = (Callbacks) activity;
+    }
+	
     @Override
     public void onDetach() {
         super.onDetach();
@@ -211,6 +231,18 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         if (!cursor.isNull(SaleOrderLinesQuery.QUANTITY_AVAILABLE)) {
         	quantity_available = cursor.getDouble(SaleOrderLinesQuery.QUANTITY_AVAILABLE);
         	mQuantityAvailable.setText(String.valueOf(quantity_available));
+        }
+        
+        double price = -1;
+        if (!cursor.isNull(SaleOrderLinesQuery.PRICE)) {
+        	price = cursor.getDouble(SaleOrderLinesQuery.PRICE);
+        	mPrice.setText(String.valueOf(price));
+        }
+        
+        double price_eur = -1;
+        if (!cursor.isNull(SaleOrderLinesQuery.PRICE_EUR)) {
+        	price_eur = cursor.getDouble(SaleOrderLinesQuery.PRICE_EUR);
+        	mPriceEur.setText(String.valueOf(price_eur));
         }
         
         double discount = -1;

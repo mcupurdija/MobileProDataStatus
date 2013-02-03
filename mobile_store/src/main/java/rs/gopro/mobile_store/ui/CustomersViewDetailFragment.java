@@ -2,8 +2,10 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.ui.fragment.SaleOrderAddEditLineFragment.Callbacks;
 import rs.gopro.mobile_store.util.LogUtils;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -90,6 +92,16 @@ public class CustomersViewDetailFragment extends Fragment implements
 
         // Start background query to load vendor details
         getLoaderManager().initLoader(CustomerDetailQuery._TOKEN, null, this);
+    }
+	
+	@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (!(activity instanceof Callbacks)) {
+            throw new ClassCastException("Activity must implement fragment's callbacks.");
+        }
+
+        mCallbacks = (Callbacks) activity;
     }
 	
     @Override

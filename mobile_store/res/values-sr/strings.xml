@@ -102,6 +102,8 @@
 	<string name="contextual_add">Novi</string>
 	<string name="contextual_view">Pregled</string>
 	<string name="contextual_edit_lines">Uredi stavke</string>
+	<string name="contextual_add_sale_order_line">Nova linija</string>
+	<string name="contextual_delete_sale_order_line">Izbriši liniju</string>
 	
 	<string name="document_no">Broj dokumenta</string>
 	<string name="dokument_type_no_title">Broj i tip dokumenta</string>
@@ -177,6 +179,11 @@
 	<string name="invoice_line_dialog_alternative_title">Nema stavki fakture</string>
 
 	<string name="sync_failed_title">Sinhronizacija nije uspesno izvrsena</string>
+	
+	<!-- title -->
+	
+	<string name="title_sale_order_lines_add_edit_activity">Dodaj/izmeni stavke liferice</string>
+	
 	<!-- settings -->
 	<string name="title_settings">Podesavanja</string>
 	<string name="key_ws_entry_point">ws_entry_point</string>

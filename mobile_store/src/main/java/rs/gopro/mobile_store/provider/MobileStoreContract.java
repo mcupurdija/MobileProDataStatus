@@ -412,7 +412,7 @@ public class MobileStoreContract {
 			return CONTENT_URI.buildUpon().appendPath(itemId).build();
 		}
 		public static Uri buildItemNoUri(String itemNo) {
-			return CONTENT_URI.buildUpon().appendEncodedPath(PATH_ITEM_NO).appendPath(itemNo).build();
+			return CONTENT_URI.buildUpon().appendPath(PATH_ITEM_NO).appendPath(itemNo).build();
 		}
 		public static String getItemId(Uri uri){
 			return uri.getPathSegments().get(1);

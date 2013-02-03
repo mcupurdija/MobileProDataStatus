@@ -102,6 +102,8 @@
 	<string name="contextual_add">New</string>
 	<string name="contextual_view">View</string>
 	<string name="contextual_edit_lines">Edit lines</string>
+	<string name="contextual_add_sale_order_line">New line</string>
+	<string name="contextual_delete_sale_order_line">Delete line</string>
 	
 	<string name="document_no">Document No</string>
 	<string name="dokument_type_no_title">Document no and type </string>
@@ -176,6 +178,11 @@
 	<string name="invoice_line_dialog_alternative_title">No invoice items</string>
 	
 	<string name="sync_failed_title">Sync is failed</string>
+	
+	<!-- title -->
+	
+	<string name="title_sale_order_lines_add_edit_activity">Add/Edit sales lines</string>
+	
 	<!-- settings -->
 	<string name="title_settings">Settings</string>
 	

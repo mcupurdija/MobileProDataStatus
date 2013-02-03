@@ -145,12 +145,13 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			actionMod.finish();
 		}
 		loadSaleOrderLines(MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(saleOrderId));
-		this.saleOrderId = saleOrderId;
+		
 		return true;
 	}
 
 	@Override
 	public void onSaleOrderIdAvailable(String saleOrderId) {
+		this.saleOrderId = saleOrderId;
 	}
 	
 	@Override
