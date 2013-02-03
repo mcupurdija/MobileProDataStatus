@@ -63,6 +63,7 @@ public abstract class BaseActivity extends FragmentActivity {
             	Intent settingsIntent = new Intent(getApplicationContext(), MobileStoreSettingsActivity.class);
             	startActivity(settingsIntent);
             	return true;
+           
         }
         return super.onOptionsItemSelected(item);
     }

@@ -142,7 +142,7 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 
 	private void doItemsSync() {
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(1), null, DateUtils.getWsDummyDate());
+		ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(-1), null, DateUtils.getWsDummyDate());
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
 		getActivity().startService(intent);
 
