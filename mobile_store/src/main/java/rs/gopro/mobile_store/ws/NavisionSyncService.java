@@ -67,10 +67,7 @@ public class NavisionSyncService extends IntentService {
 		new MarshaleDateNav().register(envelope);
 		envelope.dotNet = true;
 		envelope.setOutputSoapObject(request);
-
-		HttpTransportApache androidHttpTransport = new HttpTransportApache(syncObject.getUrl(), 5000, new NTCredentials("wurthtest", "remote", "", "gopro"), new AuthScope(null, -1));// "wurthtest",
-																																														// "remote",
-																																														// "",
+		HttpTransportApache androidHttpTransport = new HttpTransportApache(syncObject.getUrl(), 15000, new NTCredentials("wurthtest", "remote", "", "gopro"), new AuthScope(null, -1));// "wurthtest",
 																																														// "gopro"
 		ContentResolver contentResolver = getContentResolver();
 		androidHttpTransport.debug = true;
@@ -81,13 +78,13 @@ public class NavisionSyncService extends IntentService {
 			// send to our REST service via HttpClient.
 			androidHttpTransport.call(syncObject.getSoapAction(), envelope);
 			syncObject.saveSOAPResponse(envelope.getResponse(), contentResolver);
-			syncResult.setStatus(SyncStatus.SUCCESSED);
+			syncResult.setStatus(SyncStatus.SUCCESS);
 			syncResult.setResult(syncObject.getResult());
-			syncObject.logSyncEnd(contentResolver);
+			syncObject.logSyncEnd(contentResolver, SyncStatus.SUCCESS);
 		} catch (Exception e) {
 			syncResult.setStatus(SyncStatus.FAILURE);
 			syncResult.setResult(syncObject.getResult());
-			syncObject.logSyncEnd(contentResolver);
+			syncObject.logSyncEnd(contentResolver, SyncStatus.FAILURE);
 			LogUtils.LOGE(TAG, "Error during soap request!", e);
 		}
 

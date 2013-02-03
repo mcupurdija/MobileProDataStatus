@@ -12,6 +12,8 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
+import rs.gopro.mobile_store.provider.MobileStoreContract.*;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SelectionBuilder;
 import android.content.ContentProvider;
@@ -22,6 +24,7 @@ import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
@@ -84,6 +87,12 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int CUSTOMER_ADDRESSES = 500;
 	private static final int CUSTOMER_ADDRESSES_ID = 501;
 	private static final int CUSTOMER_ADDRESSES_CUSTOMER_NO = 502;
+	
+	private static final int SYNC_LOGS_MAX = 600;
+	private static final int SYNC_LOGS = 601;
+	private static final int SYNC_LOGS_ID = 602;
+	
+	private static final int GENERIC = 700;
 
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -163,6 +172,14 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "customer_addresses/customer_no/*", CUSTOMER_ADDRESSES_CUSTOMER_NO);
 		mobileStoreURIMatcher.addURI(authority, "customer_addresses/*", CUSTOMER_ADDRESSES_ID);
 		
+		mobileStoreURIMatcher.addURI(authority, "sync_logs/#", SYNC_LOGS_ID);
+		mobileStoreURIMatcher.addURI(authority, "sync_logs/*", SYNC_LOGS_ID);
+		mobileStoreURIMatcher.addURI(authority, "sync_logs", SYNC_LOGS);
+		
+		mobileStoreURIMatcher.addURI(authority, "sync_logs/*/sync_logs_obejct_id", SYNC_LOGS_MAX);
+		
+		mobileStoreURIMatcher.addURI(authority, "generic/*",GENERIC);
+			
 		/*
 		 * mobileStoreURIMatcher.addURI(authority, "contacts/custom_search",
 		 * CONTACTS_ALL); mobileStoreURIMatcher.addURI(authority,
@@ -267,6 +284,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.SALE_ORDER_LINES, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return SaleOrderLines.buildSaleOrderLineUri("" + id);
+		case SYNC_LOGS:
+			id = database.insertOrThrow(Tables.SYNC_LOGS,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return SyncLogs.buildSyncLogsUri(""+id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -297,18 +318,22 @@ public class MobileStoreContentProvider extends ContentProvider {
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
+		System.out.println("update(uri = " + uri + ")");
 		LogUtils.log(Log.VERBOSE, TAG, "update(uri = " + uri + ")");
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
 		SelectionBuilder builder = buildSimpleSelection(uri);
 		int updatedRows = builder.where(selection, selectionArgs).update(
 				database, values);
 		int match = mobileStoreURIMatcher.match(uri);
+		System.out.println("UPDATE MATHCER " +match);
 		switch (match) {
 		case SALE_ORDER:
 			/**
 			 * This Uri is used for select so we must use the same to do notification
 			 */
 			getContext().getContentResolver().notifyChange(SaleOrders.CONTENT_URI, null);
+		case SYNC_LOGS_ID:
+			getContext().getContentResolver().notifyChange(SyncLogs.CONTENT_URI, null);
 		default:
 			getContext().getContentResolver().notifyChange(uri, null);
 		}
@@ -353,6 +378,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			final String saleOrderIdFromLine = SaleOrderLines.getSaleOrderId(uri);
 			return builder.addTable(Tables.SALE_ORDER_LINES).where(
 					Tables.SALE_ORDER_LINES + "." + SaleOrderLines.SALE_ORDER_ID + "=?", saleOrderIdFromLine);
+		case SYNC_LOGS_ID:
+			String syncId = SyncLogs.getSyncLogId(uri);
+			return builder.addTable(Tables.SYNC_LOGS)
+				.where(SyncLogs._ID + "=?", new String[]{syncId} );
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -366,6 +395,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	 */
 	private SelectionBuilder buildExpandedSelection(Uri uri, int match) {
 		System.out.println("URI: " + uri);
+		System.out.println(match);
 		final SelectionBuilder builder = new SelectionBuilder();
 		switch (match) {
 		case USERS_ID:
@@ -631,6 +661,15 @@ public class MobileStoreContentProvider extends ContentProvider {
 			final String customerNo = CustomerAddresses.getSearchByCustomerNo(uri);
 			return builder.addTable(Tables.CUSTOMER_ADDRESSES)
 					.where(CustomerAddresses.CUSTOMER_NO + " like ?", new String[] { customerNo });
+		case SYNC_LOGS_MAX:
+			final String  syncObjectId = SyncLogs.getSyncLogObjectId(uri);
+			return builder.addTable(Tables.SYNC_LOGS)
+					.where(SyncLogs.SYNC_OBJECT_ID + "=?", new String[]{syncObjectId});
+		case SYNC_LOGS :
+			return builder.addTable(Tables.SYNC_LOGS);
+		case GENERIC :
+			final String tableName = Generic.getTableName(uri);
+			return builder.addTable(tableName);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -669,7 +708,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		// TODO possible performance drawback because triggers if there is lot of data, maybe we need another approach than triggers
 		final SQLiteDatabase db = databaseHelper.getWritableDatabase();
 		String selectionPhrase = "";
-		String selectionParam = "";
+		String[] selectionParam = null;
 		String tableName = "";
 		String[] selectionArgs = null;
 		// one method for all tables that needs this, this is used in whole provider implementation
@@ -677,18 +716,23 @@ public class MobileStoreContentProvider extends ContentProvider {
 		switch (match) {
 		case USERS:
 			tableName = Tables.USERS;
-			selectionParam = Users.USERNAME;
+			selectionParam = new String[] { Users.USERNAME };
 			selectionPhrase = Users.USERNAME + "=?";
 			break;
 		case ITEMS:
 			tableName = Tables.ITEMS;
-			selectionParam = Items.ITEM_NO;
+			selectionParam = new String[] { Items.ITEM_NO};
 			selectionPhrase = Items.ITEM_NO + "=?";
 			break;
 		case CUSTOMERS:
 			tableName = Tables.CUSTOMERS;
-			selectionParam = Customers.CUSTOMER_NO;
+			selectionParam = new String[] { Customers.CUSTOMER_NO};
 			selectionPhrase = Customers.CUSTOMER_NO + "=?";
+			break;
+		case VISITS:
+			tableName = Tables.VISITS;
+			selectionParam =  new String[] {Visits.CUSTOMER_ID, Visits.SALES_PERSON_ID, Visits.VISIT_DATE};
+			selectionPhrase =  Visits.CUSTOMER_ID + "=? and "+ Visits.SALES_PERSON_ID + "=? and "+ Visits.VISIT_DATE + "=?";
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
@@ -701,9 +745,17 @@ public class MobileStoreContentProvider extends ContentProvider {
 		db.beginTransaction();
 		try {
 			for (ContentValues cv : values) {
-				selectionArgs = new String[] { cv.getAsString(selectionParam) };
-				int affected = db.update(tableName, cv, selectionPhrase,
-						selectionArgs);
+				selectionArgs = new String[selectionParam.length];
+				for(int i  = 0; i<selectionArgs.length; i++){
+					selectionArgs[i] = cv.getAsString(selectionParam[i]);
+				}
+				int affected = 0;
+				try {
+					affected = db.update(tableName, cv, selectionPhrase,
+							selectionArgs);
+				} catch (SQLiteConstraintException e) {
+					LogUtils.LOGE(TAG, "Error during bulk update", e);
+				}
 				if (affected == 0) {
 					rowId = db.insert(tableName, null, cv);
 					if (rowId > 0)
@@ -716,6 +768,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		} finally {
 			db.endTransaction();
 		}
+		getContext().getContentResolver().notifyChange(uri, null);
 		return rowsAdded;
 	}
 }

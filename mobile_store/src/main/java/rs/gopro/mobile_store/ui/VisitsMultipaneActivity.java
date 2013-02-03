@@ -4,6 +4,10 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.widget.VisitContextualMenu;
+import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObject;
+import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObjectOut;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -117,6 +121,9 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 				return true;
 			}
 			break;
+		case R.id.sync_visits:
+			doPlannedVisitSync();
+			return true;
 			
 		/* case R.id.newrecord:
              final Intent intent = new Intent(this, NewVisitActivity.class);
@@ -198,4 +205,10 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 		return super.onCreateOptionsMenu(menu);
 	}
 	
+	private void doPlannedVisitSync() {
+		Intent intent = new Intent(this, NavisionSyncService.class);
+		PlannedVisitsToCustomersSyncObject plannedVisitsToCustomersSyncObject = new PlannedVisitsToCustomersSyncObjectOut("", "V.MAKEVIC", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), "");
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, plannedVisitsToCustomersSyncObject);
+		this.startService(intent);
+	}
 }

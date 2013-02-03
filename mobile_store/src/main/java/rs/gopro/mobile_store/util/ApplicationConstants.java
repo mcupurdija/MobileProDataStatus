@@ -16,7 +16,6 @@ public class ApplicationConstants {
 	}
 
 	public static enum SyncStatus{
-		SUCCESSED, FAILURE
-		
+		SUCCESS, FAILURE, IN_PROCCESS;	
 	}
 }

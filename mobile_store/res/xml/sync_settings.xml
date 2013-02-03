@@ -7,6 +7,17 @@
    android:layout="@layout/check_box_pref"
    android:selectable="true"
    />
-  
+  <CheckBoxPreference android:title="@string/title_sync_planned_visits"
+   android:defaultValue="false" 
+   android:key="@string/key_sync_planned_visits_check_box" 
+   android:layout="@layout/check_box_pref"
+   android:selectable="true"
+   />
+   <CheckBoxPreference android:title="@string/title_sync_realized_visits"
+   android:defaultValue="false" 
+   android:key="@string/key_sync_realized_visits_check_box" 
+   android:layout="@layout/check_box_pref"
+   android:selectable="true"
+   />
  </PreferenceCategory>
 </PreferenceScreen>
