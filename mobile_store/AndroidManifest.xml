@@ -60,7 +60,8 @@
                 android:value=".ui.MainActivity" />
         </activity>
         <activity android:name=".ui.ElectronicCardCustomerActivity"
-            android:exported="false">
+            android:exported="false"
+            android:label="@string/ecc_activity_title">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

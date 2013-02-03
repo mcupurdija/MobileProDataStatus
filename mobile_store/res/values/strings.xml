@@ -222,4 +222,6 @@
 	<string name="so_line_quote_refused_text">Refused status</string>
 	<string name="so_line_avail_to_whole_ship_check_box_text">Available to whole shippment</string>
 	<string name="so_line_save_button_text">Save order line</string>
+	<string name="ecc_menu_title">ECC preview</string>
+	<string name="ecc_activity_title">Electronic customer card</string>
 </resources>
