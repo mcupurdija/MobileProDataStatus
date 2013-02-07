@@ -28,10 +28,10 @@ public class ReportLayout extends CustomLinearLayout {
 	@Override
 	protected void inflateLayout(LayoutInflater layoutInflater) {
 		View view = layoutInflater.inflate(R.layout.content_holder_reports, null);
-		TextView textView = (TextView) view.findViewById(R.id.report_content);
+//		TextView textView = (TextView) view.findViewById(R.id.report_content);
 		this.addView(view);
-		String string = loadText("lorem.txt",getResources().getAssets());
-		textView.setText(string);
+//		String string = loadText("lorem.txt",getResources().getAssets());
+//		textView.setText(string);
 
 	}
 

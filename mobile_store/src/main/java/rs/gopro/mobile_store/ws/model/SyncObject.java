@@ -6,7 +6,9 @@ import java.util.Vector;
 import org.ksoap2.SoapFault;
 import org.ksoap2.SoapFault12;
 import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
@@ -32,7 +34,7 @@ public abstract class SyncObject implements Parcelable {
 	protected static String WS_SCHEME = "urn:microsoft-dynamics-schemas";
 	protected static String WS_NAMESPACE = WS_SCHEME + WS_ENTRY_POINT;
 	protected static String WS_NAVISION_CODEUNIT_NAME = "/Codeunit/MobileDeviceSync";
-	protected static String WS_SERVER_ADDRESS = "http://sqlserver.gopro.rs:7047/Wurth/WS";// "http://sqlserver.gopro.rs:7047/Wurth/WS";
+	protected static String WS_SERVER_ADDRESS = "http://10.94.1.5:7047/Wurth/WS";// "http://sqlserver.gopro.rs:7047/Wurth/WS";
 
 	// uri for update, no need in Parcel
 	protected Uri currentUri;
@@ -87,10 +89,20 @@ public abstract class SyncObject implements Parcelable {
 
 	protected abstract int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException;
 
-	public void saveSOAPResponse(Object response, ContentResolver contentResolver) throws SOAPResponseException {
-		if (response instanceof SoapPrimitive) {
-			SoapPrimitive soapresult = (SoapPrimitive) response;
-			int inserted = 0;
+	protected abstract int parseAndSave(ContentResolver contentResolver, SoapObject soapResponse) throws CSVParseException;
+	
+	public void saveSOAPResponse(SoapSerializationEnvelope response, ContentResolver contentResolver) throws SOAPResponseException {
+		int inserted = 0;
+//		SoapObject resp = (SoapObject) response;
+//		int l = resp.getPropertyCount();
+		Object resp = null;
+		try {
+			resp = response.getResponse();
+		} catch (SoapFault esf) {
+			throw new SOAPResponseException(esf);
+		}
+		if (resp instanceof SoapPrimitive) {
+			SoapPrimitive soapresult = (SoapPrimitive) resp;
 			try {
 				inserted = parseAndSave(contentResolver, soapresult);
 			} catch (CSVParseException e) {
@@ -98,18 +110,21 @@ public abstract class SyncObject implements Parcelable {
 			}
 			result = String.valueOf(inserted);
 			LogUtils.LOGI(getTag(), "New Items inserted:" + inserted);
-		} else if (response instanceof Vector<?>) {
-			Vector<SoapPrimitive> result = (Vector<SoapPrimitive>) response;
-			for (SoapPrimitive primitive : result) {
-				LogUtils.LOGI(getTag(), primitive.toString());
+		} else if (resp instanceof Vector<?>) {
+			SoapObject soapObject = (SoapObject) response.bodyIn;
+			try {
+				inserted = parseAndSave(contentResolver, soapObject);
+			} catch (CSVParseException e) {
+				throw new SOAPResponseException(e);
 			}
-			// LogUtils.LOGI(TAG, result.toString());
-		} else if (response instanceof SoapFault) {
-			SoapFault result = (SoapFault) response;
+			result = String.valueOf(inserted);
+			LogUtils.LOGI(getTag(), "New Items inserted:" + inserted);
+		} else if (resp instanceof SoapFault) {
+			SoapFault result = (SoapFault) resp;
 			LogUtils.LOGE(getTag(), result.faultstring);
 			throw new SOAPResponseException(result.getMessage());
-		} else if (response instanceof SoapFault12) {
-			SoapFault12 result = (SoapFault12) response;
+		} else if (resp instanceof SoapFault12) {
+			SoapFault12 result = (SoapFault12) resp;
 			LogUtils.LOGE(getTag(), result.faultstring);
 			throw new SOAPResponseException(result.getMessage());
 		}

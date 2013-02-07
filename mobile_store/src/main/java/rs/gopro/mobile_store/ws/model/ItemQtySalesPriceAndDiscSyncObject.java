@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
+import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
-import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
+import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import android.content.ContentResolver;
 import android.os.Parcel;
 
@@ -31,7 +33,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 	private String pMinimumDiscountPctAsTxt;
 	private String pMaximumDiscountPctAsTxt;
 	private String pDiscountPctAsTxt;
-
+	
 	public static final Creator<ItemQtySalesPriceAndDiscSyncObject> CREATOR = new Creator<ItemQtySalesPriceAndDiscSyncObject>() {
 
 		@Override
@@ -96,6 +98,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(getStatusMessage());
 		dest.writeString(getpItemNoa46());
 		dest.writeString(getpLocationCode());
 		dest.writeInt(getpCampaignStatus());
@@ -201,7 +204,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 
 		PropertyInfo maximumDiscountPctAsTxtInfo = new PropertyInfo();
 		maximumDiscountPctAsTxtInfo.setName("pMaximumDiscountPctAsTxt");
-		maximumDiscountPctAsTxtInfo.setValue(maximumDiscountPctAsTxtInfo);
+		maximumDiscountPctAsTxtInfo.setValue(pMaximumDiscountPctAsTxt);
 		maximumDiscountPctAsTxtInfo.setType(String.class);
 		properies.add(maximumDiscountPctAsTxtInfo);
 
@@ -215,8 +218,32 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException {
-		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	protected int parseAndSave(ContentResolver contentResolver, SoapObject soapResponse) throws CSVParseException {
+//		Map<String, String> responseProperties = new HashMap<String, String>();
+//		for(int i=0;i<soapResponse.getPropertyCount();i++){
+//			responseProperties.put(soapResponse.getProperty(i), responseProperty.toString());
+//		}
+		bindResponseProperties(soapResponse);
+		return 0;
+	}
+	
+	private void bindResponseProperties(SoapObject soapResponse) {
+		try {
+			this.pAvailableToWholeShip = Integer.valueOf(soapResponse.getPropertyAsString("pAvailableToWholeShip"));
+		} catch (NumberFormatException ne) {
+			LogUtils.LOGE(TAG, "Bat int format!", ne);
+			this.pAvailableToWholeShip = -1;
+		}
+		this.pMinimumDiscountPctAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pMinimumDiscountPctAsTxt"));
+		this.pMaximumDiscountPctAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pMaximumDiscountPctAsTxt"));
+		this.pQuantityAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pQuantityAsTxt"));
+		this.pSalesPriceRSDAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pSalesPriceRSDAsTxt"));
+		this.pSalesPriceEURAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pSalesPriceEURAsTxt"));
+		this.pDiscountPctAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pDiscountPctAsTxt"));
 	}
 
 	@Override

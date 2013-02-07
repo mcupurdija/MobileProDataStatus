@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
@@ -118,7 +119,10 @@ public abstract class RealizedVisitsToCustomersSyncObject extends SyncObject {
 		return numOfInserted;
 	}
 
-	
+	@Override
+	protected int parseAndSave(ContentResolver contentResolver, SoapObject soapResponse) throws CSVParseException {
+		return 0;
+	}
 
 	@Override
 	public String getBroadcastAction() {

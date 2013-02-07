@@ -7,22 +7,18 @@ import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 
-import rs.gopro.mobile_store.R;
-import rs.gopro.mobile_store.util.ApplicationConstants;
-import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
-import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
+import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.ws.model.SyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import rs.gopro.mobile_store.ws.util.HttpTransportApache;
 import rs.gopro.mobile_store.ws.util.MarshaleDateNav;
+import rs.gopro.mobile_store.ws.util.MarshaleDouble;
 import android.app.IntentService;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.ResultReceiver;
 import android.support.v4.content.LocalBroadcastManager;
-import android.widget.Toast;
 
 /**
  * Background worker that calls SOAP web services from Navision 2009. It has
@@ -37,7 +33,11 @@ public class NavisionSyncService extends IntentService {
 
 	public static final String EXTRA_WS_SYNC_OBJECT = "rs.gopro.mobile_store.EXTRA_WS_SYNC_OBJECT";
 	public static final String SYNC_RESULT = "rs.gopro.mobile_store.sync_result";
-
+	
+	public static final String USER_NAME = "gopro4";//"wurthtest";
+	public static final String PASS = "61et9gks";//"remote";
+	public static final String DOMAIN = "wurth";//"gopro";
+	
 	public NavisionSyncService() {
 		super(TAG);
 	}
@@ -65,9 +65,10 @@ public class NavisionSyncService extends IntentService {
 
 		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 		new MarshaleDateNav().register(envelope);
+		new MarshaleDouble().register(envelope);
 		envelope.dotNet = true;
 		envelope.setOutputSoapObject(request);
-		HttpTransportApache androidHttpTransport = new HttpTransportApache(syncObject.getUrl(), 15000, new NTCredentials("wurthtest", "remote", "", "gopro"), new AuthScope(null, -1));// "wurthtest",
+		HttpTransportApache androidHttpTransport = new HttpTransportApache(syncObject.getUrl(), 15000, new NTCredentials(USER_NAME, PASS, "", DOMAIN), new AuthScope(null, -1));// "wurthtest",
 																																														// "gopro"
 		ContentResolver contentResolver = getContentResolver();
 		androidHttpTransport.debug = true;
@@ -77,9 +78,10 @@ public class NavisionSyncService extends IntentService {
 			// Here we define our base request object which we will
 			// send to our REST service via HttpClient.
 			androidHttpTransport.call(syncObject.getSoapAction(), envelope);
-			syncObject.saveSOAPResponse(envelope.getResponse(), contentResolver);
+			syncObject.saveSOAPResponse(envelope, contentResolver);
 			syncResult.setStatus(SyncStatus.SUCCESS);
 			syncResult.setResult(syncObject.getResult());
+			syncResult.setComplexResult(syncObject);
 			syncObject.logSyncEnd(contentResolver, SyncStatus.SUCCESS);
 		} catch (Exception e) {
 			syncResult.setStatus(SyncStatus.FAILURE);

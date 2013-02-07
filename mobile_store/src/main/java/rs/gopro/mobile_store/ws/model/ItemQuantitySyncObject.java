@@ -6,6 +6,7 @@ import java.util.List;
 import org.ksoap2.SoapFault;
 import org.ksoap2.SoapFault12;
 import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
@@ -143,5 +144,12 @@ public class ItemQuantitySyncObject extends SyncObject {
 	@Override
 	public String getTag() {
 		return TAG;
+	}
+
+	@Override
+	protected int parseAndSave(ContentResolver contentResolver,
+			SoapObject soapResponse) throws CSVParseException {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

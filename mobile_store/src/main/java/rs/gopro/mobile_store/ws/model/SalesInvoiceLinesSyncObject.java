@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
@@ -171,6 +172,13 @@ public class SalesInvoiceLinesSyncObject extends SyncObject {
 
 	public void setPostingDateTo(Date postingDateTo) {
 		this.postingDateTo = postingDateTo;
+	}
+
+	@Override
+	protected int parseAndSave(ContentResolver contentResolver,
+			SoapObject soapResponse) throws CSVParseException {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

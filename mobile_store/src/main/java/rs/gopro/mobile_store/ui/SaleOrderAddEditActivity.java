@@ -666,13 +666,15 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 				loadCustomer(data);
 			} else {
 				LogUtils.LOGE(TAG, "Cursor empty for CUSTOMER_HEADER_LOADER!");
-			} 
+			}
+			break;
 		case CUSTOMER_HEADER_LOADER_TRANSIT:
 			if (data != null && data.moveToFirst()) {
 				loadCustomerTransit(data);
 			} else {
 				LogUtils.LOGE(TAG, "Cursor empty for CUSTOMER_HEADER_LOADER!");
-			} 
+			}
+			break;
 		default:
 			data.close();
 			break;

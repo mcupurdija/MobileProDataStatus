@@ -1,15 +1,26 @@
 package rs.gopro.mobile_store.ui.fragment;
 
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.components.ItemAutocompleteCursorAdapter;
-import rs.gopro.mobile_store.ui.fragment.SaleOrderLinesAddEditPreviewListFragment.Callbacks;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.SharedPreferencesUtil;
+import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.ItemQtySalesPriceAndDiscSyncObject;
+import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +29,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,11 +51,16 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	private int mSelectedSaleOrderLineId;
 	private int mSelectedSaleOrderId;
 	private int salesPersonId;
-	private int documentId;
+	private String salesPersonNo;
+	private int documentId = -1;
+	private int itemId = -1;
+	private String itemNo;
+	private int itemCampaignStatus;
 	private String documentNo;
-	private String documentType;
+	private Integer documentType;
 	private int customerId;
 	private String customerNo;
+	private boolean isServiceCalled = false;
 	
 	private ItemAutocompleteCursorAdapter itemAutocompleteAdapter;
 	ArrayAdapter<CharSequence> backorderAdapter;
@@ -74,7 +91,30 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	private Button loadItemData;
 	private Button saveData;
 	
+	private Map<Integer, Boolean> loaderState = new HashMap<Integer, Boolean>();
 	
+	private BroadcastReceiver onNotice = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
+			onSOAPResult(syncResult, intent.getAction());
+		}
+	};
+	
+	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
+		System.out.println("STATUS IS: " + syncResult.getStatus());
+		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
+			if (ItemQtySalesPriceAndDiscSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				ItemQtySalesPriceAndDiscSyncObject syncObject = (ItemQtySalesPriceAndDiscSyncObject) syncResult.getComplexResult();
+				mDiscountMin.setText(syncObject.getpMinimumDiscountPctAsTxt());
+				mDiscountMax.setText(syncObject.getpMaximumDiscountPctAsTxt());
+				mQuantityAvailable.setText(syncObject.getpQuantityAsTxt());
+				mDiscount.setText(syncObject.getpDiscountPctAsTxt());
+				mPrice.setText(syncObject.getpSalesPriceRSDAsTxt());
+				mPriceEur.setText(syncObject.getpSalesPriceEURAsTxt());
+			}
+		}
+	}
 	
 	public interface Callbacks {
 		public void onSaleOrderLineIdAvailable(String saleOrderLineId);
@@ -108,6 +148,8 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
             return;
         }
 
+        salesPersonId = Integer.valueOf(SharedPreferencesUtil.getSalePersonId(getActivity())).intValue();
+        
         // Start background query to load sales line details
         getLoaderManager().initLoader(SaleOrderLinesQuery._TOKEN, null, this);
         
@@ -164,8 +206,18 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         mQuoteRefused.setAdapter(quoteRefusedAdapter);
         
         loadItemData = (Button)rootView.findViewById(R.id.so_line_read_item_data_button);
+        loadItemData.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				isServiceCalled = true;
+
+				getActivity().getSupportLoaderManager().restartLoader(ItemQuery._TOKEN, null,SaleOrderAddEditLineFragment.this);
+				getActivity().getSupportLoaderManager().restartLoader(SaleOrderQuery._TOKEN, null,SaleOrderAddEditLineFragment.this);
+				
+			}
+		});
         saveData = (Button)rootView.findViewById(R.id.so_line_save_button);
-        
         saveData.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -176,7 +228,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         
         return rootView;
     }
-
+	
 	protected void saveForm() {
 		ContentValues localValues = new ContentValues();
 		
@@ -269,8 +321,17 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
     }
 	
     @Override
+    public void onResume() {
+    	super.onResume();
+    	IntentFilter itemQtySalesPriceAndDiscSync = new IntentFilter(ItemQtySalesPriceAndDiscSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, itemQtySalesPriceAndDiscSync);
+    }
+    
+    @Override
     public void onPause() {
         super.onPause();
+        
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(onNotice);
     }
 
     @Override
@@ -280,13 +341,157 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle data) {
-		return new CursorLoader(getActivity(), mSaleOrderLinesUri, SaleOrderLinesQuery.PROJECTION, null, null,
-                null);
+		switch (id) {
+		case SaleOrderLinesQuery._TOKEN:
+			loaderState.put(SaleOrderLinesQuery._TOKEN, false);
+			return new CursorLoader(getActivity(), mSaleOrderLinesUri, SaleOrderLinesQuery.PROJECTION, null, null,
+	                null);
+		case ItemQuery._TOKEN:
+			loaderState.put(ItemQuery._TOKEN, false);
+			if (itemId != -1) { 
+				return new CursorLoader(getActivity(), MobileStoreContract.Items.buildItemUri(String.valueOf(itemId)), ItemQuery.PROJECTION, null, null,
+						null);
+			} else {
+				LogUtils.LOGE(TAG, "Item not selected!");
+				return null;
+			}
+		case SaleOrderQuery._TOKEN:
+			loaderState.put(SaleOrderQuery._TOKEN, false);
+			if (documentId != -1) { 
+				return new CursorLoader(getActivity(), MobileStoreContract.SaleOrders.buildSaleOrderUri(String.valueOf(documentId)), SaleOrderQuery.PROJECTION, null, null,
+						null);
+			} else {
+				LogUtils.LOGE(TAG, "Document not loaded!");
+				return null;
+			}
+		case CustomerQuery._TOKEN:
+			loaderState.put(CustomerQuery._TOKEN, false);
+			if (documentId != -1) { 
+				return new CursorLoader(getActivity(), MobileStoreContract.Customers.buildCustomersUri(String.valueOf(customerId)), CustomerQuery.PROJECTION, null, null,
+						null);
+			} else {
+				LogUtils.LOGE(TAG, "Customer not loaded!");
+				return null;
+			}
+		default:
+			return null;
+		}
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-		buildUiFromCursor(cursor);
+		switch (loader.getId()) {
+		case SaleOrderLinesQuery._TOKEN:
+			loaderState.put(SaleOrderLinesQuery._TOKEN, true);
+			buildUiFromCursor(cursor);
+			break;
+		case ItemQuery._TOKEN:
+			loaderState.put(ItemQuery._TOKEN, true);
+			buildItem(cursor);
+			break;
+		case SaleOrderQuery._TOKEN:
+			loaderState.put(SaleOrderQuery._TOKEN, true);
+			buildSaleOrder(cursor);
+			break;
+		case CustomerQuery._TOKEN:
+			loaderState.put(CustomerQuery._TOKEN, true);
+			buildCustomer(cursor);
+			break;
+		default:
+			cursor.close();
+			break;
+		}
+	}
+
+	private void buildCustomer(Cursor cursor) {
+		if (getActivity() == null) {
+            return;
+        }
+
+        if (!cursor.moveToFirst()) {
+            return;
+        }
+		
+        if (!cursor.isNull(CustomerQuery.CUSTOMER_NO)) {
+        	customerNo = cursor.getString(CustomerQuery.CUSTOMER_NO);
+        }
+        
+        checkLoaderState();
+	}
+
+	private void buildSaleOrder(Cursor cursor) {
+		if (getActivity() == null) {
+            return;
+        }
+
+        if (!cursor.moveToFirst()) {
+            return;
+        }
+		
+        
+        if (!cursor.isNull(SaleOrderQuery.DOCUMENT_TYPE)) {
+        	documentType = cursor.getInt(SaleOrderQuery.DOCUMENT_TYPE);
+        }
+        if (!cursor.isNull(SaleOrderQuery.CUSTOMER_ID)) {
+        	customerId = cursor.getInt(SaleOrderQuery.CUSTOMER_ID);
+        }
+        
+        Cursor cursorCustomer = getActivity().getContentResolver().query(MobileStoreContract.Customers.buildCustomersUri(String.valueOf(customerId)), CustomerQuery.PROJECTION, null, null, null);
+        buildCustomer(cursorCustomer);
+        
+        Cursor cursorSalesPerson = getActivity().getContentResolver().query(MobileStoreContract.SalesPerson.buildSalesPersonUri(salesPersonId), SalesPersonQuery.PROJECTION, null, null, null);
+        buildSalesPerson(cursorSalesPerson);
+        
+        checkLoaderState();
+	}
+
+	private void buildSalesPerson(Cursor cursor) {
+		if (getActivity() == null) {
+            return;
+        }
+
+        if (!cursor.moveToFirst()) {
+            return;
+        }
+        
+        if (!cursor.isNull(SalesPersonQuery.SALE_PERSON_NO)) {
+        	salesPersonNo = cursor.getString(SalesPersonQuery.SALE_PERSON_NO);
+        }
+	}
+	
+	private void buildItem(Cursor cursor) {
+		if (getActivity() == null) {
+            return;
+        }
+
+        if (!cursor.moveToFirst()) {
+            return;
+        }
+        
+        if (!cursor.isNull(ItemQuery.ITEM_NO)) {
+        	itemNo = cursor.getString(ItemQuery.ITEM_NO);
+        }
+        
+        if (!cursor.isNull(ItemQuery.ITEM_CAMPAIGN_STATUS)) {
+        	itemCampaignStatus = cursor.getInt(ItemQuery.ITEM_CAMPAIGN_STATUS);
+        }
+        
+        checkLoaderState();
+	}
+
+	private void checkLoaderState() {
+		if (isServiceCalled && loaderState.get(SaleOrderQuery._TOKEN) && loaderState.get(ItemQuery._TOKEN)) {
+			doWsAction();
+			isServiceCalled = false;
+		}
+	}
+	
+	private void doWsAction() {
+		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
+		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", itemCampaignStatus, customerNo, "", Double.valueOf(0), salesPersonNo, documentType, -1, "", "", "", "", "", "");
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQtySalesPriceAndDiscSyncObject);
+		getActivity().startService(intent);
+		
 	}
 
 	@Override
@@ -302,13 +507,17 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
             return;
         }
         
+        if (!cursor.isNull(SaleOrderLinesQuery.SALE_ORDER_ID)) { 
+        	documentId = cursor.getInt(SaleOrderLinesQuery.SALE_ORDER_ID);
+        }
+        
         mDocumentNo.setText(documentNo);
-        mDocumentType.setText(documentType);
+        mDocumentType.setText(String.valueOf(documentType));
         mCustomer.setText(customerNo);
         
         int item_id = -1;
         if (!cursor.isNull(SaleOrderLinesQuery.ITEM_ID)) {
-        	item_id = cursor.getInt(SaleOrderLinesQuery.ITEM_ID);
+        	itemId = item_id = cursor.getInt(SaleOrderLinesQuery.ITEM_ID);
         	Cursor c = getActivity().getContentResolver().query(MobileStoreContract.Items.buildItemUri(String.valueOf(item_id)), new String[] {MobileStoreContract.Items.ITEM_NO, MobileStoreContract.Items.DESCRIPTION}, null, null, null);
         	if (c.moveToFirst()) {
 	        	final int codeIndex = c
@@ -443,4 +652,55 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         int ITEM_ID = 16;
 	}
 	
+	private interface CustomerQuery {
+		int _TOKEN = 0x9;
+
+        String[] PROJECTION = {
+                BaseColumns._ID,
+                MobileStoreContract.Customers.CUSTOMER_NO,
+        };
+
+        int _ID = 0;
+        int CUSTOMER_NO = 1;
+	}
+	
+	private interface SaleOrderQuery {
+		int _TOKEN = 0x8;
+
+        String[] PROJECTION = {
+                BaseColumns._ID,
+                MobileStoreContract.SaleOrders.SALES_ORDER_NO,
+                MobileStoreContract.SaleOrders.DOCUMENT_TYPE,
+                MobileStoreContract.SaleOrders.CUSTOMER_ID
+        };
+
+        int _ID = 0;
+        int SALES_ORDER_NO = 1;
+        int DOCUMENT_TYPE = 2;
+        int CUSTOMER_ID = 3;
+	}
+	
+	private interface ItemQuery {
+		int _TOKEN = 0x7;
+
+        String[] PROJECTION = {
+                BaseColumns._ID,
+                MobileStoreContract.Items.ITEM_NO,
+                MobileStoreContract.Items.CAMPAIGN_STATUS
+        };
+
+        int _ID = 0;
+        int ITEM_NO = 1;
+        int ITEM_CAMPAIGN_STATUS = 2;
+	}
+	
+	private interface SalesPersonQuery {
+		//int _TOKEN = 0x10;
+
+        String[] PROJECTION = {
+                MobileStoreContract.SalesPerson.SALE_PERSON_NO,
+        };
+
+        int SALE_PERSON_NO = 0;
+	}
 }

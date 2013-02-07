@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
@@ -164,6 +165,13 @@ public class ElectronicCardCustomerSyncObject extends SyncObject {
 
 	public void setSalespersonCode(String salespersonCode) {
 		this.salespersonCode = salespersonCode;
+	}
+
+	@Override
+	protected int parseAndSave(ContentResolver contentResolver,
+			SoapObject soapResponse) throws CSVParseException {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	

@@ -35,7 +35,7 @@ public class MobileStoreContract {
 	private static final String PATH_INVOICE_LINES = "invoice_lines";
 	private static final String PATH_INVOICE_LINES_FROM_ORDER = "invoice_lines_from_order";
 	private static final String PATH_SYNC_LOGS_ID = "sync_logs_obejct_id";
-	private static final String PATH_SALES_PERSON = "sales_person";
+	private static final String PATH_SALES_PERSON = "sales_persons";
 	private static final String PATH_GENRIC = "generic";
 	private static final String PATH_ELECT_CARD_CUSTOMER = "electronic_card_customer";
 
@@ -364,6 +364,14 @@ public class MobileStoreContract {
 	
 	public static class SalesPerson implements SalesPersonsColumns, BaseColumns{
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALES_PERSON).build();
+		
+		public static Uri buildSalesPersonUri(int salesPersonId) {
+			return CONTENT_URI.buildUpon().appendPath(String.valueOf(salesPersonId)).build();
+		}
+		
+		public static String getSalesPersonId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
 	}
 	
 	public static class Users implements UsersColumns, UsersRoleColumns, BaseColumns {

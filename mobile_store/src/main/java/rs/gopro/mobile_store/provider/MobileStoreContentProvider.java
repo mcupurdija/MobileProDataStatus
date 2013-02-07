@@ -5,15 +5,17 @@ import java.util.ArrayList;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerAddresses;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
+import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Generic;
 import rs.gopro.mobile_store.provider.MobileStoreContract.InvoiceLine;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SalesPerson;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
-import rs.gopro.mobile_store.provider.MobileStoreContract.*;
-import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SelectionBuilder;
 import android.content.ContentProvider;
@@ -97,6 +99,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int ELECTRONIC_CARD_CUSTOMER = 800;
 	private static final int ELECTRONIC_CARD_CUSTOMER_ID = 801;
 
+	private static final int SALES_PERSONS = 900;
+	private static final int SALES_PERSON_ID = 901;
+	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
 
@@ -185,7 +190,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "electronic_card_customer", ELECTRONIC_CARD_CUSTOMER);
 		mobileStoreURIMatcher.addURI(authority, "electronic_card_customer/#", ELECTRONIC_CARD_CUSTOMER_ID);
 		
-			
+		mobileStoreURIMatcher.addURI(authority, "sales_persons", SALES_PERSONS);
+		mobileStoreURIMatcher.addURI(authority, "sales_persons/*", SALES_PERSON_ID);
+		
 		/*
 		 * mobileStoreURIMatcher.addURI(authority, "contacts/custom_search",
 		 * CONTACTS_ALL); mobileStoreURIMatcher.addURI(authority,
@@ -296,6 +303,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.SYNC_LOGS,null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return SyncLogs.buildSyncLogsUri(""+id);
+		case SALES_PERSONS:
+			id = database.insertOrThrow(Tables.SALES_PERSONS,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return SalesPerson.buildSalesPersonUri((int)id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -390,6 +401,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			String syncId = SyncLogs.getSyncLogId(uri);
 			return builder.addTable(Tables.SYNC_LOGS)
 				.where(SyncLogs._ID + "=?", new String[]{syncId} );
+		case SALES_PERSONS:
+			return builder.addTable(Tables.SALES_PERSONS);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -417,10 +430,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 					mapToTable(Users.PASSWORD, Tables.USERS).
 					mapToTable(Users.LAST_LOGIN, Tables.USERS).
 					mapToTable(Users.SALES_PERSON_ID, Tables.USERS).		
-					mapToTable(Users.NAME, Tables.USERS_ROLE)
-					
-					;
-			
+					mapToTable(Users.NAME, Tables.USERS_ROLE);
 		case INVOICES_ID:
 			String invoicesId = Invoices.getInvoicesId(uri);
 			return builder.addTable(Tables.INVOICES).where(Invoices._ID + "=?",
@@ -702,8 +712,13 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(ElectronicCardCustomer.TOTAL_TURNOVER_CURRENT_YEAR, Tables.ELECTRONIC_CARD_CUSTOMER )
 					.mapToTable(ElectronicCardCustomer.TOTAL_TURNOVER_PRIOR_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
 					.mapToTable(ElectronicCardCustomer.SALES_LINE_COUNTS_CURRENT_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
-					 ;
+					.mapToTable(ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER );
+		case SALES_PERSONS:
+			return builder.addTable(Tables.SALES_PERSONS);
+		case SALES_PERSON_ID:
+			final String sales_person_id = SalesPerson.getSalesPersonId(uri);
+			return builder.addTable(Tables.SALES_PERSONS)
+					.where(SalesPerson._ID + "=?", new String[]{ sales_person_id });
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

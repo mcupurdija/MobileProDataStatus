@@ -4,22 +4,19 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 
-import org.ksoap2.SoapFault;
-import org.ksoap2.SoapFault12;
 import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.os.Parcel;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
-import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.os.Parcel;
 
 public class ItemsSyncObject extends SyncObject {
 	public static String TAG = "ItemsSyncObject";
@@ -112,35 +109,35 @@ public class ItemsSyncObject extends SyncObject {
 		return properies;
 	}
 
-	@Override
-	public void saveSOAPResponse(Object response, ContentResolver contentResolver) throws SOAPResponseException {
-		if (response instanceof SoapPrimitive) {
-			SoapPrimitive soapresult = (SoapPrimitive) response;
-			int inserted = 0;
-			try {
-				inserted = parseAndSave(contentResolver, soapresult);
-			} catch (CSVParseException e) {
-				throw new SOAPResponseException(e);
-			}
-			result = String.valueOf(inserted);
-			LogUtils.LOGI(TAG, "New Items inserted:" + inserted);
-		} else if (response instanceof Vector<?>) {
-			Vector<SoapPrimitive> result = (Vector<SoapPrimitive>) response;
-			for (SoapPrimitive primitive : result) {
-				LogUtils.LOGI(TAG, primitive.toString());
-			}
-			// LogUtils.LOGI(TAG, result.toString());
-		} else if (response instanceof SoapFault) {
-			SoapFault result = (SoapFault) response;
-			LogUtils.LOGE(TAG, result.faultstring);
-			throw new SOAPResponseException(result.getMessage());
-		} else if (response instanceof SoapFault12) {
-			SoapFault12 result = (SoapFault12) response;
-			LogUtils.LOGE(TAG, result.faultstring);
-			throw new SOAPResponseException(result.getMessage());
-		}
-
-	}
+//	@Override
+//	public void saveSOAPResponse(SoapSerializationEnvelope response, ContentResolver contentResolver) throws SOAPResponseException {
+//		if (response instanceof SoapPrimitive) {
+//			SoapPrimitive soapresult = (SoapPrimitive) response;
+//			int inserted = 0;
+//			try {
+//				inserted = parseAndSave(contentResolver, soapresult);
+//			} catch (CSVParseException e) {
+//				throw new SOAPResponseException(e);
+//			}
+//			result = String.valueOf(inserted);
+//			LogUtils.LOGI(TAG, "New Items inserted:" + inserted);
+//		} else if (response instanceof Vector<?>) {
+//			Vector<SoapPrimitive> result = (Vector<SoapPrimitive>) response;
+//			for (SoapPrimitive primitive : result) {
+//				LogUtils.LOGI(TAG, primitive.toString());
+//			}
+//			// LogUtils.LOGI(TAG, result.toString());
+//		} else if (response instanceof SoapFault) {
+//			SoapFault result = (SoapFault) response;
+//			LogUtils.LOGE(TAG, result.faultstring);
+//			throw new SOAPResponseException(result.getMessage());
+//		} else if (response instanceof SoapFault12) {
+//			SoapFault12 result = (SoapFault12) response;
+//			LogUtils.LOGE(TAG, result.faultstring);
+//			throw new SOAPResponseException(result.getMessage());
+//		}
+//
+//	}
 
 	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive result) throws CSVParseException {
 		List<ItemsDomain> parsedItems = CSVDomainReader.parse(new StringReader(result.toString()), ItemsDomain.class);
@@ -219,5 +216,11 @@ public class ItemsSyncObject extends SyncObject {
 	@Override
 	public String getTag() {
 		return TAG;
+	}
+
+	@Override
+	protected int parseAndSave(ContentResolver contentResolver,
+			SoapObject soapResponse) throws CSVParseException {
+		return 0;
 	}
 }

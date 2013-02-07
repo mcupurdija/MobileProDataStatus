@@ -8,6 +8,7 @@ public class SyncResult implements Parcelable {
 
 	private SyncStatus status;
 	private String result;
+	private SyncObject complexResult;
 
 	public SyncResult() {
 	}
@@ -23,7 +24,7 @@ public class SyncResult implements Parcelable {
 			setStatus(null);
 		}
 		setResult(in.readString());
-
+		setComplexResult((SyncObject)in.readParcelable(SyncObject.class.getClassLoader()));
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class SyncResult implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(getStatus() == null ? "" : getStatus().name());
 		dest.writeString(getResult());
-
+		dest.writeParcelable(getComplexResult(), 0);
 	}
 
 	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -62,6 +63,14 @@ public class SyncResult implements Parcelable {
 
 	public void setResult(String result) {
 		this.result = result;
+	}
+
+	public SyncObject getComplexResult() {
+		return complexResult;
+	}
+
+	public void setComplexResult(SyncObject complexResult) {
+		this.complexResult = complexResult;
 	}
 
 }

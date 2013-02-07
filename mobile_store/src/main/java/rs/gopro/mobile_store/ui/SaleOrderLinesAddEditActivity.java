@@ -5,21 +5,16 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.fragment.SaleOrderAddEditLineFragment;
 import rs.gopro.mobile_store.ui.fragment.SaleOrderLinesAddEditPreviewListFragment;
-import rs.gopro.mobile_store.util.LogUtils;
-import rs.gopro.mobile_store.util.exceptions.SaleOrderValidationException;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 public class SaleOrderLinesAddEditActivity extends BaseActivity implements
 		SaleOrderLinesAddEditPreviewListFragment.Callbacks,
@@ -138,9 +133,9 @@ public class SaleOrderLinesAddEditActivity extends BaseActivity implements
 	private void loadSaleOrderLineAddEdit(Uri addEditUri) {
 		SaleOrderAddEditLineFragment fragment = new SaleOrderAddEditLineFragment();
 		//mAction should be add or edit
+		Intent lineIntent = new Intent(mAction, addEditUri);
 		fragment.setArguments(BaseActivity
-				.intentToFragmentArguments(new Intent(mAction,
-						addEditUri)));
+				.intentToFragmentArguments(lineIntent));
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.fragment_sale_order_line_add_edit, fragment).commit();
 		saleOrderAddEditLineFragment = fragment;

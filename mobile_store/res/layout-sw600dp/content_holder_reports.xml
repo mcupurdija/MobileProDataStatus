@@ -1,16 +1,77 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/inner_view_about"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/report_content"
+        android:id="@+id/invoices_label"
+        style="@style/AddEdit_Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Izvestaji fakture" />
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginLeft="30dp"
-        android:paddingBottom="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_marginBottom="8dip"
+        android:orientation="horizontal" >
+        <Button
+                android:id="@+id/so_line_fakture1_data_button"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:text="Fakture za zadate datume" />
+        <Button
+                android:id="@+id/so_line_fakture2_data_button"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:text="Otvorene fakture" />
+    </LinearLayout>
 
+    <TextView
+        android:id="@+id/payments_label"
+        style="@style/AddEdit_Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Izvestaji uplata" />
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dip"
+        android:orientation="horizontal" >
+        <Button
+                android:id="@+id/so_line_payment1_data_button"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:text="Uplate na dan" />
+        <Button
+                android:id="@+id/so_line_payment2_data_button"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:text="Sve uplate" />
+    </LinearLayout>
+    
 </LinearLayout>
