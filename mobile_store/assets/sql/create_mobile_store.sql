@@ -361,6 +361,7 @@ CREATE TABLE `sale_orders` (
 	`total_items` REAL,
 	`hide_rebate` INTEGER DEFAULT 0,
 	`further_sale` INTEGER DEFAULT 0,
+	`customer_business_unit_code` TEXT DEFAULT NULL,
 	`note1` TEXT,
 	`note2` TEXT,
 	`note3` TEXT,

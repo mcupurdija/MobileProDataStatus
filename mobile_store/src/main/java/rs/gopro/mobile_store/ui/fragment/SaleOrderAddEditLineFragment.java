@@ -30,6 +30,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -178,11 +180,43 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         mQuantityAvailable.setFocusable(false);
         
         mPrice = (EditText) rootView.findViewById(R.id.so_line_item_price_value);
+        mPrice.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				calculatePriceWithDiscount();
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
         mPriceEur = (EditText) rootView.findViewById(R.id.so_line_item_sugg_price_value);
         mPrice.setFocusable(false);
         mPriceEur.setFocusable(false);
         
         mDiscount = (EditText) rootView.findViewById(R.id.so_line_item_discount_value);
+        mDiscount.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				calculatePriceWithDiscount();
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
         mDiscountMin = (EditText) rootView.findViewById(R.id.so_line_item_min_discount_value);
         mDiscountMin.setFocusable(false);
         mDiscountMax = (EditText) rootView.findViewById(R.id.so_line_item_max_discount_value);
@@ -229,6 +263,22 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         return rootView;
     }
 	
+	protected void calculatePriceWithDiscount() {
+		String price = mPrice.getText().toString();
+		String discount = mDiscount.getText().toString();
+		if (price == null || discount == null || price.length() < 1 || discount.length() < 1) {
+			return;
+		}
+		try {
+			double price_d = Double.parseDouble(price);
+			double discount_d = Double.parseDouble(discount);
+			double discounted_price = price_d * (discount_d/100);
+			mPriceEur.setText(String.valueOf(discounted_price));
+		} catch (NumberFormatException e) {
+			LogUtils.LOGE(TAG, "Not cool formats.", e);
+		}
+	}
+
 	protected void saveForm() {
 		ContentValues localValues = new ContentValues();
 		

@@ -3,6 +3,7 @@ package rs.gopro.mobile_store.ws.formats;
 import android.annotation.SuppressLint;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +20,13 @@ public class WsDataFormatEnUsLatin {
 	@SuppressLint("SimpleDateFormat")
 	private static SimpleDateFormat dateWsFormat = new SimpleDateFormat("dd/MM/yy");
 	private static java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance();
+	
+	static {
+		DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
+		formatSymbols.setDecimalSeparator(',');
+		formatSymbols.setGroupingSeparator('.');
+		decimalFormat.setDecimalFormatSymbols(formatSymbols);
+    }
 	
 	public WsDataFormatEnUsLatin() {
 	}

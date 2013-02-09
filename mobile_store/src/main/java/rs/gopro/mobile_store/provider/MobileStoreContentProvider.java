@@ -72,6 +72,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int SALE_ORDER_BY_STATUS = 142;
 	private static final int SALE_ORDERS_LIST = 143;
 	private static final int SALE_ORDER = 144;
+	private static final int SALE_ORDER_EXPORT = 145;
 	
 	private static final int VISITS = 200;
 	private static final int VISIT_ID = 201;
@@ -82,6 +83,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int SALE_ORDER_LINES_FROM_ORDER = 300;
 	private static final int SALE_ORDER_LINE = 301;
 	private static final int SALE_ORDER_LINES = 302;
+	private static final int SALE_ORDER_LINES_EXPORT = 303;
 	
 	private static final int CONTACTS = 400;
 	private static final int CONTACTS_ID = 401;
@@ -164,15 +166,20 @@ public class MobileStoreContentProvider extends ContentProvider {
 				"sale_orders/*/#/custom_search", SALE_ORDER_CUSTOM_SEARCH);
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_orders/#/*/custom_search", SALE_ORDER_CUSTOM_SEARCH);
-
+		mobileStoreURIMatcher.addURI(authority,
+				"sale_orders_export", SALE_ORDER_EXPORT);
+		
+		
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_order_lines", SALE_ORDER_LINES);
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_order_lines/*", SALE_ORDER_LINE);
-		
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_order_lines_from_order/#", SALE_ORDER_LINES_FROM_ORDER);
-
+		mobileStoreURIMatcher.addURI(authority,
+				"sale_order_lines_export", SALE_ORDER_LINES_EXPORT);
+		
+		
 		mobileStoreURIMatcher.addURI(authority, "contacts", CONTACTS);
 		mobileStoreURIMatcher.addURI(authority, "contacts/*", CONTACTS_ID);
 		
@@ -719,6 +726,41 @@ public class MobileStoreContentProvider extends ContentProvider {
 			final String sales_person_id = SalesPerson.getSalesPersonId(uri);
 			return builder.addTable(Tables.SALES_PERSONS)
 					.where(SalesPerson._ID + "=?", new String[]{ sales_person_id });
+		case SALE_ORDER_EXPORT:
+			return builder.addTable(Tables.SALE_ORDERS_EXPORT)
+					.mapToTable(MobileStoreContract.SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.Customers.CUSTOMER_NO, Tables.CUSTOMERS)
+					.mapToTable(MobileStoreContract.SaleOrders.LOCATION_CODE, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.SHORTCUT_DIMENSION_1_CODE, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.EXTERNAL_DOCUMENT_NO, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.QUOTE_NO, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SalesPerson.SALE_PERSON_NO, Tables.SALES_PERSONS)
+					.mapToTable(MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.SHIPP_TO_ADDRESS_ID, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.CONTACT_NAME, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.CONTACT_PHONE, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.HIDE_REBATE, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.FURTHER_SALE, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.PAYMENT_OPTION, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.QUOTE_REALIZED_STATUS, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS, Tables.SALE_ORDERS);
+		case SALE_ORDER_LINES_EXPORT:
+			return builder.addTable(Tables.SALE_ORDER_LINES_EXPORT)
+					//.mapToTable(MobileStoreContract.SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDER_LINES)
+					//.mapToTable(MobileStoreContract.SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDER_LINES)
+					.mapToTable(MobileStoreContract.SaleOrderLines.LINE_NO, Tables.SALE_ORDER_LINES)
+					.mapToTable(MobileStoreContract.Items.ITEM_NO, Tables.ITEMS)
+					.mapToTable(MobileStoreContract.SaleOrderLines.QUANTITY, Tables.SALE_ORDER_LINES)
+					.mapToTable(MobileStoreContract.SaleOrderLines.UNIT_SALES_PRICE_DIN, Tables.SALE_ORDER_LINES)
+					.mapToTable(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT, Tables.SALE_ORDER_LINES)
+					.mapToTable(MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS, Tables.SALE_ORDER_LINES)
+					.mapToTable(MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS, Tables.SALE_ORDER_LINES)
+					.mapToTable(MobileStoreContract.SaleOrderLines.BACKORDER_STATUS, Tables.SALE_ORDER_LINES)
+					.mapToTable(MobileStoreContract.SaleOrderLines.AVAILABLE_TO_WHOLE_SHIPMENT, Tables.SALE_ORDER_LINES);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

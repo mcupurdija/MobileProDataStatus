@@ -21,8 +21,10 @@ public class MobileStoreContract {
 	private static final String PATH_VISITS = "visits";
 	private static final String PATH_SALE_ORDERS = "sale_orders";
 	private static final String PATH_SALE_ORDERS_LIST = "sale_orders_list";
+	private static final String PATH_SALE_ORDERS_EXPORT = "sale_orders_export";
 	private static final String PATH_SALE_ORDER_LINES = "sale_order_lines";
 	private static final String PATH_SALE_ORDER_LINES_FROM_ORDER = "sale_order_lines_from_order";
+	private static final String PATH_SALE_ORDER_LINES_EXPORT = "sale_order_lines_export";
 	private static final String PATH_WITH_CUSTOMER = "with_customer";
 	private static final String PATH_SALE_ORDER_SEARCH_CUSTOM = "custom_search";
 
@@ -184,6 +186,7 @@ public class MobileStoreContract {
 		String TOTAL_ITEMS = "total_items";
 		String HIDE_REBATE = "hide_rebate";
 		String FURTHER_SALE = "further_sale";
+		String CUSTOMER_BUSINESS_UNIT_CODE = "customer_business_unit_code";
 		String NOTE1 = "note1";
 		String NOTE2 = "note2";
 		String NOTE3 = "note3";
@@ -584,6 +587,10 @@ public class MobileStoreContract {
 			return BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDERS_LIST).appendPath(salesPersonId).build();
 		}
 
+		public static Uri buildSaleOrderExport() {
+			return CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDERS_EXPORT).build();
+		}
+		
 		public static String getSalesPersonId(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}
@@ -627,6 +634,10 @@ public class MobileStoreContract {
 			return CONTENT_URI.buildUpon().appendPath(saleOrderLine).build();
 		}
 
+		public static Uri buildSaleOrderLineExportUri() {
+			return CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDER_LINES_EXPORT).build();
+		}
+		
 		public static String getSaleOrderLineId(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}
