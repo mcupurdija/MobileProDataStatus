@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -45,6 +46,8 @@ public class HomeScreenActivity extends BaseActivity implements OnClickListener,
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.i(TAG, "Loga activity created.");
+		//load default shared preferences for ws settings
+		PreferenceManager.setDefaultValues(this, R.xml.ws_settings,false);
 		setContentView(R.layout.activity_home_screen);
 		boolean isUserLogged = SharedPreferencesUtil.isUserLoggedIn(getApplicationContext());
 		if (!isUserLogged) {
