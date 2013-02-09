@@ -34,7 +34,7 @@ public class TransformDomainObject {
 		return valuesForInsert;
 	}
 
-	private int getRecordId(RowItemDataHolder dataHolder, ContentResolver contentResolver) {
+	private Integer getRecordId(RowItemDataHolder dataHolder, ContentResolver contentResolver) {
 		Integer recordId = null;
 		Uri uri = Generic.buildTableUri(dataHolder.getTable());
 		Cursor cursor = contentResolver.query(uri, new String[] { BaseColumns._ID }, dataHolder.getNoColumn() + "=?", new String[] { dataHolder.getNoColumnValue() }, null);

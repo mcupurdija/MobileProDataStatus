@@ -8,140 +8,120 @@
         android:id="@+id/el_card_customer_no"
         style="@style/table_cell_text_view"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="Customer No." />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_item_no"
         style="@style/table_cell_text_view"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="Item No." />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_jan_qty"
         style="@style/table_cell_text_view"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="January (Qty)" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_feb_qty"
         style="@style/table_cell_text_view"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="February(Qty)" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_mart_qty"
         style="@style/table_cell_text_view"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="March(Qty)" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_apr_qty"
         style="@style/table_cell_text_view"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="April(Qty)" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_may_qty"
         style="@style/table_cell_text_view"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="May(Qty)" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_june_qty"
         style="@style/table_cell_text_view"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="June(Qty)" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_july_qty"
         style="@style/table_cell_text_view"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="July(Qty)" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_aug_qty"
         style="@style/table_cell_text_view"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="August(Qty)" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_sep_qty"
         style="@style/table_cell_text_view"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="September(Qty)" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_oct_qty"
         style="@style/table_cell_text_view"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="October(Qty)" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_nov_qty"
         style="@style/table_cell_text_view"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="November(Qty)" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_dec_qty"
         style="@style/table_cell_text_view"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="December(Qty)" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_total_sale_curr_qty"
         style="@style/table_cell_text_view"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="Total Sale (Qty) In This Year" />
+        android:layout_width="200dp"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_total_sale_prior_qty"
         style="@style/table_cell_text_view"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="Total Sale (Qty) In Last Year" />
+        android:layout_width="200dp"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_turnover_curr_qty"
         style="@style/table_cell_text_view"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="Total Turnover In This Year" />
+        android:layout_width="200dp"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_turnover_prior_qty"
         style="@style/table_cell_text_view"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="Total Turnover In Last Year" />
+        android:layout_width="200dp"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_sales_line_counts_curr_qty"
         style="@style/table_cell_text_view"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="Sales Line Counts This Year" />
+        android:layout_width="200dp"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/el_card_sales_line_counts_prior_qty"
         style="@style/table_cell_text_view"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="Sales Line Counts In Last Year" />
+        android:layout_width="200dp"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

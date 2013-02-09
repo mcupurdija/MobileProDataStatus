@@ -224,4 +224,26 @@
 	<string name="so_line_save_button_text">Save order line</string>
 	<string name="ecc_menu_title">ECC preview</string>
 	<string name="ecc_activity_title">Electronic customer card</string>
+	
+	<!-- ecc header label -->
+	<string name = "el_card_customer_no_label">Customer No.</string>
+	<string name = "el_card_item_no_label">Item No.</string>
+	<string name = "el_card_jan_qty_label">January (Qty)</string>
+	<string name = "el_card_feb_qty_label">February(Qty)</string>
+	<string name = "el_card_mart_qty_label">March(Qty)</string>
+	<string name = "el_card_apr_qty_label">April(Qty)</string>
+	<string name = "el_card_may_qty_label">May(Qty)</string>
+	<string name = "el_card_june_qty_label">June(Qty)</string>
+	<string name = "el_card_july_qty_label">July(Qty)</string>
+	<string name = "el_card_aug_qty_label">August(Qty)</string>
+	<string name = "el_card_sep_qty_label">September(Qty)</string>
+	<string name = "el_card_oct_qty_label">October(Qty)</string>
+	<string name = "el_card_nov_qty_label">November(Qty)</string>
+	<string name = "el_card_dec_qty_label">December(Qty)</string>
+	<string name = "el_card_total_sale_curr_qty_label">Total Sale (Qty) In This Year</string>
+	<string name = "el_card_total_sale_prior_qty_label">Total Sale (Qty) In Last Year</string>
+	<string name = "el_card_turnover_curr_qty_label">Total Turnover In This Year</string>
+	<string name = "el_card_turnover_prior_qty_label">Total Turnover In Last Year</string>
+	<string name = "el_card_sales_line_counts_curr_qty_label">Sales Line Counts This Year</string>
+	<string name = "el_card_sales_line_counts_prior_qty_label">Sales Line Counts In Last Year</string>
 </resources>

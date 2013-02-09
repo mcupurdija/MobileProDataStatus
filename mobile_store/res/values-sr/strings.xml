@@ -222,4 +222,26 @@
 	<string name="so_line_save_button_text">Sačuvaj promene</string>
 	<string name="ecc_menu_title">EKK pregled</string>
 	<string name="ecc_activity_title">Elekronska karta kupca</string>
+	
+	<!-- ecc header label -->
+	<string name = "el_card_customer_no_label">Broj kupca</string>
+	<string name = "el_card_item_no_label">Broj atrikla</string>
+	<string name = "el_card_jan_qty_label">Januar (Kol)</string>
+	<string name = "el_card_feb_qty_label">Februar (Kol)</string>
+	<string name = "el_card_mart_qty_label">Mart(Kol)</string>
+	<string name = "el_card_apr_qty_label">April(Kol)</string>
+	<string name = "el_card_may_qty_label">Maj (Kol)</string>
+	<string name = "el_card_june_qty_label">Jun (Kol)</string>
+	<string name = "el_card_july_qty_label">Jul (Kol)</string>
+	<string name = "el_card_aug_qty_label">Avgust (Kol)</string>
+	<string name = "el_card_sep_qty_label">Septembar (Kol)</string>
+	<string name = "el_card_oct_qty_label">Oktobar (Kol)</string>
+	<string name = "el_card_nov_qty_label">Novembar (Kol)</string>
+	<string name = "el_card_dec_qty_label">Decembar(Kol)</string>
+	<string name = "el_card_total_sale_curr_qty_label">Ukupna prodaja (Kol) u ovoj godina</string>
+	<string name = "el_card_total_sale_prior_qty_label">Ukupna prodaja (Kol) u prosloj godina</string>
+	<string name = "el_card_turnover_curr_qty_label">Ukupan promet u ovoj godini</string>
+	<string name = "el_card_turnover_prior_qty_label">Ukupan promet u prosloj godini</string>
+	<string name = "el_card_sales_line_counts_curr_qty_label">Broj realizacija u ovoj godini</string>
+	<string name = "el_card_sales_line_counts_prior_qty_label">Broj realizacija u prosloj godini</string>
 </resources>
