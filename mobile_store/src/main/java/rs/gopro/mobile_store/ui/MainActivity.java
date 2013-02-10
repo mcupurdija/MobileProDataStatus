@@ -14,6 +14,7 @@ import rs.gopro.mobile_store.ui.customlayout.ItemsLayout;
 import rs.gopro.mobile_store.ui.customlayout.PlanOfVisitsLayout;
 import rs.gopro.mobile_store.ui.customlayout.ReportLayout;
 import rs.gopro.mobile_store.ui.customlayout.SaleOrdersLayout;
+import rs.gopro.mobile_store.ui.customlayout.SentOrdersLayout;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
@@ -52,7 +53,7 @@ import android.widget.TextView;
 
 public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener, MainContextualActionBarCallback {
 	private static String TAG = "MainActivity";
-	
+
 	ActionsAdapter actionsAdapter;
 	private Integer currentItemPosition = Integer.valueOf(1);
 	public static final String CURRENT_POSITION_KEY = "current_position";
@@ -121,7 +122,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 			if (savedLayoutInstances.containsKey(SaleOrdersLayout.SALE_ORDER_URI.toString())) {
 				view = savedLayoutInstances.get(SaleOrdersLayout.SALE_ORDER_URI.toString());
 			} else {
-				view =  new SaleOrdersLayout(getSupportFragmentManager(), this);
+				view = new SaleOrdersLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(SaleOrdersLayout.SALE_ORDER_URI.toString(), view);
 			}
 		} else if (PlanOfVisitsLayout.PLAN_OF_VISITS_URI.equals(uri)) {
@@ -131,42 +132,49 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				view = new PlanOfVisitsLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(PlanOfVisitsLayout.PLAN_OF_VISITS_URI.toString(), view);
 			}
-		}else if(CustomersLayout.CUSTOMERS_URI.equals(uri)) {
+		} else if (CustomersLayout.CUSTOMERS_URI.equals(uri)) {
 			if (savedLayoutInstances.containsKey(CustomersLayout.CUSTOMERS_URI.toString())) {
 				view = savedLayoutInstances.get(CustomersLayout.CUSTOMERS_URI.toString());
 			} else {
 				view = new CustomersLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(CustomersLayout.CUSTOMERS_URI.toString(), view);
 			}
-		}else if(ItemsLayout.ITEMS_URI.equals(uri)) {
+		} else if (ItemsLayout.ITEMS_URI.equals(uri)) {
 			if (savedLayoutInstances.containsKey(ItemsLayout.ITEMS_URI.toString())) {
 				view = savedLayoutInstances.get(ItemsLayout.ITEMS_URI.toString());
 			} else {
 				view = new ItemsLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(ItemsLayout.ITEMS_URI.toString(), view);
 			}
-		} else if(InvoicesLayout.INVOICES_URI.equals(uri)){
-			if(savedLayoutInstances.containsKey(InvoicesLayout.INVOICES_URI.toString())){
+		} else if (InvoicesLayout.INVOICES_URI.equals(uri)) {
+			if (savedLayoutInstances.containsKey(InvoicesLayout.INVOICES_URI.toString())) {
 				view = savedLayoutInstances.get(InvoicesLayout.INVOICES_URI.toString());
-				
-			} else{
+
+			} else {
 				view = new InvoicesLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(InvoicesLayout.INVOICES_URI.toString(), view);
 			}
-			
-		} else if(ReportLayout.REPORTS_URI.equals(uri)) {
+
+		} else if (ReportLayout.REPORTS_URI.equals(uri)) {
 			if (savedLayoutInstances.containsKey(ReportLayout.REPORTS_URI.toString())) {
 				view = savedLayoutInstances.get(ReportLayout.REPORTS_URI.toString());
 			} else {
 				view = new ReportLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(ReportLayout.REPORTS_URI.toString(), view);
 			}
-		}else if(ContactsLayout.CONTACTS_URI.equals(uri)) {
+		} else if (ContactsLayout.CONTACTS_URI.equals(uri)) {
 			if (savedLayoutInstances.containsKey(ContactsLayout.CONTACTS_URI.toString())) {
 				view = savedLayoutInstances.get(ContactsLayout.CONTACTS_URI.toString());
 			} else {
 				view = new ContactsLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(ContactsLayout.CONTACTS_URI.toString(), view);
+			}
+		} else if (SentOrdersLayout.SENT_ORDERS_URI.equals(uri)) {
+			if (savedLayoutInstances.containsKey(SentOrdersLayout.SENT_ORDERS_URI.toString())) {
+				view = savedLayoutInstances.get(SentOrdersLayout.SENT_ORDERS_URI.toString());
+			} else {
+				view = new SentOrdersLayout(getSupportFragmentManager(), this);
+				savedLayoutInstances.put(SentOrdersLayout.SENT_ORDERS_URI.toString(), view);
 			}
 		}
 		currentCustomLinearLayout = view;
@@ -192,64 +200,64 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	@Override
 	public void onLongClickItem(String identifier) {
 		ActionMode.Callback callback = currentCustomLinearLayout.getContextualActionBar(identifier);
-		if(callback != null){
+		if (callback != null) {
 			startActionMode(callback);
 		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater menuInflater = getMenuInflater();
-	    menuInflater.inflate(R.menu.main_activity_menu, menu);
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.main_activity_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.synchronize_main_action : 
-			//doSynchronization();
+		case R.id.synchronize_main_action:
+			// doSynchronization();
 			currentCustomLinearLayout.doSynchronization();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		IntentFilter navSyncFilter = new IntentFilter(ItemsSyncObject.BROADCAST_SYNC_ACTION);
-		//registering broadcast receiver to listen BROADCAST_SYNC_ACTION broadcast 
+		// registering broadcast receiver to listen BROADCAST_SYNC_ACTION
+		// broadcast
 		LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, navSyncFilter);
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(onNotice);
 	}
-	
-	private BroadcastReceiver onNotice= new BroadcastReceiver() {
-        
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
-            onSOAPResult(syncResult.getStatus(), syncResult.getResult());
-        }
-    };
-	
+
+	private BroadcastReceiver onNotice = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
+			onSOAPResult(syncResult.getStatus(), syncResult.getResult());
+		}
+	};
 
 	private void doSynchronization() {
 		Intent intent = new Intent(this, NavisionSyncService.class);
 		ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(1), null, DateUtils.getWsDummyDate());
-		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject );
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
 		this.startService(intent);
-		
+
 	}
-	
+
 	public void onSOAPResult(SyncStatus syncStatus, String result) {
-		System.out.println("Status: "+syncStatus);
-    	return;
-    }
+		System.out.println("Status: " + syncStatus);
+		return;
+	}
 
 }

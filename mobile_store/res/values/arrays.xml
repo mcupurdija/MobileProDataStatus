@@ -6,6 +6,7 @@
         <item>@null</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
+         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
@@ -19,6 +20,7 @@
         <item>Main menu</item>
         <item>Plan of visits</item>
         <item>Sale orders</item>
+        <item>Sent orders</item>
         <item>Customers</item>
         <item>Contacts</item>
         <item>Items</item>
@@ -31,6 +33,7 @@
         <item>category://main_menu</item>
         <item>settings://plan_visits</item>
         <item>settings://sale_orders</item>
+        <item>settings://sent_orders</item>
         <item>settings://customers</item>
         <item>settings://contacts</item>
         <item>settings://items</item>

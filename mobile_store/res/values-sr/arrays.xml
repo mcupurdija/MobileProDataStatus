@@ -7,6 +7,7 @@
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
+         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
@@ -19,6 +20,7 @@
         <item>Glavni meni</item>
         <item>Plan poseta</item>
         <item>Liferice</item>
+        <item>Poslate porudzbine</item>
         <item>Kupci</item>
         <item>Kontakti</item>
         <item>Artikli</item>
@@ -31,6 +33,7 @@
         <item>category://main_menu</item>
         <item>settings://plan_visits</item>
         <item>settings://sale_orders</item>
+        <item>settings://sent_orders</item>
         <item>settings://customers</item>
         <item>settings://contacts</item>
         <item>settings://items</item>
