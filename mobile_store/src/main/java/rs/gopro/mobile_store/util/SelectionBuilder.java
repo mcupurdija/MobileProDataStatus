@@ -70,6 +70,11 @@ public class SelectionBuilder {
 		return this;
 	}
 
+	public SelectionBuilder mapToTable(String column, String table, String alias) {
+		builderProjectionMap.put(alias, table + "." + column + " AS " + alias);
+		return this;
+	}
+	
 	public SelectionBuilder map(String fromColumn, String toClause) {
 		builderProjectionMap.put(fromColumn, toClause + " AS " + fromColumn);
 		return this;
