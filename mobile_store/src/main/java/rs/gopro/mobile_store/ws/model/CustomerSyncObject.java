@@ -1,5 +1,6 @@
 package rs.gopro.mobile_store.ws.model;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,9 +10,13 @@ import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
+import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
+import rs.gopro.mobile_store.ws.model.domain.CustomerDomain;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.os.Parcel;
 
 public class CustomerSyncObject extends SyncObject {
@@ -67,6 +72,7 @@ public class CustomerSyncObject extends SyncObject {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flag) {
+		dest.writeString(getStatusMessage());
 		dest.writeString(getcSVString());
 		dest.writeString(getCustomerNoa46());
 		dest.writeString(getSalespersonCode());
@@ -104,14 +110,16 @@ public class CustomerSyncObject extends SyncObject {
 		dateModifiedInfo.setName("pDateModified");
 		dateModifiedInfo.setValue(dateModified);
 		dateModifiedInfo.setType(Date.class);
-
+		properties.add(dateModifiedInfo);
 		return properties;
 	}
 
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException {
-		// TODO Auto-generated method stub
-		return 0;
+		List<CustomerDomain> parsedItems = CSVDomainReader.parse(new StringReader(soapResponse.toString()), CustomerDomain.class);
+		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedItems);
+		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.Customers.CONTENT_URI, valuesForInsert);
+		return numOfInserted;
 	}
 
 	@Override

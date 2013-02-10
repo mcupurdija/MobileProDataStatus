@@ -87,7 +87,7 @@ public class CustomersFromHomeScreenFragment extends Fragment implements LoaderM
 		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_customer_home_screen, null);
 		mCustomer_no = (TextView) rootView.findViewById(R.id.customer_no_group_value);
 		mAddress = (TextView) rootView.findViewById(R.id.customer_address_value);
-		mCity = (TextView) rootView.findViewById(R.id.customer_city_value);
+		//mCity = (TextView) rootView.findViewById(R.id.customer_city_value);
 		mPost_code = (TextView) rootView.findViewById(R.id.customer_postal_code_value);
 		mPhone = (TextView) rootView.findViewById(R.id.customer_phone_value);
 		mMobile = (TextView) rootView.findViewById(R.id.customer_phone_mobile_value);
@@ -107,7 +107,7 @@ public class CustomersFromHomeScreenFragment extends Fragment implements LoaderM
 		}
 		String customernoString = cursor.getString(CustomerDetailQuery.CUSTOMER_NO);
 		String addressString = cursor.getString(CustomerDetailQuery.ADDRESS);
-		String cityString = cursor.getString(CustomerDetailQuery.CITY);
+		//String cityString = cursor.getString(CustomerDetailQuery.CITY);
 		String postcodeString = cursor.getString(CustomerDetailQuery.POST_CODE);
 		String phoneString = cursor.getString(CustomerDetailQuery.PHONE);
 		String mobileString = cursor.getString(CustomerDetailQuery.MOBILE);
@@ -117,7 +117,7 @@ public class CustomersFromHomeScreenFragment extends Fragment implements LoaderM
 
 		mCustomer_no.setText(customernoString);
 		mAddress.setText(addressString);
-		mCity.setText(cityString);
+		//mCity.setText(cityString);
 		mPost_code.setText(postcodeString);
 		mPhone.setText(phoneString);
 		mMobile.setText(mobileString);
@@ -154,7 +154,7 @@ public class CustomersFromHomeScreenFragment extends Fragment implements LoaderM
 		int _TOKEN = 0x8;
 
 		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Customers.CUSTOMER_NO, MobileStoreContract.Customers.NAME, MobileStoreContract.Customers.NAME_2, MobileStoreContract.Customers.ADDRESS,
-				MobileStoreContract.Customers.CITY, MobileStoreContract.Customers.POST_CODE, MobileStoreContract.Customers.PHONE, MobileStoreContract.Customers.MOBILE, MobileStoreContract.Customers.EMAIL,
+				MobileStoreContract.Customers.POST_CODE, MobileStoreContract.Customers.PHONE, MobileStoreContract.Customers.MOBILE, MobileStoreContract.Customers.EMAIL,
 				MobileStoreContract.Customers.COMPANY_ID, MobileStoreContract.Customers.PRIMARY_CONTACT_ID, MobileStoreContract.Customers.VAR_REG_NO, MobileStoreContract.Customers.CREDIT_LIMIT_LCY,
 				MobileStoreContract.Customers.BALANCE_LCY, MobileStoreContract.Customers.BALANCE_DUE_LCY, MobileStoreContract.Customers.PAYMENT_TERMS_CODE, MobileStoreContract.Customers.PRIORITY,
 				MobileStoreContract.Customers.GLOBAL_DIMENSION, MobileStoreContract.Customers.CHANNEL_ORAN, MobileStoreContract.Customers.BLOCKED_STATUS, MobileStoreContract.Customers.SML,
@@ -166,28 +166,27 @@ public class CustomersFromHomeScreenFragment extends Fragment implements LoaderM
 		int NAME = 2;
 		int NAME_2 = 3;
 		int ADDRESS = 4;
-		int CITY = 5;
-		int POST_CODE = 6;
-		int PHONE = 7;
-		int MOBILE = 8;
-		int EMAIL = 9;
-		int COMPANY_ID = 10;
-		int PRIMARY_CONTACT_ID = 11;
-		int VAR_REG_NO = 12;
-		int CREDIT_LIMIT_LCY = 13;
-		int BALANCE_LCY = 14;
-		int BALANCE_DUE_LCY = 15;
-		int PAYMENT_TERMS_CODE = 16;
-		int PRIORITY = 17;
-		int GLOBAL_DIMENSION = 18;
-		int CHANNEL_ORAN = 19;
-		int BLOCKED_STATUS = 20;
-		int SML = 21;
-		int INTERNAL_BALANCE_DUE_LCY = 22;
-		int ADOPTED_POTENTIAL = 23;
-		int FOCUS_CUSTOMER = 24;
-		int DIVISION = 25;
-		int NUMBER_OF_BLUE_COAT = 26;
-		int NUMBER_OF_GREY_COAT = 27;
+		int POST_CODE = 5;
+		int PHONE = 6;
+		int MOBILE = 7;
+		int EMAIL = 8;
+		int COMPANY_ID = 9;
+		int PRIMARY_CONTACT_ID = 10;
+		int VAR_REG_NO = 11;
+		int CREDIT_LIMIT_LCY = 12;
+		int BALANCE_LCY = 13;
+		int BALANCE_DUE_LCY = 14;
+		int PAYMENT_TERMS_CODE = 15;
+		int PRIORITY = 16;
+		int GLOBAL_DIMENSION = 17;
+		int CHANNEL_ORAN = 18;
+		int BLOCKED_STATUS = 19;
+		int SML = 20;
+		int INTERNAL_BALANCE_DUE_LCY = 21;
+		int ADOPTED_POTENTIAL = 22;
+		int FOCUS_CUSTOMER = 23;
+		int DIVISION = 24;
+		int NUMBER_OF_BLUE_COAT = 25;
+		int NUMBER_OF_GREY_COAT = 26;
 	}
 }

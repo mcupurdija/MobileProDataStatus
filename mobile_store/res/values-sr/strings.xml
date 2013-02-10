@@ -204,6 +204,8 @@
 	<string name="title_sync_items">Sinhronizuj artikle</string>
 	<string name="title_sync_action">Sinh</string>
 	<string name="title_sync_planned_visits">Sinhronizuj planirane posete</string>
+	<string name="title_sync_customers">Sinhronizuj kupce</string>
+	
 	
 	<string name="title_sync_realized_visits">Sinhronizuj realizovane posete</string>
 	

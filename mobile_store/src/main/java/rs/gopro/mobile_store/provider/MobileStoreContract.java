@@ -103,7 +103,7 @@ public class MobileStoreContract {
 		String NAME = "name";
 		String NAME_2 = "name2";
 		String ADDRESS = "address";
-		String CITY = "city";
+		//String CITY = "city";
 		String POST_CODE = "post_code";
 		String PHONE = "phone";
 		String MOBILE = "mobile";
@@ -129,6 +129,28 @@ public class MobileStoreContract {
 		String NUMBER_OF_GREY_COAT = "number_of_grey_coat";
 		String SYNC_OBJECT_BATCH = "sync_object_batch";
 		String SALES_PERSON_ID = "sales_person_id";
+		
+		String SALES_LCY = "sales_lcy";
+		String GROSS_PROFIT_PFEP = "gross_profit_pfep";
+		String TURNOVER_IN_LAST_3M = "turnover_in_last_3m";
+		String TURNOVER_IN_LAST_6M = "turnover_in_last_6m";
+		String TURNOVER_IN_LAST_12M = "turnover_in_last_12m";
+		String TURNOVER_GENERATED_3 = "turnover_generated_3";
+		String TURNOVER_GENERATED_2 = "turnover_generated_2";
+		String TURNOVER_GENERATED_1 = "turnover_generated_1";
+		String NUMBER_OF_DIFF_ITEMS_3 = "number_of_diff_items_3";
+		String NUMBER_OF_DIFF_ITEMS_2 = "number_of_diff_items_2";
+		String NUMBER_OF_DIFF_ITEMS_1 = "number_of_diff_items_1";
+		String ORSY_SHELF_COUNT_AT_CUST = "orsy_shelf_count_at_cust";
+		String CUSTOMER_12_MONTHS_PLAN = "customer_12_months_plan";
+		String AVARAGE_PAYMENT_DAYS = "avarage_payment_days";
+		String NUMBER_OF_SALESPERSONS_WORKING_WITH_CUSTOMER = "number_of_salespersons_working_with_customer";
+		String DAYS_SINCE_OLDEST_OPEN_INVOICE = "days_since_oldest_open_invoice";
+		String NEXT_15_DAYS_INVOICE_DUE_AMOUNT = "next_15_days_invoice_due_amount";
+		String NEXT_15_DAYS_DUE_INVOICE_COUNT = "next_15_days_due_invoice_count";
+		String FINANCIAL_CONTROL_STATUS = "financial_control_status";
+
+		
 	}
 
 	public interface ItemsColumns {

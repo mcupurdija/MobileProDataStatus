@@ -8,6 +8,7 @@ import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.CustomerSyncObject;
 import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
 import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObjectOut;
@@ -38,10 +39,12 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 	private final int SYNC_ITEM_LOADER = 0;
 	private final int SYNC_PLANNED_VISIT_LOADER = 1;
 	private final int SYNC_REALIZED_VISIT_LOADER = 2;
+	private final int SYNC_CUSTOMER_LOADER = 3;
 
 	private CheckBoxPreference itemSyncCheckBox;
 	private CheckBoxPreference plannedVisitSyncCheckBox;
 	private CheckBoxPreference realizedVisistSyncCheckBox;
+	private CheckBoxPreference customerSyncCheckBox;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,11 +57,14 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 		plannedVisitSyncCheckBox.setOnPreferenceChangeListener(this);
 		realizedVisistSyncCheckBox = (CheckBoxPreference) getPreferenceScreen().findPreference(getString(R.string.key_sync_realized_visits_check_box));
 		realizedVisistSyncCheckBox.setOnPreferenceChangeListener(this);
+		customerSyncCheckBox  = (CheckBoxPreference) getPreferenceScreen().findPreference(getString(R.string.key_sync_customers_check_box));
+		customerSyncCheckBox.setOnPreferenceChangeListener(this);
 
 		setHasOptionsMenu(true);
 		getLoaderManager().initLoader(SYNC_ITEM_LOADER, null, this);
 		getLoaderManager().initLoader(SYNC_PLANNED_VISIT_LOADER, null, this);
 		getLoaderManager().initLoader(SYNC_REALIZED_VISIT_LOADER, null, this);
+		getLoaderManager().initLoader(SYNC_CUSTOMER_LOADER, null, this);
 	}
 
 	@Override
@@ -70,9 +76,12 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 
 		IntentFilter plannedVisitSyncIntent = new IntentFilter(PlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION);
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, plannedVisitSyncIntent);
-		
+
 		IntentFilter realizedVisitSyncIntent = new IntentFilter(RealizedVisitsToCustomersSyncObjectOut.BROADCAST_SYNC_ACTION);
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, realizedVisitSyncIntent);
+
+		IntentFilter customerSyncIntent = new IntentFilter(CustomerSyncObject.BROADCAST_SYNC_ACTION);
+		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, customerSyncIntent);
 	}
 
 	@Override
@@ -105,8 +114,10 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 					doItemsSync();
 				} else if (getString(R.string.key_sync_planned_visits_check_box).equalsIgnoreCase(preference.getKey())) {
 					doPlannedVisitSync();
-				}else if(getString(R.string.key_sync_realized_visits_check_box).equals(preference.getKey())){
+				} else if (getString(R.string.key_sync_realized_visits_check_box).equals(preference.getKey())) {
 					doRealizedVisitSync();
+				} else if (getString(R.string.key_sync_customers_check_box).equals(preference.getKey())){
+					doCustomerSync();
 				}
 			}
 		}
@@ -120,8 +131,11 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 		if (plannedVisitSyncCheckBox.isChecked()) {
 			doPlannedVisitSync();
 		}
-		if(realizedVisistSyncCheckBox.isChecked()){
+		if (realizedVisistSyncCheckBox.isChecked()) {
 			doRealizedVisitSync();
+		}
+		if (customerSyncCheckBox.isChecked()) {
+			doCustomerSync();
 		}
 	}
 
@@ -132,6 +146,13 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 			onSOAPResult(syncResult.getStatus(), syncResult.getResult(), intent.getAction());
 		}
 	};
+
+	private void doCustomerSync() {
+		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
+		CustomerSyncObject syncObject = new CustomerSyncObject("", "","", DateUtils.getWsDummyDate());
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT,syncObject);
+		getActivity().startService(intent);
+	}
 
 	private void doPlannedVisitSync() {
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
@@ -147,13 +168,13 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 		getActivity().startService(intent);
 
 	}
-	
-	private void doRealizedVisitSync(){
+
+	private void doRealizedVisitSync() {
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 		RealizedVisitsToCustomersSyncObject realizedVisitsToCustomersSyncObject = new RealizedVisitsToCustomersSyncObjectOut("", "V.MAKEVIC", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), "");
-		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT,realizedVisitsToCustomersSyncObject);
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, realizedVisitsToCustomersSyncObject);
 		getActivity().startService(intent);
-		
+
 	}
 
 	public void onSOAPResult(SyncStatus syncStatus, String result, String broadcastAction) {
@@ -163,8 +184,10 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 				itemSyncCheckBox.setSummary(getString(R.string.sync_summary_label) + " " + DateUtils.formatDbDate(new Date()));
 			} else if (PlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 				plannedVisitSyncCheckBox.setSummary(getString(R.string.sync_summary_label) + " " + DateUtils.formatDbDate(new Date()));
-			}else if(RealizedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)){
+			} else if (RealizedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 				realizedVisistSyncCheckBox.setSummary(getString(R.string.sync_summary_label) + " " + DateUtils.formatDbDate(new Date()));
+			}else if(CustomerSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)){
+				customerSyncCheckBox.setSummary(getString(R.string.sync_summary_label)+ " " + DateUtils.formatDbDate(new Date()));
 			}
 		}
 	}
@@ -184,8 +207,10 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 			return new CursorLoader(getActivity(), SyncLogs.CONTENT_URI, SyncLogsQuery.PROJECTION, SyncLogs.SYNC_OBJECT_ID + "=?  AND " + SyncLogs.SYNC_OBJECT_BATCH + " = (select MAX(" + SyncLogs.SYNC_OBJECT_BATCH + ") from "
 					+ Tables.SYNC_LOGS + " where " + SyncLogs.SYNC_OBJECT_ID + "= ? AND " + SyncLogs.SYNC_OBJECT_STATUS + "='" + SyncStatus.SUCCESS + "')", new String[] { RealizedVisitsToCustomersSyncObjectOut.TAG,
 					RealizedVisitsToCustomersSyncObjectOut.TAG }, null);
-
-			
+		case SYNC_CUSTOMER_LOADER:
+			return new CursorLoader(getActivity(), SyncLogs.CONTENT_URI, SyncLogsQuery.PROJECTION, SyncLogs.SYNC_OBJECT_ID + "=?  AND " + SyncLogs.SYNC_OBJECT_BATCH + " = (select MAX(" + SyncLogs.SYNC_OBJECT_BATCH + ") from "
+					+ Tables.SYNC_LOGS + " where " + SyncLogs.SYNC_OBJECT_ID + "= ? AND " + SyncLogs.SYNC_OBJECT_STATUS + "='" + SyncStatus.SUCCESS + "')", new String[] { CustomerSyncObject.TAG,
+				CustomerSyncObject.TAG }, null);
 		default:
 			return null;
 		}
@@ -195,14 +220,19 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		if (data.moveToNext()) {
 			String updatedDate = data.getString(SyncLogsQuery.UPDATED_DATE);
+			String summaryText = getString(R.string.sync_summary_label) + " " + updatedDate;
 			switch (loader.getId()) {
 			case SYNC_ITEM_LOADER:
-				itemSyncCheckBox.setSummary(getString(R.string.sync_summary_label) + " " + updatedDate);
+				itemSyncCheckBox.setSummary(summaryText);
 				break;
 			case SYNC_PLANNED_VISIT_LOADER:
-				plannedVisitSyncCheckBox.setSummary(getString(R.string.sync_summary_label) + " " + updatedDate);
+				plannedVisitSyncCheckBox.setSummary(summaryText);
+				break;
 			case SYNC_REALIZED_VISIT_LOADER:
-				realizedVisistSyncCheckBox.setSummary(getString(R.string.sync_summary_label) + " " + updatedDate);
+				realizedVisistSyncCheckBox.setSummary(summaryText);
+				break;
+			case SYNC_CUSTOMER_LOADER:
+				customerSyncCheckBox.setSummary(summaryText);
 			default:
 				break;
 			}

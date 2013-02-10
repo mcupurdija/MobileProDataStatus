@@ -205,11 +205,13 @@
 	<string name="title_sync_action">Sync</string>
 	<string name="title_sync_planned_visits">Sync planned visits</string>
 	<string name="title_sync_realized_visits">Sync realized visits</string>
+	<string name="title_sync_customers">Sync customers</string>
 	
 	<string name = "sync_summary_label">Last success sync:</string>
 	<string name = "key_sync_check_box">sync_check_box</string>
 	<string name = "key_sync_planned_visits_check_box">sync_planned_visits_check_box</string>
 	<string name = "key_sync_realized_visits_check_box">key_sync_realized_visits_check_box</string>
+	<string name = "key_sync_customers_check_box">key_sync_customers_check_box</string>
 	
 	<string name="contact_name_phone_title">Contact name and phone</string>
 	<string name="contact_no_label">Contact no.</string>

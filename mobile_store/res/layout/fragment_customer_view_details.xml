@@ -131,7 +131,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
-        <TableRow
+       <!--  <TableRow
             android:id="@+id/customer_city_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
@@ -153,7 +153,7 @@
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
+        </TableRow> -->
 
         <TableRow
             android:id="@+id/customer_postal_code_group"

@@ -108,7 +108,6 @@ CREATE TABLE `customers` (
 	`name` TEXT, 
 	`name2` TEXT, 
 	`address` TEXT, 
-	`city` TEXT, 
 	`post_code` TEXT, 
 	`phone` TEXT, 
 	`mobile` TEXT, 
@@ -131,10 +130,29 @@ CREATE TABLE `customers` (
 	`division` TEXT,
 	`number_of_blue_coat` INTEGER,
 	`number_of_grey_coat` INTEGER,
-	`sync_object_batch` INTEGER
+	`sync_object_batch` INTEGER,
+	`sales_lcy` REAL,
+	`gross_profit_pfep` REAL,
+	`turnover_in_last_3m` REAL,
+	`turnover_in_last_6m` REAL,
+	`turnover_in_last_12m` REAL,
+	`turnover_generated_3` REAL,
+	`turnover_generated_2` REAL,
+	`turnover_generated_1` REAL,
+	`number_of_diff_items_3` INTEGER,
+	`number_of_diff_items_2` INTEGER,
+	`number_of_diff_items_1` INTEGER,
+	`orsy_shelf_count_at_cust` INTEGER,
+	`customer_12_months_plan` REAL,
+	`avarage_payment_days` REAL,
+	`number_of_salespersons_working_with_customer` INTEGER,
+	`days_since_oldest_open_invoice` INTEGER,
+	`next_15_days_invoice_due_amount` REAL,
+	`next_15_days_due_invoice_count` INTEGER,
+	`financial_control_status` TEXT
 );
-INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`, `city`)
-values ('1','1','K00001','Šule Inter Trans komerc','','Višnjicki put 22','381112442421','381648978987','101','0','10 DANA','0','106200575','11000','sule@gmail.com','','','','0','No','1','0','0','182,368,864','182,368,864','182,368,864', '0', 'Belgrade');
+INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
+values ('1','1','K00001','Šule Inter Trans komerc','','Višnjicki put 22','381112442421','381648978987','101','0','10 DANA','0','106200575','11000','sule@gmail.com','','','','0','No','1','0','0','182,368,864','182,368,864','182,368,864', '0');
 INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
 values ('2','1','K00002','Greda DOO BEOGRAD','','','','','','0','','0','','11000','','','20481943','L1','0','No','','0','0','10,200','10,200','10,200', '0');
 INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
