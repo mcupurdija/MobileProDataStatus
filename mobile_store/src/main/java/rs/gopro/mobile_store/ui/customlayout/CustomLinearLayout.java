@@ -31,6 +31,13 @@ public abstract class CustomLinearLayout extends LinearLayout implements OnDateS
 	
 	public abstract ActionMode.Callback getContextualActionBar(String identifier);
 	
+	/**
+	 * method for sync implementation called from main activity
+	 */
+	public void doSynchronization(){
+		
+	}
+	
 	
 	/**
 	 * On default implementation

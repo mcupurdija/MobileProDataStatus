@@ -84,11 +84,14 @@ public class MobileStoreContract {
 		String INVOICE_NO = "invoice_no";
 		String CUSTOMER_ID = "customer_id";
 		String POSTING_DATE = "posting_date";
-		String SALES_PERSON_ID = "sales_person_id";
+		//fetch from customer SALES_PERSON_ID 
+		//String SALES_PERSON_ID = "sales_person_id";
 		String DUE_DATE = "due_date";
-		String TOTAL = "total";
-		String TOTAL_LEFT = "total_left";
-		String DUE_DATE_DAYS_LEFT = "due_date_days_left";
+		String ORIGINAL_AMOUNT = "original_amount";
+		String REMAINING_AMOUNT = "remaining_amount";
+		String DOCUMENT_TYPE = "document_type";
+		String OPEN = "open";
+		String PRICES_INCLUDE_VAT = "prices_include_vat";
 		String SYNC_OBJECT_BATCH = "sync_object_batch";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
@@ -451,7 +454,7 @@ public class MobileStoreContract {
 		}
 	}
 
-	public static class Invoices implements InvoicesColumns, BaseColumns, SalesPersonsColumns {
+	public static class Invoices implements InvoicesColumns, BaseColumns, SalesPersonsColumns, CustomersColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_INVOICES).build();
 
 		public static Uri buildInvoicesUri(String invoicesId) {

@@ -855,6 +855,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 			selectionParam = new String[]{CustomerTradeAgreemnt.CUSTOMER_ID, CustomerTradeAgreemnt.CODE};
 			selectionPhrase =  CustomerTradeAgreemnt.CUSTOMER_ID + "=? AND " + CustomerTradeAgreemnt.CODE + "=?";
 			break;
+		case INVOICES:
+			tableName = Tables.INVOICES;
+			selectionParam = new String[]{Invoices.INVOICE_NO};
+			selectionPhrase = Invoices.INVOICE_NO+ "=?";
+			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}

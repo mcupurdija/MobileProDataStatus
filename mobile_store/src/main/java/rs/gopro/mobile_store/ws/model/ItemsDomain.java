@@ -1,5 +1,6 @@
 package rs.gopro.mobile_store.ws.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
@@ -68,7 +69,8 @@ public class ItemsDomain extends Domain {
 
 	@Override
 	public List<RowItemDataHolder> getRowItemsForRepalce() {
-		return null;
+		List<RowItemDataHolder> dataHolders = new ArrayList<RowItemDataHolder>();
+		return dataHolders;
 	}
 
 	public String getItem_no() {

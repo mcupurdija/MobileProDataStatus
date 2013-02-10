@@ -14,6 +14,7 @@ import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObjectOut;
 import rs.gopro.mobile_store.ws.model.RealizedVisitsToCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.RealizedVisitsToCustomersSyncObjectOut;
+import rs.gopro.mobile_store.ws.model.SalesDocumentsSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.BroadcastReceiver;
@@ -40,11 +41,13 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 	private final int SYNC_PLANNED_VISIT_LOADER = 1;
 	private final int SYNC_REALIZED_VISIT_LOADER = 2;
 	private final int SYNC_CUSTOMER_LOADER = 3;
+	private final int SYNC_INVOICES_LOADER = 4;
 
 	private CheckBoxPreference itemSyncCheckBox;
 	private CheckBoxPreference plannedVisitSyncCheckBox;
 	private CheckBoxPreference realizedVisistSyncCheckBox;
 	private CheckBoxPreference customerSyncCheckBox;
+	private CheckBoxPreference invoicesSyncCheckBox;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -59,12 +62,15 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 		realizedVisistSyncCheckBox.setOnPreferenceChangeListener(this);
 		customerSyncCheckBox  = (CheckBoxPreference) getPreferenceScreen().findPreference(getString(R.string.key_sync_customers_check_box));
 		customerSyncCheckBox.setOnPreferenceChangeListener(this);
+		invoicesSyncCheckBox = (CheckBoxPreference) getPreferenceScreen().findPreference(getString(R.string.key_sync_sales_doc_check_box));
+		invoicesSyncCheckBox.setOnPreferenceChangeListener(this);
 
 		setHasOptionsMenu(true);
 		getLoaderManager().initLoader(SYNC_ITEM_LOADER, null, this);
 		getLoaderManager().initLoader(SYNC_PLANNED_VISIT_LOADER, null, this);
 		getLoaderManager().initLoader(SYNC_REALIZED_VISIT_LOADER, null, this);
 		getLoaderManager().initLoader(SYNC_CUSTOMER_LOADER, null, this);
+		getLoaderManager().initLoader(SYNC_INVOICES_LOADER, null, this);
 	}
 
 	@Override
@@ -82,6 +88,9 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 
 		IntentFilter customerSyncIntent = new IntentFilter(CustomerSyncObject.BROADCAST_SYNC_ACTION);
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, customerSyncIntent);
+		
+		IntentFilter salesDocSyncIntent = new IntentFilter(SalesDocumentsSyncObject.BROADCAST_SYNC_ACTION);
+		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, salesDocSyncIntent);
 	}
 
 	@Override
@@ -118,6 +127,8 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 					doRealizedVisitSync();
 				} else if (getString(R.string.key_sync_customers_check_box).equals(preference.getKey())){
 					doCustomerSync();
+				}else if(getString(R.string.key_sync_sales_doc_check_box).equals(preference.getKey())){
+					doSalesDocumentsSync();
 				}
 			}
 		}
@@ -136,6 +147,9 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 		}
 		if (customerSyncCheckBox.isChecked()) {
 			doCustomerSync();
+		}
+		if(invoicesSyncCheckBox.isChecked()){
+			doSalesDocumentsSync();
 		}
 	}
 
@@ -174,20 +188,29 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 		RealizedVisitsToCustomersSyncObject realizedVisitsToCustomersSyncObject = new RealizedVisitsToCustomersSyncObjectOut("", "V.MAKEVIC", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, realizedVisitsToCustomersSyncObject);
 		getActivity().startService(intent);
-
+	}
+	
+	private void doSalesDocumentsSync(){
+		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
+		SalesDocumentsSyncObject syncObject = new SalesDocumentsSyncObject("", Integer.valueOf(0), "", "", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), "",Integer.valueOf(-1));
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, syncObject);
+		getActivity().startService(intent);
 	}
 
 	public void onSOAPResult(SyncStatus syncStatus, String result, String broadcastAction) {
 		System.out.println("STATUS IS: " + syncStatus);
 		if (syncStatus.equals(SyncStatus.SUCCESS)) {
+			String summaryText = getString(R.string.sync_summary_label)+ " " + DateUtils.formatDbDate(new Date());
 			if (ItemsSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
-				itemSyncCheckBox.setSummary(getString(R.string.sync_summary_label) + " " + DateUtils.formatDbDate(new Date()));
+				itemSyncCheckBox.setSummary(summaryText);
 			} else if (PlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
-				plannedVisitSyncCheckBox.setSummary(getString(R.string.sync_summary_label) + " " + DateUtils.formatDbDate(new Date()));
+				plannedVisitSyncCheckBox.setSummary(summaryText);
 			} else if (RealizedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
-				realizedVisistSyncCheckBox.setSummary(getString(R.string.sync_summary_label) + " " + DateUtils.formatDbDate(new Date()));
+				realizedVisistSyncCheckBox.setSummary(summaryText);
 			}else if(CustomerSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)){
-				customerSyncCheckBox.setSummary(getString(R.string.sync_summary_label)+ " " + DateUtils.formatDbDate(new Date()));
+				customerSyncCheckBox.setSummary(summaryText);
+			}else if(SalesDocumentsSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)){
+				invoicesSyncCheckBox.setSummary(summaryText);
 			}
 		}
 	}
@@ -211,6 +234,10 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 			return new CursorLoader(getActivity(), SyncLogs.CONTENT_URI, SyncLogsQuery.PROJECTION, SyncLogs.SYNC_OBJECT_ID + "=?  AND " + SyncLogs.SYNC_OBJECT_BATCH + " = (select MAX(" + SyncLogs.SYNC_OBJECT_BATCH + ") from "
 					+ Tables.SYNC_LOGS + " where " + SyncLogs.SYNC_OBJECT_ID + "= ? AND " + SyncLogs.SYNC_OBJECT_STATUS + "='" + SyncStatus.SUCCESS + "')", new String[] { CustomerSyncObject.TAG,
 				CustomerSyncObject.TAG }, null);
+		case SYNC_INVOICES_LOADER:
+			return new CursorLoader(getActivity(), SyncLogs.CONTENT_URI, SyncLogsQuery.PROJECTION, SyncLogs.SYNC_OBJECT_ID + "=?  AND " + SyncLogs.SYNC_OBJECT_BATCH + " = (select MAX(" + SyncLogs.SYNC_OBJECT_BATCH + ") from "
+					+ Tables.SYNC_LOGS + " where " + SyncLogs.SYNC_OBJECT_ID + "= ? AND " + SyncLogs.SYNC_OBJECT_STATUS + "='" + SyncStatus.SUCCESS + "')", new String[] { SalesDocumentsSyncObject.TAG,
+				SalesDocumentsSyncObject.TAG }, null);
 		default:
 			return null;
 		}
@@ -233,6 +260,10 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 				break;
 			case SYNC_CUSTOMER_LOADER:
 				customerSyncCheckBox.setSummary(summaryText);
+				break;
+			case SYNC_INVOICES_LOADER:
+				invoicesSyncCheckBox.setSummary(summaryText);
+				break;
 			default:
 				break;
 			}

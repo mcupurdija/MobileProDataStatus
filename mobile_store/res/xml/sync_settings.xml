@@ -1,30 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
- <PreferenceCategory android:title="@string/title_sync_category">
-  <CheckBoxPreference android:title="@string/title_sync_items"
-   android:defaultValue="false" 
-   android:key="@string/key_sync_check_box" 
-   android:layout="@layout/check_box_pref"
-   android:selectable="true"
-   />
-  <CheckBoxPreference android:title="@string/title_sync_planned_visits"
-   android:defaultValue="false" 
-   android:key="@string/key_sync_planned_visits_check_box" 
-   android:layout="@layout/check_box_pref"
-   android:selectable="true"
-   />
-   <CheckBoxPreference android:title="@string/title_sync_realized_visits"
-   android:defaultValue="false" 
-   android:key="@string/key_sync_realized_visits_check_box" 
-   android:layout="@layout/check_box_pref"
-   android:selectable="true"
-   />
-   
-   <CheckBoxPreference android:title="@string/title_sync_customers"
-   android:defaultValue="false" 
-   android:key="@string/key_sync_customers_check_box" 
-   android:layout="@layout/check_box_pref"
-   android:selectable="true"
-   />
- </PreferenceCategory>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/title_sync_category" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/key_sync_check_box"
+            android:layout="@layout/check_box_pref"
+            android:selectable="true"
+            android:title="@string/title_sync_items" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/key_sync_planned_visits_check_box"
+            android:layout="@layout/check_box_pref"
+            android:selectable="true"
+            android:title="@string/title_sync_planned_visits" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/key_sync_realized_visits_check_box"
+            android:layout="@layout/check_box_pref"
+            android:selectable="true"
+            android:title="@string/title_sync_realized_visits" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/key_sync_customers_check_box"
+            android:layout="@layout/check_box_pref"
+            android:selectable="true"
+            android:title="@string/title_sync_customers" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/key_sync_sales_doc_check_box"
+            android:layout="@layout/check_box_pref"
+            android:selectable="true"
+            android:title="@string/title_sync_sales_doc" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

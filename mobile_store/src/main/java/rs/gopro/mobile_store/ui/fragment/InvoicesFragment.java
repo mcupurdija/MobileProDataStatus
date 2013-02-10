@@ -171,7 +171,7 @@ public class InvoicesFragment  extends ListFragment implements LoaderCallbacks<C
 		public void bindView(View view, Context context, final Cursor cursor) {
 			final Integer invoicesId = cursor.getInt(InvoicesQuery._ID);
 			final String invoicesNo = cursor.getString(InvoicesQuery.NO);
-			final Integer totalAmount = cursor.getInt(InvoicesQuery.TOTAL);
+			final Integer totalAmount = cursor.getInt(InvoicesQuery.ORIGINAL_AMOUNT);
 			final long dateOfCreation = UIUtils.getDateTime(cursor.getString(InvoicesQuery.CREATED_DATE)).getTime();
 			final long postingDate = UIUtils.getDateTime(cursor.getString(InvoicesQuery.POSTING_DATE)).getTime();
 			final TextView timeView = (TextView) view.findViewById(R.id.block_time);
@@ -226,9 +226,22 @@ public class InvoicesFragment  extends ListFragment implements LoaderCallbacks<C
 	
 	private interface InvoicesQuery {
 
-		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Invoices.INVOICE_NO, MobileStoreContract.Invoices.CUSTOMER_ID, MobileStoreContract.Invoices.POSTING_DATE, MobileStoreContract.Invoices.SALES_PERSON_ID, MobileStoreContract.Invoices.DUE_DATE,
-				MobileStoreContract.Invoices.TOTAL, MobileStoreContract.Invoices.TOTAL_LEFT, MobileStoreContract.Invoices.DUE_DATE_DAYS_LEFT, MobileStoreContract.Invoices.CREATED_DATE, MobileStoreContract.Invoices.CREATED_BY,
-				MobileStoreContract.Invoices.UPDATED_DATE, MobileStoreContract.Invoices.UPDATED_BY
+		String[] PROJECTION = { BaseColumns._ID,
+				MobileStoreContract.Invoices.INVOICE_NO, 
+				MobileStoreContract.Invoices.CUSTOMER_ID, 
+				MobileStoreContract.Invoices.POSTING_DATE, 
+				MobileStoreContract.Invoices.SALES_PERSON_ID, 
+				MobileStoreContract.Invoices.DUE_DATE,
+				MobileStoreContract.Invoices.ORIGINAL_AMOUNT, 
+				MobileStoreContract.Invoices.REMAINING_AMOUNT, 
+				MobileStoreContract.Invoices.DOCUMENT_TYPE,
+				MobileStoreContract.Invoices.OPEN,
+				MobileStoreContract.Invoices.PRICES_INCLUDE_VAT,
+				
+				MobileStoreContract.Invoices.CREATED_DATE,
+				MobileStoreContract.Invoices.CREATED_BY,
+				MobileStoreContract.Invoices.UPDATED_DATE, 
+				MobileStoreContract.Invoices.UPDATED_BY
 
 		};
 
@@ -238,13 +251,15 @@ public class InvoicesFragment  extends ListFragment implements LoaderCallbacks<C
 		int POSTING_DATE = 3;
 		int SALES_PERSON_ID = 4;
 		int DUE_DATE = 5;
-		int TOTAL = 6;
-		int TOTAL_LEFT = 7;
-		int DUE_DATE_DAYS_LEFT = 8;
-		int CREATED_DATE = 9;
-		int CREATED_BY = 10;
-		int UPDATED_DATE = 11;
-		int UPDATED_BY = 12;
+		int ORIGINAL_AMOUNT = 6;
+		int REMAINING_AMOUNT = 7;
+		int DOCUMENT_TYPE = 8;
+		int OPEN = 9;
+		int PRICES_INCLUDE_VAT = 10;
+		int CREATED_DATE = 11;
+		int CREATED_BY = 12;
+		int UPDATED_DATE = 13;
+		int UPDATED_BY = 14;
 	}
 
 

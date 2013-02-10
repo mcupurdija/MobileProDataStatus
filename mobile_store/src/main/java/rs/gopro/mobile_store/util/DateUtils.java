@@ -86,7 +86,7 @@ public class DateUtils {
 	}
 	
 	public static String formatDateFromNavisionToDB(String dbDate) {
-		if (dbDate == null) return "";
+		if (dbDate == null || dbDate.isEmpty()) return "";
 		Date localDbDate = getNavisionDate(dbDate);
 		//return pickerDate.format(localDbDate);
 		return formatDbDate(localDbDate);

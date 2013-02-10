@@ -64,9 +64,11 @@ CREATE TABLE `invoices` (
 	`posting_date` TEXT,
 	`sales_person_id` INTEGER,
 	`due_date` TEXT,
-	`total` REAL,
-	`total_left` REAL,
-	`due_date_days_left` INTEGER,
+	`document_type` TEXT, 
+	`open` INTEGER,
+	`remaining_amount` REAL,
+	`original_amount` REAL,
+	`prices_include_vat` INTEGER,
 	`sync_object_batch` INTEGER,
 	`created_date` TEXT,
 	`created_by` TEXT,
@@ -87,18 +89,18 @@ BEGIN
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`sales_person_id`,`due_date` ,`total` ,`total_left` ,	`due_date_days_left` ,`created_date` ,`created_by` ,`updated_date`,	`updated_by`) VALUES
-	(1 , 'IF11-00002', 5 , '2012-11-10 08:08:00', 1 , '2012-12-20', 100290 , 100 , 5 , '2012-11-10 08:08:00', 'system', datetime('now'), 'INITIAL' );
-INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`sales_person_id`,`due_date` ,`total` ,`total_left` ,	`due_date_days_left` ,`created_date` ,`created_by` ,`updated_date`,	`updated_by`) VALUES
-	(2 , 'IF11-00003', 6 , '2011-11-12 14:00:00', 1 , '2011-12-15', 23900 , 22 , 2 , '2011-11-12 14:00:00', 'system', datetime('now'), 'INITIAL');
-INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`sales_person_id`,`due_date` ,`total` ,`total_left` ,	`due_date_days_left` ,`created_date` ,`created_by` ,`updated_date`,	`updated_by`) VALUES
-	(3 , 'IF11-00004', 7 , '2011-11-12 16:00:00', 1 , '2011-12-16', 23765, 411 , 2 , '2011-11-12 16:00:00', 'system', datetime('now'), 'INITIAL');
-INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`sales_person_id`,`due_date` ,`total` ,`total_left` ,	`due_date_days_left` ,`created_date` ,`created_by` ,`updated_date`,	`updated_by`) VALUES
-	(4 , 'IF11-00005', 8 , '2012-11-18 05:08:00', 1 , '2012-12-17', 76435, 100 , 5 , '2012-11-10 05:08:00', 'system', datetime('now'), 'INITIAL' );
-INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`sales_person_id`,`due_date` ,`total` ,`total_left` ,	`due_date_days_left` ,`created_date` ,`created_by` ,`updated_date`,	`updated_by`) VALUES
-	(5 , 'IF11-00006', 9 , '2011-11-15 15:00:00', 1 , '2011-12-18', 83765, 22 , 2 , '2011-11-12 15:00:00', 'system', datetime('now'), 'INITIAL');
-INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`sales_person_id`,`due_date` ,`total` ,`total_left` ,	`due_date_days_left` ,`created_date` ,`created_by` ,`updated_date`,	`updated_by`) VALUES
-	(6 , 'IF11-00007', 4 , '2011-11-16 16:00:00', 1 , '2011-12-19', 63588, 411 , 2 , '2011-11-16 16:00:00', 'system', datetime('now'), 'INITIAL');
+INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`sales_person_id`,`due_date` ,`original_amount` ,`remaining_amount`  ,`created_date` ,`created_by` ,`updated_date`,	`updated_by`) VALUES
+	(1 , 'IF11-00002', 5 , '2012-11-10 08:08:00', 1 , '2012-12-20', 100290 , 100 , '2012-11-10 08:08:00', 'system', datetime('now'), 'INITIAL' );
+INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`sales_person_id`,`due_date` ,`original_amount` ,`remaining_amount` ,	`created_date` ,`created_by` ,`updated_date`,	`updated_by`) VALUES
+	(2 , 'IF11-00003', 6 , '2011-11-12 14:00:00', 1 , '2011-12-15', 23900 , 22 , '2011-11-12 14:00:00', 'system', datetime('now'), 'INITIAL');
+INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`sales_person_id`,`due_date` ,`original_amount` ,`remaining_amount` ,	`created_date` ,`created_by` ,`updated_date`,	`updated_by`) VALUES
+	(3 , 'IF11-00004', 7 , '2011-11-12 16:00:00', 1 , '2011-12-16', 23765, 411 ,  '2011-11-12 16:00:00', 'system', datetime('now'), 'INITIAL');
+INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`sales_person_id`,`due_date` ,`original_amount` ,`remaining_amount` ,	`created_date` ,`created_by` ,`updated_date`,	`updated_by`) VALUES
+	(4 , 'IF11-00005', 8 , '2012-11-18 05:08:00', 1 , '2012-12-17', 76435, 100 , '2012-11-10 05:08:00', 'system', datetime('now'), 'INITIAL' );
+INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`sales_person_id`,`due_date` ,`original_amount` ,`remaining_amount` ,	`created_date` ,`created_by` ,`updated_date`,	`updated_by`) VALUES
+	(5 , 'IF11-00006', 9 , '2011-11-15 15:00:00', 1 , '2011-12-18', 83765, 22 ,  '2011-11-12 15:00:00', 'system', datetime('now'), 'INITIAL');
+INSERT INTO `invoices` (`_id` ,	`invoice_no`  ,	`customer_id`,`posting_date` ,`sales_person_id`,`due_date` ,`original_amount` ,`remaining_amount` ,	`created_date` ,`created_by` ,`updated_date`,	`updated_by`) VALUES
+	(6 , 'IF11-00007', 4 , '2011-11-16 16:00:00', 1 , '2011-12-19', 63588, 411 ,  '2011-11-16 16:00:00', 'system', datetime('now'), 'INITIAL');
 
 -- customers
 CREATE TABLE `customers` (
