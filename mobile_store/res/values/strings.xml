@@ -224,6 +224,9 @@
 	<string name="so_line_save_button_text">Save order line</string>
 	<string name="ecc_menu_title">ECC preview</string>
 	<string name="ecc_activity_title">Electronic customer card</string>
+	<string name="cus_trade_agree_menu_title">Agreement preview</string>
+	<string name="cus_trade_agree_activity_title">Customer trade agreement</string>
+	
 	
 	<!-- ecc header label -->
 	<string name = "el_card_customer_no_label">Customer No.</string>
@@ -246,4 +249,13 @@
 	<string name = "el_card_turnover_prior_qty_label">Total Turnover In Last Year</string>
 	<string name = "el_card_sales_line_counts_curr_qty_label">Sales Line Counts This Year</string>
 	<string name = "el_card_sales_line_counts_prior_qty_label">Sales Line Counts In Last Year</string>
+	
+	<!-- customer trade agreemnt -->
+	<string name = "cus_trade_agreement_customer_no_label">Customer No.</string>
+	<string name = "cus_trade_agreement_entry_type_label">Entry type</string>
+	<string name = "cus_trade_agreement_code_label">Code</string>
+	<string name = "cus_trade_agreement_minimum_quantity_label">Minimum quantity</string>
+	<string name = "cus_trade_agreement_starting_date_label">Starting date</string>
+	<string name = "cus_trade_agreement_ending_date_label">Ending date</string>
+	<string name = "cus_trade_agreement_actual_discount_label">Actual discount (%)</string>
 </resources>

@@ -626,3 +626,33 @@ BEGIN
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
+
+CREATE TABLE `customer_trade_agreement` (
+	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
+	`customer_id` INTEGER,
+	`entry_type` TEXT, 
+	`code` TEXT,
+	`minimum_quantity` INTEGER,
+	`starting_date` TEXT, 
+	`ending_date` TEXT,
+	`actual_discount` REAL,
+	`created_date` TEXT,
+	`created_by` TEXT,
+	`updated_date` TEXT,
+	`updated_by` TEXT
+);
+
+CREATE TRIGGER IF NOT EXISTS "log_new_customer_trade_agreement" AFTER INSERT ON "customer_trade_agreement" 
+BEGIN 
+	update customer_trade_agreement set 
+	created_date = datetime('now'),
+	created_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TRIGGER IF NOT EXISTS "log_customer_trade_agreement_change" AFTER UPDATE ON "customer_trade_agreement" 
+BEGIN 
+	update customer_trade_agreement set 
+	updated_date = datetime('now'),
+	updated_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;

@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:baselineAligned="false"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/cus_trade_agreement_customer_no"
+        style="@style/table_cell_text_view_header"
+        android:layout_width="170dp"
+        android:layout_height="fill_parent"
+        android:text="@string/cus_trade_agreement_customer_no_label" />
+
+    <TextView
+        android:id="@+id/cus_trade_agreement_entry_type"
+        style="@style/table_cell_text_view_header"
+        android:layout_width="170dp"
+        android:layout_height="fill_parent"
+        android:text="@string/cus_trade_agreement_entry_type_label" />
+
+    <TextView
+        android:id="@+id/cus_trade_agreement_code"
+        style="@style/table_cell_text_view_header"
+        android:layout_width="170dp"
+        android:layout_height="fill_parent"
+        android:text="@string/cus_trade_agreement_code_label" />
+
+    <TextView
+        android:id="@+id/cus_trade_agreement_minimum_quantity"
+        style="@style/table_cell_text_view_header"
+        android:layout_width="170dp"
+        android:layout_height="fill_parent"
+        android:text="@string/cus_trade_agreement_minimum_quantity_label" />
+
+    <TextView
+        android:id="@+id/cus_trade_agreement_starting_date"
+        style="@style/table_cell_text_view_header"
+        android:layout_width="170dp"
+        android:layout_height="fill_parent"
+        android:text="@string/cus_trade_agreement_starting_date_label" />
+
+    <TextView
+        android:id="@+id/cus_trade_agreement_ending_date"
+        style="@style/table_cell_text_view_header"
+        android:layout_width="170dp"
+        android:layout_height="fill_parent"
+        android:text="@string/cus_trade_agreement_ending_date_label" />
+
+    <TextView
+        android:id="@+id/cus_trade_agreement_actual_discount"
+        style="@style/table_cell_text_view_header"
+        android:layout_width="170dp"
+        android:layout_height="fill_parent"
+        android:text="@string/cus_trade_agreement_actual_discount_label" />
+
+
+</LinearLayout>

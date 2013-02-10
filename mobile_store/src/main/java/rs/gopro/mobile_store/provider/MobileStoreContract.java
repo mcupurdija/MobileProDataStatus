@@ -40,6 +40,7 @@ public class MobileStoreContract {
 	private static final String PATH_SALES_PERSON = "sales_persons";
 	private static final String PATH_GENRIC = "generic";
 	private static final String PATH_ELECT_CARD_CUSTOMER = "electronic_card_customer";
+	private static final String PATH_CUSTOMER_TRADE_AGREEMENT = "customer_trade_agreement";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -331,6 +332,20 @@ public class MobileStoreContract {
 		String UPDATED_DATE = "updated_date";
 		String UPDATED_BY = "updated_by";
 	}
+	
+	public interface CustomerTradeAgreemntColumns {
+		String CUSTOMER_ID = "customer_id";
+		String ENTRY_TYPE = "entry_type";
+		String CODE = "code";
+		String MINIMUM_QUANTITY = "minimum_quantity";
+		String STARTING_DATE = "starting_date";
+		String ENDING_DATE = "ending_date";
+		String ACTUAL_DISCOUNT = "actual_discount";
+		String CREATED_DATE = "created_date";
+		String CREATED_BY = "created_by";
+		String UPDATED_DATE = "updated_date";
+		String UPDATED_BY = "updated_by";
+	}
 
 	public static class Generic implements BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_GENRIC).build();
@@ -344,6 +359,23 @@ public class MobileStoreContract {
 		}
 	}
 
+	public static class CustomerTradeAgreemnt implements CustomerTradeAgreemntColumns, BaseColumns, CustomersColumns{
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CUSTOMER_TRADE_AGREEMENT).build();
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.customer_trade_agreement";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.customer_trade_agreement";
+		
+		public static Uri buildUri(String id) {
+			return CONTENT_URI.buildUpon().appendPath(id).build();
+		}
+		
+		public static String getId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+		
+		public static final String DEFAULT_SORT = Tables.CUSTOMER_TRADE_AGREEMENT + "." + CustomerTradeAgreemnt.CREATED_DATE + " ASC";
+	
+	} 
 	
 	public static class ElectronicCardCustomer implements ElectronicCardCustomerColumns, ItemsColumns, CustomersColumns, BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_ELECT_CARD_CUSTOMER).build();

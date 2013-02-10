@@ -4,5 +4,9 @@
         android:id="@+id/create_ecc_activity"
         android:showAsAction="ifRoom|withText"
         android:title="@string/ecc_menu_title" />
+     <item
+        android:id="@+id/create_cus_trade_agree_activity"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/cus_trade_agree_menu_title" />
 
 </menu>

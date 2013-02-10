@@ -222,6 +222,9 @@
 	<string name="so_line_save_button_text">Sačuvaj promene</string>
 	<string name="ecc_menu_title">EKK pregled</string>
 	<string name="ecc_activity_title">Elekronska karta kupca</string>
+	<string name="cus_trade_agree_menu_title">Pregled sporazuma</string>
+	<string name="cus_trade_agree_activity_title">Korisnicki sporazum</string>
+	
 	
 	<!-- ecc header label -->
 	<string name = "el_card_customer_no_label">Broj kupca</string>
@@ -244,4 +247,13 @@
 	<string name = "el_card_turnover_prior_qty_label">Ukupan promet u prosloj godini</string>
 	<string name = "el_card_sales_line_counts_curr_qty_label">Broj realizacija u ovoj godini</string>
 	<string name = "el_card_sales_line_counts_prior_qty_label">Broj realizacija u prosloj godini</string>
+	
+	<!-- customer trade agreemnt -->
+	<string name = "cus_trade_agreement_customer_no_label">Broj kupca</string>
+	<string name = "cus_trade_agreement_entry_type_label">Tip unosa</string>
+	<string name = "cus_trade_agreement_code_label">Kod</string>
+	<string name = "cus_trade_agreement_minimum_quantity_label">Minimalna kolicina</string>
+	<string name = "cus_trade_agreement_starting_date_label">Pocetni datum</string>
+	<string name = "cus_trade_agreement_ending_date_label">Krajnji datum</string>
+	<string name = "cus_trade_agreement_actual_discount_label">Popust (%)</string>
 </resources>

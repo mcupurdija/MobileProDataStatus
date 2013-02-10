@@ -63,6 +63,7 @@ public class ElectronicCardCustomerFragment extends ListFragment implements Load
 
 		View headerView = getActivity().getLayoutInflater().inflate(R.layout.list_header_el_card_customer, null, false);
 		getListView().addHeaderView(headerView);
+		getListView().setDivider(null);
 		view.setBackgroundColor(Color.WHITE);
 		setListAdapter(cursorAdapter);
 	}
@@ -84,7 +85,6 @@ public class ElectronicCardCustomerFragment extends ListFragment implements Load
 		if(data.moveToFirst()){
 			cursorAdapter.swapCursor(data);
 		}
-
 	}
 
 	@Override

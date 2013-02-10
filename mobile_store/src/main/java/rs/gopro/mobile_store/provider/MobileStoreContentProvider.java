@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerAddresses;
+import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerTradeAgreemnt;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Generic;
@@ -104,6 +105,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int SALES_PERSONS = 900;
 	private static final int SALES_PERSON_ID = 901;
 	
+	private static final int CUSTOMER_TRADE_AGREEMENT = 1000;
+	private static final int CUSTOMER_TRADE_AGREEMENT_ID = 1001;
+	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
 
@@ -200,6 +204,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "sales_persons", SALES_PERSONS);
 		mobileStoreURIMatcher.addURI(authority, "sales_persons/*", SALES_PERSON_ID);
 		
+		mobileStoreURIMatcher.addURI(authority, "customer_trade_agreement", CUSTOMER_TRADE_AGREEMENT);
+		mobileStoreURIMatcher.addURI(authority, "customer_trade_agreement/#", CUSTOMER_TRADE_AGREEMENT_ID);
+		
 		/*
 		 * mobileStoreURIMatcher.addURI(authority, "contacts/custom_search",
 		 * CONTACTS_ALL); mobileStoreURIMatcher.addURI(authority,
@@ -261,6 +268,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return InvoiceLine.CONTENT_TYPE;
 		case ELECTRONIC_CARD_CUSTOMER_ID:
 			return ElectronicCardCustomer.CONTENT_TYPE;
+		case CUSTOMER_TRADE_AGREEMENT_ID:
+			return CustomerTradeAgreemnt.CONTENT_TYPE;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -761,6 +770,17 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS, Tables.SALE_ORDER_LINES)
 					.mapToTable(MobileStoreContract.SaleOrderLines.BACKORDER_STATUS, Tables.SALE_ORDER_LINES)
 					.mapToTable(MobileStoreContract.SaleOrderLines.AVAILABLE_TO_WHOLE_SHIPMENT, Tables.SALE_ORDER_LINES);
+		case CUSTOMER_TRADE_AGREEMENT:
+			return builder.addTable(Tables.CUSTOMER_AGREEMENT_JOIN_CUSTOMER)
+					.mapToTable(CustomerTradeAgreemnt._ID, Tables.CUSTOMER_TRADE_AGREEMENT )
+					.mapToTable(CustomerTradeAgreemnt.CUSTOMER_ID , Tables.CUSTOMER_TRADE_AGREEMENT )
+					.mapToTable(CustomerTradeAgreemnt.CUSTOMER_NO, Tables.CUSTOMERS)
+					.mapToTable(CustomerTradeAgreemnt.ENTRY_TYPE, Tables.CUSTOMER_TRADE_AGREEMENT)
+					.mapToTable(CustomerTradeAgreemnt.CODE, Tables.CUSTOMER_TRADE_AGREEMENT)
+					.mapToTable(CustomerTradeAgreemnt.MINIMUM_QUANTITY, Tables.CUSTOMER_TRADE_AGREEMENT)
+					.mapToTable(CustomerTradeAgreemnt.STARTING_DATE, Tables.CUSTOMER_TRADE_AGREEMENT)
+					.mapToTable(CustomerTradeAgreemnt.ENDING_DATE, Tables.CUSTOMER_TRADE_AGREEMENT)
+					.mapToTable(CustomerTradeAgreemnt.ACTUAL_DISCOUNT, Tables.CUSTOMER_TRADE_AGREEMENT);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -829,6 +849,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 			tableName = Tables.ELECTRONIC_CARD_CUSTOMER;
 			selectionParam = new String[]{ElectronicCardCustomer.CUSTOMER_ID, ElectronicCardCustomer.ITEM_ID};
 			selectionPhrase = ElectronicCardCustomer.CUSTOMER_ID + "=? AND "+ ElectronicCardCustomer.ITEM_ID + "=?";
+			break;
+		case CUSTOMER_TRADE_AGREEMENT:
+			tableName = Tables.CUSTOMER_TRADE_AGREEMENT;
+			selectionParam = new String[]{CustomerTradeAgreemnt.CUSTOMER_ID, CustomerTradeAgreemnt.CODE};
+			selectionPhrase =  CustomerTradeAgreemnt.CUSTOMER_ID + "=? AND " + CustomerTradeAgreemnt.CODE + "=?";
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);

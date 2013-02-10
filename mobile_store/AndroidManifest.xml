@@ -75,6 +75,23 @@
              <meta-data android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
+        
+         <activity android:name=".ui.CustomerTradeAgreementActivity"
+            android:exported="false"
+            android:label="@string/cus_trade_agree_activity_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.rs.gopro.mobile_store.customer_trade_agreement" />
+            </intent-filter>
+             <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.customer_trade_agreement"/>
+            </intent-filter>
+             <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
+        </activity>
      	   
 		<activity
             android:name=".ui.VisitsMultipaneActivity"

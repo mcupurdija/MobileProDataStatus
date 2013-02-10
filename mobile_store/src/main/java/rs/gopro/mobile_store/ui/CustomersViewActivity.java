@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerTradeAgreemnt;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import android.content.Intent;
@@ -112,6 +113,9 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 			Intent eccIntent = new Intent(Intent.ACTION_VIEW, ElectronicCardCustomer.buildUri(customerId));
 			startActivity(eccIntent);
 			return true;
+		case R.id.create_cus_trade_agree_activity:
+			Intent customerTradeAgreementIntent = new Intent(Intent.ACTION_VIEW, CustomerTradeAgreemnt.buildUri(customerId));
+			startActivity(customerTradeAgreementIntent);
 		}
 		return super.onOptionsItemSelected(item);
 	}
