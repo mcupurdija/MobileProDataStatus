@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
+
 import android.database.Cursor;
 
 public class CSVDomainWriter {
@@ -36,7 +38,7 @@ public class CSVDomainWriter {
 						break;
 					//case Cursor.FIELD_TYPE_FLOAT:
 					default:
-						lineResult.add(String.valueOf(cursor.getDouble(i)));
+						lineResult.add(WsDataFormatEnUsLatin.parseForWsDouble(cursor.getDouble(i)));
 						break;
 					}
 				}

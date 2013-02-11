@@ -217,7 +217,6 @@
 	<string name = "key_sync_customers_check_box">key_sync_customers_check_box</string>
 	<string name = "key_sync_sales_doc_check_box">key_sync_sales_doc_check_box</string>
 	
-	
 	<string name="contact_name_phone_title">Contact name and phone</string>
 	<string name="contact_no_label">Contact no.</string>
 	<string name="toast_update_success">Data saved</string>

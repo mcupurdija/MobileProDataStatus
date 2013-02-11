@@ -4,6 +4,7 @@ import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
@@ -90,6 +91,7 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
         final int saleOrdersQueryToken;
 
         if (mSaleOrdersUri == null) {
+        	LogUtils.LOGE(TAG, "No URI passed to fragment. Fragmen will not load.");
             return;
         }
 
