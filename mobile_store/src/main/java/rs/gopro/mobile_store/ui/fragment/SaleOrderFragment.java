@@ -9,6 +9,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 
 import rs.gopro.mobile_store.ui.SaleOrdersPreviewActivity;
 import rs.gopro.mobile_store.ui.widget.SimpleSelectionedListAdapter;
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
 import android.content.Context;
@@ -61,7 +62,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 				String[] queryStrings = constraint.toString().split(splitQuerySeparator);
 				Cursor cursor = null;
 				if (getActivity() != null) {
-					cursor = getActivity().getContentResolver().query(SaleOrders.buildCustomSearchUri(queryStrings[0], queryStrings[1]), SaleOrderQuery.PROJECTION, null, null, SaleOrders.DEFAULT_SORT);
+					cursor = getActivity().getContentResolver().query(SaleOrders.buildCustomSearchUri(queryStrings[0], queryStrings[1], ApplicationConstants.OrderType.SALE_ORDER.getType()), SaleOrderQuery.PROJECTION, null, null, SaleOrders.DEFAULT_SORT);
 				}
 				return cursor;
 			}

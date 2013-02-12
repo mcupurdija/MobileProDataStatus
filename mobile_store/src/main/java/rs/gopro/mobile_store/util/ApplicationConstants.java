@@ -18,4 +18,33 @@ public class ApplicationConstants {
 	public static enum SyncStatus{
 		SUCCESS, FAILURE, IN_PROCCESS;	
 	}
+	
+	public static enum OrderType {
+		SALE_ORDER("sale_order"), SENT_ORDER("sent_order");
+		
+		private String type;
+		
+		private OrderType(String type){
+			this.type = type;
+		}
+
+		public String getType() {
+			return type;
+		}
+		
+		public static OrderType find(String type){
+			OrderType orderType = null;
+			try {
+				if(type != null && !type.isEmpty()){
+				for(OrderType type2 : OrderType.values()){
+					if(type2.getType().equalsIgnoreCase(type)){
+						return type2;
+					}
+				}	
+				}
+			} catch (Exception e) {
+			}
+			return orderType;
+		}
+	}
 }

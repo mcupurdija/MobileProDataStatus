@@ -656,8 +656,8 @@ public class MobileStoreContract {
 			return uri.getPathSegments().get(1);
 		}
 
-		public static Uri buildCustomSearchUri(String text, String status) {
-			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(PATH_SALE_ORDER_SEARCH_CUSTOM).build();
+		public static Uri buildCustomSearchUri(String text, String status, String type) {
+			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(type).appendPath(PATH_SALE_ORDER_SEARCH_CUSTOM).build();
 		}
 
 		public static String getCustomSearchFirstParamQuery(Uri uri) {
@@ -666,6 +666,9 @@ public class MobileStoreContract {
 
 		public static String getCustomSearchSecondParamQuery(Uri uri) {
 			return uri.getPathSegments().get(2);
+		}
+		public static String getCustomSearchThirdParamQuery(Uri uri){
+			return uri.getPathSegments().get(3);
 		}
 
 		public static String getSaleOrderDocType(Uri uri) {
