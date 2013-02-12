@@ -12,7 +12,9 @@ import rs.gopro.mobile_store.ui.components.ItemAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
+import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.model.ItemQtySalesPriceAndDiscSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.Activity;
@@ -36,6 +38,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -170,6 +174,13 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         itemAutocompleteAdapter = new ItemAutocompleteCursorAdapter(getActivity(), null);
         mItemAutocomplete = (AutoCompleteTextView) rootView.findViewById(R.id.so_line_item_no_value);
         mItemAutocomplete.setAdapter(itemAutocompleteAdapter);
+        mItemAutocomplete.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				saveForm();
+			}
+		});
         
         mCustomer = (TextView) rootView.findViewById(R.id.so_line_header_document_customer_label);
         mDocumentNo = (TextView) rootView.findViewById(R.id.so_line_header_document_no_label);
@@ -266,14 +277,17 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	protected void calculatePriceWithDiscount() {
 		String price = mPrice.getText().toString();
 		String discount = mDiscount.getText().toString();
-		if (price == null || discount == null || price.length() < 1 || discount.length() < 1) {
-			return;
+		if (price == null || price.length() < 1) {
+			price = "0";
+		}
+		if (discount == null || discount.length() < 1) {
+			price = "0";
 		}
 		try {
-			double price_d = Double.parseDouble(price);
-			double discount_d = Double.parseDouble(discount);
-			double discounted_price = price_d * (discount_d/100);
-			mPriceEur.setText(String.valueOf(discounted_price));
+			double price_d = WsDataFormatEnUsLatin.parseForUIDouble(price);
+			double discount_d = WsDataFormatEnUsLatin.parseForUIDouble(discount);
+			double discounted_price = price_d - (price_d * (discount_d/100));
+			mPriceEur.setText(UIUtils.formatDoubleForUI(discounted_price));
 		} catch (NumberFormatException e) {
 			LogUtils.LOGE(TAG, "Not cool formats.", e);
 		}
@@ -293,49 +307,49 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 
 		String quantity = mQuantity.getText().toString().trim();
 		if (quantity != null && !quantity.equals("")) {
-			localValues.put(MobileStoreContract.SaleOrderLines.QUANTITY, Double.valueOf(quantity));
+			localValues.put(MobileStoreContract.SaleOrderLines.QUANTITY, UIUtils.getDoubleFromUI(quantity));
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrderLines.QUANTITY);
 		}
 		
 		String quantity_available = mQuantityAvailable.getText().toString().trim();
 		if (quantity_available != null && !quantity_available.equals("")) {
-			localValues.put(MobileStoreContract.SaleOrderLines.QUANTITY_AVAILABLE, Double.valueOf(quantity_available));
+			localValues.put(MobileStoreContract.SaleOrderLines.QUANTITY_AVAILABLE, UIUtils.getDoubleFromUI(quantity_available));
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrderLines.QUANTITY_AVAILABLE);
 		}
 		
 		String price = mPrice.getText().toString().trim();
 		if (price != null && !price.equals("")) {
-			localValues.put(MobileStoreContract.SaleOrderLines.PRICE, Double.valueOf(price));
+			localValues.put(MobileStoreContract.SaleOrderLines.PRICE, UIUtils.getDoubleFromUI(price));
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrderLines.PRICE);
 		}
 		
 		String price_eur = mPriceEur.getText().toString().trim();
 		if (price_eur != null && !price_eur.equals("")) {
-			localValues.put(MobileStoreContract.SaleOrderLines.PRICE_EUR, Double.valueOf(price_eur));
+			localValues.put(MobileStoreContract.SaleOrderLines.PRICE_EUR, UIUtils.getDoubleFromUI(price_eur));
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrderLines.PRICE_EUR);
 		}
 		
 		String discount = mDiscount.getText().toString().trim();
 		if (discount != null && !discount.equals("")) {
-			localValues.put(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT, Double.valueOf(discount));
+			localValues.put(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT, UIUtils.getDoubleFromUI(discount));
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT);
 		}
 		
 		String discountMin = mDiscountMin.getText().toString().trim();
 		if (discountMin != null && !discountMin.equals("")) {
-			localValues.put(MobileStoreContract.SaleOrderLines.MIN_DISCOUNT, Double.valueOf(discountMin));
+			localValues.put(MobileStoreContract.SaleOrderLines.MIN_DISCOUNT, UIUtils.getDoubleFromUI(discountMin));
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrderLines.MIN_DISCOUNT);
 		}
 		
 		String discountMax = mDiscountMax.getText().toString().trim();
 		if (discountMax != null && !discountMax.equals("")) {
-			localValues.put(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT, Double.valueOf(discountMax));
+			localValues.put(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT, UIUtils.getDoubleFromUI(discountMax));
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT);
 		}
@@ -538,7 +552,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	
 	private void doWsAction() {
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", itemCampaignStatus, customerNo, "", Double.valueOf(0), salesPersonNo, documentType, -1, "", "", "", "", "", "");
+		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", itemCampaignStatus, customerNo, "", Double.valueOf(0), salesPersonNo, documentType, -1, "", "", "", "", "", "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQtySalesPriceAndDiscSyncObject);
 		getActivity().startService(intent);
 		
@@ -584,43 +598,43 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         double quantity = -1;
         if (!cursor.isNull(SaleOrderLinesQuery.QUANTITY)) {
         	quantity = cursor.getDouble(SaleOrderLinesQuery.QUANTITY);
-        	mQuantity.setText(String.valueOf(quantity));
+        	mQuantity.setText(UIUtils.formatDoubleForUI(quantity));
         }
         
         double quantity_available = -1;
         if (!cursor.isNull(SaleOrderLinesQuery.QUANTITY_AVAILABLE)) {
         	quantity_available = cursor.getDouble(SaleOrderLinesQuery.QUANTITY_AVAILABLE);
-        	mQuantityAvailable.setText(String.valueOf(quantity_available));
+        	mQuantityAvailable.setText(UIUtils.formatDoubleForUI(quantity_available));
         }
         
         double price = -1;
         if (!cursor.isNull(SaleOrderLinesQuery.PRICE)) {
         	price = cursor.getDouble(SaleOrderLinesQuery.PRICE);
-        	mPrice.setText(String.valueOf(price));
+        	mPrice.setText(UIUtils.formatDoubleForUI(price));
         }
         
         double price_eur = -1;
         if (!cursor.isNull(SaleOrderLinesQuery.PRICE_EUR)) {
         	price_eur = cursor.getDouble(SaleOrderLinesQuery.PRICE_EUR);
-        	mPriceEur.setText(String.valueOf(price_eur));
+        	mPriceEur.setText(UIUtils.formatDoubleForUI(price_eur));
         }
         
         double discount = -1;
         if (!cursor.isNull(SaleOrderLinesQuery.REAL_DISCOUNT)) {
         	discount = cursor.getDouble(SaleOrderLinesQuery.REAL_DISCOUNT);
-        	mDiscount.setText(String.valueOf(discount));
+        	mDiscount.setText(UIUtils.formatDoubleForUI(discount));
         }
         
         double discount_min = -1;
         if (!cursor.isNull(SaleOrderLinesQuery.MIN_DISCOUNT)) {
         	discount_min = cursor.getDouble(SaleOrderLinesQuery.MIN_DISCOUNT);
-        	mDiscountMin.setText(String.valueOf(discount_min));
+        	mDiscountMin.setText(UIUtils.formatDoubleForUI(discount_min));
         }
         
         double discount_max = -1;
         if (!cursor.isNull(SaleOrderLinesQuery.MAX_DISCOUNT)) {
         	discount_max = cursor.getDouble(SaleOrderLinesQuery.MAX_DISCOUNT);
-        	mDiscountMax.setText(String.valueOf(discount_max));
+        	mDiscountMax.setText(UIUtils.formatDoubleForUI(discount_max));
         }
         
         int available_to_whole_shipment = -1;

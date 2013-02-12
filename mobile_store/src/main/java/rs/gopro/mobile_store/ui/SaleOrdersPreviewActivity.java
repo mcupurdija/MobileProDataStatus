@@ -4,6 +4,9 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.widget.SaleOrderContextualMenu;
+import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.ItemQtySalesPriceAndDiscSyncObject;
+import rs.gopro.mobile_store.ws.model.MobileDeviceSalesDocumentSyncObject;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -187,7 +190,17 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			Intent editSaleOrderIntent = new Intent(Intent.ACTION_EDIT,
 					MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(saleOrderId));
 			startActivity(editSaleOrderIntent);
-			return true;	
+			return true;
+		case R.id.send_sale_order_action_menu_option:
+			// TODO sale order lines goes here
+			if (saleOrderId == null) {
+				return true;
+			}
+			Intent intent = new Intent(this, NavisionSyncService.class);
+			MobileDeviceSalesDocumentSyncObject mobileDeviceSalesDocumentSyncObject = new MobileDeviceSalesDocumentSyncObject(Integer.valueOf(saleOrderId));
+			intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, mobileDeviceSalesDocumentSyncObject);
+			startService(intent);
+			return true;
 		}
 		
 		return super.onOptionsItemSelected(item);

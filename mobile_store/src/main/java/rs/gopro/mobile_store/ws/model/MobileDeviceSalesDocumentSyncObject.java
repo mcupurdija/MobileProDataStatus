@@ -1,5 +1,7 @@
 package rs.gopro.mobile_store.ws.model;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,11 +10,13 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.util.csv.CSVDomainWriter;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.os.Parcel;
-import android.provider.BaseColumns;
+import au.com.bytecode.opencsv.CSVWriter;
 
 public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 
@@ -22,7 +26,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	private int documentId;
 	private String pCSVStringHeader;
 	private String pCSVStringLines;
-	private Integer pNoteForCentralOffice;
+	private String pNoteForCentralOffice;
 	private String pDocumentNote;
 	
 	public static final Creator<MobileDeviceSalesDocumentSyncObject> CREATOR = new Creator<MobileDeviceSalesDocumentSyncObject>() {
@@ -48,7 +52,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		setDocumentId(source.readInt());
 		setpCSVStringHeader(source.readString());
 		setpCSVStringLines(source.readString());
-		setpNoteForCentralOffice(source.readInt());
+		setpNoteForCentralOffice(source.readString());
 		setpDocumentNote(source.readString());
 	}
 	
@@ -57,7 +61,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	}
 	
 	public MobileDeviceSalesDocumentSyncObject(String pCSVStringHeader,
-			String pCSVStringLines, Integer pNoteForCentralOffice,
+			String pCSVStringLines, String pNoteForCentralOffice,
 			String pDocumentNote) {
 		super();
 		this.pCSVStringHeader = pCSVStringHeader;
@@ -77,7 +81,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		dest.writeInt(getDocumentId());
 		dest.writeString(getpCSVStringHeader());
 		dest.writeString(getpCSVStringLines());
-		dest.writeInt(getpNoteForCentralOffice());
+		dest.writeString(getpNoteForCentralOffice());
 		dest.writeString(getpDocumentNote());
 	}
 
@@ -90,22 +94,24 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	public List<PropertyInfo> getSOAPRequestProperties() {
 		List<PropertyInfo> properies = new ArrayList<PropertyInfo>();
 
+		setpCSVStringHeader(createHeader());
 		PropertyInfo cSVStringHeader = new PropertyInfo();
 		cSVStringHeader.setName("pCSVStringHeader");
-		cSVStringHeader.setValue(createHeader());
+		cSVStringHeader.setValue(pCSVStringHeader);
 		cSVStringHeader.setType(String.class);
 		properies.add(cSVStringHeader);
 		
+		setpCSVStringLines(createLines());
 		PropertyInfo cSVStringLines = new PropertyInfo();
 		cSVStringLines.setName("pCSVStringLines");
-		cSVStringLines.setValue(createLines());
+		cSVStringLines.setValue(pCSVStringLines);
 		cSVStringLines.setType(String.class);
 		properies.add(cSVStringLines);
 		
 		PropertyInfo noteForCentralOffice = new PropertyInfo();
 		noteForCentralOffice.setName("pNoteForCentralOffice");
 		noteForCentralOffice.setValue(pNoteForCentralOffice);
-		noteForCentralOffice.setType(Integer.class);
+		noteForCentralOffice.setType(String.class);
 		properies.add(noteForCentralOffice);
 		
 		PropertyInfo documentNote = new PropertyInfo();
@@ -119,14 +125,32 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 
 	private String createHeader() {
 		// get header data
-		//Cursor cursor = context.getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderExport(), SalesOrderHeaderQuery.PROJECTION, selection, selectionArgs, null);
-		return null;
+		Cursor cursorHeader = context.getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderExport(), SalesOrderHeaderQuery.PROJECTION, Tables.SALE_ORDERS+"._ID=?", new String[] { String.valueOf(documentId) }, null);
+		List<String[]> header = CSVDomainWriter.parseCursor(cursorHeader);
+		StringWriter stringWriter = new StringWriter();
+		CSVWriter writer = new CSVWriter(stringWriter, ';', '"');
+		writer.writeAll(header);
+		try {
+			writer.close();
+		} catch (IOException e) {
+			writer = null;
+		}
+		return stringWriter.toString();
 	}
 	
 	private String createLines() {
 		// get lines data
-		//Cursor cursor = context.getContentResolver().query(MobileStoreContract.SaleOrderLines.buildSaleOrderLineExportUri(), SalesOrderLineQuery.PROJECTION, selection, selectionArgs, sortOrder);
-		return null;
+		Cursor cursorLines = context.getContentResolver().query(MobileStoreContract.SaleOrderLines.buildSaleOrderLineExportUri(), SalesOrderLineQuery.PROJECTION, Tables.SALE_ORDER_LINES+"."+MobileStoreContract.SaleOrderLines.SALE_ORDER_ID+"=?", new String[] { String.valueOf(documentId) }, Tables.SALE_ORDER_LINES + "." + MobileStoreContract.SaleOrderLines.LINE_NO + " ASC");
+		List<String[]> lines = CSVDomainWriter.parseCursor(cursorLines);
+		StringWriter stringWriter = new StringWriter();
+		CSVWriter writer = new CSVWriter(stringWriter, ';', '"');
+		writer.writeAll(lines);
+		try {
+			writer.close();
+		} catch (IOException e) {
+			writer = null;
+		}
+		return stringWriter.toString();
 	}
 
 	@Override
@@ -149,7 +173,8 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver,
 			SoapObject soapResponse) throws CSVParseException {
-		// TODO Auto-generated method stub
+		String headerResp = soapResponse.getPropertyAsString("pCSVStringHeader");
+		String linesResp = soapResponse.getPropertyAsString("pCSVStringLines");
 		return 0;
 	}
 
@@ -169,11 +194,11 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		this.pCSVStringLines = pCSVStringLines;
 	}
 
-	public Integer getpNoteForCentralOffice() {
+	public String getpNoteForCentralOffice() {
 		return pNoteForCentralOffice;
 	}
 
-	public void setpNoteForCentralOffice(Integer pNoteForCentralOffice) {
+	public void setpNoteForCentralOffice(String pNoteForCentralOffice) {
 		this.pNoteForCentralOffice = pNoteForCentralOffice;
 	}
 
@@ -190,7 +215,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		String[] PROJECTION = {
                 //BaseColumns._ID,
                 MobileStoreContract.SaleOrders.DOCUMENT_TYPE,
-                MobileStoreContract.SaleOrders.SALES_ORDER_NO,
+                MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO,
                 MobileStoreContract.Customers.CUSTOMER_NO,
                 MobileStoreContract.SaleOrders.LOCATION_CODE,
                 MobileStoreContract.SaleOrders.SHORTCUT_DIMENSION_1_CODE,
@@ -198,8 +223,8 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
                 MobileStoreContract.SaleOrders.QUOTE_NO,
                 MobileStoreContract.SalesPerson.SALE_PERSON_NO,
                 MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE,
-                MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID,
-                MobileStoreContract.SaleOrders.SHIPP_TO_ADDRESS_ID,
+                "sell_to_address_no",
+                "shipp_to_address_no",
                 MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST,
                 MobileStoreContract.SaleOrders.CONTACT_NAME,
                 MobileStoreContract.SaleOrders.CONTACT_PHONE,
@@ -237,8 +262,8 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	private interface SalesOrderLineQuery {
 		String[] PROJECTION = {
                 //BaseColumns._ID,
-                //MobileStoreContract.SaleOrders.DOCUMENT_TYPE,
-                //MobileStoreContract.SaleOrders.SALES_ORDER_NO,
+                MobileStoreContract.SaleOrders.DOCUMENT_TYPE,
+                MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO,
                 MobileStoreContract.SaleOrderLines.LINE_NO,
                 MobileStoreContract.Items.ITEM_NO,
                 MobileStoreContract.SaleOrderLines.QUANTITY,
@@ -250,18 +275,18 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
                 MobileStoreContract.SaleOrderLines.AVAILABLE_TO_WHOLE_SHIPMENT
         };
 
-		int _ID = 0;
-		int DOCUMENT_TYPE = 1;
-		int SALES_ORDER_NO = 2;
-		int LINE_NO = 3;
-		int ITEM_NO = 4;
-		int QUANTITY = 5;
-		int UNIT_SALES_PRICE_DIN = 6;
-		int REAL_DISCOUNT = 7;
-		int CAMPAIGN_STATUS = 8;
-		int QUOTE_REFUSED_STATUS = 9;
-		int BACKORDER_STATUS = 10;
-		int AVAILABLE_TO_WHOLE_SHIPMENT = 11; 
+		//int _ID = 0;
+		//int DOCUMENT_TYPE = 1;
+		int SALES_ORDER_NO = 0;
+		int LINE_NO = 1;
+		int ITEM_NO = 2;
+		int QUANTITY = 3;
+		int UNIT_SALES_PRICE_DIN = 4;
+		int REAL_DISCOUNT = 5;
+		int CAMPAIGN_STATUS = 6;
+		int QUOTE_REFUSED_STATUS = 7;
+		int BACKORDER_STATUS = 8;
+		int AVAILABLE_TO_WHOLE_SHIPMENT = 9; 
 	}
 
 	public int getDocumentId() {

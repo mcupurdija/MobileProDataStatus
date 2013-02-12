@@ -104,6 +104,8 @@
 	<string name="contextual_edit_lines">Edit lines</string>
 	<string name="contextual_add_sale_order_line">New line</string>
 	<string name="contextual_delete_sale_order_line">Delete line</string>
+	<string name="contextual_add_sale_order">New sale order</string>
+	<string name="contextual_send_sale_order">Send sale order</string>
 	
 	<string name="document_no">Document No</string>
 	<string name="dokument_type_no_title">Document no and type </string>
@@ -214,7 +216,6 @@
 	<string name = "key_sync_realized_visits_check_box">key_sync_realized_visits_check_box</string>
 	<string name = "key_sync_customers_check_box">key_sync_customers_check_box</string>
 	<string name = "key_sync_sales_doc_check_box">key_sync_sales_doc_check_box</string>
-	
 	
 	<string name="contact_name_phone_title">Contact name and phone</string>
 	<string name="contact_no_label">Contact no.</string>

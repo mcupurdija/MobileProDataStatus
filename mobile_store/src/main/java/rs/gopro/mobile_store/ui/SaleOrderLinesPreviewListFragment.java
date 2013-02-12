@@ -31,7 +31,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
 	
 	private Uri mSaleOrderLinesUri;
 	private CursorAdapter mAdapter;
-	private String mSelectedSaleOrderId;
+	private String mSelectedSaleOrderLineId;
 	private boolean mHasSetEmptyText = false;
 	
 	public interface Callbacks {
@@ -54,6 +54,10 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
         mSaleOrderLinesUri = intent.getData();
         if (mSaleOrderLinesUri == null) {
             return;
+        }
+        
+        if (savedInstanceState != null) {
+            mSelectedSaleOrderLineId = savedInstanceState.getString(STATE_SELECTED_ID);
         }
         
         reloadFromArguments(getArguments());
@@ -123,8 +127,8 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mSelectedSaleOrderId != null) {
-            outState.putString(STATE_SELECTED_ID, mSelectedSaleOrderId);
+        if (mSelectedSaleOrderLineId != null) {
+            outState.putString(STATE_SELECTED_ID, mSelectedSaleOrderLineId);
         }
     }
 
@@ -163,7 +167,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
 	 * @param id
 	 */
 	public void setSelectedSalesOrderId(String id) {
-		mSelectedSaleOrderId = id;
+		mSelectedSaleOrderLineId = id;
         if (mAdapter != null) {
             mAdapter.notifyDataSetChanged();
         }
@@ -190,8 +194,8 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
 //            UIUtils.setActivatedCompat(view, cursor.getString(VisitsQuery.VENDOR_ID)
 //                    .equals(mSelectedVendorId));
         	//mSelectedSaleOrderId = cursor.getString(SaleOrderLinesQuery.SALE_ORDER_ID);
-            view.setActivated(String.valueOf(cursor.getInt(SaleOrderLinesQuery.SALE_ORDER_ID))
-                    .equals(mSelectedSaleOrderId));
+            view.setActivated(String.valueOf(cursor.getInt(SaleOrderLinesQuery._ID))
+                    .equals(mSelectedSaleOrderLineId));
             
             final TextView timeView = (TextView) view.findViewById(R.id.block_time);
             final TextView titleView = (TextView) view.findViewById(R.id.block_title);

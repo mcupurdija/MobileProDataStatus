@@ -61,7 +61,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	private static String[]  SALES_ORDER_PROJECTION = new String[] { 
 		MobileStoreContract.SaleOrders._ID,
 		MobileStoreContract.SaleOrders.SALES_PERSON_ID,
-		MobileStoreContract.SaleOrders.SALES_ORDER_NO,
+		MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO,
 		MobileStoreContract.SaleOrders.DOCUMENT_TYPE,
 		MobileStoreContract.SaleOrders.CUSTOMER_ID,
 		MobileStoreContract.SaleOrders.ORDER_DATE,
@@ -387,8 +387,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		}
 		
 		String document_no = null;
-		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_NO))) {	
-			document_no = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_NO));
+		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO))) {	
+			document_no = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO));
 		} else {
 			document_no = "LIF-"+ data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders._ID));
 		}
@@ -901,7 +901,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		}
 		
 		String document_no = documentNo.getText().toString();
-		localValues.put(MobileStoreContract.SaleOrders.SALES_ORDER_NO, document_no);
+		localValues.put(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO, document_no);
 		
 		if (orderDate == null) {
 			orderDate = DateUtils.formatDbDate(new Date());

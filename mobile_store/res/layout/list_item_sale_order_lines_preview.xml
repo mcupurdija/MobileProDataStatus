@@ -12,8 +12,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="?activatableItemBackground"
-        android:focusable="false" >
+        android:focusable="false"
+        android:background="?activatableItemBackground" >
 
         <FrameLayout
             android:id="@+id/block_time_container"
@@ -21,7 +21,6 @@
             android:layout_height="match_parent"
             android:background="@drawable/schedule_time_background"
             android:duplicateParentState="true"
-            android:foreground="?activatableItemBackground"
             android:padding="8dp"
             android:focusable="false" >
 

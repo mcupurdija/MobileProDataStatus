@@ -160,6 +160,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "visits/*/visits_date", VISITS_DATE);
 
 		mobileStoreURIMatcher.addURI(authority, "sale_orders", SALE_ORDERS);
+		mobileStoreURIMatcher.addURI(authority,
+				"sale_orders/sale_orders_export", SALE_ORDER_EXPORT);
 		mobileStoreURIMatcher.addURI(authority, "sale_orders/#", SALE_ORDER);
 		mobileStoreURIMatcher.addURI(authority, "sale_orders_list/*",
 				SALE_ORDERS_LIST);
@@ -174,16 +176,18 @@ public class MobileStoreContentProvider extends ContentProvider {
 				"sale_orders/#/*/*/custom_search", SALE_ORDER_CUSTOM_SEARCH);
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_orders_export", SALE_ORDER_EXPORT);
+
 		
 		
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_order_lines", SALE_ORDER_LINES);
 		mobileStoreURIMatcher.addURI(authority,
+				"sale_order_lines/sale_order_lines_export", SALE_ORDER_LINES_EXPORT);
+		mobileStoreURIMatcher.addURI(authority,
 				"sale_order_lines/*", SALE_ORDER_LINE);
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_order_lines_from_order/#", SALE_ORDER_LINES_FROM_ORDER);
-		mobileStoreURIMatcher.addURI(authority,
-				"sale_order_lines_export", SALE_ORDER_LINES_EXPORT);
+
 		
 		
 		mobileStoreURIMatcher.addURI(authority, "contacts", CONTACTS);
@@ -679,6 +683,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder
 					.addTable(Tables.SALE_ORDER_LINES)
 					.where(SaleOrderLines._ID + "=?", salesOrderlineId);
+		case SALE_ORDER_LINES:
+			return builder.addTable(Tables.SALE_ORDER_LINES);
 		case SALE_ORDER_LINES_FROM_ORDER:
 			final String salesOrderId = SaleOrderLines.getSaleOrderLineId(uri);
 			return builder
@@ -755,7 +761,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case SALE_ORDER_EXPORT:
 			return builder.addTable(Tables.SALE_ORDERS_EXPORT)
 					.mapToTable(MobileStoreContract.SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDERS)
-					.mapToTable(MobileStoreContract.SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.Customers.CUSTOMER_NO, Tables.CUSTOMERS)
 					.mapToTable(MobileStoreContract.SaleOrders.LOCATION_CODE, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.SaleOrders.SHORTCUT_DIMENSION_1_CODE, Tables.SALE_ORDERS)
@@ -763,8 +769,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(MobileStoreContract.SaleOrders.QUOTE_NO, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.SalesPerson.SALE_PERSON_NO, Tables.SALES_PERSONS)
 					.mapToTable(MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE, Tables.SALE_ORDERS)
-					.mapToTable(MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID, Tables.SALE_ORDERS)
-					.mapToTable(MobileStoreContract.SaleOrders.SHIPP_TO_ADDRESS_ID, Tables.SALE_ORDERS)
+					//.mapToTable(MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID, Tables.SALE_ORDERS)
+					//.mapToTable(MobileStoreContract.SaleOrders.SHIPP_TO_ADDRESS_ID, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.CustomerAddresses.ADDRESS_NO, "ca1", "sell_to_address_no")
+					.mapToTable(MobileStoreContract.CustomerAddresses.ADDRESS_NO, "ca2", "shipp_to_address_no")
 					.mapToTable(MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.SaleOrders.CONTACT_NAME, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.SaleOrders.CONTACT_PHONE, Tables.SALE_ORDERS)
@@ -776,12 +784,12 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS, Tables.SALE_ORDERS);
 		case SALE_ORDER_LINES_EXPORT:
 			return builder.addTable(Tables.SALE_ORDER_LINES_EXPORT)
-					//.mapToTable(MobileStoreContract.SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDER_LINES)
-					//.mapToTable(MobileStoreContract.SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDER_LINES)
+					.mapToTable(MobileStoreContract.SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.SaleOrderLines.LINE_NO, Tables.SALE_ORDER_LINES)
 					.mapToTable(MobileStoreContract.Items.ITEM_NO, Tables.ITEMS)
 					.mapToTable(MobileStoreContract.SaleOrderLines.QUANTITY, Tables.SALE_ORDER_LINES)
-					.mapToTable(MobileStoreContract.SaleOrderLines.UNIT_SALES_PRICE_DIN, Tables.SALE_ORDER_LINES)
+					.mapToTable(MobileStoreContract.SaleOrderLines.PRICE, Tables.SALE_ORDER_LINES)
 					.mapToTable(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT, Tables.SALE_ORDER_LINES)
 					.mapToTable(MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS, Tables.SALE_ORDER_LINES)
 					.mapToTable(MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS, Tables.SALE_ORDER_LINES)

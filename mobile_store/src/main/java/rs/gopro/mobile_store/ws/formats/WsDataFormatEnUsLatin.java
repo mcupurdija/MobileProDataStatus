@@ -49,4 +49,21 @@ public class WsDataFormatEnUsLatin {
 		}
 	}
 	
+	public static String parseForWsDouble(Double wsDouble) {
+//		try {
+		return decimalWSFormat.format(wsDouble.doubleValue());
+//		} catch (ParseException e) {
+//			LogUtils.LOGE(TAG, "Ws double not in good fromat", e);
+//			return String.valueOf(wsDouble);
+//		}
+	}
+	
+	public static Double parseForUIDouble(String uiDouble) {
+		try {
+			return decimalFormat.parse(uiDouble).doubleValue();
+		} catch (ParseException e) {
+			LogUtils.LOGE(TAG, "Ui double not in good fromat", e);
+			return null;
+		}
+	}
 }

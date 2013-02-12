@@ -131,7 +131,7 @@ public class CustomersViewDetailFragment extends Fragment implements
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_customer_view_details, null);
         mCustomer_no = (TextView) rootView.findViewById(R.id.customer_no_group_value);
         mName = (EditText) rootView.findViewById(R.id.customer_name_value);
-        mName2 = (EditText) rootView.findViewById(R.id.customer_name_value);
+        mName2 = (EditText) rootView.findViewById(R.id.customer_name2_value);
         mAddress = (EditText) rootView.findViewById(R.id.customer_address_value);
         //mCity = (TextView) rootView.findViewById(R.id.customer_city_value);
         mPostCode = (EditText) rootView.findViewById(R.id.customer_postal_code_value);

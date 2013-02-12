@@ -4,6 +4,7 @@ import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.BaseActivity;
+import rs.gopro.mobile_store.util.LogUtils;
 import android.database.Cursor;
 import android.app.Activity;
 import android.content.Context;
@@ -33,7 +34,7 @@ public class SaleOrderLinesAddEditPreviewListFragment extends ListFragment
 	
 	private Uri mSaleOrderLinesUri;
 	private CursorAdapter mAdapter;
-	private String mSelectedSaleOrderId;
+//	private String mSelectedSaleOrderId;
 	private String mSelectedSaleOrderLineId;
 	private boolean mHasSetEmptyText = false;
 //	private int salesPersonId = -1;
@@ -87,6 +88,7 @@ public class SaleOrderLinesAddEditPreviewListFragment extends ListFragment
         final Intent intent = BaseActivity.fragmentArgumentsToIntent(arguments);
         mSaleOrderLinesUri = intent.getData();
         if (mSaleOrderLinesUri == null) {
+        	LogUtils.LOGE(TAG, "No URI, fragment will nit load.");
             return;
         }
 
@@ -216,7 +218,7 @@ public class SaleOrderLinesAddEditPreviewListFragment extends ListFragment
 			// .equals(mSelectedVendorId));
 			view.setActivated(String.valueOf(
 					cursor.getInt(SaleOrderLinesQuery._ID)).equals(
-					mSelectedSaleOrderId));
+					mSelectedSaleOrderLineId));
 
 			final TextView timeView = (TextView) view
 					.findViewById(R.id.block_time);
@@ -254,7 +256,7 @@ public class SaleOrderLinesAddEditPreviewListFragment extends ListFragment
 				MobileStoreContract.SaleOrderLines.REAL_DISCOUNT };
 
 		int _ID = 0;
-		int SALE_ORDER_ID = 1;
+//		int SALE_ORDER_ID = 1;
 		int ITEM_NO = 2;
 		int DESCRIPTION = 3;
 //		int DESCRIPTION2 = 4;

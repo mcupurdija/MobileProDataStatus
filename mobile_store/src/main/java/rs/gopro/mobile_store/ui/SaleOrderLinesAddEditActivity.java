@@ -1,12 +1,15 @@
 package rs.gopro.mobile_store.ui;
-
+	
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.provider.MobileStoreContentProvider;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.fragment.SaleOrderAddEditLineFragment;
 import rs.gopro.mobile_store.ui.fragment.SaleOrderLinesAddEditPreviewListFragment;
+import rs.gopro.mobile_store.util.LogUtils;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +23,8 @@ public class SaleOrderLinesAddEditActivity extends BaseActivity implements
 		SaleOrderLinesAddEditPreviewListFragment.Callbacks,
 		SaleOrderAddEditLineFragment.Callbacks {
 
+	private static final String TAG = "SaleOrderLinesAddEditActivity";
+	
 	public static final String EXTRA_MASTER_URI = "rs.gopro.mobile_store.extra.MASTER_URI";
 	
 	private Fragment saleOrderAddEditLineFragment;
@@ -64,6 +69,7 @@ public class SaleOrderLinesAddEditActivity extends BaseActivity implements
 		Uri uri = intent.getData();
 //		mUri = uri;
 		if (uri == null) {
+			LogUtils.LOGE(TAG, "No URI. Activity will not load.");
 			return;
 		}
 		
@@ -181,8 +187,20 @@ public class SaleOrderLinesAddEditActivity extends BaseActivity implements
 		case R.id.add_sale_order_line:
 			ContentValues cv = new ContentValues();
 			cv.put(MobileStoreContract.SaleOrderLines.SALE_ORDER_ID, MobileStoreContract.SaleOrderLines.getSaleOrderId(mUri));
-			getContentResolver().insert(mUri, cv);
+			
+			Cursor lineNoCursor = getContentResolver().query(MobileStoreContract.SaleOrderLines.CONTENT_URI, new String[]{"MAX(line_no) AS max_line_no"}, null, null, null);
+			int maxLineNo = 0;
+			if (lineNoCursor.moveToFirst() && lineNoCursor.getColumnIndex("max_line_no") != -1) {
+				maxLineNo = lineNoCursor.getInt(lineNoCursor.getColumnIndex("max_line_no"));
+				maxLineNo = maxLineNo +1;
+			}
+			cv.put(MobileStoreContract.SaleOrderLines.LINE_NO, Integer.valueOf(maxLineNo));
+			Uri lineUri = getContentResolver().insert(mUri, cv);
 
+			SaleOrderLinesAddEditPreviewListFragment listFrag = (SaleOrderLinesAddEditPreviewListFragment)
+	                getSupportFragmentManager().findFragmentById(R.id.fragment_sale_order_lines_lines_list);
+			listFrag.setSelectedSalesOrderLineId(MobileStoreContract.SaleOrderLines.getSaleOrderLineId(lineUri));
+			loadSaleOrderLineAddEdit(lineUri);
 			return true;
 		default:
 			break;
