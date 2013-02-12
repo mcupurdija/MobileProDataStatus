@@ -116,7 +116,7 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 
 	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
-		if (preference instanceof CheckBoxPreference) {
+		/*if (preference instanceof CheckBoxPreference) {
 			Boolean status = (Boolean) newValue;
 			if (status) {
 				if (getString(R.string.key_sync_check_box).equalsIgnoreCase(preference.getKey())) {
@@ -131,7 +131,7 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 					doSalesDocumentsSync();
 				}
 			}
-		}
+		}*/
 		return true;
 	}
 
