@@ -8,10 +8,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
-import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
 import android.content.ContentResolver;
 import android.os.Parcel;
-import android.os.Parcelable.Creator;
 
 public class NextContactNoSyncObject extends SyncObject {
 

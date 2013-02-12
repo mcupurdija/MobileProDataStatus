@@ -3,21 +3,12 @@ package rs.gopro.mobile_store.ws.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ksoap2.SoapFault;
-import org.ksoap2.SoapFault12;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
-import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
-import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
-import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
-
 import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Parcel;
 
 public class ItemQuantitySyncObject extends SyncObject {

@@ -3,7 +3,6 @@ package rs.gopro.mobile_store.ws.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import rs.gopro.mobile_store.provider.MobileStoreContract.SalesPersonsColumns;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.DateUtils;

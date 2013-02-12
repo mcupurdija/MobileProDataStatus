@@ -15,7 +15,6 @@ import rs.gopro.mobile_store.ws.model.domain.CustomerTradeAgreementDomain;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.os.Parcel;
-import android.os.Parcelable.Creator;
 
 public class CustomerTradeAgreementSyncObject extends SyncObject {
 	public static String TAG = "CustomerTradeAgreement";
@@ -108,7 +107,7 @@ public class CustomerTradeAgreementSyncObject extends SyncObject {
 	List<CustomerTradeAgreementDomain> domains = CSVDomainReader.parse(new StringReader(soapResponse.toString()), CustomerTradeAgreementDomain.class);
 	ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, domains);
 	int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.CustomerTradeAgreemnt.CONTENT_URI, valuesForInsert);
-	return 0;
+	return numOfInserted;
 	}
 
 	@Override

@@ -2,8 +2,6 @@ package rs.gopro.mobile_store.ws.model;
 import java.util.Date;
 
 import android.os.Parcel;
-import android.os.Parcelable.Creator;
-import rs.gopro.mobile_store.ws.model.RealizedVisitsToCustomersSyncObject;
 
 public class RealizedVisitsToCustomersSyncObjectIn extends RealizedVisitsToCustomersSyncObject {
 	public static String TAG = "RealizedVisitsToCustomersSyncObjectIn";

@@ -3,9 +3,8 @@ package rs.gopro.mobile_store.ws.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
+import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 import android.content.ContentValues;
 

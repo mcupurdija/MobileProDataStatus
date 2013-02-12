@@ -14,7 +14,6 @@ import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.os.Parcel;
-import android.os.Parcelable.Creator;
 
 public class ElectronicCardCustomerSyncObject extends SyncObject {
 

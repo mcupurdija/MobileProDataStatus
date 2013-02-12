@@ -3,7 +3,6 @@ package rs.gopro.mobile_store.ws.model;
 import java.util.Date;
 
 import android.os.Parcel;
-import android.os.Parcelable.Creator;
 
 public class RealizedVisitsToCustomersSyncObjectOut extends RealizedVisitsToCustomersSyncObject {
 
