@@ -57,4 +57,13 @@ public class WsDataFormatEnUsLatin {
 //			return String.valueOf(wsDouble);
 //		}
 	}
+	
+	public static Double parseForUIDouble(String uiDouble) {
+		try {
+			return decimalFormat.parse(uiDouble).doubleValue();
+		} catch (ParseException e) {
+			LogUtils.LOGE(TAG, "Ui double not in good fromat", e);
+			return null;
+		}
+	}
 }

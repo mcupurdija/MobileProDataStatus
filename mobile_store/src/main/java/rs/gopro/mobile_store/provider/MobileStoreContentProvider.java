@@ -663,6 +663,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder
 					.addTable(Tables.SALE_ORDER_LINES)
 					.where(SaleOrderLines._ID + "=?", salesOrderlineId);
+		case SALE_ORDER_LINES:
+			return builder.addTable(Tables.SALE_ORDER_LINES);
 		case SALE_ORDER_LINES_FROM_ORDER:
 			final String salesOrderId = SaleOrderLines.getSaleOrderLineId(uri);
 			return builder
@@ -739,7 +741,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case SALE_ORDER_EXPORT:
 			return builder.addTable(Tables.SALE_ORDERS_EXPORT)
 					.mapToTable(MobileStoreContract.SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDERS)
-					.mapToTable(MobileStoreContract.SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.Customers.CUSTOMER_NO, Tables.CUSTOMERS)
 					.mapToTable(MobileStoreContract.SaleOrders.LOCATION_CODE, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.SaleOrders.SHORTCUT_DIMENSION_1_CODE, Tables.SALE_ORDERS)
@@ -763,7 +765,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case SALE_ORDER_LINES_EXPORT:
 			return builder.addTable(Tables.SALE_ORDER_LINES_EXPORT)
 					.mapToTable(MobileStoreContract.SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDERS)
-					.mapToTable(MobileStoreContract.SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.SaleOrderLines.LINE_NO, Tables.SALE_ORDER_LINES)
 					.mapToTable(MobileStoreContract.Items.ITEM_NO, Tables.ITEMS)
 					.mapToTable(MobileStoreContract.SaleOrderLines.QUANTITY, Tables.SALE_ORDER_LINES)

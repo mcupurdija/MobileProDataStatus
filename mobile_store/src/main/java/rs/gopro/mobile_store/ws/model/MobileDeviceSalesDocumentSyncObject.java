@@ -1,5 +1,6 @@
 package rs.gopro.mobile_store.ws.model;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,6 @@ import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.Tables;
-import rs.gopro.mobile_store.provider.MobileStoreContract.AuditColumns;
 import rs.gopro.mobile_store.util.csv.CSVDomainWriter;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import android.content.ContentResolver;
@@ -130,7 +130,11 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		StringWriter stringWriter = new StringWriter();
 		CSVWriter writer = new CSVWriter(stringWriter, ';', '"');
 		writer.writeAll(header);
-		
+		try {
+			writer.close();
+		} catch (IOException e) {
+			writer = null;
+		}
 		return stringWriter.toString();
 	}
 	
@@ -141,6 +145,11 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		StringWriter stringWriter = new StringWriter();
 		CSVWriter writer = new CSVWriter(stringWriter, ';', '"');
 		writer.writeAll(lines);
+		try {
+			writer.close();
+		} catch (IOException e) {
+			writer = null;
+		}
 		return stringWriter.toString();
 	}
 
@@ -206,7 +215,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		String[] PROJECTION = {
                 //BaseColumns._ID,
                 MobileStoreContract.SaleOrders.DOCUMENT_TYPE,
-                MobileStoreContract.SaleOrders.SALES_ORDER_NO,
+                MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO,
                 MobileStoreContract.Customers.CUSTOMER_NO,
                 MobileStoreContract.SaleOrders.LOCATION_CODE,
                 MobileStoreContract.SaleOrders.SHORTCUT_DIMENSION_1_CODE,
@@ -254,7 +263,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		String[] PROJECTION = {
                 //BaseColumns._ID,
                 MobileStoreContract.SaleOrders.DOCUMENT_TYPE,
-                MobileStoreContract.SaleOrders.SALES_ORDER_NO,
+                MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO,
                 MobileStoreContract.SaleOrderLines.LINE_NO,
                 MobileStoreContract.Items.ITEM_NO,
                 MobileStoreContract.SaleOrderLines.QUANTITY,

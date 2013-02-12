@@ -1,6 +1,9 @@
 package rs.gopro.mobile_store.util;
 
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,6 +17,16 @@ import android.view.View;
 
 public class UIUtils {
 
+	public static String TAG = "UIUtils";
+	private static DecimalFormat decimalFormat = (DecimalFormat)NumberFormat.getInstance();
+	
+	static {
+		DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
+		formatSymbols.setDecimalSeparator(',');
+		formatSymbols.setGroupingSeparator('.');
+		decimalFormat.setDecimalFormatSymbols(formatSymbols);
+    }
+	
 	//@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public static void setActivatedCompat(View view, boolean activated) {
 		if (hasHoneycomb()) {
@@ -94,5 +107,23 @@ public class UIUtils {
 		if (date == null) return "";
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd. MM. yyyy HH:mm:ss");
 		return dateFormat.format(date);
+	}
+	
+	public static String formatDoubleForUI(Double uiDouble) {
+//		try {
+			return decimalFormat.format(uiDouble);
+//		} catch (ParseException e) {
+//			LogUtils.LOGE(TAG, "Ui double not in good fromat", e);
+//			return null;
+//		}
+	}
+	
+	public static Double getDoubleFromUI(String uiDouble) {
+		try {
+			return decimalFormat.parse(uiDouble).doubleValue();
+		} catch (ParseException e) {
+			LogUtils.LOGE(TAG, "Ui double not in good fromat", e);
+			return null;
+		}
 	}
 }

@@ -33,6 +33,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 	private String pMinimumDiscountPctAsTxt;
 	private String pMaximumDiscountPctAsTxt;
 	private String pDiscountPctAsTxt;
+	private String pSubstituteItemNoa46;
 	
 	public static final Creator<ItemQtySalesPriceAndDiscSyncObject> CREATOR = new Creator<ItemQtySalesPriceAndDiscSyncObject>() {
 
@@ -69,10 +70,11 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		setpMinimumDiscountPctAsTxt(parcel.readString());
 		setpMaximumDiscountPctAsTxt(parcel.readString());
 		setpDiscountPctAsTxt(parcel.readString());
+		setpSubstituteItemNoa46(parcel.readString());
 	}
 
 	public ItemQtySalesPriceAndDiscSyncObject(String pItemNoa46, String pLocationCode, Integer pCampaignStatus, String pCustomerNoa46, String pPotentialCustomerNoa46, Double pQuantityOnSalesLine, String pSalespersonCode,
-			Integer pDocumentType, Integer pAvailableToWholeShip, String pQuantityAsTxt, String pSalesPriceRSDAsTxt, String pSalesPriceEURAsTxt, String pMinimumDiscountPctAsTxt, String pMaximumDiscountPctAsTxt, String pDiscountPctAsTxt) {
+			Integer pDocumentType, Integer pAvailableToWholeShip, String pQuantityAsTxt, String pSalesPriceRSDAsTxt, String pSalesPriceEURAsTxt, String pMinimumDiscountPctAsTxt, String pMaximumDiscountPctAsTxt, String pDiscountPctAsTxt, String pSubstituteItemNoa46) {
 		super();
 		this.pItemNoa46 = pItemNoa46;
 		this.pLocationCode = pLocationCode;
@@ -89,6 +91,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		this.pMinimumDiscountPctAsTxt = pMinimumDiscountPctAsTxt;
 		this.pMaximumDiscountPctAsTxt = pMaximumDiscountPctAsTxt;
 		this.pDiscountPctAsTxt = pDiscountPctAsTxt;
+		this.pSubstituteItemNoa46 = pSubstituteItemNoa46;
 	}
 
 	@Override
@@ -114,6 +117,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		dest.writeString(getpMinimumDiscountPctAsTxt());
 		dest.writeString(getpMaximumDiscountPctAsTxt());
 		dest.writeString(getpDiscountPctAsTxt());
+		dest.writeString(getpSubstituteItemNoa46());
 	}
 
 	@Override
@@ -213,6 +217,13 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		discountPctAsTxtInfo.setValue(pDiscountPctAsTxt);
 		discountPctAsTxtInfo.setType(String.class);
 		properies.add(discountPctAsTxtInfo);
+		
+		PropertyInfo substituteItemNoa46 = new PropertyInfo();
+		substituteItemNoa46.setName("pSubstituteItemNoa46");
+		substituteItemNoa46.setValue(pSubstituteItemNoa46);
+		substituteItemNoa46.setType(String.class);
+		properies.add(substituteItemNoa46);
+		
 		return properies;
 	}
 
@@ -244,6 +255,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		this.pSalesPriceRSDAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pSalesPriceRSDAsTxt"));
 		this.pSalesPriceEURAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pSalesPriceEURAsTxt"));
 		this.pDiscountPctAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pDiscountPctAsTxt"));
+		this.pSubstituteItemNoa46 = soapResponse.getPropertyAsString("pSubstituteItemNoa46");
 	}
 
 	@Override
@@ -375,5 +387,12 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 	public void setpDiscountPctAsTxt(String pDiscountPctAsTxt) {
 		this.pDiscountPctAsTxt = pDiscountPctAsTxt;
 	}
+	
+	public String getpSubstituteItemNoa46() {
+		return pSubstituteItemNoa46;
+	}
 
+	public void setpSubstituteItemNoa46(String pSubstituteItemNoa46) {
+		this.pSubstituteItemNoa46 = pSubstituteItemNoa46;
+	}
 }

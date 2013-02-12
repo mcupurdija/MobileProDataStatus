@@ -179,6 +179,7 @@ public class MobileStoreContract {
 	}
 
 	public interface SaleOrdersColumns {
+		String SALES_ORDER_DEVICE_NO = "sales_order_device_no";
 		String SALES_ORDER_NO = "sales_order_no";
 		String DOCUMENT_TYPE = "document_type";
 		String CUSTOMER_ID = "customer_id";
@@ -682,7 +683,7 @@ public class MobileStoreContract {
 	public static class SaleOrderLines implements SaleOrderLinesColumns, BaseColumns, ItemsColumns, AuditColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDER_LINES).build();
 		/** Default "ORDER BY" clause. */
-		public static final String DEFAULT_SORT = "sale_order_lines." + AuditColumns.CREATED_DATE + " DESC";
+		public static final String DEFAULT_SORT = "sale_order_lines." + MobileStoreContract.SaleOrderLines.LINE_NO + " ASC";
 
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sale_order_lines";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sale_order_lines";
