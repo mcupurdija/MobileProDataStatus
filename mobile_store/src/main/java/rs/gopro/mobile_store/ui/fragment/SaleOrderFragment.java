@@ -9,6 +9,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 
 import rs.gopro.mobile_store.ui.SaleOrdersPreviewActivity;
 import rs.gopro.mobile_store.ui.widget.SimpleSelectionedListAdapter;
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
 import android.content.Context;
@@ -61,7 +62,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 				String[] queryStrings = constraint.toString().split(splitQuerySeparator);
 				Cursor cursor = null;
 				if (getActivity() != null) {
-					cursor = getActivity().getContentResolver().query(SaleOrders.buildCustomSearchUri(queryStrings[0], queryStrings[1]), SaleOrderQuery.PROJECTION, null, null, SaleOrders.DEFAULT_SORT);
+					cursor = getActivity().getContentResolver().query(SaleOrders.buildCustomSearchUri(queryStrings[0], queryStrings[1], ApplicationConstants.OrderType.SALE_ORDER.getType()), SaleOrderQuery.PROJECTION, null, null, SaleOrders.DEFAULT_SORT);
 				}
 				return cursor;
 			}
@@ -218,7 +219,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 		@Override
 		public void bindView(View view, Context context, final Cursor cursor) {
 			final Integer saleOrderId = cursor.getInt(SaleOrderQuery._ID);
-			final String saleOrderNo = cursor.getString(SaleOrderQuery.NO);
+			final String saleOrderNo = cursor.getString(SaleOrderQuery.DEVICE_NO);
 			final Integer totalAmount = cursor.getInt(SaleOrderQuery.TOTAL);
 			final long orderDate = UIUtils.getDateTime(cursor.getString(SaleOrderQuery.ORDER_DATE)).getTime();
 
@@ -255,10 +256,10 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 
 	private interface SaleOrderQuery {
 
-		String[] PROJECTION = { BaseColumns._ID, SaleOrders.SALES_ORDER_NO, SaleOrders.ORDER_DATE, SaleOrders.TOTAL };
+		String[] PROJECTION = { BaseColumns._ID, SaleOrders.SALES_ORDER_DEVICE_NO, SaleOrders.ORDER_DATE, SaleOrders.TOTAL };
 
 		int _ID = 0;
-		int NO = 1;
+		int DEVICE_NO = 1;
 		int ORDER_DATE = 2;
 		int TOTAL = 3;
 	}
