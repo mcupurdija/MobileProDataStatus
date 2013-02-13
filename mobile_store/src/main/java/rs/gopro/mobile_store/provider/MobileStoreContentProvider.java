@@ -76,6 +76,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int SALE_ORDERS_LIST = 143;
 	private static final int SALE_ORDER = 144;
 	private static final int SALE_ORDER_EXPORT = 145;
+	private static final int SENT_ORDER_CUSTOM_SEARCH = 146;
+	private static final int SENT_ORDER_BY_STATUS = 147;
 	
 	private static final int VISITS = 200;
 	private static final int VISIT_ID = 201;
@@ -176,6 +178,19 @@ public class MobileStoreContentProvider extends ContentProvider {
 				"sale_orders/#/*/*/custom_search", SALE_ORDER_CUSTOM_SEARCH);
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_orders_export", SALE_ORDER_EXPORT);
+		
+		
+		// custom_search
+		mobileStoreURIMatcher.addURI(authority, "sent_orders/*/*/custom_search",
+				SENT_ORDER_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "sent_orders/#/*/custom_search",
+				SENT_ORDER_BY_STATUS);
+		mobileStoreURIMatcher.addURI(authority,
+				"sent_orders/*/*/*/custom_search", SENT_ORDER_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority,
+				"sent_orders/#/*/*/custom_search", SENT_ORDER_CUSTOM_SEARCH);
+				
+		
 
 		
 		
@@ -673,10 +688,40 @@ public class MobileStoreContentProvider extends ContentProvider {
 			}
 			return builder
 					.addTable(Tables.SALE_ORDERS)
-					.where(SaleOrders.SALES_ORDER_NO + " like ? ",
+					.where(SaleOrders.SALES_ORDER_DEVICE_NO + " like ? ",
 							new String[] { "%" + saleCustomParam + "%" })
 					.where(SaleOrders.DOCUMENT_TYPE + "= ? ",new String[] { saleDocType })
 					.where(additionalCondition, new String []{});
+		case SENT_ORDER_BY_STATUS:
+			//String saleOrderDocType = SaleOrders.getSaleOrderDocType(uri);
+			String saleOrderDocType1 = SaleOrders.getCustomSearchFirstParamQuery(uri);
+			String noType1 = SaleOrders.getCustomSearchSecondParamQuery(uri);
+			OrderType orderType1 = ApplicationConstants.OrderType.find(noType1);
+			String condition1 = SaleOrders.SALES_ORDER_NO  + " is null";
+			if(OrderType.SENT_ORDER.equals(orderType1)){
+				condition1 = SaleOrders.SALES_ORDER_NO  + " is not null";
+			}
+			return builder.addTable(Tables.SALE_ORDERS)
+					.where(
+					SaleOrders.DOCUMENT_TYPE + "= ?",new String[] { saleOrderDocType1 })
+					.where(condition1, new String []{});
+		case SENT_ORDER_CUSTOM_SEARCH:
+			String saleCustomParam1 = SaleOrders
+					.getCustomSearchFirstParamQuery(uri);
+			String saleDocType1 = SaleOrders
+					.getCustomSearchSecondParamQuery(uri);
+			String saleOrderType1 = SaleOrders.getCustomSearchThirdParamQuery(uri);
+			OrderType orderTypeSale1 = ApplicationConstants.OrderType.find(saleOrderType1);
+			String additionalCondition1 = SaleOrders.SALES_ORDER_NO  + " is null";
+			if(OrderType.SENT_ORDER.equals(orderTypeSale1)){
+				additionalCondition1 = SaleOrders.SALES_ORDER_NO  + " is not null";
+			}
+			return builder
+					.addTable(Tables.SALE_ORDERS)
+					.where(SaleOrders.SALES_ORDER_NO + " like ? ",
+							new String[] { "%" + saleCustomParam1 + "%" })
+					.where(SaleOrders.DOCUMENT_TYPE + "= ? ",new String[] { saleDocType1 })
+					.where(additionalCondition1, new String []{});
 			
 		case SALE_ORDER_LINE:
 			final String salesOrderlineId = SaleOrderLines.getSaleOrderLineId(uri);

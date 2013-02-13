@@ -41,6 +41,7 @@ public class MobileStoreContract {
 	private static final String PATH_GENRIC = "generic";
 	private static final String PATH_ELECT_CARD_CUSTOMER = "electronic_card_customer";
 	private static final String PATH_CUSTOMER_TRADE_AGREEMENT = "customer_trade_agreement";
+	private static final String PATH_SENT_ORDERS = "sent_orders";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -631,6 +632,55 @@ public class MobileStoreContract {
 	public static class SaleOrders implements SaleOrdersColumns, BaseColumns, CustomersColumns, AuditColumns, SalesPersonsColumns {
 
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDERS).build();
+		/** Default "ORDER BY" clause. */
+		public static final String DEFAULT_SORT = "sale_orders." + SaleOrders.ORDER_DATE + " DESC";
+
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sale_orders";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sale_orders";
+
+		public static Uri buildSaleOrderUri(String saleOrderId) {
+			return CONTENT_URI.buildUpon().appendPath(saleOrderId).build();
+		}
+
+		public static Uri buildSaleOrdersListUri(String salesPersonId) {
+			return BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDERS_LIST).appendPath(salesPersonId).build();
+		}
+
+		public static Uri buildSaleOrderExport() {
+			return CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDERS_EXPORT).build();
+		}
+		
+		public static String getSalesPersonId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+
+		public static String getSaleOrderId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+
+		public static Uri buildCustomSearchUri(String text, String status, String type) {
+			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(type).appendPath(PATH_SALE_ORDER_SEARCH_CUSTOM).build();
+		}
+
+		public static String getCustomSearchFirstParamQuery(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+
+		public static String getCustomSearchSecondParamQuery(Uri uri) {
+			return uri.getPathSegments().get(2);
+		}
+		public static String getCustomSearchThirdParamQuery(Uri uri){
+			return uri.getPathSegments().get(3);
+		}
+
+		public static String getSaleOrderDocType(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+	}
+	
+	public static class SentOrders implements SaleOrdersColumns, BaseColumns, CustomersColumns, AuditColumns, SalesPersonsColumns {
+
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SENT_ORDERS).build();
 		/** Default "ORDER BY" clause. */
 		public static final String DEFAULT_SORT = "sale_orders." + SaleOrders.ORDER_DATE + " DESC";
 

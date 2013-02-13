@@ -6,6 +6,7 @@ import java.util.List;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SentOrders;
 import rs.gopro.mobile_store.ui.SaleOrdersPreviewActivity;
 import rs.gopro.mobile_store.ui.widget.SimpleSelectionedListAdapter;
 import rs.gopro.mobile_store.util.ApplicationConstants;
@@ -61,7 +62,7 @@ public class SentOrdersFragment extends ListFragment implements LoaderCallbacks<
 				String[] queryStrings = constraint.toString().split(splitQuerySeparator);
 				Cursor cursor = null;
 				if (getActivity() != null) {
-					cursor = getActivity().getContentResolver().query(SaleOrders.buildCustomSearchUri(queryStrings[0], queryStrings[1], ApplicationConstants.OrderType.SENT_ORDER.getType()), SaleOrderQuery.PROJECTION, null, null, SaleOrders.DEFAULT_SORT);
+					cursor = getActivity().getContentResolver().query(SentOrders.buildCustomSearchUri(queryStrings[0], queryStrings[1], ApplicationConstants.OrderType.SENT_ORDER.getType()), SaleOrderQuery.PROJECTION, null, null, SaleOrders.DEFAULT_SORT);
 				}
 				return cursor;
 			}

@@ -233,6 +233,10 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
             String salesOrderDate = cursor.getString(SaleOrdersQuery.ORDER_DATE);
             String salesOrderFormatDate = UIUtils.formatDate(UIUtils.getDateTime(salesOrderDate));
             String salesOrderNo = cursor.getString(SaleOrdersQuery.SALES_ORDER_NO);
+            //if sale order no is null use device no
+            if(salesOrderNo == null){
+            	salesOrderNo = cursor.getString(SaleOrdersQuery.SALES_ORDER_DEVICE_NO);
+            }
             String salesOrderCust = cursor.getString(SaleOrdersQuery.CUSTOMER_NO) + " " + cursor.getString(SaleOrdersQuery.CUSTOMER_NAME) + " " + cursor.getString(SaleOrdersQuery.CUSTOMER_NAME2);
             timeView.setText(salesOrderFormatDate);
             titleView.setText(salesOrderNo);
@@ -251,7 +255,8 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
                 MobileStoreContract.SaleOrders.CUSTOMER_NO,
                 MobileStoreContract.SaleOrders.NAME,
                 MobileStoreContract.SaleOrders.NAME_2,
-                MobileStoreContract.SaleOrders.ORDER_DATE
+                MobileStoreContract.SaleOrders.ORDER_DATE,
+                MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO
         };
 
         int _ID = 0;
@@ -262,6 +267,7 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
         int CUSTOMER_NAME = 5;
         int CUSTOMER_NAME2 = 6;
         int ORDER_DATE = 7;
+        int SALES_ORDER_DEVICE_NO = 8;
 	}
 
 

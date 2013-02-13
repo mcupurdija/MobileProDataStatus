@@ -219,7 +219,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 		@Override
 		public void bindView(View view, Context context, final Cursor cursor) {
 			final Integer saleOrderId = cursor.getInt(SaleOrderQuery._ID);
-			final String saleOrderNo = cursor.getString(SaleOrderQuery.NO);
+			final String saleOrderNo = cursor.getString(SaleOrderQuery.DEVICE_NO);
 			final Integer totalAmount = cursor.getInt(SaleOrderQuery.TOTAL);
 			final long orderDate = UIUtils.getDateTime(cursor.getString(SaleOrderQuery.ORDER_DATE)).getTime();
 
@@ -256,10 +256,10 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 
 	private interface SaleOrderQuery {
 
-		String[] PROJECTION = { BaseColumns._ID, SaleOrders.SALES_ORDER_NO, SaleOrders.ORDER_DATE, SaleOrders.TOTAL };
+		String[] PROJECTION = { BaseColumns._ID, SaleOrders.SALES_ORDER_DEVICE_NO, SaleOrders.ORDER_DATE, SaleOrders.TOTAL };
 
 		int _ID = 0;
-		int NO = 1;
+		int DEVICE_NO = 1;
 		int ORDER_DATE = 2;
 		int TOTAL = 3;
 	}
