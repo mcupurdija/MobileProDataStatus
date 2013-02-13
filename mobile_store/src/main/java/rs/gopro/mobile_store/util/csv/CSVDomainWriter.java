@@ -1,5 +1,6 @@
 package rs.gopro.mobile_store.util.csv;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,16 +20,23 @@ public class CSVDomainWriter {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static List<String[]> parseCursor(Cursor cursor) {
+	public static List<String[]> parseCursor(Cursor cursor, Type[] types) {
 		List<String[]> result = new ArrayList<String[]>();
 		
 		if (cursor.moveToFirst()) {
 			do {
 				List<String> lineResult = new ArrayList<String>();
 				for (int i=0;i<cursor.getColumnCount();i++) {
+					Type currentFiledType = types[i];
 					switch(cursor.getType(i)) {
 					case Cursor.FIELD_TYPE_NULL:
-						lineResult.add("");
+						if (currentFiledType.equals(Integer.class)) {
+							lineResult.add("0");
+						} else if (currentFiledType.equals(Double.class)) {
+							lineResult.add("0");
+						} else {
+							lineResult.add("");
+						}
 						break;
 					case Cursor.FIELD_TYPE_STRING:
 						lineResult.add(cursor.getString(i));

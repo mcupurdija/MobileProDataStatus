@@ -748,7 +748,6 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(MobileStoreContract.SaleOrders.EXTERNAL_DOCUMENT_NO, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.SaleOrders.QUOTE_NO, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.SalesPerson.SALE_PERSON_NO, Tables.SALES_PERSONS)
-					.mapToTable(MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE, Tables.SALE_ORDERS)
 					//.mapToTable(MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID, Tables.SALE_ORDERS)
 					//.mapToTable(MobileStoreContract.SaleOrders.SHIPP_TO_ADDRESS_ID, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.CustomerAddresses.ADDRESS_NO, "ca1", "sell_to_address_no")

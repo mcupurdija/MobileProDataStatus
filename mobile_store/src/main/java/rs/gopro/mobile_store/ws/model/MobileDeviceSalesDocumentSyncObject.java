@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.ws.model;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,7 +127,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	private String createHeader() {
 		// get header data
 		Cursor cursorHeader = context.getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderExport(), SalesOrderHeaderQuery.PROJECTION, Tables.SALE_ORDERS+"._ID=?", new String[] { String.valueOf(documentId) }, null);
-		List<String[]> header = CSVDomainWriter.parseCursor(cursorHeader);
+		List<String[]> header = CSVDomainWriter.parseCursor(cursorHeader, SalesOrderHeaderQuery.PROJECTION_TYPE);
 		StringWriter stringWriter = new StringWriter();
 		CSVWriter writer = new CSVWriter(stringWriter, ';', '"');
 		writer.writeAll(header);
@@ -141,7 +142,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	private String createLines() {
 		// get lines data
 		Cursor cursorLines = context.getContentResolver().query(MobileStoreContract.SaleOrderLines.buildSaleOrderLineExportUri(), SalesOrderLineQuery.PROJECTION, Tables.SALE_ORDER_LINES+"."+MobileStoreContract.SaleOrderLines.SALE_ORDER_ID+"=?", new String[] { String.valueOf(documentId) }, Tables.SALE_ORDER_LINES + "." + MobileStoreContract.SaleOrderLines.LINE_NO + " ASC");
-		List<String[]> lines = CSVDomainWriter.parseCursor(cursorLines);
+		List<String[]> lines = CSVDomainWriter.parseCursor(cursorLines, SalesOrderLineQuery.PROJECTION_TYPE);
 		StringWriter stringWriter = new StringWriter();
 		CSVWriter writer = new CSVWriter(stringWriter, ';', '"');
 		writer.writeAll(lines);
@@ -222,7 +223,6 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
                 MobileStoreContract.SaleOrders.EXTERNAL_DOCUMENT_NO,
                 MobileStoreContract.SaleOrders.QUOTE_NO,
                 MobileStoreContract.SalesPerson.SALE_PERSON_NO,
-                MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE,
                 "sell_to_address_no",
                 "shipp_to_address_no",
                 MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST,
@@ -235,6 +235,32 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
                 MobileStoreContract.SaleOrders.QUOTE_REALIZED_STATUS,
                 MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS
         };
+		
+		Type[] PROJECTION_TYPE = {
+				Integer.class,
+				String.class,
+				String.class,
+				String.class,
+				String.class,
+				String.class,
+				String.class,
+				String.class,
+				
+				String.class,
+				String.class,
+				
+				String.class,
+				String.class,
+				String.class,
+				
+				Integer.class,
+				Integer.class,
+				
+				Integer.class,
+				Integer.class,
+				Integer.class,
+				Integer.class
+		};
 
 		int _ID = 0;
 		int DOCUMENT_TYPE = 1;
@@ -275,6 +301,20 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
                 MobileStoreContract.SaleOrderLines.AVAILABLE_TO_WHOLE_SHIPMENT
         };
 
+		Type[] PROJECTION_TYPE = {
+				Integer.class,
+				String.class,
+				Integer.class,
+				String.class,
+				Double.class,
+				Double.class,
+				Double.class,
+				Integer.class,
+				Integer.class,
+				Integer.class,
+				Integer.class
+		};
+		
 		//int _ID = 0;
 		//int DOCUMENT_TYPE = 1;
 		int SALES_ORDER_NO = 0;

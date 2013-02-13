@@ -1,9 +1,13 @@
 package rs.gopro.mobile_store.ui;
 
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
+
+import org.kxml2.kdom.Document;
+
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -202,7 +206,25 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
             final TextView subtitleView = (TextView) view.findViewById(R.id.block_subtitle);
             String salesOrderDate = cursor.getString(SaleOrderLinesQuery.LINE_NO);
             String salesOrderNo = cursor.getString(SaleOrderLinesQuery.ITEM_NO) + " - " + cursor.getString(SaleOrderLinesQuery.DESCRIPTION);
-            String salesOrderCust = "Količina: "+String.valueOf(cursor.getDouble(SaleOrderLinesQuery.QUANTITY)) + "  -  Cena:" + String.valueOf(cursor.getDouble(SaleOrderLinesQuery.PRICE_EUR)) + "  -  Popust:" + String.valueOf(cursor.getDouble(SaleOrderLinesQuery.REAL_DISCOUNT));
+            
+            double quantity = 0;
+            if (!cursor.isNull(SaleOrderLinesQuery.QUANTITY)) {
+            	quantity = cursor.getDouble(SaleOrderLinesQuery.QUANTITY);
+            }
+            double price = 0;
+            if (!cursor.isNull(SaleOrderLinesQuery.PRICE)) {
+            	price = cursor.getDouble(SaleOrderLinesQuery.PRICE);
+            }
+            double discount = 0;
+            if (!cursor.isNull(SaleOrderLinesQuery.REAL_DISCOUNT)) {
+            	discount = cursor.getDouble(SaleOrderLinesQuery.REAL_DISCOUNT);
+            }
+            
+            double discounted_price = price - (price*(discount/100));
+            
+            double ammount = quantity*discounted_price;
+            
+            String salesOrderCust = "Količina: "+UIUtils.formatDoubleForUI(quantity) + "  -  Cena:" + UIUtils.formatDoubleForUI(price) + "  -  Popust:" + UIUtils.formatDoubleForUI(discount) + "%  -  Jedinicna cena:" + UIUtils.formatDoubleForUI(discounted_price) + "  -  Iznos:" + UIUtils.formatDoubleForUI(ammount);
             timeView.setText(salesOrderDate);
             titleView.setText(salesOrderNo);
             subtitleView.setText(salesOrderCust);
@@ -221,7 +243,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
                 MobileStoreContract.SaleOrderLines.DESCRIPTION2,
                 MobileStoreContract.SaleOrderLines.LINE_NO,
                 MobileStoreContract.SaleOrderLines.QUANTITY,
-                MobileStoreContract.SaleOrderLines.PRICE_EUR,
+                MobileStoreContract.SaleOrderLines.PRICE,
                 MobileStoreContract.SaleOrderLines.REAL_DISCOUNT
         };
 
@@ -232,7 +254,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
         //int DESCRIPTION2 = 4;
         int LINE_NO = 5;
         int QUANTITY = 6;
-        int PRICE_EUR = 7;
+        int PRICE = 7;
         int REAL_DISCOUNT = 8;
 	}
 
