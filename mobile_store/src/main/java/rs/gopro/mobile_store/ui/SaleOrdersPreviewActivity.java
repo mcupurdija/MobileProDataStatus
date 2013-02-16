@@ -198,6 +198,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			}
 			Intent intent = new Intent(this, NavisionSyncService.class);
 			MobileDeviceSalesDocumentSyncObject mobileDeviceSalesDocumentSyncObject = new MobileDeviceSalesDocumentSyncObject(Integer.valueOf(saleOrderId));
+			//mobileDeviceSalesDocumentSyncObject.setpDocumentNote()
 			intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, mobileDeviceSalesDocumentSyncObject);
 			startService(intent);
 			return true;

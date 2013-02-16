@@ -929,6 +929,16 @@ public class MobileStoreContentProvider extends ContentProvider {
 			selectionParam = new String[]{Invoices.INVOICE_NO};
 			selectionPhrase = Invoices.INVOICE_NO+ "=?";
 			break;
+		case SALE_ORDERS:
+			tableName = Tables.SALE_ORDERS;
+			selectionParam = new String[]{SaleOrders.SALES_ORDER_DEVICE_NO};
+			selectionPhrase = SaleOrders.SALES_ORDER_DEVICE_NO+ "=?";
+			break;
+		case SALE_ORDER_LINES:
+			tableName = Tables.SALE_ORDER_LINES;
+			selectionParam = new String[]{SaleOrderLines.SALE_ORDER_ID, SaleOrderLines.LINE_NO};
+			selectionPhrase =  SaleOrderLines.SALE_ORDER_ID + "=? AND " + SaleOrderLines.LINE_NO + "=?";
+			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}

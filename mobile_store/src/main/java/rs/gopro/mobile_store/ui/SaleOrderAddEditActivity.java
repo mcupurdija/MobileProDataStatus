@@ -176,10 +176,14 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private EditText documentNote;
     private EditText headquartersNote;
     
+    ArrayAdapter<CharSequence> orderConditionStatusAdapter;
     private Spinner orderConditionStatus;
-    private Spinner financialControlStatus;
-    private Spinner orderShipmentStatus;
-    private Spinner orderValueStatus;
+    private String[] financialControlStatusOptions;
+    private TextView financialControlStatus;
+    private String[] orderShipmentStatusOptions;
+    private TextView orderShipmentStatus;
+    private String[] orderValueStatusOptions;
+    private TextView orderValueStatus;
 
     private ContentValues initialLoadedContentValues;
     private boolean shouldLoadInitialValues = false;
@@ -373,6 +377,22 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	    
 	    hideDiscount = (CheckBox) findViewById(R.id.edit_sale_order_hide_discount_check_box);
 	    showDeclaration = (CheckBox) findViewById(R.id.edit_sale_order_show_declaration_check_box);
+	    
+	    documentNote = (EditText) findViewById(R.id.edit_sale_order_document_note_value);
+	    headquartersNote = (EditText) findViewById(R.id.edit_sale_order_headquarters_note_value);
+	    
+	    orderConditionStatusAdapter = ArrayAdapter.createFromResource(this, R.array.order_condition_status_array, android.R.layout.simple_spinner_item);
+	    orderConditionStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    orderConditionStatus = (Spinner) findViewById(R.id.edit_sale_order_order_condition_status_spinner);
+	    orderConditionStatus.setAdapter(orderConditionStatusAdapter);
+		
+		financialControlStatusOptions = getResources().getStringArray(R.array.financial_control_status_array);
+		orderShipmentStatusOptions = getResources().getStringArray(R.array.order_status_for_shipment_array);
+		orderValueStatusOptions = getResources().getStringArray(R.array.order_value_status_array);
+		
+		financialControlStatus = (TextView) findViewById(R.id.edit_sale_order_financial_control_status_text);
+		orderShipmentStatus = (TextView) findViewById(R.id.edit_sale_order_order_status_for_shipment_text);
+		orderValueStatus = (TextView) findViewById(R.id.edit_sale_order_order_value_status_text);
 	}
 
 	private void loadData(Cursor data, String action) {
@@ -446,6 +466,44 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			show_declaration = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.FURTHER_SALE));
 		}
 		showDeclaration.setChecked(show_declaration == 1 ? true : false);
+		
+		String document_note = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.NOTE1));
+		String headquarters_note = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.NOTE2));
+		
+		documentNote.setText(document_note);
+		headquartersNote.setText(headquarters_note);
+		
+		int order_condition_status = -1;
+		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS))) {
+			order_condition_status = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS));
+			orderConditionStatus.setSelection(order_condition_status);
+		} else {
+			orderConditionStatus.setSelection(0);
+		}
+		
+		int financial_control_status = -1;
+		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.FIN_CONTROL_STATUS))) {
+			financial_control_status = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.FIN_CONTROL_STATUS));
+			financialControlStatus.setText(financialControlStatusOptions[financial_control_status]);
+		} else {
+			financialControlStatus.setText("-");
+		}
+		
+		int order_status_for_shipment = -1;
+		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.ORDER_STATUS_FOR_SHIPMENT))) {
+			order_status_for_shipment = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.ORDER_STATUS_FOR_SHIPMENT));
+			orderShipmentStatus.setText(orderShipmentStatusOptions[order_status_for_shipment]);
+		} else {
+			orderShipmentStatus.setText("-");
+		}
+		
+		int order_value_status = -1;
+		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.ORDER_VALUE_STATUS))) {
+			order_value_status = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.ORDER_VALUE_STATUS));
+			orderValueStatus.setText(orderValueStatusOptions[order_value_status]);
+		} else {
+			orderValueStatus.setText("-");
+		}
 		
 		// globals because in init customer it will load combo box
 		shippingAddressId = shipp_to_address_id;

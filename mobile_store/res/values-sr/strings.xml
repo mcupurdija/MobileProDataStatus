@@ -264,4 +264,16 @@
 	<string name = "cus_trade_agreement_starting_date_label">Pocetni datum</string>
 	<string name = "cus_trade_agreement_ending_date_label">Krajnji datum</string>
 	<string name = "cus_trade_agreement_actual_discount_label">Popust (%)</string>
+	
+	<string name="document_note">Poruka na dokumentu</string>
+	<string name="headquarters_note">Poruka za centralu</string>
+	
+	<string name="order_condition_status">Status uslova porudžbine</string>
+	<string name="financial_control_status">Finan. kontrolni status</string>
+	<string name="order_status_for_shipment">Status porudžbine za isporuku</string>
+	<string name="order_value_status">Vrednost porudžbine status</string>
+	
+	<string name="available_to_whole_ship">Dostupno za isporuku u celosti</string>
+	<string name="verify_status">Status verifikacije</string>
+	<string name="price_and_discount_are_correct">Cena i Popust su u skladu sa poslovnom politikom</string>
 </resources>

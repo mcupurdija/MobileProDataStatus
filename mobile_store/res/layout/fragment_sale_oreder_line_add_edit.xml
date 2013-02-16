@@ -17,47 +17,6 @@
             android:layout_height="wrap_content"
             android:text="@string/header_label" />
 
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dip"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/so_line_header_document_no_label"
-                style="@style/AddEdit_Label"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="16dip"
-                android:layout_marginRight="16dip"
-                android:layout_weight="3"
-                android:gravity="center_vertical" />
-
-            <TextView
-                android:id="@+id/so_line_header_document_type_label"
-                style="@style/AddEdit_Label"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="16dip"
-                android:layout_marginRight="16dip"
-                android:layout_weight="3"
-                android:gravity="center_vertical" />
-
-            <TextView
-                android:id="@+id/so_line_header_document_customer_label"
-                style="@style/AddEdit_Label"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="16dip"
-                android:layout_marginRight="16dip"
-                android:layout_weight="3"
-                android:gravity="center_vertical" />
-        </LinearLayout>
-
         <TextView
             android:id="@+id/so_line_item_no_label"
             style="@style/AddEdit_Label"
@@ -302,6 +261,82 @@
                     android:layout_marginRight="16dip" />
             </LinearLayout>
         </LinearLayout>
+        
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/so_line_item_available_to_whole_ship_label"
+                    style="@style/AddEdit_Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/available_to_whole_ship" />
+
+                <Spinner
+                    android:id="@+id/so_line_item_available_to_whole_ship_spinner"
+                    style="EditEvent_Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dip"
+                    android:layout_marginRight="16dip" />
+            </LinearLayout>
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/so_line_verify_status_label"
+                    style="@style/AddEdit_Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/verify_status" />
+
+                <TextView
+                    android:id="@+id/so_line_verify_status_value"
+                    style="@style/AddEdit_Text_Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/so_line_price_and_discount_are_correct_label"
+                    style="@style/AddEdit_Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/price_and_discount_are_correct" />
+
+                <TextView
+                    android:id="@+id/so_line_price_and_discount_are_correct_value"
+                    style="@style/AddEdit_Text_Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+        
         <Button
              android:id="@+id/so_line_save_button"
              android:layout_width="wrap_content"

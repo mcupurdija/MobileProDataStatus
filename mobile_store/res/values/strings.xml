@@ -264,4 +264,17 @@
 	<string name = "cus_trade_agreement_starting_date_label">Starting date</string>
 	<string name = "cus_trade_agreement_ending_date_label">Ending date</string>
 	<string name = "cus_trade_agreement_actual_discount_label">Actual discount (%)</string>
+	
+	<string name="document_note">Document Note</string>
+	<string name="headquarters_note">Headquarters Note</string>
+	
+	<string name="order_condition_status">Order Condition Status</string>
+	<string name="financial_control_status">Financial Control Status</string>
+	<string name="order_status_for_shipment">Order Status For Shipment</string>
+	<string name="order_value_status">Order Value Status</string>
+	
+	<string name="available_to_whole_ship">Available To Whole Shippment</string>
+	<string name="verify_status">Verify Status</string>
+	<string name="price_and_discount_are_correct">Price And Discountc Are Correct</string>
+	
 </resources>

@@ -180,7 +180,7 @@
                 android:text="@string/visit_result_title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/visit_result_input"
                 android:hint="@string/visit_result_hint"
                 android:textAppearance="?android:attr/textAppearanceMedium" />

@@ -136,4 +136,66 @@
         <item>Cena</item>
         <item>Kvalitet</item>
     </string-array>
+    <string-array name="visit_result_type_array">
+        <item>P</item>
+        <item>+</item>
+        <item>-</item>
+        <item>O</item>
+        <item>R</item>
+        <item>K</item>
+    </string-array>
+    <string-array name="order_condition_status_array">
+        <item>Ok</item>
+		<item>Ceka avans</item>
+		<item>Koristi kredit komercijaliste</item>
+		<item>Koristi kredit menadžera</item>
+		<item>Zahtev za kredit menadžera</item>
+		<item>Menadžer odbio</item>
+		<item>Prekoracen kreditni limit zaposlenog</item>
+    </string-array>
+    <string-array name="financial_control_status_array">
+        <item>Ok</item>
+		<item>Prekoracen kreditni limit</item>
+		<item>Prekoracena valuta</item>
+		<item>Prekoracen kreditni limit i valuta</item>
+    </string-array>
+    <string-array name="order_status_for_shipment_array">
+        <item>Porudžbina u pripremi</item>
+		<item>Finans. zabrana</item>
+		<item>Redovi na zabrani</item>
+		<item>Zabrana zbog finans. i redova</item>
+		<item>Za isporuku</item>
+		<item>Verifikovano</item>
+		<item>Ceka avans</item>
+    </string-array>
+    <string-array name="order_value_status_array">
+		<item>Ok</item>
+		<item>Nedovoljna</item>
+		<item>Dovoljna</item>
+		<item>Dodati transp.i troškovi</item>
+		<item>Odobrena mala vrednost</item>
+		<item>Neodobrena mala vrednost</item>
+    </string-array>
+    <string-array name="available_to_whole_ship_array">
+        <item>-</item>
+		<item>Ne</item>
+		<item>Odobreno</item>
+		<item>Traženo u celosti</item>
+		<item>Neodobreno</item>
+    </string-array>
+    <string-array name="verify_status_array">
+        <item>-</item>
+		<item>Min. jedin. količina</item>
+		<item>Min. vrednost linije za NSTD/SPEC</item>
+		<item>Zabranjeni NSTD/SPEC</item>
+		<item>Artikal je DISC</item>
+		<item>Odobreno</item>
+    </string-array>
+    <string-array name="price_and_discount_are_correct_array">
+        <item>-</item>
+		<item>Ne</item>
+		<item>Nema OverStock/Akcije</item>
+		<item>Odobreno</item>
+		<item>Odbijeno</item>
+    </string-array>
 </resources>

@@ -18,7 +18,7 @@ public class WsDataFormatEnUsLatin {
 	private static DecimalFormat decimalWSFormat = (DecimalFormat)NumberFormat.getInstance(Locale.US);
 	private static DecimalFormat decimalFormat = (DecimalFormat)NumberFormat.getInstance();
 	@SuppressLint("SimpleDateFormat")
-	private static SimpleDateFormat dateWsFormat = new SimpleDateFormat("dd/MM/yy");
+	private static SimpleDateFormat dateWsFormat = new SimpleDateFormat("dd.MM.yy");
 	private static java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance();
 	
 	static {
@@ -26,6 +26,7 @@ public class WsDataFormatEnUsLatin {
 		formatSymbols.setDecimalSeparator(',');
 		formatSymbols.setGroupingSeparator('.');
 		decimalFormat.setDecimalFormatSymbols(formatSymbols);
+		decimalWSFormat.setDecimalFormatSymbols(formatSymbols);
     }
 	
 	public WsDataFormatEnUsLatin() {
@@ -61,6 +62,15 @@ public class WsDataFormatEnUsLatin {
 	public static Double parseForUIDouble(String uiDouble) {
 		try {
 			return decimalFormat.parse(uiDouble).doubleValue();
+		} catch (ParseException e) {
+			LogUtils.LOGE(TAG, "Ui double not in good fromat", e);
+			return null;
+		}
+	}
+	
+	public static Double toDoubleFromWs(String wsDouble) {
+		try {
+			return decimalWSFormat.parse(wsDouble).doubleValue();
 		} catch (ParseException e) {
 			LogUtils.LOGE(TAG, "Ui double not in good fromat", e);
 			return null;

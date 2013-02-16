@@ -604,6 +604,188 @@
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
+        
+        <TableRow
+            android:id="@+id/edit_sale_order_headquarters_note_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/headquarters_note" />
+
+            <EditText
+                android:id="@+id/edit_sale_order_headquarters_note_value"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:maxLines="10"
+                android:minLines="6"
+                android:singleLine="false"
+    			android:lines="8"
+    			android:scrollbars="vertical" />
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/edit_sale_order_document_note_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/document_note" />
+
+            <EditText
+                android:id="@+id/edit_sale_order_document_note_value"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:maxLines="10"
+                android:minLines="6"
+                android:singleLine="false"
+    			android:lines="8"
+    			android:scrollbars="vertical" />
+        </TableRow>
+        
+        <!-- Status line of -->
+
+        <TableRow
+            android:id="@+id/edit_sale_order_status_line_group"
+            android:layout_marginBottom="15dp"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <LinearLayout
+                android:layout_span="2"
+                android:animateLayoutChanges="false"
+                android:baselineAligned="false"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:animateLayoutChanges="false"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_order_condition_status_label"
+                        style="@style/AddEdit_Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical"
+                        android:text="@string/order_condition_status" />
+
+                    <Spinner
+                        android:id="@+id/edit_sale_order_order_condition_status_spinner"
+                        style="EditEvent_Spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:animateLayoutChanges="false"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_financial_control_status_label"
+                        style="@style/AddEdit_Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical"
+                        android:text="@string/financial_control_status" />
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_financial_control_status_text"
+                        style="@style/AddEdit_Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:animateLayoutChanges="false"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_order_status_for_shipment_layout"
+                        style="@style/AddEdit_Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical"
+                        android:text="@string/order_status_for_shipment" />
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_order_status_for_shipment_text"
+                        style="@style/AddEdit_Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:animateLayoutChanges="false"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_order_value_status_label"
+                        style="@style/AddEdit_Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical"
+                        android:text="@string/order_value_status" />
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_order_value_status_text"
+                        style="@style/AddEdit_Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+            </LinearLayout>
+        </TableRow>
+        
     </TableLayout>
 
 </ScrollView>

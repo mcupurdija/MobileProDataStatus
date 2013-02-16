@@ -1,6 +1,7 @@
 package rs.gopro.mobile_store.ws.model;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -12,9 +13,11 @@ import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.csv.CSVDomainWriter;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import au.com.bytecode.opencsv.CSVWriter;
@@ -174,9 +177,19 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver,
 			SoapObject soapResponse) throws CSVParseException {
-		String headerResp = soapResponse.getPropertyAsString("pCSVStringHeader");
-		String linesResp = soapResponse.getPropertyAsString("pCSVStringLines");
-		return 0;
+//		String headerResp = soapResponse.getPropertyAsString("pCSVStringHeader");
+//		String linesResp = soapResponse.getPropertyAsString("pCSVStringLines");
+		
+		List<MobileDeviceSalesDocumentHeaderDomain> parsedSalesHeader = CSVDomainReader.parse(new StringReader(soapResponse.getPropertyAsString("pCSVStringHeader")), MobileDeviceSalesDocumentHeaderDomain.class);
+		ContentValues[] valuesForInsertHeader = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedSalesHeader);
+		
+		List<MobileDeviceSalesDocumentLinesDomain> parsedSalesLines = CSVDomainReader.parse(new StringReader(soapResponse.getPropertyAsString("pCSVStringLines")), MobileDeviceSalesDocumentLinesDomain.class);
+		ContentValues[] valuesForInsertLines = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedSalesLines);
+		
+		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.SaleOrders.CONTENT_URI, valuesForInsertHeader);
+		numOfInserted = contentResolver.bulkInsert(MobileStoreContract.SaleOrderLines.CONTENT_URI, valuesForInsertLines);
+		
+		return numOfInserted;
 	}
 
 	public String getpCSVStringHeader() {

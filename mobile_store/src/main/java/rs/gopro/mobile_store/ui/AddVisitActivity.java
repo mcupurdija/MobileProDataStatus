@@ -8,6 +8,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.util.LogUtils;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
@@ -30,10 +31,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
+import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TimePicker;
 
@@ -55,7 +58,8 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 	EditText odometerEditText;
 	EditText departureTimeEditText;
 	EditText arrivalTimeEditText;
-	EditText visitResultEditText;
+	Spinner visitResultEditText;
+	ArrayAdapter<CharSequence> visitResultAdapter;
 	EditText noteEditText;
 
 //	OnDateSetListener depaertureDateSetListener;
@@ -87,7 +91,10 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		odometerEditText = (EditText) findViewById(R.id.odometer_input);
 		departureTimeEditText = (EditText) findViewById(R.id.departure_time_input);
 		arrivalTimeEditText = (EditText) findViewById(R.id.arrival_time_input);
-		visitResultEditText = (EditText) findViewById(R.id.visit_result_input);
+		visitResultAdapter = ArrayAdapter.createFromResource(this, R.array.visit_result_type_array, android.R.layout.simple_spinner_item);
+		visitResultAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		visitResultEditText = (Spinner) findViewById(R.id.visit_result_input);
+		visitResultEditText.setAdapter(visitResultAdapter);
 		noteEditText = (EditText) findViewById(R.id.note_input);
 
 		// mode new
@@ -242,7 +249,15 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		if (selectedVisitId != null) {
 			odometerEditText.setText(data.getString(VisitsQuery.ODOMETER));
 			departureTimeEditText.setText(DateUtils.formatDbTimeForPresentation(data.getString(VisitsQuery.DEPARTURE_TIME)));
-			visitResultEditText.setText(data.getString(VisitsQuery.VISIT_RESULT));
+			String visit_result = data.getString(VisitsQuery.VISIT_RESULT);
+			if (visit_result != null) {
+				int spinnerPosition = visitResultAdapter.getPosition(visit_result);
+				if (spinnerPosition != -1) {
+					visitResultEditText.setSelection(spinnerPosition);
+				} else {
+					LogUtils.LOGE("AddVisitActivity", "No position for value:"+visit_result);
+				}
+			}
 			noteEditText.setText(data.getString(VisitsQuery.NOTE)==null ? "":data.getString(VisitsQuery.NOTE));
 		}
 
@@ -342,7 +357,7 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 			contentValues.put(Visits.ODOMETER, odometerEditText.getText().toString());
 			contentValues.put(Visits.DEPARTURE_TIME, DateUtils.formatPickerTimeInputForDb(departureTimeEditText.getText().toString()));
 			contentValues.put(Visits.ARRIVAL_TIME, DateUtils.formatPickerTimeInputForDb(arrivalTimeEditText.getText().toString()));
-			contentValues.put(Visits.VISIT_RESULT, visitResultEditText.getText().toString());
+			contentValues.put(Visits.VISIT_RESULT, visitResultEditText.getSelectedItem().toString());
 			contentValues.put(Visits.NOTE, noteEditText.getText().toString());
 		}
 		String currentVisitId = null;

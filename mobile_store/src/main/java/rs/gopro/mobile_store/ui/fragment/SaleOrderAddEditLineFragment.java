@@ -75,9 +75,9 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	
 	private AutoCompleteTextView mItemAutocomplete;
 	
-	private TextView mDocumentNo;
-	private TextView mDocumentType;
-	private TextView mCustomer;
+//	private TextView mDocumentNo;
+//	private TextView mDocumentType;
+//	private TextView mCustomer;
 	
 	private EditText mQuantity;
 	private EditText mQuantityAvailable;
@@ -96,6 +96,13 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	
 	private Button loadItemData;
 	private Button saveData;
+	
+	ArrayAdapter<CharSequence> availableToWholeShipAdapter;
+    private Spinner availableToWholeShipStatus;
+    private String[] verifyStatusOptions;
+    private TextView verifyStatus;
+    private String[] priceAndDiscountAreCorrectStatusOptions;
+    private TextView priceAndDiscountAreCorrectStatus;
 	
 	private Map<Integer, Boolean> loaderState = new HashMap<Integer, Boolean>();
 	
@@ -182,9 +189,9 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			}
 		});
         
-        mCustomer = (TextView) rootView.findViewById(R.id.so_line_header_document_customer_label);
-        mDocumentNo = (TextView) rootView.findViewById(R.id.so_line_header_document_no_label);
-        mDocumentType = (TextView) rootView.findViewById(R.id.so_line_header_document_type_label);
+//        mCustomer = (TextView) rootView.findViewById(R.id.so_line_header_document_customer_label);
+//        mDocumentNo = (TextView) rootView.findViewById(R.id.so_line_header_document_no_label);
+//        mDocumentType = (TextView) rootView.findViewById(R.id.so_line_header_document_type_label);
         
         mQuantity = (EditText) rootView.findViewById(R.id.so_line_item_quantity_value);
         mQuantityAvailable = (EditText) rootView.findViewById(R.id.so_line_item_max_quantity_value);
@@ -262,6 +269,18 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 				
 			}
 		});
+        
+        availableToWholeShipAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.available_to_whole_ship_array, android.R.layout.simple_spinner_item);
+        availableToWholeShipAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        availableToWholeShipStatus = (Spinner) rootView.findViewById(R.id.so_line_item_available_to_whole_ship_spinner);
+        availableToWholeShipStatus.setAdapter(availableToWholeShipAdapter);
+        
+        verifyStatusOptions = getResources().getStringArray(R.array.verify_status_array);
+        priceAndDiscountAreCorrectStatusOptions = getResources().getStringArray(R.array.price_and_discount_are_correct_array);
+		
+		verifyStatus = (TextView) rootView.findViewById(R.id.so_line_verify_status_value);
+		priceAndDiscountAreCorrectStatus = (TextView) rootView.findViewById(R.id.so_line_price_and_discount_are_correct_value);
+        
         saveData = (Button)rootView.findViewById(R.id.so_line_save_button);
         saveData.setOnClickListener(new OnClickListener() {
 			
@@ -575,9 +594,9 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         	documentId = cursor.getInt(SaleOrderLinesQuery.SALE_ORDER_ID);
         }
         
-        mDocumentNo.setText(documentNo);
-        mDocumentType.setText(String.valueOf(documentType));
-        mCustomer.setText(customerNo);
+//        mDocumentNo.setText(documentNo);
+//        mDocumentType.setText(String.valueOf(documentType));
+//        mCustomer.setText(customerNo);
         
         int item_id = -1;
         if (!cursor.isNull(SaleOrderLinesQuery.ITEM_ID)) {
@@ -659,6 +678,30 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		if (!cursor.isNull(SaleOrderLinesQuery.LINE_CAMPAIGN_STATUS)) {
 			capaign_status = cursor.getInt(SaleOrderLinesQuery.LINE_CAMPAIGN_STATUS);
 			mCampaignStatus.setSelection(capaign_status);
+		}
+		
+		int available_to_whole_ship = -1;
+		if (!cursor.isNull(SaleOrderLinesQuery.AVAILABLE_TO_WHOLE_SHIPMENT)) {
+			available_to_whole_ship = cursor.getInt(SaleOrderLinesQuery.AVAILABLE_TO_WHOLE_SHIPMENT);
+			availableToWholeShipStatus.setSelection(available_to_whole_ship);
+		} else {
+			availableToWholeShipStatus.setSelection(0);
+		}
+		
+		int verify_status = -1;
+		if (!cursor.isNull(cursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrderLines.VERIFY_STATUS))) {
+			verify_status = cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrderLines.VERIFY_STATUS));
+			verifyStatus.setText(verifyStatusOptions[verify_status]);
+		} else {
+			verifyStatus.setText("-");
+		}
+		
+		int price_and_discount_are_correct = -1;
+		if (!cursor.isNull(cursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrderLines.PRICE_DISCOUNT_STATUS))) {
+			price_and_discount_are_correct = cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrderLines.PRICE_DISCOUNT_STATUS));
+			priceAndDiscountAreCorrectStatus.setText(priceAndDiscountAreCorrectStatusOptions[price_and_discount_are_correct]);
+		} else {
+			priceAndDiscountAreCorrectStatus.setText("-");
 		}
 		
 		mSelectedSaleOrderLineId = cursor.getInt(SaleOrderLinesQuery._ID);

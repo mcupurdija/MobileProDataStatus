@@ -135,4 +135,64 @@
         <item>Price</item>
         <item>Quality</item>
     </string-array>
+    <string-array name="visit_result_type_array">
+        <item>P start of day</item>
+        <item>+ with closure</item>
+        <item>- no closure</item>
+        <item>O other</item>
+        <item>R end of day</item>
+        <item>K return to home</item>
+    </string-array>
+    <string-array name="order_condition_status_array">
+        <item>Ok</item>
+		<item>Wait Prepayment</item>
+		<item>Use SalesPerosne Credit</item>
+		<item>Use Manager Credit</item>
+		<item>Request for Mng. Credit</item>
+		<item>Refused Mng. Credit</item>
+		<item>Exceeded Empl. CreditLimit</item>
+    </string-array>
+    <string-array name="financial_control_status_array">
+        <item>Ok</item>
+		<item>Over Credit Limit</item>
+		<item>Over Due Date</item>
+		<item>Over Due and Credit</item>
+    </string-array>
+    <string-array name="order_status_for_shipment_array">
+        <item>Order in preparation</item>
+		<item>Finance Forbbiden</item>
+		<item>Lines Forbbiden</item>
+		<item>Finance and Lines Forbbiden</item>
+		<item>For Ship,Verification is OK</item>
+		<item>Wait Prepayment</item>
+    </string-array>
+    <string-array name="order_value_status_array">
+        <item>Empty</item>
+		<item>Unsufficient</item>
+		<item>Sufficient</item>
+		<item>Added Transport Cost</item>
+		<item>Approved small value</item>
+		<item>Refused small value</item>
+    </string-array>
+    <string-array name="available_to_whole_ship_array">
+        <item>Empty</item>
+		<item>No</item>
+		<item>Request in Whole</item>
+		<item>Approved</item>
+    </string-array>
+    <string-array name="verify_status_array">
+        <item>Empty</item>
+		<item>Min. Unit Item Qty.</item>
+		<item>Min. Line Value for NSTD/SPEC</item>
+		<item>Forbbiden NSTD/SPEC</item>
+		<item>Item is DISC</item>
+		<item>Approved</item>
+    </string-array>
+    <string-array name="price_and_discount_are_correct_array">
+        <item>Empty</item>
+		<item>No</item>
+		<item>No OverStock/Action</item>
+		<item>Approved</item>
+		<item>Refused</item>
+    </string-array>
 </resources>
