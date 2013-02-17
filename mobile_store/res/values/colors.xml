@@ -8,6 +8,7 @@
     <color name="body_text_2_inverse">#99ffffff</color>
     
     <color name="body_text_1_positive">#ff669900</color>
+    <color name="body_text_1_positive_mod">#ff660000</color>
     <color name="body_text_1_negative">#ffff4444</color>
     
     <color name="red">#ffff0000</color>

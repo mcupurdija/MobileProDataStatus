@@ -34,6 +34,7 @@ public class MobileDeviceSalesDocumentHeaderDomain extends Domain {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(MobileStoreContract.SaleOrders.DOCUMENT_TYPE, document_type);
 		contentValues.put(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO, sales_order_device_no);
+		contentValues.put(MobileStoreContract.SaleOrders.SALES_ORDER_NO, sales_order_no);
 		contentValues.put(MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS, order_condition_status == "" ? "0" : order_condition_status);
 		contentValues.put(MobileStoreContract.SaleOrders.FIN_CONTROL_STATUS, financial_control_status == "" ? "0" : financial_control_status);
 		contentValues.put(MobileStoreContract.SaleOrders.ORDER_STATUS_FOR_SHIPMENT, order_status_for_shipment == "" ? "0" : order_status_for_shipment);

@@ -4,6 +4,8 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.SaleOrdersPreviewActivity;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -50,6 +52,19 @@ public class SaleOrderContextualMenu implements ActionMode.Callback {
 			activity.startActivity(viewIntent);
 			mode.finish();
 			//activity.finish();
+			return true;
+		case R.id.view_sale_order_saldo:
+			//activity.getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+			builder.setMessage("Look at this dialog!")
+			       .setCancelable(false)
+			       .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			                //do things
+			           }
+			       });
+			AlertDialog alert = builder.create();
+			alert.show();
 			return true;
 		default:
 			break;

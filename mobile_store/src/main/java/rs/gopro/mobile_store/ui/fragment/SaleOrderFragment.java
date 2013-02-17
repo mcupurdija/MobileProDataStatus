@@ -244,7 +244,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 			};
 
 			titleView.setText(saleOrderNo);
-			titleView.setTextColor(res.getColorStateList(R.color.body_text_1_positive));
+			titleView.setTextColor(res.getColorStateList(R.color.body_text_1_positive_mod));
 			subtitleView.setText(getString(R.string.sale_order_amount_total_template) + totalAmount);
 			primaryTouchTargetView.setOnClickListener(allSessionsListener);
 			subtitleView.setTextColor(res.getColorStateList(R.color.body_text_2));

@@ -172,7 +172,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     
     private EditText orderNo;
     
-    // TODO not on form yet
     private EditText documentNote;
     private EditText headquartersNote;
     
@@ -1108,7 +1107,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		@Override
 		protected void onDeleteComplete(int token, Object cookie, int result) {
-			// TODO Auto-generated method stub
 			super.onDeleteComplete(token, cookie, result);
 		}
 		

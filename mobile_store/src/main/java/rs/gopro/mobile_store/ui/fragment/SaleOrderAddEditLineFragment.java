@@ -319,6 +319,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		if (itemAutocompleteAdapter.getIdForTitle(item_auto_complete) != -1) {
 			//Cursor customerItemCursor = (Cursor) customerAutoCompleteAdapter.getItem(customerAutoCompleteAdapter.getIdForTitle(customer_auto_complete));
 			int item_id = itemAutocompleteAdapter.getIdForTitle(item_auto_complete);//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
+			itemId = item_id; // update global after save
 			localValues.put(MobileStoreContract.SaleOrderLines.ITEM_ID, Integer.valueOf(item_id));
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrderLines.ITEM_ID);
@@ -571,7 +572,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	
 	private void doWsAction() {
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", itemCampaignStatus, customerNo, "", Double.valueOf(0), salesPersonNo, documentType, -1, "", "", "", "", "", "", "");
+		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", itemCampaignStatus, customerNo, "", Double.valueOf(0), salesPersonNo, documentType, 0, "", "", "", "", "", "", "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQtySalesPriceAndDiscSyncObject);
 		getActivity().startService(intent);
 		

@@ -180,6 +180,11 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 //		String headerResp = soapResponse.getPropertyAsString("pCSVStringHeader");
 //		String linesResp = soapResponse.getPropertyAsString("pCSVStringLines");
 		
+		if (soapResponse.getPropertyAsString("pCSVStringHeader").equals("")) {
+			// when status is ponuda it will return nothing
+			return 1;
+		}
+		
 		List<MobileDeviceSalesDocumentHeaderDomain> parsedSalesHeader = CSVDomainReader.parse(new StringReader(soapResponse.getPropertyAsString("pCSVStringHeader")), MobileDeviceSalesDocumentHeaderDomain.class);
 		ContentValues[] valuesForInsertHeader = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedSalesHeader);
 		
@@ -306,7 +311,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
                 MobileStoreContract.SaleOrderLines.LINE_NO,
                 MobileStoreContract.Items.ITEM_NO,
                 MobileStoreContract.SaleOrderLines.QUANTITY,
-                MobileStoreContract.SaleOrderLines.UNIT_SALES_PRICE_DIN,
+                MobileStoreContract.SaleOrderLines.PRICE,
                 MobileStoreContract.SaleOrderLines.REAL_DISCOUNT,
                 MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS,
                 MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS,

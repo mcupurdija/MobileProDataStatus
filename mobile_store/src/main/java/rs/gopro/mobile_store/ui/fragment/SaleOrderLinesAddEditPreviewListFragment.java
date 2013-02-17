@@ -235,7 +235,7 @@ public class SaleOrderLinesAddEditPreviewListFragment extends ListFragment
 							.getDouble(SaleOrderLinesQuery.QUANTITY))
 					+ "  -  Cena:"
 					+ String.valueOf(cursor
-							.getDouble(SaleOrderLinesQuery.PRICE_EUR));
+							.getDouble(SaleOrderLinesQuery.PRICE));
 			timeView.setText(salesOrderDate);
 			titleView.setText(salesOrderNo);
 			subtitleView.setText(salesOrderCust);
@@ -252,7 +252,7 @@ public class SaleOrderLinesAddEditPreviewListFragment extends ListFragment
 				MobileStoreContract.SaleOrderLines.DESCRIPTION2,
 				MobileStoreContract.SaleOrderLines.LINE_NO,
 				MobileStoreContract.SaleOrderLines.QUANTITY,
-				MobileStoreContract.SaleOrderLines.PRICE_EUR,
+				MobileStoreContract.SaleOrderLines.PRICE,
 				MobileStoreContract.SaleOrderLines.REAL_DISCOUNT };
 
 		int _ID = 0;
@@ -262,7 +262,7 @@ public class SaleOrderLinesAddEditPreviewListFragment extends ListFragment
 //		int DESCRIPTION2 = 4;
 		int LINE_NO = 5;
 		int QUANTITY = 6;
-		int PRICE_EUR = 7;
+		int PRICE = 7;
 //		int REAL_DISCOUNT = 8;
 	}
 	
