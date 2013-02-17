@@ -19,6 +19,10 @@ public class WsDataFormatEnUsLatin {
 	private static DecimalFormat decimalFormat = (DecimalFormat)NumberFormat.getInstance();
 	@SuppressLint("SimpleDateFormat")
 	private static SimpleDateFormat dateWsFormat = new SimpleDateFormat("dd.MM.yy");
+	@SuppressLint("SimpleDateFormat")
+	private static SimpleDateFormat timeWsFormat = new SimpleDateFormat("HH:mm:ss");
+	@SuppressLint("SimpleDateFormat")
+	private static SimpleDateFormat dateDbFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance();
 	
 	static {
@@ -74,6 +78,24 @@ public class WsDataFormatEnUsLatin {
 		} catch (ParseException e) {
 			LogUtils.LOGE(TAG, "Ui double not in good fromat", e);
 			return null;
+		}
+	}
+	
+	public static String toOutputWsDate(String dbDate) {
+		try {
+			return dateWsFormat.format(dateDbFormat.parse(dbDate));
+		} catch (ParseException e) {
+			LogUtils.LOGE(TAG, "Ws double not in good fromat", e);
+			return dbDate;
+		}
+	}
+	
+	public static String toOutputWsTime(String dbDate) {
+		try {
+			return timeWsFormat.format(dateDbFormat.parse(dbDate));
+		} catch (ParseException e) {
+			LogUtils.LOGE(TAG, "Ws double not in good fromat", e);
+			return dbDate;
 		}
 	}
 }

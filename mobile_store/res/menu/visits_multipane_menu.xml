@@ -12,6 +12,9 @@
     <item
         android:id="@+id/create_insert_visit_activity"
         android:showAsAction="ifRoom|withText"
-        android:title="Add new ..."/>
-
+        android:title="@string/menu_new_visit"/>
+	<item
+        android:id="@+id/menu_option_send_visit"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_send_visit"/>
 </menu>

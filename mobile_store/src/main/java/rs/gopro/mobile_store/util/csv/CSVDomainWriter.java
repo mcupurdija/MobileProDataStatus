@@ -3,11 +3,13 @@ package rs.gopro.mobile_store.util.csv;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 
 import android.database.Cursor;
+import android.text.format.Time;
 
 public class CSVDomainWriter {
 
@@ -38,8 +40,16 @@ public class CSVDomainWriter {
 							lineResult.add("");
 						}
 						break;
-					case Cursor.FIELD_TYPE_STRING:
-						lineResult.add(cursor.getString(i));
+					case Cursor.FIELD_TYPE_STRING:	
+						if (currentFiledType.equals(Date.class)) {
+							String dateResult = cursor.getString(i);
+							lineResult.add(WsDataFormatEnUsLatin.toOutputWsDate(dateResult));
+						} else if (currentFiledType.equals(Time.class)) {
+							String timeResult = cursor.getString(i);
+							lineResult.add(WsDataFormatEnUsLatin.toOutputWsTime(timeResult));
+						} else {
+							lineResult.add(cursor.getString(i));
+						}
 						break;
 					case Cursor.FIELD_TYPE_INTEGER:
 						lineResult.add(String.valueOf(cursor.getInt(i)));

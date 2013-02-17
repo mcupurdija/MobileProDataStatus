@@ -277,4 +277,7 @@
 	<string name="available_to_whole_ship">Dostupno za isporuku u celosti</string>
 	<string name="verify_status">Status verifikacije</string>
 	<string name="price_and_discount_are_correct">Cena i Popust su u skladu sa poslovnom politikom</string>
+	
+	<string name="menu_new_visit">Nova poseta</string>
+	<string name="menu_send_visit">Pošalji posetu</string>
 </resources>

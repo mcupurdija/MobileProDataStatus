@@ -219,8 +219,13 @@ public class VisitListFragment extends ListFragment implements
         public void bindView(View view, Context context, Cursor cursor) {
 //            UIUtils.setActivatedCompat(view, cursor.getString(VisitsQuery.VENDOR_ID)
 //                    .equals(mSelectedVendorId));
-            view.setActivated(String.valueOf(cursor.getInt(VisitsQuery._ID))
-                    .equals(mSelectedVisitId));
+        	if (String.valueOf(cursor.getInt(VisitsQuery._ID))
+                    .equals(mSelectedVisitId)) {
+        		view.setActivated(true);
+        		mCallbacks.onVisitSelected(String.valueOf(cursor.getInt(VisitsQuery._ID)));
+        	} else {
+        		view.setActivated(false);
+        	}
             ((TextView) view.findViewById(R.id.visit_title)).setText(
                     UIUtils.formatDate(UIUtils.getDateTime(cursor.getString(VisitsQuery.VISIT_DATE))));
             ((TextView) view.findViewById(R.id.visit_subtitle1)).setText(

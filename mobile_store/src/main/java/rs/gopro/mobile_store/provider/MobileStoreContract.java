@@ -19,6 +19,8 @@ public class MobileStoreContract {
 	private static final String PATH_ITEM_SEARCH = "item_search";
 	private static final String PATH_ITEM_NO = "item_no";
 	private static final String PATH_VISITS = "visits";
+	private static final String PATH_PLANNED_VISITS_EXPORT = "visits_planned_export";
+	private static final String PATH_REALIZED_VISITS_EXPORT = "visits_realized_export";
 	private static final String PATH_SALE_ORDERS = "sale_orders";
 	private static final String PATH_SALE_ORDERS_LIST = "sale_orders_list";
 	private static final String PATH_SALE_ORDERS_EXPORT = "sale_orders_export";
@@ -68,6 +70,7 @@ public class MobileStoreContract {
 		
 		String VISIT_DATE = "visit_date";
 		String CUSTOMER_ID = "customer_id";
+		String POTENTIAL_CUSTOMER = "potential_customer";
 		String LINE_NO = "line_no";
 		String ENTRY_TYPE = "entry_type";
 		String ODOMETER = "odometer";
@@ -611,6 +614,14 @@ public class MobileStoreContract {
 			return CONTENT_URI.buildUpon().appendPath(visitsDate).appendPath(PATH_VISITS_DATE).build();
 		}
 
+		public static Uri buildVisitsPlannedExport() {
+			return CONTENT_URI.buildUpon().appendPath(PATH_PLANNED_VISITS_EXPORT).build();
+		}
+		
+		public static Uri buildVisitsRealizedExport() {
+			return CONTENT_URI.buildUpon().appendPath(PATH_REALIZED_VISITS_EXPORT).build();
+		}
+		
 		public static String getVisitId(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}

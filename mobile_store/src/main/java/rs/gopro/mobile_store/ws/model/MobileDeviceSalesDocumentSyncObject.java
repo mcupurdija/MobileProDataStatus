@@ -170,7 +170,6 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver,
 			SoapPrimitive soapResponse) throws CSVParseException {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -280,27 +279,27 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 				Integer.class
 		};
 
-		int _ID = 0;
-		int DOCUMENT_TYPE = 1;
-		int SALES_ORDER_NO = 2;
-		int CUSTOMER_N = 3;
-		int LOCATION_CODE = 4;
-		int SHORTCUT_DIMENSION_1_CODE = 5;
-		int EXTERNAL_DOCUMENT_NO = 6;
-		int QUOTE_NO = 7;
-		int SALES_PERSON_ID = 8;
-		int CUSTOMER_BUSINESS_UNIT_CODE = 9;
-		int SELL_TO_ADDRESS_ID = 10;
-		int SHIPP_TO_ADDRESS_ID = 11;
-		int CUST_USES_TRANSIT_CUST = 12;
-		int CONTACT_NAME = 13;
-		int CONTACT_PHONE = 14;
-		int HIDE_REBATE = 15;
-		int FURTHER_SALE = 16;
-		int PAYMENT_OPTION = 17;
-		int BACKORDER_SHIPMENT_STATUS = 18;
-		int QUOTE_REALIZED_STATUS = 19;
-		int ORDER_CONDITION_STATUS = 20; 
+//		int _ID = 0;
+//		int DOCUMENT_TYPE = 1;
+//		int SALES_ORDER_NO = 2;
+//		int CUSTOMER_N = 3;
+//		int LOCATION_CODE = 4;
+//		int SHORTCUT_DIMENSION_1_CODE = 5;
+//		int EXTERNAL_DOCUMENT_NO = 6;
+//		int QUOTE_NO = 7;
+//		int SALES_PERSON_ID = 8;
+//		int CUSTOMER_BUSINESS_UNIT_CODE = 9;
+//		int SELL_TO_ADDRESS_ID = 10;
+//		int SHIPP_TO_ADDRESS_ID = 11;
+//		int CUST_USES_TRANSIT_CUST = 12;
+//		int CONTACT_NAME = 13;
+//		int CONTACT_PHONE = 14;
+//		int HIDE_REBATE = 15;
+//		int FURTHER_SALE = 16;
+//		int PAYMENT_OPTION = 17;
+//		int BACKORDER_SHIPMENT_STATUS = 18;
+//		int QUOTE_REALIZED_STATUS = 19;
+//		int ORDER_CONDITION_STATUS = 20; 
 	}
 	
 	private interface SalesOrderLineQuery {
@@ -335,16 +334,16 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		
 		//int _ID = 0;
 		//int DOCUMENT_TYPE = 1;
-		int SALES_ORDER_NO = 0;
-		int LINE_NO = 1;
-		int ITEM_NO = 2;
-		int QUANTITY = 3;
-		int UNIT_SALES_PRICE_DIN = 4;
-		int REAL_DISCOUNT = 5;
-		int CAMPAIGN_STATUS = 6;
-		int QUOTE_REFUSED_STATUS = 7;
-		int BACKORDER_STATUS = 8;
-		int AVAILABLE_TO_WHOLE_SHIPMENT = 9; 
+//		int SALES_ORDER_NO = 0;
+//		int LINE_NO = 1;
+//		int ITEM_NO = 2;
+//		int QUANTITY = 3;
+//		int UNIT_SALES_PRICE_DIN = 4;
+//		int REAL_DISCOUNT = 5;
+//		int CAMPAIGN_STATUS = 6;
+//		int QUOTE_REFUSED_STATUS = 7;
+//		int BACKORDER_STATUS = 8;
+//		int AVAILABLE_TO_WHOLE_SHIPMENT = 9; 
 	}
 
 	public int getDocumentId() {

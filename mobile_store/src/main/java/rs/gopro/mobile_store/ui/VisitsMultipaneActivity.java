@@ -8,6 +8,7 @@ import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObjectOut;
+import rs.gopro.mobile_store.ws.model.SetPlannedVisitsToCustomersSyncObject;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 
 	private Fragment visitsPlanFragmentDetail;
 	private ShowHideMasterLayout mShowHideMasterLayout;
+	private String selectedVisitId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +126,16 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 		case R.id.sync_visits:
 			doPlannedVisitSync();
 			return true;
-			
+        case R.id.create_insert_visit_activity: 
+        	Intent newVisitIntent = new Intent(getApplicationContext(), AddVisitActivity.class);
+        	startActivityForResult(newVisitIntent, ADD_VISIT_REQUEST_CODE);
+        	return true;
+        case R.id.menu_option_send_visit:
+        	SetPlannedVisitsToCustomersSyncObject plannedVisitsToCustomersSyncObject = new SetPlannedVisitsToCustomersSyncObject(Integer.valueOf(selectedVisitId));
+        	Intent intent = new Intent(this, NavisionSyncService.class);
+        	intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, plannedVisitsToCustomersSyncObject);
+			startService(intent);
+        	return true;
 		/* case R.id.newrecord:
              final Intent intent = new Intent(this, NewVisitActivity.class);
              startActivity(intent);
@@ -166,12 +177,13 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 	}
 
 	@Override
-	public boolean onVisitSelected(String visitsId) {
+	public boolean onVisitSelected(String visitId) {
 		//close action mode if user selected other item
 		if(actionMod != null){
 			actionMod.finish();
 		}
-		loadVisitDetail(MobileStoreContract.Visits.buildVisitUri(visitsId));
+		loadVisitDetail(MobileStoreContract.Visits.buildVisitUri(visitId));
+		selectedVisitId = visitId;
 		return true;
 	}
 	
@@ -184,6 +196,7 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 
 	@Override
 	public void onVisitIdAvailable(String visitId) {
+		selectedVisitId = visitId;
 	}
 	
 	

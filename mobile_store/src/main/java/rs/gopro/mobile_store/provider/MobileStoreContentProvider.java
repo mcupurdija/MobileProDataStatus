@@ -83,6 +83,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int VISIT_ID = 201;
 	private static final int VISITS_WITH_CUSTOMER = 202;
 	private static final int VISITS_DATE = 203;
+	private static final int VISITS_REALIZED_EXPORT = 204;
+	private static final int VISITS_PLANNED_EXPORT = 205;
 	
 
 	private static final int SALE_ORDER_LINES_FROM_ORDER = 300;
@@ -156,6 +158,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "items/*", ITEM_ID);
 		
 		mobileStoreURIMatcher.addURI(authority, "visits", VISITS);
+		mobileStoreURIMatcher.addURI(authority, "visits/visits_planned_export", VISITS_PLANNED_EXPORT);
+		mobileStoreURIMatcher.addURI(authority, "visits/visits_realized_export", VISITS_REALIZED_EXPORT);
 		mobileStoreURIMatcher.addURI(authority, "visits/#", VISIT_ID);
 		mobileStoreURIMatcher.addURI(authority, "visits/with_customer",
 				VISITS_WITH_CUSTOMER);
@@ -414,7 +418,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Invoices._ID);
 		case VISITS:
 			return builder.addTable(Tables.VISITS);
-		case VISIT_ID: // TODO should be fixed, this is place for insert, maybe NOT, it could send item uri for filter
+		case VISIT_ID:
 			final String visitId = Visits.getVisitId(uri);
 			return builder.addTable(Tables.VISITS).where(
 					Tables.VISITS + "." + Visits._ID + "=?", visitId);
@@ -424,7 +428,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 			final String saleOrderId = SaleOrders.getSaleOrderId(uri);
 			return builder.addTable(Tables.SALE_ORDERS).where(
 					Tables.SALE_ORDERS + "." + SaleOrders._ID + "=?", saleOrderId);
-		case CONTACTS_ID: // TODO should be fixed, this is place for insert
+		case CONTACTS_ID:
 			final String contactId = Contacts.getContactsId(uri);
 			return builder.addTable(Tables.CONTACTS).where(
 					Tables.CONTACTS + "." + Contacts._ID + "=?", contactId);
@@ -850,6 +854,26 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(CustomerTradeAgreemnt.STARTING_DATE, Tables.CUSTOMER_TRADE_AGREEMENT)
 					.mapToTable(CustomerTradeAgreemnt.ENDING_DATE, Tables.CUSTOMER_TRADE_AGREEMENT)
 					.mapToTable(CustomerTradeAgreemnt.ACTUAL_DISCOUNT, Tables.CUSTOMER_TRADE_AGREEMENT);
+		case VISITS_PLANNED_EXPORT:
+			return builder.addTable(Tables.VISITS_EXPORT)
+					.mapToTable(MobileStoreContract.SalesPerson.SALE_PERSON_NO, Tables.SALES_PERSONS)
+					.mapToTable(MobileStoreContract.Visits.VISIT_DATE, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.ARRIVAL_TIME, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.DEPARTURE_TIME, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.POTENTIAL_CUSTOMER, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Customers.CUSTOMER_NO, Tables.CUSTOMERS)
+					.mapToTable(MobileStoreContract.Visits.NOTE, Tables.VISITS);
+		case VISITS_REALIZED_EXPORT:
+			return builder.addTable(Tables.VISITS_EXPORT)
+					.mapToTable(MobileStoreContract.SalesPerson.SALE_PERSON_NO, Tables.SALES_PERSONS)
+					.mapToTable(MobileStoreContract.Visits.VISIT_DATE, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.ARRIVAL_TIME, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.DEPARTURE_TIME, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.VISIT_RESULT, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.POTENTIAL_CUSTOMER, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Customers.CUSTOMER_NO, Tables.CUSTOMERS)
+					.mapToTable(MobileStoreContract.Visits.ODOMETER, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.NOTE, Tables.VISITS);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

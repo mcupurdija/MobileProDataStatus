@@ -225,16 +225,21 @@ public class SaleOrdersPreviewListFragment extends ListFragment implements
         /** {@inheritDoc} */
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            view.setActivated(String.valueOf(cursor.getInt(SaleOrdersQuery._ID))
-                    .equals(mSelectedSaleOrderId));
+        	int current_visit_id = cursor.getInt(SaleOrdersQuery._ID);
+        	if (String.valueOf(current_visit_id).equals(mSelectedSaleOrderId)) {
+        		view.setActivated(true);
+        		mCallbacks.onSaleOrderSelected(String.valueOf(current_visit_id));
+        	} else {
+        		view.setActivated(false);
+        	}
             final TextView timeView = (TextView) view.findViewById(R.id.block_time);
             final TextView titleView = (TextView) view.findViewById(R.id.block_title);
             final TextView subtitleView = (TextView) view.findViewById(R.id.block_subtitle);
             String salesOrderDate = cursor.getString(SaleOrdersQuery.ORDER_DATE);
             String salesOrderFormatDate = UIUtils.formatDate(UIUtils.getDateTime(salesOrderDate));
             String salesOrderNo = cursor.getString(SaleOrdersQuery.SALES_ORDER_NO);
-            //if sale order no is null use device no
-            if(salesOrderNo == null){
+            // if sale order no is null use device no
+            if (salesOrderNo == null || salesOrderNo.length() < 1) {
             	salesOrderNo = cursor.getString(SaleOrdersQuery.SALES_ORDER_DEVICE_NO);
             }
             String salesOrderCust = cursor.getString(SaleOrdersQuery.CUSTOMER_NO) + " " + cursor.getString(SaleOrdersQuery.CUSTOMER_NAME) + " " + cursor.getString(SaleOrdersQuery.CUSTOMER_NAME2);

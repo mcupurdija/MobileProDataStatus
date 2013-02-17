@@ -1,9 +1,6 @@
 package rs.gopro.mobile_store.ui;
 
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
-
-import org.kxml2.kdom.Document;
-
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.util.LogUtils;

@@ -34,4 +34,7 @@ public interface Tables {
 	
 	String EL_CARD_CUSTOMER_JOIN_CUSTOMER_JOIN_ITEM = "electronic_card_customer inner join customers on electronic_card_customer.customer_id = customers._id inner join items on electronic_card_customer.item_id = items._id";
 	String CUSTOMER_AGREEMENT_JOIN_CUSTOMER = "customer_trade_agreement inner join customers on customer_trade_agreement.customer_id = customers._id";
+	
+	String VISITS_EXPORT = "visits left outer join customers on visits.customer_id = customers._id " +
+			"left outer join sales_persons on visits.sales_person_id = sales_persons._id ";
 }

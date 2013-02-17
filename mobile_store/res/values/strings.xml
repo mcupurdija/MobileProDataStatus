@@ -278,4 +278,6 @@
 	<string name="verify_status">Verify Status</string>
 	<string name="price_and_discount_are_correct">Price And Discountc Are Correct</string>
 	
+	<string name="menu_new_visit">New visit plan</string>
+	<string name="menu_send_visit">Send visit</string>
 </resources>

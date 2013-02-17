@@ -5,7 +5,6 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.widget.SaleOrderContextualMenu;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
-import rs.gopro.mobile_store.ws.model.ItemQtySalesPriceAndDiscSyncObject;
 import rs.gopro.mobile_store.ws.model.MobileDeviceSalesDocumentSyncObject;
 import android.content.Intent;
 import android.net.Uri;
