@@ -33,6 +33,11 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	private String pNoteForCentralOffice;
 	private String pDocumentNote;
 	
+	private String order_condition_status;	
+	private String financial_control_status;
+	private String order_status_for_shipment;
+	private String order_value_status;
+	
 	public static final Creator<MobileDeviceSalesDocumentSyncObject> CREATOR = new Creator<MobileDeviceSalesDocumentSyncObject>() {
 
 		@Override
@@ -58,6 +63,11 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		setpCSVStringLines(source.readString());
 		setpNoteForCentralOffice(source.readString());
 		setpDocumentNote(source.readString());
+		
+		setOrder_condition_status(source.readString());
+		setFinancial_control_status(source.readString());
+		setOrder_status_for_shipment(source.readString());
+		setOrder_value_status(source.readString());
 	}
 	
 	public MobileDeviceSalesDocumentSyncObject(int document_id) {
@@ -87,6 +97,11 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		dest.writeString(getpCSVStringLines());
 		dest.writeString(getpNoteForCentralOffice());
 		dest.writeString(getpDocumentNote());
+		
+		dest.writeString(getOrder_condition_status());
+		dest.writeString(getFinancial_control_status());
+		dest.writeString(getOrder_status_for_shipment());
+		dest.writeString(getOrder_value_status());
 	}
 
 	@Override
@@ -192,6 +207,13 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		
 		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.SaleOrders.CONTENT_URI, valuesForInsertHeader);
 		numOfInserted = contentResolver.bulkInsert(MobileStoreContract.SaleOrderLines.CONTENT_URI, valuesForInsertLines);
+		
+		MobileDeviceSalesDocumentHeaderDomain deviceSalesDocumentHeaderDomain = parsedSalesHeader.get(0);
+		
+		setOrder_condition_status(deviceSalesDocumentHeaderDomain.order_condition_status);
+		setFinancial_control_status(deviceSalesDocumentHeaderDomain.financial_control_status);
+		setOrder_status_for_shipment(deviceSalesDocumentHeaderDomain.order_status_for_shipment);
+		setOrder_value_status(deviceSalesDocumentHeaderDomain.order_value_status);
 		
 		return numOfInserted;
 	}
@@ -352,5 +374,49 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 
 	public void setDocumentId(int documentId) {
 		this.documentId = documentId;
+	}
+
+	public String getOrder_condition_status() {
+		if (order_condition_status == null || order_condition_status.length() < 1) {
+			return "0";
+		}
+		return order_condition_status;
+	}
+
+	public void setOrder_condition_status(String order_condition_status) {
+		this.order_condition_status = order_condition_status;
+	}
+
+	public String getFinancial_control_status() {
+		if (financial_control_status == null || financial_control_status.length() < 1) {
+			return "0";
+		}
+		return financial_control_status;
+	}
+
+	public void setFinancial_control_status(String financial_control_status) {
+		this.financial_control_status = financial_control_status;
+	}
+
+	public String getOrder_status_for_shipment() {
+		if (order_status_for_shipment == null || order_status_for_shipment.length() < 1) {
+			return "0";
+		}
+		return order_status_for_shipment;
+	}
+
+	public void setOrder_status_for_shipment(String order_status_for_shipment) {
+		this.order_status_for_shipment = order_status_for_shipment;
+	}
+
+	public String getOrder_value_status() {
+		if (order_value_status == null || order_value_status.length() < 1) {
+			return "0";
+		}
+		return order_value_status;
+	}
+
+	public void setOrder_value_status(String order_value_status) {
+		this.order_value_status = order_value_status;
 	}
 }

@@ -8,7 +8,6 @@
         android:icon="@drawable/ic_action_refresh"
         android:showAsAction="ifRoom|withText"
         android:title="@string/action_button_refresh"/>
-    
     <item
         android:id="@+id/create_insert_visit_activity"
         android:showAsAction="ifRoom|withText"

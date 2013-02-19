@@ -58,7 +58,6 @@ public class SentOrdersFragment extends ListFragment implements LoaderCallbacks<
 
 			@Override
 			public Cursor runQuery(CharSequence constraint) {
-				System.out.println("USAO U FILTER");
 				String[] queryStrings = constraint.toString().split(splitQuerySeparator);
 				Cursor cursor = null;
 				if (getActivity() != null) {

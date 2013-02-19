@@ -99,7 +99,7 @@ public abstract class SyncObject implements Parcelable {
 		try {
 			resp = response.getResponse();
 		} catch (SoapFault esf) {
-			throw new SOAPResponseException(esf);
+			throw new SOAPResponseException(esf.faultstring);
 		}
 		if (resp instanceof SoapPrimitive) {
 			SoapPrimitive soapresult = (SoapPrimitive) resp;

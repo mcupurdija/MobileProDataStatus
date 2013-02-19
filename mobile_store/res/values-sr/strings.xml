@@ -108,6 +108,12 @@
 	<string name="contextual_send_sale_order">Pošalji lifericu</string>
 	<string name="contextual_view_saldo">Dokument zbirno</string>
 	
+	<string name="dialog_title_item_price_qty_load">Cena, popust i količina</string>
+	<string name="dialog_body_item_price_qty_load">Učitavanje cene, popusta i količine</string>
+	<string name="dialog_title_sale_order_send">Liferica</string>
+	<string name="dialog_body_sale_order_send">Slanje liferice je u toku&#8230;</string>
+	<string name="dialog_title_error_in_sync">Greška pri sinhronizaciji</string>
+	
 	<string name="document_no">Broj dokumenta</string>
 	<string name="dokument_type_no_title">Broj i tip dokumenta</string>
 	<string name="contact_title">Kontakt</string>
@@ -280,4 +286,8 @@
 	
 	<string name="menu_new_visit">Nova poseta</string>
 	<string name="menu_send_visit">Pošalji posetu</string>
+	
+	<string name="items_sync_group_title">Opcije osvežavanja artikala</string>
+	<string name="items_sync_overstock_button_title">Osveži overstock artikle</string>
+	<string name="items_sync_on_action_button_title">Osveži artikle na akciji</string>
 </resources>

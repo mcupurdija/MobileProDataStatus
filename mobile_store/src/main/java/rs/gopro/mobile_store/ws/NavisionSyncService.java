@@ -9,6 +9,7 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
 import rs.gopro.mobile_store.ws.model.SyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import rs.gopro.mobile_store.ws.util.HttpTransportApache;
@@ -83,9 +84,14 @@ public class NavisionSyncService extends IntentService {
 			syncResult.setResult(syncObject.getResult());
 			syncResult.setComplexResult(syncObject);
 			syncObject.logSyncEnd(contentResolver, SyncStatus.SUCCESS);
+		} catch (SOAPResponseException e) {
+			syncResult.setStatus(SyncStatus.FAILURE);
+			syncResult.setResult(e.getMessage());
+			syncObject.logSyncEnd(contentResolver, SyncStatus.FAILURE);
+			LogUtils.LOGE(TAG, "Soap request error!", e);
 		} catch (Exception e) {
 			syncResult.setStatus(SyncStatus.FAILURE);
-			syncResult.setResult(syncObject.getResult());
+			syncResult.setResult(e.getMessage());
 			syncObject.logSyncEnd(contentResolver, SyncStatus.FAILURE);
 			LogUtils.LOGE(TAG, "Error during soap request!", e);
 		}

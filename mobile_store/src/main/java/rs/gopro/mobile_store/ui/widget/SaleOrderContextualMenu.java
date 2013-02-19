@@ -1,12 +1,15 @@
 package rs.gopro.mobile_store.ui.widget;
 
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.provider.MobileStoreContentProvider;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
-import rs.gopro.mobile_store.ui.SaleOrdersPreviewActivity;
+import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,8 +58,29 @@ public class SaleOrderContextualMenu implements ActionMode.Callback {
 			return true;
 		case R.id.view_sale_order_saldo:
 			//activity.getContentResolver().query(uri, projection, selection, selectionArgs, sortOrder);
+			String quantity = MobileStoreContract.SaleOrderLines.QUANTITY;
+			String price = MobileStoreContract.SaleOrderLines.PRICE;
+			String discount = MobileStoreContract.SaleOrderLines.REAL_DISCOUNT;
+			
+			String[] projection = new String[] { "sum(" + quantity + "*(" + price + "-("+ price + "*(" + discount + "/100)))" + ")" };
+			Cursor cursor = activity.getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderSaldo(), projection, Tables.SALE_ORDERS + "." + MobileStoreContract.SaleOrders._ID + "=?", new String[] { saleOrderId }, null);
+			
+			double saldo = 0;
+			
+			double pdv = 0;
+			
+			double total = 0;
+			
+			if (cursor.moveToFirst()) {
+				saldo = cursor.getDouble(0);
+				pdv = 0.2*saldo;
+				total = saldo+pdv;
+			}
+			
 			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-			builder.setMessage("Look at this dialog!")
+			builder.setMessage("Iznos bez pdv: " + UIUtils.formatDoubleForUI(saldo) + "\n"
+					+ "PDV: " + UIUtils.formatDoubleForUI(pdv) + "\n"
+					+ "Ukupno: " + UIUtils.formatDoubleForUI(total))
 			       .setCancelable(false)
 			       .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {

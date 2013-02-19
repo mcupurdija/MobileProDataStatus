@@ -5,9 +5,12 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.ui.SaleOrderLinesPreviewListFragment.Callbacks;
 import rs.gopro.mobile_store.ui.fragment.ItemPreviewDialogFragment;
+import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.ItemQuantitySyncObject;
+import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,9 +30,11 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
@@ -40,13 +45,23 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	private static String TAG = "ItemsListFragment";
 	private EditText searchText;
 	private Spinner spinner;
+	private Button loadOverstock;
+	private Button loadOnAction;
 	private String splitQuerySeparator = ";";
 	private CursorAdapter cursorAdapter;
+	private String salesPersonId;
+	private String salesPersonNo;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		LogUtils.LOGI(TAG, "on create: "+this.getId());
+		salesPersonId = SharedPreferencesUtil.getSalePersonId(getActivity());
+		salesPersonNo = "";
+		Cursor cursor = getActivity().getContentResolver().query(MobileStoreContract.SalesPerson.CONTENT_URI, new String[] { MobileStoreContract.SalesPerson.SALE_PERSON_NO }, "_ID=?", new String[] { salesPersonId }, null);
+		if (cursor.moveToFirst()) {
+			salesPersonNo = cursor.getString(0);
+		}
 	}
 
 	@Override
@@ -82,6 +97,31 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 			spinner = (Spinner) getActivity().findViewById(R.id.items_camp_status_spinner);
 			spinner.setOnItemSelectedListener(this);
 			spinner.setAdapter(adapter);
+			
+			loadOverstock = (Button) getActivity().findViewById(R.id.items_sync_overstock_button);
+			loadOverstock.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(getActivity(), NavisionSyncService.class);
+					ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(1), salesPersonNo, DateUtils.getWsDummyDate());
+					itemsSyncObject.setResetTypeSignal(1);
+					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
+					getActivity().startService(intent);
+					
+				}
+			});
+			loadOnAction = (Button) getActivity().findViewById(R.id.items_sync_on_action_button);
+			loadOnAction.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(getActivity(), NavisionSyncService.class);
+					ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(2), salesPersonNo, DateUtils.getWsDummyDate());
+					itemsSyncObject.setResetTypeSignal(2);
+					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
+					getActivity().startService(intent);
+					
+				}
+			});
 		}
 	}
 

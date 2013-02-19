@@ -24,9 +24,10 @@ public class ItemsSyncObject extends SyncObject {
 
 	private String mCSVString;
 	private String mItemNoa46;
-	private Integer mOverstockAndCampaignOnly;
+	private Integer pCampaignStatus;
 	private String mSalespersonCode;
 	private Date mDateModified;
+	private int resetTypeSignal = 0;
 
 	public static final Creator<ItemsSyncObject> CREATOR = new Creator<ItemsSyncObject>() {
 
@@ -52,10 +53,10 @@ public class ItemsSyncObject extends SyncObject {
 
 		setmCSVString(source.readString());
 		setmItemNoa46(source.readString());
-		setmOverstockAndCampaignOnly(source.readInt());
+		setpCampaignStatus(source.readInt());
 		setmSalespersonCode(source.readString());
 		setmDateModified(new Date(source.readLong()));
-
+		setResetTypeSignal(source.readInt());
 	}
 
 	public ItemsSyncObject(String mCSVString, String mItemNoa46, Integer mOverstockAndCampaignOnly, String mSalespersonCode, Date mDateModified) {
@@ -63,7 +64,7 @@ public class ItemsSyncObject extends SyncObject {
 		this.mCSVString = mCSVString;
 		this.mItemNoa46 = mItemNoa46;
 		this.mDateModified = mDateModified;
-		this.mOverstockAndCampaignOnly = mOverstockAndCampaignOnly;
+		this.pCampaignStatus = mOverstockAndCampaignOnly;
 		this.mSalespersonCode = mSalespersonCode;
 	}
 
@@ -89,8 +90,8 @@ public class ItemsSyncObject extends SyncObject {
 		properies.add(pItemNoa46);
 
 		PropertyInfo pOverstockAndCampaignOnly = new PropertyInfo();
-		pOverstockAndCampaignOnly.setName("pOverstockAndCampaignOnly");
-		pOverstockAndCampaignOnly.setValue(mOverstockAndCampaignOnly);
+		pOverstockAndCampaignOnly.setName("pCampaignStatus");
+		pOverstockAndCampaignOnly.setValue(pCampaignStatus);
 		pOverstockAndCampaignOnly.setType(Integer.class);
 		properies.add(pOverstockAndCampaignOnly);
 
@@ -142,6 +143,37 @@ public class ItemsSyncObject extends SyncObject {
 	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive result) throws CSVParseException {
 		List<ItemsDomain> parsedItems = CSVDomainReader.parse(new StringReader(result.toString()), ItemsDomain.class);
 		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedItems);
+		switch (getResetTypeSignal()) {
+		case 0:
+			// default
+			break;
+		case 1:
+			if (valuesForInsert.length > 0) {
+				ContentValues resetOverstock = new ContentValues();
+				resetOverstock.putNull(MobileStoreContract.Items.UNIT_SALES_PRICE_DIN);
+				resetOverstock.putNull(MobileStoreContract.Items.UNIT_SALES_PRICE_EUR);
+				resetOverstock.put(MobileStoreContract.Items.CAMPAIGN_STATUS, Integer.valueOf(0));
+				resetOverstock.put(MobileStoreContract.Items.OVERSTOCK_STATUS, Integer.valueOf(0));
+				resetOverstock.putNull(MobileStoreContract.Items.CAMPAIGN_END_DATE);
+				resetOverstock.putNull(MobileStoreContract.Items.CMPAIGN_START_DATE);
+				contentResolver.update(MobileStoreContract.Items.CONTENT_URI, resetOverstock, MobileStoreContract.Items.CAMPAIGN_STATUS+"=?", new String[] { "1" });
+			}
+			break;
+		case 2:
+			if (valuesForInsert.length > 0) {
+				ContentValues resetOverstock = new ContentValues();
+				resetOverstock.putNull(MobileStoreContract.Items.UNIT_SALES_PRICE_DIN);
+				resetOverstock.putNull(MobileStoreContract.Items.UNIT_SALES_PRICE_EUR);
+				resetOverstock.put(MobileStoreContract.Items.CAMPAIGN_STATUS, Integer.valueOf(0));
+				resetOverstock.put(MobileStoreContract.Items.OVERSTOCK_STATUS, Integer.valueOf(0));
+				resetOverstock.putNull(MobileStoreContract.Items.CAMPAIGN_END_DATE);
+				resetOverstock.putNull(MobileStoreContract.Items.CMPAIGN_START_DATE);
+				contentResolver.update(MobileStoreContract.Items.CONTENT_URI, resetOverstock, MobileStoreContract.Items.CAMPAIGN_STATUS+"=?", new String[] { "2" });
+			}
+			break;
+		default:
+			break;
+		}
 		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.Items.CONTENT_URI, valuesForInsert);
 		return numOfInserted;
 	}
@@ -176,12 +208,12 @@ public class ItemsSyncObject extends SyncObject {
 		this.mDateModified = mDateModified;
 	}
 
-	public Integer getmOverstockAndCampaignOnly() {
-		return mOverstockAndCampaignOnly;
+	public Integer getpCampaignStatus() {
+		return pCampaignStatus;
 	}
 
-	public void setmOverstockAndCampaignOnly(Integer mOverstockAndCampaignOnly) {
-		this.mOverstockAndCampaignOnly = mOverstockAndCampaignOnly;
+	public void setpCampaignStatus(Integer pCampaignStatus) {
+		this.pCampaignStatus = pCampaignStatus;
 	}
 
 	@Override
@@ -194,10 +226,10 @@ public class ItemsSyncObject extends SyncObject {
 		dest.writeString(getStatusMessage());
 		dest.writeString(getmCSVString());
 		dest.writeString(getmItemNoa46());
-		dest.writeInt(getmOverstockAndCampaignOnly());
+		dest.writeInt(getpCampaignStatus());
 		dest.writeString(getmSalespersonCode());
 		dest.writeLong(getmDateModified().getTime());
-
+		dest.writeInt(getResetTypeSignal());
 	}
 
 	public String getmSalespersonCode() {
@@ -222,5 +254,13 @@ public class ItemsSyncObject extends SyncObject {
 	protected int parseAndSave(ContentResolver contentResolver,
 			SoapObject soapResponse) throws CSVParseException {
 		return 0;
+	}
+
+	public int getResetTypeSignal() {
+		return resetTypeSignal;
+	}
+
+	public void setResetTypeSignal(int resetTypeSignal) {
+		this.resetTypeSignal = resetTypeSignal;
 	}
 }

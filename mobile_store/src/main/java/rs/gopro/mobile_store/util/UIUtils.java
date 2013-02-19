@@ -119,11 +119,14 @@ public class UIUtils {
 	}
 	
 	public static Double getDoubleFromUI(String uiDouble) {
+		if (uiDouble == null || uiDouble.length() < 1) {
+			uiDouble = "0";
+		}
 		try {
 			return decimalFormat.parse(uiDouble).doubleValue();
 		} catch (ParseException e) {
 			LogUtils.LOGE(TAG, "Ui double not in good fromat", e);
-			return null;
+			return Double.valueOf(0);
 		}
 	}
 }

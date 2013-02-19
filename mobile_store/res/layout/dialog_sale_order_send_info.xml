@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/dialog_sale_order_order_condition_status_label"
+        style="@style/AddEdit_Label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
+        android:gravity="center_vertical"
+        android:text="@string/order_condition_status" />
+
+    <TextView
+        android:id="@+id/dialog_sale_order_order_condition_status_spinner"
+        style="@style/AddEdit_Text_Value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/dialog_sale_order_financial_control_status_label"
+        style="@style/AddEdit_Label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
+        android:gravity="center_vertical"
+        android:text="@string/financial_control_status" />
+
+    <TextView
+        android:id="@+id/dialog_sale_order_financial_control_status_text"
+        style="@style/AddEdit_Text_Value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/dialog_sale_order_order_status_for_shipment_layout"
+        style="@style/AddEdit_Label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
+        android:gravity="center_vertical"
+        android:text="@string/order_status_for_shipment" />
+
+    <TextView
+        android:id="@+id/dialog_sale_order_order_status_for_shipment_text"
+        style="@style/AddEdit_Text_Value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/dialog_sale_order_order_value_status_label"
+        style="@style/AddEdit_Label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
+        android:gravity="center_vertical"
+        android:text="@string/order_value_status" />
+
+    <TextView
+        android:id="@+id/dialog_sale_order_order_value_status_text"
+        style="@style/AddEdit_Label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
+        android:gravity="center_vertical" />
+	<Button
+        android:id="@+id/dialogButtonOK"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text=" Ok "
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:gravity="center" />
+</LinearLayout>

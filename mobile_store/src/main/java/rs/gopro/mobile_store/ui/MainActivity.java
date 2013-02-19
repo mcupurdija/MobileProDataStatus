@@ -214,12 +214,12 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.synchronize_main_action:
-			// doSynchronization();
-			currentCustomLinearLayout.doSynchronization();
-			return true;
-		}
+//		switch (item.getItemId()) {
+//		case R.id.synchronize_main_action:
+//			// doSynchronization();
+//			currentCustomLinearLayout.doSynchronization();
+//			return true;
+//		}
 		return super.onOptionsItemSelected(item);
 	}
 

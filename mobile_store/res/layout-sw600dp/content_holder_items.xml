@@ -5,64 +5,74 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingBottom="20dp" >
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/first_input_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="5dp"
+            android:text="@string/item_search_title"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <TextView
-                android:id="@+id/first_input_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="10dp"
-                android:paddingBottom="5dp"
-                android:text="@string/item_search_title"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+        <EditText
+            android:id="@+id/input_search_items"
+            android:layout_width="140dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:hint="Search"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:paddingBottom="5dp" >
+        </EditText>
 
-            <EditText
-                android:id="@+id/input_search_items"
-                android:layout_width="140dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:hint="@string/hint_search"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:paddingBottom="5dp" >
-            </EditText>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/items_camp_status_spinner_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="35dp" >
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="30dp"
+            android:paddingBottom="5dp"
+            android:text="@string/item_block_status_spinner_title"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <TextView
-                android:id="@+id/items_camp_status_spinner_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="10dp"
-                android:paddingBottom="5dp"
-                android:text="@string/item_block_status_spinner_title"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            <Spinner
-                android:id="@+id/items_camp_status_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" 
-                android:layout_marginLeft="10dp"
-                android:paddingBottom="5dp" 
-                android:layout_gravity="bottom" />
-        </LinearLayout>
+        <Spinner
+            android:id="@+id/items_camp_status_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-
+    <TextView
+            android:id="@+id/items_sync_group_title_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="5dp"
+            android:text="@string/items_sync_group_title"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+	<LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+    	<Button
+            android:id="@+id/items_sync_overstock_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="5dp"
+            android:text="@string/items_sync_overstock_button_title" />
+    	<Button
+            android:id="@+id/items_sync_on_action_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="5dp"
+            android:text="@string/items_sync_on_action_button_title" />
+    </LinearLayout>
     <FrameLayout
         android:id="@+id/items_content"
         android:layout_width="match_parent"

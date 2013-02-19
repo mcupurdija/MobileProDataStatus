@@ -18,6 +18,7 @@ import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.model.ItemQtySalesPriceAndDiscSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -104,6 +105,8 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
     private String[] priceAndDiscountAreCorrectStatusOptions;
     private TextView priceAndDiscountAreCorrectStatus;
 	
+    private ProgressDialog itemLoadProgressDialog;
+    
 	private Map<Integer, Boolean> loaderState = new HashMap<Integer, Boolean>();
 	
 	private BroadcastReceiver onNotice = new BroadcastReceiver() {
@@ -111,6 +114,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		public void onReceive(Context context, Intent intent) {
 			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
 			onSOAPResult(syncResult, intent.getAction());
+			itemLoadProgressDialog.dismiss();
 		}
 	};
 	
@@ -263,7 +267,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			@Override
 			public void onClick(View v) {
 				isServiceCalled = true;
-
+				itemLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_item_price_qty_load), getActivity().getResources().getString(R.string.dialog_body_item_price_qty_load), true);
 				getActivity().getSupportLoaderManager().restartLoader(ItemQuery._TOKEN, null,SaleOrderAddEditLineFragment.this);
 				getActivity().getSupportLoaderManager().restartLoader(SaleOrderQuery._TOKEN, null,SaleOrderAddEditLineFragment.this);
 				
@@ -414,7 +418,6 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
     @Override
     public void onPause() {
         super.onPause();
-        
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(onNotice);
     }
 
@@ -558,6 +561,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         
         if (!cursor.isNull(ItemQuery.ITEM_CAMPAIGN_STATUS)) {
         	itemCampaignStatus = cursor.getInt(ItemQuery.ITEM_CAMPAIGN_STATUS);
+        	mCampaignStatus.setSelection(itemCampaignStatus);
         }
         
         checkLoaderState();
@@ -572,7 +576,9 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	
 	private void doWsAction() {
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", itemCampaignStatus, customerNo, "", Double.valueOf(0), salesPersonNo, documentType, 0, "", "", "", "", "", "", "", "");
+		double quantity = UIUtils.getDoubleFromUI(mQuantity.getText().toString());
+		int campaign_status = mCampaignStatus.getSelectedItemPosition();
+		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", campaign_status, customerNo, "", quantity, salesPersonNo, documentType, 0, "", "", "", "", "", "", "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQtySalesPriceAndDiscSyncObject);
 		getActivity().startService(intent);
 		

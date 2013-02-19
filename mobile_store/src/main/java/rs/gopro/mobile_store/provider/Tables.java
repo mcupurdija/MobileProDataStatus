@@ -37,4 +37,5 @@ public interface Tables {
 	
 	String VISITS_EXPORT = "visits left outer join customers on visits.customer_id = customers._id " +
 			"left outer join sales_persons on visits.sales_person_id = sales_persons._id ";
+	String SALE_ORDERS_SALDO = "sale_orders inner join sale_order_lines on sale_order_lines.sale_order_id = sale_orders._id";
 }

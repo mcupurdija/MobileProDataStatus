@@ -3,10 +3,12 @@ package rs.gopro.mobile_store.ui.fragment;
 import java.util.Date;
 
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.CustomerSyncObject;
 import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
@@ -48,6 +50,8 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 	private CheckBoxPreference realizedVisistSyncCheckBox;
 	private CheckBoxPreference customerSyncCheckBox;
 	private CheckBoxPreference invoicesSyncCheckBox;
+	private String salesPersonId;
+	private String salesPersonNo;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +69,13 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 		invoicesSyncCheckBox = (CheckBoxPreference) getPreferenceScreen().findPreference(getString(R.string.key_sync_sales_doc_check_box));
 		invoicesSyncCheckBox.setOnPreferenceChangeListener(this);
 
-		setHasOptionsMenu(true);
+		salesPersonId = SharedPreferencesUtil.getSalePersonId(getActivity());
+		salesPersonNo = "";
+		Cursor cursor = getActivity().getContentResolver().query(MobileStoreContract.SalesPerson.CONTENT_URI, new String[] { MobileStoreContract.SalesPerson.SALE_PERSON_NO }, "_ID=?", new String[] { salesPersonId }, null);
+		if (cursor.moveToFirst()) {
+			salesPersonNo = cursor.getString(0);
+		}
+		setHasOptionsMenu(true); 
 		getLoaderManager().initLoader(SYNC_ITEM_LOADER, null, this);
 		getLoaderManager().initLoader(SYNC_PLANNED_VISIT_LOADER, null, this);
 		getLoaderManager().initLoader(SYNC_REALIZED_VISIT_LOADER, null, this);
@@ -163,21 +173,21 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 
 	private void doCustomerSync() {
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		CustomerSyncObject syncObject = new CustomerSyncObject("", "","", DateUtils.getWsDummyDate());
+		CustomerSyncObject syncObject = new CustomerSyncObject("", "", salesPersonNo, DateUtils.getWsDummyDate());
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT,syncObject);
 		getActivity().startService(intent);
 	}
 
 	private void doPlannedVisitSync() {
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		PlannedVisitsToCustomersSyncObject plannedVisitsToCustomersSyncObject = new PlannedVisitsToCustomersSyncObjectOut("", "V.MAKEVIC", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), "");
+		PlannedVisitsToCustomersSyncObject plannedVisitsToCustomersSyncObject = new PlannedVisitsToCustomersSyncObjectOut("", salesPersonNo, DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, plannedVisitsToCustomersSyncObject);
 		getActivity().startService(intent);
 	}
 
 	private void doItemsSync() {
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(-1), null, DateUtils.getWsDummyDate());
+		ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(-1), salesPersonNo, DateUtils.getWsDummyDate());
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
 		getActivity().startService(intent);
 
@@ -185,14 +195,14 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 
 	private void doRealizedVisitSync() {
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		RealizedVisitsToCustomersSyncObject realizedVisitsToCustomersSyncObject = new RealizedVisitsToCustomersSyncObjectOut("", "V.MAKEVIC", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), "");
+		RealizedVisitsToCustomersSyncObject realizedVisitsToCustomersSyncObject = new RealizedVisitsToCustomersSyncObjectOut("", salesPersonNo, DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, realizedVisitsToCustomersSyncObject);
 		getActivity().startService(intent);
 	}
 	
 	private void doSalesDocumentsSync(){
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		SalesDocumentsSyncObject syncObject = new SalesDocumentsSyncObject("", Integer.valueOf(0), "", "", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), "",Integer.valueOf(-1));
+		SalesDocumentsSyncObject syncObject = new SalesDocumentsSyncObject("", Integer.valueOf(0), "", "", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), salesPersonNo,Integer.valueOf(-1));
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, syncObject);
 		getActivity().startService(intent);
 	}

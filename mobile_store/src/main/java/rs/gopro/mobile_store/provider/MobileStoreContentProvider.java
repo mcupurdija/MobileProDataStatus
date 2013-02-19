@@ -78,6 +78,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int SALE_ORDER_EXPORT = 145;
 	private static final int SENT_ORDER_CUSTOM_SEARCH = 146;
 	private static final int SENT_ORDER_BY_STATUS = 147;
+	private static final int SALE_ORDERS_SALDO = 148;
 	
 	private static final int VISITS = 200;
 	private static final int VISIT_ID = 201;
@@ -168,6 +169,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "sale_orders", SALE_ORDERS);
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_orders/sale_orders_export", SALE_ORDER_EXPORT);
+		mobileStoreURIMatcher.addURI(authority,
+				"sale_orders/sale_orders_saldo", SALE_ORDERS_SALDO);
 		mobileStoreURIMatcher.addURI(authority, "sale_orders/#", SALE_ORDER);
 		mobileStoreURIMatcher.addURI(authority, "sale_orders_list/*",
 				SALE_ORDERS_LIST);
@@ -444,6 +447,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 				.where(SyncLogs._ID + "=?", new String[]{syncId} );
 		case SALES_PERSONS:
 			return builder.addTable(Tables.SALES_PERSONS);
+		case ITEMS: 
+			return builder.addTable(Tables.ITEMS);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -671,9 +676,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 			String saleOrderDocType = SaleOrders.getCustomSearchFirstParamQuery(uri);
 			String noType = SaleOrders.getCustomSearchSecondParamQuery(uri);
 			OrderType orderType = ApplicationConstants.OrderType.find(noType);
-			String condition = SaleOrders.SALES_ORDER_NO  + " is null";
+			String condition = SaleOrders.SALES_ORDER_NO  + " is null or "+SaleOrders.SALES_ORDER_NO  + " = ''";
 			if(OrderType.SENT_ORDER.equals(orderType)){
-				condition = SaleOrders.SALES_ORDER_NO  + " is not null";
+				condition = SaleOrders.SALES_ORDER_NO  + " is not null and "+SaleOrders.SALES_ORDER_NO  + " <> ''";
 			}
 			return builder.addTable(Tables.SALE_ORDERS)
 					.where(
@@ -874,6 +879,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(MobileStoreContract.Customers.CUSTOMER_NO, Tables.CUSTOMERS)
 					.mapToTable(MobileStoreContract.Visits.ODOMETER, Tables.VISITS)
 					.mapToTable(MobileStoreContract.Visits.NOTE, Tables.VISITS);
+		case SALE_ORDERS_SALDO:
+			return  builder.addTable(Tables.SALE_ORDERS_SALDO);
+					
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

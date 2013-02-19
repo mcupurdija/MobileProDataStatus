@@ -122,7 +122,7 @@
         <item>Platna kartica</item>
     </string-array>
     <string-array name="location_type_array">
-        <item>300</item>
+        <item>001</item>
     </string-array>
      <string-array name="invoice_line_type_array">
         <item>Konto GK</item>

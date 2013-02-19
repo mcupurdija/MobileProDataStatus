@@ -7,6 +7,7 @@ import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.fragment.SaleOrderAddEditLineFragment;
 import rs.gopro.mobile_store.ui.fragment.SaleOrderLinesAddEditPreviewListFragment;
 import rs.gopro.mobile_store.util.LogUtils;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
