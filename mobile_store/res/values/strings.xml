@@ -232,7 +232,7 @@
 	<string name="ecc_activity_title">Electronic customer card</string>
 	<string name="cus_trade_agree_menu_title">Agreement preview</string>
 	<string name="cus_trade_agree_activity_title">Customer trade agreement</string>
-	
+	<string name="sync_customer_address_menu_title">Sync address</string>
 	
 	<!-- ecc header label -->
 	<string name = "el_card_customer_no_label">Customer No.</string>

@@ -3,9 +3,14 @@ package rs.gopro.mobile_store.ui;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerTradeAgreemnt;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
+import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.CustomerAddressesSyncObject;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -116,6 +121,10 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 		case R.id.create_cus_trade_agree_activity:
 			Intent customerTradeAgreementIntent = new Intent(Intent.ACTION_VIEW, CustomerTradeAgreemnt.buildUri(customerId));
 			startActivity(customerTradeAgreementIntent);
+			return true;
+		case R.id.sych_customer_address:
+			doSync();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -163,4 +172,14 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	private void doSync() {
+		Cursor cursor = getContentResolver().query(MobileStoreContract.Customers.buildCustomersUri(customerId), new String[] { Customers._ID, Customers.CUSTOMER_NO }, null, null, null);
+		if (cursor.moveToFirst()) {
+			String customerNo = cursor.getString(1);
+			Intent syncAddressIntent = new Intent(this, NavisionSyncService.class);
+			CustomerAddressesSyncObject addressesSyncObject = new CustomerAddressesSyncObject("", customerNo, "", DateUtils.getWsDummyDate());
+			syncAddressIntent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, addressesSyncObject);
+			startService(syncAddressIntent);
+		}
+	}
 }

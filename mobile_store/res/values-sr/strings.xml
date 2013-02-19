@@ -232,6 +232,8 @@
 	<string name="ecc_activity_title">Elekronska karta kupca</string>
 	<string name="cus_trade_agree_menu_title">Pregled sporazuma</string>
 	<string name="cus_trade_agree_activity_title">Korisnicki sporazum</string>
+	<string name="sync_customer_address_menu_title">Sinh adrese</string>
+	
 	
 	
 	<!-- ecc header label -->
