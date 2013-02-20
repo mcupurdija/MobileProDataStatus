@@ -10,9 +10,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.ActionMode;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View.OnLongClickListener;
 
 public class CustomersViewActivity extends BaseActivity implements CustomersViewListFragment.Callbacks, CustomersViewDetailFragment.Callbacks {
 
@@ -23,7 +28,7 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 	// implement later on
 	// private String mViewType;
 
-	private Fragment customersViewFragmentDetail;
+	private CustomersViewDetailFragment customersViewFragmentDetail;
 	private ShowHideMasterLayout mShowHideMasterLayout;
 	private String customerId;
 
@@ -46,7 +51,7 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 		if (savedInstanceState != null) {
 			// @TODO needs to handle this
 
-			customersViewFragmentDetail = fm.findFragmentById(R.id.fragment_customer_detail);
+			customersViewFragmentDetail = (CustomersViewDetailFragment) fm.findFragmentById(R.id.fragment_customer_detail);
 			updateDetailBackground();
 		}
 	}
@@ -78,11 +83,11 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 			if (intent.hasExtra(EXTRA_MASTER_URI)) {
 				if (!updateSurfaceOnly) {
 					loadCustomersViewList((Uri) intent.getParcelableExtra(EXTRA_MASTER_URI), MobileStoreContract.Customers.getCustomersId(uri));
-					loadCustomersViewDetail(uri);
+					loadCustomersViewDetail(uri, false);
 				}
 			} else {
 				if (!updateSurfaceOnly) {
-					loadCustomersViewDetail(uri);
+					loadCustomersViewDetail(uri, false);
 				}
 			}
 		}
@@ -116,6 +121,8 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 		case R.id.create_cus_trade_agree_activity:
 			Intent customerTradeAgreementIntent = new Intent(Intent.ACTION_VIEW, CustomerTradeAgreemnt.buildUri(customerId));
 			startActivity(customerTradeAgreementIntent);
+		case R.id.edit_customers:
+			loadCustomersViewDetail(MobileStoreContract.Customers.buildCustomersUri(customerId), true);
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -132,9 +139,11 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_customers_list, fragment).commit();
 	}
 
-	private void loadCustomersViewDetail(Uri customersDetailUri) {
+	private void loadCustomersViewDetail(Uri customersDetailUri, boolean isInUpdateMode) {
 		CustomersViewDetailFragment fragment = new CustomersViewDetailFragment();
-		fragment.setArguments(BaseActivity.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW, customersDetailUri)));
+		Bundle bundle = BaseActivity.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW, customersDetailUri));
+		bundle.putBoolean(CustomersViewDetailFragment.IS_IN_UPDATE_MODE, isInUpdateMode);
+		fragment.setArguments(bundle);
 		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_customer_detail, fragment).commit();
 		customersViewFragmentDetail = fragment;
 		updateDetailBackground();
@@ -148,7 +157,7 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 	@Override
 	public boolean onCustomerSelected(String customerId) {
 		this.customerId = customerId;
-		loadCustomersViewDetail(MobileStoreContract.Customers.buildCustomersUri(customerId));
+		loadCustomersViewDetail(MobileStoreContract.Customers.buildCustomersUri(customerId), false);
 		return true;
 	}
 
@@ -162,5 +171,12 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 		menuInflater.inflate(R.menu.customer_activity_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
+
+	
+	
+	
+	
+	
+
 
 }

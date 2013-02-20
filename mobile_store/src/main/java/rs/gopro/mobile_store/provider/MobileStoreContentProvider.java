@@ -389,7 +389,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 			 */
 			getContext().getContentResolver().notifyChange(SaleOrders.CONTENT_URI, null);
 		case SYNC_LOGS_ID:
-			getContext().getContentResolver().notifyChange(SyncLogs.CONTENT_URI, null);
+			getContext().getContentResolver().notifyChange(SyncLogs.CONTENT_URI, null);	
 		default:
 			getContext().getContentResolver().notifyChange(uri, null);
 		}
@@ -440,6 +440,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 				.where(SyncLogs._ID + "=?", new String[]{syncId} );
 		case SALES_PERSONS:
 			return builder.addTable(Tables.SALES_PERSONS);
+		case CUSTOMERS_ID:
+			String customerId = Customers.getCustomersId(uri);
+			return builder.addTable(Tables.CUSTOMERS)
+					.where(Customers._ID + "=?", new String[]{customerId});
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

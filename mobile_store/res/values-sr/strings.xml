@@ -264,4 +264,8 @@
 	<string name = "cus_trade_agreement_starting_date_label">Pocetni datum</string>
 	<string name = "cus_trade_agreement_ending_date_label">Krajnji datum</string>
 	<string name = "cus_trade_agreement_actual_discount_label">Popust (%)</string>
+	
+	<string name = "customer_edit_title">Izmeni</string>
+	<string name = "save_customer_changes_title">Snimi</string>
+	
 </resources>
