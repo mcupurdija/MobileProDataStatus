@@ -2,12 +2,14 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.ui.fragment.SaleOrderAddEditLineFragment.Callbacks;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
 import rs.gopro.mobile_store.ui.fragment.ElectronicCardCustomerFragment;
 import rs.gopro.mobile_store.util.LogUtils;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -17,11 +19,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,6 +34,8 @@ public class CustomersViewDetailFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
 
 	private static final String TAG = LogUtils.makeLogTag(CustomersViewDetailFragment.class);
+	
+	public static final String IS_IN_UPDATE_MODE = "IS_IN_UPDATE_MODE";
 	
 	private Uri mCustomerdetailUri;
 	
@@ -61,6 +67,8 @@ public class CustomersViewDetailFragment extends Fragment implements
 	private TextView mNumberOfBlueCoat;
 	private EditText mNumberOfGreyCoat;
 	
+	private ActionMode actionMode;
+	private boolean isInUpdateMode = false;
 	
 	
     
@@ -79,8 +87,9 @@ public class CustomersViewDetailFragment extends Fragment implements
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final Intent intent = BaseActivity.fragmentArgumentsToIntent(getArguments());
+        	Bundle arguments = getArguments();
+         isInUpdateMode =	arguments.getBoolean(IS_IN_UPDATE_MODE);
+        final Intent intent = BaseActivity.fragmentArgumentsToIntent(arguments);
         mCustomerdetailUri = intent.getData();
         if (mCustomerdetailUri == null) {
             return;
@@ -156,7 +165,16 @@ public class CustomersViewDetailFragment extends Fragment implements
         mDivision = (TextView) rootView.findViewById(R.id.customer_division_value);
         mNumberOfBlueCoat = (TextView) rootView.findViewById(R.id.customer_blue_coat_value);
         mNumberOfGreyCoat = (EditText) rootView.findViewById(R.id.customer_gray_coat_value);
+        if(isInUpdateMode){
+        	setFocusable(true);
+        	if(actionMode == null){
+        		actionMode = getActivity().startActionMode(actionModeCallback);
+        		System.out.println("CONTEXTUAL MENUYYYYY");
+        	}
+        	
+        }else{
         setFocusable(false);
+        }
         return rootView;
     }
 	
@@ -239,6 +257,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		System.out.println("LOADER IS FINIDES");
 		buildUiFromCursor(cursor);
 	}
 
@@ -248,7 +267,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 	
 	
 	
-	private void setFocusable(boolean disable){
+	public void setFocusable(boolean disable){
 		mAddress.setFocusable(disable);
 		mName.setFocusable(disable);
 		mName2.setFocusable(disable);
@@ -263,7 +282,73 @@ public class CustomersViewDetailFragment extends Fragment implements
 	}
 	
 	
+	private void saveForm(){
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(Customers.ADDRESS, mAddress.getText().toString());
+		contentValues.put(Customers.NAME, mName.getText().toString());
+		contentValues.put(Customers.NAME_2, mName2.getText().toString());
+		contentValues.put(Customers.EMAIL, mEmail.getText().toString());
+		contentValues.put(Customers.POST_CODE, mPostCode.getText().toString());
+		contentValues.put(Customers.MOBILE, mMobile.getText().toString());
+		contentValues.put(Customers.COMPANY_ID, mCompanyId.getText().toString());
+		contentValues.put(Customers.PRIMARY_CONTACT_ID, mPrimaryContactId.getText().toString());
+		contentValues.put(Customers.VAR_REG_NO, mVarRegNo.getText().toString());
+		contentValues.put(Customers.PHONE, mPhone.getText().toString());
+		contentValues.put(Customers.NUMBER_OF_GREY_COAT, mNumberOfGreyCoat.getText().toString());
+		getActivity().getContentResolver().update(mCustomerdetailUri, contentValues, null, null);
+		
+	}
 	
+	
+private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
+		
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+		  setFocusable(false);
+		  mode = null;
+		//	getLoaderManager().restartLoader(0, null, this);
+		   getLoaderManager().restartLoader(CustomerDetailQuery._TOKEN, null, CustomersViewDetailFragment.this);
+	   
+		}
+		
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			MenuInflater inflater = mode.getMenuInflater();
+			inflater.inflate(R.menu.cutomer_contextual_action_bar, menu);
+			return true;
+		}
+		
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			System.out.println("AKCIJA: "+item.getItemId());
+			switch (item.getItemId()) {
+			case R.id.save_customer_changes :
+				System.out.println("SNIMA");
+				saveForm();
+				mode.finish();
+				return true;
+
+			default:
+				break;
+			}
+			return false;
+		}
+	};
+
+
+ public void	onEditButtonClick(){
+		setFocusable(true);
+	   // actionMode = getActivity().startActionMode(actionModeCallback);
+	}
+	
+	
+		
 	
 
 	
@@ -330,4 +415,8 @@ public class CustomersViewDetailFragment extends Fragment implements
         int NUMBER_OF_BLUE_COAT = 25;
         int NUMBER_OF_GREY_COAT = 26; 
 	}
+
+
+
+
 }

@@ -264,4 +264,7 @@
 	<string name = "cus_trade_agreement_starting_date_label">Starting date</string>
 	<string name = "cus_trade_agreement_ending_date_label">Ending date</string>
 	<string name = "cus_trade_agreement_actual_discount_label">Actual discount (%)</string>
+	
+	<string name = "customer_edit_title">Edit</string>
+	<string name = "save_customer_changes_title">Save</string>
 </resources>

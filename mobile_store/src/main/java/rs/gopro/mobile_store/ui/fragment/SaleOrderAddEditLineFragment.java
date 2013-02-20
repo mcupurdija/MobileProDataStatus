@@ -281,7 +281,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			price = "0";
 		}
 		if (discount == null || discount.length() < 1) {
-			price = "0";
+			discount = "0";
 		}
 		try {
 			double price_d = WsDataFormatEnUsLatin.parseForUIDouble(price);

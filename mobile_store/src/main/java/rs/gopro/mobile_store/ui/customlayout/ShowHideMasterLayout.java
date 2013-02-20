@@ -413,4 +413,6 @@ public class ShowHideMasterLayout extends ViewGroup implements Animator.Animator
                     return super.onFling(e1, e2, velocityX, velocityY);
                 }
             };
+            
+           
 }

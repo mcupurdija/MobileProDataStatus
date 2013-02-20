@@ -12,5 +12,10 @@
         android:id="@+id/sych_customer_address"
         android:showAsAction="ifRoom|withText"
         android:title="@string/sync_customer_address_menu_title" />
+	 <item
+        android:id="@+id/edit_customers"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/customer_edit_title" />
+
 
 </menu>
