@@ -1,6 +1,7 @@
 package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.util.PropertiesUtil;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
@@ -84,6 +85,7 @@ public class LoginActivity extends Activity {
 		 */
 		if (PropertiesUtil.getLoginSwitch(getAssets())) {
 			SharedPreferencesUtil.addSalePersonId(getApplicationContext(), "1");
+			addSalesPersonNo("1");
 			return true;
 		}
 		String passFromDB = getPassword(username);
@@ -104,11 +106,19 @@ public class LoginActivity extends Activity {
 			SharedPreferencesUtil.addSalePersonId(getApplicationContext(), salePersonId);
 			String userRole = cursor.getString(UsersQuery.NAME);
 			SharedPreferencesUtil.addUserRole(getApplicationContext(), userRole);
-			
+			addSalesPersonNo(salePersonId);
 		} else {
 			Log.i(this.getClass().getName(), "Username " + username + " does not exist");
 		}
 		return password;
+	}
+	private void addSalesPersonNo(String salePersonId) {
+		String salesPersonNo = "";
+		Cursor salespersoncursor = getContentResolver().query(MobileStoreContract.SalesPerson.CONTENT_URI, new String[] { MobileStoreContract.SalesPerson.SALE_PERSON_NO }, "_ID=?", new String[] { salePersonId }, null);
+		if (salespersoncursor.moveToFirst()) {
+			salesPersonNo = salespersoncursor.getString(0);
+		}
+		SharedPreferencesUtil.addSalePersonNo(getApplicationContext(), salesPersonNo);
 	}
 
 	/**

@@ -29,8 +29,8 @@ public class PlannedVisitsToCustomersSyncObjectOut extends PlannedVisitsToCustom
 		super(parcel);
 	}
 
-	public PlannedVisitsToCustomersSyncObjectOut(String cSVString, String salespersonCode, Date visitDateFrom, Date visitDateTo, String customerNoa46) {
-		super(cSVString, salespersonCode, visitDateFrom, visitDateTo, customerNoa46);
+	public PlannedVisitsToCustomersSyncObjectOut(String cSVString, String salespersonCode, Date visitDateFrom, Date visitDateTo, String customerNoa46, Integer pPotentialCustomer, Integer pPendingSynchronization) {
+		super(cSVString, salespersonCode, visitDateFrom, visitDateTo, customerNoa46, pPotentialCustomer, pPendingSynchronization);
 	}
 
 	@Override

@@ -26,6 +26,8 @@ public abstract class PlannedVisitsToCustomersSyncObject extends SyncObject {
 	private Date visitDateFrom;
 	private Date visitDateTo;
 	private String customerNoa46;
+	private Integer pPotentialCustomer;
+	private Integer pPendingSynchronization;
 
 	public PlannedVisitsToCustomersSyncObject() {
 		super();
@@ -38,16 +40,19 @@ public abstract class PlannedVisitsToCustomersSyncObject extends SyncObject {
 		setVisitDateFrom(new Date(parcel.readLong()));
 		setVisitDateTo(new Date(parcel.readLong()));
 		setCustomerNoa46(parcel.readString());
-
+		setpPotentialCustomer(parcel.readInt());
+		setpPendingSynchronization(parcel.readInt());
 	}
 
-	public PlannedVisitsToCustomersSyncObject(String cSVString, String salespersonCode, Date visitDateFrom, Date visitDateTo, String customerNoa46) {
+	public PlannedVisitsToCustomersSyncObject(String cSVString, String salespersonCode, Date visitDateFrom, Date visitDateTo, String customerNoa46, Integer pPotentialCustomer, Integer pPendingSynchronization) {
 		super();
 		this.cSVString = cSVString;
 		this.salespersonCode = salespersonCode;
 		this.visitDateFrom = visitDateFrom;
 		this.visitDateTo = visitDateTo;
 		this.customerNoa46 = customerNoa46;
+		this.pPotentialCustomer = pPotentialCustomer;
+		this.pPendingSynchronization = pPendingSynchronization;
 	}
 
 	@Override
@@ -64,7 +69,8 @@ public abstract class PlannedVisitsToCustomersSyncObject extends SyncObject {
 		dest.writeLong(getVisitDateFrom().getTime());
 		dest.writeLong(getVisitDateTo().getTime());
 		dest.writeString(getCustomerNoa46());
-
+		dest.writeInt(getpPotentialCustomer());
+		dest.writeInt(getpPendingSynchronization());
 	}
 
 	@Override
@@ -106,6 +112,18 @@ public abstract class PlannedVisitsToCustomersSyncObject extends SyncObject {
 		customerNoa46Info.setType(String.class);
 		properties.add(customerNoa46Info);
 
+		PropertyInfo potentialCustomer = new PropertyInfo();
+		potentialCustomer.setName("pPotentialCustomer");
+		potentialCustomer.setValue(pPotentialCustomer);
+		potentialCustomer.setType(String.class);
+		properties.add(potentialCustomer);
+		
+		PropertyInfo pendingSynchronization = new PropertyInfo();
+		pendingSynchronization.setName("pPendingSynchronization");
+		pendingSynchronization.setValue(pPendingSynchronization);
+		pendingSynchronization.setType(String.class);
+		properties.add(pendingSynchronization);
+		
 		return properties;
 	}
 
@@ -163,6 +181,22 @@ public abstract class PlannedVisitsToCustomersSyncObject extends SyncObject {
 
 	public void setCustomerNoa46(String customerNoa46) {
 		this.customerNoa46 = customerNoa46;
+	}
+
+	public Integer getpPotentialCustomer() {
+		return pPotentialCustomer;
+	}
+
+	public void setpPotentialCustomer(Integer pPotentialCustomer) {
+		this.pPotentialCustomer = pPotentialCustomer;
+	}
+
+	public Integer getpPendingSynchronization() {
+		return pPendingSynchronization;
+	}
+
+	public void setpPendingSynchronization(Integer pPendingSynchronization) {
+		this.pPendingSynchronization = pPendingSynchronization;
 	}
 
 }

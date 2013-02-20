@@ -1,15 +1,9 @@
 package rs.gopro.mobile_store.ui.fragment;
 
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
-
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.BaseActivity;
-import rs.gopro.mobile_store.ui.VisitListFromMenuFragment;
-import rs.gopro.mobile_store.ui.VisitsMultipaneActivity;
-
-import rs.gopro.mobile_store.ui.CustomersViewListFragment.Callbacks;
-import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
 import android.content.Context;
@@ -25,11 +19,9 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemLongClickListener;
 
 public class VisitListFromHomeScreenFragment  extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 	private static final String TAG = makeLogTag(VisitListFromHomeScreenFragment.class);
@@ -211,8 +203,23 @@ public class VisitListFromHomeScreenFragment  extends ListFragment implements Lo
 			// .equals(mSelectedVendorId));
 			view.setActivated(String.valueOf(cursor.getInt(VisitsQuery._ID)).equals(mSelectedCustomerId));
 			((TextView) view.findViewById(R.id.visit_title)).setText(UIUtils.formatDate(UIUtils.getDateTime(cursor.getString(VisitsQuery.VISIT_DATE))));
-			((TextView) view.findViewById(R.id.visit_subtitle1)).setText(cursor.getString(VisitsQuery.CUSTOMER_NO));
-			((TextView) view.findViewById(R.id.visit_subtitle2)).setText(cursor.getString(VisitsQuery.CUSTOMER_NAME) + cursor.getString(VisitsQuery.CUSTOMER_NAME2));
+			String customer_no = cursor.getString(VisitsQuery.CUSTOMER_NO);
+			String customer_name = cursor.getString(VisitsQuery.CUSTOMER_NAME);//  + cursor.getString(VisitsQuery.CUSTOMER_NAME2);
+        	if (customer_no == null || customer_no.length() < 1) {
+        		customer_no = "NEPOZNAT KUPAC";
+        		customer_name = "-";
+        	}
+        	
+        	String status = cursor.getString(VisitsQuery.VISIT_RESULT);
+        	if (status == null || status.length() < 1) {
+        		status = "PLAN";
+        	} else {
+        		status = "REALIZACIJA";
+        	}
+        	
+			((TextView) view.findViewById(R.id.visit_subtitle1)).setText(customer_no);
+			((TextView) view.findViewById(R.id.visit_subtitle2)).setText(customer_name);
+			((TextView) view.findViewById(R.id.visit_status)).setText(status);
 		}
 	}
 
@@ -220,7 +227,7 @@ public class VisitListFromHomeScreenFragment  extends ListFragment implements Lo
 		int _TOKEN = 0x1;
 
 		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Visits.SALES_PERSON_ID, MobileStoreContract.Visits.CUSTOMER_ID, MobileStoreContract.Visits.CUSTOMER_NO, MobileStoreContract.Visits.NAME, MobileStoreContract.Visits.NAME_2,
-				MobileStoreContract.Visits.VISIT_DATE };
+				MobileStoreContract.Visits.VISIT_DATE, MobileStoreContract.Visits.VISIT_RESULT };
 
 		int _ID = 0;
 		int SALES_PERSON_ID = 1;
@@ -229,6 +236,7 @@ public class VisitListFromHomeScreenFragment  extends ListFragment implements Lo
 		int CUSTOMER_NAME = 4;
 		int CUSTOMER_NAME2 = 5;
 		int VISIT_DATE = 6;
+		int VISIT_RESULT = 7;
 	}
 
 }

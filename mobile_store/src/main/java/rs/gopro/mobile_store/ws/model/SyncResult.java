@@ -39,7 +39,7 @@ public class SyncResult implements Parcelable {
 		dest.writeParcelable(getComplexResult(), 0);
 	}
 
-	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+	public static final Parcelable.Creator<SyncResult> CREATOR = new Parcelable.Creator<SyncResult>() {
 		public SyncResult createFromParcel(Parcel in) {
 			return new SyncResult(in);
 		}

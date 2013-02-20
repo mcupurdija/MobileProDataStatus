@@ -78,7 +78,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:layout_weight="7" />
+                android:layout_weight="7"
+                android:inputType="numberDecimal" />
 
             <EditText
                 android:id="@+id/so_line_item_max_quantity_value"

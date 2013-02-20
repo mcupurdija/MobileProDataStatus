@@ -57,11 +57,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 		super.onCreate(savedInstanceState);
 		LogUtils.LOGI(TAG, "on create: "+this.getId());
 		salesPersonId = SharedPreferencesUtil.getSalePersonId(getActivity());
-		salesPersonNo = "";
-		Cursor cursor = getActivity().getContentResolver().query(MobileStoreContract.SalesPerson.CONTENT_URI, new String[] { MobileStoreContract.SalesPerson.SALE_PERSON_NO }, "_ID=?", new String[] { salesPersonId }, null);
-		if (cursor.moveToFirst()) {
-			salesPersonNo = cursor.getString(0);
-		}
+		salesPersonNo = SharedPreferencesUtil.getSalePersonNo(getActivity());
 	}
 
 	@Override

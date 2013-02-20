@@ -157,7 +157,8 @@ public class SetPlannedVisitsToCustomersSyncObject extends SyncObject {
         		MobileStoreContract.Visits.DEPARTURE_TIME,
         		MobileStoreContract.Visits.POTENTIAL_CUSTOMER,
         		MobileStoreContract.Customers.CUSTOMER_NO,
-        		MobileStoreContract.Visits.NOTE
+        		MobileStoreContract.Visits.NOTE,
+        		MobileStoreContract.Visits.IS_DELETED
         };
         
         Type[] PROJECTION_TYPE = {
@@ -167,7 +168,8 @@ public class SetPlannedVisitsToCustomersSyncObject extends SyncObject {
         		Time.class,
         		Integer.class,
         		String.class,
-        		String.class
+        		String.class,
+        		Integer.class
         };
 	}
 }

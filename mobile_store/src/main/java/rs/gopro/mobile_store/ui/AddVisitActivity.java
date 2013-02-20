@@ -333,12 +333,14 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 
 	private void submitForm() {
 		Integer customerPk = null;
-		Object object = customerAutoComplete.getAdapter().getItem(0);
-		Cursor customerCursor = (Cursor) object;
-		if (customerCursor != null) {
-			customerPk = customerCursor.getInt(customerCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
-			String customerName = customerCursor.getString(customerCursor.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME));
-			System.out.println("Customer id is : " + customerPk + " name is :" + customerName);
+		if (customerAutoComplete.getText() != null && customerAutoComplete.getText().length() > 0) {
+			Object object = customerAutoComplete.getAdapter().getItem(0);
+			Cursor customerCursor = (Cursor) object;
+			if (customerCursor != null) {
+				customerPk = customerCursor.getInt(customerCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
+				String customerName = customerCursor.getString(customerCursor.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME));
+				System.out.println("Customer id is : " + customerPk + " name is :" + customerName);
+			}
 		}
 //		Cursor salePersonCursor = (Cursor) salePersionAutocomplete.getAdapter().getItem(0);
 //		if (salePersonCursor != null) {
@@ -348,7 +350,11 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(Visits.SALES_PERSON_ID, 1);
 		contentValues.put(Visits.VISIT_DATE, DateUtils.formatPickerInputForDb(visitDateEditText.getText().toString()));
-		contentValues.put(Visits.CUSTOMER_ID, customerPk);
+		if (customerPk == null) {
+			contentValues.putNull(Visits.CUSTOMER_ID);
+		} else {
+			contentValues.put(Visits.CUSTOMER_ID, customerPk);
+		}
 		contentValues.put(MobileStoreContract.Visits.VISIT_TYPE, "0");
 		contentValues.put(MobileStoreContract.Visits.IS_SENT, Integer.valueOf(0));
 //		contentValues.put(Visits.LINE_NO, lineNumberEditText.getText().toString());

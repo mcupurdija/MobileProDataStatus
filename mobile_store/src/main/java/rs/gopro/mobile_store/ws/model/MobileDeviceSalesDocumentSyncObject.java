@@ -194,7 +194,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 //		String headerResp = soapResponse.getPropertyAsString("pCSVStringHeader");
 //		String linesResp = soapResponse.getPropertyAsString("pCSVStringLines");
 		
-		if (soapResponse.getPropertyAsString("pCSVStringHeader").equals("")) {
+		if (soapResponse.getPropertyAsString("pCSVStringHeader") == null || soapResponse.getPropertyAsString("pCSVStringHeader").equals("")) {
 			// when status is ponuda it will return nothing
 			return 1;
 		}

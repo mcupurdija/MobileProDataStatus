@@ -7,6 +7,7 @@ import android.content.SharedPreferences.Editor;
 public class SharedPreferencesUtil {
 
 	private static final String SALE_PERSON_ID = "sale_person_id";
+	private static final String SALE_PERSON_NO = "sale_person_no";
 	private static final String USER_LOGIN_STATUS = "user_login_status";
 	private static final String USER_ROLE = "user_role";
 
@@ -52,5 +53,18 @@ public class SharedPreferencesUtil {
 		SharedPreferences sharedPreferences = context.getSharedPreferences(ApplicationConstants.SESSION_PREFS, Context.MODE_PRIVATE);
 		return sharedPreferences.getString(USER_ROLE, "USER");
 
+	}
+
+	public static void addSalePersonNo(Context applicationContext,
+			String salesPersonNo) {
+		SharedPreferences sharedPreferences = applicationContext.getSharedPreferences(ApplicationConstants.SESSION_PREFS, Context.MODE_PRIVATE);
+		Editor editor = sharedPreferences.edit();
+		editor.putString(SALE_PERSON_NO, salesPersonNo);
+		editor.commit();
+	}
+	
+	public static String getSalePersonNo(Context context) {
+		SharedPreferences sharedPreferences = context.getSharedPreferences(ApplicationConstants.SESSION_PREFS, Context.MODE_PRIVATE);
+		return sharedPreferences.getString(SALE_PERSON_NO, null);
 	}
 }

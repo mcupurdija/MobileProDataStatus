@@ -191,6 +191,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private int billingAddressId = -1;
     
     private String salesPersonId;
+    private String salesPersonNo;
     private String orderDate = null;
     
     private StatementHandler statementHandler;
@@ -210,7 +211,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		setContentView(R.layout.activity_add_sale_order);
 		
 		salesPersonId = SharedPreferencesUtil.getSalePersonId(this);
-		
+		salesPersonNo = SharedPreferencesUtil.getSalePersonNo(this);
+
 		statementHandler = new StatementHandler(this);
 		
 		// routes data from intent that called this activity to business logic
@@ -409,7 +411,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO))) {	
 			document_no = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO));
 		} else {
-			document_no = "LIF-"+ data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders._ID));
+			document_no = "LIF/"+salesPersonNo+"-"+ data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders._ID));
 		}
 		
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.ORDER_DATE))) {	

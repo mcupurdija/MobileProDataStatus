@@ -320,15 +320,23 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		ContentValues localValues = new ContentValues();
 		
 		String item_auto_complete = mItemAutocomplete.getText().toString().trim();
-		if (itemAutocompleteAdapter.getIdForTitle(item_auto_complete) != -1) {
-			//Cursor customerItemCursor = (Cursor) customerAutoCompleteAdapter.getItem(customerAutoCompleteAdapter.getIdForTitle(customer_auto_complete));
-			int item_id = itemAutocompleteAdapter.getIdForTitle(item_auto_complete);//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
+//		if (itemAutocompleteAdapter.getIdForTitle(item_auto_complete) != -1) {
+//			//Cursor customerItemCursor = (Cursor) customerAutoCompleteAdapter.getItem(customerAutoCompleteAdapter.getIdForTitle(customer_auto_complete));
+//			int item_id = itemAutocompleteAdapter.getIdForTitle(item_auto_complete);//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
+//			itemId = item_id; // update global after save
+//			localValues.put(MobileStoreContract.SaleOrderLines.ITEM_ID, Integer.valueOf(item_id));
+//		} else {
+//			localValues.putNull(MobileStoreContract.SaleOrderLines.ITEM_ID);
+//		}
+
+		if (itemAutocompleteAdapter.getSelectedId() != -1) {
+			int item_id = itemAutocompleteAdapter.getSelectedId();//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
 			itemId = item_id; // update global after save
 			localValues.put(MobileStoreContract.SaleOrderLines.ITEM_ID, Integer.valueOf(item_id));
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrderLines.ITEM_ID);
 		}
-
+		
 		String quantity = mQuantity.getText().toString().trim();
 		if (quantity != null && !quantity.equals("")) {
 			localValues.put(MobileStoreContract.SaleOrderLines.QUANTITY, UIUtils.getDoubleFromUI(quantity));
@@ -617,7 +625,8 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	    		final String result = c.getString(codeIndex) + " - "
 	    				+ c.getString(nameIndex);
 	        	mItemAutocomplete.setText(result);
-	        	itemAutocompleteAdapter.setIdForTitle(result, cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrderLines.ITEM_ID)));
+//	        	itemAutocompleteAdapter.setIdForTitle(result, cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrderLines.ITEM_ID)));
+	        	itemAutocompleteAdapter.setSelectedId(cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrderLines.ITEM_ID)));
         	}
         }
         

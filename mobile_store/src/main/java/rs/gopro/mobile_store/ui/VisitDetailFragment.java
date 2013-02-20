@@ -109,9 +109,16 @@ public class VisitDetailFragment extends Fragment implements
         }
         
         String customerNameString = cursor.getString(VisitsQuery.NAME) + " " + cursor.getString(VisitsQuery.NAME_2);
+        String customerNoString = cursor.getString(VisitsQuery.CUSTOMER_NO);
+        
+        if (customerNoString == null || customerNoString.length() < 1) {
+        	customerNoString = "NEPOZNAT KUPAC";
+        	customerNameString = "-";
+    	}
+        
         mCustomerName.setText("Kupac:		" + customerNameString);
         
-        String customerNoString = cursor.getString(VisitsQuery.CUSTOMER_NO);
+        
         mCustomerNo.setText("Kupac Br.		" + customerNoString);
         
         String visitDate = cursor.getString(VisitsQuery.VISIT_DATE);

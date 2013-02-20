@@ -1,8 +1,5 @@
 package rs.gopro.mobile_store.ui.components;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
@@ -24,9 +21,9 @@ public class ItemAutocompleteCursorAdapter extends CursorAdapter implements
 		MobileStoreContract.Items.DESCRIPTION
 	};
 
+	private int selectedId;
 	private Context mContext;
 	private LayoutInflater mInflater;
-	private Map<String, Integer> dataPositions = new HashMap<String, Integer>();
 	
 	public ItemAutocompleteCursorAdapter(Context context, Cursor c) {
 		super(context, c, 0);
@@ -74,9 +71,23 @@ public class ItemAutocompleteCursorAdapter extends CursorAdapter implements
 							: constraint.toString()), ITEM_PROJECTION,
 					null, null, null);
 		}
+		if (cursor.moveToFirst()) {
+			if (!cursor.isNull(cursor.getColumnIndexOrThrow(MobileStoreContract.Items._ID))) {
+				selectedId = cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.Items._ID));
+			}
+		}
+		
 		return cursor;
 	}
 
+	public int getSelectedId() {
+		return selectedId;
+	}
+	
+	public void setSelectedId(int selectedId) {
+		this.selectedId = selectedId;
+	}
+	
 	private String getResult(Cursor cursor) {
 		final int codeIndex = cursor
 				.getColumnIndexOrThrow(MobileStoreContract.Items.ITEM_NO);
@@ -84,18 +95,7 @@ public class ItemAutocompleteCursorAdapter extends CursorAdapter implements
 				.getColumnIndexOrThrow(MobileStoreContract.Items.DESCRIPTION);
 		final String result = cursor.getString(codeIndex) + " - "
 				+ cursor.getString(nameIndex);
-		dataPositions.put(result, Integer.valueOf(cursor.getInt(cursor
-				.getColumnIndexOrThrow(MobileStoreContract.Items._ID))));
 		return result;
 	}
-	
-	public int getIdForTitle(String data) {
-		if (dataPositions.containsKey(data)) {
-			return dataPositions.get(data);
-		} else return -1; 
-	}
-	
-	public void setIdForTitle(String data, int id) {
-		dataPositions.put(data, Integer.valueOf(id));
-	}
+
 }

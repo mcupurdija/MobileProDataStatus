@@ -184,8 +184,23 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 			// .equals(mSelectedVendorId));
 			view.setActivated(String.valueOf(cursor.getInt(VisitsQuery._ID)).equals(mSelectedVisitId));
 			((TextView) view.findViewById(R.id.visit_title)).setText(UIUtils.formatDate(UIUtils.getDateTime(cursor.getString(VisitsQuery.VISIT_DATE))));
-			((TextView) view.findViewById(R.id.visit_subtitle1)).setText(cursor.getString(VisitsQuery.CUSTOMER_NO));
-			((TextView) view.findViewById(R.id.visit_subtitle2)).setText(cursor.getString(VisitsQuery.CUSTOMER_NAME) + cursor.getString(VisitsQuery.CUSTOMER_NAME2));
+			String customer_no = cursor.getString(VisitsQuery.CUSTOMER_NO);
+			String customer_name = cursor.getString(VisitsQuery.CUSTOMER_NAME);//  + cursor.getString(VisitsQuery.CUSTOMER_NAME2);
+        	if (customer_no == null || customer_no.length() < 1) {
+        		customer_no = "NEPOZNAT KUPAC";
+        		customer_name = "-";
+        	}
+        	
+        	String status = cursor.getString(VisitsQuery.VISIT_RESULT);
+        	if (status == null || status.length() < 1) {
+        		status = "PLAN";
+        	} else {
+        		status = "REALIZACIJA";
+        	}
+        	
+			((TextView) view.findViewById(R.id.visit_subtitle1)).setText(customer_no);
+			((TextView) view.findViewById(R.id.visit_subtitle2)).setText(customer_name);
+			((TextView) view.findViewById(R.id.visit_status)).setText(status);
 		}
 	}
 
@@ -193,7 +208,7 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 		int _TOKEN = 0x1;
 
 		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Visits.SALES_PERSON_ID, MobileStoreContract.Visits.CUSTOMER_ID, MobileStoreContract.Visits.CUSTOMER_NO, MobileStoreContract.Visits.NAME, MobileStoreContract.Visits.NAME_2,
-				MobileStoreContract.Visits.VISIT_DATE };
+				MobileStoreContract.Visits.VISIT_DATE, MobileStoreContract.Visits.VISIT_RESULT };
 
 		int _ID = 0;
 //		int SALES_PERSON_ID = 1;
@@ -202,6 +217,7 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 		int CUSTOMER_NAME = 4;
 		int CUSTOMER_NAME2 = 5;
 		int VISIT_DATE = 6;
+		int VISIT_RESULT = 7;
 	}
 
 	@Override
