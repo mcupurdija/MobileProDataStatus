@@ -396,7 +396,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 			 */
 			getContext().getContentResolver().notifyChange(SaleOrders.CONTENT_URI, null);
 		case SYNC_LOGS_ID:
-			getContext().getContentResolver().notifyChange(SyncLogs.CONTENT_URI, null);
+			getContext().getContentResolver().notifyChange(SyncLogs.CONTENT_URI, null);	
 		default:
 			getContext().getContentResolver().notifyChange(uri, null);
 		}
@@ -451,6 +451,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.ITEMS);
 		case CUSTOMERS:
 			return builder.addTable(Tables.CUSTOMERS);
+		case CUSTOMERS_ID:
+			String customerId = Customers.getCustomersId(uri);
+			return builder.addTable(Tables.CUSTOMERS)
+					.where(Customers._ID + "=?", new String[]{customerId});
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -972,6 +976,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			tableName = Tables.SALE_ORDER_LINES;
 			selectionParam = new String[]{SaleOrderLines.SALE_ORDER_ID, SaleOrderLines.LINE_NO};
 			selectionPhrase =  SaleOrderLines.SALE_ORDER_ID + "=? AND " + SaleOrderLines.LINE_NO + "=?";
+		case CUSTOMER_ADDRESSES:
+			tableName = Tables.CUSTOMER_ADDRESSES;
+			selectionParam = new String[] {CustomerAddresses.ADDRESS_NO};
+			selectionPhrase = CustomerAddresses.ADDRESS_NO + "=?";
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);

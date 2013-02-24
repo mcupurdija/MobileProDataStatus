@@ -239,6 +239,8 @@
 	<string name="ecc_activity_title">Elekronska karta kupca</string>
 	<string name="cus_trade_agree_menu_title">Pregled sporazuma</string>
 	<string name="cus_trade_agree_activity_title">Korisnicki sporazum</string>
+	<string name="sync_customer_address_menu_title">Sinh adrese</string>
+	
 	
 	
 	<!-- ecc header label -->
@@ -291,4 +293,6 @@
 	<string name="items_sync_group_title">Opcije osvežavanja artikala</string>
 	<string name="items_sync_overstock_button_title">Osveži overstock artikle</string>
 	<string name="items_sync_on_action_button_title">Osveži artikle na akciji</string>
+	<string name = "customer_edit_title">Izmeni</string>
+	<string name = "save_customer_changes_title">Snimi</string>
 </resources>
