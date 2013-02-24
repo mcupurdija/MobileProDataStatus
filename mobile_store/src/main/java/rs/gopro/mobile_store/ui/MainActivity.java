@@ -198,8 +198,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	 * Callback method for contextual action bar initialization
 	 */
 	@Override
-	public void onLongClickItem(String identifier) {
-		ActionMode.Callback callback = currentCustomLinearLayout.getContextualActionBar(identifier);
+	public void onLongClickItem(String identifier, String visitType) {
+		ActionMode.Callback callback = currentCustomLinearLayout.getContextualActionBar(identifier, visitType);
 		if (callback != null) {
 			startActionMode(callback);
 		}

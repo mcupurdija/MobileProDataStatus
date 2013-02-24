@@ -17,10 +17,12 @@ import android.view.MenuItem;
  */
 public class VisitContextualMenu implements  ActionMode.Callback{
 	String visitId;
+	String visitType;
 	Activity activity;
-	public VisitContextualMenu(Activity activity, String visitId){
+	public VisitContextualMenu(Activity activity, String visitId, String visitType){
 		this.visitId = visitId;
 		this.activity = activity;
+		this.visitType = visitType;
 	}
 	
 	@Override
@@ -34,6 +36,7 @@ public class VisitContextualMenu implements  ActionMode.Callback{
 		case R.id.edit_visit :
 			Intent intent = new Intent(activity, AddVisitActivity.class);
 			intent.putExtra(AddVisitActivity.VISIT_ID, visitId);
+			intent.putExtra(AddVisitActivity.VISIT_TYPE, visitType);
 			activity.startActivity(intent);
 			mode.finish();
 			//activity.finish();

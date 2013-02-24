@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
+import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.model.Domain;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 
@@ -16,6 +17,7 @@ public class CustomerDomain extends Domain {
 	public String name;
 	public String name2;
 	public String address;
+	public String city;
 	public String phone;
 	public String mobile;
 	public String global_dimension;
@@ -58,7 +60,7 @@ public class CustomerDomain extends Domain {
 	public String next_15_days_due_invoice_count;
 	public String financial_control_status;
 
-	private static final String[] COLUMNS = new String[] { "customer_no", "name", "name2", "address", "phone", "mobile", "global_dimension", "credit_limit_lcy", "payment_terms_code", "sales_person_no", "priority", "vat_reg_no",
+	private static final String[] COLUMNS = new String[] { "customer_no", "name", "name2", "address", "city", "phone", "mobile", "global_dimension", "credit_limit_lcy", "payment_terms_code", "sales_person_no", "priority", "vat_reg_no",
 			"post_code", "email", "primary_contact_id", "company_id", "channel_oran", "sml", "adopted_potential", "focus_customer", "division", "gross_profit_pfep", "number_of_blue_coat", "number_of_grey_coat", "balance_lcy", "sales_lcy",
 			"balance_due_lcy", "internal_balance_due_lcy", "turnover_in_last_3m", "turnover_in_last_6m", "turnover_in_last_12m", "turnover_generated_3", "turnover_generated_2", "turnover_generated_1", "number_of_diff_items_3",
 			"number_of_diff_items_2", "number_of_diff_items_1", "orsy_shelf_count_at_cust", "customer_12_months_plan", "avarage_payment_days", "number_of_salespersons_working_with_customer", "days_since_oldest_open_invoice",
@@ -79,6 +81,7 @@ public class CustomerDomain extends Domain {
 		contentValues.put(MobileStoreContract.Customers.NAME, getName());
 		contentValues.put(MobileStoreContract.Customers.NAME_2 , getName2() );
 		contentValues.put(MobileStoreContract.Customers.ADDRESS , getAddress());
+		contentValues.put(MobileStoreContract.Customers.CITY , getCity());
 		contentValues.put(MobileStoreContract.Customers.POST_CODE,  getPost_code());
 		contentValues.put(MobileStoreContract.Customers.PHONE , getPhone());
 		contentValues.put(MobileStoreContract.Customers.MOBILE , getMobile());
@@ -86,40 +89,40 @@ public class CustomerDomain extends Domain {
 		contentValues.put(MobileStoreContract.Customers.COMPANY_ID , getCompany_id());
 		contentValues.put(MobileStoreContract.Customers.PRIMARY_CONTACT_ID , getPrimary_contact_id());
 		contentValues.put(MobileStoreContract.Customers.VAR_REG_NO , getVat_reg_no());
-		contentValues.put(MobileStoreContract.Customers.CREDIT_LIMIT_LCY, getCredit_limit_lcy());
-		contentValues.put(MobileStoreContract.Customers.BALANCE_LCY , getBalance_lcy());
-		contentValues.put(MobileStoreContract.Customers.BALANCE_DUE_LCY , getBalance_due_lcy());
+		contentValues.put(MobileStoreContract.Customers.CREDIT_LIMIT_LCY, WsDataFormatEnUsLatin.toDoubleFromWs(getCredit_limit_lcy()));
+		contentValues.put(MobileStoreContract.Customers.BALANCE_LCY , WsDataFormatEnUsLatin.toDoubleFromWs(getBalance_lcy()));
+		contentValues.put(MobileStoreContract.Customers.BALANCE_DUE_LCY , WsDataFormatEnUsLatin.toDoubleFromWs(getBalance_due_lcy()));
 		contentValues.put(MobileStoreContract.Customers.PAYMENT_TERMS_CODE , getPayment_terms_code());
 		contentValues.put(MobileStoreContract.Customers.PRIORITY, getPriority());
 		contentValues.put(MobileStoreContract.Customers.GLOBAL_DIMENSION, getGlobal_dimension());
 		contentValues.put(MobileStoreContract.Customers.CHANNEL_ORAN, getChannel_oran());
 		contentValues.put(MobileStoreContract.Customers.BLOCKED_STATUS , "0");
 		contentValues.put(MobileStoreContract.Customers.SML , getSml());
-		contentValues.put(MobileStoreContract.Customers.INTERNAL_BALANCE_DUE_LCY, getInternal_balance_due_lcy());
-		contentValues.put(MobileStoreContract.Customers.ADOPTED_POTENTIAL , getAdopted_potential());
+		contentValues.put(MobileStoreContract.Customers.INTERNAL_BALANCE_DUE_LCY, WsDataFormatEnUsLatin.toDoubleFromWs(getInternal_balance_due_lcy()));
+		contentValues.put(MobileStoreContract.Customers.ADOPTED_POTENTIAL , WsDataFormatEnUsLatin.toDoubleFromWs(getAdopted_potential()));
 		contentValues.put(MobileStoreContract.Customers.FOCUS_CUSTOMER , getFocus_customer());
 		contentValues.put(MobileStoreContract.Customers.DIVISION , getDivision());
 		contentValues.put(MobileStoreContract.Customers.NUMBER_OF_BLUE_COAT , getNumber_of_blue_coat());
 		contentValues.put(MobileStoreContract.Customers.NUMBER_OF_GREY_COAT , getNumber_of_grey_coat());
 		contentValues.put(MobileStoreContract.Customers.SYNC_OBJECT_BATCH , "1");
 		contentValues.put(MobileStoreContract.Customers.SALE_PERSON_NO , getSales_person_no());
-		contentValues.put(MobileStoreContract.Customers.SALES_LCY, getSales_lcy());
-		contentValues.put(MobileStoreContract.Customers.GROSS_PROFIT_PFEP, getGross_profit_pfep());
-		contentValues.put(MobileStoreContract.Customers.TURNOVER_IN_LAST_3M , getTurnover_in_last_3m());
-		contentValues.put(MobileStoreContract.Customers.TURNOVER_IN_LAST_6M, getTurnover_in_last_6m());
-		contentValues.put(MobileStoreContract.Customers.TURNOVER_IN_LAST_12M , getTurnover_in_last_12m());
-		contentValues.put(MobileStoreContract.Customers.TURNOVER_GENERATED_3 , getTurnover_generated_3());
-		contentValues.put(MobileStoreContract.Customers.TURNOVER_GENERATED_2 , getTurnover_generated_2());
-		contentValues.put(MobileStoreContract.Customers.TURNOVER_GENERATED_1 , getTurnover_generated_1());
+		contentValues.put(MobileStoreContract.Customers.SALES_LCY, WsDataFormatEnUsLatin.toDoubleFromWs(getSales_lcy()));
+		contentValues.put(MobileStoreContract.Customers.GROSS_PROFIT_PFEP, WsDataFormatEnUsLatin.toDoubleFromWs(getGross_profit_pfep()));
+		contentValues.put(MobileStoreContract.Customers.TURNOVER_IN_LAST_3M , WsDataFormatEnUsLatin.toDoubleFromWs(getTurnover_in_last_3m()));
+		contentValues.put(MobileStoreContract.Customers.TURNOVER_IN_LAST_6M, WsDataFormatEnUsLatin.toDoubleFromWs(getTurnover_in_last_6m()));
+		contentValues.put(MobileStoreContract.Customers.TURNOVER_IN_LAST_12M , WsDataFormatEnUsLatin.toDoubleFromWs(getTurnover_in_last_12m()));
+		contentValues.put(MobileStoreContract.Customers.TURNOVER_GENERATED_3 , WsDataFormatEnUsLatin.toDoubleFromWs(getTurnover_generated_3()));
+		contentValues.put(MobileStoreContract.Customers.TURNOVER_GENERATED_2 , WsDataFormatEnUsLatin.toDoubleFromWs(getTurnover_generated_2()));
+		contentValues.put(MobileStoreContract.Customers.TURNOVER_GENERATED_1 , WsDataFormatEnUsLatin.toDoubleFromWs(getTurnover_generated_1()));
 		contentValues.put(MobileStoreContract.Customers.NUMBER_OF_DIFF_ITEMS_3, getNumber_of_diff_items_3());
 		contentValues.put(MobileStoreContract.Customers.NUMBER_OF_DIFF_ITEMS_2 , getNumber_of_diff_items_2());
 		contentValues.put(MobileStoreContract.Customers.NUMBER_OF_DIFF_ITEMS_1, getNumber_of_diff_items_1());
 		contentValues.put(MobileStoreContract.Customers.ORSY_SHELF_COUNT_AT_CUST , getOrsy_shelf_count_at_cust());
-		contentValues.put(MobileStoreContract.Customers.CUSTOMER_12_MONTHS_PLAN , getCustomer_12_months_plan());
-		contentValues.put(MobileStoreContract.Customers.AVARAGE_PAYMENT_DAYS , getAvarage_payment_days());
+		contentValues.put(MobileStoreContract.Customers.CUSTOMER_12_MONTHS_PLAN , WsDataFormatEnUsLatin.toDoubleFromWs(getCustomer_12_months_plan()));
+		contentValues.put(MobileStoreContract.Customers.AVARAGE_PAYMENT_DAYS , WsDataFormatEnUsLatin.toDoubleFromWs(getAvarage_payment_days()));
 		contentValues.put(MobileStoreContract.Customers.NUMBER_OF_SALESPERSONS_WORKING_WITH_CUSTOMER , getNumber_of_salespersons_working_with_customer());
 		contentValues.put(MobileStoreContract.Customers.DAYS_SINCE_OLDEST_OPEN_INVOICE , getDays_since_oldest_open_invoice());
-		contentValues.put(MobileStoreContract.Customers.NEXT_15_DAYS_INVOICE_DUE_AMOUNT , getNext_15_days_invoice_due_amount());
+		contentValues.put(MobileStoreContract.Customers.NEXT_15_DAYS_INVOICE_DUE_AMOUNT , WsDataFormatEnUsLatin.toDoubleFromWs(getNext_15_days_invoice_due_amount()));
 		contentValues.put(MobileStoreContract.Customers.NEXT_15_DAYS_DUE_INVOICE_COUNT , getNext_15_days_due_invoice_count());
 		contentValues.put(MobileStoreContract.Customers.FINANCIAL_CONTROL_STATUS, getFinancial_control_status());
 
@@ -493,6 +496,14 @@ public class CustomerDomain extends Domain {
 
 	public void setFinancial_control_status(String financial_control_status) {
 		this.financial_control_status = financial_control_status;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 }

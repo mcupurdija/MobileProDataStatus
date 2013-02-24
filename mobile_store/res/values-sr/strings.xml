@@ -285,7 +285,8 @@
 	<string name="price_and_discount_are_correct">Cena i Popust su u skladu sa poslovnom politikom</string>
 	
 	<string name="menu_new_visit">Nova poseta</string>
-	<string name="menu_send_visit">Pošalji posetu</string>
+	<string name="menu_send_visits">Pošalji posete na dan</string>
+	<string name="menu_receive_visits">Preuzmi plan poseta</string>
 	
 	<string name="items_sync_group_title">Opcije osvežavanja artikala</string>
 	<string name="items_sync_overstock_button_title">Osveži overstock artikle</string>

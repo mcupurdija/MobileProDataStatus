@@ -42,7 +42,7 @@ public class VisitListFragment extends ListFragment implements
         public boolean onVisitSelected(String visitId);
         
         /** Pass selected visitId and initialize  contextual menu */
-        public void onVisitLongClick(String visitId);
+        public void onVisitLongClick(String visitId, String visitType);
     }
 
     private static Callbacks sDummyCallbacks = new Callbacks() {
@@ -52,7 +52,7 @@ public class VisitListFragment extends ListFragment implements
         }
 
 		@Override
-		public void onVisitLongClick(String visitId) {
+		public void onVisitLongClick(String visitId, String visitType) {
 		}
         
         
@@ -158,7 +158,8 @@ public class VisitListFragment extends ListFragment implements
 	public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long arg3) {
 		   Cursor  cursor = (Cursor) adapter.getItemAtPosition(position);
 		   String visitId = String.valueOf(cursor.getInt(VisitsQuery._ID));
-		   mCallbacks.onVisitLongClick(visitId);
+		   String visitType = String.valueOf(cursor.getInt(VisitsQuery.VISIT_TYPE));
+		   mCallbacks.onVisitLongClick(visitId, visitType);
 		   view.setSelected(true);
 		   return true;
 	}
@@ -228,13 +229,14 @@ public class VisitListFragment extends ListFragment implements
         	}
         	String customer_no = cursor.getString(VisitsQuery.CUSTOMER_NO);
         	String customer_name = cursor.getString(VisitsQuery.CUSTOMER_NAME);//  + cursor.getString(VisitsQuery.CUSTOMER_NAME2);
+        	int visit_type = cursor.getInt(VisitsQuery.VISIT_TYPE);
         	if (customer_no == null || customer_no.length() < 1) {
         		customer_no = "NEPOZNAT KUPAC";
         		customer_name = "-";
         	}
         	
         	String status = cursor.getString(VisitsQuery.VISIT_RESULT);
-        	if (status == null || status.length() < 1) {
+        	if (visit_type == 0) {
         		status = "PLAN";
         	} else {
         		status = "REALIZACIJA";
@@ -261,7 +263,8 @@ public class VisitListFragment extends ListFragment implements
                 MobileStoreContract.Visits.NAME,
                 MobileStoreContract.Visits.NAME_2,
                 MobileStoreContract.Visits.VISIT_DATE,
-                MobileStoreContract.Visits.VISIT_RESULT
+                MobileStoreContract.Visits.VISIT_RESULT,
+                MobileStoreContract.Visits.VISIT_TYPE
         };
 
         int _ID = 0;
@@ -272,6 +275,7 @@ public class VisitListFragment extends ListFragment implements
         int CUSTOMER_NAME2 = 5;
         int VISIT_DATE = 6;
         int VISIT_RESULT = 7;
+        int VISIT_TYPE = 8;
 	}
 
 	

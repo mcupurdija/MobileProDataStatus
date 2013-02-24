@@ -38,7 +38,7 @@ public class ContactsLayout extends CustomLinearLayout {
 	}
 
 	@Override
-	public Callback getContextualActionBar(String identifier) {
+	public Callback getContextualActionBar(String identifier, String visitType) {
 		return new ContactContextualActionBar(activity, identifier);
 	}
 

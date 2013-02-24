@@ -1,37 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_gravity="top|center_horizontal"
-    android:baselineAligned="false" >
+    android:animateLayoutChanges="false"
+    android:background="#FFE9E9E9"
+    android:baselineAligned="false"
+    android:fillViewport="true"
+    android:orientation="vertical" >
 
     <TableLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="15dip" >
+        android:layout_gravity="center_horizontal|top"
+        android:background="#FFFFFFFF"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:paddingTop="28dip"
+        android:shrinkColumns="1"
+        android:stretchColumns="1" >
 
         <!-- 2 columns -->
 
-<!--         <TableRow -->
-<!--             android:id="@+id/sales_person_row" -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:padding="8dip" > -->
 
-<!--             <TextView -->
-<!--                 android:id="@+id/sales_person_title" -->
-<!--                 android:text="@string/sale_person_title" -->
-<!--                 android:textAppearance="?android:attr/textAppearanceMedium" /> -->
+        <!-- <TableRow -->
+        <!-- android:id="@+id/sales_person_row" -->
+        <!-- android:layout_width="wrap_content" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:padding="8dip" > -->
 
-<!--             <AutoCompleteTextView -->
-<!--                 android:id="@+id/sale_person_autocomplete" -->
-<!--                 android:layout_width="fill_parent" -->
-<!--                 android:layout_height="wrap_content" -->
-<!--                 android:completionThreshold="1" -->
-<!--                 android:hint="@string/sale_person_hint" -->
-<!--                 android:textAppearance="?android:attr/textAppearanceMedium"  /> -->
-<!--         </TableRow> -->
+
+        <!-- <TextView -->
+        <!-- android:id="@+id/sales_person_title" -->
+        <!-- android:text="@string/sale_person_title" -->
+        <!-- android:textAppearance="?android:attr/textAppearanceMedium" /> -->
+
+
+        <!-- <AutoCompleteTextView -->
+        <!-- android:id="@+id/sale_person_autocomplete" -->
+        <!-- android:layout_width="fill_parent" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:completionThreshold="1" -->
+        <!-- android:hint="@string/sale_person_hint" -->
+        <!-- android:textAppearance="?android:attr/textAppearanceMedium"  /> -->
+        <!-- </TableRow> -->
+
 
         <!-- edittext span 2 column -->
 
@@ -46,14 +60,15 @@
                 android:text="@string/customer_title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-           
-             <AutoCompleteTextView
+            <AutoCompleteTextView
                 android:id="@+id/customer_autocomplete"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:completionThreshold="1"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
                 android:hint="@string/customer_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium"  />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
@@ -70,8 +85,11 @@
             <EditText
                 android:id="@+id/visit_date_input"
                 android:hint="@string/visit_date_hint"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
+
         <TableRow
             android:id="@+id/arrival_time_row"
             android:layout_width="wrap_content"
@@ -86,8 +104,11 @@
             <EditText
                 android:id="@+id/arrival_time_input"
                 android:hint="@string/arrival_time_hint"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
+
         <TableRow
             android:id="@+id/departure_time_row"
             android:layout_width="wrap_content"
@@ -102,52 +123,54 @@
             <EditText
                 android:id="@+id/departure_time_input"
                 android:hint="@string/departure_time_hint"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
         <!-- display this button in 3rd column via layout_column(zero based) -->
 
-<!--         <TableRow -->
-<!--             android:id="@+id/line_number_row" -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:padding="8dip" > -->
 
-<!--             <TextView -->
-<!--                 android:id="@+id/line_number_title" -->
-<!--                 android:text="@string/line_number_title" -->
-<!--                 android:textAppearance="?android:attr/textAppearanceMedium" /> -->
+        <!-- <TableRow -->
+        <!-- android:id="@+id/line_number_row" -->
+        <!-- android:layout_width="wrap_content" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:padding="8dip" > -->
 
-<!--             <EditText -->
-<!--                 android:id="@+id/line_number_input" -->
-<!--                 android:hint="@string/line_number_hint" -->
-<!--                 android:textAppearance="?android:attr/textAppearanceMedium" /> -->
-<!--         </TableRow> -->
+
+        <!-- <TextView -->
+        <!-- android:id="@+id/line_number_title" -->
+        <!-- android:text="@string/line_number_title" -->
+        <!-- android:textAppearance="?android:attr/textAppearanceMedium" /> -->
+
+
+        <!-- <EditText -->
+        <!-- android:id="@+id/line_number_input" -->
+        <!-- android:hint="@string/line_number_hint" -->
+        <!-- android:textAppearance="?android:attr/textAppearanceMedium" /> -->
+        <!-- </TableRow> -->
+
 
         <!-- display this button in 2nd column via layout_column(zero based) -->
 
-<!--         <TableRow -->
-<!--             android:id="@+id/entry_type_row" -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:padding="8dip" > -->
 
-<!--             <TextView -->
-<!--                 android:id="@+id/entry_type_title" -->
-<!--                 android:text="@string/entry_type_title" -->
-<!--                 android:textAppearance="?android:attr/textAppearanceMedium" /> -->
+        <!-- <TableRow -->
+        <!-- android:id="@+id/entry_type_row" -->
+        <!-- android:layout_width="wrap_content" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:padding="8dip" > -->
 
-<!--             <EditText -->
-<!--                 android:id="@+id/entry_type_input" -->
-<!--                 android:hint="@string/entry_type_hint" -->
-<!--                 android:textAppearance="?android:attr/textAppearanceMedium" /> -->
-<!--         </TableRow> -->
-    </TableLayout>
 
-    <TableLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="15dip" >
+        <!-- <TextView -->
+        <!-- android:id="@+id/entry_type_title" -->
+        <!-- android:text="@string/entry_type_title" -->
+        <!-- android:textAppearance="?android:attr/textAppearanceMedium" /> -->
+
+
+        <!-- <EditText -->
+        <!-- android:id="@+id/entry_type_input" -->
+        <!-- android:hint="@string/entry_type_hint" -->
+        <!-- android:textAppearance="?android:attr/textAppearanceMedium" /> -->
+        <!-- </TableRow> -->
 
         <TableRow
             android:id="@+id/odometer_row"
@@ -163,11 +186,10 @@
             <EditText
                 android:id="@+id/odometer_input"
                 android:hint="@string/odometer_hint"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-
-
-
 
         <TableRow
             android:id="@+id/visit_result_row"
@@ -183,6 +205,8 @@
             <Spinner
                 android:id="@+id/visit_result_input"
                 android:hint="@string/visit_result_hint"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -200,8 +224,10 @@
             <EditText
                 android:id="@+id/note_input"
                 android:hint="@string/note_hint"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
     </TableLayout>
 
-</LinearLayout>
+</ScrollView>

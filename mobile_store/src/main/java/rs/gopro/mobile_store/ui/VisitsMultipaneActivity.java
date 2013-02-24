@@ -1,36 +1,95 @@
 package rs.gopro.mobile_store.ui;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.widget.VisitContextualMenu;
-import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObjectOut;
 import rs.gopro.mobile_store.ws.model.SetPlannedVisitsToCustomersSyncObject;
+import rs.gopro.mobile_store.ws.model.SyncResult;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.DatePicker;
 
 public class VisitsMultipaneActivity extends BaseActivity implements
 		VisitListFragment.Callbacks, VisitDetailFragment.Callbacks {
 
 	public static final String EXTRA_MASTER_URI = "rs.gopro.mobile_store.extra.MASTER_URI";
-
+	private static final int VISIT_SYNC_OUT_DATE_PICKER = 1;
+	private static final int VISIT_SYNC_IN_DATE_PICKER = 2;
+	
 	ActionMode actionMod;
 	
 
 	private Fragment visitsPlanFragmentDetail;
 	private ShowHideMasterLayout mShowHideMasterLayout;
-	private String selectedVisitId;
+//	private String selectedVisitId;
+	private OnDateSetListener visitSyncSendDateSetListener;
+	private OnDateSetListener visitSyncReceiveDateSetListener;
 
+	private BroadcastReceiver onNotice = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
+			onSOAPResult(syncResult, intent.getAction());
+//			itemLoadProgressDialog.dismiss();
+		}
+	};
+	
+	protected void onSOAPResult(SyncResult syncResult, String broadcastAction) {
+		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
+			if (SetPlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				// TODO Auto-generated method stub
+			} else if (PlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				// TODO Auto-generated method stub
+			}
+		} else {
+			AlertDialog alertDialog = new AlertDialog.Builder(
+					VisitsMultipaneActivity.this).create();
+
+		    // Setting Dialog Title
+		    alertDialog.setTitle(getResources().getString(R.string.dialog_title_error_in_sync));
+		
+		    // Setting Dialog Message
+		    alertDialog.setMessage(syncResult.getResult());
+		
+		    // Setting Icon to Dialog
+		    alertDialog.setIcon(R.drawable.ic_launcher);
+		
+		    // Setting OK Button
+		    alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int which) {
+	            	// Write your code here to execute after dialog closed
+	            }
+		    });
+		
+		    // Showing Alert Message
+		    alertDialog.show();
+		}
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,6 +97,20 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 		setContentView(R.layout.activity_visits);
 		final FragmentManager fm = getSupportFragmentManager();
 
+		visitSyncSendDateSetListener = new OnDateSetListener() {
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+				sendForSelectedDate(year, monthOfYear, dayOfMonth);
+			}
+		};
+		
+		visitSyncReceiveDateSetListener = new OnDateSetListener() {
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+				receiveFromSelectedDate(year, monthOfYear, dayOfMonth);
+			}
+		};
+		
 		// something about swipe at portrait orientation
 		mShowHideMasterLayout = (ShowHideMasterLayout) findViewById(R.id.show_hide_master_layout);
 		if (mShowHideMasterLayout != null) {
@@ -124,17 +197,19 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 			}
 			break;
 		case R.id.sync_visits:
-			doPlannedVisitSync();
+//			doPlannedVisitSync();
+			showDialog(VISIT_SYNC_IN_DATE_PICKER);
 			return true;
         case R.id.create_insert_visit_activity: 
         	Intent newVisitIntent = new Intent(getApplicationContext(), AddVisitActivity.class);
         	startActivityForResult(newVisitIntent, ADD_VISIT_REQUEST_CODE);
         	return true;
         case R.id.menu_option_send_visit:
-        	SetPlannedVisitsToCustomersSyncObject plannedVisitsToCustomersSyncObject = new SetPlannedVisitsToCustomersSyncObject(Integer.valueOf(selectedVisitId));
-        	Intent intent = new Intent(this, NavisionSyncService.class);
-        	intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, plannedVisitsToCustomersSyncObject);
-			startService(intent);
+//        	SetPlannedVisitsToCustomersSyncObject plannedVisitsToCustomersSyncObject = new SetPlannedVisitsToCustomersSyncObject(Integer.valueOf(selectedVisitId));
+//        	Intent intent = new Intent(this, NavisionSyncService.class);
+//        	intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, plannedVisitsToCustomersSyncObject);
+//			startService(intent);
+        	showDialog(VISIT_SYNC_OUT_DATE_PICKER);
         	return true;
 		/* case R.id.newrecord:
              final Intent intent = new Intent(this, NewVisitActivity.class);
@@ -183,20 +258,20 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 			actionMod.finish();
 		}
 		loadVisitDetail(MobileStoreContract.Visits.buildVisitUri(visitId));
-		selectedVisitId = visitId;
+//		selectedVisitId = visitId;
 		return true;
 	}
 	
 	
 	@Override
-	public void onVisitLongClick(String visitId) {
-		VisitContextualMenu	contextualMenu = new VisitContextualMenu(this,visitId);
+	public void onVisitLongClick(String visitId, String visitType) {
+		VisitContextualMenu	contextualMenu = new VisitContextualMenu(this, visitId, visitType);
 	  	actionMod = startActionMode(contextualMenu);
 	}  
 
 	@Override
 	public void onVisitIdAvailable(String visitId) {
-		selectedVisitId = visitId;
+//		selectedVisitId = visitId;
 	}
 	
 	
@@ -218,10 +293,57 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 		return super.onCreateOptionsMenu(menu);
 	}
 	
-	private void doPlannedVisitSync() {
-		Intent intent = new Intent(this, NavisionSyncService.class);
-		PlannedVisitsToCustomersSyncObject plannedVisitsToCustomersSyncObject = new PlannedVisitsToCustomersSyncObjectOut("", "V.MAKEVIC", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), "", 0, 0);
-		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, plannedVisitsToCustomersSyncObject);
-		this.startService(intent);
+//	private void doPlannedVisitSync() {
+//		Intent intent = new Intent(this, NavisionSyncService.class);
+//		PlannedVisitsToCustomersSyncObject plannedVisitsToCustomersSyncObject = new PlannedVisitsToCustomersSyncObjectOut("", salesPersonNo, DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), "", 0, 0);
+//		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, plannedVisitsToCustomersSyncObject);
+//		startService(intent);
+//	}
+	
+	@Override
+	protected Dialog onCreateDialog(int id) {	
+		Calendar calendar = Calendar.getInstance();
+		switch (id) {
+		case VISIT_SYNC_OUT_DATE_PICKER:
+			DatePickerDialog visitSendDatePicker = new DatePickerDialog(this, visitSyncSendDateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+			return visitSendDatePicker;
+		case VISIT_SYNC_IN_DATE_PICKER:
+			DatePickerDialog visitReceiveDatePicker = new DatePickerDialog(this, visitSyncReceiveDateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+			return visitReceiveDatePicker;
+		}
+		return super.onCreateDialog(id);
 	}
+	
+	protected void sendForSelectedDate(int year, int monthOfYear, int dayOfMonth) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, year);calendar.set(Calendar.MONTH, monthOfYear);calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+		SetPlannedVisitsToCustomersSyncObject visitsToCustomersSyncObject = new SetPlannedVisitsToCustomersSyncObject(calendar.getTime());
+		Intent intent = new Intent(this, NavisionSyncService.class);
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, visitsToCustomersSyncObject);
+		startService(intent);
+	}
+	
+	protected void receiveFromSelectedDate(int year, int monthOfYear,
+			int dayOfMonth) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, year);calendar.set(Calendar.MONTH, monthOfYear);calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+		PlannedVisitsToCustomersSyncObject receiveVisitsToCustomersSyncObject = new PlannedVisitsToCustomersSyncObjectOut("", salesPersonNo, calendar.getTime(), new Date(), "", Integer.valueOf(0), Integer.valueOf(-1));
+		Intent intent = new Intent(this, NavisionSyncService.class);
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, receiveVisitsToCustomersSyncObject);
+		startService(intent);
+		
+	}
+	
+    @Override
+    public void onResume() {
+    	super.onResume();
+    	IntentFilter plannedVisitsToCustomersSync = new IntentFilter(SetPlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, plannedVisitsToCustomersSync);
+    }
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(onNotice);
+    }
 }

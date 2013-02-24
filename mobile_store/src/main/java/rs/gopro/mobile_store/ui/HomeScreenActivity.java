@@ -25,8 +25,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class HomeScreenActivity extends BaseActivity implements OnClickListener, VisitListFromHomeScreenFragment.Callbacks {
-	private static String TAG = "HomeScreenActivity";
-	private static String SESSION_PREFS = "SessionPrefs";
+	private static final String TAG = "HomeScreenActivity";
+	private static final String SESSION_PREFS = "SessionPrefs";
 	public static final Uri VISITS_URI = MobileStoreContract.Visits.buildDateOfVisitUri(DateUtils.formatDbDate(new Date()));
 
 	VisitListFromHomeScreenFragment firstSectionFragment;

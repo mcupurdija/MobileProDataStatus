@@ -449,6 +449,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.SALES_PERSONS);
 		case ITEMS: 
 			return builder.addTable(Tables.ITEMS);
+		case CUSTOMERS:
+			return builder.addTable(Tables.CUSTOMERS);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

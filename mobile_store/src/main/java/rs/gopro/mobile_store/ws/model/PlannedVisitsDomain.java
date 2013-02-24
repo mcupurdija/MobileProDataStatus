@@ -5,7 +5,7 @@ import java.util.List;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.provider.Tables;
-import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 import android.content.ContentValues;
 
@@ -13,13 +13,15 @@ public class PlannedVisitsDomain extends Domain {
 
 	public String sales_person_no;
 	public String visit_date;
-	public int potental_customer;
-	public String customer_no;
 	public String arrival_time;
+	public String is_deleted;
 	public String departure_time;
+	public String potental_customer;
+	public String customer_no;
+	
 	public String note;
 
-	private static final String[] COLUMNS = new String[] { "sales_person_no", "visit_date", "potential_customer", "customer_no", "arrival_time", "departure_time", "note" };
+	private static final String[] COLUMNS = new String[] { "sales_person_no", "visit_date", "arrival_time", "is_deleted", "departure_time", "potential_customer", "customer_no", "note" };
 
 	@Override
 	public String[] getCSVMappingStrategy() {
@@ -31,15 +33,15 @@ public class PlannedVisitsDomain extends Domain {
 	public ContentValues getContentValues() {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(Visits.SALE_PERSON_NO, getSales_person_no());
-		contentValues.put(Visits.VISIT_DATE, DateUtils.formatDateFromNavisionToDB(getVisit_date()));
+		contentValues.put(Visits.VISIT_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getVisit_date()));
 
 		contentValues.put(Visits.CUSTOMER_NO, getCustomer_no());
-		contentValues.put(Visits.ARRIVAL_TIME,  DateUtils.formatDateTimeFromNavisionToDB(getVisit_date(), getArrival_time()));
-		contentValues.put(Visits.DEPARTURE_TIME,  DateUtils.formatDateTimeFromNavisionToDB(getVisit_date(), getDeparture_time()));
+		contentValues.put(Visits.ARRIVAL_TIME,  WsDataFormatEnUsLatin.toDbTimeeFromWsString(getVisit_date(), getArrival_time()));
+		contentValues.put(Visits.DEPARTURE_TIME,  WsDataFormatEnUsLatin.toDbTimeeFromWsString(getVisit_date(), getDeparture_time()));
 		contentValues.put(Visits.NOTE, getNote());
 		contentValues.put(Visits.VISIT_TYPE, Integer.valueOf(0));
 		contentValues.put(Visits.IS_SENT, Integer.valueOf(1));
-
+		contentValues.put(Visits.IS_DELETED, getIs_deleted());
 		return contentValues;
 	}
 
@@ -96,6 +98,14 @@ public class PlannedVisitsDomain extends Domain {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public String getIs_deleted() {
+		return is_deleted;
+	}
+
+	public void setIs_deleted(String is_deleted) {
+		this.is_deleted = is_deleted;
 	}
 
 }

@@ -46,7 +46,7 @@ public class CustomersLayout extends CustomLinearLayout {
 	}
 
 	@Override
-	public ActionMode.Callback getContextualActionBar(String identifier) {
+	public ActionMode.Callback getContextualActionBar(String identifier, String visitType) {
 		// TODO Auto-generated method stub
 		return null;
 	}

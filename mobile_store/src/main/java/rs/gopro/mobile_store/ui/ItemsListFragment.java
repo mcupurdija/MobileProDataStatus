@@ -3,22 +3,16 @@ package rs.gopro.mobile_store.ui;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
-import rs.gopro.mobile_store.ui.SaleOrderLinesPreviewListFragment.Callbacks;
 import rs.gopro.mobile_store.ui.fragment.ItemPreviewDialogFragment;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
-import rs.gopro.mobile_store.ws.model.ItemQuantitySyncObject;
 import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.provider.BaseColumns;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -39,7 +33,6 @@ import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 public class ItemsListFragment extends ListFragment implements LoaderCallbacks<Cursor>, TextWatcher, OnItemSelectedListener {
 	private static String TAG = "ItemsListFragment";
@@ -49,14 +42,14 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	private Button loadOnAction;
 	private String splitQuerySeparator = ";";
 	private CursorAdapter cursorAdapter;
-	private String salesPersonId;
+//	private String salesPersonId;
 	private String salesPersonNo;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		LogUtils.LOGI(TAG, "on create: "+this.getId());
-		salesPersonId = SharedPreferencesUtil.getSalePersonId(getActivity());
+//		salesPersonId = SharedPreferencesUtil.getSalePersonId(getActivity());
 		salesPersonNo = SharedPreferencesUtil.getSalePersonNo(getActivity());
 	}
 

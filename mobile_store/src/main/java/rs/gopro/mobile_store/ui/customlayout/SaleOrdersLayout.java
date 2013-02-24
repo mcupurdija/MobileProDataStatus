@@ -62,7 +62,7 @@ public class SaleOrdersLayout extends CustomLinearLayout implements  OnLongClick
 	}
 
 	@Override
-	public ActionMode.Callback getContextualActionBar(String identifier) {
+	public ActionMode.Callback getContextualActionBar(String identifier, String visitType) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -8,20 +8,24 @@ import java.util.Map;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.BaseActivity;
+import rs.gopro.mobile_store.ui.SaleOrderAddEditActivity;
 import rs.gopro.mobile_store.ui.components.ItemAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.util.UIUtils;
+import rs.gopro.mobile_store.util.exceptions.SaleOrderValidationException;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.model.ItemQtySalesPriceAndDiscSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
@@ -53,6 +57,9 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
 
 	private static final String TAG = makeLogTag(SaleOrderAddEditLineFragment.class);
+	
+	private static final int NOT_THROW_EXCEPTION = 0;
+	private static final int THROW_EXCEPTION = 1;
 	
 	private Uri mSaleOrderLinesUri;
 	private int mSelectedSaleOrderLineId;
@@ -113,8 +120,8 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
-			onSOAPResult(syncResult, intent.getAction());
 			itemLoadProgressDialog.dismiss();
+			onSOAPResult(syncResult, intent.getAction());
 		}
 	};
 	
@@ -128,7 +135,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 				mQuantityAvailable.setText(syncObject.getpQuantityAsTxt());
 				mDiscount.setText(syncObject.getpDiscountPctAsTxt());
 				mPrice.setText(syncObject.getpSalesPriceRSDAsTxt());
-				mPriceEur.setText(syncObject.getpSalesPriceEURAsTxt());
+				//mPriceEur.setText(syncObject.getpSalesPriceEURAsTxt());
 			}
 		}
 	}
@@ -187,9 +194,12 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         mItemAutocomplete.setAdapter(itemAutocompleteAdapter);
         mItemAutocomplete.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				saveForm();
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				try {
+					saveForm(NOT_THROW_EXCEPTION);
+				} catch (SaleOrderValidationException e) {
+					LogUtils.LOGE(TAG, "Never should happen!", e);
+				}
 			}
 		});
         
@@ -290,7 +300,31 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			
 			@Override
 			public void onClick(View v) {
-				saveForm();
+				try {
+					saveForm(THROW_EXCEPTION);
+				} catch (SaleOrderValidationException e) {
+					AlertDialog alertDialog = new AlertDialog.Builder(
+							getActivity()).create();
+
+				    // Setting Dialog Title
+				    alertDialog.setTitle(getResources().getString(R.string.dialog_title_error_in_sync));
+				
+				    // Setting Dialog Message
+				    alertDialog.setMessage(e.getMessage());
+				
+				    // Setting Icon to Dialog
+				    alertDialog.setIcon(R.drawable.ic_launcher);
+				
+				    // Setting OK Button
+				    alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+			            public void onClick(DialogInterface dialog, int which) {
+			            	// Write your code here to execute after dialog closed
+			            }
+				    });
+				
+				    // Showing Alert Message
+				    alertDialog.show();
+				}
 			}
 		});
         
@@ -316,88 +350,102 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		}
 	}
 
-	protected void saveForm() {
+	protected void saveForm(int status) throws SaleOrderValidationException {
 		ContentValues localValues = new ContentValues();
-		
-		String item_auto_complete = mItemAutocomplete.getText().toString().trim();
-//		if (itemAutocompleteAdapter.getIdForTitle(item_auto_complete) != -1) {
-//			//Cursor customerItemCursor = (Cursor) customerAutoCompleteAdapter.getItem(customerAutoCompleteAdapter.getIdForTitle(customer_auto_complete));
-//			int item_id = itemAutocompleteAdapter.getIdForTitle(item_auto_complete);//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
-//			itemId = item_id; // update global after save
-//			localValues.put(MobileStoreContract.SaleOrderLines.ITEM_ID, Integer.valueOf(item_id));
-//		} else {
-//			localValues.putNull(MobileStoreContract.SaleOrderLines.ITEM_ID);
-//		}
-
-		if (itemAutocompleteAdapter.getSelectedId() != -1) {
-			int item_id = itemAutocompleteAdapter.getSelectedId();//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
-			itemId = item_id; // update global after save
-			localValues.put(MobileStoreContract.SaleOrderLines.ITEM_ID, Integer.valueOf(item_id));
-		} else {
-			localValues.putNull(MobileStoreContract.SaleOrderLines.ITEM_ID);
+		try {
+			String item_auto_complete = mItemAutocomplete.getText().toString().trim();
+	//		if (itemAutocompleteAdapter.getIdForTitle(item_auto_complete) != -1) {
+	//			//Cursor customerItemCursor = (Cursor) customerAutoCompleteAdapter.getItem(customerAutoCompleteAdapter.getIdForTitle(customer_auto_complete));
+	//			int item_id = itemAutocompleteAdapter.getIdForTitle(item_auto_complete);//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
+	//			itemId = item_id; // update global after save
+	//			localValues.put(MobileStoreContract.SaleOrderLines.ITEM_ID, Integer.valueOf(item_id));
+	//		} else {
+	//			localValues.putNull(MobileStoreContract.SaleOrderLines.ITEM_ID);
+	//		}
+	
+			if (itemAutocompleteAdapter.getSelectedId() != -1) {
+				int item_id = itemAutocompleteAdapter.getSelectedId();//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
+				itemId = item_id; // update global after save
+				localValues.put(MobileStoreContract.SaleOrderLines.ITEM_ID, Integer.valueOf(item_id));
+			} else {
+				throw new SaleOrderValidationException("Artikal nije izabran!");
+				//localValues.putNull(MobileStoreContract.SaleOrderLines.ITEM_ID);
+			}
+			
+			String quantity = mQuantity.getText().toString().trim();
+			if (quantity != null && !quantity.equals("")) {
+				localValues.put(MobileStoreContract.SaleOrderLines.QUANTITY, UIUtils.getDoubleFromUI(quantity));
+			} else {
+				throw new SaleOrderValidationException("Kolicina nije podesena!");
+				//localValues.putNull(MobileStoreContract.SaleOrderLines.QUANTITY);
+			}
+			
+			String quantity_available = mQuantityAvailable.getText().toString().trim();
+			if (quantity_available != null && !quantity_available.equals("")) {
+				localValues.put(MobileStoreContract.SaleOrderLines.QUANTITY_AVAILABLE, UIUtils.getDoubleFromUI(quantity_available));
+			} else {
+				localValues.putNull(MobileStoreContract.SaleOrderLines.QUANTITY_AVAILABLE);
+			}
+			
+			String price = mPrice.getText().toString().trim();
+			if (price != null && !price.equals("")) {
+				localValues.put(MobileStoreContract.SaleOrderLines.PRICE, UIUtils.getDoubleFromUI(price));
+			} else {
+				localValues.putNull(MobileStoreContract.SaleOrderLines.PRICE);
+			}
+			
+			String price_eur = mPriceEur.getText().toString().trim();
+			if (price_eur != null && !price_eur.equals("")) {
+				localValues.put(MobileStoreContract.SaleOrderLines.PRICE_EUR, UIUtils.getDoubleFromUI(price_eur));
+			} else {
+				localValues.putNull(MobileStoreContract.SaleOrderLines.PRICE_EUR);
+			}
+			
+			String discount = mDiscount.getText().toString().trim();
+			if (discount != null && !discount.equals("")) {
+				localValues.put(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT, UIUtils.getDoubleFromUI(discount));
+			} else {
+				localValues.putNull(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT);
+			}
+			
+			String discountMin = mDiscountMin.getText().toString().trim();
+			if (discountMin != null && !discountMin.equals("")) {
+				localValues.put(MobileStoreContract.SaleOrderLines.MIN_DISCOUNT, UIUtils.getDoubleFromUI(discountMin));
+			} else {
+				localValues.putNull(MobileStoreContract.SaleOrderLines.MIN_DISCOUNT);
+			}
+			
+			String discountMax = mDiscountMax.getText().toString().trim();
+			if (discountMax != null && !discountMax.equals("")) {
+				localValues.put(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT, UIUtils.getDoubleFromUI(discountMax));
+			} else {
+				localValues.putNull(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT);
+			}
+			
+			int backorder_status = mBackorderStatus.getSelectedItemPosition();
+			localValues.put(MobileStoreContract.SaleOrderLines.BACKORDER_STATUS, Integer.valueOf(backorder_status));
+			
+			int campaign_status = mCampaignStatus.getSelectedItemPosition();
+			localValues.put(MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS, Integer.valueOf(campaign_status));
+			
+			int quote_refused = mQuoteRefused.getSelectedItemPosition();
+			localValues.put(MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS, Integer.valueOf(quote_refused));
+		} catch (SaleOrderValidationException se) {
+			switch (status) {
+			case NOT_THROW_EXCEPTION:
+				LogUtils.LOGE(TAG, "Exception but not thrown!", se);
+				break;
+			case THROW_EXCEPTION:
+				throw se;
+			default:
+				throw se;
+			}
 		}
 		
-		String quantity = mQuantity.getText().toString().trim();
-		if (quantity != null && !quantity.equals("")) {
-			localValues.put(MobileStoreContract.SaleOrderLines.QUANTITY, UIUtils.getDoubleFromUI(quantity));
-		} else {
-			localValues.putNull(MobileStoreContract.SaleOrderLines.QUANTITY);
+		if (localValues.size() > 0) {
+			getActivity().getContentResolver().update(MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(String.valueOf(mSelectedSaleOrderId)), localValues, MobileStoreContract.SaleOrderLines._ID+"=?", new String[] { String.valueOf(mSelectedSaleOrderLineId) });
+			mCallbacks.onSaleOrderLineSaved();
 		}
-		
-		String quantity_available = mQuantityAvailable.getText().toString().trim();
-		if (quantity_available != null && !quantity_available.equals("")) {
-			localValues.put(MobileStoreContract.SaleOrderLines.QUANTITY_AVAILABLE, UIUtils.getDoubleFromUI(quantity_available));
-		} else {
-			localValues.putNull(MobileStoreContract.SaleOrderLines.QUANTITY_AVAILABLE);
-		}
-		
-		String price = mPrice.getText().toString().trim();
-		if (price != null && !price.equals("")) {
-			localValues.put(MobileStoreContract.SaleOrderLines.PRICE, UIUtils.getDoubleFromUI(price));
-		} else {
-			localValues.putNull(MobileStoreContract.SaleOrderLines.PRICE);
-		}
-		
-		String price_eur = mPriceEur.getText().toString().trim();
-		if (price_eur != null && !price_eur.equals("")) {
-			localValues.put(MobileStoreContract.SaleOrderLines.PRICE_EUR, UIUtils.getDoubleFromUI(price_eur));
-		} else {
-			localValues.putNull(MobileStoreContract.SaleOrderLines.PRICE_EUR);
-		}
-		
-		String discount = mDiscount.getText().toString().trim();
-		if (discount != null && !discount.equals("")) {
-			localValues.put(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT, UIUtils.getDoubleFromUI(discount));
-		} else {
-			localValues.putNull(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT);
-		}
-		
-		String discountMin = mDiscountMin.getText().toString().trim();
-		if (discountMin != null && !discountMin.equals("")) {
-			localValues.put(MobileStoreContract.SaleOrderLines.MIN_DISCOUNT, UIUtils.getDoubleFromUI(discountMin));
-		} else {
-			localValues.putNull(MobileStoreContract.SaleOrderLines.MIN_DISCOUNT);
-		}
-		
-		String discountMax = mDiscountMax.getText().toString().trim();
-		if (discountMax != null && !discountMax.equals("")) {
-			localValues.put(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT, UIUtils.getDoubleFromUI(discountMax));
-		} else {
-			localValues.putNull(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT);
-		}
-		
-		int backorder_status = mBackorderStatus.getSelectedItemPosition();
-		localValues.put(MobileStoreContract.SaleOrderLines.BACKORDER_STATUS, Integer.valueOf(backorder_status));
-		
-		int campaign_status = mCampaignStatus.getSelectedItemPosition();
-		localValues.put(MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS, Integer.valueOf(campaign_status));
-		
-		int quote_refused = mQuoteRefused.getSelectedItemPosition();
-		localValues.put(MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS, Integer.valueOf(quote_refused));
-		
-		getActivity().getContentResolver().update(MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(String.valueOf(mSelectedSaleOrderId)), localValues, MobileStoreContract.SaleOrderLines._ID+"=?", new String[] { String.valueOf(mSelectedSaleOrderLineId) });
-		
-		mCallbacks.onSaleOrderLineSaved();
 	}
 
 	@Override

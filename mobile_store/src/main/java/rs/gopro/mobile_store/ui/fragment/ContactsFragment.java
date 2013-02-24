@@ -134,7 +134,7 @@ public class ContactsFragment extends ListFragment implements LoaderCallbacks<Cu
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 		final Cursor cursor = (Cursor) cursorAdapter.getItem(position);
 		String contactId = String.valueOf(cursor.getInt(ContactsQuery._ID));
-		actionBarCallback.onLongClickItem(contactId);
+		actionBarCallback.onLongClickItem(contactId, null);
 		return true;
 	}
 

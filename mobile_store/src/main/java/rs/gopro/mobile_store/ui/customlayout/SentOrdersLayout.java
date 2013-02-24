@@ -42,7 +42,7 @@ public class SentOrdersLayout extends CustomLinearLayout {
 	}
 
 	@Override
-	public Callback getContextualActionBar(String identifier) {
+	public Callback getContextualActionBar(String identifier, String visitType) {
 		// TODO Auto-generated method stub
 		return null;
 	}

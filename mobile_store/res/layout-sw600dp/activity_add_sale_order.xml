@@ -6,7 +6,7 @@
     android:background="#FFE9E9E9"
     android:orientation="vertical"
     android:animateLayoutChanges="false"
-        android:fillViewport="true" >
+    android:fillViewport="true" >
 
     <TableLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

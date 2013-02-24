@@ -17,6 +17,7 @@
 package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,12 +30,16 @@ import android.view.MenuItem;
  */
 public abstract class BaseActivity extends FragmentActivity {
     protected static final Integer ADD_VISIT_REQUEST_CODE = Integer.valueOf(1);
+	protected String salesPersonNo;
+	protected String salesPersonId;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // setup home action bar behavior
         getActionBar().setDisplayHomeAsUpEnabled(true); // from sherlock -> .setHomeButtonEnabled(true);
+        salesPersonId = SharedPreferencesUtil.getSalePersonId(this);
+        salesPersonNo = SharedPreferencesUtil.getSalePersonNo(this);
     }
 
     

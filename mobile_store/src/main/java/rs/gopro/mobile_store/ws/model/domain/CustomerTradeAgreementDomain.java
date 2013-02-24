@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
+import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerTradeAgreemnt;
+import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.ws.model.Domain;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 
 public class CustomerTradeAgreementDomain extends Domain {
 	
+	public String customer_no;
 	public String entry_type;
 	public String code;
 	public String minimum_quantity;
@@ -18,7 +21,7 @@ public class CustomerTradeAgreementDomain extends Domain {
 	public String ending_date;
 	public String actual_discount;
 	
-	private static final String[] COLUMNS = new String[] {"entry_type", "code", "minimum_quantity", "starting_date", "ending_date", "actual_discount"};
+	private static final String[] COLUMNS = new String[] {"customer_no", "entry_type", "code", "minimum_quantity", "starting_date", "ending_date", "actual_discount"};
 
 	@Override
 	public String[] getCSVMappingStrategy() {
@@ -28,7 +31,7 @@ public class CustomerTradeAgreementDomain extends Domain {
 	@Override
 	public ContentValues getContentValues() {
 		ContentValues contentValues = new ContentValues();
-		contentValues.put(CustomerTradeAgreemnt.CUSTOMER_ID, "1");
+		contentValues.put(CustomerTradeAgreemnt.CUSTOMER_ID, customer_no);
 		contentValues.put(CustomerTradeAgreemnt.ENTRY_TYPE, getEntry_type());
 		contentValues.put(CustomerTradeAgreemnt.CODE, getCode());
 		contentValues.put(CustomerTradeAgreemnt.MINIMUM_QUANTITY, getMinimum_quantity());
@@ -41,6 +44,7 @@ public class CustomerTradeAgreementDomain extends Domain {
 	@Override
 	public List<RowItemDataHolder> getRowItemsForRepalce() {
 		List<RowItemDataHolder> dataHolders = new ArrayList<RowItemDataHolder>();
+		dataHolders.add(new RowItemDataHolder(Tables.CUSTOMERS, ElectronicCardCustomer.CUSTOMER_NO, customer_no, ElectronicCardCustomer.CUSTOMER_ID));
 		return dataHolders;
 	}
 

@@ -47,9 +47,9 @@ public class PlanOfVisitsLayout extends CustomLinearLayout {
 	}
 
 	@Override
-	public ActionMode.Callback getContextualActionBar(String identifier) {
+	public ActionMode.Callback getContextualActionBar(String identifier, String visitType) {
 		
-		return new VisitContextualMenu(activity, identifier);
+		return new VisitContextualMenu(activity, identifier, visitType);
 	}
 	
 //	View view = layoutInflater.inflate(R.layout.content_holder_plan_of_visits, null);

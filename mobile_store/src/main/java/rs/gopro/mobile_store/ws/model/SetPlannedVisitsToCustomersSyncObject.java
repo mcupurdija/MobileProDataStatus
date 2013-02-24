@@ -15,6 +15,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.csv.CSVDomainWriter;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
+import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.os.Parcel;
@@ -28,6 +29,7 @@ public class SetPlannedVisitsToCustomersSyncObject extends SyncObject {
 	
 	
 	private int visitId;
+	private Date requestSyncDate;
 	private String pCSVString;
 	
 	public static final Creator<SetPlannedVisitsToCustomersSyncObject> CREATOR = new Creator<SetPlannedVisitsToCustomersSyncObject>() {
@@ -53,10 +55,17 @@ public class SetPlannedVisitsToCustomersSyncObject extends SyncObject {
 		this.visitId = visitId;
 	}
 	
+	public SetPlannedVisitsToCustomersSyncObject(Date requestSyncDate) {
+		super();
+		this.requestSyncDate = requestSyncDate;
+	}
+	
 	public SetPlannedVisitsToCustomersSyncObject(Parcel source) {
 		super(source);
 		setVisitId(source.readInt());
 		setpCSVString(source.readString());
+		long syncdate = source.readLong();
+		setRequestSyncDate(syncdate == -1 ? null : new Date(syncdate));
 	}
 
 	@Override
@@ -69,6 +78,7 @@ public class SetPlannedVisitsToCustomersSyncObject extends SyncObject {
 		dest.writeString(getStatusMessage());
 		dest.writeInt(getVisitId());
 		dest.writeString(getpCSVString());
+		dest.writeLong(getRequestSyncDate() == null ? -1 : getRequestSyncDate().getTime());
 	}
 
 	@Override
@@ -92,7 +102,7 @@ public class SetPlannedVisitsToCustomersSyncObject extends SyncObject {
 
 	private String createVisitsData() {
 		// get header data
-		Cursor cursorHeader = context.getContentResolver().query(MobileStoreContract.Visits.buildVisitsPlannedExport(), VisitsQuery.PROJECTION, Tables.VISITS+"._ID=?", new String[] { String.valueOf(visitId) }, null);
+		Cursor cursorHeader = context.getContentResolver().query(MobileStoreContract.Visits.buildVisitsPlannedExport(), VisitsQuery.PROJECTION, "DATE("+Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_DATE+")=DATE(?) AND IS_DELETED = 0", new String[] { WsDataFormatEnUsLatin.toDbDateString(getRequestSyncDate()) }, null);
 		List<String[]> header = CSVDomainWriter.parseCursor(cursorHeader, VisitsQuery.PROJECTION_TYPE);
 		StringWriter stringWriter = new StringWriter();
 		CSVWriter writer = new CSVWriter(stringWriter, ';', '"');
@@ -154,22 +164,31 @@ public class SetPlannedVisitsToCustomersSyncObject extends SyncObject {
         		MobileStoreContract.SalesPerson.SALE_PERSON_NO,
         		MobileStoreContract.Visits.VISIT_DATE,
         		MobileStoreContract.Visits.ARRIVAL_TIME,
+        		MobileStoreContract.Visits.IS_DELETED,
         		MobileStoreContract.Visits.DEPARTURE_TIME,
         		MobileStoreContract.Visits.POTENTIAL_CUSTOMER,
         		MobileStoreContract.Customers.CUSTOMER_NO,
-        		MobileStoreContract.Visits.NOTE,
-        		MobileStoreContract.Visits.IS_DELETED
+        		MobileStoreContract.Visits.NOTE
+        		
         };
         
         Type[] PROJECTION_TYPE = {
         		String.class,
         		Date.class,
         		Time.class,
+        		Integer.class,
         		Time.class,
         		Integer.class,
         		String.class,
-        		String.class,
-        		Integer.class
+        		String.class
         };
+	}
+
+	public Date getRequestSyncDate() {
+		return requestSyncDate;
+	}
+
+	public void setRequestSyncDate(Date requestSyncDate) {
+		this.requestSyncDate = requestSyncDate;
 	}
 }

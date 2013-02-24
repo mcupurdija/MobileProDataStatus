@@ -112,7 +112,7 @@ public class MobileStoreContract {
 		String NAME = "name";
 		String NAME_2 = "name2";
 		String ADDRESS = "address";
-		//String CITY = "city";
+		String CITY = "city";
 		String POST_CODE = "post_code";
 		String PHONE = "phone";
 		String MOBILE = "mobile";

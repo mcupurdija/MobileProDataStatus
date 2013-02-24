@@ -29,7 +29,7 @@ public abstract class CustomLinearLayout extends LinearLayout implements OnDateS
 	
 	protected abstract void inflateLayout(LayoutInflater layoutInflater);
 	
-	public abstract ActionMode.Callback getContextualActionBar(String identifier);
+	public abstract ActionMode.Callback getContextualActionBar(String identifier, String visitType);
 	
 	/**
 	 * method for sync implementation called from main activity

@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.ui;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
@@ -9,6 +10,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.UIUtils;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
@@ -42,8 +44,11 @@ import android.widget.TimePicker;
 
 public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
 
+	private static final String TAG = "AddVisitActivity";
+	
 	//private static final int EXIST_VISIT_LOADER = 3;
 	public static final String VISIT_ID = "VISIT_ID";
+	public static final String VISIT_TYPE = "VISIT_TYPE";
 	private static final int DEPARTURE_DATE_PICKER = 3;
 	private static final int ARRIVAL_DATE_PICKER = 2;
 	private static final int VISIT_DATE_PICKER = 1;
@@ -69,8 +74,9 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 	OnDateSetListener visitDateSetListener;
 	
 
-	String selectedVisitId;
-
+	private String selectedVisitId;
+	private String selectedVisitType;
+	
 	static String[] CUSTOMER_PROJECTION = new String[] { MobileStoreContract.Customers._ID, MobileStoreContract.Customers.NAME };
 	static String[] SALE_PROJECTION = new String[] { MobileStoreContract.SaleOrders._ID, MobileStoreContract.SaleOrders.SALES_ORDER_NO };
 
@@ -79,6 +85,8 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		super.onCreate(savedInstanceState);
 		String visitId = getIntent().getStringExtra(VISIT_ID);
 		selectedVisitId = visitId;
+		String visitType = getIntent().getStringExtra(VISIT_TYPE);
+		selectedVisitType = visitType;
 		getSupportLoaderManager().initLoader(1, null, this);
 		getSupportLoaderManager().initLoader(2, null, this);
 		getSupportLoaderManager().initLoader(VisitsQuery._TOKEN, null, this);
@@ -98,8 +106,10 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		noteEditText = (EditText) findViewById(R.id.note_input);
 
 		// mode new
-		if (selectedVisitId == null) {
-			((TableRow) findViewById(R.id.arrival_time_row)).setVisibility(View.GONE);
+		if (selectedVisitId == null || selectedVisitType.equals("0")) {
+			visitDateEditText.setText(DateUtils.getPickerDate(new Date()));
+			arrivalTimeEditText.setText(DateUtils.getPickerTime(new Date()));
+			//((TableRow) findViewById(R.id.arrival_time_row)).setVisibility(View.GONE);
 			((TableRow) findViewById(R.id.departure_time_row)).setVisibility(View.GONE);
 			((TableRow) findViewById(R.id.odometer_row)).setVisibility(View.GONE);
 			((TableRow) findViewById(R.id.visit_result_row)).setVisibility(View.GONE);
@@ -357,12 +367,12 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		}
 		contentValues.put(MobileStoreContract.Visits.VISIT_TYPE, "0");
 		contentValues.put(MobileStoreContract.Visits.IS_SENT, Integer.valueOf(0));
+		contentValues.put(Visits.ARRIVAL_TIME, DateUtils.formatPickerTimeInputForDb(arrivalTimeEditText.getText().toString()));
 //		contentValues.put(Visits.LINE_NO, lineNumberEditText.getText().toString());
 //		contentValues.put(Visits.ENTRY_TYPE, entryTypeEditText.getText().toString());
-		if (selectedVisitId != null) {
+		if (selectedVisitType != null && selectedVisitType.equals("1")) { // selectedVisitId != null
 			contentValues.put(Visits.ODOMETER, odometerEditText.getText().toString());
 			contentValues.put(Visits.DEPARTURE_TIME, DateUtils.formatPickerTimeInputForDb(departureTimeEditText.getText().toString()));
-			contentValues.put(Visits.ARRIVAL_TIME, DateUtils.formatPickerTimeInputForDb(arrivalTimeEditText.getText().toString()));
 			contentValues.put(Visits.VISIT_RESULT, visitResultEditText.getSelectedItem().toString());
 			contentValues.put(Visits.NOTE, noteEditText.getText().toString());
 		}
@@ -377,6 +387,8 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 			currentVisitId = resultedUri.getPathSegments().get(1);
 		}
 
+		LogUtils.LOGE(TAG, "Current visit id: "+currentVisitId);
+		
 		/*Intent returnIntent = new Intent();
 		returnIntent.putExtra(VISIT_ID, currentVisitId);*/
 		// setResult(RESULT_OK,returnIntent);

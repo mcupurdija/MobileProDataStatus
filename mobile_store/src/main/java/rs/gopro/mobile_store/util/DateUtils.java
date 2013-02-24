@@ -133,4 +133,13 @@ public class DateUtils {
 		return localDbDate.format(dbDate);
 	}
 	
+	public static String getPickerTime(Date timeDate) {
+		return pickerTime.format(timeDate);
+	}
+	
+	public static String getPickerDate(Date pickerDateInput) {
+		return pickerDate.format(pickerDateInput);
+	}
+	
 }
+

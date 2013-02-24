@@ -210,8 +210,9 @@ public class VisitListFromHomeScreenFragment  extends ListFragment implements Lo
         		customer_name = "-";
         	}
         	
+        	int visit_type = cursor.getInt(VisitsQuery.VISIT_TYPE);
         	String status = cursor.getString(VisitsQuery.VISIT_RESULT);
-        	if (status == null || status.length() < 1) {
+        	if (visit_type == 0) {
         		status = "PLAN";
         	} else {
         		status = "REALIZACIJA";
@@ -227,7 +228,7 @@ public class VisitListFromHomeScreenFragment  extends ListFragment implements Lo
 		int _TOKEN = 0x1;
 
 		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Visits.SALES_PERSON_ID, MobileStoreContract.Visits.CUSTOMER_ID, MobileStoreContract.Visits.CUSTOMER_NO, MobileStoreContract.Visits.NAME, MobileStoreContract.Visits.NAME_2,
-				MobileStoreContract.Visits.VISIT_DATE, MobileStoreContract.Visits.VISIT_RESULT };
+				MobileStoreContract.Visits.VISIT_DATE, MobileStoreContract.Visits.VISIT_RESULT, MobileStoreContract.Visits.VISIT_TYPE };
 
 		int _ID = 0;
 		int SALES_PERSON_ID = 1;
@@ -237,6 +238,7 @@ public class VisitListFromHomeScreenFragment  extends ListFragment implements Lo
 		int CUSTOMER_NAME2 = 5;
 		int VISIT_DATE = 6;
 		int VISIT_RESULT = 7;
+		int VISIT_TYPE = 8;
 	}
 
 }

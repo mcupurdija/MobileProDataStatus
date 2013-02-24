@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_gravity="top|center_horizontal"
-    android:baselineAligned="false" >
+    android:baselineAligned="false"
+    android:background="#FFE9E9E9"
+    android:orientation="vertical"
+    android:animateLayoutChanges="false"
+    android:fillViewport="true" >
 
     <TableLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="15dip" >
+        android:layout_gravity="center_horizontal|top"
+        android:background="#FFFFFFFF"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:paddingTop="28dip"
+        android:shrinkColumns="1"
+        android:stretchColumns="1" >
 
         <!-- 2 columns -->
 
@@ -52,6 +62,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:completionThreshold="1"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
                 android:hint="@string/customer_hint"
                 android:textAppearance="?android:attr/textAppearanceMedium"  />
         </TableRow>
@@ -70,6 +82,8 @@
             <EditText
                 android:id="@+id/visit_date_input"
                 android:hint="@string/visit_date_hint"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -87,6 +101,8 @@
             <EditText
                 android:id="@+id/arrival_time_input"
                 android:hint="@string/arrival_time_hint"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
         
@@ -104,6 +120,8 @@
             <EditText
                 android:id="@+id/departure_time_input"
                 android:hint="@string/departure_time_hint"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
         
@@ -159,6 +177,8 @@
             <EditText
                 android:id="@+id/odometer_input"
                 android:hint="@string/odometer_hint"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -176,6 +196,8 @@
             <Spinner
                 android:id="@+id/visit_result_input"
                 android:hint="@string/visit_result_hint"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -193,8 +215,10 @@
             <EditText
                 android:id="@+id/note_input"
                 android:hint="@string/note_hint"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
     </TableLayout>
 
-</LinearLayout>
+</ScrollView>

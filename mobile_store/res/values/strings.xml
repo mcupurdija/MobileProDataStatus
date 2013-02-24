@@ -285,7 +285,8 @@
 	<string name="price_and_discount_are_correct">Price And Discountc Are Correct</string>
 	
 	<string name="menu_new_visit">New visit plan</string>
-	<string name="menu_send_visit">Send visit</string>
+	<string name="menu_send_visits">Send visits</string>
+	<string name="menu_receive_visits">Receive visits</string>
 	
 	<string name="items_sync_group_title">Items sync options</string>
 	<string name="items_sync_overstock_button_title">Sync overstock</string>

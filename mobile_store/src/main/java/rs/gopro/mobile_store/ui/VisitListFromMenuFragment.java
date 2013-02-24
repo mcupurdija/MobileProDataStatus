@@ -190,9 +190,9 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
         		customer_no = "NEPOZNAT KUPAC";
         		customer_name = "-";
         	}
-        	
+        	int visit_type = cursor.getInt(VisitsQuery.VISIT_TYPE);
         	String status = cursor.getString(VisitsQuery.VISIT_RESULT);
-        	if (status == null || status.length() < 1) {
+        	if (visit_type == 0) {
         		status = "PLAN";
         	} else {
         		status = "REALIZACIJA";
@@ -208,23 +208,25 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 		int _TOKEN = 0x1;
 
 		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Visits.SALES_PERSON_ID, MobileStoreContract.Visits.CUSTOMER_ID, MobileStoreContract.Visits.CUSTOMER_NO, MobileStoreContract.Visits.NAME, MobileStoreContract.Visits.NAME_2,
-				MobileStoreContract.Visits.VISIT_DATE, MobileStoreContract.Visits.VISIT_RESULT };
+				MobileStoreContract.Visits.VISIT_DATE, MobileStoreContract.Visits.VISIT_RESULT, MobileStoreContract.Visits.VISIT_TYPE };
 
 		int _ID = 0;
 //		int SALES_PERSON_ID = 1;
 //		int CUSTOMER_ID = 2;
 		int CUSTOMER_NO = 3;
 		int CUSTOMER_NAME = 4;
-		int CUSTOMER_NAME2 = 5;
+//		int CUSTOMER_NAME2 = 5;
 		int VISIT_DATE = 6;
 		int VISIT_RESULT = 7;
+		int VISIT_TYPE = 8;
 	}
 
 	@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 		final Cursor cursor = (Cursor) mAdapter.getItem(position);
 		String visitId = String.valueOf(cursor.getInt(VisitsQuery._ID));
-		actionBarCallback.onLongClickItem(visitId);
+		String visitType = String.valueOf(cursor.getInt(VisitsQuery.VISIT_TYPE));
+		actionBarCallback.onLongClickItem(visitId, visitType);
 		return true;
 	}
 
