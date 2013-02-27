@@ -317,7 +317,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		salesType = (Spinner) findViewById(R.id.edit_sale_order_slc1_spinner);
 		salesType.setAdapter(salesAdapter);
 		
-		paymentAdapter = ArrayAdapter.createFromResource(this, R.array.payment_type_array, android.R.layout.simple_spinner_item);
+		paymentAdapter = ArrayAdapter.createFromResource(this, R.array.payment_value_array, android.R.layout.simple_spinner_item);
 		paymentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		paymentType = (Spinner) findViewById(R.id.edit_sale_order_payment_type_spinner);
 		paymentType.setAdapter(paymentAdapter);
@@ -441,10 +441,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		String location_code = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.LOCATION_CODE));
 		
-		int payment_option = -1;
-		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.PAYMENT_OPTION))) {
-			payment_option = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.PAYMENT_OPTION));
-		}
+		String payment_option = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.PAYMENT_OPTION));
 		
 		int sell_to_address_id = -1;
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID))) {
@@ -554,8 +551,14 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			}
 		}
 
-		if (payment_option != -1) {
-			paymentType.setSelection(payment_option);
+		if (payment_option != null) {
+			ArrayList<String> paymentArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.payment_type_array)));
+			int spinnerPosition = paymentArray.indexOf(payment_option);
+			if (spinnerPosition != -1) {
+				paymentType.setSelection(spinnerPosition);
+			} else {
+				LogUtils.LOGE(TAG, "No position for value:"+payment_option);
+			}
 		}
 		
 		if (location_code != null) {
@@ -1004,7 +1007,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		localValues.put(MobileStoreContract.SaleOrders.SHORTCUT_DIMENSION_1_CODE, shc1[sales_shc1_type]);
 		
 		int payment_type = paymentType.getSelectedItemPosition();
-		localValues.put(MobileStoreContract.SaleOrders.PAYMENT_OPTION, Integer.valueOf(payment_type));
+		String[] pay = getResources().getStringArray(R.array.payment_type_array);
+		localValues.put(MobileStoreContract.SaleOrders.PAYMENT_OPTION, pay[payment_type]);
 		
 		long sell_address_id = billingAddress.getSelectedItemId();
 		if (sell_address_id != AdapterView.INVALID_ROW_ID) {

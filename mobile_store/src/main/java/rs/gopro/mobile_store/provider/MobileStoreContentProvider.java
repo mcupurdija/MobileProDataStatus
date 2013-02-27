@@ -976,6 +976,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 			tableName = Tables.SALE_ORDER_LINES;
 			selectionParam = new String[]{SaleOrderLines.SALE_ORDER_ID, SaleOrderLines.LINE_NO};
 			selectionPhrase =  SaleOrderLines.SALE_ORDER_ID + "=? AND " + SaleOrderLines.LINE_NO + "=?";
+			break;
 		case CUSTOMER_ADDRESSES:
 			tableName = Tables.CUSTOMER_ADDRESSES;
 			selectionParam = new String[] {CustomerAddresses.ADDRESS_NO};

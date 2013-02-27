@@ -34,7 +34,8 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		SaleOrdersPreviewListFragment.Callbacks, SaleOrderLinesPreviewListFragment.Callbacks {
 
 	public static final String EXTRA_MASTER_URI = "rs.gopro.mobile_store.extra.MASTER_URI";
-
+	private static final int SAVE_SALE_DOC = 0;
+	private static final int VERIFY_SALE_DOC = 1;
 //	public static final int CALL_INSERT = 1;
 //	public static final int CALL_EDIT = 2;
 	
@@ -290,13 +291,21 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 					MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(saleOrderId));
 			startActivity(editSaleOrderIntent);
 			return true;
+		case R.id.verify_sale_order_action_menu_option:
+			Intent verifyintent = new Intent(this, NavisionSyncService.class);
+			MobileDeviceSalesDocumentSyncObject verifymobileDeviceSalesDocumentSyncObject = new MobileDeviceSalesDocumentSyncObject(Integer.valueOf(saleOrderId), VERIFY_SALE_DOC);
+			//mobileDeviceSalesDocumentSyncObject.setpDocumentNote()
+			verifyintent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, verifymobileDeviceSalesDocumentSyncObject);
+			startService(verifyintent);
+			sendSaleOrderProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.dialog_title_sale_order_verify), getResources().getString(R.string.dialog_body_sale_order_verify), true);
+			return true;
 		case R.id.send_sale_order_action_menu_option:
 			// TODO sale order lines goes here
 			if (saleOrderId == null) {
 				return true;
 			}
 			Intent intent = new Intent(this, NavisionSyncService.class);
-			MobileDeviceSalesDocumentSyncObject mobileDeviceSalesDocumentSyncObject = new MobileDeviceSalesDocumentSyncObject(Integer.valueOf(saleOrderId));
+			MobileDeviceSalesDocumentSyncObject mobileDeviceSalesDocumentSyncObject = new MobileDeviceSalesDocumentSyncObject(Integer.valueOf(saleOrderId), SAVE_SALE_DOC);
 			//mobileDeviceSalesDocumentSyncObject.setpDocumentNote()
 			intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, mobileDeviceSalesDocumentSyncObject);
 			startService(intent);

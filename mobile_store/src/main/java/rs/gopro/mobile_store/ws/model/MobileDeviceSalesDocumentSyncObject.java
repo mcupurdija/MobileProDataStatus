@@ -32,7 +32,9 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	private String pCSVStringLines;
 	private String pNoteForCentralOffice;
 	private String pDocumentNote;
+	private Integer pVerifyOnly;
 	
+	// not on request/response just for status return
 	private String order_condition_status;	
 	private String financial_control_status;
 	private String order_status_for_shipment;
@@ -63,6 +65,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		setpCSVStringLines(source.readString());
 		setpNoteForCentralOffice(source.readString());
 		setpDocumentNote(source.readString());
+		setpVerifyOnly(source.readInt());
 		
 		setOrder_condition_status(source.readString());
 		setFinancial_control_status(source.readString());
@@ -70,18 +73,20 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		setOrder_value_status(source.readString());
 	}
 	
-	public MobileDeviceSalesDocumentSyncObject(int document_id) {
+	public MobileDeviceSalesDocumentSyncObject(int document_id, Integer pVerifyOnly) {
 		this.documentId = document_id;
+		this.pVerifyOnly = pVerifyOnly;
 	}
 	
 	public MobileDeviceSalesDocumentSyncObject(String pCSVStringHeader,
 			String pCSVStringLines, String pNoteForCentralOffice,
-			String pDocumentNote) {
+			String pDocumentNote, Integer pVerifyOnly) {
 		super();
 		this.pCSVStringHeader = pCSVStringHeader;
 		this.pCSVStringLines = pCSVStringLines;
 		this.pNoteForCentralOffice = pNoteForCentralOffice;
 		this.pDocumentNote = pDocumentNote;
+		this.pVerifyOnly = pVerifyOnly;
 	}
 
 	@Override
@@ -97,6 +102,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		dest.writeString(getpCSVStringLines());
 		dest.writeString(getpNoteForCentralOffice());
 		dest.writeString(getpDocumentNote());
+		dest.writeInt(getpVerifyOnly());
 		
 		dest.writeString(getOrder_condition_status());
 		dest.writeString(getFinancial_control_status());
@@ -138,6 +144,12 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		documentNote.setValue(pDocumentNote);
 		documentNote.setType(String.class);
 		properies.add(documentNote);
+		
+		PropertyInfo verifyOnly = new PropertyInfo();
+		verifyOnly.setName("pVerifyOnly");
+		verifyOnly.setValue(pVerifyOnly);
+		verifyOnly.setType(Integer.class);
+		properies.add(verifyOnly);
 		
 		return properies;
 	}
@@ -201,6 +213,10 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		
 		List<MobileDeviceSalesDocumentHeaderDomain> parsedSalesHeader = CSVDomainReader.parse(new StringReader(soapResponse.getPropertyAsString("pCSVStringHeader")), MobileDeviceSalesDocumentHeaderDomain.class);
 		ContentValues[] valuesForInsertHeader = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedSalesHeader);
+		
+		if (pVerifyOnly == 1) {
+			valuesForInsertHeader[0].putNull("sales_order_no");
+		}
 		
 		List<MobileDeviceSalesDocumentLinesDomain> parsedSalesLines = CSVDomainReader.parse(new StringReader(soapResponse.getPropertyAsString("pCSVStringLines")), MobileDeviceSalesDocumentLinesDomain.class);
 		ContentValues[] valuesForInsertLines = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedSalesLines);
@@ -295,7 +311,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 				Integer.class,
 				Integer.class,
 				
-				Integer.class,
+				String.class,
 				Integer.class,
 				Integer.class,
 				Integer.class
@@ -418,5 +434,13 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 
 	public void setOrder_value_status(String order_value_status) {
 		this.order_value_status = order_value_status;
+	}
+
+	public Integer getpVerifyOnly() {
+		return pVerifyOnly;
+	}
+
+	public void setpVerifyOnly(Integer pVerifyOnly) {
+		this.pVerifyOnly = pVerifyOnly;
 	}
 }

@@ -114,11 +114,18 @@
         <item>SA4</item>
     </string-array>
     <string-array name="payment_type_array">
-        <item>No cash</item>
-        <item>Sales person</item>
-        <item>City</item>
-        <item>PG</item>
-        <item>Card</item>
+        <item>KEŠ-CITY</item>
+        <item>KEŠ-KOM</item>
+        <item>KEŠ-PGO</item>
+        <item>KRED-KART</item>
+        <item>ŽIRO-RAČUN</item>
+    </string-array>
+    <string-array name="payment_value_array">
+        <item>Gotovina (City)</item>
+        <item>Gotovina (Komercijalista)</item>
+        <item>Gotovina Pick&amp;Go</item>
+        <item>Kreditna kartica</item>
+        <item>Virman</item>
     </string-array>
     <string-array name="location_type_array">
         <item>001</item>

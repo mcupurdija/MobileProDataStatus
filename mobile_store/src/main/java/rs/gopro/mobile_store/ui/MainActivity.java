@@ -31,8 +31,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -71,6 +69,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 		if (savedInstanceState != null) {
 			currentItemPosition = savedInstanceState.getInt(CURRENT_POSITION_KEY);
 		}
+	
 		setContentView(R.layout.activity_main_screen);
 		final ListView viewActionsList = (ListView) findViewById(R.id.main_menu_list);
 		actionsAdapter = new ActionsAdapter(this);

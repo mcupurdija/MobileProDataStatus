@@ -335,6 +335,12 @@ public class MobileStoreContract {
 		String SALE_PERSON_NO = "sales_person_no";
 		String SALE_PERSON_NAME = "name";
 		String SALE_PERSON_NAME_2 = "name2";
+		String DEFAULT_LOCATION = "default_location";
+		String ALLOW_LOCATION_CHANGE_ON_MDSD = "allow_location_change_on_mdsd";
+		String TEAM_PARTNER = "team_partner";
+		String ACCESS_TO_ALL_CUSTOMERS = "access_to_all_customers";
+		String INVOICE_QUERY_NUMBER_OF_DAYS = "invoice_query_number_of_days";
+		String PASSWORD = "password";
 		
 	}
 	

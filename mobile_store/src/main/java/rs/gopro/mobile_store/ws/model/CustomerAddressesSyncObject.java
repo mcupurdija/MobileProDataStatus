@@ -12,7 +12,6 @@ import org.ksoap2.serialization.SoapPrimitive;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
-import rs.gopro.mobile_store.util.exceptions.SOAPResponseException;
 import rs.gopro.mobile_store.ws.model.domain.CustomerAddressDomain;
 import android.content.ContentResolver;
 import android.content.ContentValues;

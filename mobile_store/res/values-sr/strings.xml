@@ -28,13 +28,13 @@
 	
 	<string name="invoice_amount_total_template">Iznos je: </string>
 	
-	<string name="sale_order_search_title">Pronadji lifericu: </string>
+	<string name="sale_order_search_title">Pronadji porudžbinu/ponudu: </string>
 	<string name="sale_order_status_spinner_title">Filtriraj po statusu:</string>
 	
 	<string name="empty_visits">Nema planiranih poseta.</string>
-	<string name="empty_sale_orders">Liferice nisu pronađene.</string>
+	<string name="empty_sale_orders">Porudžbine/ponude nisu pronađene.</string>
 	<string name="empty_customers">Nema detalja za izabranog kupca.</string>
-	<string name="empty_sale_order_lines">Nema stavki za izabranu lifericu</string>
+	<string name="empty_sale_order_lines">Nema stavki za izabranu porudžbinu/Ponudu</string>
 	<string name="hint_search">Pretraži&#8230;</string>
 	<string name="save_button_title">Sačuvaj</string>
 	<string name="cancel_button_title">Otkaži</string>
@@ -101,17 +101,20 @@
 	<string name="contextual_edit">Izmeni</string>
 	<string name="contextual_add">Novi</string>
 	<string name="contextual_view">Pregled</string>
-	<string name="contextual_edit_lines">Uredi stavke liferice</string>
+	<string name="contextual_edit_lines">Uredi stavke porudžbine</string>
 	<string name="contextual_add_sale_order_line">Nova linija</string>
 	<string name="contextual_delete_sale_order_line">Izbriši liniju</string>
-	<string name="contextual_add_sale_order">Nova liferica</string>
-	<string name="contextual_send_sale_order">Pošalji lifericu</string>
+	<string name="contextual_add_sale_order">Nova porudžbina/ponuda</string>
+	<string name="contextual_send_sale_order">Pošalji porudžbinu/ponudu</string>
 	<string name="contextual_view_saldo">Dokument zbirno</string>
+	<string name="contextual_verify_sale_order">Verifikuj porudžbinu/ponudu</string>
 	
 	<string name="dialog_title_item_price_qty_load">Cena, popust i količina</string>
 	<string name="dialog_body_item_price_qty_load">Učitavanje cene, popusta i količine</string>
-	<string name="dialog_title_sale_order_send">Liferica</string>
-	<string name="dialog_body_sale_order_send">Slanje liferice je u toku&#8230;</string>
+	<string name="dialog_title_sale_order_send">Porudžbine/Ponude</string>
+	<string name="dialog_title_sale_order_verify">Verifikacija porudžbine/ponude</string>
+	<string name="dialog_body_sale_order_send">Slanje porudžbine/ponude je u toku&#8230;</string>
+	<string name="dialog_body_sale_order_verify">Verifikacija porudžbine/ponude je u toku&#8230;</string>
 	<string name="dialog_title_error_in_sync">Greška pri sinhronizaciji</string>
 	
 	<string name="document_no">Broj dokumenta</string>
@@ -130,7 +133,7 @@
 	<string name="quote_no">Br. porudžbine</string>
 	<string name="quote_date">Rok vazenja porudžbine</string>
 	<string name="quote_status">Status porudžbine</string>
-	<string name="transit_customer">Tranzit kupac</string>
+	<string name="transit_customer">Krajnji kupac (preko tranzitnog isporuka)</string>
 	
 	<string name="customer_no_label">Br. kupca</string>
 	<string name="customer_address_label">Adresa</string>
@@ -191,7 +194,7 @@
 	
 	<!-- title -->
 	
-	<string name="title_sale_order_lines_add_edit_activity">Dodaj/izmeni stavke liferice</string>
+	<string name="title_sale_order_lines_add_edit_activity">Dodaj/izmeni stavke porudžbine/ponude</string>
 	
 	<!-- settings -->
 	<string name="title_settings">Podesavanja</string>
