@@ -7,6 +7,7 @@ import rs.gopro.mobile_store.util.PropertiesUtil;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Dialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,8 @@ public class LoginActivity extends Activity {
 	private static String TAG = "LoginActivity";
 //	private static String SESSION_PREFS = "SessionPrefs";
 
+	private Button btnRegister;
+	
 	private OnClickListener btnLoginListener = new OnClickListener() {
 		public void onClick(View v) {
 			EditText editTextUser = (EditText) findViewById(R.id.editTextUsername);
@@ -71,6 +74,37 @@ public class LoginActivity extends Activity {
 		Button btnLogin = (Button) findViewById(R.id.btnLogin);
 		btnLogin.setOnClickListener(btnLoginListener);
 
+		btnRegister = (Button) findViewById(R.id.btnRegister);
+		btnRegister.setVisibility(View.GONE);
+		btnRegister.setOnClickListener(new OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				final Dialog dialog = new Dialog(LoginActivity.this);
+				dialog.setContentView(R.layout.dialog_register_new_user);
+				dialog.setTitle("Unesite šifru korisnika");
+				
+				final EditText text1 = (EditText) dialog.findViewById(R.id.dialog_register_user_no);
+
+				
+				Button dialogButton = (Button) dialog.findViewById(R.id.dialogRegisterUserButtonOK);
+				//dialogButton.setVisibility(View.GONE);
+				// if button is clicked, close the custom dialog
+				dialogButton.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						
+						String user_no = text1.getText().toString();
+						
+						
+						
+						dialog.dismiss();
+					}
+				});
+	 
+				dialog.show();
+				
+			}
+		});
 	}
 	@Override
 	public void onBackPressed() {

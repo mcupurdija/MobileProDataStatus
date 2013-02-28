@@ -5,6 +5,8 @@
     <string name="username">Korisničko ime</string>
     <string name="password">Lozinka</string>
     <string name="login">Prijava za rad</string>
+    <string name="register">Registruj novog korisnika</string>
+    <string name="register_user_no">Šifra korisnika</string>
     <string name="app_logo_desc">Logo aplikacije</string>
     <string name="login_title">Prijavi se</string>
     <string name="home_title">Početak</string>
@@ -108,6 +110,7 @@
 	<string name="contextual_send_sale_order">Pošalji porudžbinu/ponudu</string>
 	<string name="contextual_view_saldo">Dokument zbirno</string>
 	<string name="contextual_verify_sale_order">Verifikuj porudžbinu/ponudu</string>
+	<string name="contextual_complete_visit">Realizuj posetu</string>
 	
 	<string name="dialog_title_item_price_qty_load">Cena, popust i količina</string>
 	<string name="dialog_body_item_price_qty_load">Učitavanje cene, popusta i količine</string>

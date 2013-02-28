@@ -375,6 +375,7 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 			contentValues.put(Visits.DEPARTURE_TIME, DateUtils.formatPickerTimeInputForDb(departureTimeEditText.getText().toString()));
 			contentValues.put(Visits.VISIT_RESULT, visitResultEditText.getSelectedItem().toString());
 			contentValues.put(Visits.NOTE, noteEditText.getText().toString());
+			contentValues.put(Visits.VISIT_TYPE, "1");
 		}
 		String currentVisitId = null;
 		if (selectedVisitId != null) {

@@ -41,6 +41,13 @@ public class VisitContextualMenu implements  ActionMode.Callback{
 			mode.finish();
 			//activity.finish();
 			return true;
+		case R.id.relise_visit:
+			Intent completeIntent = new Intent(activity, AddVisitActivity.class);
+			completeIntent.putExtra(AddVisitActivity.VISIT_ID, visitId);
+			completeIntent.putExtra(AddVisitActivity.VISIT_TYPE, "1");
+			activity.startActivity(completeIntent);
+			mode.finish();
+			return true;
 		default:
 			break;
 		}

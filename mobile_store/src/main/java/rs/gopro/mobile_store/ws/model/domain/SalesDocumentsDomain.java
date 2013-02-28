@@ -7,7 +7,6 @@ import android.content.ContentValues;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
 import rs.gopro.mobile_store.util.DateUtils;
-import rs.gopro.mobile_store.ws.model.Domain;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 
 public class SalesDocumentsDomain extends Domain {

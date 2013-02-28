@@ -3,12 +3,9 @@ package rs.gopro.mobile_store.ws.model.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.ContentValues;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
-import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerAddresses;
-import rs.gopro.mobile_store.ws.model.Domain;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
+import android.content.ContentValues;
 
 public class CustomerAddressDomain extends Domain {
 

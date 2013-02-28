@@ -9,7 +9,7 @@ import au.com.bytecode.opencsv.bean.CsvToBean;
 
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
-import rs.gopro.mobile_store.ws.model.Domain;
+import rs.gopro.mobile_store.ws.model.domain.Domain;
 
 public class CSVDomainReader {
 	

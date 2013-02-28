@@ -5,6 +5,8 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="register">Register user</string>
+    <string name="register_user_no">User no</string>
     <string name="app_logo_desc">Application image logo</string>
     <string name="login_title">Login</string>
     <string name="home_title">Home</string>
@@ -108,6 +110,7 @@
 	<string name="contextual_send_sale_order">Send sale order</string>
 	<string name="contextual_view_saldo">Document saldo</string>
 	<string name="contextual_verify_sale_order">Verify document</string>
+	<string name="contextual_complete_visit">Complete visit</string>
 	
 	<string name="dialog_title_item_price_qty_load">Price and Quantity</string>
 	<string name="dialog_body_item_price_qty_load">Loading price and quantity</string>

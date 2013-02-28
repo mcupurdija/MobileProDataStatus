@@ -3,9 +3,15 @@
     <item
         android:id="@+id/deactivate_visit"
         android:title="@string/contextual_deactivate"
-        android:showAsAction="ifRoom|withText"/>
+        android:showAsAction="ifRoom|withText" />
+    
+    <item
+        android:id="@+id/relise_visit"
+        android:title="@string/contextual_complete_visit"
+        android:showAsAction="ifRoom|withText" />
+    
     <item
         android:id="@+id/edit_visit"
         android:title="@string/contextual_edit"
-        android:showAsAction="ifRoom|withText"/>
+        android:showAsAction="ifRoom|withText" />
 </menu>

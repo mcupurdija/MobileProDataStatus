@@ -8,7 +8,6 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
-import rs.gopro.mobile_store.ws.model.Domain;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 
 public class CustomerDomain extends Domain {
