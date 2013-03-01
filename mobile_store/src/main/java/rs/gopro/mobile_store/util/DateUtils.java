@@ -25,9 +25,9 @@ public class DateUtils {
 	@SuppressLint("SimpleDateFormat")
 	private final static SimpleDateFormat localDbDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	@SuppressLint("SimpleDateFormat")
-	private final static SimpleDateFormat navisionDbDate = new SimpleDateFormat("MM/dd/yy");
+	private final static SimpleDateFormat navisionDbDate = new SimpleDateFormat("dd.MM.yy");
 	@SuppressLint("SimpleDateFormat")
-	private final static SimpleDateFormat navisionDbDateTime = new SimpleDateFormat("MM/dd/yy hh:mm:ss aaa");
+	private final static SimpleDateFormat navisionDbDateTime = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
 	
 	public static Date getWsDummyDate() {
 		Calendar calendar = GregorianCalendar.getInstance();

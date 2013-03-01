@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
 import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 
 public class SalesDocumentsDomain extends Domain {
@@ -33,15 +34,15 @@ public class SalesDocumentsDomain extends Domain {
 	public ContentValues getContentValues() {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(Invoices.CUSTOMER_NO, getCustomer_no());
-		contentValues.put(Invoices.POSTING_DATE, DateUtils.formatDateFromNavisionToDB(getPosting_date()));
+		contentValues.put(Invoices.POSTING_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getPosting_date()));
 		contentValues.put(Invoices.DOCUMENT_TYPE, getDocument_type());
 		contentValues.put(Invoices.INVOICE_NO, getInvoice_no());
-		contentValues.put(Invoices.REMAINING_AMOUNT, getRemaining_amount());
+		contentValues.put(Invoices.REMAINING_AMOUNT, WsDataFormatEnUsLatin.toDoubleFromWs(getRemaining_amount()));
 		contentValues.put(Invoices.SALE_PERSON_NO, getSales_person_no());
 		contentValues.put(Invoices.OPEN, getOpen());
-		contentValues.put(Invoices.DUE_DATE, DateUtils.formatDateFromNavisionToDB(getDue_date()));
-		contentValues.put(Invoices.ORIGINAL_AMOUNT, getOriginal_amount());
-		contentValues.put(Invoices.PRICES_INCLUDE_VAT, getPrices_include_vat());
+		contentValues.put(Invoices.DUE_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getDue_date()));
+		contentValues.put(Invoices.ORIGINAL_AMOUNT, WsDataFormatEnUsLatin.toDoubleFromWs(getOriginal_amount()));
+		contentValues.put(Invoices.PRICES_INCLUDE_VAT, WsDataFormatEnUsLatin.toDoubleFromWs(getPrices_include_vat()));
 
 		return contentValues;
 	}

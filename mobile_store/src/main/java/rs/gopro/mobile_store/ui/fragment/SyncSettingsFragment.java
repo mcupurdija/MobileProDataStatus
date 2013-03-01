@@ -197,7 +197,7 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 	
 	private void doSalesDocumentsSync(){
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		SalesDocumentsSyncObject syncObject = new SalesDocumentsSyncObject("", Integer.valueOf(0), "", "", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), salesPersonNo,Integer.valueOf(-1));
+		SalesDocumentsSyncObject syncObject = new SalesDocumentsSyncObject("", Integer.valueOf(-1), "", "", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), salesPersonNo,Integer.valueOf(-1));
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, syncObject);
 		getActivity().startService(intent);
 	}
