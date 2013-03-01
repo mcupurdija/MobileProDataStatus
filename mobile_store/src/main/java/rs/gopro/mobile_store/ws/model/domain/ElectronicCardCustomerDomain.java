@@ -5,6 +5,7 @@ import java.util.List;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
 import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 import android.content.ContentValues;
 
@@ -42,26 +43,26 @@ public class ElectronicCardCustomerDomain extends Domain {
 	@Override
 	public ContentValues getContentValues() {
 		ContentValues contentValues = new ContentValues();
-		contentValues.put(ElectronicCardCustomer.CUSTOMER_NO,  getCustomer_no() );
+		contentValues.put(ElectronicCardCustomer.CUSTOMER_NO, getCustomer_no());
 		contentValues.put(ElectronicCardCustomer.ITEM_NO, getItem_no());
-		contentValues.put(ElectronicCardCustomer.JANUARY_QTY, getJanuary_qty());
-		contentValues.put(ElectronicCardCustomer.FEBRUARY_QTY, getFebruary_qty());
-		contentValues.put(ElectronicCardCustomer.MARCH_QTY, getMarch_qty());
-		contentValues.put(ElectronicCardCustomer.APRIL_QTY, getApril_qty());
-		contentValues.put(ElectronicCardCustomer.MAY_QTY, getMay_qty() );
-		contentValues.put(ElectronicCardCustomer.JUNE_QTY, getJune_qty());
-		contentValues.put(ElectronicCardCustomer.JULY_QTY, getJuly_qty());
-		contentValues.put(ElectronicCardCustomer.AUGUST_QTY, getAugust_qty());
-		contentValues.put(ElectronicCardCustomer.SEPTEMBER_QTY, getSeptember_qty());
-		contentValues.put(ElectronicCardCustomer.OCTOBER_QTY, getOctober_qty());
-		contentValues.put(ElectronicCardCustomer.NOVEMBER_QTY, getNovember_qty() );
-		contentValues.put(ElectronicCardCustomer.DECEMBER_QTY, getDecember_qty());
-		contentValues.put(ElectronicCardCustomer.TOTAL_SALE_QTY_CURRENT_YEAR, getTotal_sale_qty_current_year());
-		contentValues.put(ElectronicCardCustomer.TOTAL_SALE_QTY_PRIOR_YEAR, getTotal_sale_qty_prior_year());
-		contentValues.put(ElectronicCardCustomer.TOTAL_TURNOVER_CURRENT_YEAR, getTotal_turnover_current_year());
-		contentValues.put(ElectronicCardCustomer.TOTAL_TURNOVER_PRIOR_YEAR, getTotal_turnover_prior_year());
-		contentValues.put(ElectronicCardCustomer.SALES_LINE_COUNTS_CURRENT_YEAR, getSales_line_counts_current_year());
-		contentValues.put(ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR, getSales_line_counts_prior_year());		
+		contentValues.put(ElectronicCardCustomer.JANUARY_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getJanuary_qty()));
+		contentValues.put(ElectronicCardCustomer.FEBRUARY_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getFebruary_qty()));
+		contentValues.put(ElectronicCardCustomer.MARCH_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getMarch_qty()));
+		contentValues.put(ElectronicCardCustomer.APRIL_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getApril_qty()));
+		contentValues.put(ElectronicCardCustomer.MAY_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getMay_qty() ));
+		contentValues.put(ElectronicCardCustomer.JUNE_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getJune_qty()));
+		contentValues.put(ElectronicCardCustomer.JULY_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getJuly_qty()));
+		contentValues.put(ElectronicCardCustomer.AUGUST_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getAugust_qty()));
+		contentValues.put(ElectronicCardCustomer.SEPTEMBER_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getSeptember_qty()));
+		contentValues.put(ElectronicCardCustomer.OCTOBER_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getOctober_qty()));
+		contentValues.put(ElectronicCardCustomer.NOVEMBER_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getNovember_qty()));
+		contentValues.put(ElectronicCardCustomer.DECEMBER_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getDecember_qty()));
+		contentValues.put(ElectronicCardCustomer.TOTAL_SALE_QTY_CURRENT_YEAR, WsDataFormatEnUsLatin.toDoubleFromWs(getTotal_sale_qty_current_year()));
+		contentValues.put(ElectronicCardCustomer.TOTAL_SALE_QTY_PRIOR_YEAR, WsDataFormatEnUsLatin.toDoubleFromWs(getTotal_sale_qty_prior_year()));
+		contentValues.put(ElectronicCardCustomer.TOTAL_TURNOVER_CURRENT_YEAR, WsDataFormatEnUsLatin.toDoubleFromWs(getTotal_turnover_current_year()));
+		contentValues.put(ElectronicCardCustomer.TOTAL_TURNOVER_PRIOR_YEAR, WsDataFormatEnUsLatin.toDoubleFromWs(getTotal_turnover_prior_year()));
+		contentValues.put(ElectronicCardCustomer.SALES_LINE_COUNTS_CURRENT_YEAR, WsDataFormatEnUsLatin.toDoubleFromWs(getSales_line_counts_current_year()));
+		contentValues.put(ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR, WsDataFormatEnUsLatin.toDoubleFromWs(getSales_line_counts_prior_year()));		
 		return contentValues;
 	}
 

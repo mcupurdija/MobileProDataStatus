@@ -3,12 +3,12 @@ package rs.gopro.mobile_store.ws.model.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.ContentValues;
-import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerTradeAgreemnt;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
-import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
+import android.content.ContentValues;
 
 public class CustomerTradeAgreementDomain extends Domain {
 	
@@ -33,10 +33,10 @@ public class CustomerTradeAgreementDomain extends Domain {
 		contentValues.put(CustomerTradeAgreemnt.CUSTOMER_ID, customer_no);
 		contentValues.put(CustomerTradeAgreemnt.ENTRY_TYPE, getEntry_type());
 		contentValues.put(CustomerTradeAgreemnt.CODE, getCode());
-		contentValues.put(CustomerTradeAgreemnt.MINIMUM_QUANTITY, getMinimum_quantity());
-		contentValues.put(CustomerTradeAgreemnt.STARTING_DATE,  DateUtils.formatDateFromNavisionToDB(getStarting_date()));
-		contentValues.put(CustomerTradeAgreemnt.ENDING_DATE,  DateUtils.formatDateFromNavisionToDB(getEnding_date()));
-		contentValues.put(CustomerTradeAgreemnt.ACTUAL_DISCOUNT, getActual_discount());
+		contentValues.put(CustomerTradeAgreemnt.MINIMUM_QUANTITY, WsDataFormatEnUsLatin.toDoubleFromWs(getMinimum_quantity()));
+		contentValues.put(CustomerTradeAgreemnt.STARTING_DATE,  WsDataFormatEnUsLatin.toDbDateFromWsString(getStarting_date()));
+		contentValues.put(CustomerTradeAgreemnt.ENDING_DATE,  WsDataFormatEnUsLatin.toDbDateFromWsString(getEnding_date()));
+		contentValues.put(CustomerTradeAgreemnt.ACTUAL_DISCOUNT, WsDataFormatEnUsLatin.toDoubleFromWs(getActual_discount()));
 		return contentValues;
 	}
 
