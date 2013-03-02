@@ -16,7 +16,7 @@ import android.view.View.OnLongClickListener;
 import android.widget.DatePicker;
 
 public class SaleOrdersLayout extends CustomLinearLayout implements  OnLongClickListener {
-	private static String TAG = "CustomersLayout";
+	private static String TAG = "SaleOrdersLayout";
 	private static final String SALE_ORDER_SCHEME = "settings";
 	private static final String SALE_ORDER_AUTHORITY = "sale_orders";
 	public static final Uri SALE_ORDER_URI = new Uri.Builder().scheme(SALE_ORDER_SCHEME).authority(SALE_ORDER_AUTHORITY).build();
@@ -63,7 +63,6 @@ public class SaleOrdersLayout extends CustomLinearLayout implements  OnLongClick
 
 	@Override
 	public ActionMode.Callback getContextualActionBar(String identifier, String visitType) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

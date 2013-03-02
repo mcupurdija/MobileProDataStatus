@@ -18,7 +18,6 @@ import rs.gopro.mobile_store.ui.customlayout.SentOrdersLayout;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
-import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
@@ -246,13 +245,13 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 		}
 	};
 
-	private void doSynchronization() {
-		Intent intent = new Intent(this, NavisionSyncService.class);
-		ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(1), null, DateUtils.getWsDummyDate());
-		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
-		this.startService(intent);
-
-	}
+//	private void doSynchronization() {
+//		Intent intent = new Intent(this, NavisionSyncService.class);
+//		ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(1), null, DateUtils.getWsDummyDate());
+//		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
+//		this.startService(intent);
+//
+//	}
 
 	public void onSOAPResult(SyncStatus syncStatus, String result) {
 		System.out.println("Status: " + syncStatus);

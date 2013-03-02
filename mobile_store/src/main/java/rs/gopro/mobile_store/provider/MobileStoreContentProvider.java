@@ -53,6 +53,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int INVOICES = 110;
 	private static final int INVOICES_ID = 111;
 	private static final int INVOICE_LINES_FROM_ORDER = 112;
+	private static final int INVOICES_SEARCH = 113;
 
 	private static final int CUSTOMERS = 120;
 	private static final int CUSTOMERS_ID = 121;
@@ -127,7 +128,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "invoices", INVOICES);
 		mobileStoreURIMatcher.addURI(authority, "invoices/#", INVOICES_ID);
 		mobileStoreURIMatcher.addURI(authority, "invoice_lines_from_order/#", INVOICE_LINES_FROM_ORDER);
-
+		mobileStoreURIMatcher.addURI(authority, "invoices/*/*/*/invoices_search",
+				INVOICES_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "invoices/#/*/*/invoices_search",
+				INVOICES_SEARCH);
+		
 		mobileStoreURIMatcher.addURI(authority, "customers", CUSTOMERS);
 		mobileStoreURIMatcher.addURI(authority, "customers_by_sales_person/*",
 				CUSTOMERS_BY_SALES_PERSON);
@@ -488,7 +493,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.INVOICES).where(Invoices._ID + "=?",
 					invoicesId);
 		case INVOICES:
-			return builder.addTable(Tables.INVOICES);
+			return builder.addTable(Tables.INVOICES_JOIN_CUSTOMER);
 		case INVOICE_LINES_FROM_ORDER:
 			String invoiceid = InvoiceLine.getInvoiceId(uri);
 			return builder.addTable(Tables.INVOICE_LINES)
@@ -887,7 +892,26 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(MobileStoreContract.Visits.NOTE, Tables.VISITS);
 		case SALE_ORDERS_SALDO:
 			return  builder.addTable(Tables.SALE_ORDERS_SALDO);
-					
+		case INVOICES_SEARCH:
+			String customer_no = Invoices
+					.getCustomSearchFirstParamQuery(uri);
+			String invoiceOpenType = SaleOrders
+					.getCustomSearchSecondParamQuery(uri);
+			String invoiceDocType = SaleOrders.getCustomSearchThirdParamQuery(uri);
+
+			builder
+				.addTable(Tables.INVOICES_JOIN_CUSTOMER);
+			if (!customer_no.equals("noCustomer")) {
+				builder.where(Tables.CUSTOMERS+"."+MobileStoreContract.Customers.CUSTOMER_NO + " like ? ",
+							new String[] { "%" + customer_no + "%" });
+			}
+			if (!invoiceDocType.equals("-1")) {
+				builder.where(Tables.INVOICES+"."+MobileStoreContract.Invoices.DOCUMENT_TYPE + " = ? ",new String[] { invoiceDocType });
+			}
+			if (!invoiceOpenType.equals("-1")) {
+				builder.where(Tables.INVOICES+"."+MobileStoreContract.Invoices.OPEN + " = ? ",new String[] { invoiceOpenType });
+			}
+			return builder;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

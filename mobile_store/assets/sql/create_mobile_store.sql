@@ -63,7 +63,7 @@ BEGIN
 	where _id = new._id; 
 END;
 INSERT INTO `sales_persons` (_id, sales_person_no, name, name2, created_date, created_by) VALUES 
-	(1, 'Z0146', 'vlada', 'vlada', datetime('now'), 'INITIAL');
+	(1, 'Z0141', 'vlada', 'vlada', datetime('now'), 'INITIAL');
 --Z0146, Z0157
 -- invoices
 CREATE TABLE `invoices` (

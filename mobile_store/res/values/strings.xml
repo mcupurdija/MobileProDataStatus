@@ -22,13 +22,20 @@
 	<string name="empty_waiting_for_sync">Wait sync</string>
 	<string name="sale_order_amount_total_template">Amount is: </string>
 	<string name="customer_search_title">Find customer: </string>
+	<string name="customer_search_filter">Find by customer no:</string>
 	<string name="customer_block_status_spinner_title">Filter by status:</string>
 	<string name="contact_search_title">Find contact: </string>
+	<string name="invoice_document_type_label_text">Find by document type:</string>
+	<string name="invoice_document_open_status_label_text">Find by document open status:</string>
 	
 	<string name="item_search_title">Find item: </string>
 	<string name="item_block_status_spinner_title">Filter by status</string>
 	
-	<string name="invoice_amount_total_template">Amount is: </string>
+	<string name="invoice_document_type">Document type: </string>
+	<string name="invoice_amount_total">Amount is: </string>
+	<string name="invoice_amount_remaining">Remaining amount is: </string>
+	<string name="invoice_sync_open_docs_per_customer_button_title">Sync open documents for customer</string>
+	<string name="invoice_sync_per_days_button_title">Sync documents for 2 days</string>
 	
 	<string name="sale_order_search_title">Find invoice: </string>
 	<string name="sale_order_status_spinner_title">Filter by status</string>
@@ -119,6 +126,8 @@
 	<string name="dialog_body_sale_order_send">Sending sale order</string>
 	<string name="dialog_body_sale_order_verify">Verifying sale order</string>
 	<string name="dialog_title_error_in_sync">Sync error</string>
+	<string name="dialog_title_invoices_load">Customer leadger entries</string>
+	<string name="dialog_body_invoices_load">Loading customer leadger entries</string>
 	
 	<string name="document_no">Document No</string>
 	<string name="dokument_type_no_title">Document no and type </string>
@@ -299,4 +308,7 @@
 	<string name="items_sync_on_action_button_title">Sync on action</string>
 	<string name = "customer_edit_title">Edit</string>
 	<string name = "save_customer_changes_title">Save</string>
+	
+	<string name="invoice_open">Open</string>
+	<string name="invoice_closed">Closed</string>
 </resources>

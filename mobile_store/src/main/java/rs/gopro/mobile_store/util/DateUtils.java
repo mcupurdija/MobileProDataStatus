@@ -35,6 +35,32 @@ public class DateUtils {
 		return calendar.getTime();
 	}
 	
+	public static Date getTodayDateIgnoringWeekend(Date date) {
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.setTime(date);
+		
+		if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+		}
+		
+		return calendar.getTime();
+	}
+	
+	public static Date getPreviousDateIgnoringWeekend(Date date) {
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.setTime(date);
+		
+		if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+			calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+		} else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+		} else {
+			calendar.set(Calendar.DAY_OF_WEEK, calendar.get(Calendar.DAY_OF_WEEK) - 1);
+		}
+		
+		return calendar.getTime();
+	}
+	
 	public static String marshaleDate(Date date) {
 		return marshalDate.format(date);
 	}

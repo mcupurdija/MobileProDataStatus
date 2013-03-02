@@ -12,6 +12,7 @@ public class MobileStoreContract {
 
 	private static final String PATH_USERS = "users";
 	private static final String PATH_INVOICES = "invoices";
+	private static final String PATH_INVOICES_SEARCH = "invoices_search";
 	private static final String PATH_CUSTOMERS = "customers";
 	private static final String PATH_CUSTOMERS_BY_SALES_PERSON = "customers_by_sales_person";
 	//private static final String PATH_SEARCH = "search";
@@ -478,8 +479,23 @@ public class MobileStoreContract {
 			return uri.getPathSegments().get(1);
 		}
 
+		public static Uri buildCustomSearchUri(String customerNo, String status, String type) {
+			return CONTENT_URI.buildUpon().appendPath(customerNo).appendPath(status).appendPath(type).appendPath(PATH_INVOICES_SEARCH).build();
+		}
+		
+		public static String getCustomSearchFirstParamQuery(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+
+		public static String getCustomSearchSecondParamQuery(Uri uri) {
+			return uri.getPathSegments().get(2);
+		}
+		public static String getCustomSearchThirdParamQuery(Uri uri){
+			return uri.getPathSegments().get(3);
+		}
+		
 		/** Default "ORDER BY" clause. */
-		public static final String DEFAULT_SORT = Invoices.POSTING_DATE + " ASC";
+		public static final String DEFAULT_SORT = Invoices.POSTING_DATE + " DESC";
 	}
 	
 	/**

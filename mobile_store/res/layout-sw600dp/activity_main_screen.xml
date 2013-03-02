@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:baselineAligned="false" >
 
     <ListView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/main_menu_list"
-        android:layout_width="match_parent"
+        android:layout_width="0px"
         android:layout_height="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="2"
         android:layout_marginLeft="@dimen/multipane_padding"
         android:layout_marginTop="@dimen/multipane_padding"
         android:layout_marginBottom="@dimen/multipane_padding"
@@ -17,11 +17,10 @@
         />
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/content_master"
-        android:layout_width="match_parent"
+        android:layout_width="0px"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="5"
         android:orientation="vertical"
         android:layout_margin="@dimen/multipane_padding"
         android:background="@drawable/grey_frame_on_white" >
@@ -36,9 +35,8 @@
             android:text="@string/first_section_title" />
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/content"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_margin="@dimen/multipane_half_padding" />
     </LinearLayout>

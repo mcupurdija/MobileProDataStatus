@@ -149,8 +149,6 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		// TODO Auto-generated method stub
-
 	}
 
 	private final ContentObserver mObserver = new ContentObserver(new Handler()) {
@@ -175,14 +173,10 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -193,19 +187,15 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onFilterComplete(int count) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public class SaleOrdersListAdapter extends CursorAdapter {
 		/** Flags used with {@link DateUtils#formatDateRange}. */
-		private static final int TIME_FLAGS = DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY;
+//		private static final int TIME_FLAGS = DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY;
 
 		public SaleOrdersListAdapter(Context context) {
 			super(context, null, false);

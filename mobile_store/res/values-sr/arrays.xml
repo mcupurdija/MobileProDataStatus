@@ -24,7 +24,7 @@
         <item>Kupci</item>
         <item>Kontakti</item>
         <item>Artikli</item>
-        <item>Fakture</item>
+        <item>Stavke kupaca</item>
         <item>Izvestaji</item>
         <item>Podesavanja</item>
         <item>Podesavanja</item>
@@ -204,5 +204,19 @@
 		<item>Nema OverStock/Akcije</item>
 		<item>Odobreno</item>
 		<item>Odbijeno</item>
+    </string-array>
+    <string-array name="invoice_type_array">
+        <item>Svi dokumenti</item>
+		<item>Uplata</item>
+		<item>Faktura</item>
+		<item>Odobrenje</item>
+		<item>Zatezne kamate</item>
+		<item>Opomena</item>
+		<item>Refundacija</item>
+    </string-array>
+    <string-array name="invoice_open_status_array">
+        <item>Sve</item>
+        <item>Zatvorene</item>
+        <item>Otvorene</item>
     </string-array>
 </resources>
