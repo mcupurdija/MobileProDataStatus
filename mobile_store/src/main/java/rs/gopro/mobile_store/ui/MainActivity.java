@@ -8,11 +8,11 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.adapter.ActionsAdapter;
 import rs.gopro.mobile_store.ui.customlayout.ContactsLayout;
 import rs.gopro.mobile_store.ui.customlayout.CustomLinearLayout;
+import rs.gopro.mobile_store.ui.customlayout.CustomerLedgerEntriesLayout;
 import rs.gopro.mobile_store.ui.customlayout.CustomersLayout;
-import rs.gopro.mobile_store.ui.customlayout.InvoicesLayout;
 import rs.gopro.mobile_store.ui.customlayout.ItemsLayout;
 import rs.gopro.mobile_store.ui.customlayout.PlanOfVisitsLayout;
-import rs.gopro.mobile_store.ui.customlayout.ReportLayout;
+import rs.gopro.mobile_store.ui.customlayout.SentOrdersStatusLayout;
 import rs.gopro.mobile_store.ui.customlayout.SaleOrdersLayout;
 import rs.gopro.mobile_store.ui.customlayout.SentOrdersLayout;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
@@ -144,21 +144,21 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				view = new ItemsLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(ItemsLayout.ITEMS_URI.toString(), view);
 			}
-		} else if (InvoicesLayout.INVOICES_URI.equals(uri)) {
-			if (savedLayoutInstances.containsKey(InvoicesLayout.INVOICES_URI.toString())) {
-				view = savedLayoutInstances.get(InvoicesLayout.INVOICES_URI.toString());
+		} else if (CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.equals(uri)) {
+			if (savedLayoutInstances.containsKey(CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.toString())) {
+				view = savedLayoutInstances.get(CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.toString());
 
 			} else {
-				view = new InvoicesLayout(getSupportFragmentManager(), this);
-				savedLayoutInstances.put(InvoicesLayout.INVOICES_URI.toString(), view);
+				view = new CustomerLedgerEntriesLayout(getSupportFragmentManager(), this);
+				savedLayoutInstances.put(CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.toString(), view);
 			}
 
-		} else if (ReportLayout.REPORTS_URI.equals(uri)) {
-			if (savedLayoutInstances.containsKey(ReportLayout.REPORTS_URI.toString())) {
-				view = savedLayoutInstances.get(ReportLayout.REPORTS_URI.toString());
+		} else if (SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.equals(uri)) {
+			if (savedLayoutInstances.containsKey(SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.toString())) {
+				view = savedLayoutInstances.get(SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.toString());
 			} else {
-				view = new ReportLayout(getSupportFragmentManager(), this);
-				savedLayoutInstances.put(ReportLayout.REPORTS_URI.toString(), view);
+				view = new SentOrdersStatusLayout(getSupportFragmentManager(), this);
+				savedLayoutInstances.put(SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.toString(), view);
 			}
 		} else if (ContactsLayout.CONTACTS_URI.equals(uri)) {
 			if (savedLayoutInstances.containsKey(ContactsLayout.CONTACTS_URI.toString())) {

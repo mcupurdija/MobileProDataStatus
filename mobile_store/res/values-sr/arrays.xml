@@ -25,9 +25,9 @@
         <item>Kontakti</item>
         <item>Artikli</item>
         <item>Stavke kupaca</item>
-        <item>Izvestaji</item>
-        <item>Podesavanja</item>
-        <item>Podesavanja</item>
+        <item>Status poslatih porudžbina</item>
+        <item>Podešavanja</item>
+        <item>Podešavanja</item>
     </string-array>
     <string-array name="actions_links">
         <item>category://main_menu</item>
@@ -37,8 +37,8 @@
         <item>settings://customers</item>
         <item>settings://contacts</item>
         <item>settings://items</item>
-        <item>settings://invoices</item>
-        <item>settings://reports</item>
+        <item>settings://customer_ledger_entries</item>
+        <item>settings://sent_orders_status</item>
         <item>category://settings</item>
         <item>settings://settings</item>
     </string-array>
@@ -79,9 +79,11 @@
     </integer-array>
 
     <string-array name="customer_block_status_array">
-        <item>Aktivno</item>
-        <item>Blokirano 1</item>
-        <item>Blokirano 2</item>
+        <item>Aktivni</item>
+        <item>Prekoračen kreditni limit</item>
+        <item>Prekoračena valuta</item>
+        <item>Prekoračen kreditni limit i valuta</item>
+        <item>Zabranjeni</item>
     </string-array>
     <string-array name="item_camp_status_array">
         <item>Redovna prodaja</item>

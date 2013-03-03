@@ -31,11 +31,13 @@
 	<string name="item_search_title">Find item: </string>
 	<string name="item_block_status_spinner_title">Filter by status</string>
 	
-	<string name="invoice_document_type">Document type: </string>
+	<string name="invoice_document_no">Doc no.: </string>
+	<string name="invoice_document_type">Doc type: </string>
 	<string name="invoice_amount_total">Amount is: </string>
 	<string name="invoice_amount_remaining">Remaining amount is: </string>
 	<string name="invoice_sync_open_docs_per_customer_button_title">Sync open documents for customer</string>
 	<string name="invoice_sync_per_days_button_title">Sync documents for 2 days</string>
+	<string name="invoice_due_date">Due date:</string>
 	
 	<string name="sale_order_search_title">Find invoice: </string>
 	<string name="sale_order_status_spinner_title">Filter by status</string>

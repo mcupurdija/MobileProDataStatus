@@ -1,18 +1,11 @@
 package rs.gopro.mobile_store.ui.fragment;
 
 import rs.gopro.mobile_store.R;
-import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.ui.BaseActivity;
-import rs.gopro.mobile_store.ws.NavisionSyncService;
-import rs.gopro.mobile_store.ws.model.ItemQuantitySyncObject;
-import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,29 +14,27 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 
 public class ItemPreviewDialogFragment extends DialogFragment implements LoaderManager.LoaderCallbacks<Cursor>{
 	
 	
-	private static final String STOCK_STATUS = "stock_status";
-	private static final String IS_STOCK_SYNC_COMPLETED = "is_stock_sync_completed";
-	private static final String IS_STOCK_SYNC_STARTED = "is_stock_sync_started";
+//	private static final String STOCK_STATUS = "stock_status";
+//	private static final String IS_STOCK_SYNC_COMPLETED = "is_stock_sync_completed";
+//	private static final String IS_STOCK_SYNC_STARTED = "is_stock_sync_started";
 
 	private Uri mItemUri;
-	private String stockStatusValue;
-	private boolean isStockSyncCompleted = false;
-	private boolean isStockSyncStarted = false;
+//	private String stockStatusValue;
+//	private boolean isStockSyncCompleted = false;
+//	private boolean isStockSyncStarted = false;
 
 	private TextView itemNo;
 	private TextView description;
-	private FrameLayout stockStatusFrame;
+//	private FrameLayout stockStatusFrame;
 	private TextView unitOfMeasure;
 	private TextView categoryCode;
 	private TextView groupCode;
@@ -57,9 +48,20 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	private TextView campaingEndDate;
 
 	// private ResultReceiver mReceiver;
-	private ItemQuantitySyncObject itemQuantitySyncObject;
-	private Activity activity;
+//	private ItemQuantitySyncObject itemQuantitySyncObject;
+//	private Activity activity;
 
+//	private BroadcastReceiver onNotice = new BroadcastReceiver() {
+//
+//		@Override
+//		public void onReceive(Context context, Intent intent) {
+//			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
+//			stockStatusValue = syncResult.getResult();
+//			addStockStatusToFrame(syncResult.getResult());
+//
+//		}
+//	};
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,15 +72,15 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		}
 
 		if (savedInstanceState != null) {
-			stockStatusValue = savedInstanceState.getString(STOCK_STATUS);
-			isStockSyncCompleted = savedInstanceState.getBoolean(IS_STOCK_SYNC_COMPLETED);
-			isStockSyncStarted = savedInstanceState.getBoolean(IS_STOCK_SYNC_STARTED);
+//			stockStatusValue = savedInstanceState.getString(STOCK_STATUS);
+//			isStockSyncCompleted = savedInstanceState.getBoolean(IS_STOCK_SYNC_COMPLETED);
+//			isStockSyncStarted = savedInstanceState.getBoolean(IS_STOCK_SYNC_STARTED);
 		}
 
-		if (!isStockSyncStarted) {
-			String itemId = MobileStoreContract.Items.getItemId(mItemUri);
-			doSynchronization(itemId);
-		}
+//		if (!isStockSyncStarted) {
+//			String itemId = MobileStoreContract.Items.getItemId(mItemUri);
+//			doSynchronization(itemId);
+//		}
 
 	}
 
@@ -108,18 +110,17 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		campaignCode = (TextView) view.findViewById(R.id.item_campaign_code_value);
 		campaignStartDate = (TextView) view.findViewById(R.id.item_campaign_start_date_value);
 		campaingEndDate = (TextView) view.findViewById(R.id.item_campaign_end_date_value);
-		stockStatusFrame = (FrameLayout) view.findViewById(R.id.item_stock_status_holder);
-		if (!isStockSyncCompleted) {
-			addWaitingLayoutToFrame();
-		} else {
-			addStockStatusToFrame(stockStatusValue);
-		}
+//		stockStatusFrame = (FrameLayout) view.findViewById(R.id.item_stock_status_holder);
+//		if (!isStockSyncCompleted) {
+//			addWaitingLayoutToFrame();
+//		} else {
+//			addStockStatusToFrame(stockStatusValue);
+//		}
 		return view;
 	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
 		dialog.setTitle(getString(R.string.item_dialog_title));
 		return dialog;
@@ -129,15 +130,15 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	public void onResume() {
 		super.onResume();
 
-		IntentFilter intentFilter = new IntentFilter(ItemQuantitySyncObject.BROADCAST_SYNC_ACTION);
+//		IntentFilter intentFilter = new IntentFilter(ItemQuantitySyncObject.BROADCAST_SYNC_ACTION);
 		//registering broadcast receiver to listen BROADCAST_SYNC_ACTION broadcast 
-		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, intentFilter);
+//		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, intentFilter);
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(onNotice);
+//		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(onNotice);
 	}
 
 	@Override
@@ -153,8 +154,6 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void buildUiFromCursor(Cursor cursor) {
@@ -195,61 +194,53 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		this.activity = activity;
+//		this.activity = activity;
 	}
 
-	private void addStockStatusToFrame(String stockStatus) {
-		isStockSyncCompleted = true;
-		if (activity == null) {
-			return;
-		}
-		stockStatusFrame.removeAllViews();
-		TextView textView = (TextView) activity.getLayoutInflater().inflate(R.layout.text_view_sotck_status, null);
-		textView.setText(stockStatus);
-		stockStatusFrame.addView(textView);
-	}
-
-	private void addWaitingLayoutToFrame() {
-		View waitingSync = activity.getLayoutInflater().inflate(R.layout.content_empty_waiting_sync, null);
-		stockStatusFrame.addView(waitingSync);
-	}
+//	private void addStockStatusToFrame(String stockStatus) {
+//		isStockSyncCompleted = true;
+//		if (activity == null) {
+//			return;
+//		}
+//		stockStatusFrame.removeAllViews();
+//		TextView textView = (TextView) activity.getLayoutInflater().inflate(R.layout.text_view_sotck_status, null);
+//		textView.setText(stockStatus);
+//		stockStatusFrame.addView(textView);
+//	}
+//
+//	private void addWaitingLayoutToFrame() {
+//		View waitingSync = activity.getLayoutInflater().inflate(R.layout.content_empty_waiting_sync, null);
+//		stockStatusFrame.addView(waitingSync);
+//	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		outState.putString(STOCK_STATUS, stockStatusValue);
-		outState.putBoolean(IS_STOCK_SYNC_COMPLETED, isStockSyncCompleted);
-		outState.putBoolean(IS_STOCK_SYNC_STARTED, isStockSyncStarted);
+//		outState.putString(STOCK_STATUS, stockStatusValue);
+//		outState.putBoolean(IS_STOCK_SYNC_COMPLETED, isStockSyncCompleted);
+//		outState.putBoolean(IS_STOCK_SYNC_STARTED, isStockSyncStarted);
 		super.onSaveInstanceState(outState);
 	}
 
-	private BroadcastReceiver onNotice = new BroadcastReceiver() {
 
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
-			stockStatusValue = syncResult.getResult();
-			addStockStatusToFrame(syncResult.getResult());
 
-		}
-	};
+//	private void doSynchronization(final String itemId) {
+//		isStockSyncStarted = true;
+//		itemQuantitySyncObject = new ItemQuantitySyncObject(itemId, "300", Integer.valueOf(-1));
+//		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
+//		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQuantitySyncObject);
+//		getActivity().startService(intent);
+//
+//	}
 
-	private void doSynchronization(final String itemId) {
-		isStockSyncStarted = true;
-		itemQuantitySyncObject = new ItemQuantitySyncObject(itemId, "300", Integer.valueOf(-1));
-		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQuantitySyncObject);
-		getActivity().startService(intent);
-
-	}
-
-	public void onSOAPResult(int code, String result, String itemId) {
-		stockStatusValue = result;
-		addStockStatusToFrame(result);
-	}
+//	public void onSOAPResult(int code, String result, String itemId) {
+//		stockStatusValue = result;
+//		addStockStatusToFrame(result);
+//	}
 	
 	
 	private interface ItemsQuery {
 		int _TOKEN = 0x8;
+		
 		String[] PROJECTION = { 
 				BaseColumns._ID, 
 				Items.ITEM_NO,
@@ -267,6 +258,7 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 				Items.CMPAIGN_START_DATE,
 				Items.CAMPAIGN_END_DATE
 		};
+		
 		int _ID = 0;
 		int ITEM_NO = 1;
 		int DESCRIPTION = 2;
@@ -282,16 +274,5 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		int CAMPAIGN_CODE = 12;
 		int CMPAIGN_START_DATE = 13;
 		int CAMPAIGN_END_DATE = 14;
-
-
 	}
-
-
-	
-
-
-	
-
-	
-
 }

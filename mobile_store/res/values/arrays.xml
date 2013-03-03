@@ -24,8 +24,8 @@
         <item>Customers</item>
         <item>Contacts</item>
         <item>Items</item>
-        <item>Invoices</item>
-        <item>Reports</item>
+        <item>Customer ledger entries</item>
+        <item>Sent orders status</item>
         <item>Settings</item>
         <item>Settings</item>
     </string-array>
@@ -37,8 +37,8 @@
         <item>settings://customers</item>
         <item>settings://contacts</item>
         <item>settings://items</item>
-        <item>settings://invoices</item>
-        <item>settings://reports</item>
+        <item>settings://customer_ledger_entries</item>
+        <item>settings://sent_orders_status</item>
         <item>category://settings</item>
         <item>settings://settings</item>
     </string-array>

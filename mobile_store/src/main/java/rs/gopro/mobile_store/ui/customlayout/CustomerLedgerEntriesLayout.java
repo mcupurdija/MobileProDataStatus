@@ -17,19 +17,19 @@ import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 
-public class InvoicesLayout extends CustomLinearLayout {
+public class CustomerLedgerEntriesLayout extends CustomLinearLayout {
 
-	private static String TAG = "InvoicesLayout";
-	private static final String INVOICES_SCHEME = "settings";
-	private static final String INVOICES_AUTHORITY = "invoices";
-	public static final Uri INVOICES_URI = new Uri.Builder().scheme(INVOICES_SCHEME).authority(INVOICES_AUTHORITY).build();
+	private static String TAG = "CustomerLedgerEntriesLayout";
+	private static final String CUSTOMER_LEDGER_ENTRIES_SCHEME = "settings";
+	private static final String CUSTOMER_LEDGER_ENTRIES_AUTHORITY = "customer_ledger_entries";
+	public static final Uri CUSTOMER_LEDGER_ENTRIES_URI = new Uri.Builder().scheme(CUSTOMER_LEDGER_ENTRIES_SCHEME).authority(CUSTOMER_LEDGER_ENTRIES_AUTHORITY).build();
 	private Fragment fragment;
 
-	public InvoicesLayout(Context context) {
+	public CustomerLedgerEntriesLayout(Context context) {
 		super(context);
 	}
 	
-	public InvoicesLayout(FragmentManager fragmentManager, Activity activity) {
+	public CustomerLedgerEntriesLayout(FragmentManager fragmentManager, Activity activity) {
 		super(fragmentManager, activity);
 	}
 
@@ -48,7 +48,6 @@ public class InvoicesLayout extends CustomLinearLayout {
 
 	@Override
 	public ActionMode.Callback getContextualActionBar(String identifier, String visitType) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

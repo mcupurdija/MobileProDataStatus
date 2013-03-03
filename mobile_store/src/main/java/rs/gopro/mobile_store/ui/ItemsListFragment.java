@@ -175,23 +175,26 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		final Cursor cursor = (Cursor) cursorAdapter.getItem(position);
-        final String itemNo = String.valueOf(cursor.getString(1));
-	   showDialog(MobileStoreContract.Items.buildItemNoUri(itemNo), itemNo); 
+		final String itemNo = String.valueOf(cursor.getString(1));
+		showDialog(MobileStoreContract.Items.buildItemNoUri(itemNo), itemNo);
 	}
 	 
 	
-	private void showDialog(Uri itemUri, String itemId){
-		 FragmentTransaction ft =  getActivity().getSupportFragmentManager().beginTransaction();
-		    Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-		    if (prev != null) {
-		        ft.remove(prev);
-		    }
-		    ft.addToBackStack(null);
+	private void showDialog(Uri itemUri, String itemId) {
+		FragmentTransaction ft = getActivity().getSupportFragmentManager()
+				.beginTransaction();
+		Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+		if (prev != null) {
+			ft.remove(prev);
+		}
+		ft.addToBackStack(null);
 
-		    // Create and show the dialog.
-		   ItemPreviewDialogFragment fragment = new ItemPreviewDialogFragment();
-		   fragment.setArguments(BaseActivity.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW,itemUri)));
-		    fragment.show(ft, "dialog");
+		// Create and show the dialog.
+		ItemPreviewDialogFragment fragment = new ItemPreviewDialogFragment();
+		fragment.setArguments(BaseActivity
+				.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW,
+						itemUri)));
+		fragment.show(ft, "dialog");
 	}
 	
 }

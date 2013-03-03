@@ -38,6 +38,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -196,6 +197,8 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				try {
+					Cursor cursor = (Cursor) itemAutocompleteAdapter.getItem(arg2);
+					itemId = cursor.getInt(0);
 					saveForm(NOT_THROW_EXCEPTION);
 				} catch (SaleOrderValidationException e) {
 					LogUtils.LOGE(TAG, "Never should happen!", e);
@@ -353,7 +356,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	protected void saveForm(int status) throws SaleOrderValidationException {
 		ContentValues localValues = new ContentValues();
 		try {
-			String item_auto_complete = mItemAutocomplete.getText().toString().trim();
+//			String item_auto_complete = mItemAutocomplete.getText().toString().trim();
 	//		if (itemAutocompleteAdapter.getIdForTitle(item_auto_complete) != -1) {
 	//			//Cursor customerItemCursor = (Cursor) customerAutoCompleteAdapter.getItem(customerAutoCompleteAdapter.getIdForTitle(customer_auto_complete));
 	//			int item_id = itemAutocompleteAdapter.getIdForTitle(item_auto_complete);//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
@@ -363,10 +366,10 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	//			localValues.putNull(MobileStoreContract.SaleOrderLines.ITEM_ID);
 	//		}
 	
-			if (itemAutocompleteAdapter.getSelectedId() != -1) {
-				int item_id = itemAutocompleteAdapter.getSelectedId();//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
-				itemId = item_id; // update global after save
-				localValues.put(MobileStoreContract.SaleOrderLines.ITEM_ID, Integer.valueOf(item_id));
+			if (itemId != -1) {
+//				int item_id = itemAutocompleteAdapter.getSelectedId();//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
+//				itemId = item_id; // update global after save
+				localValues.put(MobileStoreContract.SaleOrderLines.ITEM_ID, Integer.valueOf(itemId));
 			} else {
 				throw new SaleOrderValidationException("Artikal nije izabran!");
 				//localValues.putNull(MobileStoreContract.SaleOrderLines.ITEM_ID);
@@ -617,7 +620,11 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         
         if (!cursor.isNull(ItemQuery.ITEM_CAMPAIGN_STATUS)) {
         	itemCampaignStatus = cursor.getInt(ItemQuery.ITEM_CAMPAIGN_STATUS);
-        	mCampaignStatus.setSelection(itemCampaignStatus);
+        	// if empty it is first time load, then we need to load value
+        	// if not then is second time load and we need not to change selection
+        	if (TextUtils.isEmpty(mDiscountMax.getText()) && TextUtils.isEmpty(mDiscountMin.getText())) {
+        		mCampaignStatus.setSelection(itemCampaignStatus);
+        	}
         }
         
         checkLoaderState();

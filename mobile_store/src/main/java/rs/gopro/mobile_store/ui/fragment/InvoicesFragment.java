@@ -9,11 +9,10 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.widget.SimpleSelectionedListAdapter;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.util.UIUtils;
-import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
-import rs.gopro.mobile_store.ws.model.ItemQtySalesPriceAndDiscSyncObject;
 import rs.gopro.mobile_store.ws.model.SalesDocumentsSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.Activity;
@@ -92,7 +91,8 @@ public class InvoicesFragment extends ListFragment implements
 		System.out.println("STATUS IS: " + syncResult.getStatus());
 		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
 			if (SalesDocumentsSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
-				SalesDocumentsSyncObject syncObject = (SalesDocumentsSyncObject) syncResult.getComplexResult();
+				// TODO some nice info here
+//				SalesDocumentsSyncObject syncObject = (SalesDocumentsSyncObject) syncResult.getComplexResult();
 				
 			}
 		} else {
@@ -340,6 +340,8 @@ public class InvoicesFragment extends ListFragment implements
 			final int statusOpen = cursor.getInt(InvoicesQuery.OPEN);
 			
 			final int doc_type = cursor.getInt(InvoicesQuery.DOCUMENT_TYPE);
+			
+			final String dueDate = cursor.getString(InvoicesQuery.DUE_DATE);
 //			final long dateOfCreation = UIUtils.getDateTime(
 //					cursor.getString(InvoicesQuery.CREATED_DATE)).getTime();
 //			final long postingDate = UIUtils.getDateTime(
@@ -371,18 +373,21 @@ public class InvoicesFragment extends ListFragment implements
 				}
 			};
 
-			titleView.setText(customerNo + " - " + customerName + "   Broj dokumenta: " + invoicesNo);
+			titleView.setText(customerNo + " - " + customerName + "   " + getString(R.string.invoice_document_no) + " " + invoicesNo);
 			titleView.setTextColor(res.getColorStateList(R.color.body_text_1_positive));
 			
-			statusView.setText(statusOpen == 0 ? "" : getString(R.string.invoice_open));
-			statusView.setBackgroundDrawable(statusOpen == 0 ? res.getDrawable(R.drawable.border_ok) : res.getDrawable(R.drawable.border_bad));
+			statusView.setText(statusOpen != 0 ? getString(R.string.invoice_open) : "");
+			if (statusOpen != 0) {
+				statusView.setBackgroundDrawable(res.getDrawable(R.drawable.border_bad));
+			}
 			
-			subtitleView.setText(getString(R.string.invoice_document_type) + " " + doc_types[doc_type]);
+			subtitleView.setText(getString(R.string.invoice_document_type) + " " + doc_types[doc_type]
+					+ " - " + getString(R.string.invoice_due_date) + " " + rs.gopro.mobile_store.util.DateUtils.formatDbDateForPresentation(dueDate));
+			subtitleView.setTextColor(res.getColorStateList(R.color.body_text_2));
 			subtitleView2.setText(getString(R.string.invoice_amount_total)
 							+ " " + UIUtils.formatDoubleForUI(totalAmount) + "  " + getString(R.string.invoice_amount_remaining)
 							+ " " + UIUtils.formatDoubleForUI(remainingAmount));
-			subtitleView2.setTextColor(res
-					.getColorStateList(R.color.body_text_2));
+			subtitleView2.setTextColor(res.getColorStateList(R.color.body_text_2));
 			primaryTouchTargetView.setOnClickListener(allSessionsListener);
 			primaryTouchTargetView.setEnabled(true);
 		}
@@ -430,19 +435,19 @@ public class InvoicesFragment extends ListFragment implements
 
 		int _ID = 0;
 		int NO = 1;
-		int CUSTOMER_ID = 2;
+//		int CUSTOMER_ID = 2;
 		int POSTING_DATE = 3;
-		int SALES_PERSON_ID = 4;
+//		int SALES_PERSON_ID = 4;
 		int DUE_DATE = 5;
 		int ORIGINAL_AMOUNT = 6;
 		int REMAINING_AMOUNT = 7;
 		int DOCUMENT_TYPE = 8;
 		int OPEN = 9;
-		int PRICES_INCLUDE_VAT = 10;
-		int CREATED_DATE = 11;
-		int CREATED_BY = 12;
-		int UPDATED_DATE = 13;
-		int UPDATED_BY = 14;
+//		int PRICES_INCLUDE_VAT = 10;
+//		int CREATED_DATE = 11;
+//		int CREATED_BY = 12;
+//		int UPDATED_DATE = 13;
+//		int UPDATED_BY = 14;
 		int CUSTOMER_NO = 15;
 		int CUSTOMER_NAME = 16;
 	}
