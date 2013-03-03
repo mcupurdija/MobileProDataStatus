@@ -39,6 +39,8 @@
 	<string name="invoice_sync_per_days_button_title">Sync documents for 2 days</string>
 	<string name="invoice_due_date">Due date:</string>
 	
+	<string name="sent_orders_status_sync_open_headers_button_title">Preuzmi statuse poslatih porudžbina</string>
+	
 	<string name="sale_order_search_title">Find invoice: </string>
 	<string name="sale_order_status_spinner_title">Filter by status</string>
 
@@ -202,7 +204,7 @@
 	<string name="invoice_line_discount_amount">Discount</string>
 	<string name="invoice_line_dialog_title">Invoice items</string>
 	<string name="invoice_line_dialog_alternative_title">No invoice items</string>
-	
+
 	<string name="sync_failed_title">Sync is failed</string>
 	
 	<!-- title -->
@@ -211,7 +213,6 @@
 	
 	<!-- settings -->
 	<string name="title_settings">Settings</string>
-	
 	<string name="key_ws_entry_point">ws_entry_point</string>
 	<string name="key_ws_schema">ws_schema</string>
 	<string name="key_ws_navisition_codeunit">ws_navisition_codeunit</string>
@@ -281,13 +282,13 @@
 	<string name = "el_card_sales_line_counts_prior_qty_label">Sales Line Counts In Last Year</string>
 	
 	<!-- customer trade agreemnt -->
-	<string name = "cus_trade_agreement_customer_no_label">Customer No.</string>
-	<string name = "cus_trade_agreement_entry_type_label">Entry type</string>
-	<string name = "cus_trade_agreement_code_label">Code</string>
-	<string name = "cus_trade_agreement_minimum_quantity_label">Minimum quantity</string>
-	<string name = "cus_trade_agreement_starting_date_label">Starting date</string>
-	<string name = "cus_trade_agreement_ending_date_label">Ending date</string>
-	<string name = "cus_trade_agreement_actual_discount_label">Actual discount (%)</string>
+	<string name="cus_trade_agreement_customer_no_label">Customer No.</string>
+	<string name="cus_trade_agreement_entry_type_label">Entry type</string>
+	<string name="cus_trade_agreement_code_label">Code</string>
+	<string name="cus_trade_agreement_minimum_quantity_label">Minimum quantity</string>
+	<string name="cus_trade_agreement_starting_date_label">Starting date</string>
+	<string name="cus_trade_agreement_ending_date_label">Ending date</string>
+	<string name="cus_trade_agreement_actual_discount_label">Actual discount (%)</string>
 	
 	<string name="document_note">Document Note</string>
 	<string name="headquarters_note">Headquarters Note</string>
@@ -308,8 +309,8 @@
 	<string name="items_sync_group_title">Items sync options</string>
 	<string name="items_sync_overstock_button_title">Sync overstock</string>
 	<string name="items_sync_on_action_button_title">Sync on action</string>
-	<string name = "customer_edit_title">Edit</string>
-	<string name = "save_customer_changes_title">Save</string>
+	<string name="customer_edit_title">Edit</string>
+	<string name="save_customer_changes_title">Save</string>
 	
 	<string name="invoice_open">Open</string>
 	<string name="invoice_closed">Closed</string>

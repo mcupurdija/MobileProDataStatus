@@ -1,17 +1,17 @@
 package rs.gopro.mobile_store.ui.customlayout;
 
 import rs.gopro.mobile_store.R;
-import rs.gopro.mobile_store.ui.fragment.CustomerFragment;
 import rs.gopro.mobile_store.ui.fragment.SentOrdersFragment;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.ActionMode.Callback;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ActionMode.Callback;
 
 public class SentOrdersLayout extends CustomLinearLayout {
 	private static String TAG = "SentOrdersLayout";
@@ -21,10 +21,12 @@ public class SentOrdersLayout extends CustomLinearLayout {
 	
 	private Fragment fragment;
 	
+	public SentOrdersLayout(Context context) {
+		super(context);
+	}
 	
 	public SentOrdersLayout(FragmentManager fragmentManager, Activity activity) {
 		super(fragmentManager, activity);
-		
 	}
 
 	@Override
