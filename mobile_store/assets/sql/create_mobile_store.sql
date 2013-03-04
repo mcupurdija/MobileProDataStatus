@@ -18430,8 +18430,8 @@ CREATE TABLE `invoice_lines` (
 	`invoices_id` INTEGER,
 	`line_no` INTEGER,
 	`customer_id` INTEGER,
-	`type` INTEGER,
-	`no` INTEGER,
+	`document_type` INTEGER,
+	`item_no` INTEGER,
 	`location_code` TEXT,
 	`description` TEXT,
 	`quantity` REAL,
@@ -18464,18 +18464,18 @@ BEGIN
 	where _id = new._id; 
 END;
 
-INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
-(1, 2, 3, 1, 1, 'noo', 'location_code', 'Description', '123', '213', '32', '215', '21', '222', '123', '1', '1' );
-INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
-(2, 2, 4, 1, 2, 'noo 2', 'location_code second', 'Description', '12', '122', '32', '21', '21', '222', '123', '1', '1' );
-INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
-(3, 3, 6, 1, 2, 'noo 2', 'location_code second', 'Description', '12', '2434', '32', '21', '21', '222', '123', '1', '1' );
-INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
-(4, 1, 3, 1, 1, 'noo', 'location_code', 'Description', '123', '213', '32', '215', '21', '222', '123', '1', '1' );
-INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
-(5, 1, 4, 1, 2, 'noo 2', 'location_code second', 'Description', '12', '122', '32', '21', '21', '222', '123', '1', '1' );
-INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
-(6, 2, 6, 1, 2, 'noo 2', 'location_code second', 'Description', '12', '2434', '32', '21', '21', '222', '123', '1', '1' );
+--INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
+--(1, 2, 3, 1, 1, 'noo', 'location_code', 'Description', '123', '213', '32', '215', '21', '222', '123', '1', '1' );
+--INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
+--(2, 2, 4, 1, 2, 'noo 2', 'location_code second', 'Description', '12', '122', '32', '21', '21', '222', '123', '1', '1' );
+--INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
+--(3, 3, 6, 1, 2, 'noo 2', 'location_code second', 'Description', '12', '2434', '32', '21', '21', '222', '123', '1', '1' );
+--INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
+--(4, 1, 3, 1, 1, 'noo', 'location_code', 'Description', '123', '213', '32', '215', '21', '222', '123', '1', '1' );
+--INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
+--(5, 1, 4, 1, 2, 'noo 2', 'location_code second', 'Description', '12', '122', '32', '21', '21', '222', '123', '1', '1' );
+--INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
+--(6, 2, 6, 1, 2, 'noo 2', 'location_code second', 'Description', '12', '2434', '32', '21', '21', '222', '123', '1', '1' );
 
 
 CREATE TABLE `electronic_card_customer` (

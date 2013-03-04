@@ -363,7 +363,7 @@ public class InvoicesFragment extends ListFragment implements
 				public void onClick(View view) {
 					final Uri invoiceLineUri = MobileStoreContract.InvoiceLine
 							.buildInvoiceLinesUri(invoicesId.toString());
-					showDialog(invoiceLineUri);
+					showDialog(invoiceLineUri, invoicesNo);
 				}
 			};
 
@@ -390,7 +390,7 @@ public class InvoicesFragment extends ListFragment implements
 
 	}
 
-	private void showDialog(Uri invoiceLineUri) {
+	private void showDialog(Uri invoiceLineUri, String invoicesNo) {
 		FragmentTransaction ft = getActivity().getSupportFragmentManager()
 				.beginTransaction();
 		Fragment prev = getFragmentManager().findFragmentByTag("dialog");
@@ -401,9 +401,11 @@ public class InvoicesFragment extends ListFragment implements
 
 		// Create and show the dialog.
 		InvoicesPreviewDialog fragment = new InvoicesPreviewDialog();
+		Intent tempIntent = new Intent(Intent.ACTION_VIEW,
+				invoiceLineUri);
+		tempIntent.putExtra(InvoicesPreviewDialog.EXTRA_INVOICE_NO, invoicesNo);
 		fragment.setArguments(BaseActivity
-				.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW,
-						invoiceLineUri)));
+				.intentToFragmentArguments(tempIntent));
 		fragment.show(ft, "invoice_dialog");
 	}
 

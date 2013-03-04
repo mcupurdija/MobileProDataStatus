@@ -39,6 +39,8 @@
 	<string name="invoice_sync_per_days_button_title">Sync documents for 2 days</string>
 	<string name="invoice_due_date">Due date:</string>
 	
+	<string name="invoice_lines_sync_button_title">Sync selected document lines</string>
+	
 	<string name="sent_orders_status_sync_open_headers_button_title">Preuzmi statuse poslatih porudžbina</string>
 	<string name="sent_orders_status_order_date">Order date:</string>
 	

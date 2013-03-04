@@ -309,8 +309,8 @@ public class MobileStoreContract {
 		String INVOICES_ID = "invoices_id";
 		String LINE_NO = "line_no";
 		String CUSTOMER_ID = "customer_id";
-		String TYPE = "type";
-		String NO = "no";
+		String TYPE = "document_type";
+		String NO = "item_no";
 		String LOCATION_CODE = "location_code";
 		String DESCRIPTION = "description";
 		String QUANTITY = "quantity";

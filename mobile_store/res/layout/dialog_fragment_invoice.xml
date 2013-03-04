@@ -3,7 +3,16 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-
+	<Button
+        android:id="@+id/invoice_lines_sync_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/invoice_lines_sync_button_title" />
     <ListView
         android:id="@+id/invoice_dialog_list"
         android:layout_width="fill_parent"

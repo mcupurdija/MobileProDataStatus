@@ -120,6 +120,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int SENT_ORDERS_STATUS = 1100;
 	private static final int SENT_ORDERS_STATUS_SEARCH = 1101;
 	
+	private static final int INVOICE_LINES = 1200;
+	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
 
@@ -243,6 +245,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 				SENT_ORDERS_STATUS_SEARCH);
 		mobileStoreURIMatcher.addURI(authority, "sent_orders_status/#/*/custom_search",
 				SENT_ORDERS_STATUS_SEARCH);
+		
+		mobileStoreURIMatcher.addURI(authority, "invoice_lines", INVOICE_LINES);
+		
 	}
 
 	@Override
@@ -939,6 +944,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 				builder.where(Tables.SENT_ORDERS_STATUS+"."+MobileStoreContract.SentOrdersStatus.ORDER_STATUS_FOR_SHIPMENT + " = ? ",new String[] { shipmentStatus });
 			}
 			return builder;
+		case INVOICE_LINES:
+			return builder.addTable(Tables.INVOICE_LINES);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -1017,6 +1024,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 			tableName = Tables.INVOICES;
 			selectionParam = new String[]{Invoices.INVOICE_NO};
 			selectionPhrase = Invoices.INVOICE_NO+ "=?";
+			break;
+		case INVOICE_LINES:
+			tableName = Tables.INVOICE_LINES;
+			selectionParam = new String[]{InvoiceLine.INVOICES_ID, InvoiceLine.LINE_NO};
+			selectionPhrase = InvoiceLine.INVOICES_ID+ "=? AND " + InvoiceLine.LINE_NO + "=?";
 			break;
 		case SALE_ORDERS:
 			tableName = Tables.SALE_ORDERS;
