@@ -31,9 +31,10 @@ public class ElectronicCardCustomerDomain extends Domain {
 	public String total_turnover_prior_year;
 	public String sales_line_counts_current_year;
 	public String sales_line_counts_prior_year;
+	public String last_line_discount;
 
 	private static final String[] COLUMNS = new String[] { "customer_no", "item_no", "january_qty", "february_qty", "march_qty", "april_qty", "may_qty", "june_qty", "july_qty", "august_qty", "september_qty", "october_qty", "november_qty",
-			"december_qty", "total_sale_qty_current_year", "total_sale_qty_prior_year", "total_turnover_current_year", "total_turnover_prior_year", "sales_line_counts_current_year", "sales_line_counts_prior_year" };
+			"december_qty", "total_sale_qty_current_year", "total_sale_qty_prior_year", "total_turnover_current_year", "total_turnover_prior_year", "sales_line_counts_current_year", "sales_line_counts_prior_year", "last_line_discount" };
 
 	@Override
 	public String[] getCSVMappingStrategy() {
@@ -62,7 +63,8 @@ public class ElectronicCardCustomerDomain extends Domain {
 		contentValues.put(ElectronicCardCustomer.TOTAL_TURNOVER_CURRENT_YEAR, WsDataFormatEnUsLatin.toDoubleFromWs(getTotal_turnover_current_year()));
 		contentValues.put(ElectronicCardCustomer.TOTAL_TURNOVER_PRIOR_YEAR, WsDataFormatEnUsLatin.toDoubleFromWs(getTotal_turnover_prior_year()));
 		contentValues.put(ElectronicCardCustomer.SALES_LINE_COUNTS_CURRENT_YEAR, WsDataFormatEnUsLatin.toDoubleFromWs(getSales_line_counts_current_year()));
-		contentValues.put(ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR, WsDataFormatEnUsLatin.toDoubleFromWs(getSales_line_counts_prior_year()));		
+		contentValues.put(ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR, WsDataFormatEnUsLatin.toDoubleFromWs(getSales_line_counts_prior_year()));
+		contentValues.put(ElectronicCardCustomer.LAST_LINE_DISCOUNT, WsDataFormatEnUsLatin.toDoubleFromWs(getLast_line_discount()));
 		return contentValues;
 	}
 
@@ -233,6 +235,14 @@ public class ElectronicCardCustomerDomain extends Domain {
 
 	public void setSales_line_counts_prior_year(String sales_line_counts_prior_year) {
 		this.sales_line_counts_prior_year = sales_line_counts_prior_year;
+	}
+
+	public String getLast_line_discount() {
+		return last_line_discount;
+	}
+
+	public void setLast_line_discount(String last_line_discount) {
+		this.last_line_discount = last_line_discount;
 	}
 
 	

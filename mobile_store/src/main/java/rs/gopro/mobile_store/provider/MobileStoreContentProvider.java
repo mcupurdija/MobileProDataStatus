@@ -14,6 +14,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SalesPerson;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SentOrdersStatus;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
@@ -116,6 +117,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int CUSTOMER_TRADE_AGREEMENT = 1000;
 	private static final int CUSTOMER_TRADE_AGREEMENT_ID = 1001;
 	
+	private static final int SENT_ORDERS_STATUS = 1100;
+	private static final int SENT_ORDERS_STATUS_SEARCH = 1101;
+	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
 
@@ -179,6 +183,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "sale_orders/#", SALE_ORDER);
 		mobileStoreURIMatcher.addURI(authority, "sale_orders_list/*",
 				SALE_ORDERS_LIST);
+		
 		// custom_search
 		mobileStoreURIMatcher.addURI(authority, "sale_orders/*/*/custom_search",
 				SALE_ORDER_BY_STATUS);
@@ -191,7 +196,6 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_orders_export", SALE_ORDER_EXPORT);
 		
-		
 		// custom_search
 		mobileStoreURIMatcher.addURI(authority, "sent_orders/*/*/custom_search",
 				SENT_ORDER_BY_STATUS);
@@ -202,10 +206,6 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority,
 				"sent_orders/#/*/*/custom_search", SENT_ORDER_CUSTOM_SEARCH);
 				
-		
-
-		
-		
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_order_lines", SALE_ORDER_LINES);
 		mobileStoreURIMatcher.addURI(authority,
@@ -215,8 +215,6 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_order_lines_from_order/#", SALE_ORDER_LINES_FROM_ORDER);
 
-		
-		
 		mobileStoreURIMatcher.addURI(authority, "contacts", CONTACTS);
 		mobileStoreURIMatcher.addURI(authority, "contacts/*", CONTACTS_ID);
 		
@@ -240,14 +238,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "customer_trade_agreement", CUSTOMER_TRADE_AGREEMENT);
 		mobileStoreURIMatcher.addURI(authority, "customer_trade_agreement/#", CUSTOMER_TRADE_AGREEMENT_ID);
 		
-		/*
-		 * mobileStoreURIMatcher.addURI(authority, "contacts/custom_search",
-		 * CONTACTS_ALL); mobileStoreURIMatcher.addURI(authority,
-		 * "contacts/custom_search/*", CONTACTS_CUSTOM_SEARCH);
-		 */
-		// mobileStoreURIMatcher.addURI(authority, "contacts/custom_search/#",
-		// CONTACTS_CUSTOM_SEARCH);
-
+		mobileStoreURIMatcher.addURI(authority, "sent_orders_status", SENT_ORDERS_STATUS);
+		mobileStoreURIMatcher.addURI(authority, "sent_orders_status/*/*/custom_search",
+				SENT_ORDERS_STATUS_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "sent_orders_status/#/*/custom_search",
+				SENT_ORDERS_STATUS_SEARCH);
 	}
 
 	@Override
@@ -356,6 +351,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.SALES_PERSONS,null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return SalesPerson.buildSalesPersonUri((int)id);
+		case SENT_ORDERS_STATUS:
+			id = database.insertOrThrow(Tables.SENT_ORDERS_STATUS,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return SentOrdersStatus.buildSentOrdersStatusUri((int)id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -475,6 +474,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 		System.out.println("URI: " + uri);
 		System.out.println(match);
 		final SelectionBuilder builder = new SelectionBuilder();
+		String customer_no = null;
+		
 		switch (match) {
 		case USERS_ID:
 			String userId = Users.getUserId(uri);
@@ -521,16 +522,24 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.getCustomSearchFirstParamQuery(uri);
 			String customerStatus = Customers
 					.getCustomSearchSecondParamQuery(uri);
-			return builder
-					.addTable(Tables.CUSTOMERS)
-					.where(Customers.CUSTOMER_NO + " like ? OR "
-							+ Customers.NAME + " like ?",
-							new String[] { /* "%" + */
-							customerCustomParam + "%",
-									"%" + customerCustomParam + "%" })
-					.where(Customers.BLOCKED_STATUS + "= ?",
-							new String[] { customerStatus });
-
+			builder
+				.addTable(Tables.CUSTOMERS)
+				.where(Customers.CUSTOMER_NO + " like ? OR "
+						+ Customers.NAME + " like ?",
+						new String[] { /* "%" + */
+						customerCustomParam + "%",
+								"%" + customerCustomParam + "%" });
+			if (customerStatus.equals("4")) {
+				builder.where(Customers.CREDIT_LIMIT_LCY + "= ?",
+						new String[] { "2" });
+			} else if (customerStatus.equals("5")) {
+				builder.where(Customers.CREDIT_LIMIT_LCY + "= ?",
+						new String[] { "1" });
+			} else {
+				builder.where(Customers.FINANCIAL_CONTROL_STATUS + "= ?",
+						new String[] { customerStatus });
+			}
+			return builder;
 		case ITEMS:
 			return builder.addTable(Tables.ITEMS);
 		case ITEMS_BY_STATUS:
@@ -893,7 +902,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case SALE_ORDERS_SALDO:
 			return  builder.addTable(Tables.SALE_ORDERS_SALDO);
 		case INVOICES_SEARCH:
-			String customer_no = Invoices
+			customer_no = Invoices
 					.getCustomSearchFirstParamQuery(uri);
 			String invoiceOpenType = SaleOrders
 					.getCustomSearchSecondParamQuery(uri);
@@ -910,6 +919,24 @@ public class MobileStoreContentProvider extends ContentProvider {
 			}
 			if (!invoiceOpenType.equals("-1")) {
 				builder.where(Tables.INVOICES+"."+MobileStoreContract.Invoices.OPEN + " = ? ",new String[] { invoiceOpenType });
+			}
+			return builder;
+		case SENT_ORDERS_STATUS:
+			return builder.addTable(Tables.SENT_ORDERS_STATUS_JOIN_CUSTOMERS);
+		case SENT_ORDERS_STATUS_SEARCH:
+			customer_no = SentOrdersStatus
+					.getCustomSearchFirstParamQuery(uri);
+			String shipmentStatus = SentOrdersStatus
+					.getCustomSearchSecondParamQuery(uri);
+
+			builder
+				.addTable(Tables.SENT_ORDERS_STATUS_JOIN_CUSTOMERS);
+			if (!customer_no.equals("noCustomer")) {
+				builder.where(Tables.CUSTOMERS+"."+MobileStoreContract.Customers.CUSTOMER_NO + " like ? ",
+							new String[] { "%" + customer_no + "%" });
+			}
+			if (!shipmentStatus.equals("-1")) {
+				builder.where(Tables.SENT_ORDERS_STATUS+"."+MobileStoreContract.SentOrdersStatus.ORDER_STATUS_FOR_SHIPMENT + " = ? ",new String[] { shipmentStatus });
 			}
 			return builder;
 		default:
@@ -1005,6 +1032,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 			tableName = Tables.CUSTOMER_ADDRESSES;
 			selectionParam = new String[] {CustomerAddresses.ADDRESS_NO};
 			selectionPhrase = CustomerAddresses.ADDRESS_NO + "=?";
+			break;
+		case SENT_ORDERS_STATUS:
+			tableName = Tables.SENT_ORDERS_STATUS;
+			selectionParam = new String[] {SentOrdersStatus.SENT_ORDER_NO};
+			selectionPhrase = SentOrdersStatus.SENT_ORDER_NO + "=?";
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);

@@ -88,7 +88,6 @@ public class InvoicesFragment extends ListFragment implements
 	};
 	
 	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
-		System.out.println("STATUS IS: " + syncResult.getStatus());
 		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
 			if (SalesDocumentsSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 				// TODO some nice info here
@@ -101,13 +100,10 @@ public class InvoicesFragment extends ListFragment implements
 
 		    // Setting Dialog Title
 		    alertDialog.setTitle(getResources().getString(R.string.dialog_title_error_in_sync));
-		
 		    // Setting Dialog Message
 		    alertDialog.setMessage(syncResult.getResult());
-		
 		    // Setting Icon to Dialog
 		    alertDialog.setIcon(R.drawable.ic_launcher);
-		
 		    // Setting OK Button
 		    alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface dialog, int which) {
@@ -212,13 +208,12 @@ public class InvoicesFragment extends ListFragment implements
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		
 		// This is called when a new Loader needs to be created.  This
         // sample only has one Loader, so we don't care about the ID.
         // First, pick the base URI to use depending on whether we are
         // currently filtering.
         Uri baseUri;
-        if (customer_no == null && isOpen == -1 && document_type == -1) {
+        if (customer_no.equals("noCustomer") && isOpen == -1 && document_type == -1) {
         	baseUri = MobileStoreContract.Invoices.CONTENT_URI;
         } else {
         	baseUri = MobileStoreContract.Invoices.buildCustomSearchUri(Uri.encode(customer_no), String.valueOf(isOpen), String.valueOf(document_type));
@@ -233,7 +228,6 @@ public class InvoicesFragment extends ListFragment implements
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-
 		if (getActivity() == null) {
 			return;
 		}
@@ -378,11 +372,13 @@ public class InvoicesFragment extends ListFragment implements
 			
 			statusView.setText(statusOpen != 0 ? getString(R.string.invoice_open) : "");
 			if (statusOpen != 0) {
-				statusView.setBackgroundDrawable(res.getDrawable(R.drawable.border_bad));
+				statusView.setBackgroundResource(R.drawable.border_bad);
+			} else {
+				statusView.setBackgroundResource(0);
 			}
 			
 			subtitleView.setText(getString(R.string.invoice_document_type) + " " + doc_types[doc_type]
-					+ " - " + getString(R.string.invoice_due_date) + " " + rs.gopro.mobile_store.util.DateUtils.formatDbDateForPresentation(dueDate));
+					+ " - " + getString(R.string.invoice_due_date) + " " + rs.gopro.mobile_store.util.DateUtils.toUIfromDbDate(dueDate));
 			subtitleView.setTextColor(res.getColorStateList(R.color.body_text_2));
 			subtitleView2.setText(getString(R.string.invoice_amount_total)
 							+ " " + UIUtils.formatDoubleForUI(totalAmount) + "  " + getString(R.string.invoice_amount_remaining)

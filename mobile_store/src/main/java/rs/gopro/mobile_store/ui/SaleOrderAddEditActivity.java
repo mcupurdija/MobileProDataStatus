@@ -1055,6 +1055,9 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			localValues.putNull(MobileStoreContract.SaleOrders.QUOTE_NO);
 		}
 		
+		int order_condition_status = orderConditionStatus.getSelectedItemPosition();
+		localValues.put(MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS, Integer.valueOf(order_condition_status));
+		
 		return localValues;
 	}
 	

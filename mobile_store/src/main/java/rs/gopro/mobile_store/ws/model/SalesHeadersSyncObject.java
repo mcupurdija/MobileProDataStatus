@@ -12,73 +12,70 @@ import org.ksoap2.serialization.SoapPrimitive;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
-import rs.gopro.mobile_store.ws.model.domain.SalesDocumentsDomain;
+import rs.gopro.mobile_store.ws.model.domain.SalesHeadersDomain;
 import rs.gopro.mobile_store.ws.model.domain.TransformDomainObject;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.os.Parcel;
 
-public class SalesDocumentsSyncObject extends SyncObject {
+public class SalesHeadersSyncObject extends SyncObject {
 
-	public static String TAG = "SalesDocumentsSyncObject";
-	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.SALES_DOCUMENTS_SYNC_ACTION";
+	public static String TAG = "SalesHeadersSyncObject";
+	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.SALES_HEADERS_SYNC_ACTION";
 
 	private String cSVString;
 	private Integer documentType;
 	private String documentNoa46;
 	private String customerNoa46;
-	private Date postingDateFrom;
-	private Date postingDateTo;
-	private Date dueDate;
+	private Date pDocumentDateFrom;
+	private Date pDocumentDateTo;
+	private Integer blocked;
 	private String salespersonCode;
-	private Integer open;
+	
 
-	public static final Creator<SalesDocumentsSyncObject> CREATOR = new Creator<SalesDocumentsSyncObject>() {
+	public static final Creator<SalesHeadersSyncObject> CREATOR = new Creator<SalesHeadersSyncObject>() {
 
 		@Override
-		public SalesDocumentsSyncObject createFromParcel(Parcel source) {
-			return new SalesDocumentsSyncObject(source);
+		public SalesHeadersSyncObject createFromParcel(Parcel source) {
+			return new SalesHeadersSyncObject(source);
 		}
 
 		@Override
-		public SalesDocumentsSyncObject[] newArray(int size) {
-			return new SalesDocumentsSyncObject[size];
+		public SalesHeadersSyncObject[] newArray(int size) {
+			return new SalesHeadersSyncObject[size];
 		}
 	};
 
-	public SalesDocumentsSyncObject() {
+	public SalesHeadersSyncObject() {
 		super();
 	}
 
-	public SalesDocumentsSyncObject(Parcel parcel) {
+	public SalesHeadersSyncObject(Parcel parcel) {
 		super(parcel);
 		setcSVString(parcel.readString());
 		setDocumentType(parcel.readInt());
 		setDocumentNoa46(parcel.readString());
 		setCustomerNoa46(parcel.readString());
-		setPostingDateFrom(new Date(parcel.readLong()));
-		setPostingDateTo(new Date(parcel.readLong()));
-		setDueDate(new Date(parcel.readLong()));
+		setDocumentDateFrom(new Date(parcel.readLong()));
+		setDocumentDateTo(new Date(parcel.readLong()));
 		setSalespersonCode(parcel.readString());
-		setOpen(parcel.readInt());
+		setBlocked(parcel.readInt());
 	}
 
-	public SalesDocumentsSyncObject(String cSVString, Integer documentType, String documentNoa46, String customerNoa46, Date postingDateFrom, Date postingDateTo, Date dueDate, String salespersonCode, Integer open) {
+	public SalesHeadersSyncObject(String cSVString, Integer documentType, String documentNoa46, String customerNoa46, Date postingDateFrom, Date postingDateTo, String salespersonCode, Integer open) {
 		super();
 		this.cSVString = cSVString;
 		this.documentType = documentType;
 		this.documentNoa46 = documentNoa46;
 		this.customerNoa46 = customerNoa46;
-		this.postingDateFrom = postingDateFrom;
-		this.postingDateTo = postingDateTo;
-		this.dueDate = dueDate;
+		this.pDocumentDateFrom = postingDateFrom;
+		this.pDocumentDateTo = postingDateTo;
 		this.salespersonCode = salespersonCode;
-		this.open = open;
+		this.blocked = open;
 	}
 
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -89,16 +86,15 @@ public class SalesDocumentsSyncObject extends SyncObject {
 		dest.writeInt(getDocumentType());
 		dest.writeString(getDocumentNoa46());
 		dest.writeString(getCustomerNoa46());
-		dest.writeLong(getPostingDateFrom().getTime());
-		dest.writeLong(getPostingDateTo().getTime());
-		dest.writeLong(getDueDate().getTime());
+		dest.writeLong(getDocumentDateFrom().getTime());
+		dest.writeLong(getDocumentDateTo().getTime());
 		dest.writeString(getSalespersonCode());
-		dest.writeInt(getOpen());
+		dest.writeInt(getBlocked());
 	}
 
 	@Override
 	public String getWebMethodName() {
-		return "GetPostedSalesDocuments";
+		return "GetSalesHeaders";
 	}
 
 	@Override
@@ -130,55 +126,48 @@ public class SalesDocumentsSyncObject extends SyncObject {
 		properties.add(customerNoa46Info);
 
 		PropertyInfo postingDateFromInfo = new PropertyInfo();
-		postingDateFromInfo.setName("pPostingDateFrom");
-		postingDateFromInfo.setValue(postingDateFrom);
+		postingDateFromInfo.setName("pDocumentDateFrom");
+		postingDateFromInfo.setValue(pDocumentDateFrom);
 		postingDateFromInfo.setType(Date.class);
 		properties.add(postingDateFromInfo);
 
 		PropertyInfo postingDateToInfo = new PropertyInfo();
-		postingDateToInfo.setName("pPostingDateTo");
-		postingDateToInfo.setValue(postingDateTo);
+		postingDateToInfo.setName("pDocumentDateTo");
+		postingDateToInfo.setValue(pDocumentDateTo);
 		postingDateToInfo.setType(Date.class);
 		properties.add(postingDateToInfo);
 
-		PropertyInfo dueDateInfo = new PropertyInfo();
-		dueDateInfo.setName("pDueDate");
-		dueDateInfo.setValue(dueDate);
-		dueDateInfo.setType(Date.class);
-		properties.add(dueDateInfo);
-
+		PropertyInfo openInfo = new PropertyInfo();
+		openInfo.setName("pGetBlockedOnly");
+		openInfo.setValue(blocked);
+		openInfo.setType(Integer.class);
+		properties.add(openInfo);
+		
 		PropertyInfo salespersonCodeInfo = new PropertyInfo();
 		salespersonCodeInfo.setName("pSalespersonCode");
 		salespersonCodeInfo.setValue(salespersonCode);
 		salespersonCodeInfo.setType(String.class);
 		properties.add(salespersonCodeInfo);
 
-		PropertyInfo openInfo = new PropertyInfo();
-		openInfo.setName("pOpen");
-		openInfo.setValue(open);
-		openInfo.setType(Integer.class);
-		properties.add(openInfo);
-
 		return properties;
 	}
 
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException {
-		List<SalesDocumentsDomain> parsedItems = CSVDomainReader.parse(new StringReader(soapResponse.toString()), SalesDocumentsDomain.class);
+		List<SalesHeadersDomain> parsedItems = CSVDomainReader.parse(new StringReader(soapResponse.toString()), SalesHeadersDomain.class);
 		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedItems);
-		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.Invoices.CONTENT_URI, valuesForInsert);
+		//valuesForInsert.put(SalesPerson.SALE_PERSON_NO, salespersonCode);
+		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.SentOrdersStatus.CONTENT_URI, valuesForInsert);
 		return numOfInserted;
 	}
 
 	@Override
 	public String getTag() {
-		// TODO Auto-generated method stub
 		return TAG;
 	}
 
 	@Override
 	public String getBroadcastAction() {
-		// TODO Auto-generated method stub
 		return BROADCAST_SYNC_ACTION;
 	}
 
@@ -198,20 +187,20 @@ public class SalesDocumentsSyncObject extends SyncObject {
 		this.customerNoa46 = customerNoa46;
 	}
 
-	public Date getPostingDateFrom() {
-		return postingDateFrom;
+	public Date getDocumentDateFrom() {
+		return pDocumentDateFrom;
 	}
 
-	public void setPostingDateFrom(Date postingDateFrom) {
-		this.postingDateFrom = postingDateFrom;
+	public void setDocumentDateFrom(Date postingDateFrom) {
+		this.pDocumentDateFrom = postingDateFrom;
 	}
 
-	public Date getPostingDateTo() {
-		return postingDateTo;
+	public Date getDocumentDateTo() {
+		return pDocumentDateTo;
 	}
 
-	public void setPostingDateTo(Date postingDateTo) {
-		this.postingDateTo = postingDateTo;
+	public void setDocumentDateTo(Date postingDateTo) {
+		this.pDocumentDateTo = postingDateTo;
 	}
 
 	public Integer getDocumentType() {
@@ -230,14 +219,6 @@ public class SalesDocumentsSyncObject extends SyncObject {
 		this.documentNoa46 = documentNoa46;
 	}
 
-	public Date getDueDate() {
-		return dueDate;
-	}
-
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
-	}
-
 	public String getSalespersonCode() {
 		return salespersonCode;
 	}
@@ -246,18 +227,17 @@ public class SalesDocumentsSyncObject extends SyncObject {
 		this.salespersonCode = salespersonCode;
 	}
 
-	public Integer getOpen() {
-		return open;
+	public Integer getBlocked() {
+		return blocked;
 	}
 
-	public void setOpen(Integer open) {
-		this.open = open;
+	public void setBlocked(Integer blocked) {
+		this.blocked = blocked;
 	}
 
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver,
 			SoapObject soapResponse) throws CSVParseException {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

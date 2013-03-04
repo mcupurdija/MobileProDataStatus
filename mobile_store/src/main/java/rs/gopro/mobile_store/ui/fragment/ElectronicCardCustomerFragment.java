@@ -1,17 +1,12 @@
 package rs.gopro.mobile_store.ui.fragment;
 
 import rs.gopro.mobile_store.R;
-import rs.gopro.mobile_store.provider.MobileStoreContract;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.BaseActivity;
-import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.ElectronicCardCustomerSyncObject;
-import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -27,7 +22,6 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 public class ElectronicCardCustomerFragment extends ListFragment implements LoaderCallbacks<Cursor> {
 	
@@ -58,7 +52,7 @@ public class ElectronicCardCustomerFragment extends ListFragment implements Load
 		getLoaderManager().initLoader(0, null, this);
 		int[] to = new int[] { android.R.id.empty, R.id.el_card_customer_no, R.id.el_card_item_no, R.id.el_card_jan_qty, R.id.el_card_feb_qty, R.id.el_card_mart_qty, R.id.el_card_apr_qty, R.id.el_card_may_qty, R.id.el_card_june_qty, R.id.el_card_july_qty,
 				R.id.el_card_aug_qty, R.id.el_card_sep_qty, R.id.el_card_oct_qty, R.id.el_card_nov_qty, R.id.el_card_dec_qty, R.id.el_card_total_sale_curr_qty, R.id.el_card_total_sale_prior_qty, R.id.el_card_turnover_curr_qty,
-				R.id.el_card_turnover_prior_qty, R.id.el_card_sales_line_counts_curr_qty, R.id.el_card_sales_line_counts_prior_qty };
+				R.id.el_card_turnover_prior_qty, R.id.el_card_sales_line_counts_curr_qty, R.id.el_card_sales_line_counts_prior_qty, R.id.el_card_sales_line_last_line_discount };
 		cursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(), R.layout.list_item_el_card_customer, null, ElectronicCardCustomerQuery.PROJECTION, to, 0);
 
 		View headerView = getActivity().getLayoutInflater().inflate(R.layout.list_header_el_card_customer, null, false);
@@ -129,7 +123,9 @@ public class ElectronicCardCustomerFragment extends ListFragment implements Load
 				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.TOTAL_TURNOVER_CURRENT_YEAR,
 				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.TOTAL_TURNOVER_PRIOR_YEAR,
 				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.SALES_LINE_COUNTS_CURRENT_YEAR,
-				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR,};
+				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR,
+				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.LAST_LINE_DISCOUNT
+		};
 
 		int _ID = 0;
 		int CUSTOMER_ID = 1;
@@ -152,6 +148,7 @@ public class ElectronicCardCustomerFragment extends ListFragment implements Load
 		int TOTAL_TURNOVER_PRIOR_YEAR = 18;
 		int SALES_LINE_COUNTS_CURRENT_YEAR = 19;
 		int SALES_LINE_COUNTS_PRIOR_YEAR = 20;
+		int LAST_LINE_DISCOUNT = 21;
 	}
 
 }

@@ -46,6 +46,8 @@ public class MobileStoreContract {
 	private static final String PATH_ELECT_CARD_CUSTOMER = "electronic_card_customer";
 	private static final String PATH_CUSTOMER_TRADE_AGREEMENT = "customer_trade_agreement";
 	private static final String PATH_SENT_ORDERS = "sent_orders";
+	private static final String PATH_SENT_ORDERS_STATUS = "sent_orders_status";
+	private static final String PATH_SENT_ORDERS_STATUS_SEARCH = "custom_search";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -69,7 +71,6 @@ public class MobileStoreContract {
 
 	public interface VisitsColumns {
 		// it pick sales_person_id from customer
-		
 		String VISIT_DATE = "visit_date";
 		String CUSTOMER_ID = "customer_id";
 		String POTENTIAL_CUSTOMER = "potential_customer";
@@ -158,9 +159,7 @@ public class MobileStoreContract {
 		String DAYS_SINCE_OLDEST_OPEN_INVOICE = "days_since_oldest_open_invoice";
 		String NEXT_15_DAYS_INVOICE_DUE_AMOUNT = "next_15_days_invoice_due_amount";
 		String NEXT_15_DAYS_DUE_INVOICE_COUNT = "next_15_days_due_invoice_count";
-		String FINANCIAL_CONTROL_STATUS = "financial_control_status";
-
-		
+		String FINANCIAL_CONTROL_STATUS = "financial_control_status";	
 	}
 
 	public interface ItemsColumns {
@@ -279,7 +278,6 @@ public class MobileStoreContract {
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
 		String UPDATED_BY = "updated_by";
-
 	}
 
 	public interface SyncLogsColumns {
@@ -308,8 +306,6 @@ public class MobileStoreContract {
 	}
 	
 	public interface InvoiceLineColumns {
-
-		
 		String INVOICES_ID = "invoices_id";
 		String LINE_NO = "line_no";
 		String CUSTOMER_ID = "customer_id";
@@ -342,7 +338,6 @@ public class MobileStoreContract {
 		String ACCESS_TO_ALL_CUSTOMERS = "access_to_all_customers";
 		String INVOICE_QUERY_NUMBER_OF_DAYS = "invoice_query_number_of_days";
 		String PASSWORD = "password";
-		
 	}
 	
 	public interface ElectronicCardCustomerColumns {
@@ -366,6 +361,7 @@ public class MobileStoreContract {
 		String TOTAL_TURNOVER_PRIOR_YEAR = "total_turnover_prior_year";
 		String SALES_LINE_COUNTS_CURRENT_YEAR = "sales_line_counts_current_year";
 		String SALES_LINE_COUNTS_PRIOR_YEAR = "sales_line_counts_prior_year";
+		String LAST_LINE_DISCOUNT = "last_line_discount";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
@@ -384,6 +380,21 @@ public class MobileStoreContract {
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
 		String UPDATED_BY = "updated_by";
+	}
+	
+	public interface SentOrdersStatusColumns {
+		String DOCUMENT_TYPE = 	"document_type";
+		String SENT_ORDER_NO = 	"sent_order_no";
+		String CUSTOMER_ID = 	"customer_id";
+		String ORDER_DATE = 	"order_date";
+		String ORDER_STATUS_FOR_SHIPMENT = 	"order_status_for_shipment";
+		String FIN_CONTROL_STATUS = 	"fin_control_status";
+		String ORDER_CONDITION_STATUS = 	"order_condition_status";
+		String USED_CREDIT_LIMIT_BY_EMPLOYEE = 	"used_credit_limit_by_employee";
+		String ORDER_VALUE_STATUS = 	"order_value_status";
+		String SPECIAL_QUOTE = 	"special_quote";
+		String PRICES_INCLUDE_VAT = 	"prices_include_vat";
+		String SALES_PERSON_ID = 	"sales_person_id"; 
 	}
 
 	public static class Generic implements BaseColumns {
@@ -879,6 +890,32 @@ public class MobileStoreContract {
 		}
 		
 		public static final String DEFAULT_SORT = CustomerAddresses.ADDRESS_NO + " ASC";
+	}
+	
+	public static class SentOrdersStatus implements SentOrdersStatusColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SENT_ORDERS_STATUS).build();
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sent_orders_status";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sent_orders_status";
+		
+		public static final String DEFAULT_SORT = SentOrdersStatus.ORDER_DATE + " DESC";
+
+		public static Uri buildSentOrdersStatusUri(int id) {
+			return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
+		}
+		
+		public static Uri buildCustomSearchUri(String customerNo, String shipmentStatus) {
+			return CONTENT_URI.buildUpon().appendPath(customerNo).appendPath(shipmentStatus).appendPath(PATH_SENT_ORDERS_STATUS_SEARCH).build();
+		}
+
+		public static String getCustomSearchFirstParamQuery(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+
+		public static String getCustomSearchSecondParamQuery(Uri uri) {
+			return uri.getPathSegments().get(2);
+		}
+		
+		
 	}
 	
 	/**

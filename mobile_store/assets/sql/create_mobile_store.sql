@@ -18500,6 +18500,7 @@ CREATE TABLE `electronic_card_customer` (
 	`total_turnover_prior_year` REAL,
 	`sales_line_counts_current_year` REAL,
 	`sales_line_counts_prior_year` REAL,
+	`last_line_discount` REAL,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
@@ -18546,6 +18547,41 @@ END;
 CREATE TRIGGER IF NOT EXISTS "log_customer_trade_agreement_change" AFTER UPDATE ON "customer_trade_agreement" 
 BEGIN 
 	update customer_trade_agreement set 
+	updated_date = datetime('now'),
+	updated_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+-- sent orders status report
+CREATE TABLE `sent_orders_status` (
+	`_id` INTEGER PRIMARY KEY  NOT NULL,
+	`document_type` INTEGER,
+	`sent_order_no` TEXT NOT NULL,
+	`customer_id` INTEGER,
+	`order_date` TEXT,
+	`order_status_for_shipment` INTEGER,
+	`fin_control_status` INTEGER,
+	`order_condition_status` INTEGER,
+	`used_credit_limit_by_employee` TEXT,
+	`order_value_status` INTEGER,
+	`special_quote` INTEGER,
+	`prices_include_vat` INTEGER,
+	`sales_person_id` INTEGER,
+	`sync_object_batch` INTEGER,
+	`created_date` TEXT,
+	`created_by` TEXT,
+	`updated_date` TEXT,
+	`updated_by`TEXT
+);
+CREATE TRIGGER IF NOT EXISTS "log_new_sent_orders_status" AFTER INSERT ON "sent_orders_status" 
+BEGIN 
+	update sent_orders_status set 
+	created_date = datetime('now'),
+	created_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TRIGGER IF NOT EXISTS "log_sent_orders_status_change" AFTER UPDATE ON "sent_orders_status" 
+BEGIN 
+	update sent_orders_status set 
 	updated_date = datetime('now'),
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 

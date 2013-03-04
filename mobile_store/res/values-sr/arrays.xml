@@ -84,6 +84,7 @@
         <item>Prekoračena valuta</item>
         <item>Prekoračen kreditni limit i valuta</item>
         <item>Zabranjeni</item>
+        <item>Avansni</item>
     </string-array>
     <string-array name="item_camp_status_array">
         <item>Redovna prodaja</item>
@@ -94,6 +95,12 @@
         <item>Porudžbina</item>
         <item>Ponuda</item>
         <item>Spec ponuda</item>
+    </string-array>
+    <string-array name="sent_orders_status_doc_type_array">
+        <item>Porudžbina</item>
+        <item>Ponuda</item>
+        <item>Spec ponuda</item>
+        <item>Povrat</item>
     </string-array>
     <string-array name="contact_type_array">
         <item>Čovek</item>

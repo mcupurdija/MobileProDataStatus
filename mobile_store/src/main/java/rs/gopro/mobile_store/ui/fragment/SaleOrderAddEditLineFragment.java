@@ -8,7 +8,6 @@ import java.util.Map;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.BaseActivity;
-import rs.gopro.mobile_store.ui.SaleOrderAddEditActivity;
 import rs.gopro.mobile_store.ui.components.ItemAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.LogUtils;
@@ -137,7 +136,48 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 				mDiscount.setText(syncObject.getpDiscountPctAsTxt());
 				mPrice.setText(syncObject.getpSalesPriceRSDAsTxt());
 				//mPriceEur.setText(syncObject.getpSalesPriceEURAsTxt());
+				if ((syncObject.getpMinimumSalesUnitQuantityTxt().length() > 0 && !syncObject.getpMinimumSalesUnitQuantityTxt().equals("anyType{}")) || (syncObject.getpOutstandingPurchaseLinesTxt().length() > 0) && !syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}")) {
+					AlertDialog alertDialog = new AlertDialog.Builder(
+							getActivity()).create();
+
+				    // Setting Dialog Title
+				    alertDialog.setTitle(getResources().getString(R.string.dialog_title_sync_info));
+				    // Setting Dialog Message
+				    String outstanding = syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}") ? "" : "Poruka: " + syncObject.getpOutstandingPurchaseLinesTxt();
+				    String minimum = syncObject.getpMinimumSalesUnitQuantityTxt().equals("anyType{}") ? "" : syncObject.getpMinimumSalesUnitQuantityTxt();
+				    alertDialog.setMessage(minimum + "\n" +  outstanding);
+				    // Setting Icon to Dialog
+				    alertDialog.setIcon(R.drawable.ic_launcher);
+				    // Setting OK Button
+				    alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+			            public void onClick(DialogInterface dialog, int which) {
+			            	// Write your code here to execute after dialog closed
+			            }
+				    });
+				
+				    // Showing Alert Message
+				    alertDialog.show();
+				}
 			}
+		} else {
+			AlertDialog alertDialog = new AlertDialog.Builder(
+					getActivity()).create();
+
+		    // Setting Dialog Title
+		    alertDialog.setTitle(getResources().getString(R.string.dialog_title_error_in_sync));
+		    // Setting Dialog Message
+		    alertDialog.setMessage(syncResult.getResult());
+		    // Setting Icon to Dialog
+		    alertDialog.setIcon(R.drawable.ic_launcher);
+		    // Setting OK Button
+		    alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int which) {
+	            	// Write your code here to execute after dialog closed
+	            }
+		    });
+		
+		    // Showing Alert Message
+		    alertDialog.show();
 		}
 	}
 	
@@ -641,7 +681,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 		double quantity = UIUtils.getDoubleFromUI(mQuantity.getText().toString());
 		int campaign_status = mCampaignStatus.getSelectedItemPosition();
-		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", campaign_status, customerNo, "", quantity, salesPersonNo, documentType, 0, "", "", "", "", "", "", "", "");
+		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", campaign_status, Integer.valueOf(0),customerNo, quantity, salesPersonNo, documentType, 0, "", "", "", "", "", "", "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQtySalesPriceAndDiscSyncObject);
 		getActivity().startService(intent);
 		

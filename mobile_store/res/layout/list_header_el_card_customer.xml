@@ -143,5 +143,11 @@
         android:layout_width="200dp"
         android:layout_height="fill_parent"
         android:text="@string/el_card_sales_line_counts_prior_qty_label" />
+    <TextView
+        android:id="@+id/el_card_sales_line_last_line_discount"
+        style="@style/table_cell_text_view_header"
+        android:layout_width="200dp"
+        android:layout_height="fill_parent"
+        android:text="@string/el_card_sales_line_last_line_discount_label" />
 
 </LinearLayout>

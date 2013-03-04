@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.ui.customlayout;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.ui.fragment.SentOrdersFragment;
+import rs.gopro.mobile_store.ui.fragment.SentOrdersStatusMainViewFragment;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
 import android.content.Context;
@@ -39,7 +40,7 @@ public class SentOrdersStatusLayout extends CustomLinearLayout {
 					R.layout.content_holder_sale_orders_status, null);
 			this.addView(view);
 			FragmentTransaction tr = fragmentManager.beginTransaction();
-			fragment = new SentOrdersFragment();
+			fragment = new SentOrdersStatusMainViewFragment();
 			tr.replace(R.id.sent_orders_status_content, fragment);
 			tr.commit();
 			LogUtils.LOGI(TAG, "inflateLayout" + fragment.getId());

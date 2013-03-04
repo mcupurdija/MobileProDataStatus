@@ -28,6 +28,8 @@ public class DateUtils {
 	private final static SimpleDateFormat navisionDbDate = new SimpleDateFormat("dd.MM.yy");
 	@SuppressLint("SimpleDateFormat")
 	private final static SimpleDateFormat navisionDbDateTime = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
+	@SuppressLint("SimpleDateFormat")
+	private final static SimpleDateFormat niceSerbianUIDate = new SimpleDateFormat("dd.MM.yyyy");
 	
 	public static Date getWsDummyDate() {
 		Calendar calendar = GregorianCalendar.getInstance();
@@ -109,6 +111,12 @@ public class DateUtils {
 		if (dbDate == null) return "";
 		Date localDbDate = getLocalDbDate(dbDate);
 		return pickerDate.format(localDbDate);
+	}
+	
+	public static String toUIfromDbDate(String dbDate) {
+		if (dbDate == null) return "";
+		Date localDbDate = getLocalDbDate(dbDate);
+		return niceSerbianUIDate.format(localDbDate);
 	}
 	
 	public static String formatDateFromNavisionToDB(String dbDate) {
