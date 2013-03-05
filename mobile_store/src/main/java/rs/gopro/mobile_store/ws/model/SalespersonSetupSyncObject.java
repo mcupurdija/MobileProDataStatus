@@ -9,12 +9,15 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SalesPerson;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import rs.gopro.mobile_store.ws.model.domain.SalespersonSetupDomain;
 import rs.gopro.mobile_store.ws.model.domain.TransformDomainObject;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Parcel;
 
 public class SalespersonSetupSyncObject extends SyncObject {
@@ -38,8 +41,15 @@ public class SalespersonSetupSyncObject extends SyncObject {
 		}
 	};
 	
+	
+	
 	public SalespersonSetupSyncObject() {
 		super();
+	}
+	
+	public SalespersonSetupSyncObject(String salesPerson) {
+		super();
+		this.setpSalespersonCode(salesPerson);
 	}
 	
 	public SalespersonSetupSyncObject(Parcel parcel) {
@@ -97,7 +107,28 @@ public class SalespersonSetupSyncObject extends SyncObject {
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver,
 			SoapPrimitive soapResponse) throws CSVParseException {
-		return 0;
+		List<SalespersonSetupDomain> parsedSalesLines = CSVDomainReader.parse(new StringReader(soapResponse.toString()), SalespersonSetupDomain.class);
+		//parsedSalesLines.get(0).getContentValues().put(SalesPerson.SALE_PERSON_NO, pSalespersonCode);
+		ContentValues[] valuesForInsertLines = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedSalesLines);
+		valuesForInsertLines[0].put(SalesPerson.SALE_PERSON_NO, pSalespersonCode);
+		Uri salePersonUri = contentResolver.insert(MobileStoreContract.SalesPerson.CONTENT_URI, valuesForInsertLines[0]);
+		
+		//int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.SalesPerson.CONTENT_URI, valuesForInsertLines);
+		
+		String sales_person_id = SalesPerson.getSalesPersonId(salePersonUri);
+		String user = pSalespersonCode;
+		String pass = parsedSalesLines.get(0).password;
+		
+		ContentValues userValues = new ContentValues();
+		
+		userValues.put(Users.SALES_PERSON_ID, sales_person_id);
+		userValues.put(Users.USERNAME, user);
+		userValues.put(Users.PASSWORD, pass);
+		userValues.put(Users.USERS_ROLE_ID, 1);
+		
+		contentResolver.insert(MobileStoreContract.Users.CONTENT_URI, userValues);
+		
+		return 1;
 	}
 
 	@Override
@@ -107,9 +138,24 @@ public class SalespersonSetupSyncObject extends SyncObject {
 		List<SalespersonSetupDomain> parsedSalesLines = CSVDomainReader.parse(new StringReader(soapResponse.getPropertyAsString("pCSVString")), SalespersonSetupDomain.class);
 		ContentValues[] valuesForInsertLines = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedSalesLines);
 		
-		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.SalesPerson.CONTENT_URI, valuesForInsertLines);
+		Uri salePersonUri = contentResolver.insert(MobileStoreContract.SalesPerson.CONTENT_URI, valuesForInsertLines[0]);
 		
-		return numOfInserted;
+		//int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.SalesPerson.CONTENT_URI, valuesForInsertLines);
+		
+		String sales_person_id = SalesPerson.getSalesPersonId(salePersonUri);
+		String user = pSalespersonCode;
+		String pass = parsedSalesLines.get(0).password;
+		
+		ContentValues userValues = new ContentValues();
+		
+		userValues.put(Users.SALES_PERSON_ID, sales_person_id);
+		userValues.put(Users.USERNAME, user);
+		userValues.put(Users.PASSWORD, pass);
+		userValues.put(Users.USERS_ROLE_ID, 1);
+		
+		contentResolver.insert(MobileStoreContract.Users.CONTENT_URI, userValues);
+		
+		return 1;
 	}
 
 	public String getpCSVString() {

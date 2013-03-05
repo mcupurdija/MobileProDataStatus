@@ -5,9 +5,12 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.util.PropertiesUtil;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
+import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.SalespersonSetupSyncObject;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -87,16 +90,16 @@ public class LoginActivity extends Activity {
 
 				
 				Button dialogButton = (Button) dialog.findViewById(R.id.dialogRegisterUserButtonOK);
-				//dialogButton.setVisibility(View.GONE);
 				// if button is clicked, close the custom dialog
 				dialogButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						
 						String user_no = text1.getText().toString();
-						
-						
-						
+						SalespersonSetupSyncObject salespersonSetupSyncObject = new SalespersonSetupSyncObject(user_no);
+						Intent syncSalesPerson = new Intent(LoginActivity.this, NavisionSyncService.class);
+						syncSalesPerson.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, salespersonSetupSyncObject);
+						startService(syncSalesPerson);
 						dialog.dismiss();
 					}
 				});
