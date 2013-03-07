@@ -46,6 +46,8 @@ import android.widget.TextView;
  * 
  * @author aleksandar
  * 
+ * new comment vlada
+ * 
  */
 
 public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener, MainContextualActionBarCallback {

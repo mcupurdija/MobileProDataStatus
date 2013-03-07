@@ -9,7 +9,8 @@
 	<name>mobile_store</name>
 	<!-- comment test -->
 	<!-- comment test two-->
-
+	<!-- comment test three from Vlaada-->
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<platform.version>4.1.1.4</platform.version>
