@@ -8,6 +8,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.widget.VisitContextualMenu;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
+import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObjectOut;
@@ -31,6 +32,9 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.DatePicker;
 
 public class VisitsMultipaneActivity extends BaseActivity implements
@@ -39,15 +43,20 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 	public static final String EXTRA_MASTER_URI = "rs.gopro.mobile_store.extra.MASTER_URI";
 	private static final int VISIT_SYNC_OUT_DATE_PICKER = 1;
 	private static final int VISIT_SYNC_IN_DATE_PICKER = 2;
+	private static final int VISIT_FILTER_DATE_PICKER = 3;
 	
 	ActionMode actionMod;
 	
-
+	private Uri mVisitListUri;
+	private String visitDateFilter;
+	private Button filterVisitDateButton;
+	
 	private Fragment visitsPlanFragmentDetail;
 	private ShowHideMasterLayout mShowHideMasterLayout;
 //	private String selectedVisitId;
 	private OnDateSetListener visitSyncSendDateSetListener;
 	private OnDateSetListener visitSyncReceiveDateSetListener;
+	private OnDateSetListener visitFilterDateSetListener;
 
 	private BroadcastReceiver onNotice = new BroadcastReceiver() {
 		@Override
@@ -96,7 +105,7 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 
 		setContentView(R.layout.activity_visits);
 		final FragmentManager fm = getSupportFragmentManager();
-
+		
 		visitSyncSendDateSetListener = new OnDateSetListener() {
 			@Override
 			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -111,11 +120,35 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 			}
 		};
 		
+		visitFilterDateSetListener = new OnDateSetListener() {
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.set(Calendar.YEAR, year);calendar.set(Calendar.MONTH, monthOfYear);calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				visitDateFilter = DateUtils.formatDbDate(calendar.getTime());
+				filterVisitDateButton.setText(DateUtils.toUIDate(calendar.getTime()));
+				loadVisitList(mVisitListUri, null, visitDateFilter);
+			}
+		};
+		
+		filterVisitDateButton = (Button) findViewById(R.id.date_filter_button);
+		
+		filterVisitDateButton.setOnClickListener(new OnClickListener() {		
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				showDialog(VISIT_FILTER_DATE_PICKER);
+				
+			}
+		});
+		
 		// something about swipe at portrait orientation
 		mShowHideMasterLayout = (ShowHideMasterLayout) findViewById(R.id.show_hide_master_layout);
 		if (mShowHideMasterLayout != null) {
 			mShowHideMasterLayout.setFlingToExposeMasterEnabled(true);
 		}
+		
+		
 		
 		// routes data from intent that called this activity to business logic
 		routeIntent(getIntent(), savedInstanceState != null);
@@ -136,7 +169,7 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 		if (uri == null) {
 			return;
 		}
-
+		
 		if (intent.hasExtra(Intent.EXTRA_TITLE)) {
 			setTitle(intent.getStringExtra(Intent.EXTRA_TITLE));
 		}
@@ -146,7 +179,8 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 		if (MobileStoreContract.Visits.CONTENT_TYPE.equals(mimeType)) {
 			// Load a session list, hiding the tracks dropdown and the tabs
 			if (!updateSurfaceOnly) {
-				loadVisitList(uri, null);
+				mVisitListUri = uri;
+				loadVisitList(mVisitListUri, null, null);
 				if (mShowHideMasterLayout != null) {
 					mShowHideMasterLayout.showMaster(true,
 							ShowHideMasterLayout.FLAG_IMMEDIATE);
@@ -158,9 +192,9 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 			// Load session details
 			if (intent.hasExtra(EXTRA_MASTER_URI)) {
 				if (!updateSurfaceOnly) {
-					loadVisitList(
-							(Uri) intent.getParcelableExtra(EXTRA_MASTER_URI),
-							MobileStoreContract.Visits.getVisitId(uri));
+					mVisitListUri = (Uri) intent.getParcelableExtra(EXTRA_MASTER_URI);
+					loadVisitList(mVisitListUri,
+							MobileStoreContract.Visits.getVisitId(uri), null);
 					loadVisitDetail(uri);
 				}
 			} else {
@@ -224,12 +258,16 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 		super.onSaveInstanceState(outState);
 	}
 
-	private void loadVisitList(Uri visitsUri, String selectVisitId) {
+	private void loadVisitList(Uri visitsUri, String selectVisitId, String dateFilter) {
 		VisitListFragment fragment = new VisitListFragment();
+		Intent listIntent = new Intent(Intent.ACTION_VIEW,
+				visitsUri);
+		if (dateFilter != null) {
+			listIntent.putExtra(VisitListFragment.EXTRA_DATE_FILTER, dateFilter);
+		}
 		fragment.setSelectedVisitId(selectVisitId);
 		fragment.setArguments(BaseActivity
-				.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW,
-						visitsUri)));
+				.intentToFragmentArguments(listIntent));
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.fragment_visitsplan_list, fragment).commit();
 		
@@ -310,6 +348,9 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 		case VISIT_SYNC_IN_DATE_PICKER:
 			DatePickerDialog visitReceiveDatePicker = new DatePickerDialog(this, visitSyncReceiveDateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 			return visitReceiveDatePicker;
+		case VISIT_FILTER_DATE_PICKER:
+			DatePickerDialog visitFilterDatePicker = new DatePickerDialog(this, visitFilterDateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+			return visitFilterDatePicker;
 		}
 		return super.onCreateDialog(id);
 	}
@@ -331,7 +372,6 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 		Intent intent = new Intent(this, NavisionSyncService.class);
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, receiveVisitsToCustomersSyncObject);
 		startService(intent);
-		
 	}
 	
     @Override

@@ -13,6 +13,16 @@
         android:layout_weight="1"
         android:orientation="vertical" >
         
+        <Button 
+            android:id="@+id/date_filter_button"
+            style="@style/EditEvent_SpinnerButton"
+            android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+        	android:layout_marginBottom="3dp"
+            android:text="@string/date_filter_button_text"/>
+        
         <FrameLayout android:id="@+id/fragment_visitsplan_list"
             android:background="@android:color/white"
             android:layout_width="match_parent"

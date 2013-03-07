@@ -321,4 +321,6 @@
 	
 	<string name="invoice_open">Otvoreno</string>
 	<string name="invoice_closed">Zatvoreno</string>
+	
+	<string name="date_filter_button_text">Filtriraj po datumu</string>
 </resources>

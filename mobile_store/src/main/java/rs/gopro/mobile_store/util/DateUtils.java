@@ -113,6 +113,11 @@ public class DateUtils {
 		return pickerDate.format(localDbDate);
 	}
 	
+	public static String toUIDate(Date anyDate) {
+		if (anyDate == null) return "";
+		return niceSerbianUIDate.format(anyDate);
+	}
+	
 	public static String toUIfromDbDate(String dbDate) {
 		if (dbDate == null) return "";
 		Date localDbDate = getLocalDbDate(dbDate);

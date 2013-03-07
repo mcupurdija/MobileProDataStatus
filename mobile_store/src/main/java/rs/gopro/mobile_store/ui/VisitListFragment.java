@@ -1,8 +1,14 @@
 package rs.gopro.mobile_store.ui;
 
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.ui.widget.SimpleSelectionedListAdapter;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
@@ -17,7 +23,9 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.format.DateUtils;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -28,12 +36,16 @@ import android.widget.TextView;
 public class VisitListFragment extends ListFragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, OnItemLongClickListener {
 
+	public static final String EXTRA_DATE_FILTER = "rs.gopro.mobile_store.extra.VISIT_DATE_FILTER";
+	
 	private static final String TAG = makeLogTag(VisitListFragment.class);
 	
 	private static final String STATE_SELECTED_ID = "selectedId";
 	
+	private String mDateFilter = null;
 	private Uri mVisitsUri;
-	private CursorAdapter mAdapter;
+	private SimpleSelectionedListAdapter mSeparatorAdapter;
+	private CursorAdapter mVisitAdapter;
 	private String mSelectedVisitId;
 	private boolean mHasSetEmptyText = false;
 	
@@ -86,10 +98,15 @@ public class VisitListFragment extends ListFragment implements
             return;
         }
 
-        mAdapter = new VisitsAdapter(getActivity());
+        mDateFilter = intent.getStringExtra(EXTRA_DATE_FILTER);
+        
+        mVisitAdapter = new VisitsAdapter(getActivity());
         visitQueryToken = VisitsQuery._TOKEN;
 
-        setListAdapter(mAdapter);
+        mSeparatorAdapter = new SimpleSelectionedListAdapter(getActivity(),
+				R.layout.list_item_report_document_header, mVisitAdapter);
+        
+        setListAdapter(mSeparatorAdapter);
 
         // Start background query to load vendors
         getLoaderManager().initLoader(visitQueryToken, null, this);
@@ -144,13 +161,7 @@ public class VisitListFragment extends ListFragment implements
     /** {@inheritDoc} */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-    	System.out.println("ONCLICK");
-        final Cursor cursor = (Cursor) mAdapter.getItem(position);
-        String visitId = String.valueOf(cursor.getInt(VisitsQuery._ID));
-        if (mCallbacks.onVisitSelected(visitId)) {
-            mSelectedVisitId = visitId;
-            mAdapter.notifyDataSetChanged();
-        }
+    	
     }
     
     
@@ -167,8 +178,13 @@ public class VisitListFragment extends ListFragment implements
     
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, null, null,
-                MobileStoreContract.Visits.DEFAULT_SORT);
+		if (mDateFilter != null) {
+			return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, "DATE("+Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_DATE+")>=DATE(?)", new String[] { mDateFilter },
+	                MobileStoreContract.Visits.DEFAULT_SORT);
+		} else {
+			return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, null, null,
+	                MobileStoreContract.Visits.DEFAULT_SORT);
+		}
 	}
 
 	@Override
@@ -178,7 +194,28 @@ public class VisitListFragment extends ListFragment implements
         }
         int token = loader.getId();
         if (token == VisitsQuery._TOKEN) {
-            mAdapter.changeCursor(cursor);
+        	List<SimpleSelectionedListAdapter.Section> sections = new ArrayList<SimpleSelectionedListAdapter.Section>();
+        	cursor.moveToFirst();
+    		long previouspostingDate = -1;
+    		long postingDate;
+    		while (!cursor.isAfterLast()) {
+    			postingDate = UIUtils.getDateTime(
+    					cursor.getString(VisitsQuery.VISIT_DATE)).getTime();
+    			if (!UIUtils.isSameDay(previouspostingDate, postingDate)) {
+    				String title = DateUtils.formatDateTime(getActivity(),
+    						postingDate, DateUtils.FORMAT_ABBREV_MONTH
+    								| DateUtils.FORMAT_SHOW_DATE
+    								| DateUtils.FORMAT_SHOW_WEEKDAY);
+    				sections.add(new SimpleSelectionedListAdapter.Section(cursor
+    						.getPosition(), title));
+
+    			}
+    			previouspostingDate = postingDate;
+    			cursor.moveToNext();
+    		}
+        	mVisitAdapter.changeCursor(cursor);
+        	SimpleSelectionedListAdapter.Section[] dummy = new SimpleSelectionedListAdapter.Section[sections.size()];
+        	mSeparatorAdapter.setSections(sections.toArray(dummy));
         } else {
             cursor.close();
         }
@@ -186,7 +223,7 @@ public class VisitListFragment extends ListFragment implements
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		mAdapter.swapCursor(null);
+		mVisitAdapter.swapCursor(null);
 	}
 	
 	/**
@@ -195,8 +232,8 @@ public class VisitListFragment extends ListFragment implements
 	 */
 	public void setSelectedVisitId(String id) {
 		mSelectedVisitId = id;
-        if (mAdapter != null) {
-            mAdapter.notifyDataSetChanged();
+        if (mVisitAdapter != null) {
+            mVisitAdapter.notifyDataSetChanged();
         }
     }
 	
@@ -220,8 +257,8 @@ public class VisitListFragment extends ListFragment implements
         public void bindView(View view, Context context, Cursor cursor) {
 //            UIUtils.setActivatedCompat(view, cursor.getString(VisitsQuery.VENDOR_ID)
 //                    .equals(mSelectedVendorId));
-        	if (String.valueOf(cursor.getInt(VisitsQuery._ID))
-                    .equals(mSelectedVisitId)) {
+        	final String visit_id = String.valueOf(cursor.getInt(VisitsQuery._ID));
+        	if (visit_id.equals(mSelectedVisitId)) {
         		view.setActivated(true);
         		mCallbacks.onVisitSelected(String.valueOf(cursor.getInt(VisitsQuery._ID)));
         	} else {
@@ -249,6 +286,19 @@ public class VisitListFragment extends ListFragment implements
             ((TextView) view.findViewById(R.id.visit_subtitle1)).setText(customer_no);
             ((TextView) view.findViewById(R.id.visit_subtitle2)).setText(customer_name);
             ((TextView) view.findViewById(R.id.visit_status)).setText(status);
+            
+            view.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+//			        final Cursor cursor = (Cursor) mVisitAdapter.getItem(position);
+//			        String visitId = String.valueOf(cursor.getInt(VisitsQuery._ID));
+			        if (mCallbacks.onVisitSelected(visit_id)) {
+			            mSelectedVisitId = visit_id;
+			            mVisitAdapter.notifyDataSetChanged();
+			        }
+				}
+			});
+            view.setEnabled(true);
         }
     }
 	
