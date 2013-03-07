@@ -8,6 +8,7 @@
 	<packaging>apk</packaging>
 	<name>mobile_store</name>
 
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<platform.version>4.1.1.4</platform.version>
