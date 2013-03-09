@@ -312,6 +312,9 @@
 	<string name="menu_new_visit">New visit plan</string>
 	<string name="menu_send_visits">Send visits</string>
 	<string name="menu_receive_visits">Receive visits</string>
+	<string name="menu_sale_order_sent_option">Sale order details</string>
+	<string name="menu_sale_order_option">Sale order details</string>
+	<string name="menu_visits_option">Visits details</string>
 	
 	<string name="items_sync_group_title">Items sync options</string>
 	<string name="items_sync_overstock_button_title">Sync overstock</string>

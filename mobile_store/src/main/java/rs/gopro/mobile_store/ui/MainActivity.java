@@ -87,6 +87,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 		this.currentItemPosition = position;
 		actionsAdapter.markSecletedItem(view);
 		updateContent(position);
+		invalidateOptionsMenu();
 		LogUtils.LOGI(TAG, "onItemClick");
 	}
 
@@ -132,6 +133,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				view = new PlanOfVisitsLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(PlanOfVisitsLayout.PLAN_OF_VISITS_URI.toString(), view);
 			}
+			
 		} else if (CustomersLayout.CUSTOMERS_URI.equals(uri)) {
 			if (savedLayoutInstances.containsKey(CustomersLayout.CUSTOMERS_URI.toString())) {
 				view = savedLayoutInstances.get(CustomersLayout.CUSTOMERS_URI.toString());
@@ -206,6 +208,31 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	}
 
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		Uri uri = actionsAdapter.getItem(currentItemPosition);
+		
+		if (SaleOrdersLayout.SALE_ORDER_URI.equals(uri)) {
+			menu.getItem(1).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);
+		} else if (PlanOfVisitsLayout.PLAN_OF_VISITS_URI.equals(uri)) {
+			menu.getItem(0).setVisible(true);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);
+		} else if (CustomersLayout.CUSTOMERS_URI.equals(uri)) {
+			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);
+		} else if (ItemsLayout.ITEMS_URI.equals(uri)) {
+			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);
+		} else if (CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.equals(uri)) {
+			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);
+		} else if (SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.equals(uri)) {
+			menu.getItem(2).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(1).setVisible(false);
+		} else if (ContactsLayout.CONTACTS_URI.equals(uri)) {
+			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);
+		} else if (SentOrdersLayout.SENT_ORDERS_URI.equals(uri)) {
+			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);
+		}
+		
+		return super.onPrepareOptionsMenu(menu);
+	}
+	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.main_activity_menu, menu);
@@ -214,12 +241,14 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
+		switch (item.getItemId()) {
 //		case R.id.synchronize_main_action:
 //			// doSynchronization();
 //			currentCustomLinearLayout.doSynchronization();
 //			return true;
-//		}
+		case R.id.main_options_visits_details:
+			return true;
+		}
 		return super.onOptionsItemSelected(item);
 	}
 

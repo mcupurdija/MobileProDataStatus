@@ -94,7 +94,7 @@ public class SentOrdersFragment extends ListFragment implements LoaderCallbacks<
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		activity.getContentResolver().registerContentObserver(MobileStoreContract.Invoices.CONTENT_URI, true, mObserver);
+		activity.getContentResolver().registerContentObserver(MobileStoreContract.SentOrders.CONTENT_URI, true, mObserver);
 	}
 
 	@Override

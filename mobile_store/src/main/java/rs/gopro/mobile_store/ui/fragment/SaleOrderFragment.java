@@ -58,7 +58,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 
 			@Override
 			public Cursor runQuery(CharSequence constraint) {
-				System.out.println("USAO U FILTER");
+//				System.out.println("USAO U FILTER");
 				String[] queryStrings = constraint.toString().split(splitQuerySeparator);
 				Cursor cursor = null;
 				if (getActivity() != null) {
@@ -104,7 +104,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		activity.getContentResolver().registerContentObserver(MobileStoreContract.Invoices.CONTENT_URI, true, mObserver);
+		activity.getContentResolver().registerContentObserver(MobileStoreContract.SaleOrders.CONTENT_URI, true, mObserver);
 	}
 
 	@Override

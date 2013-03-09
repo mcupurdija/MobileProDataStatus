@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
+        android:id="@+id/main_options_visits_details"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_visits_option" 
+        android:visible="false" />
+    <item
+        android:id="@+id/main_options_sale_order_details"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_sale_order_option"
+        android:visible="false" />
+    <item
+        android:id="@+id/main_options_sale_order_sent_details"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_sale_order_sent_option"
+        android:visible="false" />
+    <item
         android:id="@+id/create_settings_activity"
         android:icon="@drawable/ic_action_settings"
         android:showAsAction="ifRoom|withText"

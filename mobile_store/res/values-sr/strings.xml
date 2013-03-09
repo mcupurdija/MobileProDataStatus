@@ -312,6 +312,9 @@
 	<string name="menu_new_visit">Nova poseta</string>
 	<string name="menu_send_visits">Pošalji posete na dan</string>
 	<string name="menu_receive_visits">Preuzmi plan poseta</string>
+	<string name="menu_sale_order_sent_option">Detalji porudžbina</string>
+	<string name="menu_sale_order_option">Detalji porudžbina</string>
+	<string name="menu_visits_option">Detalji poseta</string>
 	
 	<string name="items_sync_group_title">Opcije osvežavanja artikala</string>
 	<string name="items_sync_overstock_button_title">Osveži overstock artikle</string>
