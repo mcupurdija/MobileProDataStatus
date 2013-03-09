@@ -65,7 +65,6 @@ public class CustomerSyncObject extends SyncObject {
 
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -166,7 +165,6 @@ public class CustomerSyncObject extends SyncObject {
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver,
 			SoapObject soapResponse) throws CSVParseException {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

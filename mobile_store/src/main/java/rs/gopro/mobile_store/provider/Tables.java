@@ -26,7 +26,8 @@ public interface Tables {
 	String SALE_ORDERS_EXPORT = "sale_orders left outer join customers on sale_orders.customer_id = customers._id " +
 			"left outer join sales_persons on sale_orders.sales_person_id = sales_persons._id " +
 			"left outer join customer_addresses ca1 on sale_orders.sell_to_address_id = ca1._id " +
-			"left outer join customer_addresses ca2 on sale_orders.shipp_to_address_id = ca2._id";
+			"left outer join customer_addresses ca2 on sale_orders.shipp_to_address_id = ca2._id " +
+			"left outer join contacts con on sale_orders.contact_id = con._id";
 	String SALE_ORDER_LINES = "sale_order_lines";
 	String SALE_ORDER_LINES_JOIN_ITEMS = "sale_order_lines left outer join items on sale_order_lines.item_id = items._id";
 	String SALE_ORDER_LINES_EXPORT = "sale_order_lines left outer join items on sale_order_lines.item_id = items._id " +

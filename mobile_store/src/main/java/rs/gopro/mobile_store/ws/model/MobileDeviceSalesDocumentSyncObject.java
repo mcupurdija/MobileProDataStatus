@@ -211,12 +211,15 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		
 		if (soapResponse == null || soapResponse.toString().equals("") || soapResponse.getPropertyAsString("pCSVStringHeader") == null || soapResponse.getPropertyAsString("pCSVStringHeader").equals("") || soapResponse.getPropertyAsString("pCSVStringHeader").equals("anyType{}")) {
 			// when status is ponuda or spec ponuda an response is empty everything is OK
+			
+			// now we have response
 			return 1;
 		}
 		
 		List<MobileDeviceSalesDocumentHeaderDomain> parsedSalesHeader = CSVDomainReader.parse(new StringReader(soapResponse.getPropertyAsString("pCSVStringHeader")), MobileDeviceSalesDocumentHeaderDomain.class);
 		ContentValues[] valuesForInsertHeader = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedSalesHeader);
 		
+		// verification, there is no returned sale order no
 		if (pVerifyOnly == 1) {
 			valuesForInsertHeader[0].putNull("sales_order_no");
 		}
@@ -227,8 +230,8 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.SaleOrders.CONTENT_URI, valuesForInsertHeader);
 		numOfInserted = contentResolver.bulkInsert(MobileStoreContract.SaleOrderLines.CONTENT_URI, valuesForInsertLines);
 		
+		// return statuses
 		MobileDeviceSalesDocumentHeaderDomain deviceSalesDocumentHeaderDomain = parsedSalesHeader.get(0);
-		
 		setOrder_condition_status(deviceSalesDocumentHeaderDomain.order_condition_status);
 		setFinancial_control_status(deviceSalesDocumentHeaderDomain.financial_control_status);
 		setOrder_status_for_shipment(deviceSalesDocumentHeaderDomain.order_status_for_shipment);
@@ -284,6 +287,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
                 "sell_to_address_no",
                 "shipp_to_address_no",
                 MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST,
+                MobileStoreContract.Contacts.CONTACT_NO,
                 MobileStoreContract.SaleOrders.CONTACT_NAME,
                 MobileStoreContract.SaleOrders.CONTACT_PHONE,
                 MobileStoreContract.SaleOrders.HIDE_REBATE,

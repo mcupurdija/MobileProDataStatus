@@ -125,8 +125,6 @@ public class CustomerDomain extends Domain {
 		contentValues.put(MobileStoreContract.Customers.NEXT_15_DAYS_DUE_INVOICE_COUNT , getNext_15_days_due_invoice_count());
 		contentValues.put(MobileStoreContract.Customers.FINANCIAL_CONTROL_STATUS, getFinancial_control_status());
 
-		
-		
 		return contentValues;
 	}
 
