@@ -328,4 +328,13 @@
 	<string name="date_filter_button_text">Filtriraj po datumu</string>
 	
 	<string name="add_customer_names_title">Ime kupca</string>
+	<string name="add_customer_address_title">Adresa</string>
+	<string name="add_customer_city_post_code_title">Grad - poštanski broj</string>
+	<string name="add_customer_phones_title">Telefon - mobilni telefon</string>
+	
+	<string name="add_customer_email_title">E-mail</string>
+	<string name="add_customer_company_data_title">PIB - Matični broj</string>
+	<string name="add_customer_global_dimension_title">Globalna dimenzija 2</string>
+	<string name="add_customer_blue_coats_title">Br. plavih mantila</string>
+	<string name="add_customer_grey_coats_title">Br. sivih mantila</string>
 </resources>
