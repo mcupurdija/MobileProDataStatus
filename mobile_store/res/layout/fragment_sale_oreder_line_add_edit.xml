@@ -5,7 +5,6 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
@@ -25,7 +24,6 @@
             android:text="@string/item_no_label" />
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dip"
@@ -65,7 +63,6 @@
             android:text="@string/so_line_item_quantities_text" />
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dip"
@@ -100,6 +97,8 @@
             android:layout_marginBottom="8dip"
             android:layout_marginLeft="16dip"
             android:layout_marginRight="16dip"
+            android:paddingLeft="8dip"
+            android:paddingRight="8dip"
             android:text="@string/so_line_avail_to_whole_ship_check_box_text" />
 
         <TextView
@@ -110,7 +109,6 @@
             android:text="@string/so_line_item_prices_text" />
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dip"
@@ -145,7 +143,6 @@
             android:text="@string/so_line_item_discounts_text" />
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dip"
@@ -183,7 +180,6 @@
         </LinearLayout>
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dip"
@@ -191,7 +187,6 @@
             android:orientation="horizontal" >
 
             <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -215,7 +210,6 @@
             </LinearLayout>
 
             <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -239,7 +233,6 @@
             </LinearLayout>
 
             <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -264,7 +257,6 @@
         </LinearLayout>
         
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dip"
@@ -272,7 +264,6 @@
             android:orientation="horizontal" >
 
             <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -296,7 +287,6 @@
             </LinearLayout>
 
             <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -317,7 +307,6 @@
             </LinearLayout>
 
             <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"

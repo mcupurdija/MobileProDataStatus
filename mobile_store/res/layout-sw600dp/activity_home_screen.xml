@@ -15,7 +15,7 @@
 
         <TextView
             style="@style/HeaderText"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/multipane_half_padding"
             android:layout_marginRight="@dimen/multipane_half_padding"
@@ -25,12 +25,9 @@
         <FrameLayout
             android:id="@+id/first_section_fragment"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="fill_parent"
             android:layout_margin="@dimen/multipane_half_padding"
-            android:background="@drawable/list_border_home_screen"
-            android:layout_weight="1" />
-
-       
+            android:background="@drawable/list_border_home_screen" />
     </LinearLayout>
 
     <LinearLayout
@@ -41,7 +38,7 @@
 
        <TextView
             style="@style/HeaderText"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/multipane_half_padding"
             android:layout_marginRight="@dimen/multipane_half_padding"
@@ -51,9 +48,8 @@
         <FrameLayout
             android:id="@+id/second_section_fragment"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="fill_parent"
             android:layout_margin="@dimen/multipane_half_padding"
- 			android:layout_weight="1"
             android:background="@drawable/list_border_home_screen" />
 
     </LinearLayout>
