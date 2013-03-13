@@ -1,5 +1,6 @@
 package rs.gopro.mobile_store.ws.model;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -11,8 +12,10 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
 import rs.gopro.mobile_store.util.ApplicationConstants;
+import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
@@ -41,6 +44,8 @@ public abstract class SyncObject implements Parcelable {
 	private String statusMessage;
 	protected String result;
 	protected Context context;
+	
+	protected boolean lastSyncDateNeeded = false;
 
 	public SyncObject() {
 	}
@@ -146,6 +151,17 @@ public abstract class SyncObject implements Parcelable {
 		currentUri = contentResolver.insert(SyncLogs.CONTENT_URI, values);
 	}
 
+	public Date getLastSuccessSyncDate(ContentResolver contentResolver) {
+		Date maxDate = null;
+		Cursor cursor = contentResolver.query(MobileStoreContract.SyncLogs.CONTENT_URI, new String[] { "MAX(DATE(" + SyncLogs.CREATED_DATE + "))" }, SyncLogs.SYNC_OBJECT_ID+"=? AND "+SyncLogs.SYNC_OBJECT_STATUS+"="+SyncStatus.SUCCESS.toString(), new String[] { getTag() }, null);
+		if (cursor.moveToFirst()) {
+			maxDate = DateUtils.getLocalDbDate(cursor.getString(0));
+		} else {
+			maxDate = DateUtils.getWsDummyDate();
+		}
+		return maxDate;
+	}
+	
 	public void logSyncEnd(ContentResolver contentResolver, SyncStatus syncStatus) {
 		ContentValues values = new ContentValues();
 		values.put(SyncLogs.SYNC_OBJECT_STATUS, syncStatus.toString());
@@ -170,6 +186,14 @@ public abstract class SyncObject implements Parcelable {
 
 	public void setContext(Context context) {
 		this.context = context;
+	}
+
+	public boolean isLastSyncDateNeeded() {
+		return lastSyncDateNeeded;
+	}
+
+	public void setLastSyncDateNeeded(boolean lastSyncDateNeeded) {
+		this.lastSyncDateNeeded = lastSyncDateNeeded;
 	}
 
 }

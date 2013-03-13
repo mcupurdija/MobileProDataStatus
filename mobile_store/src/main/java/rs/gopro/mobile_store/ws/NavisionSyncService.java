@@ -1,5 +1,7 @@
 package rs.gopro.mobile_store.ws;
 
+import java.util.Date;
+
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.NTCredentials;
 import org.ksoap2.SoapEnvelope;
@@ -61,6 +63,11 @@ public class NavisionSyncService extends IntentService {
 
 		SoapObject request = new SoapObject(syncObject.getNamespace(), syncObject.getWebMethodName());
 
+		if (syncObject.isLastSyncDateNeeded()) {
+			Date lastSuccessSyncDaye = syncObject.getLastSuccessSyncDate(getContentResolver());
+			// TODO pass date to whoever is in needs
+		}
+		
 		for (PropertyInfo wsProperty : syncObject.getSOAPRequestProperties()) {
 			request.addProperty(wsProperty);
 		}

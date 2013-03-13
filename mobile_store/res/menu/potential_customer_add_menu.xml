@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/cancel_save_potential_customer_menu_option"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/cancel_button_title"/>
+    <item
+        android:id="@+id/save_potential_customer_menu_option"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/save_button_title"/>
+
+</menu>

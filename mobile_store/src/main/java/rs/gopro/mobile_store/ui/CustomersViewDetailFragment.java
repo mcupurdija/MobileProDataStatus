@@ -292,7 +292,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 		contentValues.put(Customers.MOBILE, mMobile.getText().toString());
 		contentValues.put(Customers.COMPANY_ID, mCompanyId.getText().toString());
 		contentValues.put(Customers.PRIMARY_CONTACT_ID, mPrimaryContactId.getText().toString());
-		contentValues.put(Customers.VAR_REG_NO, mVarRegNo.getText().toString());
+		contentValues.put(Customers.VAT_REG_NO, mVarRegNo.getText().toString());
 		contentValues.put(Customers.PHONE, mPhone.getText().toString());
 		contentValues.put(Customers.NUMBER_OF_GREY_COAT, mNumberOfGreyCoat.getText().toString());
 		getActivity().getContentResolver().update(mCustomerdetailUri, contentValues, null, null);
@@ -369,7 +369,7 @@ private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
                 MobileStoreContract.Customers.EMAIL,
                 MobileStoreContract.Customers.COMPANY_ID,
                 MobileStoreContract.Customers.PRIMARY_CONTACT_ID,
-                MobileStoreContract.Customers.VAR_REG_NO,
+                MobileStoreContract.Customers.VAT_REG_NO,
                 MobileStoreContract.Customers.CREDIT_LIMIT_LCY,
                 MobileStoreContract.Customers.BALANCE_LCY,
                 MobileStoreContract.Customers.BALANCE_DUE_LCY,

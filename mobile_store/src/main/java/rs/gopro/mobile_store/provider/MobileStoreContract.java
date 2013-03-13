@@ -122,7 +122,7 @@ public class MobileStoreContract {
 		String EMAIL = "email";
 		String COMPANY_ID = "company_id";
 		String PRIMARY_CONTACT_ID = "primary_contact_id";
-		String VAR_REG_NO = "vat_reg_no";
+		String VAT_REG_NO = "vat_reg_no";
 		String CREDIT_LIMIT_LCY = "credit_limit_lcy";
 		String BALANCE_LCY = "balance_lcy";
 		String BALANCE_DUE_LCY = "balance_due_lcy";
@@ -139,6 +139,7 @@ public class MobileStoreContract {
 		String DIVISION = "division";
 		String NUMBER_OF_BLUE_COAT = "number_of_blue_coat";
 		String NUMBER_OF_GREY_COAT = "number_of_grey_coat";
+		String CONTACT_COMPANY_NO = "contact_company_no";
 		String SYNC_OBJECT_BATCH = "sync_object_batch";
 		String SALES_PERSON_ID = "sales_person_id";
 		
@@ -271,6 +272,8 @@ public class MobileStoreContract {
 		String VAT_REGISTRATION = "vat_registration";
 		String SALES_PERSON_ID = "sales_person_id";
 		String DIVISION = "division";
+		String DEPARTMENT = "department";
+		String POSITION = "position";
 		String NUMBER_OF_BLUE_COAT = "number_of_blue_coat";
 		String NUMBER_OF_GREY_COAT = "number_of_grey_coat";
 		String JOB_TITLE = "job_title";

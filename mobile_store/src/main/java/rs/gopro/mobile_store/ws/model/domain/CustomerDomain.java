@@ -37,6 +37,7 @@ public class CustomerDomain extends Domain {
 	public String gross_profit_pfep;
 	public String number_of_blue_coat;
 	public String number_of_grey_coat;
+	public String contact_company_no;
 	public String balance_lcy;
 	public String sales_lcy;
 	public String balance_due_lcy;
@@ -60,7 +61,7 @@ public class CustomerDomain extends Domain {
 	public String financial_control_status;
 
 	private static final String[] COLUMNS = new String[] { "customer_no", "name", "name2", "address", "city", "phone", "mobile", "global_dimension", "credit_limit_lcy", "payment_terms_code", "sales_person_no", "priority", "vat_reg_no",
-			"post_code", "email", "primary_contact_id", "company_id", "channel_oran", "sml", "adopted_potential", "focus_customer", "division", "gross_profit_pfep", "number_of_blue_coat", "number_of_grey_coat", "balance_lcy", "sales_lcy",
+			"post_code", "email", "primary_contact_id", "company_id", "channel_oran", "sml", "adopted_potential", "focus_customer", "division", "gross_profit_pfep", "number_of_blue_coat", "number_of_grey_coat", "contact_company_no", "balance_lcy", "sales_lcy",
 			"balance_due_lcy", "internal_balance_due_lcy", "turnover_in_last_3m", "turnover_in_last_6m", "turnover_in_last_12m", "turnover_generated_3", "turnover_generated_2", "turnover_generated_1", "number_of_diff_items_3",
 			"number_of_diff_items_2", "number_of_diff_items_1", "orsy_shelf_count_at_cust", "customer_12_months_plan", "avarage_payment_days", "number_of_salespersons_working_with_customer", "days_since_oldest_open_invoice",
 			"next_15_days_invoice_due_amount", "next_15_days_due_invoice_count", "financial_control_status"
@@ -87,7 +88,7 @@ public class CustomerDomain extends Domain {
 		contentValues.put(MobileStoreContract.Customers.EMAIL , getEmail());
 		contentValues.put(MobileStoreContract.Customers.COMPANY_ID , getCompany_id());
 		contentValues.put(MobileStoreContract.Customers.PRIMARY_CONTACT_ID , getPrimary_contact_id());
-		contentValues.put(MobileStoreContract.Customers.VAR_REG_NO , getVat_reg_no());
+		contentValues.put(MobileStoreContract.Customers.VAT_REG_NO , getVat_reg_no());
 		contentValues.put(MobileStoreContract.Customers.CREDIT_LIMIT_LCY, WsDataFormatEnUsLatin.toDoubleFromWs(getCredit_limit_lcy()));
 		contentValues.put(MobileStoreContract.Customers.BALANCE_LCY , WsDataFormatEnUsLatin.toDoubleFromWs(getBalance_lcy()));
 		contentValues.put(MobileStoreContract.Customers.BALANCE_DUE_LCY , WsDataFormatEnUsLatin.toDoubleFromWs(getBalance_due_lcy()));
@@ -103,6 +104,7 @@ public class CustomerDomain extends Domain {
 		contentValues.put(MobileStoreContract.Customers.DIVISION , getDivision());
 		contentValues.put(MobileStoreContract.Customers.NUMBER_OF_BLUE_COAT , getNumber_of_blue_coat());
 		contentValues.put(MobileStoreContract.Customers.NUMBER_OF_GREY_COAT , getNumber_of_grey_coat());
+		contentValues.put(MobileStoreContract.Customers.CONTACT_COMPANY_NO , contact_company_no);
 		contentValues.put(MobileStoreContract.Customers.SYNC_OBJECT_BATCH , "1");
 		contentValues.put(MobileStoreContract.Customers.SALE_PERSON_NO , getSales_person_no());
 		contentValues.put(MobileStoreContract.Customers.SALES_LCY, WsDataFormatEnUsLatin.toDoubleFromWs(getSales_lcy()));

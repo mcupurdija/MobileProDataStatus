@@ -1050,6 +1050,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 			selectionParam = new String[] {SentOrdersStatus.SENT_ORDER_NO};
 			selectionPhrase = SentOrdersStatus.SENT_ORDER_NO + "=?";
 			break;
+		case CONTACTS:
+			tableName = Tables.CONTACTS;
+			selectionParam = new String[] { Contacts.CONTACT_NO };
+			selectionPhrase = Contacts.CONTACT_NO + "=?";
+			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}

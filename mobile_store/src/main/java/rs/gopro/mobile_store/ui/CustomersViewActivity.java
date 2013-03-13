@@ -13,16 +13,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.ActionMode;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.View.OnLongClickListener;
 
 public class CustomersViewActivity extends BaseActivity implements CustomersViewListFragment.Callbacks, CustomersViewDetailFragment.Callbacks {
 
@@ -119,6 +113,10 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 				return true;
 			}
 			break;
+		case R.id.add_new_potential_customer:
+			Intent potentialCustIntent = new Intent(Intent.ACTION_INSERT, Customers.buildCustomersUri(customerId));
+			startActivity(potentialCustIntent);
+			return true;
 		case R.id.create_ecc_activity:
 			Intent eccIntent = new Intent(Intent.ACTION_VIEW, ElectronicCardCustomer.buildUri(customerId));
 			startActivity(eccIntent);

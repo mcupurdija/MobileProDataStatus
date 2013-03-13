@@ -155,7 +155,7 @@ public class CustomersFromHomeScreenFragment extends Fragment implements LoaderM
 
 		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Customers.CUSTOMER_NO, MobileStoreContract.Customers.NAME, MobileStoreContract.Customers.NAME_2, MobileStoreContract.Customers.ADDRESS,
 				MobileStoreContract.Customers.POST_CODE, MobileStoreContract.Customers.PHONE, MobileStoreContract.Customers.MOBILE, MobileStoreContract.Customers.EMAIL,
-				MobileStoreContract.Customers.COMPANY_ID, MobileStoreContract.Customers.PRIMARY_CONTACT_ID, MobileStoreContract.Customers.VAR_REG_NO, MobileStoreContract.Customers.CREDIT_LIMIT_LCY,
+				MobileStoreContract.Customers.COMPANY_ID, MobileStoreContract.Customers.PRIMARY_CONTACT_ID, MobileStoreContract.Customers.VAT_REG_NO, MobileStoreContract.Customers.CREDIT_LIMIT_LCY,
 				MobileStoreContract.Customers.BALANCE_LCY, MobileStoreContract.Customers.BALANCE_DUE_LCY, MobileStoreContract.Customers.PAYMENT_TERMS_CODE, MobileStoreContract.Customers.PRIORITY,
 				MobileStoreContract.Customers.GLOBAL_DIMENSION, MobileStoreContract.Customers.CHANNEL_ORAN, MobileStoreContract.Customers.BLOCKED_STATUS, MobileStoreContract.Customers.SML,
 				MobileStoreContract.Customers.INTERNAL_BALANCE_DUE_LCY, MobileStoreContract.Customers.ADOPTED_POTENTIAL, MobileStoreContract.Customers.FOCUS_CUSTOMER, MobileStoreContract.Customers.DIVISION,

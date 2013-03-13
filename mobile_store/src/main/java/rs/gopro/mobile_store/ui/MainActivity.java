@@ -6,6 +6,7 @@ import java.util.Map;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.adapter.ActionsAdapter;
+import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.customlayout.ContactsLayout;
 import rs.gopro.mobile_store.ui.customlayout.CustomLinearLayout;
 import rs.gopro.mobile_store.ui.customlayout.CustomerLedgerEntriesLayout;
@@ -247,7 +248,19 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 //			currentCustomLinearLayout.doSynchronization();
 //			return true;
 		case R.id.main_options_visits_details:
+			final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
+			final Intent intent = new Intent(Intent.ACTION_VIEW, visitsUri);
+			startActivity(intent);
 			return true;
+		case R.id.main_options_sale_order_details:
+			final Uri saleOrdersUri = MobileStoreContract.SaleOrders.CONTENT_URI;
+            final Intent saleOrderIntent = new Intent(Intent.ACTION_VIEW, saleOrdersUri);
+            startActivity(saleOrderIntent);
+			return true;
+		case R.id.main_options_sale_order_sent_details:
+			return true;
+		default:
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -147,7 +147,7 @@ public class AddContactActivity extends BaseActivity implements LoaderCallbacks<
 		contentValues.put(Contacts.COMPANY_ID,companyId.getText().toString());
 		contentValues.put(Contacts.COMPANY_NO, companyNo.getText().toString());
 		contentValues.put(Contacts.VAT_REGISTRATION, vatRegistration.getText().toString());
-		contentValues.put(Contacts.SALES_PERSON_ID, "1");
+		contentValues.put(Contacts.SALES_PERSON_ID, salesPersonId);
 		contentValues.put(Contacts.DIVISION, division.getText().toString());
 		contentValues.put(Contacts.NUMBER_OF_BLUE_COAT, numOfBlueCoat.getText().toString());
 		contentValues.put(Contacts.NUMBER_OF_GREY_COAT,numOfGrayCoat.getText().toString());

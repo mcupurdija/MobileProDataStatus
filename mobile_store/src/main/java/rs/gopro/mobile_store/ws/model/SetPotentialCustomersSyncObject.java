@@ -174,7 +174,7 @@ public class SetPotentialCustomersSyncObject extends SyncObject {
 				MobileStoreContract.Customers.MOBILE, 
 
 				MobileStoreContract.Customers.SALE_PERSON_NO, 
-				MobileStoreContract.Customers.VAR_REG_NO,
+				MobileStoreContract.Customers.VAT_REG_NO,
 				MobileStoreContract.Customers.POST_CODE,
 				MobileStoreContract.Customers.EMAIL, 
 				MobileStoreContract.Customers.COMPANY_ID, 

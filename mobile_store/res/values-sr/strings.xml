@@ -259,9 +259,10 @@
 	<string name="so_line_quote_refused_text">Status odbijanja ponude</string>
 	<string name="so_line_avail_to_whole_ship_check_box_text">Dostupno za isporuku u celosti</string>
 	<string name="so_line_save_button_text">Sačuvaj promene</string>
+	<string name="add_potential_customer_menu_title">Novi kupac</string>
 	<string name="ecc_menu_title">EKK pregled</string>
-	<string name="ecc_activity_title">Elekronska karta kupca</string>
-	<string name="cus_trade_agree_menu_title">Pregled sporazuma</string>
+	<string name="ecc_activity_title">Pregled EKK</string>
+	<string name="cus_trade_agree_menu_title">Pregled TA</string>
 	<string name="cus_trade_agree_activity_title">Korisnicki sporazum</string>
 	<string name="sync_customer_address_menu_title">Sinh adrese</string>
 	

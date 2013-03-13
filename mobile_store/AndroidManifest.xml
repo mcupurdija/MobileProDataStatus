@@ -185,6 +185,20 @@
             </intent-filter>
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.SaleOrdersPreviewActivity"/>
 		</activity>
+		<activity android:exported="false" android:name=".ui.AddPotentialCustomerActivity">
+		    <intent-filter>
+                <action android:name="android.intent.action.INSERT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.customer"/>
+            </intent-filter>
+		    <intent-filter>
+                <action android:name="android.intent.action.EDIT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="vnd.android.cursor.item/vnd.rs.gopro.mobile_store.customer"/>
+            </intent-filter>
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.CustomersViewActivity"/>
+		</activity>
+		
         <provider
             android:exported="false"
             android:name="rs.gopro.mobile_store.provider.MobileStoreContentProvider"

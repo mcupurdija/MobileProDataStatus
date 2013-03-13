@@ -53,7 +53,7 @@ public class PotentialCustomerDomain extends Domain {
 		contentValues.put(MobileStoreContract.Customers.MOBILE , getMobile());
 
 		contentValues.put(MobileStoreContract.Customers.SALE_PERSON_NO , getSales_person_no());
-		contentValues.put(MobileStoreContract.Customers.VAR_REG_NO , getVat_reg_no());
+		contentValues.put(MobileStoreContract.Customers.VAT_REG_NO , getVat_reg_no());
 		contentValues.put(MobileStoreContract.Customers.POST_CODE,  getPost_code());
 		contentValues.put(MobileStoreContract.Customers.EMAIL , getEmail());
 		contentValues.put(MobileStoreContract.Customers.COMPANY_ID , getCompany_id());

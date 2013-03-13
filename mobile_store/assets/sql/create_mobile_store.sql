@@ -142,6 +142,7 @@ CREATE TABLE `customers` (
 	`division` TEXT,
 	`number_of_blue_coat` INTEGER,
 	`number_of_grey_coat` INTEGER,
+	`contact_company_no` TEXT,
 	`sync_object_batch` INTEGER,
 	`sales_lcy` REAL,
 	`gross_profit_pfep` REAL,
