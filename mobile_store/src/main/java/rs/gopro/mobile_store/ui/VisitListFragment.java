@@ -26,6 +26,7 @@ import android.support.v4.content.Loader;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -167,12 +168,7 @@ public class VisitListFragment extends ListFragment implements
     
     @Override
 	public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long arg3) {
-		   Cursor  cursor = (Cursor) adapter.getItemAtPosition(position);
-		   String visitId = String.valueOf(cursor.getInt(VisitsQuery._ID));
-		   String visitType = String.valueOf(cursor.getInt(VisitsQuery.VISIT_TYPE));
-		   mCallbacks.onVisitLongClick(visitId, visitType);
-		   view.setSelected(true);
-		   return true;
+    	return true;
 	}
     
     
@@ -266,7 +262,7 @@ public class VisitListFragment extends ListFragment implements
         	}
         	String customer_no = cursor.getString(VisitsQuery.CUSTOMER_NO);
         	String customer_name = cursor.getString(VisitsQuery.CUSTOMER_NAME);//  + cursor.getString(VisitsQuery.CUSTOMER_NAME2);
-        	int visit_type = cursor.getInt(VisitsQuery.VISIT_TYPE);
+        	final int visit_type = cursor.getInt(VisitsQuery.VISIT_TYPE);
         	if (customer_no == null || customer_no.length() < 1) {
         		customer_no = "NEPOZNAT KUPAC";
         		customer_name = "-";
@@ -298,6 +294,17 @@ public class VisitListFragment extends ListFragment implements
 			        }
 				}
 			});
+            OnLongClickListener longClickListener = new OnLongClickListener() {
+				@Override
+				public boolean onLongClick(View v) {
+				   String visitId = visit_id;
+				   String visitType = String.valueOf(visit_type);
+				   mCallbacks.onVisitLongClick(visitId, visitType);
+				   v.setSelected(true);
+				   return true;
+				}
+			};
+            view.setOnLongClickListener(longClickListener);
             view.setEnabled(true);
         }
     }

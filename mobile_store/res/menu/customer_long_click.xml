@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/sync_customer_address"
+        android:title="@string/sync_customer_address_menu_title"/>
+    <item
+        android:id="@+id/sync_customer_contacts"
+        android:title="@string/sync_customer_contacts_menu_title"/>
+
+</menu>

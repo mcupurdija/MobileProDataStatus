@@ -6,14 +6,25 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerTradeAgreemnt;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
+import rs.gopro.mobile_store.ui.widget.CustomerContextualMenu;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.CustomerAddressesSyncObject;
+import rs.gopro.mobile_store.ws.model.CustomerSyncObject;
+import rs.gopro.mobile_store.ws.model.GetContactsSyncObject;
+import rs.gopro.mobile_store.ws.model.SyncResult;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,7 +41,32 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 	private CustomersViewDetailFragment customersViewFragmentDetail;
 	private ShowHideMasterLayout mShowHideMasterLayout;
 	private String customerId;
-
+	ActionMode actionMod;
+	private ProgressDialog syncProgressDialog;
+	
+	private BroadcastReceiver onNotice = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
+			if (syncProgressDialog != null) {
+				syncProgressDialog.dismiss();
+			}
+			onSOAPResult(syncResult, intent.getAction());
+		}
+	};
+	
+	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
+		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
+			if (GetContactsSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Kontakti preuzeti!");
+			} else if (CustomerAddressesSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Adrese preuzete!");
+			}
+		} else {
+			DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_error_in_sync), syncResult.getResult());
+		}
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,7 +97,7 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 		if (uri == null) {
 			return;
 		}
-		this.customerId = MobileStoreContract.Customers.getCustomersId(uri);
+		
 		if (intent.hasExtra(Intent.EXTRA_TITLE)) {
 			setTitle(intent.getStringExtra(Intent.EXTRA_TITLE));
 		}
@@ -78,6 +114,7 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 			}
 
 		} else if (MobileStoreContract.Customers.CONTENT_ITEM_TYPE.equals(mimeType)) {
+			this.customerId = MobileStoreContract.Customers.getCustomersId(uri);
 			// Load session details
 			if (intent.hasExtra(EXTRA_MASTER_URI)) {
 				if (!updateSurfaceOnly) {
@@ -101,7 +138,7 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 			findViewById(R.id.fragment_customer_detail).setBackgroundResource(R.drawable.grey_frame_on_white);
 		}
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -114,7 +151,7 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 			}
 			break;
 		case R.id.add_new_potential_customer:
-			Intent potentialCustIntent = new Intent(Intent.ACTION_INSERT, Customers.buildCustomersUri(customerId));
+			Intent potentialCustIntent = new Intent(Intent.ACTION_INSERT, Customers.CONTENT_URI);
 			startActivity(potentialCustIntent);
 			return true;
 		case R.id.create_ecc_activity:
@@ -125,12 +162,18 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 			Intent customerTradeAgreementIntent = new Intent(Intent.ACTION_VIEW, CustomerTradeAgreemnt.buildUri(customerId));
 			startActivity(customerTradeAgreementIntent);
 			return true;
-		case R.id.sych_customer_address:
-			doSync();
+		case R.id.sync_all_customers:
+			Intent intent = new Intent(this, NavisionSyncService.class);
+			CustomerSyncObject syncObject = new CustomerSyncObject("", "", salesPersonNo, DateUtils.getWsDummyDate());
+			intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT,syncObject);
+			startService(intent);
 			return true;
 		case R.id.edit_customers:
+			if (customerId == null) {
+				return true;
+			}
 			loadCustomersViewDetail(MobileStoreContract.Customers.buildCustomersUri(customerId), true);
-
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -164,11 +207,21 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 
 	@Override
 	public boolean onCustomerSelected(String customerId) {
+		if(actionMod != null){
+			actionMod.finish();
+		}
 		this.customerId = customerId;
 		loadCustomersViewDetail(MobileStoreContract.Customers.buildCustomersUri(customerId), false);
 		return true;
 	}
 
+	@Override
+	public void onCustomerLongClick(String customerId) {
+		CustomerContextualMenu	contextualMenu = new CustomerContextualMenu(this, customerId, syncProgressDialog);
+	  	actionMod = startActionMode(contextualMenu);
+		
+	}
+	
 	@Override
 	public void onCustomerIdAvailable(String customerId) {
 	}
@@ -180,16 +233,19 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 		return super.onCreateOptionsMenu(menu);
 	}
 
-
-	private void doSync() {
-		Cursor cursor = getContentResolver().query(MobileStoreContract.Customers.buildCustomersUri(customerId), new String[] { Customers._ID, Customers.CUSTOMER_NO }, null, null, null);
-		if (cursor.moveToFirst()) {
-			String customerNo = cursor.getString(1);
-			Intent syncAddressIntent = new Intent(this, NavisionSyncService.class);
-			CustomerAddressesSyncObject addressesSyncObject = new CustomerAddressesSyncObject("", customerNo, "", DateUtils.getWsDummyDate());
-			syncAddressIntent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, addressesSyncObject);
-			startService(syncAddressIntent);
-		}
-	}
-
+	 @Override
+    public void onResume() {
+    	super.onResume();
+    	IntentFilter contactsSyncObject = new IntentFilter(GetContactsSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, contactsSyncObject);
+    	IntentFilter addressesSyncObject = new IntentFilter(CustomerAddressesSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, addressesSyncObject);
+    }
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(onNotice);
+    }
+	
 }

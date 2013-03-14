@@ -264,7 +264,10 @@
 	<string name="ecc_activity_title">Pregled EKK</string>
 	<string name="cus_trade_agree_menu_title">Pregled TA</string>
 	<string name="cus_trade_agree_activity_title">Korisnicki sporazum</string>
-	<string name="sync_customer_address_menu_title">Sinh adrese</string>
+	<string name="sync_sub_menu_title">Preuzimanje podataka</string>
+	<string name="sync_customer_address_menu_title">Preuzmi adrese</string>
+	<string name="sync_customer_contacts_menu_title">Preuzmi kontakte</string>
+	<string name="sync_all_customers_menu_title">Preuzmi kupce</string>
 	
 	<!-- ecc header label -->
 	<string name = "el_card_customer_no_label">Broj kupca</string>
@@ -316,6 +319,7 @@
 	<string name="menu_sale_order_sent_option">Detalji porudžbina</string>
 	<string name="menu_sale_order_option">Detalji porudžbina</string>
 	<string name="menu_visits_option">Detalji poseta</string>
+	<string name="menu_customers_option">Detalji kupaca</string>
 	
 	<string name="items_sync_group_title">Opcije osvežavanja artikala</string>
 	<string name="items_sync_overstock_button_title">Osveži overstock artikle</string>

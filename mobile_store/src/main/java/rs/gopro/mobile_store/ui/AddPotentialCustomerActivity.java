@@ -41,6 +41,7 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
     private Uri mUri;
 	
     private int customerId;
+    private String newCustomerNo;
     
 	public AddPotentialCustomerActivity() {
 	}
@@ -96,7 +97,9 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 		if (Intent.ACTION_INSERT.equals(mAction)) {
 			ContentValues contentValues = new ContentValues();
 			contentValues.putNull(MobileStoreContract.Customers.CUSTOMER_NO); // this is signal that customer is potential
-			mUri = getContentResolver().insert(MobileStoreContract.Contacts.CONTENT_URI, contentValues);
+			mUri = getContentResolver().insert(MobileStoreContract.Customers.CONTENT_URI, contentValues);
+			String customer_id = MobileStoreContract.Customers.getCustomersId(mUri);
+			newCustomerNo = "CUST/"+salesPersonNo+"-"+customer_id;
 		}
 		
 		getSupportLoaderManager().initLoader(0, null, this);
@@ -130,9 +133,11 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 			if (Intent.ACTION_INSERT.equals(mAction)) {
 				getContentResolver().delete(MobileStoreContract.Customers.CONTENT_URI, Tables.CUSTOMERS+".ID=?", new String[] { String.valueOf(customerId) });
 			}
+			finish();
 			return true;
 		case R.id.save_potential_customer_menu_option:
 			submitForm();
+			finish();
 			return true;
 		default:
 			break;
@@ -158,6 +163,10 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 		contentValues.put(Customers.NUMBER_OF_BLUE_COAT, numOfBlueCoat.getText().toString());
 		contentValues.put(Customers.NUMBER_OF_GREY_COAT,numOfGrayCoat.getText().toString());
 	
+		if (Intent.ACTION_INSERT.equals(mAction)) {
+			contentValues.put(Customers.CUSTOMER_NO, newCustomerNo);
+		}
+		
 		getContentResolver().update(MobileStoreContract.Customers.CONTENT_URI, contentValues, Tables.CUSTOMERS + "._ID=?", new String[] { String.valueOf(customerId) });
 	}
 	
@@ -194,7 +203,7 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 				MobileStoreContract.Customers.PHONE, 
 				MobileStoreContract.Customers.MOBILE, 
 
-				MobileStoreContract.Customers.SALE_PERSON_NO, 
+				MobileStoreContract.Customers.SALES_PERSON_ID, 
 				MobileStoreContract.Customers.VAT_REG_NO,
 				MobileStoreContract.Customers.POST_CODE,
 				MobileStoreContract.Customers.EMAIL, 
@@ -214,7 +223,7 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 		int PHONE = 5; 
 		int MOBILE = 6; 
 
-		int SALE_PERSON_NO = 7; 
+		int SALES_PERSON_ID = 7; 
 		int VAT_REG_NO = 8;
 		int POST_CODE = 9;
 		int EMAIL = 10; 

@@ -822,7 +822,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	
 	private void loadContactValues(Cursor data) {
 		if (data.getCount() < 1) {
-			LogUtils.LOGI(TAG, "No customer address data!");
+			LogUtils.LOGI(TAG, "No contact data!");
 			return;
 		}
 		customerContactId = Integer.valueOf(data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Contacts._ID)));

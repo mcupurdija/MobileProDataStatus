@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- UI -->
+
+    <!-- UI -->
     <string name="app_name">MobilePro</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -10,332 +11,316 @@
     <string name="app_logo_desc">Application image logo</string>
     <string name="login_title">Login</string>
     <string name="home_title">Home</string>
-	<!-- ERRORS -->
-	<string name="login_error">* Error during login!</string>
-	<string name="hi_label">Hi!</string>
-	<string name="get_company">get company ws</string>
-	<string name="s">* Error during login!</string>
-	<string name="first_section_title">Plan of visit on day</string>
-	<string name="second_section_title">Customer info</string>
-	<string name="third_section_title">Third Section</string>
-	<string name="next_button_title">Next</string>
-	<string name="empty_waiting_for_sync">Wait sync</string>
-	<string name="sale_order_amount_total_template">Amount is: </string>
-	<string name="customer_search_title">Find customer: </string>
-	<string name="customer_search_filter">Find by customer no:</string>
-	<string name="customer_block_status_spinner_title">Filter by status:</string>
-	<string name="contact_search_title">Find contact: </string>
-	<string name="invoice_document_type_label_text">Find by document type:</string>
-	<string name="invoice_document_open_status_label_text">Find by document open status:</string>
-	
-	<string name="item_search_title">Find item: </string>
-	<string name="item_block_status_spinner_title">Filter by status</string>
-	
-	<string name="invoice_document_no">Doc no.: </string>
-	<string name="invoice_document_type">Doc type: </string>
-	<string name="invoice_amount_total">Amount is: </string>
-	<string name="invoice_amount_remaining">Remaining amount is: </string>
-	<string name="invoice_sync_open_docs_per_customer_button_title">Sync open documents for customer</string>
-	<string name="invoice_sync_per_days_button_title">Sync documents for 2 days</string>
-	<string name="invoice_due_date">Due date:</string>
-	
-	<string name="invoice_lines_sync_button_title">Sync selected document lines</string>
-	
-	<string name="sent_orders_status_sync_open_headers_button_title">Preuzmi statuse poslatih porudžbina</string>
-	<string name="sent_orders_status_order_date">Order date:</string>
-	
-	<string name="sale_order_search_title">Find invoice: </string>
-	<string name="sale_order_status_spinner_title">Filter by status</string>
+    <!-- ERRORS -->
+    <string name="login_error">* Error during login!</string>
+    <string name="hi_label">Hi!</string>
+    <string name="get_company">get company ws</string>
+    <string name="s">* Error during login!</string>
+    <string name="first_section_title">Plan of visit on day</string>
+    <string name="second_section_title">Customer info</string>
+    <string name="third_section_title">Third Section</string>
+    <string name="next_button_title">Next</string>
+    <string name="empty_waiting_for_sync">Wait sync</string>
+    <string name="sale_order_amount_total_template">Amount is: </string>
+    <string name="customer_search_title">Find customer: </string>
+    <string name="customer_search_filter">Find by customer no:</string>
+    <string name="customer_block_status_spinner_title">Filter by status:</string>
+    <string name="contact_search_title">Find contact: </string>
+    <string name="invoice_document_type_label_text">Find by document type:</string>
+    <string name="invoice_document_open_status_label_text">Find by document open status:</string>
+    <string name="item_search_title">Find item: </string>
+    <string name="item_block_status_spinner_title">Filter by status</string>
+    <string name="invoice_document_no">Doc no.: </string>
+    <string name="invoice_document_type">Doc type: </string>
+    <string name="invoice_amount_total">Amount is: </string>
+    <string name="invoice_amount_remaining">Remaining amount is: </string>
+    <string name="invoice_sync_open_docs_per_customer_button_title">Sync open documents for customer</string>
+    <string name="invoice_sync_per_days_button_title">Sync documents for 2 days</string>
+    <string name="invoice_due_date">Due date:</string>
+    <string name="invoice_lines_sync_button_title">Sync selected document lines</string>
+    <string name="sent_orders_status_sync_open_headers_button_title">Preuzmi statuse poslatih porudžbina</string>
+    <string name="sent_orders_status_order_date">Order date:</string>
+    <string name="sale_order_search_title">Find invoice: </string>
+    <string name="sale_order_status_spinner_title">Filter by status</string>
+    <string name="empty_visits">No planned visits.</string>
+    <string name="empty_sale_orders">No sale orders found.</string>
+    <string name="empty_customers">No customer details found.</string>
+    <string name="empty_sale_order_lines">No sale order lines found.</string>
+    <string name="hint_search">Search&#8230;</string>
+    <string name="save_button_title">Save</string>
+    <string name="cancel_button_title">Cancel</string>
+    <string name="new_button_title">New</string>
 
-	<string name="empty_visits">No planned visits.</string>
-	<string name="empty_sale_orders">No sale orders found.</string>
-	<string name="empty_customers">No customer details found.</string>
-	<string name="empty_sale_order_lines">No sale order lines found.</string>
-	<string name="hint_search">Search&#8230;</string>
-	<string name="save_button_title">Save</string>
-	<string name="cancel_button_title">Cancel</string>
-	<string name="new_button_title">New</string>
-	
-	<!-- add visit --> 
-	<string name="sale_person_title">Sale person</string>
-	<string name="sale_person_hint">Sale Person</string>
-	<string name="customer_title">Customer</string>
-	<string name="customer_hint">Customer</string>
-	<string name="visit_date_title">Visit Date</string>
-	<string name="visit_date_hint">Visit date</string>
-	<string name="line_number_title">Line number</string>
-	<string name="line_number_hint">Line number</string>
-	<string name="entry_type_title">Entry type</string>
-	<string name="entry_type_hint">Entry type</string>
-	<string name="odometer_title">Odometer</string>
-	<string name="odometer_hint">Odometer</string>
-	<string name="departure_time_title">Departure time</string>
-	<string name="departure_time_hint">Departure time</string>
-	<string name="arrival_time_title">Arrival time</string>
-	<string name="arrival_time_hint">Arrival time</string>
-	<string name="visit_result_title">Visit result</string>
-	<string name="visit_result_hint">Visit result</string>
-	<string name="note_title">Note</string>
-	<string name="note_hint">Note</string>
-	<string name="action_button_refresh">Refresh</string>
-	
-	<!-- add contact --> 
-	<string name="contact_type_title">Type</string>
-	<string name="contact_type_hint">Type</string>
-	<string name="contact_name_title">Primary name</string>
-	<string name="contact_name_hint">Name</string>
-	<string name="contact_name_2_title">Secondary name</string>
-	<string name="contact_name_2_hint">Secondary name</string>
-	<string name="contact_address_title">Address</string>
-	<string name="contact_address_hint">Address</string>
-	<string name="contact_city_title">City</string>
-	<string name="contact_city_hint">City</string>
-	<string name="contact_post_code_title">Post code</string>
-	<string name="contact_post_code_hint">Post code</string>
-	<string name="contact_phone_title">Phone</string>
-	<string name="contact_phone_hint">Phone</string>
-	<string name="contact_mobile_phone_title">Mobile phone</string>
-	<string name="contact_mobile_phone_hint">Mobile Phone</string>
-	<string name="contact_email_title">Email</string>
-	<string name="contact_email_hint">Email</string>
-	<string name="contact_company_no_title">Company number</string>
-	<string name="contact_company_no_hint">Company number</string>
-	<string name="contact_company_id_title">Company id</string>
-	<string name="contact_company_id_hint">Company id</string>
-	<string name="contact_vat_registration_title">Vat registration</string>
-	<string name="contact_vat_registration_hint">Vat reg</string>
-	<string name="contact_division_title">Division</string>
-	<string name="contact_division_hint">Division</string>
-	<string name="contact_number_of_blue_coat_title">Num of blue coat</string>
-	<string name="contact_number_of_blue_coat_hint">Num of blue coat</string>
-	<string name="contact_number_of_grey_coat_title">Num of gray coat</string>
-	<string name="contact_number_of_grey_coat_hint">Num of blue coat</string>
-	<string name="contact_job_title">Job title</string>
-	<string name="contact_job_title_hint">Job title</string>
-	
-	<string name="contextual_deactivate">Delete</string>
-	<string name="contextual_edit">Edit</string>
-	<string name="contextual_add">New</string>
-	<string name="contextual_view">View</string>
-	<string name="contextual_edit_lines">Edit lines</string>
-	<string name="contextual_add_sale_order_line">New line</string>
-	<string name="contextual_delete_sale_order_line">Delete line</string>
-	<string name="contextual_add_sale_order">New sale order</string>
-	<string name="contextual_send_sale_order">Send sale order</string>
-	<string name="contextual_view_saldo">Document saldo</string>
-	<string name="contextual_verify_sale_order">Verify document</string>
-	<string name="contextual_complete_visit">Complete visit</string>
-	
-	<string name="dialog_title_item_price_qty_load">Price and Quantity</string>
-	<string name="dialog_body_item_price_qty_load">Loading price and quantity</string>
-	<string name="dialog_title_sale_order_send">Sale Order</string>
-	<string name="dialog_title_sale_order_verify">Verify Order</string>
-	<string name="dialog_body_sale_order_send">Sending sale order</string>
-	<string name="dialog_body_sale_order_verify">Verifying sale order</string>
-	<string name="dialog_title_error_in_sync">Sync error</string>
-	<string name="dialog_title_invoices_load">Customer leadger entries</string>
-	<string name="dialog_body_invoices_load">Loading customer leadger entries</string>
-	<string name="dialog_title_sent_orders_status_load">Sent orders statuses</string>
-	<string name="dialog_body_sent_orders_status_load">Loading sent orders statuses</string>
-	<string name="dialog_title_sync_info">Sync info</string>
-	
-	<string name="document_no">Document No</string>
-	<string name="dokument_type_no_title">Document no and type </string>
-	<string name="contact_title">Kontakt</string>
-	<string name="contact_hint">Kontakt</string>
-	<string name="contact_address_ship_section_title">Shipping address</string>
-	<string name="contact_address_invoice_section_title">Billing address</string>
-	<string name="location_no">Location no.</string>
-	<string name="shortcut_dimension1_code">Shortcut dimension 1</string>
-	<string name="backorder">Backorder status</string>
-	<string name="payment_type">Payment</string>
-	<string name="hide_discount">Hide discount</string>
-	<string name="show_declaration">Show declaration</string>
-	<string name="quote_no">Quote no.</string>
-	<string name="quote_date">Quote date</string>
-	<string name="quote_status">Quote status</string>
-	<string name="transit_customer">Transit customer</string>
-	
-	<string name="customer_no_label">Customer No.</string>
-	<string name="customer_address_label">Adsress</string>
-	<string name="customer_city_label">City</string>
-	<string name="customer_postal_code_label">Postal code</string>
-	<string name="customer_phone_label">Phone</string>	
-	<string name="customer_phone_mobile_label">Mobile phone</string>
-	<string name="customer_email_label">Email</string>
-	<string name="customer_blue_coat_label">Num. of blue coat</string>
-	<string name="customer_gray_coat_label">Num. of gray coat</string>
-	<string name="customer_note_label">Note</string>
-	
-	<string name="customer_name_label">Name</string>
-	<string name="customer_name2_label">Name 2</string>
-	<string name="customer_company_id_label">Company id</string>
-	<string name="customer_primary_contact_id_label">Primary contact id</string>
-	<string name="customer_vat_reg_no_label">Var reg NO</string>	
-	<string name="customer_credit_limit_lcy_label">Credit limit (LVT)</string>
-	<string name="customer_balance_lcy_label">Balance (LVT))</string>
-	<string name="customer_balance_due_lcy_label">Balance due (LVT</string>
-	<string name="customer_internal_balance_lcy_label">Internal balance (LVT)</string>
-	<string name="customer_payment_terms_code_label">Payment term code</string>		
-	<string name="customer_priority_label">Priority</string>
-	<string name="customer_global_dimension_label">Global dimension</string>
-	<string name="customer_channel_oran_label">Channel (ORAN)</string>
-	<string name="customer_blocked_status_label">Blocked status</string>
-	<string name="customer_sml_label">SML</string>	
-	<string name="customer_adopted_potential_label">Adopted potential</string>
-	<string name="customer_focus_customer_label">Focus customer</string>
-	<string name="customer_division_label">Division</string>
-	
-	<!-- item -->
-	<string name="item_no_label">Item no</string>
-	<string name="item_no_hint">Search for item</string>
-	<string name="item_desc_label">Description</string>
-	<string name="item_stock_status_label">Stock status</string>		
-	<string name="item_category_code_label">Category code</string>
-	<string name="item_group_code_label">Group code</string>
-	<string name="item_unit_sales_price_eur_label">Unit sale price EUR</string>
-	<string name="item_unit_sales_price_din_label">Unit sale price DIN</string>
-	<string name="item_unit_of_measure_label">Unit of measure</string>	
-	<string name="item_campaign_status_label">Campaign status</string>
-	<string name="item_overstock_status_label">Overstock status</string>
-	<string name="item_connected_spec_ship_item_label">Connected spec ship item</string>
-	<string name="item_campaign_code_label">Campaign code</string>	
-	<string name="item_campaign_start_date_label">Campaign start date</string>
-	<string name="item_campaign_end_date_label">Campaign end date</string>
-	<string name="item_dialog_title">Item information</string>
-	
-	<!-- invoice_line -->
-	<string name="invoice_line_quantity">Quantity</string>
-	<string name="invoice_line_unit_price">Unti price</string>
-	<string name="invoice_line_discount_amount">Discount</string>
-	<string name="invoice_line_dialog_title">Invoice items</string>
-	<string name="invoice_line_dialog_alternative_title">No invoice items</string>
+    <!-- add visit -->
+    <string name="sale_person_title">Sale person</string>
+    <string name="sale_person_hint">Sale Person</string>
+    <string name="customer_title">Customer</string>
+    <string name="customer_hint">Customer</string>
+    <string name="visit_date_title">Visit Date</string>
+    <string name="visit_date_hint">Visit date</string>
+    <string name="line_number_title">Line number</string>
+    <string name="line_number_hint">Line number</string>
+    <string name="entry_type_title">Entry type</string>
+    <string name="entry_type_hint">Entry type</string>
+    <string name="odometer_title">Odometer</string>
+    <string name="odometer_hint">Odometer</string>
+    <string name="departure_time_title">Departure time</string>
+    <string name="departure_time_hint">Departure time</string>
+    <string name="arrival_time_title">Arrival time</string>
+    <string name="arrival_time_hint">Arrival time</string>
+    <string name="visit_result_title">Visit result</string>
+    <string name="visit_result_hint">Visit result</string>
+    <string name="note_title">Note</string>
+    <string name="note_hint">Note</string>
+    <string name="action_button_refresh">Refresh</string>
 
-	<string name="sync_failed_title">Sync is failed</string>
-	
-	<!-- title -->
-	
-	<string name="title_sale_order_lines_add_edit_activity">Add/Edit sales lines</string>
-	
-	<!-- settings -->
-	<string name="title_settings">Settings</string>
-	<string name="key_ws_entry_point">ws_entry_point</string>
-	<string name="key_ws_schema">ws_schema</string>
-	<string name="key_ws_navisition_codeunit">ws_navisition_codeunit</string>
-	<string name="key_ws_server_address">ws_server_address</string>
-	<string name="key_company">company_address</string>
-	
-	<string name="title_ws_entry_point">Endpoint</string>
-	<string name="title_ws_schema">Web service schema</string>
-	<string name="title_ws_navisition_codeunit">Navision code unit name </string>
-	<string name="title_ws_server_address">Server address</string>
-	<string name="title_company">Company</string>
-	
-	<string name="title_web_service_settings">Web service</string>
-	<string name="title_sync_settings">Synchronization</string>
-	<string name="title_sync_category">Sync manage</string>
-	<string name="title_sync_items">Sync items</string>
-	<string name="title_sync_action">Sync</string>
-	<string name="title_sync_planned_visits">Sync planned visits</string>
-	<string name="title_sync_realized_visits">Sync realized visits</string>
-	<string name="title_sync_customers">Sync customers</string>
-	<string name="title_sync_sales_doc">Sync invoices</string>
-	
-	<string name = "sync_summary_label">Last success sync:</string>
-	<string name = "key_sync_check_box">sync_check_box</string>
-	<string name = "key_sync_planned_visits_check_box">sync_planned_visits_check_box</string>
-	<string name = "key_sync_realized_visits_check_box">key_sync_realized_visits_check_box</string>
-	<string name = "key_sync_customers_check_box">key_sync_customers_check_box</string>
-	<string name = "key_sync_sales_doc_check_box">key_sync_sales_doc_check_box</string>
-	
-	<string name="contact_name_phone_title">Contact name and phone</string>
-	<string name="contact_no_label">Contact no.</string>
-	<string name="toast_update_success">Data saved</string>
-	<string name="header_label">Document header data</string>
-	<string name="load_item_data_button">Load item data</string>
-	<string name="so_line_item_quantities_text">Quantities, selected and available</string>
-	<string name="so_line_item_prices_text">Prices, selected and system</string>
-	<string name="so_line_item_discounts_text">Discounts, selected, min and max</string>
-	<string name="so_line_quote_refused_text">Refused status</string>
-	<string name="so_line_avail_to_whole_ship_check_box_text">Available to whole shippment</string>
-	<string name="so_line_save_button_text">Save order line</string>
-	<string name="add_potential_customer_menu_title">New byer</string>
-	<string name="ecc_menu_title">ECC preview</string>
-	<string name="ecc_activity_title">Electronic customer card</string>
-	<string name="cus_trade_agree_menu_title">Agreement preview</string>
-	<string name="cus_trade_agree_activity_title">Customer trade agreement</string>
-	<string name="sync_customer_address_menu_title">Sync address</string>
-	
-	<!-- ecc header label -->
-	<string name = "el_card_customer_no_label">Customer No.</string>
-	<string name = "el_card_item_no_label">Item No.</string>
-	<string name = "el_card_jan_qty_label">January (Qty)</string>
-	<string name = "el_card_feb_qty_label">February(Qty)</string>
-	<string name = "el_card_mart_qty_label">March(Qty)</string>
-	<string name = "el_card_apr_qty_label">April(Qty)</string>
-	<string name = "el_card_may_qty_label">May(Qty)</string>
-	<string name = "el_card_june_qty_label">June(Qty)</string>
-	<string name = "el_card_july_qty_label">July(Qty)</string>
-	<string name = "el_card_aug_qty_label">August(Qty)</string>
-	<string name = "el_card_sep_qty_label">September(Qty)</string>
-	<string name = "el_card_oct_qty_label">October(Qty)</string>
-	<string name = "el_card_nov_qty_label">November(Qty)</string>
-	<string name = "el_card_dec_qty_label">December(Qty)</string>
-	<string name = "el_card_total_sale_curr_qty_label">Total Sale (Qty) In This Year</string>
-	<string name = "el_card_total_sale_prior_qty_label">Total Sale (Qty) In Last Year</string>
-	<string name = "el_card_turnover_curr_qty_label">Total Turnover In This Year</string>
-	<string name = "el_card_turnover_prior_qty_label">Total Turnover In Last Year</string>
-	<string name = "el_card_sales_line_counts_curr_qty_label">Sales Line Counts This Year</string>
-	<string name = "el_card_sales_line_counts_prior_qty_label">Sales Line Counts In Last Year</string>
-	<string name="el_card_sales_line_last_line_discount_label">Last line discount</string>
-	
-	<!-- customer trade agreemnt -->
-	<string name="cus_trade_agreement_customer_no_label">Customer No.</string>
-	<string name="cus_trade_agreement_entry_type_label">Entry type</string>
-	<string name="cus_trade_agreement_code_label">Code</string>
-	<string name="cus_trade_agreement_minimum_quantity_label">Minimum quantity</string>
-	<string name="cus_trade_agreement_starting_date_label">Starting date</string>
-	<string name="cus_trade_agreement_ending_date_label">Ending date</string>
-	<string name="cus_trade_agreement_actual_discount_label">Actual discount (%)</string>
-	
-	<string name="document_note">Document Note</string>
-	<string name="headquarters_note">Headquarters Note</string>
-	
-	<string name="order_condition_status">Order Condition Status</string>
-	<string name="financial_control_status">Financial Control Status</string>
-	<string name="order_status_for_shipment">Order Status For Shipment</string>
-	<string name="order_value_status">Order Value Status</string>
-	
-	<string name="available_to_whole_ship">Available To Whole Shippment</string>
-	<string name="verify_status">Verify Status</string>
-	<string name="price_and_discount_are_correct">Price And Discountc Are Correct</string>
-	
-	<string name="menu_new_visit">New visit plan</string>
-	<string name="menu_send_visits">Send visits</string>
-	<string name="menu_receive_visits">Receive visits</string>
-	<string name="menu_sale_order_sent_option">Sale order details</string>
-	<string name="menu_sale_order_option">Sale order details</string>
-	<string name="menu_visits_option">Visits details</string>
-	
-	<string name="items_sync_group_title">Items sync options</string>
-	<string name="items_sync_overstock_button_title">Sync overstock</string>
-	<string name="items_sync_on_action_button_title">Sync on action</string>
-	<string name="customer_edit_title">Edit</string>
-	<string name="save_customer_changes_title">Save</string>
-	
-	<string name="invoice_open">Open</string>
-	<string name="invoice_closed">Closed</string>
-	
-	<string name="date_filter_button_text">Filter by date</string>
-	
-	<string name="add_customer_names_title">Customer name1 - name2</string>
-	<string name="add_customer_address_title">Address</string>
-	<string name="add_customer_city_post_code_title">City - postal code</string>
-	<string name="add_customer_phones_title">MAin phone - mobile phone</string>
-	
-	<string name="add_customer_email_title">E-mail</string>
-	<string name="add_customer_company_data_title">VAT number - copmany id</string>
-	<string name="add_customer_global_dimension_title">Global dimension 2</string>
-	<string name="add_customer_blue_coats_title">Num of blue coats</string>
-	<string name="add_customer_grey_coats_title">Num of grey coats</string>
+    <!-- add contact -->
+    <string name="contact_type_title">Type</string>
+    <string name="contact_type_hint">Type</string>
+    <string name="contact_name_title">Primary name</string>
+    <string name="contact_name_hint">Name</string>
+    <string name="contact_name_2_title">Secondary name</string>
+    <string name="contact_name_2_hint">Secondary name</string>
+    <string name="contact_address_title">Address</string>
+    <string name="contact_address_hint">Address</string>
+    <string name="contact_city_title">City</string>
+    <string name="contact_city_hint">City</string>
+    <string name="contact_post_code_title">Post code</string>
+    <string name="contact_post_code_hint">Post code</string>
+    <string name="contact_phone_title">Phone</string>
+    <string name="contact_phone_hint">Phone</string>
+    <string name="contact_mobile_phone_title">Mobile phone</string>
+    <string name="contact_mobile_phone_hint">Mobile Phone</string>
+    <string name="contact_email_title">Email</string>
+    <string name="contact_email_hint">Email</string>
+    <string name="contact_company_no_title">Company number</string>
+    <string name="contact_company_no_hint">Company number</string>
+    <string name="contact_company_id_title">Company id</string>
+    <string name="contact_company_id_hint">Company id</string>
+    <string name="contact_vat_registration_title">Vat registration</string>
+    <string name="contact_vat_registration_hint">Vat reg</string>
+    <string name="contact_division_title">Division</string>
+    <string name="contact_division_hint">Division</string>
+    <string name="contact_number_of_blue_coat_title">Num of blue coat</string>
+    <string name="contact_number_of_blue_coat_hint">Num of blue coat</string>
+    <string name="contact_number_of_grey_coat_title">Num of gray coat</string>
+    <string name="contact_number_of_grey_coat_hint">Num of blue coat</string>
+    <string name="contact_job_title">Job title</string>
+    <string name="contact_job_title_hint">Job title</string>
+    <string name="contextual_deactivate">Delete</string>
+    <string name="contextual_edit">Edit</string>
+    <string name="contextual_add">New</string>
+    <string name="contextual_view">View</string>
+    <string name="contextual_edit_lines">Edit lines</string>
+    <string name="contextual_add_sale_order_line">New line</string>
+    <string name="contextual_delete_sale_order_line">Delete line</string>
+    <string name="contextual_add_sale_order">New sale order</string>
+    <string name="contextual_send_sale_order">Send sale order</string>
+    <string name="contextual_view_saldo">Document saldo</string>
+    <string name="contextual_verify_sale_order">Verify document</string>
+    <string name="contextual_complete_visit">Complete visit</string>
+    <string name="dialog_title_item_price_qty_load">Price and Quantity</string>
+    <string name="dialog_body_item_price_qty_load">Loading price and quantity</string>
+    <string name="dialog_title_sale_order_send">Sale Order</string>
+    <string name="dialog_title_sale_order_verify">Verify Order</string>
+    <string name="dialog_body_sale_order_send">Sending sale order</string>
+    <string name="dialog_body_sale_order_verify">Verifying sale order</string>
+    <string name="dialog_title_error_in_sync">Sync error</string>
+    <string name="dialog_title_invoices_load">Customer leadger entries</string>
+    <string name="dialog_body_invoices_load">Loading customer leadger entries</string>
+    <string name="dialog_title_sent_orders_status_load">Sent orders statuses</string>
+    <string name="dialog_body_sent_orders_status_load">Loading sent orders statuses</string>
+    <string name="dialog_title_sync_info">Sync info</string>
+    <string name="document_no">Document No</string>
+    <string name="dokument_type_no_title">Document no and type </string>
+    <string name="contact_title">Kontakt</string>
+    <string name="contact_hint">Kontakt</string>
+    <string name="contact_address_ship_section_title">Shipping address</string>
+    <string name="contact_address_invoice_section_title">Billing address</string>
+    <string name="location_no">Location no.</string>
+    <string name="shortcut_dimension1_code">Shortcut dimension 1</string>
+    <string name="backorder">Backorder status</string>
+    <string name="payment_type">Payment</string>
+    <string name="hide_discount">Hide discount</string>
+    <string name="show_declaration">Show declaration</string>
+    <string name="quote_no">Quote no.</string>
+    <string name="quote_date">Quote date</string>
+    <string name="quote_status">Quote status</string>
+    <string name="transit_customer">Transit customer</string>
+    <string name="customer_no_label">Customer No.</string>
+    <string name="customer_address_label">Adsress</string>
+    <string name="customer_city_label">City</string>
+    <string name="customer_postal_code_label">Postal code</string>
+    <string name="customer_phone_label">Phone</string>
+    <string name="customer_phone_mobile_label">Mobile phone</string>
+    <string name="customer_email_label">Email</string>
+    <string name="customer_blue_coat_label">Num. of blue coat</string>
+    <string name="customer_gray_coat_label">Num. of gray coat</string>
+    <string name="customer_note_label">Note</string>
+    <string name="customer_name_label">Name</string>
+    <string name="customer_name2_label">Name 2</string>
+    <string name="customer_company_id_label">Company id</string>
+    <string name="customer_primary_contact_id_label">Primary contact id</string>
+    <string name="customer_vat_reg_no_label">Var reg NO</string>
+    <string name="customer_credit_limit_lcy_label">Credit limit (LVT)</string>
+    <string name="customer_balance_lcy_label">Balance (LVT))</string>
+    <string name="customer_balance_due_lcy_label">Balance due (LVT</string>
+    <string name="customer_internal_balance_lcy_label">Internal balance (LVT)</string>
+    <string name="customer_payment_terms_code_label">Payment term code</string>
+    <string name="customer_priority_label">Priority</string>
+    <string name="customer_global_dimension_label">Global dimension</string>
+    <string name="customer_channel_oran_label">Channel (ORAN)</string>
+    <string name="customer_blocked_status_label">Blocked status</string>
+    <string name="customer_sml_label">SML</string>
+    <string name="customer_adopted_potential_label">Adopted potential</string>
+    <string name="customer_focus_customer_label">Focus customer</string>
+    <string name="customer_division_label">Division</string>
+
+    <!-- item -->
+    <string name="item_no_label">Item no</string>
+    <string name="item_no_hint">Search for item</string>
+    <string name="item_desc_label">Description</string>
+    <string name="item_stock_status_label">Stock status</string>
+    <string name="item_category_code_label">Category code</string>
+    <string name="item_group_code_label">Group code</string>
+    <string name="item_unit_sales_price_eur_label">Unit sale price EUR</string>
+    <string name="item_unit_sales_price_din_label">Unit sale price DIN</string>
+    <string name="item_unit_of_measure_label">Unit of measure</string>
+    <string name="item_campaign_status_label">Campaign status</string>
+    <string name="item_overstock_status_label">Overstock status</string>
+    <string name="item_connected_spec_ship_item_label">Connected spec ship item</string>
+    <string name="item_campaign_code_label">Campaign code</string>
+    <string name="item_campaign_start_date_label">Campaign start date</string>
+    <string name="item_campaign_end_date_label">Campaign end date</string>
+    <string name="item_dialog_title">Item information</string>
+
+    <!-- invoice_line -->
+    <string name="invoice_line_quantity">Quantity</string>
+    <string name="invoice_line_unit_price">Unti price</string>
+    <string name="invoice_line_discount_amount">Discount</string>
+    <string name="invoice_line_dialog_title">Invoice items</string>
+    <string name="invoice_line_dialog_alternative_title">No invoice items</string>
+    <string name="sync_failed_title">Sync is failed</string>
+
+    <!-- title -->
+
+    <string name="title_sale_order_lines_add_edit_activity">Add/Edit sales lines</string>
+
+    <!-- settings -->
+    <string name="title_settings">Settings</string>
+    <string name="key_ws_entry_point">ws_entry_point</string>
+    <string name="key_ws_schema">ws_schema</string>
+    <string name="key_ws_navisition_codeunit">ws_navisition_codeunit</string>
+    <string name="key_ws_server_address">ws_server_address</string>
+    <string name="key_company">company_address</string>
+    <string name="title_ws_entry_point">Endpoint</string>
+    <string name="title_ws_schema">Web service schema</string>
+    <string name="title_ws_navisition_codeunit">Navision code unit name </string>
+    <string name="title_ws_server_address">Server address</string>
+    <string name="title_company">Company</string>
+    <string name="title_web_service_settings">Web service</string>
+    <string name="title_sync_settings">Synchronization</string>
+    <string name="title_sync_category">Sync manage</string>
+    <string name="title_sync_items">Sync items</string>
+    <string name="title_sync_action">Sync</string>
+    <string name="title_sync_planned_visits">Sync planned visits</string>
+    <string name="title_sync_realized_visits">Sync realized visits</string>
+    <string name="title_sync_customers">Sync customers</string>
+    <string name="title_sync_sales_doc">Sync invoices</string>
+    <string name="sync_summary_label">Last success sync:</string>
+    <string name="key_sync_check_box">sync_check_box</string>
+    <string name="key_sync_planned_visits_check_box">sync_planned_visits_check_box</string>
+    <string name="key_sync_realized_visits_check_box">key_sync_realized_visits_check_box</string>
+    <string name="key_sync_customers_check_box">key_sync_customers_check_box</string>
+    <string name="key_sync_sales_doc_check_box">key_sync_sales_doc_check_box</string>
+    <string name="contact_name_phone_title">Contact name and phone</string>
+    <string name="contact_no_label">Contact no.</string>
+    <string name="toast_update_success">Data saved</string>
+    <string name="header_label">Document header data</string>
+    <string name="load_item_data_button">Load item data</string>
+    <string name="so_line_item_quantities_text">Quantities, selected and available</string>
+    <string name="so_line_item_prices_text">Prices, selected and system</string>
+    <string name="so_line_item_discounts_text">Discounts, selected, min and max</string>
+    <string name="so_line_quote_refused_text">Refused status</string>
+    <string name="so_line_avail_to_whole_ship_check_box_text">Available to whole shippment</string>
+    <string name="so_line_save_button_text">Save order line</string>
+    <string name="add_potential_customer_menu_title">New byer</string>
+    <string name="ecc_menu_title">ECC preview</string>
+    <string name="ecc_activity_title">Electronic customer card</string>
+    <string name="cus_trade_agree_menu_title">Agreement preview</string>
+    <string name="cus_trade_agree_activity_title">Customer trade agreement</string>
+    <string name="sync_sub_menu_title">Sync data</string>
+    <string name="sync_customer_address_menu_title">Sync addresses</string>
+    <string name="sync_customer_contacts_menu_title">Sync contacts</string>
+    <string name="sync_all_customers_menu_title">Sync customers</string>
+
+    <!-- ecc header label -->
+    <string name="el_card_customer_no_label">Customer No.</string>
+    <string name="el_card_item_no_label">Item No.</string>
+    <string name="el_card_jan_qty_label">January (Qty)</string>
+    <string name="el_card_feb_qty_label">February(Qty)</string>
+    <string name="el_card_mart_qty_label">March(Qty)</string>
+    <string name="el_card_apr_qty_label">April(Qty)</string>
+    <string name="el_card_may_qty_label">May(Qty)</string>
+    <string name="el_card_june_qty_label">June(Qty)</string>
+    <string name="el_card_july_qty_label">July(Qty)</string>
+    <string name="el_card_aug_qty_label">August(Qty)</string>
+    <string name="el_card_sep_qty_label">September(Qty)</string>
+    <string name="el_card_oct_qty_label">October(Qty)</string>
+    <string name="el_card_nov_qty_label">November(Qty)</string>
+    <string name="el_card_dec_qty_label">December(Qty)</string>
+    <string name="el_card_total_sale_curr_qty_label">Total Sale (Qty) In This Year</string>
+    <string name="el_card_total_sale_prior_qty_label">Total Sale (Qty) In Last Year</string>
+    <string name="el_card_turnover_curr_qty_label">Total Turnover In This Year</string>
+    <string name="el_card_turnover_prior_qty_label">Total Turnover In Last Year</string>
+    <string name="el_card_sales_line_counts_curr_qty_label">Sales Line Counts This Year</string>
+    <string name="el_card_sales_line_counts_prior_qty_label">Sales Line Counts In Last Year</string>
+    <string name="el_card_sales_line_last_line_discount_label">Last line discount</string>
+
+    <!-- customer trade agreemnt -->
+    <string name="cus_trade_agreement_customer_no_label">Customer No.</string>
+    <string name="cus_trade_agreement_entry_type_label">Entry type</string>
+    <string name="cus_trade_agreement_code_label">Code</string>
+    <string name="cus_trade_agreement_minimum_quantity_label">Minimum quantity</string>
+    <string name="cus_trade_agreement_starting_date_label">Starting date</string>
+    <string name="cus_trade_agreement_ending_date_label">Ending date</string>
+    <string name="cus_trade_agreement_actual_discount_label">Actual discount (%)</string>
+    <string name="document_note">Document Note</string>
+    <string name="headquarters_note">Headquarters Note</string>
+    <string name="order_condition_status">Order Condition Status</string>
+    <string name="financial_control_status">Financial Control Status</string>
+    <string name="order_status_for_shipment">Order Status For Shipment</string>
+    <string name="order_value_status">Order Value Status</string>
+    <string name="available_to_whole_ship">Available To Whole Shippment</string>
+    <string name="verify_status">Verify Status</string>
+    <string name="price_and_discount_are_correct">Price And Discountc Are Correct</string>
+    
+    <string name="menu_new_visit">New visit plan</string>
+    <string name="menu_send_visits">Send visits</string>
+    <string name="menu_receive_visits">Receive visits</string>
+    <string name="menu_sale_order_sent_option">Sale order details</string>
+    <string name="menu_sale_order_option">Sale order details</string>
+    <string name="menu_visits_option">Visits details</string>
+    <string name="menu_customers_option">Customers details</string>
+    
+    <string name="items_sync_group_title">Items sync options</string>
+    <string name="items_sync_overstock_button_title">Sync overstock</string>
+    <string name="items_sync_on_action_button_title">Sync on action</string>
+    <string name="customer_edit_title">Edit</string>
+    <string name="save_customer_changes_title">Save</string>
+    <string name="invoice_open">Open</string>
+    <string name="invoice_closed">Closed</string>
+    <string name="date_filter_button_text">Filter by date</string>
+    
+    <string name="add_customer_names_title">Customer name1 - name2</string>
+    <string name="add_customer_address_title">Address</string>
+    <string name="add_customer_city_post_code_title">City - postal code</string>
+    
+    <string name="add_customer_phones_title">MAin phone - mobile phone</string>
+    <string name="add_customer_email_title">E-mail</string>
+    <string name="add_customer_company_data_title">VAT number - copmany id</string>
+    <string name="add_customer_global_dimension_title">Global dimension 2</string>
+    <string name="add_customer_blue_coats_title">Num of blue coats</string>
+    <string name="add_customer_grey_coats_title">Num of grey coats</string>
+
 </resources>

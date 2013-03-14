@@ -20,12 +20,14 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class CustomersViewListFragment extends ListFragment implements
-		LoaderManager.LoaderCallbacks<Cursor> {
+		LoaderManager.LoaderCallbacks<Cursor>, OnItemLongClickListener {
 
 	private static final String TAG = makeLogTag(CustomersViewListFragment.class);
 	private static final String STANDARD_FILTER = Tables.CUSTOMERS + "." + MobileStoreContract.Customers.SALES_PERSON_ID+"=?";
@@ -41,6 +43,8 @@ public class CustomersViewListFragment extends ListFragment implements
 	public interface Callbacks {
         /** Return true to select (activate) the vendor in the list, false otherwise. */
         public boolean onCustomerSelected(String customerId);
+        
+        public void onCustomerLongClick(String customerId);
     }
 
     private static Callbacks sDummyCallbacks = new Callbacks() {
@@ -48,6 +52,10 @@ public class CustomersViewListFragment extends ListFragment implements
         public boolean onCustomerSelected(String customerId) {
             return true;
         }
+
+		@Override
+		public void onCustomerLongClick(String customerId) {
+		}
     };
 
     private Callbacks mCallbacks = sDummyCallbacks;
@@ -96,6 +104,7 @@ public class CustomersViewListFragment extends ListFragment implements
         final ListView listView = getListView();
         listView.setSelector(android.R.color.transparent);
         listView.setCacheColorHint(Color.WHITE);
+        listView.setOnItemLongClickListener(this);
     }
 
     @Override
@@ -143,6 +152,16 @@ public class CustomersViewListFragment extends ListFragment implements
             mSelectedCustomerId = customerId;
             mAdapter.notifyDataSetChanged();
         }
+    }
+    
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapter, View view, int position,
+    		long arg3) {
+    	Cursor cursor = (Cursor) adapter.getItemAtPosition(position);
+		String customerId = String.valueOf(cursor.getInt(CustomersQuery._ID));
+		mCallbacks.onCustomerLongClick(customerId);
+		view.setSelected(true);
+		return true;
     }
     
 	@Override

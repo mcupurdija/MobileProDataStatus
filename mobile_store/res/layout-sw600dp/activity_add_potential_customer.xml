@@ -42,8 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:layout_weight="6"
-                android:inputType="numberDecimal" />
+                android:layout_weight="6" />
 
             <EditText
                 android:id="@+id/add_customer_name2"
@@ -94,8 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:layout_weight="7"
-                android:inputType="numberDecimal" />
+                android:layout_weight="7" />
 
             <EditText
                 android:id="@+id/add_customer_postal_code"
@@ -104,7 +102,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:layout_weight="3" />
+                android:layout_weight="3"
+                android:inputType="numberDecimal" />
         </LinearLayout>
 
         <TextView
@@ -139,7 +138,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:layout_weight="5" />
+                android:layout_weight="5"
+                android:inputType="numberDecimal" />
         </LinearLayout>
 
         <TextView
@@ -191,7 +191,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:layout_weight="5" />
+                android:layout_weight="5"
+                android:inputType="numberDecimal" />
         </LinearLayout>
 
         <LinearLayout

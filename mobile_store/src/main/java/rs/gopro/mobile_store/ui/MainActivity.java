@@ -213,21 +213,21 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 		Uri uri = actionsAdapter.getItem(currentItemPosition);
 		
 		if (SaleOrdersLayout.SALE_ORDER_URI.equals(uri)) {
-			menu.getItem(1).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);
+			menu.getItem(1).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(3).setVisible(false);
 		} else if (PlanOfVisitsLayout.PLAN_OF_VISITS_URI.equals(uri)) {
-			menu.getItem(0).setVisible(true);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);
+			menu.getItem(0).setVisible(true);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);
 		} else if (CustomersLayout.CUSTOMERS_URI.equals(uri)) {
-			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);
+			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(true);
 		} else if (ItemsLayout.ITEMS_URI.equals(uri)) {
-			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);
+			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);
 		} else if (CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.equals(uri)) {
-			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);
+			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);
 		} else if (SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.equals(uri)) {
-			menu.getItem(2).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(1).setVisible(false);
+			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);
 		} else if (ContactsLayout.CONTACTS_URI.equals(uri)) {
-			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);
+			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);
 		} else if (SentOrdersLayout.SENT_ORDERS_URI.equals(uri)) {
-			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);
+			menu.getItem(2).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);
 		}
 		
 		return super.onPrepareOptionsMenu(menu);
@@ -258,6 +258,14 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             startActivity(saleOrderIntent);
 			return true;
 		case R.id.main_options_sale_order_sent_details:
+			final Uri sentOrdersUri = MobileStoreContract.SaleOrders.CONTENT_URI;
+            final Intent sentOrderIntent = new Intent(Intent.ACTION_VIEW, sentOrdersUri);
+            startActivity(sentOrderIntent);
+			return true;
+		case R.id.main_options_customers_details:
+			final Uri customersuri = MobileStoreContract.Customers.CONTENT_URI;
+            final Intent customersIntent = new Intent(Intent.ACTION_VIEW, customersuri);
+            startActivity(customersIntent);
 			return true;
 		default:
 			break;

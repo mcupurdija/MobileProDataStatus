@@ -5,8 +5,10 @@ import java.util.List;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SentOrders;
+import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.SaleOrdersPreviewActivity;
 import rs.gopro.mobile_store.ui.widget.SimpleSelectionedListAdapter;
 import rs.gopro.mobile_store.util.ApplicationConstants;
@@ -32,13 +34,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Filter.FilterListener;
 import android.widget.FilterQueryProvider;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Filter.FilterListener;
 
 public class SentOrdersFragment extends ListFragment implements LoaderCallbacks<Cursor>, TextWatcher, OnItemSelectedListener, FilterListener {
 	
@@ -210,6 +212,8 @@ public class SentOrdersFragment extends ListFragment implements LoaderCallbacks<
 		public void bindView(View view, Context context, final Cursor cursor) {
 			final Integer saleOrderId = cursor.getInt(SaleOrderQuery._ID);
 			final String saleOrderNo = cursor.getString(SaleOrderQuery.NO);
+			final String customerNo = cursor.getString(SaleOrderQuery.CUSTOMER_NO);
+			final String customerName = cursor.getString(SaleOrderQuery.CUSTOMER_NAME);
 			final Integer totalAmount = cursor.getInt(SaleOrderQuery.TOTAL);
 			final long orderDate = UIUtils.getDateTime(cursor.getString(SaleOrderQuery.ORDER_DATE)).getTime();
 
@@ -233,7 +237,7 @@ public class SentOrdersFragment extends ListFragment implements LoaderCallbacks<
 				}
 			};
 
-			titleView.setText(saleOrderNo);
+			titleView.setText(customerNo+"-"+customerName);
 			titleView.setTextColor(res.getColorStateList(R.color.body_text_1_positive));
 			subtitleView.setText(getString(R.string.sale_order_amount_total_template) + totalAmount);
 			primaryTouchTargetView.setOnClickListener(allSessionsListener);
@@ -246,12 +250,14 @@ public class SentOrdersFragment extends ListFragment implements LoaderCallbacks<
 
 	private interface SaleOrderQuery {
 
-		String[] PROJECTION = { BaseColumns._ID, SaleOrders.SALES_ORDER_NO, SaleOrders.ORDER_DATE, SaleOrders.TOTAL };
+		String[] PROJECTION = { Tables.SALE_ORDERS+"."+BaseColumns._ID, Tables.SALE_ORDERS+"."+SaleOrders.SALES_ORDER_DEVICE_NO, Tables.SALE_ORDERS+"."+SaleOrders.ORDER_DATE, Tables.SALE_ORDERS+"."+SaleOrders.TOTAL, Tables.CUSTOMERS+"."+Customers.CUSTOMER_NO, Tables.CUSTOMERS+"."+Customers.NAME };
 
 		int _ID = 0;
 		int NO = 1;
 		int ORDER_DATE = 2;
 		int TOTAL = 3;
+		int CUSTOMER_NO = 4;
+		int CUSTOMER_NAME = 5;
 	}
 
 }

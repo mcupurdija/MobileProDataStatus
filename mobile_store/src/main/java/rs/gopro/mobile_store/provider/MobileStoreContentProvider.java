@@ -61,7 +61,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int CUSTOMERS_NO = 122;
 	//private static final int CUSTOMERS_SEARCH = 123;
 	private static final int CUSTOMERS_CUSTOM_SEARCH = 124;
-	private static final int CUSTOMERS_BY_STATUS = 125;
+//	private static final int CUSTOMERS_BY_STATUS = 125;
 	private static final int CUSTOMERS_BY_SALES_PERSON = 126;
 
 	private static final int ITEMS = 130;
@@ -145,10 +145,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "customers/#", CUSTOMERS_ID);
 		mobileStoreURIMatcher.addURI(authority, "customers/customer_no",
 				CUSTOMERS_NO);
-		mobileStoreURIMatcher.addURI(authority, "customers/*/customer_no",
-				CUSTOMERS_BY_STATUS);
-		mobileStoreURIMatcher.addURI(authority, "customers/#/customer_no",
-				CUSTOMERS_BY_STATUS);
+//		mobileStoreURIMatcher.addURI(authority, "customers/*/customer_no",
+//				CUSTOMERS_BY_STATUS);
+//		mobileStoreURIMatcher.addURI(authority, "customers/#/customer_no",
+//				CUSTOMERS_BY_STATUS);
 		mobileStoreURIMatcher.addURI(authority, "customers/#/*/customer_no",
 				CUSTOMERS_CUSTOM_SEARCH);
 		mobileStoreURIMatcher.addURI(authority, "customers/*/#/customer_no",
@@ -505,8 +505,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.INVOICE_LINES)
 					.where(InvoiceLine.INVOICES_ID + "=?", new String[] {invoiceid});
 		case CUSTOMERS:
-			return builder.addTable(Tables.CUSTOMERS).where(
-					Customers.BLOCKED_STATUS + "= ?", new String[] { "0" }); // TODO delete this!
+			return builder.addTable(Tables.CUSTOMERS);//.where(
+					//Customers.BLOCKED_STATUS + "= ?", new String[] { "0" }); // TODO delete this!
 		case CUSTOMERS_BY_SALES_PERSON:
 			final String salesPersonIdOnCustomer = Customers
 					.getCustomersSalesPersonId(uri);
@@ -518,31 +518,36 @@ public class MobileStoreContentProvider extends ContentProvider {
 					Customers._ID + "=?", customerId);
 		case CUSTOMERS_NO:
 			return builder.addTable(Tables.CUSTOMERS);
-		case CUSTOMERS_BY_STATUS:
-			String query = Customers.getSearchQuery(uri);
-			return builder.addTable(Tables.CUSTOMERS).where(
-					Customers.BLOCKED_STATUS + "= ?", new String[] { query });
+//		case CUSTOMERS_BY_STATUS:
+//			String query = Customers.getSearchQuery(uri);
+//			return builder.addTable(Tables.CUSTOMERS).where(
+//					Customers.BLOCKED_STATUS + "= ?", new String[] { query });
 		case CUSTOMERS_CUSTOM_SEARCH:
 			String customerCustomParam = Customers
 					.getCustomSearchFirstParamQuery(uri);
 			String customerStatus = Customers
 					.getCustomSearchSecondParamQuery(uri);
 			builder
-				.addTable(Tables.CUSTOMERS)
-				.where(Customers.CUSTOMER_NO + " like ? OR "
-						+ Customers.NAME + " like ?",
-						new String[] { /* "%" + */
-						customerCustomParam + "%",
-								"%" + customerCustomParam + "%" });
-			if (customerStatus.equals("4")) {
-				builder.where(Customers.CREDIT_LIMIT_LCY + "= ?",
-						new String[] { "2" });
-			} else if (customerStatus.equals("5")) {
-				builder.where(Customers.CREDIT_LIMIT_LCY + "= ?",
-						new String[] { "1" });
-			} else {
-				builder.where(Customers.FINANCIAL_CONTROL_STATUS + "= ?",
-						new String[] { customerStatus });
+				.addTable(Tables.CUSTOMERS);
+			if (customerCustomParam != null && customerCustomParam.length() > 0 && !customerCustomParam.equals("noNoOrName")) {
+				builder
+					.where(Customers.CUSTOMER_NO + " like ? OR "
+							+ Customers.NAME + " like ?",
+							new String[] { /* "%" + */
+							customerCustomParam + "%",
+									"%" + customerCustomParam + "%" });
+			}
+			if (customerStatus != null && customerStatus.length() > 0) {
+				if (customerStatus.equals("4")) {
+					builder.where(Customers.CREDIT_LIMIT_LCY + "= ?",
+							new String[] { "2" });
+				} else if (customerStatus.equals("5")) {
+					builder.where(Customers.CREDIT_LIMIT_LCY + "= ?",
+							new String[] { "1" });
+				} else {
+					builder.where(Customers.FINANCIAL_CONTROL_STATUS + "= ?",
+							new String[] { customerStatus });
+				}
 			}
 			return builder;
 		case ITEMS:
@@ -701,13 +706,13 @@ public class MobileStoreContentProvider extends ContentProvider {
 			String saleOrderDocType = SaleOrders.getCustomSearchFirstParamQuery(uri);
 			String noType = SaleOrders.getCustomSearchSecondParamQuery(uri);
 			OrderType orderType = ApplicationConstants.OrderType.find(noType);
-			String condition = SaleOrders.SALES_ORDER_NO  + " is null or "+SaleOrders.SALES_ORDER_NO  + " = ''";
+			String condition = Tables.SALE_ORDERS+"."+SaleOrders.SALES_ORDER_NO  + " is null or "+Tables.SALE_ORDERS+"."+SaleOrders.SALES_ORDER_NO  + " = ''";
 			if(OrderType.SENT_ORDER.equals(orderType)){
-				condition = SaleOrders.SALES_ORDER_NO  + " is not null and "+SaleOrders.SALES_ORDER_NO  + " <> ''";
+				condition = Tables.SALE_ORDERS+"."+SaleOrders.SALES_ORDER_NO  + " is not null and "+Tables.SALE_ORDERS+"."+SaleOrders.SALES_ORDER_NO  + " <> ''";
 			}
-			return builder.addTable(Tables.SALE_ORDERS)
+			return builder.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)
 					.where(
-					SaleOrders.DOCUMENT_TYPE + "= ?",new String[] { saleOrderDocType })
+					Tables.SALE_ORDERS+"."+SaleOrders.DOCUMENT_TYPE + "= ?",new String[] { saleOrderDocType })
 					.where(condition, new String []{});
 		case SALE_ORDER_CUSTOM_SEARCH:
 			String saleCustomParam = SaleOrders
@@ -716,28 +721,28 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.getCustomSearchSecondParamQuery(uri);
 			String saleOrderType = SaleOrders.getCustomSearchThirdParamQuery(uri);
 			OrderType orderTypeSale = ApplicationConstants.OrderType.find(saleOrderType);
-			String additionalCondition = SaleOrders.SALES_ORDER_NO  + " is null";
+			String additionalCondition = Tables.SALE_ORDERS+"."+SaleOrders.SALES_ORDER_NO  + " is null";
 			if(OrderType.SENT_ORDER.equals(orderTypeSale)){
-				additionalCondition = SaleOrders.SALES_ORDER_NO  + " is not null";
+				additionalCondition = Tables.SALE_ORDERS+"."+SaleOrders.SALES_ORDER_NO  + " is not null";
 			}
 			return builder
-					.addTable(Tables.SALE_ORDERS)
-					.where(SaleOrders.SALES_ORDER_DEVICE_NO + " like ? ",
+					.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)
+					.where(Tables.SALE_ORDERS+"."+SaleOrders.SALES_ORDER_DEVICE_NO + " like ? ",
 							new String[] { "%" + saleCustomParam + "%" })
-					.where(SaleOrders.DOCUMENT_TYPE + "= ? ",new String[] { saleDocType })
+					.where(Tables.SALE_ORDERS+"."+SaleOrders.DOCUMENT_TYPE + "= ? ",new String[] { saleDocType })
 					.where(additionalCondition, new String []{});
 		case SENT_ORDER_BY_STATUS:
 			//String saleOrderDocType = SaleOrders.getSaleOrderDocType(uri);
 			String saleOrderDocType1 = SaleOrders.getCustomSearchFirstParamQuery(uri);
 			String noType1 = SaleOrders.getCustomSearchSecondParamQuery(uri);
 			OrderType orderType1 = ApplicationConstants.OrderType.find(noType1);
-			String condition1 = SaleOrders.SALES_ORDER_NO  + " is null";
+			String condition1 = Tables.SALE_ORDERS+"."+SaleOrders.SALES_ORDER_NO  + " is null";
 			if(OrderType.SENT_ORDER.equals(orderType1)){
-				condition1 = SaleOrders.SALES_ORDER_NO  + " is not null";
+				condition1 = Tables.SALE_ORDERS+"."+SaleOrders.SALES_ORDER_NO  + " is not null";
 			}
-			return builder.addTable(Tables.SALE_ORDERS)
+			return builder.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)
 					.where(
-					SaleOrders.DOCUMENT_TYPE + "= ?",new String[] { saleOrderDocType1 })
+					Tables.SALE_ORDERS+"."+SaleOrders.DOCUMENT_TYPE + "= ?",new String[] { saleOrderDocType1 })
 					.where(condition1, new String []{});
 		case SENT_ORDER_CUSTOM_SEARCH:
 			String saleCustomParam1 = SaleOrders
@@ -746,15 +751,15 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.getCustomSearchSecondParamQuery(uri);
 			String saleOrderType1 = SaleOrders.getCustomSearchThirdParamQuery(uri);
 			OrderType orderTypeSale1 = ApplicationConstants.OrderType.find(saleOrderType1);
-			String additionalCondition1 = SaleOrders.SALES_ORDER_NO  + " is null";
+			String additionalCondition1 = Tables.SALE_ORDERS+"."+SaleOrders.SALES_ORDER_NO  + " is null";
 			if(OrderType.SENT_ORDER.equals(orderTypeSale1)){
-				additionalCondition1 = SaleOrders.SALES_ORDER_NO  + " is not null";
+				additionalCondition1 = Tables.SALE_ORDERS+"."+SaleOrders.SALES_ORDER_NO  + " is not null";
 			}
 			return builder
-					.addTable(Tables.SALE_ORDERS)
-					.where(SaleOrders.SALES_ORDER_NO + " like ? ",
+					.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)
+					.where(Tables.SALE_ORDERS+"."+SaleOrders.SALES_ORDER_NO + " like ? ",
 							new String[] { "%" + saleCustomParam1 + "%" })
-					.where(SaleOrders.DOCUMENT_TYPE + "= ? ",new String[] { saleDocType1 })
+					.where(Tables.SALE_ORDERS+"."+SaleOrders.DOCUMENT_TYPE + "= ? ",new String[] { saleDocType1 })
 					.where(additionalCondition1, new String []{});
 			
 		case SALE_ORDER_LINE:

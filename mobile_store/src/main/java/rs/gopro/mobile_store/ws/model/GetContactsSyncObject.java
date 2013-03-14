@@ -24,6 +24,7 @@ public class GetContactsSyncObject extends SyncObject {
 	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.GET_CONTACTS_SYNC_ACTION";
 
 	private String cSVString;
+	private String pContactNo;
 	private String pPotentialCustomerNoa46;
 	private String salespersonCode;
 	private Date dateModified;
@@ -49,15 +50,17 @@ public class GetContactsSyncObject extends SyncObject {
 	public GetContactsSyncObject(Parcel parcel) {
 		super(parcel);
 		setcSVString(parcel.readString());
+		setpContactNo(parcel.readString());
 		setpPotentialCustomerNoa46(parcel.readString());
 		setSalespersonCode(parcel.readString());
 		setDateModified(new Date(parcel.readLong()));
 	}
 	
-	public GetContactsSyncObject(String cSVString, String customerNoa46,
+	public GetContactsSyncObject(String cSVString, String pContactNo, String customerNoa46,
 			String salespersonCode, Date dateModified) {
 		super();
 		this.cSVString = cSVString;
+		this.pContactNo = pContactNo;
 		this.pPotentialCustomerNoa46 = customerNoa46;
 		this.salespersonCode = salespersonCode;
 		this.dateModified = dateModified;
@@ -72,6 +75,7 @@ public class GetContactsSyncObject extends SyncObject {
 	public void writeToParcel(Parcel dest, int flag) {
 		dest.writeString(getStatusMessage());
 		dest.writeString(getcSVString());
+		dest.writeString(getpContactNo());
 		dest.writeString(getpPotentialCustomerNoa46());
 		dest.writeString(getSalespersonCode());
 		dest.writeLong(getDateModified().getTime());
@@ -91,6 +95,12 @@ public class GetContactsSyncObject extends SyncObject {
 		cSVStringInfo.setType(String.class);
 		properties.add(cSVStringInfo);
 
+		PropertyInfo contactNo = new PropertyInfo();
+		contactNo.setName("pContactNoa46");
+		contactNo.setValue(pContactNo);
+		contactNo.setType(String.class);
+		properties.add(contactNo);
+		
 		PropertyInfo customerNoa46Info = new PropertyInfo();
 		customerNoa46Info.setName("pPotentialCustomerNoa46");
 		customerNoa46Info.setValue(pPotentialCustomerNoa46);
@@ -122,8 +132,7 @@ public class GetContactsSyncObject extends SyncObject {
 	}
 
 	@Override
-	protected int parseAndSave(ContentResolver contentResolver,
-			SoapPrimitive soapResponse) throws CSVParseException {
+	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException {
 		List<ContactsDomain> parsedItems = CSVDomainReader.parse(new StringReader(soapResponse.toString()), ContactsDomain.class);
 		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedItems);
 		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.Contacts.CONTENT_URI, valuesForInsert);
@@ -166,6 +175,14 @@ public class GetContactsSyncObject extends SyncObject {
 
 	public void setDateModified(Date dateModified) {
 		this.dateModified = dateModified;
+	}
+
+	public String getpContactNo() {
+		return pContactNo;
+	}
+
+	public void setpContactNo(String pContactNo) {
+		this.pContactNo = pContactNo;
 	}
 	
 }

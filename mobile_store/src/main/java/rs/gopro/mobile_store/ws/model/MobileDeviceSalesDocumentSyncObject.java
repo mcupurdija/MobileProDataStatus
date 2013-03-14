@@ -314,6 +314,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 				String.class,
 				String.class,
 				String.class,
+				String.class,
 				
 				Integer.class,
 				Integer.class,

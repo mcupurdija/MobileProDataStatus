@@ -10,6 +10,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.components.ItemAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.util.UIUtils;
@@ -126,7 +127,6 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	};
 	
 	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
-		System.out.println("STATUS IS: " + syncResult.getStatus());
 		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
 			if (ItemQtySalesPriceAndDiscSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 				ItemQtySalesPriceAndDiscSyncObject syncObject = (ItemQtySalesPriceAndDiscSyncObject) syncResult.getComplexResult();
@@ -137,47 +137,15 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 				mPrice.setText(syncObject.getpSalesPriceRSDAsTxt());
 				//mPriceEur.setText(syncObject.getpSalesPriceEURAsTxt());
 				if ((syncObject.getpMinimumSalesUnitQuantityTxt().length() > 0 && !syncObject.getpMinimumSalesUnitQuantityTxt().equals("anyType{}")) || (syncObject.getpOutstandingPurchaseLinesTxt().length() > 0) && !syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}")) {
-					AlertDialog alertDialog = new AlertDialog.Builder(
-							getActivity()).create();
-
-				    // Setting Dialog Title
-				    alertDialog.setTitle(getResources().getString(R.string.dialog_title_sync_info));
 				    // Setting Dialog Message
 				    String outstanding = syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}") ? "" : "Poruka: " + syncObject.getpOutstandingPurchaseLinesTxt();
 				    String minimum = syncObject.getpMinimumSalesUnitQuantityTxt().equals("anyType{}") ? "" : syncObject.getpMinimumSalesUnitQuantityTxt();
-				    alertDialog.setMessage(minimum + "\n" +  outstanding);
-				    // Setting Icon to Dialog
-				    alertDialog.setIcon(R.drawable.ic_launcher);
-				    // Setting OK Button
-				    alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-			            public void onClick(DialogInterface dialog, int which) {
-			            	// Write your code here to execute after dialog closed
-			            }
-				    });
-				
-				    // Showing Alert Message
-				    alertDialog.show();
+
+				    DialogUtil.showInfoDialog(getActivity(), getResources().getString(R.string.dialog_title_sync_info), minimum + "\n" +  outstanding);
 				}
 			}
 		} else {
-			AlertDialog alertDialog = new AlertDialog.Builder(
-					getActivity()).create();
-
-		    // Setting Dialog Title
-		    alertDialog.setTitle(getResources().getString(R.string.dialog_title_error_in_sync));
-		    // Setting Dialog Message
-		    alertDialog.setMessage(syncResult.getResult());
-		    // Setting Icon to Dialog
-		    alertDialog.setIcon(R.drawable.ic_launcher);
-		    // Setting OK Button
-		    alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-	            public void onClick(DialogInterface dialog, int which) {
-	            	// Write your code here to execute after dialog closed
-	            }
-		    });
-		
-		    // Showing Alert Message
-		    alertDialog.show();
+			DialogUtil.showInfoDialog(getActivity(), getResources().getString(R.string.dialog_title_error_in_sync), syncResult.getResult());
 		}
 	}
 	
@@ -320,7 +288,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			@Override
 			public void onClick(View v) {
 				isServiceCalled = true;
-				itemLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_item_price_qty_load), getActivity().getResources().getString(R.string.dialog_body_item_price_qty_load), true);
+				
 				getActivity().getSupportLoaderManager().restartLoader(ItemQuery._TOKEN, null,SaleOrderAddEditLineFragment.this);
 				getActivity().getSupportLoaderManager().restartLoader(SaleOrderQuery._TOKEN, null,SaleOrderAddEditLineFragment.this);
 				
@@ -678,6 +646,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	}
 	
 	private void doWsAction() {
+		itemLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_item_price_qty_load), getActivity().getResources().getString(R.string.dialog_body_item_price_qty_load), true, true);
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 		double quantity = UIUtils.getDoubleFromUI(mQuantity.getText().toString());
 		int campaign_status = mCampaignStatus.getSelectedItemPosition();

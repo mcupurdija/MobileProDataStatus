@@ -332,7 +332,7 @@ public class ShowHideMasterLayout extends ViewGroup implements Animator.Animator
         if (event.getAction() == MotionEvent.ACTION_DOWN && mMasterView != null && mMasterVisible) {
             // If the master is visible, touching in the detail area should hide the master.
             if (event.getX() > mTranslateAmount) {
-                return true;
+                return super.onInterceptTouchEvent(event); //true;
             }
         }
         return super.onInterceptTouchEvent(event);
@@ -343,14 +343,14 @@ public class ShowHideMasterLayout extends ViewGroup implements Animator.Animator
         if (mFlingToExposeMaster
                 && !mMasterVisible
                 && mGestureDetector.onTouchEvent(event)) {
-            return true;
+            return super.onTouchEvent(event);
         }
 
         if (event.getAction() == MotionEvent.ACTION_DOWN && mMasterView != null && mMasterVisible) {
             // If the master is visible, touching in the detail area should hide the master.
             if (event.getX() > mTranslateAmount) {
                 showMaster(false, 0);
-                return true;
+                return super.onTouchEvent(event);
             }
         }
         return super.onTouchEvent(event);

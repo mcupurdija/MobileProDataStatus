@@ -104,7 +104,11 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 	public void afterTextChanged(Editable s) {
 		cursorAdapter.swapCursor(null);
 		int statusId = spinner.getSelectedItemPosition();
-		String queryString = s.toString() + splitQuerySeparator + statusId;
+		String searchText = s.toString();
+		if (searchText == null || searchText.length() < 1) {
+			searchText = "noNoOrName";
+		}
+		String queryString = searchText + splitQuerySeparator + statusId;
 		cursorAdapter.getFilter().filter(queryString);
 
 	}
@@ -119,7 +123,11 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		String queryString = searchText.getText().toString() + splitQuerySeparator + position;
+		String searchT = searchText.getText().toString();
+		if (searchT == null || searchT.length() < 1) {
+			searchT = "noNoOrName";
+		}
+		String queryString = searchT + splitQuerySeparator + position;
 		cursorAdapter.getFilter().filter(queryString);
 
 	}

@@ -552,9 +552,9 @@ public class MobileStoreContract {
 			return CONTENT_URI.buildUpon().appendEncodedPath(CUSTOMER_NO).build();
 		}
 
-		public static Uri buildSearchUri(String query) {
-			return CONTENT_URI.buildUpon().appendPath(query).appendPath(CUSTOMER_NO).build();
-		}
+//		public static Uri buildSearchUri(String query) {
+//			return CONTENT_URI.buildUpon().appendPath(query).appendPath(CUSTOMER_NO).build();
+//		}
 
 		public static Uri buildCustomSearchUri(String text, String status) {
 			return CONTENT_URI.buildUpon().appendPath(text).appendPath(status).appendPath(CUSTOMER_NO).build();

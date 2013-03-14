@@ -6,7 +6,7 @@
         android:showAsAction="ifRoom|withText" />
     
     <item
-        android:id="@+id/relise_visit"
+        android:id="@+id/realise_visit"
         android:title="@string/contextual_complete_visit"
         android:showAsAction="ifRoom|withText" />
     

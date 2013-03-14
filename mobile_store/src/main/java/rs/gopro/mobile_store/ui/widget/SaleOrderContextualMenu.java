@@ -1,7 +1,6 @@
 package rs.gopro.mobile_store.ui.widget;
 
 import rs.gopro.mobile_store.R;
-import rs.gopro.mobile_store.provider.MobileStoreContentProvider;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.UIUtils;

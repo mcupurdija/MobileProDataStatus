@@ -63,7 +63,7 @@ BEGIN
 	where _id = new._id; 
 END;
 INSERT INTO `sales_persons` (_id, sales_person_no, name, name2, created_date, created_by) VALUES 
-	(1, 'LAMZA', 'vlada', 'vlada', datetime('now'), 'INITIAL');
+	(1, 'Z0141', 'vlada', 'vlada', datetime('now'), 'INITIAL');
 --Z0146, Z0157
 -- invoices
 CREATE TABLE `invoices` (
@@ -200,6 +200,8 @@ CREATE TABLE `contacts` (
 	`vat_registration` TEXT,
 	`sales_person_id` TEXT,
 	`division` TEXT,
+	`department` TEXT,
+	`position` TEXT,
 	`number_of_blue_coat` INTEGER,
 	`number_of_grey_coat` INTEGER,
 	`job_title` TEXT,
@@ -223,9 +225,9 @@ BEGIN
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-INSERT INTO `contacts` VALUES ('1','KT0001','0','Kontak broj 1',null,'Neznanih junaka BB','Beograd','11000','011111111',null,'test@test.com',null,null,null,'1',null,null,null,null,null,'2012-12-26 19:30:59','tica','2012-12-26 19:30:59','tica');
-INSERT INTO `contacts` VALUES ('2','KT0002','1','Kontak broj 2',null,'Neznanih junaka BB','Beograd','11000','011111111',null,'test@test.com',null,null,null,'1',null,null,null,null,null,'2012-12-26 19:31:17','tica','2012-12-26 19:31:17','tica');
-INSERT INTO `contacts` VALUES ('3','KT0003','1','Kontak broj 3',null,'Neznanih junaka BB','Beograd','11000','011111111',null,'test@test.com',null,null,null,'1',null,null,null,null,null,'2012-12-26 19:31:31','tica','2012-12-26 19:31:31','tica');
+--INSERT INTO `contacts` VALUES ('1','KT0001','0','Kontak broj 1',null,'Neznanih junaka BB','Beograd','11000','011111111',null,'test@test.com',null,null,null,'1',null,null,null,null,null,'2012-12-26 19:30:59','tica','2012-12-26 19:30:59','tica');
+--INSERT INTO `contacts` VALUES ('2','KT0002','1','Kontak broj 2',null,'Neznanih junaka BB','Beograd','11000','011111111',null,'test@test.com',null,null,null,'1',null,null,null,null,null,'2012-12-26 19:31:17','tica','2012-12-26 19:31:17','tica');
+--INSERT INTO `contacts` VALUES ('3','KT0003','1','Kontak broj 3',null,'Neznanih junaka BB','Beograd','11000','011111111',null,'test@test.com',null,null,null,'1',null,null,null,null,null,'2012-12-26 19:31:31','tica','2012-12-26 19:31:31','tica');
 
 -- items
 CREATE TABLE `items` (

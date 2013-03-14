@@ -83,9 +83,11 @@ public class AddContactActivity extends BaseActivity implements LoaderCallbacks<
 		case R.id.submit_contact_form:
 			submitForm();
 			finish();
-			break;
+			return true;
 		case R.id.cancel_contact_form:
 			finish();
+			return true;
+		default:
 			break;
 		}
 

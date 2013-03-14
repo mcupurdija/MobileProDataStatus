@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    
+
     <item
         android:id="@+id/add_new_potential_customer"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/add_potential_customer_menu_title" />
-    
+        android:title="@string/add_potential_customer_menu_title"/>
     <item
         android:id="@+id/create_ecc_activity"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/ecc_menu_title" />
-     <item
+        android:title="@string/ecc_menu_title"/>
+    <item
         android:id="@+id/create_cus_trade_agree_activity"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/cus_trade_agree_menu_title" />
-      <item
-        android:id="@+id/sych_customer_address"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/sync_customer_address_menu_title" />
-	 <item
+        android:title="@string/cus_trade_agree_menu_title"/>
+    <item
+        android:id="@+id/sync_all_customers"
+        android:title="@string/sync_all_customers_menu_title"/>
+    <item
         android:id="@+id/edit_customers"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/customer_edit_title" />
-
+        android:title="@string/customer_edit_title"/>
 
 </menu>

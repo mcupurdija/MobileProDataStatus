@@ -64,7 +64,7 @@ public class NavisionSyncService extends IntentService {
 		SoapObject request = new SoapObject(syncObject.getNamespace(), syncObject.getWebMethodName());
 
 		if (syncObject.isLastSyncDateNeeded()) {
-			Date lastSuccessSyncDaye = syncObject.getLastSuccessSyncDate(getContentResolver());
+			Date lastSuccessSyncDate = syncObject.getLastSuccessSyncDate(getContentResolver());
 			// TODO pass date to whoever is in needs
 		}
 		
