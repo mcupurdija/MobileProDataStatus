@@ -78,6 +78,7 @@
     </integer-array>
 
     <string-array name="customer_block_status_array">
+        <item>Svi</item>
         <item>Aktivni</item>
         <item>Prekoračen kreditni limit</item>
         <item>Prekoračena valuta</item>
@@ -91,6 +92,12 @@
         <item>Action</item>
     </string-array>
     <string-array name="sale_order_block_status_array">
+        <item>Order</item>
+        <item>Supply</item>
+        <item>Spec supply</item>
+    </string-array>
+    <string-array name="sale_order_block_status_filter_array">
+        <item>All</item>
         <item>Order</item>
         <item>Supply</item>
         <item>Spec supply</item>

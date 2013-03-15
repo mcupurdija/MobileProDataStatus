@@ -19,14 +19,14 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class VisitListFromMenuFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, OnItemLongClickListener {
+public class VisitListFromMenuFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> { //, OnItemLongClickListener
 
 	private static final String TAG = makeLogTag(VisitListFromMenuFragment.class);
 
@@ -81,7 +81,7 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 		final ListView listView = getListView();
 		listView.setSelector(android.R.color.transparent);
 		listView.setCacheColorHint(Color.WHITE);
-		listView.setOnItemLongClickListener(this);
+		//listView.setOnItemLongClickListener(this);
 	}
 
 	@Override
@@ -118,14 +118,7 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 	/** {@inheritDoc} */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		final Cursor cursor = (Cursor) mAdapter.getItem(position);
-		String visitId = String.valueOf(cursor.getInt(VisitsQuery._ID));
-		mSelectedVisitId = visitId;
-		mAdapter.notifyDataSetChanged();
-		final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
-		final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.Visits.buildVisitUri(visitId));
-		intent.putExtra(VisitsMultipaneActivity.EXTRA_MASTER_URI, visitsUri);
-		startActivity(intent);
+
 	}
 
 	@Override
@@ -182,7 +175,8 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 			// UIUtils.setActivatedCompat(view,
 			// cursor.getString(VisitsQuery.VENDOR_ID)
 			// .equals(mSelectedVendorId));
-			view.setActivated(String.valueOf(cursor.getInt(VisitsQuery._ID)).equals(mSelectedVisitId));
+			final String visit_id = String.valueOf(cursor.getInt(VisitsQuery._ID));
+			view.setActivated(visit_id.equals(mSelectedVisitId));
 			((TextView) view.findViewById(R.id.visit_title)).setText(UIUtils.formatDate(UIUtils.getDateTime(cursor.getString(VisitsQuery.VISIT_DATE))));
 			String customer_no = cursor.getString(VisitsQuery.CUSTOMER_NO);
 			String customer_name = cursor.getString(VisitsQuery.CUSTOMER_NAME);//  + cursor.getString(VisitsQuery.CUSTOMER_NAME2);
@@ -190,7 +184,7 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
         		customer_no = "NEPOZNAT KUPAC";
         		customer_name = "-";
         	}
-        	int visit_type = cursor.getInt(VisitsQuery.VISIT_TYPE);
+        	final int visit_type = cursor.getInt(VisitsQuery.VISIT_TYPE);
         	String status = cursor.getString(VisitsQuery.VISIT_RESULT);
         	if (visit_type == 0) {
         		status = "PLAN";
@@ -201,6 +195,29 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 			((TextView) view.findViewById(R.id.visit_subtitle1)).setText(customer_no);
 			((TextView) view.findViewById(R.id.visit_subtitle2)).setText(customer_name);
 			((TextView) view.findViewById(R.id.visit_status)).setText(status);
+			
+			view.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mSelectedVisitId = visit_id;
+					mAdapter.notifyDataSetChanged();
+					final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
+					final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.Visits.buildVisitUri(visit_id));
+					intent.putExtra(VisitsMultipaneActivity.EXTRA_MASTER_URI, visitsUri);
+					startActivity(intent);	
+				}
+			});
+			
+			view.setOnLongClickListener(new OnLongClickListener() {
+				@Override
+				public boolean onLongClick(View v) {
+					String visitId = visit_id;
+					String visitType = String.valueOf(visit_type);
+					actionBarCallback.onLongClickItem(visitId, visitType);
+					return true;
+				}
+			});
+			view.setEnabled(true);
 		}
 	}
 
@@ -221,13 +238,9 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 		int VISIT_TYPE = 8;
 	}
 
-	@Override
-	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		final Cursor cursor = (Cursor) mAdapter.getItem(position);
-		String visitId = String.valueOf(cursor.getInt(VisitsQuery._ID));
-		String visitType = String.valueOf(cursor.getInt(VisitsQuery.VISIT_TYPE));
-		actionBarCallback.onLongClickItem(visitId, visitType);
-		return true;
-	}
+//	@Override
+//	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+//		return true;
+//	}
 
 }

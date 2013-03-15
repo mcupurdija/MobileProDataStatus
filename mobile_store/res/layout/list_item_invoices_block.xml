@@ -6,11 +6,43 @@
 
     <RelativeLayout
         android:id="@+id/list_item_middle_container"
-        android:layout_width="0dp"
+        android:layout_width="0px"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:clickable="true"
         android:focusable="false" >
+
+        <LinearLayout
+            android:id="@+id/block_title_group"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"  
+            android:orientation="horizontal"
+            android:layout_alignParentLeft="true"
+        	android:layout_toLeftOf="@+id/block_time_container" >
+
+            <TextView
+                android:id="@+id/block_title"
+                style="@style/ListItemTitle"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/listPreferredItemPaddingLeft"
+                android:layout_marginRight="@dimen/listPreferredItemPaddingRight"
+                android:layout_weight="6"
+                android:focusable="false"
+                android:paddingTop="8dp" />
+
+            <TextView
+                android:id="@+id/block_status"
+                style="@style/ListItemTitle"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/listPreferredItemPaddingLeft"
+                android:layout_marginRight="@dimen/listPreferredItemPaddingRight"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="3"
+                android:focusable="false"
+                android:gravity="left" />
+        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/block_time_container"
@@ -19,7 +51,8 @@
             android:background="@drawable/list_border_main_menu"
             android:duplicateParentState="true"
             android:focusable="false"
-            android:padding="8dp" >
+            android:padding="8dp"
+            android:layout_alignParentRight="true" >
 
             <TextView
                 android:id="@+id/block_time"
@@ -28,51 +61,22 @@
                 android:focusable="false"
                 android:paddingTop="@dimen/text_size_diff_large_small"
                 android:textColor="@color/body_text_1"
-                android:textSize="@dimen/text_size_small" />
+                android:textSize="@dimen/text_size_medium"
+                android:gravity="center" />
         </FrameLayout>
-
-        <LinearLayout
-             android:id="@+id/block_title_group"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_alignParentRight="true"
-            android:layout_toRightOf="@id/block_time_container" >
-
-            <TextView
-                android:id="@+id/block_title"
-                style="@style/ListItemTitle"
-                android:layout_width="0px"
-                android:layout_weight="6"
-                android:layout_height="wrap_content"
-                
-                android:layout_marginLeft="@dimen/listPreferredItemPaddingLeft"
-                android:layout_marginRight="@dimen/listPreferredItemPaddingRight"
-                
-                android:focusable="false"
-                android:paddingTop="8dp" />
-
-            <TextView
-                android:id="@+id/block_status"
-                style="@style/ListItemSubtitle"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="3"
-                android:focusable="false"
-                android:gravity="right" />
-        </LinearLayout>
 
         <TextView
             android:id="@+id/block_subtitle"
             style="@style/ListItemSubtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/listPreferredItemPaddingLeft"
+            android:layout_marginRight="@dimen/listPreferredItemPaddingRight"
             android:layout_alignLeft="@id/block_title_group"
             android:layout_alignRight="@id/block_title_group"
             android:layout_below="@id/block_title_group"
             android:focusable="false"
-            android:gravity="right"
+            android:gravity="left"
             android:paddingBottom="8dp" />
     </RelativeLayout>
 
