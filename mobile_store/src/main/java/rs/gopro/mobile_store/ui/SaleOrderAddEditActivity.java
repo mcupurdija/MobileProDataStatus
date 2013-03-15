@@ -895,7 +895,10 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		Cursor cursor = (Cursor)parent.getAdapter().getItem(position);
 		int customerNoPosition = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);	
 		this.selectedCustomerNo = cursor.getString(customerNoPosition);
-		int customerContactId = cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.PRIMARY_CONTACT_ID));
+		int customerContactId = -1;
+		if (!cursor.isNull(cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.PRIMARY_CONTACT_ID))) {
+			customerContactId = cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.PRIMARY_CONTACT_ID));
+		}
 		
 		Bundle customerIdbundle = new Bundle();
 		customerIdbundle.putInt("CUSTOMER_ID", cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID)));
@@ -904,10 +907,11 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		//getSupportLoaderManager().restartLoader(BILLING_ADDRESS_LOADER, null, this);
 		//getSupportLoaderManager().restartLoader(SHIPPING_ADDRESS_LOADER, null, this);
-		
-		Bundle contactBundle = new Bundle();
-		contactBundle.putInt("PRIMARY_CONTACT_ID", customerContactId);
-		getSupportLoaderManager().restartLoader(CONTACT_HEADER_LOADER, contactBundle, this);
+		if (customerContactId != -1) {
+			Bundle contactBundle = new Bundle();
+			contactBundle.putInt("PRIMARY_CONTACT_ID", customerContactId);
+			getSupportLoaderManager().restartLoader(CONTACT_HEADER_LOADER, contactBundle, this);
+		}
 	}
 
 	/**

@@ -200,6 +200,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
             
             final TextView timeView = (TextView) view.findViewById(R.id.block_time);
             final TextView titleView = (TextView) view.findViewById(R.id.block_title);
+            final TextView titleStatusView = (TextView) view.findViewById(R.id.block_status);
             final TextView subtitleView = (TextView) view.findViewById(R.id.block_subtitle);
             String salesOrderDate = cursor.getString(SaleOrderLinesQuery.LINE_NO);
             String salesOrderNo = cursor.getString(SaleOrderLinesQuery.ITEM_NO) + " - " + cursor.getString(SaleOrderLinesQuery.DESCRIPTION);
@@ -221,9 +222,35 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
             
             double ammount = quantity*discounted_price;
             
+            int verify_status = -1;
+            if (!cursor.isNull(SaleOrderLinesQuery.VERIFY_STATUS)) {
+            	verify_status = cursor.getInt(SaleOrderLinesQuery.VERIFY_STATUS);
+            }
+            
+            int price_discount_status = -1;
+            if (!cursor.isNull(SaleOrderLinesQuery.PRICE_DISCOUNT_STATUS)) {
+            	price_discount_status = cursor.getInt(SaleOrderLinesQuery.PRICE_DISCOUNT_STATUS);
+            }
+            
+            int quote_refused_status = -1;
+            if (!cursor.isNull(SaleOrderLinesQuery.QUOTE_REFUSED_STATUS)) {
+            	quote_refused_status = cursor.getInt(SaleOrderLinesQuery.QUOTE_REFUSED_STATUS);
+            }
+            
+            String status = "-";
+            
+            if ((price_discount_status == -1) && (verify_status == -1) && (quote_refused_status == -1)) {
+            	status = "-";
+            } else if ((price_discount_status == 0 || price_discount_status == 3) && (verify_status == 0 || verify_status == 5) && (quote_refused_status == 0 || quote_refused_status == 3)) {
+            	status = "Ok";
+            } else {
+            	status = "Problem";
+            }
+            
             String salesOrderCust = "Količina: "+UIUtils.formatDoubleForUI(quantity) + "  -  Cena:" + UIUtils.formatDoubleForUI(price) + "  -  Popust:" + UIUtils.formatDoubleForUI(discount) + "%  -  Jedinicna cena:" + UIUtils.formatDoubleForUI(discounted_price) + "  -  Iznos:" + UIUtils.formatDoubleForUI(ammount);
             timeView.setText(salesOrderDate);
             titleView.setText(salesOrderNo);
+            titleStatusView.setText("Status: "+status);
             subtitleView.setText(salesOrderCust);
             mCallbacks.onSaleOrderIdAvailable(cursor.getString(SaleOrderLinesQuery.SALE_ORDER_ID));
         }
@@ -241,7 +268,10 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
                 MobileStoreContract.SaleOrderLines.LINE_NO,
                 MobileStoreContract.SaleOrderLines.QUANTITY,
                 MobileStoreContract.SaleOrderLines.PRICE,
-                MobileStoreContract.SaleOrderLines.REAL_DISCOUNT
+                MobileStoreContract.SaleOrderLines.REAL_DISCOUNT,
+                MobileStoreContract.SaleOrderLines.PRICE_DISCOUNT_STATUS,
+                MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS,
+                MobileStoreContract.SaleOrderLines.VERIFY_STATUS
         };
 
         int _ID = 0;
@@ -253,6 +283,9 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
         int QUANTITY = 6;
         int PRICE = 7;
         int REAL_DISCOUNT = 8;
+        int PRICE_DISCOUNT_STATUS = 9;
+        int QUOTE_REFUSED_STATUS = 10;
+        int VERIFY_STATUS = 11;
 	}
 
 }

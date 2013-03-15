@@ -309,7 +309,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			//mobileDeviceSalesDocumentSyncObject.setpDocumentNote()
 			intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, mobileDeviceSalesDocumentSyncObject);
 			startService(intent);
-			sendSaleOrderProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.dialog_title_sale_order_send), getResources().getString(R.string.dialog_body_sale_order_send), true);
+			sendSaleOrderProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.dialog_title_sale_order_send), getResources().getString(R.string.dialog_body_sale_order_send), true, true);
 			return true;
 		}
 		

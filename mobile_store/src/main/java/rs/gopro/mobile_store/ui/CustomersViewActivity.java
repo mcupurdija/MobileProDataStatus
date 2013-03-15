@@ -61,6 +61,8 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Kontakti preuzeti!");
 			} else if (CustomerAddressesSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Adrese preuzete!");
+			} else if (CustomerSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Kupci preuzeti!");
 			}
 		} else {
 			DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_error_in_sync), syncResult.getResult());
@@ -167,6 +169,7 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 			CustomerSyncObject syncObject = new CustomerSyncObject("", "", salesPersonNo, DateUtils.getWsDummyDate());
 			intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT,syncObject);
 			startService(intent);
+			syncProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.dialog_title_customers_receive), getResources().getString(R.string.dialog_body_customers_receive), true, true);
 			return true;
 		case R.id.edit_customers:
 			if (customerId == null) {
@@ -219,7 +222,6 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 	public void onCustomerLongClick(String customerId) {
 		CustomerContextualMenu	contextualMenu = new CustomerContextualMenu(this, customerId, syncProgressDialog);
 	  	actionMod = startActionMode(contextualMenu);
-		
 	}
 	
 	@Override
@@ -240,6 +242,8 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
     	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, contactsSyncObject);
     	IntentFilter addressesSyncObject = new IntentFilter(CustomerAddressesSyncObject.BROADCAST_SYNC_ACTION);
     	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, addressesSyncObject);
+    	IntentFilter customerSyncObject = new IntentFilter(CustomerSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, customerSyncObject);
     }
     
     @Override

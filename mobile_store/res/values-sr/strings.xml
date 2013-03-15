@@ -138,7 +138,9 @@
 	<string name="dialog_title_sent_orders_status_load">Statusi poslatih porudžbina</string>
 	<string name="dialog_body_sent_orders_status_load">Učitavanje statusa poslatih porudžbina</string>
 	<string name="dialog_title_sync_info">Poruka sinhronizacije</string>
-	
+	<string name="dialog_title_customers_receive">Kupci</string>
+    <string name="dialog_body_customers_receive">Preuzimanje svih kupaca</string>
+    
 	<string name="document_no">Broj dokumenta</string>
 	<string name="dokument_type_no_title">Broj i tip dokumenta</string>
 	<string name="contact_title">Kontakt</string>

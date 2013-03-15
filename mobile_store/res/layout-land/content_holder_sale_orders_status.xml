@@ -61,22 +61,27 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="30dp" />
         </LinearLayout>
-        
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/black" />
 
-        <Button
-            android:id="@+id/sent_orders_status_sync_open_headers_button"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="10dp"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="@string/sent_orders_status_sync_open_headers_button_title" />
+            android:orientation="horizontal" >
 
+            <Button
+                android:id="@+id/sent_orders_status_sync_open_headers_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="10dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:text="@string/sent_orders_status_sync_open_headers_button_title" />
+        </LinearLayout>
     </LinearLayout>
 
     <FrameLayout
