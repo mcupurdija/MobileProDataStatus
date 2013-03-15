@@ -297,7 +297,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			//mobileDeviceSalesDocumentSyncObject.setpDocumentNote()
 			verifyintent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, verifymobileDeviceSalesDocumentSyncObject);
 			startService(verifyintent);
-			sendSaleOrderProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.dialog_title_sale_order_verify), getResources().getString(R.string.dialog_body_sale_order_verify), true);
+			sendSaleOrderProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.dialog_title_sale_order_verify), getResources().getString(R.string.dialog_body_sale_order_verify), true, true);
 			return true;
 		case R.id.send_sale_order_action_menu_option:
 			// TODO sale order lines goes here

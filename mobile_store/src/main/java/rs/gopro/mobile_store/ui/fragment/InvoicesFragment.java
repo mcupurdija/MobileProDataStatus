@@ -163,7 +163,7 @@ public class InvoicesFragment extends ListFragment implements
 					SalesDocumentsSyncObject syncObject = new SalesDocumentsSyncObject("", Integer.valueOf(-1), "", "", rs.gopro.mobile_store.util.DateUtils.getPreviousDateIgnoringWeekend(today), rs.gopro.mobile_store.util.DateUtils.getTodayDateIgnoringWeekend(today), rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), salesPersonNo,Integer.valueOf(-1));
 					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, syncObject);
 					getActivity().startService(intent);
-					invoicesLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_invoices_load), getActivity().getResources().getString(R.string.dialog_body_invoices_load), true);
+					invoicesLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_invoices_load), getActivity().getResources().getString(R.string.dialog_body_invoices_load), true, true);
 				}
 			});
 			syncOpenForCustomerButton.setOnClickListener(new OnClickListener() {
@@ -173,7 +173,7 @@ public class InvoicesFragment extends ListFragment implements
 					SalesDocumentsSyncObject syncObject = new SalesDocumentsSyncObject("", Integer.valueOf(-1), "", customerNo.getText().toString(), rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), salesPersonNo,Integer.valueOf(1));
 					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, syncObject);
 					getActivity().startService(intent);
-					invoicesLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_invoices_load), getActivity().getResources().getString(R.string.dialog_body_invoices_load), true);
+					invoicesLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_invoices_load), getActivity().getResources().getString(R.string.dialog_body_invoices_load), true, true);
 				}
 			});
 			ArrayAdapter<CharSequence> docTypeAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.invoice_type_array, android.R.layout.simple_spinner_item);

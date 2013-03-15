@@ -266,6 +266,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         mDiscountMax.setFocusable(false);
         
         mAvailableToWholeShipment = (CheckBox) rootView.findViewById(R.id.so_line_avail_to_whole_ship_check_box);
+        mAvailableToWholeShipment.setVisibility(View.GONE);
         
         backorderAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.backorder_type_array, android.R.layout.simple_spinner_item);
 		backorderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -174,7 +174,7 @@ public class SentOrdersStatusMainViewFragment extends ListFragment implements
 					SalesHeadersSyncObject syncObject = new SalesHeadersSyncObject("", Integer.valueOf(-1), "", "", rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), salesPersonNo, Integer.valueOf(-1));
 					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, syncObject);
 					getActivity().startService(intent);
-					sentOrdersStatusProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_sent_orders_status_load), getActivity().getResources().getString(R.string.dialog_body_sent_orders_status_load), true);
+					sentOrdersStatusProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_sent_orders_status_load), getActivity().getResources().getString(R.string.dialog_body_sent_orders_status_load), true, true);
 				}
 			});
 
