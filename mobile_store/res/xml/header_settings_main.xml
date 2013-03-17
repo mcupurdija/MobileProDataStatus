@@ -4,8 +4,8 @@
     <header
         android:fragment="rs.gopro.mobile_store.ui.fragment.WebServiceSettingsFragment"
         android:title="@string/title_web_service_settings" />
-    <header
-        android:fragment="rs.gopro.mobile_store.ui.fragment.SyncSettingsFragment"
-        android:title="@string/title_sync_settings" />
+<!--     <header -->
+<!--         android:fragment="rs.gopro.mobile_store.ui.fragment.SyncSettingsFragment" -->
+<!--         android:title="@string/title_sync_settings" /> -->
 
 </preference-headers>

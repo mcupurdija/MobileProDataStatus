@@ -241,7 +241,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
             
             if ((price_discount_status == -1) && (verify_status == -1) && (quote_refused_status == -1)) {
             	status = "-";
-            } else if ((price_discount_status == 0 || price_discount_status == 3) && (verify_status == 0 || verify_status == 5) && (quote_refused_status == 0 || quote_refused_status == 3)) {
+            } else if ((price_discount_status == -1 || price_discount_status == 0 || price_discount_status == 3) && (verify_status == -1 || verify_status == 0 || verify_status == 5) && (quote_refused_status == -1 || quote_refused_status == 0 || quote_refused_status == 3)) {
             	status = "Ok";
             } else {
             	status = "Problem";

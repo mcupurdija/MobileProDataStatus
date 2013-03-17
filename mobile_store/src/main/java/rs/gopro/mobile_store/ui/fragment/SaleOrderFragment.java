@@ -219,7 +219,11 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 			final String customerNo = cursor.getString(SaleOrderQuery.CUSTOMER_NO);
 			final String customerName = cursor.getString(SaleOrderQuery.CUSTOMER_NAME);
 //			final Integer totalAmount = cursor.getInt(SaleOrderQuery.TOTAL);
-			final long orderDate = UIUtils.getDateTime(cursor.getString(SaleOrderQuery.ORDER_DATE)).getTime();
+			String dateString = null;
+			if (!cursor.isNull(SaleOrderQuery.ORDER_DATE)) {
+				dateString = cursor.getString(SaleOrderQuery.ORDER_DATE);
+			}
+			final long orderDate = dateString == null ? 0 : UIUtils.getDateTime(dateString).getTime();
 			final int financial_control_status = cursor.getInt(SaleOrderQuery.FIN_CONTROL_STATUS);
 			final int document_type = cursor.getInt(SaleOrderQuery.DOCUMENT_TYPE);
 
@@ -248,7 +252,7 @@ public class SaleOrderFragment extends ListFragment implements LoaderCallbacks<C
 			titleView.setTextColor(res.getColorStateList(R.color.body_text_1_positive_mod));
 			title2View.setText(docTypeOptions[document_type]);
 			title2View.setTextColor(res.getColorStateList(R.color.body_text_2));
-			subtitleView.setText(saleOrderNo+" - "+rs.gopro.mobile_store.util.DateUtils.toUIDate(new Date(orderDate)));
+			subtitleView.setText(saleOrderNo+" - "+(orderDate == 0 ? "" : rs.gopro.mobile_store.util.DateUtils.toUIDate(new Date(orderDate))));
 			primaryTouchTargetView.setOnClickListener(allSessionsListener);
 			subtitleView.setTextColor(res.getColorStateList(R.color.body_text_2));
 			primaryTouchTargetView.setEnabled(true);

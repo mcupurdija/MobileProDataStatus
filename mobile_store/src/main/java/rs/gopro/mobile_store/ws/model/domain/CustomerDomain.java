@@ -87,7 +87,11 @@ public class CustomerDomain extends Domain {
 		contentValues.put(MobileStoreContract.Customers.MOBILE , getMobile());
 		contentValues.put(MobileStoreContract.Customers.EMAIL , getEmail());
 		contentValues.put(MobileStoreContract.Customers.COMPANY_ID , getCompany_id());
-		contentValues.put(MobileStoreContract.Customers.PRIMARY_CONTACT_ID , getPrimary_contact_id());
+		if ( getPrimary_contact_id() == null ||  getPrimary_contact_id().length() < 1) {
+			contentValues.putNull(MobileStoreContract.Customers.PRIMARY_CONTACT_ID);
+		} else {
+			contentValues.put(MobileStoreContract.Customers.PRIMARY_CONTACT_ID , getPrimary_contact_id());
+		}
 		contentValues.put(MobileStoreContract.Customers.VAT_REG_NO , getVat_reg_no());
 		contentValues.put(MobileStoreContract.Customers.CREDIT_LIMIT_LCY, WsDataFormatEnUsLatin.toDoubleFromWs(getCredit_limit_lcy()));
 		contentValues.put(MobileStoreContract.Customers.BALANCE_LCY , WsDataFormatEnUsLatin.toDoubleFromWs(getBalance_lcy()));
