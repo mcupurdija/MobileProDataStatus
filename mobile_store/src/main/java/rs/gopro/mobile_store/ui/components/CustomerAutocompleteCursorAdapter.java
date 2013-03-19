@@ -74,8 +74,8 @@ public class CustomerAutocompleteCursorAdapter extends CursorAdapter implements
 		Cursor cursor = null;
 		if (mContext.getContentResolver() != null && constraint != null) {
 			cursor = mContext.getContentResolver().query(
-					Customers.buildCustomSearchUri(constraint == null ? ""
-							: constraint.toString(), "0"), CUSTOMER_PROJECTION,
+					Customers.buildCustomSearchUri(constraint == null ? "noNoOrName"
+							: constraint.toString(), "-1"), CUSTOMER_PROJECTION,
 					null, null, null);
 		}
 		return cursor;

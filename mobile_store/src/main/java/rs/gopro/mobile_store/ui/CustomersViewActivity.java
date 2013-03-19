@@ -235,7 +235,7 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	 @Override
+	@Override
     public void onResume() {
     	super.onResume();
     	IntentFilter contactsSyncObject = new IntentFilter(GetContactsSyncObject.BROADCAST_SYNC_ACTION);

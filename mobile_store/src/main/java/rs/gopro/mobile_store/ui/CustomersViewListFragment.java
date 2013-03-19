@@ -166,7 +166,7 @@ public class CustomersViewListFragment extends ListFragment implements
     
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		return new CursorLoader(getActivity(), mCustomersListUri, CustomersQuery.PROJECTION, STANDARD_FILTER, new String[] { salesPersonId },
+		return new CursorLoader(getActivity(), mCustomersListUri, CustomersQuery.PROJECTION, null, null, //STANDARD_FILTER, new String[] { salesPersonId }
                 MobileStoreContract.Customers.DEFAULT_SORT);
 	}
 

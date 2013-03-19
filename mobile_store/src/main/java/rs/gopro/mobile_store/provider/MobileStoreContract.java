@@ -213,6 +213,7 @@ public class MobileStoreContract {
 		String CONTACT_ID = "contact_id";
 		String CONTACT_NAME = "contact_name";
 		String CONTACT_PHONE = "contact_phone";
+		String CONTACT_EMAIL = "contact_email";
 		String PAYMENT_OPTION = "payment_option";
 		String CHECK_STATUS_PHONE = "check_status_phone";
 		String TOTAL = "total";
@@ -342,6 +343,7 @@ public class MobileStoreContract {
 		String ACCESS_TO_ALL_CUSTOMERS = "access_to_all_customers";
 		String INVOICE_QUERY_NUMBER_OF_DAYS = "invoice_query_number_of_days";
 		String PASSWORD = "password";
+		String SALES_PERSON_EMAIL = "email";
 	}
 	
 	public interface ElectronicCardCustomerColumns {

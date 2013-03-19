@@ -290,8 +290,11 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
                 MobileStoreContract.Contacts.CONTACT_NO,
                 MobileStoreContract.SaleOrders.CONTACT_NAME,
                 MobileStoreContract.SaleOrders.CONTACT_PHONE,
+                MobileStoreContract.SaleOrders.CONTACT_EMAIL,
+                
                 MobileStoreContract.SaleOrders.HIDE_REBATE,
                 MobileStoreContract.SaleOrders.FURTHER_SALE,
+                
                 MobileStoreContract.SaleOrders.PAYMENT_OPTION,
                 MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS,
                 MobileStoreContract.SaleOrders.QUOTE_REALIZED_STATUS,
@@ -311,6 +314,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 				String.class,
 				String.class,
 				
+				String.class,
 				String.class,
 				String.class,
 				String.class,

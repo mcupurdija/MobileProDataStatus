@@ -3,16 +3,26 @@ package rs.gopro.mobile_store.ui;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.PropertiesUtil;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.SalespersonSetupSyncObject;
+import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,11 +42,36 @@ public class LoginActivity extends Activity {
 //	private static String SESSION_PREFS = "SessionPrefs";
 
 	private Button btnRegister;
+	private EditText editTextUser;
+	private EditText editTextPass;
+	private String activeSalesPerson = null;
+	private boolean isRegistrationStarted = false;
+	private ProgressDialog syncProgressDialog;
+	
+	private BroadcastReceiver onNotice = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
+			if (syncProgressDialog != null) {
+				syncProgressDialog.dismiss();
+			}
+			onSOAPResult(syncResult, intent.getAction());
+		}
+	};
+	
+	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
+		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
+			if (SalespersonSetupSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Korisnik registrovan!");
+			}
+		} else {
+			DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_error_in_sync), syncResult.getResult());
+		}
+	}
 	
 	private OnClickListener btnLoginListener = new OnClickListener() {
 		public void onClick(View v) {
-			EditText editTextUser = (EditText) findViewById(R.id.editTextUsername);
-			EditText editTextPass = (EditText) findViewById(R.id.editTextPassword);
+			 
 			boolean loginSignal = doLogin(editTextUser.getText().toString(), editTextPass.getText().toString());
 			if (loginSignal) {
 				try {
@@ -77,37 +112,55 @@ public class LoginActivity extends Activity {
 		Button btnLogin = (Button) findViewById(R.id.btnLogin);
 		btnLogin.setOnClickListener(btnLoginListener);
 
+		editTextUser = (EditText) findViewById(R.id.editTextUsername);
+		editTextPass = (EditText) findViewById(R.id.editTextPassword);
+		
 		btnRegister = (Button) findViewById(R.id.btnRegister);
-		btnRegister.setVisibility(View.GONE);
-		btnRegister.setOnClickListener(new OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-				final Dialog dialog = new Dialog(LoginActivity.this);
-				dialog.setContentView(R.layout.dialog_register_new_user);
-				dialog.setTitle("Unesite šifru korisnika");
-				
-				final EditText text1 = (EditText) dialog.findViewById(R.id.dialog_register_user_no);
-
-				
-				Button dialogButton = (Button) dialog.findViewById(R.id.dialogRegisterUserButtonOK);
-				// if button is clicked, close the custom dialog
-				dialogButton.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						
-						String user_no = text1.getText().toString();
-						SalespersonSetupSyncObject salespersonSetupSyncObject = new SalespersonSetupSyncObject(user_no);
-						Intent syncSalesPerson = new Intent(LoginActivity.this, NavisionSyncService.class);
-						syncSalesPerson.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, salespersonSetupSyncObject);
-						startService(syncSalesPerson);
-						dialog.dismiss();
-					}
-				});
-	 
-				dialog.show();
-				
-			}
-		});
+		Cursor cusrsor = getContentResolver().query(MobileStoreContract.SalesPerson.CONTENT_URI, new String[] { MobileStoreContract.SalesPerson.SALE_PERSON_NO } , null, null, null);
+		if (cusrsor.moveToFirst()) {
+			btnRegister.setVisibility(View.GONE);
+			activeSalesPerson = cusrsor.getString(0);
+			editTextUser.setText(activeSalesPerson);
+		} else {
+			btnRegister.setOnClickListener(new OnClickListener() {	
+				@Override
+				public void onClick(View v) {
+					final Dialog dialog = new Dialog(LoginActivity.this);
+					dialog.setContentView(R.layout.dialog_register_new_user);
+					dialog.setTitle("Unesite šifru korisnika");
+					
+					final EditText text1 = (EditText) dialog.findViewById(R.id.dialog_register_user_no);
+	
+					
+					Button dialogButton = (Button) dialog.findViewById(R.id.dialogRegisterUserButtonOK);
+					// if button is clicked, close the custom dialog
+					dialogButton.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							
+							String user_no = text1.getText().toString();
+							SalespersonSetupSyncObject salespersonSetupSyncObject = new SalespersonSetupSyncObject(user_no);
+							Intent syncSalesPerson = new Intent(LoginActivity.this, NavisionSyncService.class);
+							syncSalesPerson.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, salespersonSetupSyncObject);
+							startService(syncSalesPerson);
+							isRegistrationStarted = true;
+							dialog.dismiss();
+						}
+					});
+		 
+					dialog.show();
+					dialog.setOnDismissListener(new OnDismissListener() {
+						@Override
+						public void onDismiss(DialogInterface dialog) {
+							if (isRegistrationStarted) {
+								syncProgressDialog = ProgressDialog.show(LoginActivity.this, getResources().getString(R.string.dialog_title_sales_person_registration), getResources().getString(R.string.dialog_body_sales_person_registration), true, true);
+							}
+						}
+					});
+					
+				}
+			});
+		}
 	}
 	@Override
 	public void onBackPressed() {
@@ -135,7 +188,7 @@ public class LoginActivity extends Activity {
 
 	private String getPassword(String username) {
 		String password = null;
-		Cursor cursor = getContentResolver().query(Users.buildUsernameUri(), UsersQuery.PROJECTION, Users.USERNAME + "= ?", new String[] { username }, null);
+		Cursor cursor = getContentResolver().query(Users.buildUsernameUri(), UsersQuery.PROJECTION, Users.USERNAME + "= ?", new String[] { username.toUpperCase() }, null);
 		boolean hasEntry = cursor.moveToFirst();
 		if (hasEntry) {
 			password = cursor.getString(UsersQuery.PASSWORD);
@@ -158,6 +211,19 @@ public class LoginActivity extends Activity {
 		SharedPreferencesUtil.addSalePersonNo(getApplicationContext(), salesPersonNo);
 	}
 
+	@Override
+    public void onResume() {
+    	super.onResume();
+    	IntentFilter salesPersonSyncObject = new IntentFilter(SalespersonSetupSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, salesPersonSyncObject);
+    }
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(onNotice);
+    }
+	
 	/**
 	 * 
 	 * @author aleksandar

@@ -110,8 +110,10 @@ public class SalespersonSetupSyncObject extends SyncObject {
 		List<SalespersonSetupDomain> parsedSalesLines = CSVDomainReader.parse(new StringReader(soapResponse.toString()), SalespersonSetupDomain.class);
 		//parsedSalesLines.get(0).getContentValues().put(SalesPerson.SALE_PERSON_NO, pSalespersonCode);
 		ContentValues[] valuesForInsertLines = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedSalesLines);
-		valuesForInsertLines[0].put(SalesPerson.SALE_PERSON_NO, pSalespersonCode);
+		valuesForInsertLines[0].put(SalesPerson.SALE_PERSON_NO, pSalespersonCode.toUpperCase());
 		Uri salePersonUri = contentResolver.insert(MobileStoreContract.SalesPerson.CONTENT_URI, valuesForInsertLines[0]);
+		
+		//contentResolver.update(MobileStoreContract.SalesPerson.CONTENT_URI, valuesForInsertLines[0], SalesPerson._ID+"=?",new String[] {"1"});
 		
 		//int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.SalesPerson.CONTENT_URI, valuesForInsertLines);
 		
@@ -122,7 +124,7 @@ public class SalespersonSetupSyncObject extends SyncObject {
 		ContentValues userValues = new ContentValues();
 		
 		userValues.put(Users.SALES_PERSON_ID, sales_person_id);
-		userValues.put(Users.USERNAME, user);
+		userValues.put(Users.USERNAME, user.toUpperCase());
 		userValues.put(Users.PASSWORD, pass);
 		userValues.put(Users.USERS_ROLE_ID, 1);
 		

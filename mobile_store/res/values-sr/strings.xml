@@ -140,6 +140,8 @@
 	<string name="dialog_title_sync_info">Poruka sinhronizacije</string>
 	<string name="dialog_title_customers_receive">Kupci</string>
     <string name="dialog_body_customers_receive">Preuzimanje svih kupaca</string>
+    <string name="dialog_title_sales_person_registration">Registracija prodavca</string>
+    <string name="dialog_body_sales_person_registration">Registrovanje prodavca je u toku </string>
     
 	<string name="document_no">Broj dokumenta</string>
 	<string name="dokument_type_no_title">Broj i tip dokumenta</string>

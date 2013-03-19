@@ -133,6 +133,8 @@
     <string name="dialog_title_sync_info">Sync info</string>
     <string name="dialog_title_customers_receive">Customers</string>
     <string name="dialog_body_customers_receive">Receiving all customers</string>
+    <string name="dialog_title_sales_person_registration">Sales person registration</string>
+    <string name="dialog_body_sales_person_registration">Registration is in process</string>
     <string name="document_no">Document No</string>
     <string name="dokument_type_no_title">Document no and type </string>
     <string name="contact_title">Kontakt</string>

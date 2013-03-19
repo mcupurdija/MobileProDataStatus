@@ -153,6 +153,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 				CUSTOMERS_CUSTOM_SEARCH);
 		mobileStoreURIMatcher.addURI(authority, "customers/*/#/customer_no",
 				CUSTOMERS_CUSTOM_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "customers/*/*/customer_no",
+				CUSTOMERS_CUSTOM_SEARCH);
 
 		mobileStoreURIMatcher.addURI(authority, "items", ITEMS);
 		mobileStoreURIMatcher.addURI(authority, "items/item_no/*", ITEM_NO);

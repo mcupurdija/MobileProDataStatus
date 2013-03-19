@@ -8,12 +8,12 @@ CREATE TABLE `users` (
 	`last_login` TEXT,
 	`users_role_id` INTEGER
 );
-INSERT INTO `users` (_id, username, pass, sales_person_id, last_login, users_role_id) VALUES 
-	(1, 'user', '1234', 1, datetime('now'), 1);
-INSERT INTO `users` (_id, username, pass, sales_person_id, last_login, users_role_id) VALUES 
-	(2, 'admin', '1234', 1, datetime('now'), 2);
-INSERT INTO `users` (_id, username, pass, sales_person_id, last_login, users_role_id) VALUES 
-	(3, 'ivan', '1234', 1, datetime('now'), 2);
+--INSERT INTO `users` (_id, username, pass, sales_person_id, last_login, users_role_id) VALUES 
+--	(1, 'user', '1234', 1, datetime('now'), 1);
+--INSERT INTO `users` (_id, username, pass, sales_person_id, last_login, users_role_id) VALUES 
+--	(2, 'admin', '1234', 1, datetime('now'), 2);
+--INSERT INTO `users` (_id, username, pass, sales_person_id, last_login, users_role_id) VALUES 
+--	(3, 'ivan', '1234', 1, datetime('now'), 2);
 
 	
 -- user role
@@ -43,6 +43,7 @@ CREATE TABLE `sales_persons` (
 	`access_to_all_customers` TEXT,
 	`invoice_query_number_of_days` TEXT,
 	`password` TEXT,
+	`email` TEXT,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
@@ -62,8 +63,8 @@ BEGIN
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-INSERT INTO `sales_persons` (_id, sales_person_no, name, name2, created_date, created_by) VALUES 
-	(1, 'Z0141', 'vlada', 'vlada', datetime('now'), 'INITIAL');
+--INSERT INTO `sales_persons` (_id, sales_person_no, name, name2, created_date, created_by) VALUES 
+--	(1, 'Z0141', 'vlada', 'vlada', datetime('now'), 'INITIAL');
 --Z0146, Z0157
 -- invoices
 CREATE TABLE `invoices` (
@@ -164,24 +165,24 @@ CREATE TABLE `customers` (
 	`next_15_days_due_invoice_count` INTEGER,
 	`financial_control_status` TEXT
 );
-INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
-values ('1','1','K00001','Šule Inter Trans komerc','','Višnjicki put 22','381112442421','381648978987','101','0','10 DANA','0','106200575','11000','sule@gmail.com','','','','0','No','1','0','0','182,368,864','182,368,864','182,368,864', '0');
-INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
-values ('2','1','K00002','Greda DOO BEOGRAD','','','','','','0','','0','','11000','','','20481943','L1','0','No','','0','0','10,200','10,200','10,200', '0');
-INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
-values ('3','1','K00003','JAVNO PREDUZECE  VODOVOD ','','','','','','0','','0','','11000','','','17536320','','0','No','','0','0','1,334,700','1,334,700','1,334,700', '0');
-INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
-values ('4','1','K00004','WEST BEOCAR DOO','','','','','','500','','0','','11070','','','20678593','','0','No','','0','0','320,965.39','320,965.39','320,965.39', '0');
-INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
-values ('5','1','K00005','TELEKOM SRBIJA A.D.','','','','','','2,130,000','','0','','11000','','','','','0','No','','0','0','2,117,350','2,117,350','2,117,350', '0');
-INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
-values ('6','1','K00006','Porshe Srbija','','','','','','0','','0','','','','','','','0','No','','0','0','-41,850','-41,850','-41,850', '0');
-INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
-values ('7','1','K00007','Kupac zatvaranje','','','','','','0','','0','','','','','','','0','No','','0','0','100','100','100', '0');
-INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
-values ('8','1','K00008','GoPro','','Bul. Arsenija Carn.','0112345678','','0','','','0','','','','KONT-00018','','','0','No','','0','0','0','0','0', '1');
-INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
-values ('9','1','K00009','EXPERT-ŠPED D.O.O.','','Auto put bb','','','0','','','0','','11070','','','','','0','No','','0','0','0','0','0', '2');
+--INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
+--values ('1','1','K00001','Šule Inter Trans komerc','','Višnjicki put 22','381112442421','381648978987','101','0','10 DANA','0','106200575','11000','sule@gmail.com','','','','0','No','1','0','0','182,368,864','182,368,864','182,368,864', '0');
+--INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
+--values ('2','1','K00002','Greda DOO BEOGRAD','','','','','','0','','0','','11000','','','20481943','L1','0','No','','0','0','10,200','10,200','10,200', '0');
+--INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
+--values ('3','1','K00003','JAVNO PREDUZECE  VODOVOD ','','','','','','0','','0','','11000','','','17536320','','0','No','','0','0','1,334,700','1,334,700','1,334,700', '0');
+--INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
+--values ('4','1','K00004','WEST BEOCAR DOO','','','','','','500','','0','','11070','','','20678593','','0','No','','0','0','320,965.39','320,965.39','320,965.39', '0');
+--INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
+--values ('5','1','K00005','TELEKOM SRBIJA A.D.','','','','','','2,130,000','','0','','11000','','','','','0','No','','0','0','2,117,350','2,117,350','2,117,350', '0');
+--INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
+--values ('6','1','K00006','Porshe Srbija','','','','','','0','','0','','','','','','','0','No','','0','0','-41,850','-41,850','-41,850', '0');
+--INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
+--values ('7','1','K00007','Kupac zatvaranje','','','','','','0','','0','','','','','','','0','No','','0','0','100','100','100', '0');
+--INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
+--values ('8','1','K00008','GoPro','','Bul. Arsenija Carn.','0112345678','','0','','','0','','','','KONT-00018','','','0','No','','0','0','0','0','0', '1');
+--INSERT INTO  `customers` (`_id`, `sales_person_id`, `customer_no` , `name` , `name2` , 	`address`, 	`phone` , `mobile`, `global_dimension` , `credit_limit_lcy`, `payment_terms_code`, `priority`, `vat_reg_no`, `post_code`, `email`, `primary_contact_id`, `company_id`, `sml`, `adopted_potential`, `focus_customer`, `division`,`number_of_blue_coat`,`number_of_grey_coat`, `balance_lcy` , `balance_due_lcy`, `internal_balance_due_lcy`, `blocked_status`)
+--values ('9','1','K00009','EXPERT-ŠPED D.O.O.','','Auto put bb','','','0','','','0','','11070','','','','','0','No','','0','0','0','0','0', '2');
 -- contacts
 CREATE TABLE `contacts` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
@@ -267,31 +268,31 @@ BEGIN
 	where _id = new._id; 
 END;
 
-INSERT INTO `items` VALUES(1,'0 376 8  12','Navrtka udarna M8 X H11mm',NULL,'KOM','ALAT','ELEKTROOPR','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(2,'0 456 11','Vezica',NULL,'KOM','VEZICE','MALE','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(3,'0 456 111','Set kljuceva',NULL,'KOM','ALAT','SETOVI','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(4,'0 456 222','Francuski kljuc',NULL,'KOM','ALAT','ELEKTROOPR','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(5,'0 587 760150','Lepezasti brusni tockic, G1500',NULL,'KOM','','','1',NULL,'',NULL,NULL,'1',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(6,'0 614 787305','Umetak 5/16, TX30, L50mm',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(7,'0 614 788250','Umetak, 10mm, TX50, L120mm',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(8,'0 681 001001','Paropropusna folija WUTOP TRIO',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(9,'0 893 5562','Cistac hladnjaka, 250ml',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(10,'0 893 567','Diesel aditiv CR, 300 ml',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(11,'0 984 160110','Mesavina ulja akcija',NULL,'KOM','MAZIVA','MAZHID','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(12,'0 991 4546','Ulje za hidrauliku 20L',NULL,'KOM','MAZIVA','MAZHID','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(13,'0 992 3546','Ulje za kocnice',NULL,'KOM','MAZIVA','MAZHID','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(14,'0 992 9001','Sijalica za farove',NULL,'KOM','RASVETA','AUTOSIJA','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(15,'007 007','Nestandardan artikal',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(16,'007 008','Min kolicina artikal',NULL,'KOM','ALAT','ELEKTROOPR','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(17,'1111','Olovka',NULL,'KOM','','','1',NULL,'0 376 8  12',NULL,NULL,'1',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(18,'20','Artikal 20 za dodatni trosak',NULL,'','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(19,'2112','Gume',NULL,'KOM','ALAT','ELEKTROOPR','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(20,'345','dsfadf dfasfd',NULL,'KOM','ALAT','SETOVI','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(21,'60','Artikal 60 za dodatni trosak',NULL,'','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(22,'612','tocak',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(23,'83','Gume',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(24,'JKL','Min kolicina artikal',NULL,'KOM','MAZIVA','MAZHID','1',NULL,'0 456 11',NULL,NULL,'1',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
-INSERT INTO `items` VALUES(25,'V123','Brankov artikal',NULL,'KOM','MAZIVA','PENA','2',NULL,'',NULL,NULL,'2',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(1,'0 376 8  12','Navrtka udarna M8 X H11mm',NULL,'KOM','ALAT','ELEKTROOPR','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(2,'0 456 11','Vezica',NULL,'KOM','VEZICE','MALE','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(3,'0 456 111','Set kljuceva',NULL,'KOM','ALAT','SETOVI','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(4,'0 456 222','Francuski kljuc',NULL,'KOM','ALAT','ELEKTROOPR','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(5,'0 587 760150','Lepezasti brusni tockic, G1500',NULL,'KOM','','','1',NULL,'',NULL,NULL,'1',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(6,'0 614 787305','Umetak 5/16, TX30, L50mm',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(7,'0 614 788250','Umetak, 10mm, TX50, L120mm',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(8,'0 681 001001','Paropropusna folija WUTOP TRIO',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(9,'0 893 5562','Cistac hladnjaka, 250ml',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(10,'0 893 567','Diesel aditiv CR, 300 ml',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(11,'0 984 160110','Mesavina ulja akcija',NULL,'KOM','MAZIVA','MAZHID','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(12,'0 991 4546','Ulje za hidrauliku 20L',NULL,'KOM','MAZIVA','MAZHID','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(13,'0 992 3546','Ulje za kocnice',NULL,'KOM','MAZIVA','MAZHID','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(14,'0 992 9001','Sijalica za farove',NULL,'KOM','RASVETA','AUTOSIJA','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(15,'007 007','Nestandardan artikal',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(16,'007 008','Min kolicina artikal',NULL,'KOM','ALAT','ELEKTROOPR','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(17,'1111','Olovka',NULL,'KOM','','','1',NULL,'0 376 8  12',NULL,NULL,'1',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(18,'20','Artikal 20 za dodatni trosak',NULL,'','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(19,'2112','Gume',NULL,'KOM','ALAT','ELEKTROOPR','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(20,'345','dsfadf dfasfd',NULL,'KOM','ALAT','SETOVI','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(21,'60','Artikal 60 za dodatni trosak',NULL,'','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(22,'612','tocak',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(23,'83','Gume',NULL,'KOM','','','0',NULL,'',NULL,NULL,'0',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(24,'JKL','Min kolicina artikal',NULL,'KOM','MAZIVA','MAZHID','1',NULL,'0 456 11',NULL,NULL,'1',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
+--INSERT INTO `items` VALUES(25,'V123','Brankov artikal',NULL,'KOM','MAZIVA','PENA','2',NULL,'',NULL,NULL,'2',NULL,NULL,NULL,'2013-02-18 12:17:36',NULL,'2013-02-18 12:17:36',NULL);
 INSERT INTO `items` VALUES(26,'000030','Ulje za vakuum pumpu 330ml',NULL,'KOM','','','0','0','',NULL,'','','','',NULL,'2013-02-18 12:20:21',NULL,'2013-02-18 12:20:21',NULL);
 INSERT INTO `items` VALUES(27,'0000516','Vijak sa upuštenom gl.,šlic, DIN963, mesing, M5x16',NULL,'KOM','','','0','0','',NULL,'','','','',NULL,'2013-02-18 12:20:21',NULL,'2013-02-18 12:20:21',NULL);
 INSERT INTO `items` VALUES(28,'0000530','Vijak sa upušt. gl., šlic prihvat, DIN 963, mesing',NULL,'KOM','','','0','0','',NULL,'','','','',NULL,'2013-02-18 12:20:21',NULL,'2013-02-18 12:20:21',NULL);
@@ -18215,12 +18216,12 @@ BEGIN
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-INSERT INTO `visits` VALUES ('1','1','2013-12-18 00:00:00','1','0',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,0,1,0, '2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('2','1','2013-02-18 00:00:00','2','0',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,0,1,0,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('3','1','2013-01-18 00:00:00','3','0',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,0,1,0,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('4','1','2012-12-19 00:00:00','4','0',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,0,1,0, '2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('5','1','2012-12-17 00:00:00','5','0',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,0,1,0, '2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
-INSERT INTO `visits` VALUES ('6','1','2012-12-11 00:00:00','6','0',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,0,1,0, '2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+--INSERT INTO `visits` VALUES ('1','1','2013-12-18 00:00:00','1','0',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,0,1,0, '2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+--INSERT INTO `visits` VALUES ('2','1','2013-02-18 00:00:00','2','0',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,0,1,0,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+--INSERT INTO `visits` VALUES ('3','1','2013-01-18 00:00:00','3','0',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,0,1,0,'2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+--INSERT INTO `visits` VALUES ('4','1','2012-12-19 00:00:00','4','0',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,0,1,0, '2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+--INSERT INTO `visits` VALUES ('5','1','2012-12-17 00:00:00','5','0',null,null,'1','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,0,1,0, '2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
+--INSERT INTO `visits` VALUES ('6','1','2012-12-11 00:00:00','6','0',null,null,'1000','2012-12-18 00:00:00','2012-12-18 00:00:00',null,'dada',null,0,1,0, '2012-12-18 01:11:12','vlada','2012-12-18 01:11:12','vlada');
 
 CREATE TABLE `sale_orders` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
@@ -18250,6 +18251,7 @@ CREATE TABLE `sale_orders` (
 	`contact_id` INTEGER,
 	`contact_name` TEXT,
 	`contact_phone` TEXT,
+	`contact_email` TEXT,
 	`payment_option` TEXT,
 	`check_status_phone` TEXT,
 	`total` REAL,
@@ -18269,18 +18271,18 @@ CREATE TABLE `sale_orders` (
 	`updated_by` TEXT
 );
 
-INSERT INTO `sale_orders` (	`_id`, `sales_order_device_no`,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
-(1, 'POR12-00001','POR12-00001', 0,2, '2012-06-12 20:20:20', '300', 'SA1', 1, 'ext doc', 'quote no', 0,0,0,0,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 3, null,2,'contact name','06457575','KEŠ-CITY', 'startus phone', 2000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
-INSERT INTO `sale_orders` (	`_id`, `sales_order_device_no`,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
-(2, 'POR12-00002','POR12-00002', 0,2, '2012-12-12 10:20:20', '300', 'SA1', 1, 'ext doc', 'quote no', 0,0,0,0,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 3, null,2,'contact name','06457575','KEŠ-CITY', 'startus phone', 2500, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
-INSERT INTO `sale_orders` (	`_id`, `sales_order_device_no`,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
-(3, 'POR12-00003','POR12-00003', 1,2, '2010-10-12 10:20:20', '300', 'SA1', 1, 'ext doc', 'quote no', 0,0,0,0,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 3, null,2,'contact name','06457575','KEŠ-CITY', 'startus phone', 1000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
-INSERT INTO `sale_orders` (	`_id`, `sales_order_device_no`,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
-(4, 'POR12-00004','POR12-00004', 1,1, '2012-12-12 00:20:20', '300', 'SA2', 1, 'ext doc', 'quote no', 0,0,0,0,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 1, null,1,'contact name','06457575','KEŠ-CITY', 'startus phone', 22000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
-INSERT INTO `sale_orders` (	`_id`, `sales_order_device_no`,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
-(5, null,'POR12-00005', 1,1, '2010-12-12 08:20:20', '300', 'SA2', 0, 'ext doc', 'quote no', 0,0,0,0,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 1, null,1,'contact name','06457575','KEŠ-CITY', 'startus phone', 8000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
-INSERT INTO `sale_orders` (	`_id`, `sales_order_device_no`,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
-(6, 'POR12-00006',null, 1,1, '2011-12-12 09:20:20', '300', 'SA2', 0, 'ext doc', 'quote no', 0,0,0,0,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 1, null,1,'contact name','06457575','KEŠ-CITY', 'startus phone', 6000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
+--INSERT INTO `sale_orders` (	`_id`, `sales_order_device_no`,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
+--(1, 'POR12-00001','POR12-00001', 0,2, '2012-06-12 20:20:20', '300', 'SA1', 1, 'ext doc', 'quote no', 0,0,0,0,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 3, null,2,'contact name','06457575','KEŠ-CITY', 'startus phone', 2000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
+--INSERT INTO `sale_orders` (	`_id`, `sales_order_device_no`,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
+--(2, 'POR12-00002','POR12-00002', 0,2, '2012-12-12 10:20:20', '300', 'SA1', 1, 'ext doc', 'quote no', 0,0,0,0,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 3, null,2,'contact name','06457575','KEŠ-CITY', 'startus phone', 2500, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
+--INSERT INTO `sale_orders` (	`_id`, `sales_order_device_no`,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
+--(3, 'POR12-00003','POR12-00003', 1,2, '2010-10-12 10:20:20', '300', 'SA1', 1, 'ext doc', 'quote no', 0,0,0,0,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 3, null,2,'contact name','06457575','KEŠ-CITY', 'startus phone', 1000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
+--INSERT INTO `sale_orders` (	`_id`, `sales_order_device_no`,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
+--(4, 'POR12-00004','POR12-00004', 1,1, '2012-12-12 00:20:20', '300', 'SA2', 1, 'ext doc', 'quote no', 0,0,0,0,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 1, null,1,'contact name','06457575','KEŠ-CITY', 'startus phone', 22000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
+--INSERT INTO `sale_orders` (	`_id`, `sales_order_device_no`,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
+--(5, null,'POR12-00005', 1,1, '2010-12-12 08:20:20', '300', 'SA2', 0, 'ext doc', 'quote no', 0,0,0,0,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 1, null,1,'contact name','06457575','KEŠ-CITY', 'startus phone', 8000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
+--INSERT INTO `sale_orders` (	`_id`, `sales_order_device_no`,	`sales_order_no` ,	`document_type` ,	`customer_id` ,	`order_date` ,	`location_code` ,	`shortcut_dimension_1_code` ,	`currency_code` ,	`external_document_no` ,	`quote_no` ,	`backorder_shipment_status` ,	`order_status_for_shipment` ,	`fin_control_status` ,`order_condition_status` ,	`used_credit_limit_by_employee` ,	`order_value_status` ,	`quote_realized_status` ,	`special_quote` ,	`quote_valid_date_to` ,	`cust_uses_transit_cust` ,	`sales_person_id` ,	`sell_to_address_id`, `shipp_to_address_id`, `contact_id`, `contact_name`, `contact_phone` , `payment_option` ,	`check_status_phone` ,	`total` ,	`total_discount` ,	`total_pdv` ,	`total_items` ,	`hide_rebate` ,	`further_sale`,	`note1` ,	`note2` ,	`note3` ,	`created_date` ,	`created_by` ,	`updated_date` ,	`updated_by`) VALUES
+--(6, 'POR12-00006',null, 1,1, '2011-12-12 09:20:20', '300', 'SA2', 0, 'ext doc', 'quote no', 0,0,0,0,'used limitation', 2,2,2, '2012-12-12 20:20:20', null, 1, 1, null,1,'contact name','06457575','KEŠ-CITY', 'startus phone', 6000, 1000, 5, 200, 0,0, 'note1', 'note2', 'note3', '2012-12-12 20:20:20','sys', '2012-12-12 20:20:20', 'sys');
 
 
 CREATE TRIGGER IF NOT EXISTS "log_new_sale_order" AFTER INSERT ON "sale_orders" 
@@ -18339,25 +18341,25 @@ BEGIN
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-INSERT INTO `sale_order_lines` VALUES ('1','1','1','1','23','25.8','KOM','22.33','10','20','12',null,null,'23456','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('2','1','2','2','100','41','KOM','1000','10','20','18',null,null,'2233','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('3','1','3','3','2','21.8','KOM','2023','10','20','12',null,null,'1256','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('4','1','4','4','1','130','KOM','512.33','10','20','18',null,null,'2345','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-
-INSERT INTO `sale_order_lines` VALUES ('5','2','1','5','2','130','KOM','23','10','20','12',null,null,'23456','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('6','2','2','6','2','130','KOM','214','10','20','18',null,null,'2233','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('7','2','3','7','2','130','KOM','2023','10','20','12',null,null,'1256','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('8','2','4','8','2','130','KOM','512.33','10','20','18',null,null,'2345','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-
-INSERT INTO `sale_order_lines` VALUES ('9','3','1','1','2','130','KOM','23','10','20','12',null,null,'23456','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('10','3','2','3','2','130','KOM','214','10','20','18',null,null,'2233','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('11','3','3','4','2','130','KOM','2023','10','20','12',null,null,'1256','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('12','3','4','7','2','130','KOM','512.33','10','20','18',null,null,'2345','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-
-INSERT INTO `sale_order_lines` VALUES ('13','4','1','10','2','130','KOM','23','10','20','12',null,null,'23456','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('14','4','2','13','2','130','KOM','214','10','20','18',null,null,'2233','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('15','4','3','14','2','130','KOM','2023','10','20','12',null,null,'1256','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
-INSERT INTO `sale_order_lines` VALUES ('16','4','4','15','2','130','KOM','512.33','10','20','18',null,null,'2345','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--INSERT INTO `sale_order_lines` VALUES ('1','1','1','1','23','25.8','KOM','22.33','10','20','12',null,null,'23456','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--INSERT INTO `sale_order_lines` VALUES ('2','1','2','2','100','41','KOM','1000','10','20','18',null,null,'2233','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--INSERT INTO `sale_order_lines` VALUES ('3','1','3','3','2','21.8','KOM','2023','10','20','12',null,null,'1256','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--INSERT INTO `sale_order_lines` VALUES ('4','1','4','4','1','130','KOM','512.33','10','20','18',null,null,'2345','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--
+--INSERT INTO `sale_order_lines` VALUES ('5','2','1','5','2','130','KOM','23','10','20','12',null,null,'23456','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--INSERT INTO `sale_order_lines` VALUES ('6','2','2','6','2','130','KOM','214','10','20','18',null,null,'2233','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--INSERT INTO `sale_order_lines` VALUES ('7','2','3','7','2','130','KOM','2023','10','20','12',null,null,'1256','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--INSERT INTO `sale_order_lines` VALUES ('8','2','4','8','2','130','KOM','512.33','10','20','18',null,null,'2345','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--
+--INSERT INTO `sale_order_lines` VALUES ('9','3','1','1','2','130','KOM','23','10','20','12',null,null,'23456','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--INSERT INTO `sale_order_lines` VALUES ('10','3','2','3','2','130','KOM','214','10','20','18',null,null,'2233','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--INSERT INTO `sale_order_lines` VALUES ('11','3','3','4','2','130','KOM','2023','10','20','12',null,null,'1256','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--INSERT INTO `sale_order_lines` VALUES ('12','3','4','7','2','130','KOM','512.33','10','20','18',null,null,'2345','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--
+--INSERT INTO `sale_order_lines` VALUES ('13','4','1','10','2','130','KOM','23','10','20','12',null,null,'23456','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--INSERT INTO `sale_order_lines` VALUES ('14','4','2','13','2','130','KOM','214','10','20','18',null,null,'2233','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--INSERT INTO `sale_order_lines` VALUES ('15','4','3','14','2','130','KOM','2023','10','20','12',null,null,'1256','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
+--INSERT INTO `sale_order_lines` VALUES ('16','4','4','15','2','130','KOM','512.33','10','20','18',null,null,'2345','0','0',null,null,null,'0','0',null,'2012-12-19 15:29:42','tica','2012-12-19 15:29:42','tica');
 
 CREATE TABLE `sync_logs` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
@@ -18385,12 +18387,12 @@ BEGIN
 	where _id = new._id; 
 END;
 
-INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch`, `updated_date` ) VALUES
-(1, 'ItemsSyncObject', 'ItemsSyncObject', 'FAILED', 2,'2012-12-19 15:29:42' );
-INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch`, `updated_date` ) VALUES
-(2, 'ItemsSyncObject', 'ItemsSyncObject', 'FAILED', 5, '2012-12-19 15:29:42');
-INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch`, `updated_date` ) VALUES
-(3, 'ItemsSyncObject', 'ItemsSyncObject', 'SUCCESS', 50, '2012-12-19 15:29:42');
+--INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch`, `updated_date` ) VALUES
+--(1, 'ItemsSyncObject', 'ItemsSyncObject', 'FAILED', 2,'2012-12-19 15:29:42' );
+--INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch`, `updated_date` ) VALUES
+--(2, 'ItemsSyncObject', 'ItemsSyncObject', 'FAILED', 5, '2012-12-19 15:29:42');
+--INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch`, `updated_date` ) VALUES
+--(3, 'ItemsSyncObject', 'ItemsSyncObject', 'SUCCESS', 50, '2012-12-19 15:29:42');
 
 CREATE TABLE `customer_addresses` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
@@ -18420,13 +18422,13 @@ BEGIN
 	updated_by = (select username from users where active = 1)
 	where _id = new._id; 
 END;
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('1','ADR 1','K00001','Koste Aba 9','Valjevo','Test1','1234567','14000');
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('2','ADR 2','K00001','Test2 Abrasevica 9','Beograd','Test1','1234567','11000');
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('3','ADR 4','K00002','Test1 9','Valjevo','Test1','1234567','14000');
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('4','ADR 5','K00002','Test2 vica 9','Valjevo','Test1','1234567','14000');
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('5','ADR 7','K00003','Koste Abrasevica 9','Beograd','Test1','1234567','11000');
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('6','ADR 10','K00004','Test1 9','Beograd','Test1','1234567','11000');
-INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('7','ADR 13','K00005','Test2 Abrasevica 9','Beograd','Test1','1234567','11000');
+--INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('1','ADR 1','K00001','Koste Aba 9','Valjevo','Test1','1234567','14000');
+--INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('2','ADR 2','K00001','Test2 Abrasevica 9','Beograd','Test1','1234567','11000');
+--INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('3','ADR 4','K00002','Test1 9','Valjevo','Test1','1234567','14000');
+--INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('4','ADR 5','K00002','Test2 vica 9','Valjevo','Test1','1234567','14000');
+--INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('5','ADR 7','K00003','Koste Abrasevica 9','Beograd','Test1','1234567','11000');
+--INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('6','ADR 10','K00004','Test1 9','Beograd','Test1','1234567','11000');
+--INSERT INTO `customer_addresses` (`_id`, `address_no`, `customer_no`, `address`, `city`, `contact`, `phone_no`, `post_code`) VALUES ('7','ADR 13','K00005','Test2 Abrasevica 9','Beograd','Test1','1234567','11000');
 
 CREATE TABLE `invoice_lines` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
