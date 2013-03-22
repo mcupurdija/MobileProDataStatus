@@ -1,9 +1,16 @@
-package rs.gopro.mobile_store.ui;
+package rs.gopro.mobile_store.ui.fragment;
 
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
+
+import java.util.Date;
+
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.ui.BaseActivity;
+import rs.gopro.mobile_store.ui.RecordVisitsMultipaneActivity;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
+import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
@@ -26,12 +33,12 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class VisitListFromMenuFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> { //, OnItemLongClickListener
+public class RecordVisitListFromMenuFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> { //, OnItemLongClickListener
 	
-	private static final String TAG = makeLogTag(VisitListFromMenuFragment.class);
+	private static final String TAG = makeLogTag(RecordVisitListFromMenuFragment.class);
 
 	private static final String STATE_SELECTED_ID = "selectedId";
-//	private static final String VISITS_DATE_FILTER = "DATE("+Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_DATE+")=DATE(?)";
+	private static final String VISITS_DATE_FILTER = "DATE("+Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_DATE+")=DATE(?)";
 
 	private Uri mVisitsUri;
 //	private String mAction;
@@ -95,7 +102,7 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 		if (!mHasSetEmptyText) {
 			// Could be a bug, but calling this twice makes it become visible
 			// when it shouldn't be visible.
-			setEmptyText(getString(R.string.empty_visits));
+			setEmptyText(getString(R.string.empty_recorded_visits));
 			mHasSetEmptyText = true;
 		}
 	}
@@ -127,7 +134,7 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, null, null, MobileStoreContract.Visits.DEFAULT_SORT);
+		return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, VISITS_DATE_FILTER, new String[] { DateUtils.toDbDate(new Date()) }, MobileStoreContract.Visits.DEFAULT_SORT);
 	}
 
 	@Override
@@ -207,8 +214,8 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 					mAdapter.notifyDataSetChanged();
 					final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
 					// mAction is from main menu sent, and it is in par with expected actions in activities
-					final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.Visits.buildVisitUri(visit_id));
-					intent.putExtra(VisitsMultipaneActivity.EXTRA_MASTER_URI, visitsUri);
+					final Intent intent = new Intent(RecordVisitsMultipaneActivity.RECORD_VISITS_INTENT, MobileStoreContract.Visits.buildVisitUri(visit_id));
+					intent.putExtra(RecordVisitsMultipaneActivity.EXTRA_MASTER_URI, visitsUri);
 					startActivity(intent);	
 				}
 			});
@@ -227,7 +234,7 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 	}
 
 	private interface VisitsQuery {
-		int _TOKEN = 0x1;
+		int _TOKEN = 0x1234;
 
 		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Visits.SALES_PERSON_ID, MobileStoreContract.Visits.CUSTOMER_ID, MobileStoreContract.Visits.CUSTOMER_NO, MobileStoreContract.Visits.NAME, MobileStoreContract.Visits.NAME_2,
 				MobileStoreContract.Visits.VISIT_DATE, MobileStoreContract.Visits.VISIT_RESULT, MobileStoreContract.Visits.VISIT_TYPE };

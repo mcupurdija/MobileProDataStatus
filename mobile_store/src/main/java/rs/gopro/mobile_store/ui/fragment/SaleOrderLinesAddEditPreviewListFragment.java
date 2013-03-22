@@ -5,6 +5,7 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.UIUtils;
 import android.database.Cursor;
 import android.app.Activity;
 import android.content.Context;
@@ -226,16 +227,21 @@ public class SaleOrderLinesAddEditPreviewListFragment extends ListFragment
 					.findViewById(R.id.block_title);
 			final TextView subtitleView = (TextView) view
 					.findViewById(R.id.block_subtitle);
+			
+			final double price = cursor.isNull(SaleOrderLinesQuery.PRICE) ? 0 : cursor.getDouble(SaleOrderLinesQuery.PRICE);
+			final double quantity = cursor.isNull(SaleOrderLinesQuery.QUANTITY) ? 0 : cursor.getDouble(SaleOrderLinesQuery.QUANTITY);
+			final double discount = cursor.isNull(SaleOrderLinesQuery.REAL_DISCOUNT) ? 0 : cursor.getDouble(SaleOrderLinesQuery.REAL_DISCOUNT);
+			
+			final double lineAmount = quantity * (price - (price * (discount/100)));
+			
 			String salesOrderDate = cursor
 					.getString(SaleOrderLinesQuery.LINE_NO);
 			String salesOrderNo = cursor.getString(SaleOrderLinesQuery.ITEM_NO)
 					+ " - " + cursor.getString(SaleOrderLinesQuery.DESCRIPTION);
 			String salesOrderCust = "Količina: "
-					+ String.valueOf(cursor
-							.getDouble(SaleOrderLinesQuery.QUANTITY))
-					+ "  -  Cena:"
-					+ String.valueOf(cursor
-							.getDouble(SaleOrderLinesQuery.PRICE));
+					+ UIUtils.formatDoubleForUI(quantity)
+					+ "  -  Iznos:"
+					+ UIUtils.formatDoubleForUI(lineAmount);
 			timeView.setText(salesOrderDate);
 			titleView.setText(salesOrderNo);
 			subtitleView.setText(salesOrderCust);
@@ -263,7 +269,7 @@ public class SaleOrderLinesAddEditPreviewListFragment extends ListFragment
 		int LINE_NO = 5;
 		int QUANTITY = 6;
 		int PRICE = 7;
-//		int REAL_DISCOUNT = 8;
+		int REAL_DISCOUNT = 8;
 	}
 	
 }

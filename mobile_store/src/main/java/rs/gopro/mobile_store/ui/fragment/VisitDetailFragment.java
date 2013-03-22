@@ -1,7 +1,8 @@
-package rs.gopro.mobile_store.ui;
+package rs.gopro.mobile_store.ui.fragment;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;

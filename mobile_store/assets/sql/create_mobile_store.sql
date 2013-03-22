@@ -18180,12 +18180,13 @@ INSERT INTO `items` VALUES(17909,'Z587555WR','Rezervno kućište za laser 0 714 
 
 -- visits
 CREATE TABLE `visits` (
-	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL ,
+	`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`sales_person_id` INTEGER,
 	`visit_date` TEXT,
 	`customer_id` INTEGER,
 	`potential_customer` INTEGER DEFAULT 0,
 	`line_no` INTEGER,
+	`visit_type` INTEGER DEFAULT 0,
 	`entry_type` TEXT,
 	`odometer` INTEGER,
 	`departure_time` TEXT,
@@ -18193,7 +18194,6 @@ CREATE TABLE `visits` (
 	`visit_result` TEXT,
 	`note` TEXT,
 	`sync_object_batch` INTEGER,
-	`visit_type` INTEGER DEFAULT 0,
 	`is_sent` INTEGER DEFAULT 1,
 	`is_deleted` INTEGER DEFAULT 0,
 	`created_date` TEXT,

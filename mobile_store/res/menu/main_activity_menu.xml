@@ -21,6 +21,11 @@
         android:title="@string/menu_customers_option"
         android:visible="false" />
     <item
+        android:id="@+id/main_options_record_visits_details"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_record_visits_option" 
+        android:visible="false" />
+    <item
         android:id="@+id/create_settings_activity"
         android:icon="@drawable/ic_action_settings"
         android:showAsAction="ifRoom|withText"

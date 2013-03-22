@@ -11,6 +11,9 @@ public class ApplicationConstants {
 	public static final Integer SUCCESS = 1;
 	public static final Integer FAILURE = 2;
 
+	public static final int VISIT_PLANNED = 0;
+	public static final int VISIT_RECORDED = 1;
+	
 	public static enum USER_ROLE {
 		ADMIN, USER
 	}

@@ -6,21 +6,22 @@ import java.util.Date;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
+import rs.gopro.mobile_store.ui.fragment.VisitDetailFragment;
+import rs.gopro.mobile_store.ui.fragment.VisitListFragment;
 import rs.gopro.mobile_store.ui.widget.VisitContextualMenu;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObjectOut;
 import rs.gopro.mobile_store.ws.model.SetPlannedVisitsToCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
@@ -45,7 +46,7 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 	private static final int VISIT_SYNC_IN_DATE_PICKER = 2;
 	private static final int VISIT_FILTER_DATE_PICKER = 3;
 	
-	ActionMode actionMod;
+	private ActionMode actionMod;
 	
 	private Uri mVisitListUri;
 	private String visitDateFilter;
@@ -75,27 +76,7 @@ public class VisitsMultipaneActivity extends BaseActivity implements
 				// TODO Auto-generated method stub
 			}
 		} else {
-			AlertDialog alertDialog = new AlertDialog.Builder(
-					VisitsMultipaneActivity.this).create();
-
-		    // Setting Dialog Title
-		    alertDialog.setTitle(getResources().getString(R.string.dialog_title_error_in_sync));
-		
-		    // Setting Dialog Message
-		    alertDialog.setMessage(syncResult.getResult());
-		
-		    // Setting Icon to Dialog
-		    alertDialog.setIcon(R.drawable.ic_launcher);
-		
-		    // Setting OK Button
-		    alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-	            public void onClick(DialogInterface dialog, int which) {
-	            	// Write your code here to execute after dialog closed
-	            }
-		    });
-		
-		    // Showing Alert Message
-		    alertDialog.show();
+			DialogUtil.showInfoDialog(VisitsMultipaneActivity.this, getResources().getString(R.string.dialog_title_error_in_sync), syncResult.getResult());
 		}
 	}
 	

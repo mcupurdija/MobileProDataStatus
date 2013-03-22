@@ -1,4 +1,4 @@
-package rs.gopro.mobile_store.ui;
+package rs.gopro.mobile_store.ui.fragment;
 
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 
@@ -8,7 +8,9 @@ import java.util.List;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.widget.SimpleSelectionedListAdapter;
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
@@ -37,13 +39,13 @@ import android.widget.TextView;
 public class VisitListFragment extends ListFragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, OnItemLongClickListener {
 
-	public static final String EXTRA_DATE_FILTER = "rs.gopro.mobile_store.extra.VISIT_DATE_FILTER";
-	
 	private static final String TAG = makeLogTag(VisitListFragment.class);
-	
+	public static final String EXTRA_DATE_FILTER = "rs.gopro.mobile_store.extra.VISIT_DATE_FILTER";
 	private static final String STATE_SELECTED_ID = "selectedId";
+	private static final String VISITS_TYPE_FILTER = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_TYPE+"=?";
+	private static final String VISITS_DATE_FILTER = "DATE("+Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_DATE+")>=DATE(?)";
 	
-	private String mDateFilter = null;
+	private String mDateFilterValue = null;
 	private Uri mVisitsUri;
 	private SimpleSelectionedListAdapter mSeparatorAdapter;
 	private CursorAdapter mVisitAdapter;
@@ -99,7 +101,7 @@ public class VisitListFragment extends ListFragment implements
             return;
         }
 
-        mDateFilter = intent.getStringExtra(EXTRA_DATE_FILTER);
+        mDateFilterValue = intent.getStringExtra(EXTRA_DATE_FILTER);
         
         mVisitAdapter = new VisitsAdapter(getActivity());
         visitQueryToken = VisitsQuery._TOKEN;
@@ -174,11 +176,11 @@ public class VisitListFragment extends ListFragment implements
     
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		if (mDateFilter != null) {
-			return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, "DATE("+Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_DATE+")>=DATE(?)", new String[] { mDateFilter },
+		if (mDateFilterValue != null) {
+			return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, VISITS_DATE_FILTER + " and " + VISITS_TYPE_FILTER, new String[] { mDateFilterValue, String.valueOf(ApplicationConstants.VISIT_PLANNED) },
 	                MobileStoreContract.Visits.DEFAULT_SORT);
 		} else {
-			return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, null, null,
+			return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, VISITS_TYPE_FILTER, new String[] { String.valueOf(ApplicationConstants.VISIT_PLANNED) },
 	                MobileStoreContract.Visits.DEFAULT_SORT);
 		}
 	}
@@ -334,9 +336,4 @@ public class VisitListFragment extends ListFragment implements
         int VISIT_RESULT = 7;
         int VISIT_TYPE = 8;
 	}
-
-	
-
-	
-
 }

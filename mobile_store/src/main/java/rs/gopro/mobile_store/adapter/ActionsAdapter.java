@@ -45,9 +45,9 @@ public class ActionsAdapter extends BaseAdapter {
 	private final String[] mTitles;
 	private final String[] mUrls;
 	//private final TypedArray mIcons;
-	Resources res;
-	View currentSelectedView;
-	MainActivity mainActivity;
+	private Resources res;
+	private View currentSelectedView;
+	private MainActivity mainActivity;
 	
 	private final Drawable iconListOption;
 	private final Drawable iconListActiveOption;
@@ -89,7 +89,6 @@ public class ActionsAdapter extends BaseAdapter {
 				convertView = mInflater.inflate(R.layout.list_category_item_main_menu, parent, false);
 			} else {
 				convertView = mInflater.inflate(R.layout.list_action_item_main_menu, parent, false);
-
 			}
 			holder = new ViewHolder();
 			holder.text = (TextView) convertView.findViewById(android.R.id.text1);

@@ -6,7 +6,8 @@
         <item>@null</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
-         <item>@drawable/ic_action_settings</item>
+        <item>@drawable/ic_action_settings</item>
+        <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
@@ -18,6 +19,7 @@
 
     <string-array name="actions_names">
         <item>Main menu</item>
+        <item>Recorded visits</item>
         <item>Plan of visits</item>
         <item>Sale orders</item>
         <item>Sent orders</item>
@@ -31,6 +33,7 @@
     </string-array>
     <string-array name="actions_links">
         <item>category://main_menu</item>
+        <item>settings://record_visits</item>
         <item>settings://plan_visits</item>
         <item>settings://sale_orders</item>
         <item>settings://sent_orders</item>

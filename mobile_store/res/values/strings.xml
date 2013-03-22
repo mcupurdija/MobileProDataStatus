@@ -46,6 +46,7 @@
     <string name="empty_sale_orders">No sale orders found.</string>
     <string name="empty_customers">No customer details found.</string>
     <string name="empty_sale_order_lines">No sale order lines found.</string>
+    <string name="empty_recorded_visits">No planned or realised visits.</string>
     <string name="hint_search">Search&#8230;</string>
     <string name="save_button_title">Save</string>
     <string name="cancel_button_title">Cancel</string>
@@ -306,6 +307,7 @@
     <string name="menu_sale_order_option">Sale order details</string>
     <string name="menu_visits_option">Visits details</string>
     <string name="menu_customers_option">Customers details</string>
+    <string name="menu_record_visits_option">Realization</string>
     
     <string name="items_sync_group_title">Items sync options</string>
     <string name="items_sync_overstock_button_title">Sync overstock</string>
@@ -327,4 +329,9 @@
     <string name="add_customer_blue_coats_title">Num of blue coats</string>
     <string name="add_customer_grey_coats_title">Num of grey coats</string>
 
+    <string name="visit_customer_no_name_label_title">Customer no and name:</string>
+    <string name="visit_date_label_title">Realisation date:</string>
+    <string name="visit_time_label_title">Realisation time:</string>
+    <string name="visit_odometer_label_title">Odometer value:</string>
+    <string name="visit_note_label_title">Note:</string>
 </resources>

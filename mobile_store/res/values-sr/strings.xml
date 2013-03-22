@@ -51,6 +51,7 @@
 	<string name="empty_sale_orders">Porudžbine/ponude nisu pronađene.</string>
 	<string name="empty_customers">Nema detalja za izabranog kupca.</string>
 	<string name="empty_sale_order_lines">Nema stavki za izabranu porudžbinu/Ponudu</string>
+	<string name="empty_recorded_visits">Nema planova i realizacija na današnji dan.</string>
 	<string name="hint_search">Pretraži&#8230;</string>
 	<string name="save_button_title">Sačuvaj</string>
 	<string name="cancel_button_title">Otkaži</string>
@@ -324,6 +325,7 @@
 	<string name="menu_sale_order_option">Detalji porudžbina</string>
 	<string name="menu_visits_option">Detalji poseta</string>
 	<string name="menu_customers_option">Detalji kupaca</string>
+	<string name="menu_record_visits_option">Realizacija</string>
 	
 	<string name="items_sync_group_title">Opcije osvežavanja artikala</string>
 	<string name="items_sync_overstock_button_title">Osveži overstock artikle</string>
@@ -346,4 +348,10 @@
 	<string name="add_customer_global_dimension_title">Globalna dimenzija 2</string>
 	<string name="add_customer_blue_coats_title">Br. plavih mantila</string>
 	<string name="add_customer_grey_coats_title">Br. sivih mantila</string>
+	
+	<string name="visit_customer_no_name_label_title">Kupac:</string>
+    <string name="visit_date_label_title">Datum realizacije:</string>
+    <string name="visit_time_label_title">Vreme realizacije:</string>
+    <string name="visit_odometer_label_title">Kilometraža:</string>
+    <string name="visit_note_label_title">Poruka:</string>
 </resources>

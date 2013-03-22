@@ -13,11 +13,13 @@ import rs.gopro.mobile_store.ui.customlayout.CustomerLedgerEntriesLayout;
 import rs.gopro.mobile_store.ui.customlayout.CustomersLayout;
 import rs.gopro.mobile_store.ui.customlayout.ItemsLayout;
 import rs.gopro.mobile_store.ui.customlayout.PlanOfVisitsLayout;
+import rs.gopro.mobile_store.ui.customlayout.RecordVisitsLayout;
 import rs.gopro.mobile_store.ui.customlayout.SentOrdersStatusLayout;
 import rs.gopro.mobile_store.ui.customlayout.SaleOrdersLayout;
 import rs.gopro.mobile_store.ui.customlayout.SentOrdersLayout;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.util.ApplicationConstants;
+import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
@@ -31,6 +33,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -53,10 +56,10 @@ import android.widget.TextView;
 
 public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener, MainContextualActionBarCallback {
 	private static String TAG = "MainActivity";
-
-	ActionsAdapter actionsAdapter;
-	private Integer currentItemPosition = Integer.valueOf(1);
 	public static final String CURRENT_POSITION_KEY = "current_position";
+	
+	private ActionsAdapter actionsAdapter;
+	private Integer currentItemPosition = Integer.valueOf(1);
 	private CustomLinearLayout currentCustomLinearLayout;
 	private Map<String, CustomLinearLayout> savedLayoutInstances = new HashMap<String, CustomLinearLayout>();
 
@@ -68,6 +71,14 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		PreferenceManager.setDefaultValues(this, R.xml.ws_settings,false);
+		boolean isUserLogged = SharedPreferencesUtil.isUserLoggedIn(getApplicationContext());
+		if (!isUserLogged) {
+			Intent loginScreen = new Intent(this, LoginActivity.class);
+			startActivity(loginScreen);
+		}
+		
 		if (savedInstanceState != null) {
 			currentItemPosition = savedInstanceState.getInt(CURRENT_POSITION_KEY);
 		}
@@ -79,7 +90,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 		viewActionsList.setOnItemClickListener(this);
 		setContentTitle(currentItemPosition);
 		updateContent(currentItemPosition);
-		LogUtils.LOGI(TAG, "onCreate");
+		LogUtils.LOGI(TAG, "Main activity created!");
 	}
 
 	@Override
@@ -127,6 +138,13 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				view = new SaleOrdersLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(SaleOrdersLayout.SALE_ORDER_URI.toString(), view);
 			}
+		} else if (RecordVisitsLayout.RECORD_VISITS_URI.equals(uri)) {
+			if (savedLayoutInstances.containsKey(RecordVisitsLayout.RECORD_VISITS_URI.toString())) {
+				view = savedLayoutInstances.get(RecordVisitsLayout.RECORD_VISITS_URI.toString());
+			} else {
+				view = new RecordVisitsLayout(getSupportFragmentManager(), this);
+				savedLayoutInstances.put(RecordVisitsLayout.RECORD_VISITS_URI.toString(), view);
+			}
 		} else if (PlanOfVisitsLayout.PLAN_OF_VISITS_URI.equals(uri)) {
 			if (savedLayoutInstances.containsKey(PlanOfVisitsLayout.PLAN_OF_VISITS_URI.toString())) {
 				view = savedLayoutInstances.get(PlanOfVisitsLayout.PLAN_OF_VISITS_URI.toString());
@@ -134,7 +152,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				view = new PlanOfVisitsLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(PlanOfVisitsLayout.PLAN_OF_VISITS_URI.toString(), view);
 			}
-			
 		} else if (CustomersLayout.CUSTOMERS_URI.equals(uri)) {
 			if (savedLayoutInstances.containsKey(CustomersLayout.CUSTOMERS_URI.toString())) {
 				view = savedLayoutInstances.get(CustomersLayout.CUSTOMERS_URI.toString());
@@ -152,12 +169,10 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 		} else if (CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.equals(uri)) {
 			if (savedLayoutInstances.containsKey(CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.toString())) {
 				view = savedLayoutInstances.get(CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.toString());
-
 			} else {
 				view = new CustomerLedgerEntriesLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.toString(), view);
 			}
-
 		} else if (SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.equals(uri)) {
 			if (savedLayoutInstances.containsKey(SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.toString())) {
 				view = savedLayoutInstances.get(SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.toString());
@@ -210,26 +225,30 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		Uri uri = actionsAdapter.getItem(currentItemPosition);
-		
-		if (SaleOrdersLayout.SALE_ORDER_URI.equals(uri)) {
-			menu.getItem(1).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(3).setVisible(false);
-		} else if (PlanOfVisitsLayout.PLAN_OF_VISITS_URI.equals(uri)) {
-			menu.getItem(0).setVisible(true);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);
-		} else if (CustomersLayout.CUSTOMERS_URI.equals(uri)) {
-			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(true);
-		} else if (ItemsLayout.ITEMS_URI.equals(uri)) {
-			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);
-		} else if (CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.equals(uri)) {
-			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);
-		} else if (SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.equals(uri)) {
-			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);
-		} else if (ContactsLayout.CONTACTS_URI.equals(uri)) {
-			menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);
-		} else if (SentOrdersLayout.SENT_ORDERS_URI.equals(uri)) {
-			menu.getItem(2).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);
+		// this check because if user is not logged in, it will break
+		if (actionsAdapter != null) {
+			Uri uri = actionsAdapter.getItem(currentItemPosition);
+			
+			if (SaleOrdersLayout.SALE_ORDER_URI.equals(uri)) {
+				menu.getItem(1).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);
+			} else if (PlanOfVisitsLayout.PLAN_OF_VISITS_URI.equals(uri)) {
+				menu.getItem(0).setVisible(true);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);
+			} else if (CustomersLayout.CUSTOMERS_URI.equals(uri)) {
+				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(true);menu.getItem(4).setVisible(false);
+			} else if (ItemsLayout.ITEMS_URI.equals(uri)) {
+				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);
+			} else if (CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.equals(uri)) {
+				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);
+			} else if (SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.equals(uri)) {
+				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);
+			} else if (ContactsLayout.CONTACTS_URI.equals(uri)) {
+				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);
+			} else if (SentOrdersLayout.SENT_ORDERS_URI.equals(uri)) {
+				menu.getItem(2).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);
+			} else if (RecordVisitsLayout.RECORD_VISITS_URI.equals(uri)) {
+				menu.getItem(0).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(true);
+			}
 		}
-		
 		return super.onPrepareOptionsMenu(menu);
 	}
 	
@@ -247,6 +266,11 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 //			// doSynchronization();
 //			currentCustomLinearLayout.doSynchronization();
 //			return true;
+		case R.id.main_options_record_visits_details:
+			final Uri recordVisitsUri = MobileStoreContract.Visits.CONTENT_URI;
+			final Intent recordIntent = new Intent(RecordVisitsMultipaneActivity.RECORD_VISITS_INTENT, recordVisitsUri);
+			startActivity(recordIntent);
+			return true;
 		case R.id.main_options_visits_details:
 			final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
 			final Intent intent = new Intent(Intent.ACTION_VIEW, visitsUri);

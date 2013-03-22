@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/visit_customer_no_name_label"
+        style="@style/AddEdit_Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/element_spacing_normal"
+        android:text="@string/visit_customer_no_name_label_title" />
+
+    <TextView
+        android:id="@+id/visit_customer_no_name"
+        style="@style/AddEdit_Text_Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/element_spacing_normal" />
+
+    <TextView
+        android:id="@+id/visit_date_label"
+        style="@style/AddEdit_Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/element_spacing_normal"
+        android:text="@string/visit_date_label_title" />
+
+    <TextView
+        android:id="@+id/visit_date"
+        style="@style/AddEdit_Text_Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/element_spacing_normal" />
+
+    <TextView
+        android:id="@+id/visit_time_label"
+        style="@style/AddEdit_Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/element_spacing_normal"
+        android:text="@string/visit_time_label_title" />
+
+    <TextView
+        android:id="@+id/visit_time"
+        style="@style/AddEdit_Text_Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/element_spacing_normal" />
+
+    <TextView
+        android:id="@+id/visit_odometer_label"
+        style="@style/AddEdit_Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/element_spacing_normal"
+        android:text="@string/visit_odometer_label_title" />
+
+    <TextView
+        android:id="@+id/visit_odometer"
+        style="@style/AddEdit_Text_Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/element_spacing_normal" />
+    
+	<TextView
+        android:id="@+id/visit_note_label"
+        style="@style/AddEdit_Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/element_spacing_normal"
+        android:text="@string/visit_note_label_title" />
+
+    <TextView
+        android:id="@+id/visit_note"
+        style="@style/AddEdit_Text_Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/element_spacing_normal" />
+</LinearLayout>

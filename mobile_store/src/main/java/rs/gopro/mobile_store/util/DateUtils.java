@@ -118,6 +118,11 @@ public class DateUtils {
 		return niceSerbianUIDate.format(anyDate);
 	}
 	
+	public static String toDbDate(Date anyDate) {
+		if (anyDate == null) return "";
+		return localDbDate.format(anyDate);
+	}
+	
 	public static String toUIfromDbDate(String dbDate) {
 		if (dbDate == null) return "";
 		Date localDbDate = getLocalDbDate(dbDate);
