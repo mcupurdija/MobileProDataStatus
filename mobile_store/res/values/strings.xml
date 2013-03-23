@@ -75,6 +75,9 @@
     <string name="note_hint">Note</string>
     <string name="action_button_refresh">Refresh</string>
 
+    <string name="start_visit_button_title">Start visit</string>
+    <string name="end_visit_button_title">End visit</string>
+    
     <!-- add contact -->
     <string name="contact_type_title">Type</string>
     <string name="contact_type_hint">Type</string>
@@ -132,6 +135,7 @@
     <string name="dialog_title_sent_orders_status_load">Sent orders statuses</string>
     <string name="dialog_body_sent_orders_status_load">Loading sent orders statuses</string>
     <string name="dialog_title_sync_info">Sync info</string>
+    <string name="dialog_title_record_visit">Visit realization</string>
     <string name="dialog_title_customers_receive">Customers</string>
     <string name="dialog_body_customers_receive">Receiving all customers</string>
     <string name="dialog_title_sales_person_registration">Sales person registration</string>
@@ -308,6 +312,11 @@
     <string name="menu_visits_option">Visits details</string>
     <string name="menu_customers_option">Customers details</string>
     <string name="menu_record_visits_option">Realization</string>
+    
+    <string name="day_start_record_visit_menu_title">Day start</string>
+    <string name="day_end_record_visit_menu_title">Day end</string>
+    <string name="day_end_back_home_visit_menu_title">Back home</string>
+    <string name="day_break_visit_menu_title">Break</string>
     
     <string name="items_sync_group_title">Items sync options</string>
     <string name="items_sync_overstock_button_title">Sync overstock</string>

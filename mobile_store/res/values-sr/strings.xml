@@ -80,6 +80,9 @@
 	<string name="note_hint">Beleške</string>
 	<string name="action_button_refresh">Osveži</string>
 	
+	<string name="start_visit_button_title">Započni posetu</string>
+    <string name="end_visit_button_title">Završi posetu</string>
+	
 	<!-- add contact --> 
 	<string name="contact_type_title">Tip</string>
 	<string name="contact_type_hint">Tip</string>
@@ -139,6 +142,7 @@
 	<string name="dialog_title_sent_orders_status_load">Statusi poslatih porudžbina</string>
 	<string name="dialog_body_sent_orders_status_load">Učitavanje statusa poslatih porudžbina</string>
 	<string name="dialog_title_sync_info">Poruka sinhronizacije</string>
+	<string name="dialog_title_record_visit">Realizacija poseta</string>
 	<string name="dialog_title_customers_receive">Kupci</string>
     <string name="dialog_body_customers_receive">Preuzimanje svih kupaca</string>
     <string name="dialog_title_sales_person_registration">Registracija prodavca</string>
@@ -326,7 +330,11 @@
 	<string name="menu_visits_option">Detalji poseta</string>
 	<string name="menu_customers_option">Detalji kupaca</string>
 	<string name="menu_record_visits_option">Realizacija</string>
-	
+	<string name="day_start_record_visit_menu_title">Započni dan</string>
+    <string name="day_end_record_visit_menu_title">Završi dan</string>
+    <string name="day_break_visit_menu_title">Pauza</string>
+    <string name="day_end_back_home_visit_menu_title">Povratak kući</string>
+    
 	<string name="items_sync_group_title">Opcije osvežavanja artikala</string>
 	<string name="items_sync_overstock_button_title">Osveži overstock artikle</string>
 	<string name="items_sync_on_action_button_title">Osveži artikle na akciji</string>

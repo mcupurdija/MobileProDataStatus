@@ -270,7 +270,8 @@ public class VisitListFragment extends ListFragment implements
         		customer_name = "-";
         	}
         	
-        	String status = cursor.getString(VisitsQuery.VISIT_RESULT);
+        	//int visit_result = cursor.getInt(VisitsQuery.VISIT_RESULT);
+        	String status = "";
         	if (visit_type == 0) {
         		status = "PLAN";
         	} else {
@@ -331,9 +332,9 @@ public class VisitListFragment extends ListFragment implements
         //int CUSTOMER_ID = 2;
         int CUSTOMER_NO = 3;
         int CUSTOMER_NAME = 4;
-        int CUSTOMER_NAME2 = 5;
+//        int CUSTOMER_NAME2 = 5;
         int VISIT_DATE = 6;
-        int VISIT_RESULT = 7;
+//        int VISIT_RESULT = 7;
         int VISIT_TYPE = 8;
 	}
 }

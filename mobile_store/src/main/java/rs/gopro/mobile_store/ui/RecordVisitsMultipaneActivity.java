@@ -5,12 +5,18 @@ import java.util.Date;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
+import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
+import rs.gopro.mobile_store.ui.dialog.EditDepartureVisitDialog.EditDepartureVisitDialogListener;
+import rs.gopro.mobile_store.ui.dialog.EditFieldDialog;
+import rs.gopro.mobile_store.ui.dialog.EditFieldDialog.EditNameDialogListener;
 import rs.gopro.mobile_store.ui.fragment.RecordVisitDetailFragment;
 import rs.gopro.mobile_store.ui.fragment.RecordVisitsListFragment;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DialogUtil;
+import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.SetPlannedVisitsToCustomersSyncObject;
@@ -19,36 +25,55 @@ import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.InputType;
 import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 
 public class RecordVisitsMultipaneActivity extends BaseActivity implements
-		RecordVisitsListFragment.Callbacks, RecordVisitDetailFragment.Callbacks {
+		RecordVisitsListFragment.Callbacks, RecordVisitDetailFragment.Callbacks, EditNameDialogListener, EditDepartureVisitDialogListener {
 
+	private static final String TAG = "RecordVisitsMultipaneActivity";
 	public static final String RECORD_VISITS_INTENT = "rs.gopro.mobile_store.intent.action.RECORD_VISITS";
 	public static final String EXTRA_MASTER_URI = "rs.gopro.mobile_store.extra.MASTER_URI";
 	private static final int VISIT_FILTER_DATE_PICKER = 1;
-
+	private static final String VISITS_DATE_FILTER = "DATE("+Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_DATE+")=DATE(?)";
+	private static final String VISITS_RESULT_FILTER = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"=?";
+	
+	private static final int VISITS_RESULT_START_DAY = 0;
+	private static final int VISITS_RESULT_END_DAY = 4;
+	private static final int VISITS_RESULT_BACK_HOME = 5;
+	private static final int VISITS_RESULT_BREAK = 3;
+	
+	public static final int RECORD_VISIT_ARRIVAL = 0;
+	public static final int RECORD_VISIT_FIXED_ACTIVITIES = 1;
+	
 	private ActionMode actionMod;
 
 	private Uri mVisitListUri;
 	private String visitDateFilter;
 	private Button filterVisitDateButton;
-
+	private int currentVisitResult = -1;
+	
+	
 	private Fragment visitsPlanFragmentDetail;
 	private ShowHideMasterLayout mShowHideMasterLayout;
-
+	
 	private OnDateSetListener visitFilterDateSetListener;
 
 	private BroadcastReceiver onNotice = new BroadcastReceiver() {
@@ -255,6 +280,104 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		return super.onCreateDialog(id);
 	}
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater menuInflater = getMenuInflater();
+	    menuInflater.inflate(R.menu.record_visit_multipane_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			if (mShowHideMasterLayout != null
+					&& !mShowHideMasterLayout.isMasterVisible()) {
+				// If showing the detail view, pressing Up should show the
+				// master pane.
+				mShowHideMasterLayout.showMaster(true, 0);
+				return true;
+			}
+			break;
+		case R.id.day_start_record_visit:
+			currentVisitResult = VISITS_RESULT_START_DAY;
+			if (!checkForRecordedVisit(currentVisitResult)) {
+				showDialog();
+			} else {
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Početak dana je zabeležen!");
+			}
+			return true;
+        case R.id.day_end_record_visit:
+        	currentVisitResult = VISITS_RESULT_END_DAY;
+        	if (!checkForRecordedVisit(currentVisitResult)) {
+        		showDialog();
+			} else {
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Kraj dana je zabeležen!");
+			}
+        	return true;
+        case R.id.day_end_back_home_visit:
+        	currentVisitResult = VISITS_RESULT_BACK_HOME;
+        	if (!checkForRecordedVisit(currentVisitResult)) {
+        		showDialog();
+			} else {
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Dolazak kući je zabeležen!");
+			}
+        	return true;
+        case R.id.day_break_visit:
+        	currentVisitResult = VISITS_RESULT_BREAK;
+        	if (!checkForRecordedVisit(currentVisitResult)) {
+        		showDialog();
+			} else {
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Odmor je zabeležen!");
+			}
+        	return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	private boolean checkForRecordedVisit(int visitSubType) {
+		Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, VISITS_DATE_FILTER + " and " + VISITS_RESULT_FILTER, new String[] { rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date()), String.valueOf(visitSubType) }, null);
+		
+		if (cursor.moveToFirst()) {
+			return true;
+		}
+		
+		return false;
+	}
+
+	private boolean recordVisit(int visitSubType, int odometer) {
+		ContentValues cv = new ContentValues();
+		
+		cv.putNull(MobileStoreContract.Visits.CUSTOMER_ID);
+		if (odometer == -1) {
+			cv.putNull(MobileStoreContract.Visits.ODOMETER);
+		} else {
+			cv.put(MobileStoreContract.Visits.ODOMETER, odometer);
+		}
+		cv.put(MobileStoreContract.Visits.VISIT_RESULT, visitSubType);
+		// break will finish in detail fragment
+		if (visitSubType == VISITS_RESULT_BREAK) {
+			cv.put(MobileStoreContract.Visits.VISIT_TYPE, 0);
+		} else {
+			cv.put(MobileStoreContract.Visits.VISIT_TYPE, 1);
+		}
+		Date newDate = new Date();
+		cv.put(Visits.VISIT_DATE, DateUtils.toDbDate(newDate));
+		cv.put(Visits.ARRIVAL_TIME, DateUtils.toDbDate(newDate));
+		// do not log departure on break
+		if (visitSubType != VISITS_RESULT_BREAK) {
+			cv.put(Visits.DEPARTURE_TIME, DateUtils.toDbDate(newDate));
+		}
+		getContentResolver().insert(MobileStoreContract.Visits.CONTENT_URI, cv);
+		
+		return true;
+	}
+	
+	private void showDialog() {
+		EditFieldDialog dialog = new EditFieldDialog(RecordVisitsMultipaneActivity.RECORD_VISIT_FIXED_ACTIVITIES, "Realizacija", "Unesite kilometražu", InputType.TYPE_CLASS_NUMBER);
+    	dialog.show(getSupportFragmentManager(), "FIXED_RECORD_DIALOG");
+	}
+	
     @Override
     public void onResume() {
     	super.onResume();
@@ -267,4 +390,42 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(onNotice);
     }
+
+	@Override
+	public void onFinishEditDialog(int dialogId, String inputText) {
+		switch (dialogId) {
+		case RECORD_VISIT_ARRIVAL:
+			RecordVisitDetailFragment detailFragment = null;
+			if (visitsPlanFragmentDetail != null) {
+				detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
+				if (!detailFragment.checkForRecordedVisit()) {
+					detailFragment.recordVisit(Integer.valueOf(inputText));
+				} else {
+					DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Pocetak posete je vec zabelezen!");
+				}
+			}
+			break;
+		case RECORD_VISIT_FIXED_ACTIVITIES:
+			recordVisit(currentVisitResult, Integer.valueOf(inputText));
+			break;
+		default:
+			LogUtils.LOGE(TAG, "Dialog finished with not implemented handler!");
+			LogUtils.LOGE(TAG, String.valueOf(dialogId));
+			break;
+		}
+		
+	}
+
+	@Override
+	public void onFinishEditDepartureVisitDialog(int id, int visitResult, String note) {
+		RecordVisitDetailFragment detailFragment = null;
+		if (visitsPlanFragmentDetail != null) {
+			detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
+			if (detailFragment.checkNotForRecordedVisit()) {
+				detailFragment.recordVisit(visitResult, note);
+			} else {
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Kraj posete je vec zabelezen!");
+			}
+		}
+	}
 }

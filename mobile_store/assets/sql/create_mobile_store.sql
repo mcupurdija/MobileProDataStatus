@@ -18191,7 +18191,7 @@ CREATE TABLE `visits` (
 	`odometer` INTEGER,
 	`departure_time` TEXT,
 	`arrival_time` TEXT,
-	`visit_result` TEXT,
+	`visit_result` INTEGER,
 	`note` TEXT,
 	`sync_object_batch` INTEGER,
 	`is_sent` INTEGER DEFAULT 1,

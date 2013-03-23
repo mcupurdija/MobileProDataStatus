@@ -211,7 +211,8 @@ public class VisitListFromHomeScreenFragment  extends ListFragment implements Lo
         	}
         	
         	int visit_type = cursor.getInt(VisitsQuery.VISIT_TYPE);
-        	String status = cursor.getString(VisitsQuery.VISIT_RESULT);
+        	//int visit_result = cursor.getInt(VisitsQuery.VISIT_RESULT);
+        	String status = "";
         	if (visit_type == 0) {
         		status = "PLAN";
         	} else {

@@ -64,7 +64,7 @@
         android:layout_gravity="left"
         android:ems="10"
         android:hint="@string/password"
-        android:inputType="textPassword"
+        android:inputType="numberPassword"
         android:paddingBottom="5dp" />
 	<!-- Error text -->
     <TextView

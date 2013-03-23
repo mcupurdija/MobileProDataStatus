@@ -258,13 +258,17 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		if (selectedVisitId != null) {
 			odometerEditText.setText(data.getString(VisitsQuery.ODOMETER));
 			departureTimeEditText.setText(DateUtils.formatDbTimeForPresentation(data.getString(VisitsQuery.DEPARTURE_TIME)));
-			String visit_result = data.getString(VisitsQuery.VISIT_RESULT);
-			if (visit_result != null) {
-				int spinnerPosition = visitResultAdapter.getPosition(visit_result);
+			int visit_result_id = -1;
+			if (!data.isNull(VisitsQuery.VISIT_RESULT)) {
+				visit_result_id = data.getInt(VisitsQuery.VISIT_RESULT);
+			}
+			//String visit_result = data.getString(VisitsQuery.VISIT_RESULT);
+			if (visit_result_id != -1) {
+				int spinnerPosition = visit_result_id;
 				if (spinnerPosition != -1) {
 					visitResultEditText.setSelection(spinnerPosition);
 				} else {
-					LogUtils.LOGE("AddVisitActivity", "No position for value:"+visit_result);
+					LogUtils.LOGE("AddVisitActivity", "No position for value:"+visit_result_id);
 				}
 			}
 			noteEditText.setText(data.getString(VisitsQuery.NOTE)==null ? "":data.getString(VisitsQuery.NOTE));
@@ -372,7 +376,7 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		if (selectedVisitType != null && selectedVisitType.equals("1")) { // selectedVisitId != null
 			contentValues.put(Visits.ODOMETER, odometerEditText.getText().toString());
 			contentValues.put(Visits.DEPARTURE_TIME, DateUtils.formatPickerTimeInputForDb(departureTimeEditText.getText().toString()));
-			contentValues.put(Visits.VISIT_RESULT, visitResultEditText.getSelectedItem().toString());
+			contentValues.put(Visits.VISIT_RESULT, visitResultEditText.getSelectedItemPosition());
 			contentValues.put(Visits.NOTE, noteEditText.getText().toString());
 			contentValues.put(Visits.VISIT_TYPE, "1");
 		}

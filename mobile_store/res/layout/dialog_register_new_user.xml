@@ -5,6 +5,7 @@
     android:orientation="vertical" >
     
     <TextView
+        android:id="@+id/dialog_register_user_no_label"
         style="@style/AddEdit_Label"
         android:layout_height="wrap_content"
         android:layout_width="160dp"

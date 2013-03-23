@@ -196,11 +196,23 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
         		customer_name = "-";
         	}
         	final int visit_type = cursor.getInt(VisitsQuery.VISIT_TYPE);
-        	String status = cursor.getString(VisitsQuery.VISIT_RESULT);
+        	int visit_result = -1;
+        	if (!cursor.isNull(VisitsQuery.VISIT_RESULT)) {
+        		visit_result = cursor.getInt(VisitsQuery.VISIT_RESULT);
+        	}
+        	String status = "";
         	if (visit_type == 0) {
         		status = "PLAN";
         	} else {
         		status = "REALIZACIJA";
+        	}
+        		
+        	if (visit_result == 0) {
+        		customer_no = "POČETAK DANA";
+        	} else if (visit_result == 4) {
+        		customer_no = "KRAJ DANA";
+        	} else if (visit_result == 5) {
+        		customer_no = "POVRATAK KUĆI";
         	}
         	
 			((TextView) view.findViewById(R.id.visit_subtitle1)).setText(customer_no);

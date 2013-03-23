@@ -26,9 +26,9 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.format.DateUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
@@ -238,11 +238,23 @@ public class RecordVisitsListFragment extends ListFragment implements
         		customer_name = "-";
         	}
         	
-        	String status = cursor.getString(RecordVisitsQuery.VISIT_RESULT);
+        	int visit_result = -1;
+        	if (!cursor.isNull(RecordVisitsQuery.VISIT_RESULT)) {
+        		visit_result = cursor.getInt(RecordVisitsQuery.VISIT_RESULT);
+        	}
+        	String status = "";
         	if (visit_type == 0) {
         		status = "PLAN";
         	} else {
         		status = "REALIZACIJA";
+        	}
+        		
+        	if (visit_result == 0) {
+        		customer_no = "POČETAK DANA";
+        	} else if (visit_result == 4) {
+        		customer_no = "KRAJ DANA";
+        	} else if (visit_result == 5) {
+        		customer_no = "POVRATAK KUĆI";
         	}
 
 			((TextView) view.findViewById(R.id.visit_subtitle1)).setText(customer_no);

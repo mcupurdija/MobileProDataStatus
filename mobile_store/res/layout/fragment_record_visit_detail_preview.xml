@@ -4,6 +4,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <LinearLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+	    <Button
+            android:id="@+id/start_visit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="5dp"
+            android:text="@string/start_visit_button_title" />
+    	<Button
+            android:id="@+id/end_visit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="5dp"
+            android:text="@string/end_visit_button_title" />
+    </LinearLayout>
     <TextView
         android:id="@+id/visit_customer_no_name_label"
         style="@style/AddEdit_Label"

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/day_start_record_visit"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/day_start_record_visit_menu_title"/>
+    <item
+        android:id="@+id/day_break_visit"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/day_break_visit_menu_title"/>
+    <item
+        android:id="@+id/day_end_record_visit"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/day_end_record_visit_menu_title"/>
+    <item
+        android:id="@+id/day_end_back_home_visit"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/day_end_back_home_visit_menu_title"/>
+
+</menu>
