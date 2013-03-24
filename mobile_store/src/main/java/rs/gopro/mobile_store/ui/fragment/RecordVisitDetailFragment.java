@@ -185,7 +185,7 @@ public class RecordVisitDetailFragment extends Fragment implements
 	public boolean recordVisit(int odometer) {
 		ContentValues cv = new ContentValues();
 		
-		cv.putNull(MobileStoreContract.Visits.CUSTOMER_ID);
+		//cv.putNull(MobileStoreContract.Visits.CUSTOMER_ID);
 		if (odometer == -1) {
 			cv.putNull(MobileStoreContract.Visits.ODOMETER);
 		} else {

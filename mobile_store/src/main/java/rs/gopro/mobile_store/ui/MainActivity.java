@@ -291,6 +291,12 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             final Intent customersIntent = new Intent(Intent.ACTION_VIEW, customersuri);
             startActivity(customersIntent);
 			return true;
+		case R.id.main_shortcuts_new_sale_order:
+			Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT,
+					MobileStoreContract.SaleOrders.CONTENT_URI);
+//			startActivityForResult(newSaleOrderIntent, CALL_INSERT);
+			startActivity(newSaleOrderIntent);
+			return true;
 		default:
 			break;
 		}

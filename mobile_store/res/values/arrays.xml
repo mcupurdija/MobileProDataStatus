@@ -116,6 +116,7 @@
         <item>Company</item>
     </string-array>
     <string-array name="backorder_type_array">
+        <item>-</item>
         <item>Don\'t order</item>
         <item>Order</item>
         <item>Reserve and order</item>

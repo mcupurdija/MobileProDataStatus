@@ -122,10 +122,12 @@ public class SentOrdersFragment extends ListFragment implements LoaderCallbacks<
         if (customer_no.equals("noCustomer") && document_status == -1) {
         	baseUri = MobileStoreContract.SaleOrders.CONTENT_URI;
         	filter = Tables.SALE_ORDERS + "."
-					+ SaleOrders.SALES_ORDER_NO + " is not null";
+					+ SaleOrders.SALES_ORDER_NO + " is not null";// + Tables.SALE_ORDERS + "."
+					//+ SaleOrders.SALES_ORDER_DEVICE_NO + " is not null";
         } else {
         	baseUri = SaleOrders.buildCustomSearchUri(customer_no, String.valueOf(document_status), ApplicationConstants.OrderType.SENT_ORDER.getType());
-        	filter = null;
+        	filter = null;//Tables.SALE_ORDERS + "."
+					//+ SaleOrders.SALES_ORDER_DEVICE_NO + " is not null";
         }
 		
 		CursorLoader cursorLoader = new CursorLoader(getActivity(),

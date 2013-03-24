@@ -1,33 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
     <item
         android:id="@+id/main_options_visits_details"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/menu_visits_option" 
-        android:visible="false" />
+        android:title="@string/menu_visits_option"
+        android:visible="false"/>
     <item
         android:id="@+id/main_options_sale_order_details"
         android:showAsAction="ifRoom|withText"
         android:title="@string/menu_sale_order_option"
-        android:visible="false" />
+        android:visible="false"/>
     <item
         android:id="@+id/main_options_sale_order_sent_details"
         android:showAsAction="ifRoom|withText"
         android:title="@string/menu_sale_order_sent_option"
-        android:visible="false" />
+        android:visible="false"/>
     <item
         android:id="@+id/main_options_customers_details"
         android:showAsAction="ifRoom|withText"
         android:title="@string/menu_customers_option"
-        android:visible="false" />
+        android:visible="false"/>
     <item
         android:id="@+id/main_options_record_visits_details"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/menu_record_visits_option" 
-        android:visible="false" />
+        android:title="@string/menu_record_visits_option"
+        android:visible="false"/>
     <item
-        android:id="@+id/create_settings_activity"
+        android:id="@+id/shortcuts"
         android:icon="@drawable/ic_action_settings"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/title_settings" />
+        android:title="Prečice">
+        <menu>
+            <item
+                android:id="@+id/main_shortcuts_new_sale_order"
+                android:showAsAction="ifRoom|withText"
+                android:title="Nova porudzbina"/>
+            <item
+                android:id="@+id/create_settings_activity"
+                android:icon="@drawable/ic_action_settings"
+                android:showAsAction="ifRoom|withText"
+                android:title="Podešavanja"/>
+            >
+        </menu>
+    </item>
+
 </menu>
