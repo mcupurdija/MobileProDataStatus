@@ -6,6 +6,7 @@ import java.util.Date;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.RecordVisitsMultipaneActivity;
@@ -38,6 +39,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 
 	private static final String STATE_SELECTED_ID = "selectedId";
 	private static final String VISITS_DATE_FILTER = "DATE("+Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_DATE+")=DATE(?)";
+	private static final String ORDER_BY_VISITS_FILTER = "DATE("+"visits." + Visits.VISIT_DATE+")" + " DESC, visits." + Visits.ARRIVAL_TIME+" ASC";
 
 	private Uri mVisitsUri;
 //	private String mAction;
@@ -133,7 +135,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, VISITS_DATE_FILTER, new String[] { DateUtils.toDbDate(new Date()) }, MobileStoreContract.Visits.DEFAULT_SORT);
+		return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, VISITS_DATE_FILTER, new String[] { DateUtils.toDbDate(new Date()) }, ORDER_BY_VISITS_FILTER);
 	}
 
 	@Override

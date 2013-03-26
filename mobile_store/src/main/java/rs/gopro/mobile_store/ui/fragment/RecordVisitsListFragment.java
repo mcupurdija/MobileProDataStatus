@@ -9,6 +9,7 @@ import java.util.List;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.widget.SimpleSelectionedListAdapter;
 import rs.gopro.mobile_store.util.LogUtils;
@@ -40,6 +41,7 @@ public class RecordVisitsListFragment extends ListFragment implements
 	private static final String STATE_SELECTED_ID = "selectedId";
 //	private static final String VISITS_TYPE_FILTER = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_TYPE+"=?";
 	private static final String VISITS_DATE_FILTER = "DATE("+Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_DATE+")=DATE(?)";
+	private static final String ORDER_BY_VISITS_FILTER = "DATE("+"visits." + Visits.VISIT_DATE+")" + " DESC, visits." + Visits.ARRIVAL_TIME+" ASC";
 	
 	private String mDateFilterValue = null;
 	private Uri mVisitsUri;
@@ -149,7 +151,7 @@ public class RecordVisitsListFragment extends ListFragment implements
 			mDateFilterValue = rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date());
 		}
 		return new CursorLoader(getActivity(), mVisitsUri, RecordVisitsQuery.PROJECTION, VISITS_DATE_FILTER, new String[] { mDateFilterValue },
-                MobileStoreContract.Visits.DEFAULT_SORT);
+				ORDER_BY_VISITS_FILTER);
 	}
 
 	@Override

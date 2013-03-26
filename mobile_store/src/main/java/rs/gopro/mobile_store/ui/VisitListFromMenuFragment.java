@@ -3,6 +3,7 @@ package rs.gopro.mobile_store.ui;
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
@@ -33,6 +34,7 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 
 	private static final String STATE_SELECTED_ID = "selectedId";
 //	private static final String VISITS_DATE_FILTER = "DATE("+Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_DATE+")=DATE(?)";
+	private static final String ORDER_BY_VISITS_FILTER = "DATE("+"visits." + Visits.VISIT_DATE+")" + " DESC, visits." + Visits.ARRIVAL_TIME+" ASC";
 
 	private Uri mVisitsUri;
 //	private String mAction;
@@ -128,7 +130,7 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, null, null, MobileStoreContract.Visits.DEFAULT_SORT);
+		return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, null, null, ORDER_BY_VISITS_FILTER);
 	}
 
 	@Override
