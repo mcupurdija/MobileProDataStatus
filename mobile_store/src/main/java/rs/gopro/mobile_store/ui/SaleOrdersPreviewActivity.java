@@ -41,6 +41,8 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 	private static final int VERIFY_SALE_DOC = 1;
 //	public static final int CALL_INSERT = 1;
 //	public static final int CALL_EDIT = 2;
+	private static final int NEW_SALE_ORDER_REQUEST_CODE = 1;
+	private static final String SALE_ORDER_LIST_TAG = "SaleOrderListTag";
 	
 	ActionMode actionMod;
 	
@@ -248,7 +250,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 				.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW,
 						salesOrdersUri)));
 		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.fragment_sale_orders_list, fragment).commit();
+				.replace(R.id.fragment_sale_orders_list, fragment, SALE_ORDER_LIST_TAG).commit();
 	}
 
 	private void loadSaleOrderLines(Uri linesUri) {
@@ -305,7 +307,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT,
 					MobileStoreContract.SaleOrders.CONTENT_URI);
 //			startActivityForResult(newSaleOrderIntent, CALL_INSERT);
-			startActivity(newSaleOrderIntent);
+			startActivityForResult(newSaleOrderIntent, NEW_SALE_ORDER_REQUEST_CODE);
 			return true;
 		case R.id.edit_lines_sale_order_action_menu_option:
 			// TODO sale order lines goes here
@@ -339,6 +341,22 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		}
 		
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == NEW_SALE_ORDER_REQUEST_CODE) {
+			if (resultCode == RESULT_OK) {
+				String saleOrderId = data.getStringExtra("saleOrderId");
+				Fragment fragment = getSupportFragmentManager().findFragmentByTag(SALE_ORDER_LIST_TAG);
+				if (fragment != null) {
+					((SaleOrdersPreviewListFragment) fragment).setSelectedSalesOrderId(saleOrderId);
+				}
+			}
+			if (resultCode == RESULT_CANCELED) {
+			}
+		}
 	}
 	
 	@Override

@@ -1064,6 +1064,9 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		localValues.put(MobileStoreContract.SaleOrders.DOCUMENT_TYPE, Integer.valueOf(document_type));
 		
 		int backorder_type = backorderType.getSelectedItemPosition();
+		if (backorder_type == 0) {
+			throw new SaleOrderValidationException("Način obrade nije izabran!");
+		}
 		localValues.put(MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS, Integer.valueOf(backorder_type));
 		
 		String location = locationType.getSelectedItem().toString();
@@ -1177,6 +1180,12 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
         		Toast toast = Toast.makeText(this, text, duration);
         		toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 10);
         		toast.show();
+        		
+        		String document_id = MobileStoreContract.SaleOrders.getSaleOrderId(mUri);
+        		Intent returnIntent = new Intent();
+        		returnIntent.putExtra("saleOrderId", document_id);
+        		setResult(RESULT_OK, returnIntent);    
+        		
         		finish();
 			} catch (SaleOrderValidationException e) {
 				//finish();
