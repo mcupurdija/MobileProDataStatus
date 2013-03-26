@@ -280,7 +280,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		this.pDiscountPctAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pDiscountPctAsTxt"));
 		this.pSubstituteItemNoa46 = soapResponse.getPropertyAsString("pSubstituteItemNoa46");
 		this.pOutstandingPurchaseLinesTxt = soapResponse.getPropertyAsString("pOutstandingPurchaseLinesTxt");
-		this.pMinimumSalesQuantityTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pMinimumSalesQuantityTxt"));
+		this.pMinimumSalesQuantityTxt = soapResponse.getPropertyAsString("pMinimumSalesQuantityTxt");
 	}
 
 	@Override

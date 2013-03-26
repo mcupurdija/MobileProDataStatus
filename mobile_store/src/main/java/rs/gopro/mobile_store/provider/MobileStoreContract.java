@@ -26,6 +26,7 @@ public class MobileStoreContract {
 	private static final String PATH_SALE_ORDERS_LIST = "sale_orders_list";
 	private static final String PATH_SALE_ORDERS_EXPORT = "sale_orders_export";
 	private static final String PATH_SALE_ORDERS_SALDO = "sale_orders_saldo";
+	private static final String PATH_SALE_ORDERS_CLONE = "sale_orders_clone";
 	private static final String PATH_SALE_ORDER_LINES = "sale_order_lines";
 	private static final String PATH_SALE_ORDER_LINES_FROM_ORDER = "sale_order_lines_from_order";
 	private static final String PATH_SALE_ORDER_LINES_EXPORT = "sale_order_lines_export";
@@ -709,6 +710,10 @@ public class MobileStoreContract {
 		
 		public static Uri buildSaleOrderSaldo() {
 			return CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDERS_SALDO).build();
+		}
+		
+		public static Uri buildSaleOrderClone() {
+			return CONTENT_URI.buildUpon().appendPath(PATH_SALE_ORDERS_CLONE).build();
 		}
 		
 		public static String getSalesPersonId(Uri uri) {

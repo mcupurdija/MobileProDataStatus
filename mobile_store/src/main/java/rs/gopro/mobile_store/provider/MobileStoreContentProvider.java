@@ -81,6 +81,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int SENT_ORDER_CUSTOM_SEARCH = 146;
 	private static final int SENT_ORDER_BY_STATUS = 147;
 	private static final int SALE_ORDERS_SALDO = 148;
+	private static final int SALE_ORDERS_CLONE = 149;
 	
 	private static final int VISITS = 200;
 	private static final int VISIT_ID = 201;
@@ -183,6 +184,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_orders/sale_orders_export", SALE_ORDER_EXPORT);
 		mobileStoreURIMatcher.addURI(authority,
+				"sale_orders/sale_orders_clone", SALE_ORDERS_CLONE);
+		mobileStoreURIMatcher.addURI(authority,
 				"sale_orders/sale_orders_saldo", SALE_ORDERS_SALDO);
 		mobileStoreURIMatcher.addURI(authority, "sale_orders/#", SALE_ORDER);
 		mobileStoreURIMatcher.addURI(authority, "sale_orders_list/*",
@@ -197,8 +200,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 				"sale_orders/*/*/*/custom_search", SALE_ORDER_CUSTOM_SEARCH);
 		mobileStoreURIMatcher.addURI(authority,
 				"sale_orders/#/*/*/custom_search", SALE_ORDER_CUSTOM_SEARCH);
-		mobileStoreURIMatcher.addURI(authority,
-				"sale_orders_export", SALE_ORDER_EXPORT);
+//		mobileStoreURIMatcher.addURI(authority,
+//				"sale_orders_export", SALE_ORDER_EXPORT);
 		
 		// custom_search
 		mobileStoreURIMatcher.addURI(authority, "sent_orders/*/*/custom_search",
@@ -346,6 +349,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.SALE_ORDERS, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return SaleOrders.buildSaleOrderUri("" + id);
+		case SALE_ORDER_LINES:
+			id = database.insertOrThrow(Tables.SALE_ORDER_LINES, null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return SaleOrderLines.buildSaleOrderLineUri("" + id);
 		case SALE_ORDER_LINES_FROM_ORDER:
 			id = database.insertOrThrow(Tables.SALE_ORDER_LINES, null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
@@ -633,6 +640,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			String saleOrderId = SaleOrders.getSaleOrderId(uri);
 			return builder.addTable(Tables.SALE_ORDERS)
 					.where(Tables.SALE_ORDERS + "." + SaleOrders._ID + "=?", saleOrderId);
+		case SALE_ORDERS_CLONE:
+			return builder.addTable(Tables.SALE_ORDERS);
 		case SALE_ORDERS:
 			return builder
 					.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS)

@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.widget.SaleOrderContextualMenu;
@@ -14,11 +15,13 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -338,9 +341,45 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			startService(intent);
 			sendSaleOrderProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.dialog_title_sale_order_send), getResources().getString(R.string.dialog_body_sale_order_send), true, true);
 			return true;
+		case R.id.clone_sale_order_menu_option:
+			if (saleOrderId == null) {
+				return true;
+			}
+			cloneDocument();
+			return true;
 		}
 		
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void cloneDocument() {
+		ContentValues documentHeaderContentValues = new ContentValues();
+		Cursor documentHeaderCursor = getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderClone(), null, Tables.SALE_ORDERS+"._id=?", new String[] { saleOrderId }, null);
+		if (documentHeaderCursor.moveToFirst()) {
+			DatabaseUtils.cursorRowToContentValues(documentHeaderCursor, documentHeaderContentValues);
+			documentHeaderContentValues.put(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO, "LIF/C/"+salesPersonNo+"-"+saleOrderId);
+			documentHeaderContentValues.putNull(MobileStoreContract.SaleOrders.SALES_ORDER_NO);
+			documentHeaderContentValues.remove(MobileStoreContract.SaleOrders._ID);
+			
+			Uri clonedDocumentUri = getContentResolver().insert(MobileStoreContract.SaleOrders.CONTENT_URI, documentHeaderContentValues);
+			
+			String clonedDocumentId = MobileStoreContract.SaleOrders.getSaleOrderId(clonedDocumentUri);
+			if (clonedDocumentId != null) {
+				Cursor documentLinesCursor = getContentResolver().query(MobileStoreContract.SaleOrderLines.CONTENT_URI, null, Tables.SALE_ORDER_LINES+"."+SaleOrderLines.SALE_ORDER_ID+"=?", new String[] { saleOrderId }, null);
+				if (documentLinesCursor.moveToFirst()) {
+					ContentValues documentLineContentValues;
+					do {
+						documentLineContentValues = new ContentValues();
+						DatabaseUtils.cursorRowToContentValues(documentLinesCursor, documentLineContentValues);
+						documentLineContentValues.remove(SaleOrderLines._ID);
+						documentLineContentValues.put(SaleOrderLines.SALE_ORDER_ID, clonedDocumentId);
+						getContentResolver().insert(SaleOrderLines.CONTENT_URI, documentLineContentValues);
+					} while(documentLinesCursor.moveToNext());
+					documentLinesCursor.close();
+				}
+			}
+		}
+		documentHeaderCursor.close();
 	}
 	
 	@Override

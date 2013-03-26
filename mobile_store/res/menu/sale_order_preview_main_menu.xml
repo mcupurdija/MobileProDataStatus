@@ -11,10 +11,14 @@
         android:title="@string/contextual_edit_lines"/>
      <item
         android:id="@+id/verify_sale_order_action_menu_option"
-        android:showAsAction="ifRoom"
+        android:showAsAction="ifRoom|withText"
         android:title="@string/contextual_verify_sale_order"/>
      <item
         android:id="@+id/send_sale_order_action_menu_option"
-        android:showAsAction="ifRoom"
+        android:showAsAction="ifRoom|withText"
         android:title="@string/contextual_send_sale_order"/>
+     <item
+        android:id="@+id/clone_sale_order_menu_option"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/contextual_clone_sale_order"/>
 </menu>
