@@ -35,7 +35,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 	private String pDiscountPctAsTxt;
 	private String pSubstituteItemNoa46;
 	private String pOutstandingPurchaseLinesTxt;
-	private String pMinimumSalesUnitQuantityTxt;
+	private String pMinimumSalesQuantityTxt;
 	
 	public static final Creator<ItemQtySalesPriceAndDiscSyncObject> CREATOR = new Creator<ItemQtySalesPriceAndDiscSyncObject>() {
 
@@ -99,7 +99,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		this.pDiscountPctAsTxt = pDiscountPctAsTxt;
 		this.pSubstituteItemNoa46 = pSubstituteItemNoa46;
 		this.pOutstandingPurchaseLinesTxt = pOutstandingPurchaseLinesTxt;
-		this.pMinimumSalesUnitQuantityTxt = ""; // can set like this because it is return parameter
+		this.pMinimumSalesQuantityTxt = ""; // can set like this because it is return parameter
 	}
 
 	@Override
@@ -242,8 +242,8 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		properies.add(outstandingPurchaseLinesTxt);
 		
 		PropertyInfo minimumSalesUnitQuantityTxt = new PropertyInfo();
-		minimumSalesUnitQuantityTxt.setName("pMinimumSalesUnitQuantityTxt");
-		minimumSalesUnitQuantityTxt.setValue(pMinimumSalesUnitQuantityTxt);
+		minimumSalesUnitQuantityTxt.setName("pMinimumSalesQuantityTxt");
+		minimumSalesUnitQuantityTxt.setValue(pMinimumSalesQuantityTxt);
 		minimumSalesUnitQuantityTxt.setType(String.class);
 		properies.add(minimumSalesUnitQuantityTxt);
 		
@@ -280,7 +280,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		this.pDiscountPctAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pDiscountPctAsTxt"));
 		this.pSubstituteItemNoa46 = soapResponse.getPropertyAsString("pSubstituteItemNoa46");
 		this.pOutstandingPurchaseLinesTxt = soapResponse.getPropertyAsString("pOutstandingPurchaseLinesTxt");
-		this.pMinimumSalesUnitQuantityTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pMinimumSalesUnitQuantityTxt"));
+		this.pMinimumSalesQuantityTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pMinimumSalesQuantityTxt"));
 	}
 
 	@Override
@@ -430,10 +430,10 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 	}
 
 	public String getpMinimumSalesUnitQuantityTxt() {
-		return pMinimumSalesUnitQuantityTxt;
+		return pMinimumSalesQuantityTxt;
 	}
 
 	public void setpMinimumSalesUnitQuantityTxt(String pMinimumSalesUnitQuantityTxt) {
-		this.pMinimumSalesUnitQuantityTxt = pMinimumSalesUnitQuantityTxt;
+		this.pMinimumSalesQuantityTxt = pMinimumSalesUnitQuantityTxt;
 	}
 }

@@ -7,6 +7,9 @@ import java.util.Date;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
+import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.ui.components.ContactSpinnerAdapter;
 import rs.gopro.mobile_store.ui.components.CustomerAddressSpinnerAdapter;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.util.DateUtils;
@@ -86,6 +89,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		MobileStoreContract.SaleOrders.CONTACT_ID,
 		MobileStoreContract.SaleOrders.CONTACT_NAME,
 		MobileStoreContract.SaleOrders.CONTACT_PHONE,
+		MobileStoreContract.SaleOrders.CONTACT_EMAIL,
 		MobileStoreContract.SaleOrders.PAYMENT_OPTION,
 		MobileStoreContract.SaleOrders.CHECK_STATUS_PHONE,
 		MobileStoreContract.SaleOrders.TOTAL,
@@ -104,7 +108,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		MobileStoreContract.Contacts.CONTACT_NO,
 		MobileStoreContract.Contacts.NAME,
 		MobileStoreContract.Contacts.NAME2,
-		MobileStoreContract.Contacts.PHONE
+		MobileStoreContract.Contacts.PHONE,
+		MobileStoreContract.Contacts.EMAIL
 	};
 	
 	private static String[]  CUSTOMER_PROJECTION = new String[] { 
@@ -115,7 +120,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		MobileStoreContract.Customers.PHONE,
 		MobileStoreContract.Customers.CITY,
 		MobileStoreContract.Customers.ADDRESS,
-		MobileStoreContract.Customers.POST_CODE
+		MobileStoreContract.Customers.POST_CODE,
+		MobileStoreContract.Customers.CONTACT_COMPANY_NO
 		
 	};
 	
@@ -142,6 +148,9 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private CustomerAutocompleteCursorAdapter customerAutoCompleteAdapter;
     private AutoCompleteTextView transitCustomerAutoComplete;
     private CustomerAutocompleteCursorAdapter transitCustomerAutoCompleteAdapter;
+    private Spinner contactSpinner;
+    private ContactSpinnerAdapter contactSpinnerAdapter;
+    
     private TextView documentNo;
     private Spinner documentType;
     ArrayAdapter<CharSequence> docAdapter;
@@ -158,9 +167,10 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private CustomerAddressSpinnerAdapter billingAddressAdapter;
     private CustomerAddressSpinnerAdapter shippingAddressAdapter;
     private Integer customerContactId;
-    private TextView customerContactNo;
+   // private TextView customerContactNo;
     private EditText contactName;
     private EditText contactPhone;
+    private EditText contactEmail;
     
     private EditText shippingAddressField;
     private EditText shippingAddressCity;
@@ -194,6 +204,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 
     private int shippingAddressId = -1;
     private int billingAddressId = -1;
+    private int contactId = -1;
     
     private String orderDate = null;
     
@@ -296,12 +307,30 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		documentType.setAdapter(docAdapter);
 		
 		documentNo = (TextView) findViewById(R.id.edit_sale_order_dokument_no_text);
-		
-		customerContactNo = (TextView) findViewById(R.id.edit_sale_order_contact_no_text);
+
 	    contactName = (EditText) findViewById(R.id.edit_sale_order_contact_name_text);
 	    contactPhone = (EditText) findViewById(R.id.edit_sale_order_contact_phone_text);
 	    orderNo = (EditText) findViewById(R.id.edit_sale_order_quote_no_edit_text);
+	    contactEmail = (EditText) findViewById(R.id.edit_sale_order_contact_email_text);
 		
+		contactSpinner = (Spinner) findViewById(R.id.edit_sale_order_contact_no_text);
+		contactSpinnerAdapter = new ContactSpinnerAdapter(this, null, 0);
+		contactSpinner.setAdapter(contactSpinnerAdapter);
+		getSupportLoaderManager().initLoader(CONTACT_HEADER_LOADER, null, this);
+		contactSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				Cursor selectedData = (Cursor) contactSpinnerAdapter.getItem(arg2);
+				loadContactValues(selectedData);
+				//getSupportLoaderManager().restartLoader(SHIPPING_ADDRESS_LOADER, null, SaleOrderAddEditActivity.this);		
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		});
+	    
 		backorderAdapter = ArrayAdapter.createFromResource(this, R.array.backorder_type_array, android.R.layout.simple_spinner_item);
 		backorderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		backorderType = (Spinner) findViewById(R.id.edit_sale_order_backorder_spinner);
@@ -430,6 +459,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		String contact_name = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CONTACT_NAME));
 		String contact_phone = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CONTACT_PHONE));
+		String contact_email = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CONTACT_EMAIL));
 		String order_no = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.QUOTE_NO));
 		
 		int backorder_status = -1;
@@ -446,6 +476,11 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		int sell_to_address_id = -1;
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID))) {
 			sell_to_address_id = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID));
+		}
+		
+		int contact_id = -1;
+		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CONTACT_ID))) {
+			contact_id = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CONTACT_ID));
 		}
 		
 		int shipp_to_address_id = -1;
@@ -506,7 +541,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		// globals because in init customer it will load combo box
 		shippingAddressId = shipp_to_address_id;
 		billingAddressId = sell_to_address_id;
-		
+		contactId = contact_id;
+				
 		if (customer_id != -1) {
 			initCustomerLoad(customer_id, "MAIN");
 		}
@@ -531,6 +567,10 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		if (contact_phone != null) {
 			contactPhone.setText(contact_phone);
+		}
+		
+		if (contact_email != null) {
+			contactEmail.setText(contact_email);
 		}
 		
 		if (order_no != null) {
@@ -617,6 +657,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		orderNo.setFocusable(false);
 	    contactName.setFocusable(false);
 	    contactPhone.setFocusable(false);
+	    contactEmail.setFocusable(false);
 		backorderType.setFocusable(false);
 		salesType.setFocusable(false);
 		locationType.setFocusable(false);
@@ -625,6 +666,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		transitCustomerAutoComplete.setFocusable(false);
 		shippingAddress.setFocusable(false);
 		billingAddress.setFocusable(false);
+		contactSpinner.setFocusable(false);
 		hideDiscount.setFocusable(false);
 		showDeclaration.setFocusable(false);
 	}
@@ -650,8 +692,9 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			cursorLoader = new CursorLoader(this, MobileStoreContract.CustomerAddresses.buildSearchByCustomerNoUri(customerFilter), CUSTOMER_ADDRESS_PROJECTION, null, null, MobileStoreContract.CustomerAddresses.DEFAULT_SORT);
 			return cursorLoader;
 		case CONTACT_HEADER_LOADER:
-			int contactId = args.getInt("PRIMARY_CONTACT_ID");
-			cursorLoader = new CursorLoader(this, MobileStoreContract.Contacts.buildContactsUri(String.valueOf(contactId)), CONTACT_PROJECTION, null, null, null);
+			//int contactId = args.getInt("PRIMARY_CONTACT_ID");
+			String potentialCustomerNo = args == null ? null : args.getString("POTENTIAL_CUSTOMER_NO");
+			cursorLoader = new CursorLoader(this, MobileStoreContract.Contacts.CONTENT_URI, CONTACT_PROJECTION, Tables.CONTACTS+"."+Contacts.COMPANY_NO+"=?", new String[] { potentialCustomerNo == null ? "" : potentialCustomerNo }, null);
 			return cursorLoader;
 		case CUSTOMER_HEADER_LOADER:
 			int customerId = args.getInt("CUSTOMER_ID");
@@ -718,8 +761,20 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			break;
 		case CONTACT_HEADER_LOADER:
 			if (data != null && data.moveToFirst()) {
+				contactSpinnerAdapter.swapCursor(data);
+				
+				if (contactId != -1) {
+					int spinnerPosition =  contactSpinnerAdapter.getIdPostition(contactId);
+					if (spinnerPosition != -1) {
+						contactSpinner.setSelection(spinnerPosition);
+						data.moveToPosition(spinnerPosition);
+					}
+					contactId = -1;
+				}
+				
 				loadContactValues(data);
 			} else {
+				contactSpinnerAdapter.swapCursor(null);
 				LogUtils.LOGE(TAG, "Cursor empty for CONTACT_HEADER_LOADER!");
 			}
 			break;
@@ -757,6 +812,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			loadBillingAddressValues(null);
 			break;
 		case CONTACT_HEADER_LOADER:
+			contactSpinnerAdapter.swapCursor(null);
 			break;
 		case CUSTOMER_HEADER_LOADER:
 			break;
@@ -826,7 +882,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			return;
 		}
 		customerContactId = Integer.valueOf(data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Contacts._ID)));
-		customerContactNo.setText(data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.CONTACT_NO)));
+		//customerContactNo.setText(data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.CONTACT_NO)));
 		String contactName1 = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.NAME));
 		String contactName2 = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.NAME2));
 		String contactNameWhole = (contactName1 != null ? contactName1:"") + (contactName2 != null ? contactName2:"");
@@ -837,6 +893,10 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		String contactPhoneLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.PHONE));
 		if (contactPhone.getText().toString().trim().equals("")) {
 			contactPhone.setText(contactPhoneLocal != null?contactPhoneLocal:"");
+		}
+		String contactEmailLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.EMAIL));
+		if (contactEmail.getText().toString().trim().equals("")) {
+			contactEmail.setText(contactEmailLocal != null?contactEmailLocal:"");
 		}
 	}
 
@@ -893,7 +953,9 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	@Override
 	public void onItemClick(AdapterView<?> parent, View arg1, int position, long id) {
 		Cursor cursor = (Cursor)parent.getAdapter().getItem(position);
-		int customerNoPosition = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);	
+		int customerNoPosition = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
+		int potentialCustomerNoPosition = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.CONTACT_COMPANY_NO);
+		String potentialCustomerNo = cursor.getString(potentialCustomerNoPosition);
 		this.selectedCustomerNo = cursor.getString(customerNoPosition);
 		int customerContactId = -1;
 		if (!cursor.isNull(cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.PRIMARY_CONTACT_ID))) {
@@ -907,11 +969,12 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		//getSupportLoaderManager().restartLoader(BILLING_ADDRESS_LOADER, null, this);
 		//getSupportLoaderManager().restartLoader(SHIPPING_ADDRESS_LOADER, null, this);
-		if (customerContactId != -1) {
-			Bundle contactBundle = new Bundle();
-			contactBundle.putInt("PRIMARY_CONTACT_ID", customerContactId);
-			getSupportLoaderManager().restartLoader(CONTACT_HEADER_LOADER, contactBundle, this);
-		}
+//		if (customerContactId != -1) {
+		Bundle contactBundle = new Bundle();
+		contactBundle.putInt("PRIMARY_CONTACT_ID", customerContactId);
+		contactBundle.putString("POTENTIAL_CUSTOMER_NO", potentialCustomerNo);
+		getSupportLoaderManager().restartLoader(CONTACT_HEADER_LOADER, contactBundle, this);
+//		}
 	}
 
 	/**
@@ -1034,6 +1097,13 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			localValues.putNull(MobileStoreContract.SaleOrders.CONTACT_ID);
 		}
 		
+		String contact_email = contactEmail.getText().toString().trim();
+		if (contact_email != null && !contact_email.equals("")) {
+			localValues.put(MobileStoreContract.SaleOrders.CONTACT_EMAIL, contact_email);
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrders.CONTACT_EMAIL);
+		}
+		
 		String contact_phone = contactPhone.getText().toString().trim();
 		if (contact_phone != null && !contact_phone.equals("")) {
 			localValues.put(MobileStoreContract.SaleOrders.CONTACT_PHONE, contact_phone);
@@ -1057,6 +1127,20 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			localValues.put(MobileStoreContract.SaleOrders.QUOTE_NO, order_no);
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrders.QUOTE_NO);
+		}
+		
+		String doc_note = documentNote.getText().toString().trim();
+		if (doc_note != null && !doc_note.equals("")) {
+			localValues.put(MobileStoreContract.SaleOrders.NOTE1, doc_note);
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrders.NOTE1);
+		}
+		
+		String headq_note = headquartersNote.getText().toString().trim();
+		if (headq_note != null && !headq_note.equals("")) {
+			localValues.put(MobileStoreContract.SaleOrders.NOTE2, headq_note);
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrders.NOTE2);
 		}
 		
 		int order_condition_status = orderConditionStatus.getSelectedItemPosition();

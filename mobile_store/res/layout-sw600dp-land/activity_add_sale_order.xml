@@ -100,15 +100,15 @@
                 android:gravity="center_vertical"
                 android:text="@string/contact_no_label" />
 
-            <TextView
+            <Spinner
                 android:id="@+id/edit_sale_order_contact_no_text"
-                style="@style/AddEdit_Text_Value"
+                style="EditEvent_Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:gravity="center_vertical"
-                android:text="@string/contact_title" />
+                android:gravity="center_vertical" />
         </TableRow>
         
         <TableRow
@@ -134,10 +134,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dip"
                     android:layout_marginRight="16dip"
-                    android:layout_weight="5"
+                    android:layout_weight="3"
                     android:gravity="center_vertical"
-                    android:text="@string/contact_name_title" />
-
+                    android:hint="@string/contact_name_title" />
                 <EditText
                     android:id="@+id/edit_sale_order_contact_phone_text"
                     style="@style/AddEdit_Text_Value"
@@ -145,9 +144,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dip"
                     android:layout_marginRight="16dip"
-                    android:layout_weight="5"
+                    android:layout_weight="3"
                     android:gravity="center_vertical"
-                    android:text="@string/contact_phone_title" />
+                    android:hint="@string/contact_phone_title" />
+                <EditText
+                    android:id="@+id/edit_sale_order_contact_email_text"
+                    style="@style/AddEdit_Text_Value"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dip"
+                    android:layout_marginRight="16dip"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:hint="Email" />
             </LinearLayout>
         </TableRow>
         

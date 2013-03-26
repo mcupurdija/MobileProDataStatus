@@ -262,6 +262,15 @@ public class VisitListFragment extends ListFragment implements
         	} else {
         		view.setActivated(false);
         	}
+        	String arrivalTime = "\\";
+	        if (!cursor.isNull(VisitsQuery.ARRIVAL_TIME)) { 
+	        	arrivalTime = rs.gopro.mobile_store.util.DateUtils.formatDbTimeForPresentation(cursor.getString(VisitsQuery.ARRIVAL_TIME));
+	        }
+	        
+	        String departureTime = "\\";
+	        if (!cursor.isNull(VisitsQuery.DEPARTURE_TIME)) { 
+	        	departureTime = rs.gopro.mobile_store.util.DateUtils.formatDbTimeForPresentation(cursor.getString(VisitsQuery.DEPARTURE_TIME));
+	        }
         	String customer_no = cursor.getString(VisitsQuery.CUSTOMER_NO);
         	String customer_name = cursor.getString(VisitsQuery.CUSTOMER_NAME);//  + cursor.getString(VisitsQuery.CUSTOMER_NAME2);
         	final int visit_type = cursor.getInt(VisitsQuery.VISIT_TYPE);
@@ -280,8 +289,7 @@ public class VisitListFragment extends ListFragment implements
 
 			((TextView) view.findViewById(R.id.visit_subtitle1)).setText(customer_no);
 			((TextView) view.findViewById(R.id.visit_subtitle2)).setText(customer_name);
-            ((TextView) view.findViewById(R.id.visit_title)).setText(
-                    UIUtils.formatDate(UIUtils.getDateTime(cursor.getString(VisitsQuery.VISIT_DATE))));
+            ((TextView) view.findViewById(R.id.visit_title)).setText(arrivalTime + " - " + departureTime);
             ((TextView) view.findViewById(R.id.visit_subtitle1)).setText(customer_no);
             ((TextView) view.findViewById(R.id.visit_subtitle2)).setText(customer_name);
             ((TextView) view.findViewById(R.id.visit_status)).setText(status);
@@ -324,7 +332,9 @@ public class VisitListFragment extends ListFragment implements
                 MobileStoreContract.Visits.NAME_2,
                 MobileStoreContract.Visits.VISIT_DATE,
                 MobileStoreContract.Visits.VISIT_RESULT,
-                MobileStoreContract.Visits.VISIT_TYPE
+                MobileStoreContract.Visits.VISIT_TYPE, 
+                MobileStoreContract.Visits.ARRIVAL_TIME, 
+                MobileStoreContract.Visits.DEPARTURE_TIME
         };
 
         int _ID = 0;
@@ -336,5 +346,7 @@ public class VisitListFragment extends ListFragment implements
         int VISIT_DATE = 6;
 //        int VISIT_RESULT = 7;
         int VISIT_TYPE = 8;
+		int ARRIVAL_TIME = 9;
+		int DEPARTURE_TIME = 10;
 	}
 }

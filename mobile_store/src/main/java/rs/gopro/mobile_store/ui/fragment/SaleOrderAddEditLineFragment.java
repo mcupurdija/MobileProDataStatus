@@ -76,6 +76,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	private int customerId;
 	private String customerNo;
 	private boolean isServiceCalled = false;
+	private int defaultBackOrderStatus = -1;
 	
 	private ItemAutocompleteCursorAdapter itemAutocompleteAdapter;
 	ArrayAdapter<CharSequence> backorderAdapter;
@@ -138,7 +139,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 				//mPriceEur.setText(syncObject.getpSalesPriceEURAsTxt());
 				if ((syncObject.getpMinimumSalesUnitQuantityTxt().length() > 0 && !syncObject.getpMinimumSalesUnitQuantityTxt().equals("anyType{}")) || (syncObject.getpOutstandingPurchaseLinesTxt().length() > 0) && !syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}")) {
 				    // Setting Dialog Message
-				    String outstanding = syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}") ? "" : "Poruka: " + syncObject.getpOutstandingPurchaseLinesTxt();
+				    String outstanding = syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}") ? "" : "Poruka: " + syncObject.getpOutstandingPurchaseLinesTxt().replace("\\n", "\n");
 				    String minimum = syncObject.getpMinimumSalesUnitQuantityTxt().equals("anyType{}") ? "" : syncObject.getpMinimumSalesUnitQuantityTxt();
 
 				    DialogUtil.showInfoDialog(getActivity(), getResources().getString(R.string.dialog_title_sync_info), minimum + "\n" +  outstanding);
@@ -181,11 +182,17 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
             return;
         }
 
+        try {
+        	documentId = Integer.valueOf(MobileStoreContract.SaleOrderLines.getSaleOrderLineId(mSaleOrderLinesUri));
+        } catch (NumberFormatException ne) {
+        	LogUtils.LOGE(TAG, "", ne);
+        }
+        
         salesPersonId = Integer.valueOf(SharedPreferencesUtil.getSalePersonId(getActivity())).intValue();
         
         // Start background query to load sales line details
         getLoaderManager().initLoader(SaleOrderLinesQuery._TOKEN, null, this);
-        
+        getLoaderManager().initLoader(SaleOrderQuery._TOKEN, null, this);
         LogUtils.LOGI(TAG, "Created SaleOrderLinesPreviewListFragment");
     }
 	
@@ -272,6 +279,9 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		backorderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mBackorderStatus = (Spinner) rootView.findViewById(R.id.so_line_backorder_spinner);
 		mBackorderStatus.setAdapter(backorderAdapter);
+		if (defaultBackOrderStatus != -1) {
+			mBackorderStatus.setSelection(defaultBackOrderStatus);
+		}
 		
 		campaignStatusAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.item_camp_status_array, android.R.layout.simple_spinner_item);
 		campaignStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -591,6 +601,13 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         	customerId = cursor.getInt(SaleOrderQuery.CUSTOMER_ID);
         }
         
+        if (!cursor.isNull(SaleOrderQuery.BACKORDER_SHIPMENT_STATUS)) {
+        	defaultBackOrderStatus = cursor.getInt(SaleOrderQuery.BACKORDER_SHIPMENT_STATUS);
+        	if (mBackorderStatus != null) {
+        		mBackorderStatus.setSelection(defaultBackOrderStatus);
+        	}
+        }
+        
         Cursor cursorCustomer = getActivity().getContentResolver().query(MobileStoreContract.Customers.buildCustomersUri(String.valueOf(customerId)), CustomerQuery.PROJECTION, null, null, null);
         buildCustomer(cursorCustomer);
         
@@ -859,13 +876,15 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
                 BaseColumns._ID,
                 MobileStoreContract.SaleOrders.SALES_ORDER_NO,
                 MobileStoreContract.SaleOrders.DOCUMENT_TYPE,
-                MobileStoreContract.SaleOrders.CUSTOMER_ID
+                MobileStoreContract.SaleOrders.CUSTOMER_ID,
+                MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS
         };
 
         int _ID = 0;
         int SALES_ORDER_NO = 1;
         int DOCUMENT_TYPE = 2;
         int CUSTOMER_ID = 3;
+        int BACKORDER_SHIPMENT_STATUS = 4;
 	}
 	
 	private interface ItemQuery {

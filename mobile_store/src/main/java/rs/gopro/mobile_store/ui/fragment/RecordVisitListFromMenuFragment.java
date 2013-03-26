@@ -12,7 +12,6 @@ import rs.gopro.mobile_store.ui.RecordVisitsMultipaneActivity;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
-import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -144,7 +143,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 		}
 		int token = loader.getId();
 		if (token == VisitsQuery._TOKEN) {
-			mAdapter.changeCursor(cursor);
+			mAdapter.swapCursor(cursor);
 		} else {
 			cursor.close();
 		}
@@ -152,6 +151,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
+		mAdapter.swapCursor(null);
 	}
 
 	/**
@@ -188,7 +188,18 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 			// .equals(mSelectedVendorId));
 			final String visit_id = String.valueOf(cursor.getInt(VisitsQuery._ID));
 			view.setActivated(visit_id.equals(mSelectedVisitId));
-			((TextView) view.findViewById(R.id.visit_title)).setText(UIUtils.formatDate(UIUtils.getDateTime(cursor.getString(VisitsQuery.VISIT_DATE))));
+			String arrivalTime = "\\";
+	        if (!cursor.isNull(VisitsQuery.ARRIVAL_TIME)) { 
+	        	arrivalTime = DateUtils.formatDbTimeForPresentation(cursor.getString(VisitsQuery.ARRIVAL_TIME));
+	        }
+	        
+	        String departureTime = "\\";
+	        if (!cursor.isNull(VisitsQuery.DEPARTURE_TIME)) { 
+	        	departureTime = DateUtils.formatDbTimeForPresentation(cursor.getString(VisitsQuery.DEPARTURE_TIME));
+	        }
+//	        String visit_date = UIUtils.formatDate(UIUtils.getDateTime(cursor.getString(VisitsQuery.VISIT_DATE)));
+			
+	        ((TextView) view.findViewById(R.id.visit_title)).setText(arrivalTime + " - " + departureTime);
 			String customer_no = cursor.getString(VisitsQuery.CUSTOMER_NO);
 			String customer_name = cursor.getString(VisitsQuery.CUSTOMER_NAME);//  + cursor.getString(VisitsQuery.CUSTOMER_NAME2);
         	if (customer_no == null || customer_no.length() < 1) {
@@ -196,6 +207,10 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
         		customer_name = "-";
         	}
         	final int visit_type = cursor.getInt(VisitsQuery.VISIT_TYPE);
+        	int odometer = -1;
+        	if (!cursor.isNull(VisitsQuery.ODOMETER)) {
+        		odometer = cursor.getInt(VisitsQuery.ODOMETER);
+        	}
         	int visit_result = -1;
         	if (!cursor.isNull(VisitsQuery.VISIT_RESULT)) {
         		visit_result = cursor.getInt(VisitsQuery.VISIT_RESULT);
@@ -215,8 +230,8 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
         		customer_no = "POVRATAK KUĆI";
         	}
         	
-			((TextView) view.findViewById(R.id.visit_subtitle1)).setText(customer_no);
-			((TextView) view.findViewById(R.id.visit_subtitle2)).setText(customer_name);
+			((TextView) view.findViewById(R.id.visit_subtitle1)).setText(customer_no + " " + customer_name);
+			((TextView) view.findViewById(R.id.visit_subtitle2)).setText(odometer == -1 ? "-" : "Kilometraža: " + String.valueOf(odometer));
 			((TextView) view.findViewById(R.id.visit_status)).setText(status);
 			
 			view.setOnClickListener(new OnClickListener() {
@@ -249,7 +264,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 		int _TOKEN = 0x1234;
 
 		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Visits.SALES_PERSON_ID, MobileStoreContract.Visits.CUSTOMER_ID, MobileStoreContract.Visits.CUSTOMER_NO, MobileStoreContract.Visits.NAME, MobileStoreContract.Visits.NAME_2,
-				MobileStoreContract.Visits.VISIT_DATE, MobileStoreContract.Visits.VISIT_RESULT, MobileStoreContract.Visits.VISIT_TYPE };
+				MobileStoreContract.Visits.VISIT_DATE, MobileStoreContract.Visits.VISIT_RESULT, MobileStoreContract.Visits.VISIT_TYPE, MobileStoreContract.Visits.ARRIVAL_TIME, MobileStoreContract.Visits.DEPARTURE_TIME, MobileStoreContract.Visits.ODOMETER };
 
 		int _ID = 0;
 //		int SALES_PERSON_ID = 1;
@@ -257,9 +272,12 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 		int CUSTOMER_NO = 3;
 		int CUSTOMER_NAME = 4;
 //		int CUSTOMER_NAME2 = 5;
-		int VISIT_DATE = 6;
+//		int VISIT_DATE = 6;
 		int VISIT_RESULT = 7;
 		int VISIT_TYPE = 8;
+		int ARRIVAL_TIME = 9;
+		int DEPARTURE_TIME = 10;
+		int ODOMETER = 11;
 	}
 
 //	@Override

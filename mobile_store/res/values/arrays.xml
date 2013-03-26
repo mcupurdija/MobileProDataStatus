@@ -117,8 +117,8 @@
     </string-array>
     <string-array name="backorder_type_array">
         <item>-</item>
-        <item>Don\'t order</item>
         <item>Order</item>
+        <item>Don\'t order</item>
         <item>Reserve and order</item>
     </string-array>
     <string-array name="slc1_type_array">

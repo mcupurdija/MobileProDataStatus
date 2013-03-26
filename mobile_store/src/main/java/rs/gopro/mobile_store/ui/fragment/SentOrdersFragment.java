@@ -102,7 +102,7 @@ public class SentOrdersFragment extends ListFragment implements LoaderCallbacks<
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		activity.getContentResolver().registerContentObserver(MobileStoreContract.SentOrders.CONTENT_URI, true, mObserver);
+		activity.getContentResolver().registerContentObserver(MobileStoreContract.SaleOrders.CONTENT_URI, true, mObserver);
 	}
 
 	@Override
@@ -271,7 +271,7 @@ public class SentOrdersFragment extends ListFragment implements LoaderCallbacks<
 
 	private interface SaleOrderQuery {
 
-		String[] PROJECTION = { Tables.SALE_ORDERS+"."+BaseColumns._ID, Tables.SALE_ORDERS+"."+SaleOrders.SALES_ORDER_DEVICE_NO, Tables.SALE_ORDERS+"."+SaleOrders.ORDER_DATE, Tables.SALE_ORDERS+"."+SaleOrders.TOTAL, Tables.CUSTOMERS+"."+Customers.CUSTOMER_NO, Tables.CUSTOMERS+"."+Customers.NAME, Tables.SALE_ORDERS+"."+SaleOrders.FIN_CONTROL_STATUS, Tables.SALE_ORDERS+"."+SaleOrders.DOCUMENT_TYPE  };
+		String[] PROJECTION = { Tables.SALE_ORDERS+"."+BaseColumns._ID, Tables.SALE_ORDERS+"."+SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDERS+"."+SaleOrders.ORDER_DATE, Tables.SALE_ORDERS+"."+SaleOrders.TOTAL, Tables.CUSTOMERS+"."+Customers.CUSTOMER_NO, Tables.CUSTOMERS+"."+Customers.NAME, Tables.SALE_ORDERS+"."+SaleOrders.FIN_CONTROL_STATUS, Tables.SALE_ORDERS+"."+SaleOrders.DOCUMENT_TYPE  };
 
 		int _ID = 0;
 		int NO = 1;

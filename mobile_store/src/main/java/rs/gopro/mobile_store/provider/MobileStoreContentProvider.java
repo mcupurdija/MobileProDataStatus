@@ -800,11 +800,15 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.where(SaleOrderLines.SALE_ORDER_ID + "=?", salesOrderId);
 		case CONTACTS_ID:
 			String contactsCustomSearch = Contacts.getContactsCustomSearch(uri);
-			return builder.addTable(Tables.CONTACTS).where(
-					Contacts.CONTACT_NO + " like ?  or " + Contacts.NAME
-							+ " like ?",
-					new String[] { "%" + contactsCustomSearch + "%",
-							"%" + contactsCustomSearch + "%" });
+			builder.addTable(Tables.CONTACTS);
+			if (contactsCustomSearch != null && contactsCustomSearch.length() > 0 && !contactsCustomSearch.equals("noNoOrName")) {	
+				builder.where(
+						Contacts.CONTACT_NO + " like ?  or " + Contacts.NAME
+								+ " like ?",
+						new String[] { "%" + contactsCustomSearch + "%",
+								"%" + contactsCustomSearch + "%" });
+			}
+			return builder;
 		case CONTACTS:
 			return builder.addTable(Tables.CONTACTS);
 		case CUSTOMER_ADDRESSES:

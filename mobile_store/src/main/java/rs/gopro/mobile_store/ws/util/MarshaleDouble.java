@@ -9,6 +9,8 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
 
+import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
+
 public class MarshaleDouble implements Marshal {
 
 	public static Class<Double> DOUBLE_CLASS = Double.class;
@@ -28,6 +30,6 @@ public class MarshaleDouble implements Marshal {
 
 	public void writeInstance(XmlSerializer writer, Object obj)
 			throws IOException {
-		writer.text(obj.toString());
+		writer.text(WsDataFormatEnUsLatin.parseForWsDouble((Double) obj));
 	}
 }

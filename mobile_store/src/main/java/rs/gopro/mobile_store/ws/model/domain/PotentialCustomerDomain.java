@@ -22,14 +22,17 @@ public class PotentialCustomerDomain extends Domain {
 	public String vat_reg_no;
 	public String post_code;
 	public String email;
+	public String company_no;
 	public String company_id;
 	public String global_dimension;
 	public String number_of_blue_coat;
 	public String number_of_grey_coat;
+	public String department;
+	public String position;
 	
 	private static final String[] COLUMNS = new String[] { "customer_no", "name", "name2", "address", "city", "phone", "mobile",
-		"sales_person_no", "vat_reg_no", "post_code", "email", "company_id", "global_dimension",
-		"number_of_blue_coat", "number_of_grey_coat"
+		"sales_person_no", "vat_reg_no", "post_code", "email", "company_no",
+		"company_id", "global_dimension", "number_of_blue_coat", "number_of_grey_coat", "department", "position"
 	};
 	
 	public PotentialCustomerDomain() {

@@ -9,6 +9,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -151,9 +152,20 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 
 			@Override
 			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-				String date = DateUtils.formatDatePickerDate(year, monthOfYear, dayOfMonth);
-				visitDateEditText.setText(date);
-
+				Calendar input = Calendar.getInstance();
+				input.set(year, monthOfYear, dayOfMonth);
+				
+				Calendar today = Calendar.getInstance();
+				
+				if (org.apache.commons.lang3.time.DateUtils.isSameDay(input, today)) {
+					String date = DateUtils.formatDatePickerDate(year, monthOfYear, dayOfMonth);
+					visitDateEditText.setText(date);
+				} else if (input.before(today)) {
+				   DialogUtil.showInfoDialog(AddVisitActivity.this, "Greska", "Ne mozete planirati unazad!");
+				} else {
+					String date = DateUtils.formatDatePickerDate(year, monthOfYear, dayOfMonth);
+					visitDateEditText.setText(date);
+				}
 			}
 		};
 		
@@ -371,6 +383,7 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		contentValues.put(MobileStoreContract.Visits.VISIT_TYPE, "0");
 		contentValues.put(MobileStoreContract.Visits.IS_SENT, Integer.valueOf(0));
 		contentValues.put(Visits.ARRIVAL_TIME, DateUtils.formatPickerTimeInputForDb(arrivalTimeEditText.getText().toString()));
+		contentValues.putNull(Visits.ODOMETER);
 //		contentValues.put(Visits.LINE_NO, lineNumberEditText.getText().toString());
 //		contentValues.put(Visits.ENTRY_TYPE, entryTypeEditText.getText().toString());
 		if (selectedVisitType != null && selectedVisitType.equals("1")) { // selectedVisitId != null

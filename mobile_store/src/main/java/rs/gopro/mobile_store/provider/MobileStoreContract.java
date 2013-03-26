@@ -818,7 +818,10 @@ public class MobileStoreContract {
 		}
 
 		public static String getSaleOrderId(Uri uri) {
-			return uri.getPathSegments().get(1);
+			if (uri != null && uri.getPathSegments().size() > 1) {
+				return uri.getPathSegments().get(1);
+			}
+			return "-1";
 		}
 	}
 

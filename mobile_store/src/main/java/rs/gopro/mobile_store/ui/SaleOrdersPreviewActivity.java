@@ -216,9 +216,9 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		super.onSaveInstanceState(outState);
 	}
 
-	private void loadSalesOrdersList(Uri salesOrdersUri, String selectVisitId) {
+	private void loadSalesOrdersList(Uri salesOrdersUri, String selectSaleOrderId) {
 		SaleOrdersPreviewListFragment fragment = new SaleOrdersPreviewListFragment();
-		fragment.setSelectedSalesOrderId(selectVisitId);
+		fragment.setSelectedSalesOrderId(selectSaleOrderId);
 		fragment.setArguments(BaseActivity
 				.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW,
 						salesOrdersUri)));
@@ -226,11 +226,11 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 				.replace(R.id.fragment_sale_orders_list, fragment).commit();
 	}
 
-	private void loadSaleOrderLines(Uri visitUri) {
+	private void loadSaleOrderLines(Uri linesUri) {
 		SaleOrderLinesPreviewListFragment fragment = new SaleOrderLinesPreviewListFragment();
 		fragment.setArguments(BaseActivity
 				.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW,
-						visitUri)));
+						linesUri)));
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.fragment_sale_order_lines_list, fragment).commit();
 		saleOrderLinesFragment = fragment;

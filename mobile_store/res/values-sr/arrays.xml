@@ -118,8 +118,8 @@
     </string-array>
     <string-array name="backorder_type_array">
         <item>-</item>
-        <item>Sa zaliha isporuči i izbriši ostatak</item>
         <item>Parcijalno isporučuj</item>
+        <item>Sa zaliha isporuči i izbriši ostatak</item>
         <item>Sačekaj i isporuči sve odjednom</item>
     </string-array>
     <string-array name="slc1_type_array">
