@@ -11,6 +11,8 @@
     <string name="app_logo_desc">Application image logo</string>
     <string name="login_title">Login</string>
     <string name="home_title">Home</string>
+    <string name="statuses">Statuses</string>
+    <string name="document_saldo">Document saldo</string>
     <!-- ERRORS -->
     <string name="login_error">* Error during login!</string>
     <string name="hi_label">Hi!</string>

@@ -399,7 +399,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 			if (visitsPlanFragmentDetail != null) {
 				detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
 				if (!detailFragment.checkForRecordedVisit()) {
-					detailFragment.recordVisit(Integer.valueOf(inputText));
+					detailFragment.recordStartVisit(Integer.valueOf(inputText));
 				} else {
 					DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Pocetak posete je vec zabelezen!");
 				}
@@ -422,7 +422,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		if (visitsPlanFragmentDetail != null) {
 			detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
 			if (detailFragment.checkNotForRecordedVisit()) {
-				detailFragment.recordVisit(visitResult, note);
+				detailFragment.recordEndVisit(visitResult, note);
 			} else {
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Kraj posete je vec zabelezen!");
 			}

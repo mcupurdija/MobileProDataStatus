@@ -60,7 +60,7 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
         mVisitResultCaption = (TextView) view.findViewById(R.id.visit_result_caption);
         mVisitResultCaption.setText("Rezultat posete:");
         
-        mVisitResultAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.visit_result_type_array, android.R.layout.simple_spinner_item);
+        mVisitResultAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.record_visit_result_type_array, android.R.layout.simple_spinner_item);
         mVisitResultAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mVisitResult = (Spinner) view.findViewById(R.id.visit_result_spinner);
         mVisitResult.setAdapter(mVisitResultAdapter);
@@ -97,7 +97,8 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
 	private void sendInputValues() {
 		// Return input text to activity
 		EditDepartureVisitDialogListener activity = (EditDepartureVisitDialogListener) getActivity();
-		activity.onFinishEditDepartureVisitDialog(dialogId, mVisitResult.getSelectedItemPosition(), mNoteText.getText().toString());
+		// plus 1 because NAV expects it in other order
+		activity.onFinishEditDepartureVisitDialog(dialogId, (mVisitResult.getSelectedItemPosition()+1), mNoteText.getText().toString());
 		this.dismiss();
 	}
 

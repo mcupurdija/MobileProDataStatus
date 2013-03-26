@@ -199,6 +199,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 	        if (!cursor.isNull(VisitsQuery.DEPARTURE_TIME)) { 
 	        	departureTime = DateUtils.formatDbTimeForPresentation(cursor.getString(VisitsQuery.DEPARTURE_TIME));
 	        }
+	        
 //	        String visit_date = UIUtils.formatDate(UIUtils.getDateTime(cursor.getString(VisitsQuery.VISIT_DATE)));
 			
 	        ((TextView) view.findViewById(R.id.visit_title)).setText(arrivalTime + " - " + departureTime);

@@ -86,6 +86,7 @@ public class MobileStoreContract {
 		String VISIT_TYPE = "visit_type";
 		String IS_SENT = "is_sent";
 		String IS_DELETED = "is_deleted";
+		String VISIT_STATUS = "visit_status";
 		// it has audit columns
 	}
 

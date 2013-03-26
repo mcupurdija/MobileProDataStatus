@@ -38,6 +38,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -207,6 +208,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         
         itemAutocompleteAdapter = new ItemAutocompleteCursorAdapter(getActivity(), null);
         mItemAutocomplete = (AutoCompleteTextView) rootView.findViewById(R.id.so_line_item_no_value);
+        mItemAutocomplete.setInputType(InputType.TYPE_CLASS_TEXT);
         mItemAutocomplete.setAdapter(itemAutocompleteAdapter);
         mItemAutocomplete.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -372,7 +374,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		}
 	}
 
-	protected void saveForm(int status) throws SaleOrderValidationException {
+	public void saveForm(int status) throws SaleOrderValidationException {
 		ContentValues localValues = new ContentValues();
 		try {
 //			String item_auto_complete = mItemAutocomplete.getText().toString().trim();

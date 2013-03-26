@@ -8,6 +8,7 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
@@ -380,10 +381,11 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		} else {
 			contentValues.put(Visits.CUSTOMER_ID, customerPk);
 		}
-		contentValues.put(MobileStoreContract.Visits.VISIT_TYPE, "0");
+		contentValues.put(Visits.VISIT_TYPE, ApplicationConstants.VISIT_PLANNED);
 		contentValues.put(MobileStoreContract.Visits.IS_SENT, Integer.valueOf(0));
 		contentValues.put(Visits.ARRIVAL_TIME, DateUtils.formatPickerTimeInputForDb(arrivalTimeEditText.getText().toString()));
 		contentValues.putNull(Visits.ODOMETER);
+		contentValues.put(Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_NEW);
 //		contentValues.put(Visits.LINE_NO, lineNumberEditText.getText().toString());
 //		contentValues.put(Visits.ENTRY_TYPE, entryTypeEditText.getText().toString());
 		if (selectedVisitType != null && selectedVisitType.equals("1")) { // selectedVisitId != null
@@ -391,7 +393,8 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 			contentValues.put(Visits.DEPARTURE_TIME, DateUtils.formatPickerTimeInputForDb(departureTimeEditText.getText().toString()));
 			contentValues.put(Visits.VISIT_RESULT, visitResultEditText.getSelectedItemPosition());
 			contentValues.put(Visits.NOTE, noteEditText.getText().toString());
-			contentValues.put(Visits.VISIT_TYPE, "1");
+			contentValues.put(Visits.VISIT_TYPE, ApplicationConstants.VISIT_RECORDED);
+			contentValues.put(Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_FINISHED);
 		}
 		String currentVisitId = null;
 		if (selectedVisitId != null) {

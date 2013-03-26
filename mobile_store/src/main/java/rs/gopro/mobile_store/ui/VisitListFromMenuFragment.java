@@ -3,8 +3,10 @@ package rs.gopro.mobile_store.ui;
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
@@ -35,7 +37,8 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 	private static final String STATE_SELECTED_ID = "selectedId";
 //	private static final String VISITS_DATE_FILTER = "DATE("+Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_DATE+")=DATE(?)";
 	private static final String ORDER_BY_VISITS_FILTER = "DATE("+"visits." + Visits.VISIT_DATE+")" + " DESC, visits." + Visits.ARRIVAL_TIME+" ASC";
-
+	private static final String VISITS_TYPE_FILTER = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_TYPE+"=?";
+	
 	private Uri mVisitsUri;
 //	private String mAction;
 	private CursorAdapter mAdapter;
@@ -130,7 +133,7 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, null, null, ORDER_BY_VISITS_FILTER);
+		return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, VISITS_TYPE_FILTER,  new String[] { String.valueOf(ApplicationConstants.VISIT_PLANNED) }, ORDER_BY_VISITS_FILTER);
 	}
 
 	@Override

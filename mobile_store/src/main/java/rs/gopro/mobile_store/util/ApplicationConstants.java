@@ -14,6 +14,10 @@ public class ApplicationConstants {
 	public static final int VISIT_PLANNED = 0;
 	public static final int VISIT_RECORDED = 1;
 	
+	public static final int VISIT_STATUS_NEW = 0;
+	public static final int VISIT_STATUS_STARTED = 1;
+	public static final int VISIT_STATUS_FINISHED = 2;
+	
 	public static enum USER_ROLE {
 		ADMIN, USER
 	}

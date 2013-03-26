@@ -2,9 +2,11 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.widget.SaleOrderContextualMenu;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
+import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.MobileDeviceSalesDocumentSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
@@ -16,6 +18,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -70,6 +73,25 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 				// AlertDialog successAlertDialog = new AlertDialog.Builder(
 				// SaleOrdersPreviewActivity.this).create();
 
+				String quantity = MobileStoreContract.SaleOrderLines.QUANTITY;
+				String price = MobileStoreContract.SaleOrderLines.PRICE;
+				String discount = MobileStoreContract.SaleOrderLines.REAL_DISCOUNT;
+				
+				String[] projection = new String[] { "sum(" + quantity + "*(" + price + "-("+ price + "*(" + discount + "/100)))" + ")" };
+				Cursor cursor = getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderSaldo(), projection, Tables.SALE_ORDERS + "." + MobileStoreContract.SaleOrders._ID + "=?", new String[] { saleOrderId }, null);
+				
+				double saldo = 0;
+				
+				double pdv = 0;
+				
+				double total = 0;
+				
+				if (cursor.moveToFirst()) {
+					saldo = cursor.getDouble(0);
+					pdv = 0.2*saldo;
+					total = saldo+pdv;
+				}
+				
 				int status1 = Integer.valueOf(deviceSalesDocumentSyncObject.getOrder_condition_status());
 				int status2 = Integer.valueOf(deviceSalesDocumentSyncObject.getFinancial_control_status());
 				int status3 = Integer.valueOf(deviceSalesDocumentSyncObject.getOrder_status_for_shipment());
@@ -90,6 +112,9 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 				
 				TextView text4 = (TextView) dialog.findViewById(R.id.dialog_sale_order_order_value_status_text);
 				text4.setText(orderValueStatusOptions[status4]);
+				
+				TextView text5 = (TextView) dialog.findViewById(R.id.dialog_sale_order_document_saldo);
+				text5.setText(UIUtils.formatDoubleForUI(total));
 				
 				Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
 				// if button is clicked, close the custom dialog

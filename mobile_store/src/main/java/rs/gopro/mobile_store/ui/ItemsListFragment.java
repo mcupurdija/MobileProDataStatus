@@ -22,6 +22,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -80,6 +81,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 		if (savedInstanceState == null) {
 			getLoaderManager().initLoader(0, null, this);
 			searchText = (EditText) getActivity().findViewById(R.id.input_search_items);
+			searchText.setInputType(InputType.TYPE_CLASS_TEXT);
 			searchText.addTextChangedListener(this);
 			ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.item_camp_status_array, android.R.layout.simple_spinner_item);
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

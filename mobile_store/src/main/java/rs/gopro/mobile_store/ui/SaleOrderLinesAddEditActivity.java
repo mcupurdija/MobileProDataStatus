@@ -6,6 +6,7 @@ import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.fragment.SaleOrderAddEditLineFragment;
 import rs.gopro.mobile_store.ui.fragment.SaleOrderLinesAddEditPreviewListFragment;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.exceptions.SaleOrderValidationException;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -26,7 +27,7 @@ public class SaleOrderLinesAddEditActivity extends BaseActivity implements
 	
 	public static final String EXTRA_MASTER_URI = "rs.gopro.mobile_store.extra.MASTER_URI";
 	
-	private Fragment saleOrderAddEditLineFragment;
+	private SaleOrderAddEditLineFragment saleOrderAddEditLineFragment;
 	private ShowHideMasterLayout mShowHideMasterLayout;
 	private Uri mUri;
 	private String mAction;
@@ -57,7 +58,7 @@ public class SaleOrderLinesAddEditActivity extends BaseActivity implements
 		if (savedInstanceState != null) {
 			// @TODO needs to handle this
 
-			saleOrderAddEditLineFragment = fm
+			saleOrderAddEditLineFragment = (SaleOrderAddEditLineFragment) fm
 					.findFragmentById(R.id.fragment_sale_order_line_add_edit);
 			updateDetailBackground();
 		}
@@ -184,6 +185,15 @@ public class SaleOrderLinesAddEditActivity extends BaseActivity implements
 			} 
 			return true;
 		case R.id.add_sale_order_line:
+			// save previous if exist
+			try {
+				if (saleOrderAddEditLineFragment != null) {
+					saleOrderAddEditLineFragment.saveForm(1);
+				}
+			} catch (SaleOrderValidationException e) {
+				LogUtils.LOGI(TAG, "Nothing to save!");
+			}
+			// load new one
 			ContentValues cv = new ContentValues();
 			cv.put(MobileStoreContract.SaleOrderLines.SALE_ORDER_ID, MobileStoreContract.SaleOrderLines.getSaleOrderId(mUri));
 			

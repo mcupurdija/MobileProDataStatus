@@ -18194,6 +18194,7 @@ CREATE TABLE `visits` (
 	`visit_result` INTEGER,
 	`note` TEXT,
 	`sync_object_batch` INTEGER,
+	`visit_status` INTEGER DEFAULT 0,
 	`is_sent` INTEGER DEFAULT 1,
 	`is_deleted` INTEGER DEFAULT 0,
 	`created_date` TEXT,

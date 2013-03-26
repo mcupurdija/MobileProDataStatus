@@ -170,6 +170,10 @@
         <item>R end of day</item>
         <item>K return to home</item>
     </string-array>
+    <string-array name="record_visit_result_type_array">
+        <item>+ with closure</item>
+        <item>- no closure</item>
+    </string-array>
     <string-array name="order_condition_status_array">
         <item>Ok</item>
 		<item>Wait Prepayment</item>

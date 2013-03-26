@@ -25,6 +25,8 @@ public class UIUtils {
 		formatSymbols.setDecimalSeparator(',');
 		formatSymbols.setGroupingSeparator('.');
 		decimalFormat.setDecimalFormatSymbols(formatSymbols);
+		decimalFormat.setDecimalSeparatorAlwaysShown(true);
+		decimalFormat.setMinimumFractionDigits(2);
     }
 	
 	//@TargetApi(Build.VERSION_CODES.HONEYCOMB)

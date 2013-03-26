@@ -26,7 +26,6 @@
             android:layout_marginLeft="10dp"
             android:hint="Search"
             android:imeOptions="actionNext"
-            android:inputType="number"
             android:paddingBottom="5dp" >
         </EditText>
 

@@ -9,6 +9,7 @@ import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.RecordVisitsMultipaneActivity;
 import rs.gopro.mobile_store.ui.dialog.EditDepartureVisitDialog;
 import rs.gopro.mobile_store.ui.dialog.EditFieldDialog;
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
@@ -158,7 +159,7 @@ public class RecordVisitDetailFragment extends Fragment implements
 	}
     
     private void save() {
-    	recordVisit(odometerValue);
+    	recordStartVisit(odometerValue);
 		isDialogValueSent = false;
     }
     
@@ -182,44 +183,33 @@ public class RecordVisitDetailFragment extends Fragment implements
 		return false;
 	}
     
-	public boolean recordVisit(int odometer) {
+	public boolean recordStartVisit(int odometer) {
 		ContentValues cv = new ContentValues();
-		
-		//cv.putNull(MobileStoreContract.Visits.CUSTOMER_ID);
+
 		if (odometer == -1) {
 			cv.putNull(MobileStoreContract.Visits.ODOMETER);
 		} else {
 			cv.put(MobileStoreContract.Visits.ODOMETER, odometer);
 		}
-		//cv.put(MobileStoreContract.Visits.VISIT_RESULT, visitSubType);
-		//cv.put(MobileStoreContract.Visits.VISIT_TYPE, 1);
+
 		Date newDate = new Date();
 		cv.put(Visits.VISIT_DATE, DateUtils.toDbDate(newDate));
 		cv.put(Visits.ARRIVAL_TIME, DateUtils.toDbDate(newDate));
-		//cv.put(Visits.DEPARTURE_TIME, DateUtils.toDbDate(newDate));
+		cv.put(Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_STARTED);
 		getActivity().getContentResolver().update(MobileStoreContract.Visits.CONTENT_URI, cv, "visits._id=?", new String[] { String.valueOf(visitId) });
-		
 		return true;
 	}
     
-	public boolean recordVisit(int visit_result, String note) {
+	public boolean recordEndVisit(int visit_result, String note) {
 		ContentValues cv = new ContentValues();
-		
-		//cv.putNull(MobileStoreContract.Visits.CUSTOMER_ID);
-//		if (odometer == -1) {
-//			cv.putNull(MobileStoreContract.Visits.ODOMETER);
-//		} else {
-//			cv.put(MobileStoreContract.Visits.ODOMETER, odometer);
-//		}
 		cv.put(MobileStoreContract.Visits.VISIT_RESULT, visit_result);
 		cv.put(MobileStoreContract.Visits.NOTE, note);
-		cv.put(MobileStoreContract.Visits.VISIT_TYPE, 1);
+		cv.put(MobileStoreContract.Visits.VISIT_TYPE, ApplicationConstants.VISIT_RECORDED);
+		cv.put(Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_FINISHED);
+		
 		Date newDate = new Date();
-//		cv.put(Visits.VISIT_DATE, DateUtils.toDbDate(newDate));
-//		cv.put(Visits.ARRIVAL_TIME, DateUtils.toDbDate(newDate));
 		cv.put(Visits.DEPARTURE_TIME, DateUtils.toDbDate(newDate));
 		getActivity().getContentResolver().update(MobileStoreContract.Visits.CONTENT_URI, cv, "visits._id=?", new String[] { String.valueOf(visitId) });
-		
 		return true;
 	}
 	
@@ -275,6 +265,28 @@ public class RecordVisitDetailFragment extends Fragment implements
         int visitId = cursor.getInt(VisitsQuery._ID);
         mCallbacks.onVisitIdAvailable(String.valueOf(visitId));
         
+        int visit_status = -1;
+        if (!cursor.isNull(VisitsQuery.VISIT_STATUS)) {
+        	visit_status =  cursor.getInt(VisitsQuery.VISIT_STATUS);
+        }
+        
+        switch (visit_status) {
+		case ApplicationConstants.VISIT_STATUS_NEW:
+			mStartVisit.setEnabled(true);
+			mEndVisit.setEnabled(false);
+			break;
+		case ApplicationConstants.VISIT_STATUS_STARTED:
+			mStartVisit.setEnabled(false);
+			mEndVisit.setEnabled(true);
+			break;
+		case ApplicationConstants.VISIT_STATUS_FINISHED:
+			mStartVisit.setEnabled(false);
+			mEndVisit.setEnabled(false);
+			break;
+		default:
+			break;
+		}
+        
         LogUtils.LOGI(TAG, "Loaded visit id: " + String.valueOf(visitId));
     }
     
@@ -307,7 +319,8 @@ public class RecordVisitDetailFragment extends Fragment implements
                 MobileStoreContract.Visits.ARRIVAL_TIME,
                 MobileStoreContract.Visits.DEPARTURE_TIME,
                 MobileStoreContract.Visits.ODOMETER,
-                MobileStoreContract.Visits.NOTE
+                MobileStoreContract.Visits.NOTE,
+                MobileStoreContract.Visits.VISIT_STATUS
         };
 
         int _ID = 0;
@@ -320,7 +333,8 @@ public class RecordVisitDetailFragment extends Fragment implements
         int ARRIVAL_TIME = 7;
         int DEPARTURE_TIME = 8;
         int ODOMETER = 9;
-        int NOTE = 10; 
+        int NOTE = 10;
+        int VISIT_STATUS = 11;
 	}
 
 	@Override

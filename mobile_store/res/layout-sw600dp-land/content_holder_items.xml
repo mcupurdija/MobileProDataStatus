@@ -26,7 +26,6 @@
             android:layout_marginLeft="10dp"
             android:hint="@string/hint_search"
             android:imeOptions="actionNext"
-            android:inputType="number"
             android:paddingBottom="5dp" >
         </EditText>
 
@@ -60,7 +59,6 @@
 	        android:orientation="horizontal" >
     	<Button
             android:id="@+id/items_sync_overstock_button"
-            style="?android:attr/buttonBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -69,7 +67,6 @@
             android:text="@string/items_sync_overstock_button_title" />
     	<Button
             android:id="@+id/items_sync_on_action_button"
-            style="?android:attr/buttonBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"

@@ -10,6 +10,8 @@
     <string name="app_logo_desc">Logo aplikacije</string>
     <string name="login_title">Prijavi se</string>
     <string name="home_title">Početak</string>
+    <string name="statuses">Statusi</string>
+    <string name="document_saldo">Dokument ukupno</string>
     <!-- GRESKE -->
 	<string name="login_error">* Greška prilikom prijave za rad!</string>
 	<string name="hi_label">Ćaos!</string>

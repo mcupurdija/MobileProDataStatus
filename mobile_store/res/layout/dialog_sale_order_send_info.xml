@@ -5,6 +5,48 @@
     android:baselineAligned="false"
     android:orientation="vertical" >
 
+    
+    <TextView
+        style="@style/AddEdit_Label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
+        android:gravity="center_vertical"
+        android:text="@string/document_saldo" />
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@android:color/black" />
+    
+    <TextView
+        android:id="@+id/dialog_sale_order_document_saldo"
+        style="@style/AddEdit_Text_Value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
+        android:gravity="center_vertical" />
+    
+    <TextView
+        style="@style/AddEdit_Label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
+        android:gravity="center_vertical"
+        android:text="@string/statuses" />
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@android:color/black" />
+    
     <TextView
         android:id="@+id/dialog_sale_order_order_condition_status_label"
         style="@style/AddEdit_Label"
@@ -74,18 +116,28 @@
 
     <TextView
         android:id="@+id/dialog_sale_order_order_value_status_text"
-        style="@style/AddEdit_Label"
+        style="@style/AddEdit_Text_Value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dip"
         android:layout_marginRight="16dip"
         android:gravity="center_vertical" />
-	<Button
-        android:id="@+id/dialogButtonOK"
-        android:layout_width="100dp"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=" Ok "
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"
-        android:gravity="center" />
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/dialogButtonOK"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="15dp"
+            android:gravity="center"
+            android:text=" Ok " />
+    </LinearLayout>
+
 </LinearLayout>
