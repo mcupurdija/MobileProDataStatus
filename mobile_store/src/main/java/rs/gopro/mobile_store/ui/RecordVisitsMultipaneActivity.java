@@ -13,6 +13,7 @@ import rs.gopro.mobile_store.ui.dialog.EditFieldDialog;
 import rs.gopro.mobile_store.ui.dialog.EditFieldDialog.EditNameDialogListener;
 import rs.gopro.mobile_store.ui.fragment.RecordVisitDetailFragment;
 import rs.gopro.mobile_store.ui.fragment.RecordVisitsListFragment;
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DialogUtil;
@@ -54,6 +55,9 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	private static final int VISIT_FILTER_DATE_PICKER = 1;
 	private static final String VISITS_DATE_FILTER = "DATE("+Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_DATE+")=DATE(?)";
 	private static final String VISITS_RESULT_FILTER = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"=?";
+	private static final String VISITS_FILTER_IS_DAY_OPEN = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"="+ApplicationConstants.VISIT_TYPE_STAR_DAY;
+	private static final String VISITS_FILTER_IS_DAY_CLOSED = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"="+ApplicationConstants.VISIT_TYPE_END_DAY;
+	private static final String VISITS_FILTER_IS_BACK_HOME = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"="+ApplicationConstants.VISIT_TYPE_BACK_HOME;
 	
 	private static final int VISITS_RESULT_START_DAY = 0;
 	private static final int VISITS_RESULT_END_DAY = 4;
@@ -301,7 +305,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 			break;
 		case R.id.day_start_record_visit:
 			currentVisitResult = VISITS_RESULT_START_DAY;
-			if (!checkForRecordedVisit(currentVisitResult)) {
+			if (!isRecorderCreated(currentVisitResult)) {
 				showDialog();
 			} else {
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Početak dana je zabeležen!");
@@ -309,42 +313,80 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 			return true;
         case R.id.day_end_record_visit:
         	currentVisitResult = VISITS_RESULT_END_DAY;
-        	if (!checkForRecordedVisit(currentVisitResult)) {
-        		showDialog();
+        	if (!isRecorderCreated(currentVisitResult)) {
+        		if (isRecordedVisitDayStart()) {
+        			showDialog();
+        		} else {
+        			DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Dan nije započet!");
+        		}
 			} else {
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Kraj dana je zabeležen!");
 			}
         	return true;
         case R.id.day_end_back_home_visit:
         	currentVisitResult = VISITS_RESULT_BACK_HOME;
-        	if (!checkForRecordedVisit(currentVisitResult)) {
-        		showDialog();
+        	if (!isRecorderCreated(currentVisitResult)) {
+        		if (isRecordedVisitDayEnd()) {
+        			showDialog();
+        		} else {
+        			DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Dan nije završen!");
+        		}
 			} else {
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Dolazak kući je zabeležen!");
 			}
         	return true;
         case R.id.day_break_visit:
         	currentVisitResult = VISITS_RESULT_BREAK;
-        	if (!checkForRecordedVisit(currentVisitResult)) {
+//        	if (!checkForRecordedVisit(currentVisitResult)) {
         		showDialog();
-			} else {
+//			} else {
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Odmor je zabeležen!");
-			}
+//			}
         	return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 	
-	private boolean checkForRecordedVisit(int visitSubType) {
-		Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, VISITS_DATE_FILTER + " and " + VISITS_RESULT_FILTER, new String[] { rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date()), String.valueOf(visitSubType) }, null);
-		
+	private boolean isRecorderCreated(int visitSubType) {
+		Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, VISITS_DATE_FILTER + " and (" + VISITS_RESULT_FILTER + " or " + VISITS_FILTER_IS_DAY_CLOSED + ")" , new String[] { rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date()), String.valueOf(visitSubType) }, null);
+		// there is already back home entry!
 		if (cursor.moveToFirst()) {
 			return true;
 		}
-		
+		cursor.close();
+		return false;
+	}
+	
+	private boolean isRecordedVisitDayStart() {
+		Cursor dayOpen = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, VISITS_DATE_FILTER + " and " + VISITS_FILTER_IS_DAY_OPEN  , new String[] { rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date()) }, null);
+		// day closed move further
+		if (dayOpen.moveToFirst()) {
+			return true;
+		}
+		dayOpen.close();
 		return false;
 	}
 
+	private boolean isRecordedVisitDayEnd() {
+		Cursor dayClosed = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, VISITS_DATE_FILTER + " and " + VISITS_FILTER_IS_DAY_CLOSED  , new String[] { rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date()) }, null);
+		// day closed move further
+		if (dayClosed.moveToFirst()) {
+			return true;
+		}
+		dayClosed.close();
+		return false;
+	}
+	
+	private boolean isRecordedVisitBackHome() {
+		Cursor backHome = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, VISITS_DATE_FILTER + " and " + VISITS_FILTER_IS_BACK_HOME  , new String[] { rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date()) }, null);
+		// day closed move further
+		if (backHome.moveToFirst()) {
+			return true;
+		}
+		backHome.close();
+		return false;
+	}
+	
 	private boolean recordVisit(int visitSubType, int odometer) {
 		ContentValues cv = new ContentValues();
 		
@@ -373,6 +415,9 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		return true;
 	}
 	
+	/**
+	 * Shows input dialog. Result is on callback. Method onFinishEditDepartureVisitDialog.
+	 */
 	private void showDialog() {
 		EditFieldDialog dialog = new EditFieldDialog(RecordVisitsMultipaneActivity.RECORD_VISIT_FIXED_ACTIVITIES, "Realizacija", "Unesite kilometražu", InputType.TYPE_CLASS_NUMBER);
     	dialog.show(getSupportFragmentManager(), "FIXED_RECORD_DIALOG");
@@ -394,17 +439,23 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	@Override
 	public void onFinishEditDialog(int dialogId, String inputText) {
 		switch (dialogId) {
+		// here goes arrivals
 		case RECORD_VISIT_ARRIVAL:
 			RecordVisitDetailFragment detailFragment = null;
 			if (visitsPlanFragmentDetail != null) {
 				detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
-				if (!detailFragment.checkForRecordedVisit()) {
-					detailFragment.recordStartVisit(Integer.valueOf(inputText));
+				if (isRecordedVisitDayStart()) {
+					if (!detailFragment.checkForRecordedVisit()) {
+						detailFragment.recordStartVisit(Integer.valueOf(inputText));
+					} else {
+						DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Pocetak posete je vec zabelezen!");
+					}
 				} else {
-					DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Pocetak posete je vec zabelezen!");
+					DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Dan nije otvoren!");
 				}
 			}
 			break;
+		// fixed activities = activities as shortcuts on action bar!
 		case RECORD_VISIT_FIXED_ACTIVITIES:
 			recordVisit(currentVisitResult, Integer.valueOf(inputText));
 			break;
@@ -418,6 +469,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 
 	@Override
 	public void onFinishEditDepartureVisitDialog(int id, int visitResult, String note) {
+		// here goes departures
 		RecordVisitDetailFragment detailFragment = null;
 		if (visitsPlanFragmentDetail != null) {
 			detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
