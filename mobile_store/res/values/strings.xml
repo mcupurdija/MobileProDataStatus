@@ -320,6 +320,7 @@
     <string name="day_end_record_visit_menu_title">Day end</string>
     <string name="day_end_back_home_visit_menu_title">Back home</string>
     <string name="day_break_visit_menu_title">Break</string>
+    <string name="new_record_visit_menu_title">New realization</string>
     
     <string name="items_sync_group_title">Items sync options</string>
     <string name="items_sync_overstock_button_title">Sync overstock</string>

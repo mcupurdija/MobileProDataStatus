@@ -30,6 +30,7 @@ public class EditFieldDialog extends DialogFragment implements OnEditorActionLis
     private EditText mEditText;
     private TextView mEditCaption;
     private Button mSubmitButton;
+    private Button mCancelButton;
 
     public EditFieldDialog() {
         // Empty constructor required for DialogFragment
@@ -90,7 +91,8 @@ public class EditFieldDialog extends DialogFragment implements OnEditorActionLis
         mEditText.setInputType(editValueInputType);
         mEditCaption = (TextView) view.findViewById(R.id.lbl_caption);
         mSubmitButton = (Button) view.findViewById(R.id.button_submit_dialog);
-        mSubmitButton.setText("OK");
+        //mSubmitButton.setText("OK");
+        mCancelButton = (Button) view.findViewById(R.id.button_cancel_dialog);
         mEditCaption.setText(valueCaption);
         getDialog().setTitle(dialogTitle);
 
@@ -100,6 +102,12 @@ public class EditFieldDialog extends DialogFragment implements OnEditorActionLis
                 LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mEditText.setOnEditorActionListener(this);
         mSubmitButton.setOnClickListener(this);
+        mCancelButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				EditFieldDialog.this.dismiss();
+			}
+		});
         return view;
     }
 

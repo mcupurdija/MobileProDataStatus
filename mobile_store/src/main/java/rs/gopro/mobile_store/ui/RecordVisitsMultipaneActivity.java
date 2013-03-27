@@ -58,6 +58,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 //	private static final String VISITS_FILTER_IS_DAY_OPEN = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"="+ApplicationConstants.VISIT_TYPE_START_DAY;
 //	private static final String VISITS_FILTER_IS_DAY_CLOSED = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"="+ApplicationConstants.VISIT_TYPE_END_DAY;
 //	private static final String VISITS_FILTER_IS_BACK_HOME = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"="+ApplicationConstants.VISIT_TYPE_BACK_HOME;
+	private static final String VISITS_FILTER_IS_VISIT_OPEN = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_STATUS+"="+ApplicationConstants.VISIT_STATUS_STARTED;
 	
 	private static final int VISITS_RESULT_START_DAY = 0;
 	private static final int VISITS_RESULT_END_DAY = 4;
@@ -305,7 +306,11 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 			break;
 		case R.id.day_start_record_visit:
 			currentVisitResult = VISITS_RESULT_START_DAY;
-			if (!isRecorderCreated(currentVisitResult)) {
+			if (isVisitOpen()) {
+        		DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Postoji otvorena poseta!");
+        		return true;
+        	}
+			if (!isVisitRecordCreated(currentVisitResult)) {
 				showDialog();
 			} else {
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Početak dana je zabeležen!");
@@ -313,7 +318,11 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 			return true;
         case R.id.day_end_record_visit:
         	currentVisitResult = VISITS_RESULT_END_DAY;
-        	if (!isRecorderCreated(currentVisitResult)) {
+        	if (isVisitOpen()) {
+        		DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Postoji otvorena poseta!");
+        		return true;
+        	}
+        	if (!isVisitRecordCreated(currentVisitResult)) {
         		if (isRecordedVisitDayStart()) {
         			showDialog();
         		} else {
@@ -325,7 +334,11 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
         	return true;
         case R.id.day_end_back_home_visit:
         	currentVisitResult = VISITS_RESULT_BACK_HOME;
-        	if (!isRecorderCreated(currentVisitResult)) {
+        	if (isVisitOpen()) {
+        		DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Postoji otvorena poseta!");
+        		return true;
+        	}
+        	if (!isVisitRecordCreated(currentVisitResult)) {
         		if (isRecordedVisitDayEnd()) {
         			showDialog();
         		} else {
@@ -337,17 +350,29 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
         	return true;
         case R.id.day_break_visit:
         	currentVisitResult = VISITS_RESULT_BREAK;
+        	if (isVisitOpen()) {
+        		DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Postoji otvorena poseta!");
+        		return true;
+        	}
 //        	if (!checkForRecordedVisit(currentVisitResult)) {
+        	if (isRecordedVisitDayStart()) {
         		showDialog();
-//			} else {
-				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Odmor je zabeležen!");
-//			}
+			} else {
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Dan nije započet!");
+//				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Odmor je zabeležen!");
+			}
+        	return true;
+        case R.id.new_record_visit:
+        	Intent newRecordVisit = new Intent(this, AddVisitActivity.class);
+        	// newRecordVisit.put(AddVisitActivity.VISIT_ID, null);
+        	newRecordVisit.putExtra(AddVisitActivity.VISIT_TYPE, "0");
+        	startActivity(newRecordVisit);
         	return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 	
-	private boolean isRecorderCreated(int visitSubType) {
+	private boolean isVisitRecordCreated(int visitSubType) {
 		Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, VISITS_DATE_FILTER + " and " + VISITS_RESULT_FILTER, new String[] { rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date()), String.valueOf(visitSubType) }, null);
 		// there is already back home entry!
 		if (cursor.moveToFirst()) {
@@ -357,12 +382,22 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		return false;
 	}
 	
+	private boolean isVisitOpen() {
+		Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, VISITS_DATE_FILTER + " and " + VISITS_FILTER_IS_VISIT_OPEN, new String[] { rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date()) }, null);
+		// there is already back home entry!
+		if (cursor.moveToFirst()) {
+			return true;
+		}
+		cursor.close();
+		return false;
+	}
+	
 	private boolean isRecordedVisitDayStart() {
-		return isRecorderCreated(ApplicationConstants.VISIT_TYPE_START_DAY);
+		return isVisitRecordCreated(ApplicationConstants.VISIT_TYPE_START_DAY);
 	}
 
 	private boolean isRecordedVisitDayEnd() {
-		return isRecorderCreated(ApplicationConstants.VISIT_TYPE_END_DAY);
+		return isVisitRecordCreated(ApplicationConstants.VISIT_TYPE_END_DAY);
 	}
 	
 //	private boolean isRecordedVisitBackHome() {

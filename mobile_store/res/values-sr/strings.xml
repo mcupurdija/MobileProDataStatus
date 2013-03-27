@@ -337,6 +337,7 @@
     <string name="day_end_record_visit_menu_title">Završi dan</string>
     <string name="day_break_visit_menu_title">Pauza</string>
     <string name="day_end_back_home_visit_menu_title">Povratak kući</string>
+    <string name="new_record_visit_menu_title">Nova realizacija</string>
     
 	<string name="items_sync_group_title">Opcije osvežavanja artikala</string>
 	<string name="items_sync_overstock_button_title">Osveži overstock artikle</string>

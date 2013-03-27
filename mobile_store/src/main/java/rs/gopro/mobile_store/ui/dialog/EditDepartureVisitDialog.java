@@ -31,6 +31,7 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
     private EditText mNoteText;
     private TextView mNoteCaption;
     private Button mSubmitButton;
+    private Button mCancelButton;
     private TextView mVisitResultCaption;
     ArrayAdapter<CharSequence> mVisitResultAdapter;
     private Spinner mVisitResult;
@@ -72,8 +73,8 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
         mNoteText.setInputType(InputType.TYPE_CLASS_TEXT);
         
         mSubmitButton = (Button) view.findViewById(R.id.button_submit_dialog);
-        mSubmitButton.setText("OK");
-        
+        //mSubmitButton.setText("OK");
+        mCancelButton = (Button) view.findViewById(R.id.button_cancel_dialog);
         getDialog().setTitle(dialogTitle);
 
         // Show soft keyboard automatically
@@ -82,6 +83,12 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
                 LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mNoteText.setOnEditorActionListener(this);
         mSubmitButton.setOnClickListener(this);
+        mCancelButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				EditDepartureVisitDialog.this.dismiss();
+			}
+		});
         return view;
     }
 

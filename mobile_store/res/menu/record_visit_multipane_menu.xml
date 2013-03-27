@@ -17,5 +17,8 @@
         android:id="@+id/day_end_back_home_visit"
         android:showAsAction="ifRoom|withText"
         android:title="@string/day_end_back_home_visit_menu_title"/>
-
+	<item
+        android:id="@+id/new_record_visit"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/new_record_visit_menu_title"/>
 </menu>
