@@ -1,10 +1,7 @@
 package rs.gopro.mobile_store.ui.fragment;
 
-import java.util.Date;
-
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.RecordVisitsMultipaneActivity;
 import rs.gopro.mobile_store.ui.dialog.EditDepartureVisitDialog;
@@ -13,9 +10,6 @@ import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
-import android.content.ContentValues;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -34,12 +28,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class RecordVisitDetailFragment extends Fragment implements
-		LoaderManager.LoaderCallbacks<Cursor>, OnDismissListener {
+		LoaderManager.LoaderCallbacks<Cursor> { //, OnDismissListener 
 
 	private static final String TAG = LogUtils.makeLogTag(RecordVisitDetailFragment.class);
 	
 	private Uri mVisitUri;
-	private int visitId = -1;
     private TextView mCustomerNoName;
     private TextView mVisitDate;
     private TextView mOdometer;
@@ -48,8 +41,6 @@ public class RecordVisitDetailFragment extends Fragment implements
     
     private Button mStartVisit;
     private Button mEndVisit;
-	private int odometerValue = -1;
-	private boolean isDialogValueSent = false;
     
 	public interface Callbacks {
 		public void onVisitIdAvailable(String visitId);
@@ -82,14 +73,12 @@ public class RecordVisitDetailFragment extends Fragment implements
             return;
         }
         
-        try {
-        	visitId = Integer.valueOf(MobileStoreContract.Visits.getVisitId(mVisitUri));
-        } catch (NumberFormatException ne) {
-        	LogUtils.LOGE(TAG, "", ne);
-        }
+//        try {
+//        	visitId = Integer.valueOf(MobileStoreContract.Visits.getVisitId(mVisitUri));
+//        } catch (NumberFormatException ne) {
+//        	LogUtils.LOGE(TAG, "", ne);
+//        }
 
-        
-        
         // Start background query to load vendor details
         getLoaderManager().initLoader(VisitsQuery._TOKEN, null, this);
     }
@@ -156,61 +145,6 @@ public class RecordVisitDetailFragment extends Fragment implements
     private void showDepartureDialog() {
     	EditDepartureVisitDialog dialog = new EditDepartureVisitDialog();
     	dialog.show(getActivity().getSupportFragmentManager(), "DEPARTURE_RECORD_DIALOG");		
-	}
-    
-    private void save() {
-    	recordStartVisit(odometerValue);
-		isDialogValueSent = false;
-    }
-    
-    public boolean checkForRecordedVisit() {
-		Cursor cursor = getActivity().getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, "visits._id=? and visits.visit_type=?", new String[] { String.valueOf(visitId), String.valueOf(1) }, null);
-		
-		if (cursor.moveToFirst()) {
-			return true;
-		}
-		
-		return false;
-	}
-
-    public boolean checkNotForRecordedVisit() {
-		Cursor cursor = getActivity().getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, "visits._id=? and visits.visit_type=?", new String[] { String.valueOf(visitId), String.valueOf(0) }, null);
-		
-		if (cursor.moveToFirst()) {
-			return true;
-		}
-		
-		return false;
-	}
-    
-	public boolean recordStartVisit(int odometer) {
-		ContentValues cv = new ContentValues();
-
-		if (odometer == -1) {
-			cv.putNull(MobileStoreContract.Visits.ODOMETER);
-		} else {
-			cv.put(MobileStoreContract.Visits.ODOMETER, odometer);
-		}
-
-		Date newDate = new Date();
-		cv.put(Visits.VISIT_DATE, DateUtils.toDbDate(newDate));
-		cv.put(Visits.ARRIVAL_TIME, DateUtils.toDbDate(newDate));
-		cv.put(Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_STARTED);
-		getActivity().getContentResolver().update(MobileStoreContract.Visits.CONTENT_URI, cv, "visits._id=?", new String[] { String.valueOf(visitId) });
-		return true;
-	}
-    
-	public boolean recordEndVisit(int visit_result, String note) {
-		ContentValues cv = new ContentValues();
-		cv.put(MobileStoreContract.Visits.VISIT_RESULT, visit_result);
-		cv.put(MobileStoreContract.Visits.NOTE, note);
-		cv.put(MobileStoreContract.Visits.VISIT_TYPE, ApplicationConstants.VISIT_RECORDED);
-		cv.put(Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_FINISHED);
-		
-		Date newDate = new Date();
-		cv.put(Visits.DEPARTURE_TIME, DateUtils.toDbDate(newDate));
-		getActivity().getContentResolver().update(MobileStoreContract.Visits.CONTENT_URI, cv, "visits._id=?", new String[] { String.valueOf(visitId) });
-		return true;
 	}
 	
     public void buildUiFromCursor(Cursor cursor) {
@@ -335,14 +269,5 @@ public class RecordVisitDetailFragment extends Fragment implements
         int ODOMETER = 9;
         int NOTE = 10;
         int VISIT_STATUS = 11;
-	}
-
-	@Override
-	public void onDismiss(DialogInterface dialog) {
-		if (isDialogValueSent) {
-			if (!checkForRecordedVisit())  {
-				save();
-			}
-		}
 	}
 }

@@ -55,9 +55,9 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	private static final int VISIT_FILTER_DATE_PICKER = 1;
 	private static final String VISITS_DATE_FILTER = "DATE("+Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_DATE+")=DATE(?)";
 	private static final String VISITS_RESULT_FILTER = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"=?";
-	private static final String VISITS_FILTER_IS_DAY_OPEN = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"="+ApplicationConstants.VISIT_TYPE_STAR_DAY;
-	private static final String VISITS_FILTER_IS_DAY_CLOSED = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"="+ApplicationConstants.VISIT_TYPE_END_DAY;
-	private static final String VISITS_FILTER_IS_BACK_HOME = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"="+ApplicationConstants.VISIT_TYPE_BACK_HOME;
+//	private static final String VISITS_FILTER_IS_DAY_OPEN = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"="+ApplicationConstants.VISIT_TYPE_START_DAY;
+//	private static final String VISITS_FILTER_IS_DAY_CLOSED = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"="+ApplicationConstants.VISIT_TYPE_END_DAY;
+//	private static final String VISITS_FILTER_IS_BACK_HOME = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"="+ApplicationConstants.VISIT_TYPE_BACK_HOME;
 	
 	private static final int VISITS_RESULT_START_DAY = 0;
 	private static final int VISITS_RESULT_END_DAY = 4;
@@ -73,7 +73,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	private String visitDateFilter;
 	private Button filterVisitDateButton;
 	private int currentVisitResult = -1;
-	
+	private String selectedVisitId = null;
 	
 	private Fragment visitsPlanFragmentDetail;
 	private ShowHideMasterLayout mShowHideMasterLayout;
@@ -263,7 +263,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 			actionMod.finish();
 		}
 		loadVisitDetail(MobileStoreContract.Visits.buildVisitUri(visitId));
-//		selectedVisitId = visitId;
+		selectedVisitId = visitId;
 		return true;
 	}
 
@@ -348,7 +348,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	}
 	
 	private boolean isRecorderCreated(int visitSubType) {
-		Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, VISITS_DATE_FILTER + " and (" + VISITS_RESULT_FILTER + " or " + VISITS_FILTER_IS_DAY_CLOSED + ")" , new String[] { rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date()), String.valueOf(visitSubType) }, null);
+		Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, VISITS_DATE_FILTER + " and " + VISITS_RESULT_FILTER, new String[] { rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date()), String.valueOf(visitSubType) }, null);
 		// there is already back home entry!
 		if (cursor.moveToFirst()) {
 			return true;
@@ -358,34 +358,16 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	}
 	
 	private boolean isRecordedVisitDayStart() {
-		Cursor dayOpen = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, VISITS_DATE_FILTER + " and " + VISITS_FILTER_IS_DAY_OPEN  , new String[] { rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date()) }, null);
-		// day closed move further
-		if (dayOpen.moveToFirst()) {
-			return true;
-		}
-		dayOpen.close();
-		return false;
+		return isRecorderCreated(ApplicationConstants.VISIT_TYPE_START_DAY);
 	}
 
 	private boolean isRecordedVisitDayEnd() {
-		Cursor dayClosed = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, VISITS_DATE_FILTER + " and " + VISITS_FILTER_IS_DAY_CLOSED  , new String[] { rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date()) }, null);
-		// day closed move further
-		if (dayClosed.moveToFirst()) {
-			return true;
-		}
-		dayClosed.close();
-		return false;
+		return isRecorderCreated(ApplicationConstants.VISIT_TYPE_END_DAY);
 	}
 	
-	private boolean isRecordedVisitBackHome() {
-		Cursor backHome = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, VISITS_DATE_FILTER + " and " + VISITS_FILTER_IS_BACK_HOME  , new String[] { rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date()) }, null);
-		// day closed move further
-		if (backHome.moveToFirst()) {
-			return true;
-		}
-		backHome.close();
-		return false;
-	}
+//	private boolean isRecordedVisitBackHome() {
+//		return isRecorderCreated(ApplicationConstants.VISIT_TYPE_BACK_HOME);
+//	}
 	
 	private boolean recordVisit(int visitSubType, int odometer) {
 		ContentValues cv = new ContentValues();
@@ -441,12 +423,12 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		switch (dialogId) {
 		// here goes arrivals
 		case RECORD_VISIT_ARRIVAL:
-			RecordVisitDetailFragment detailFragment = null;
+//			RecordVisitDetailFragment detailFragment = null;
 			if (visitsPlanFragmentDetail != null) {
-				detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
+//				detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
 				if (isRecordedVisitDayStart()) {
-					if (!detailFragment.checkForRecordedVisit()) {
-						detailFragment.recordStartVisit(Integer.valueOf(inputText));
+					if (!isRecordedVisit()) {
+						recordStartVisit(Integer.valueOf(inputText));
 					} else {
 						DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Pocetak posete je vec zabelezen!");
 					}
@@ -467,17 +449,66 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		
 	}
 
+	/**
+	 * Callback method on calling save departure dialog.
+	 */
 	@Override
 	public void onFinishEditDepartureVisitDialog(int id, int visitResult, String note) {
 		// here goes departures
-		RecordVisitDetailFragment detailFragment = null;
+//		RecordVisitDetailFragment detailFragment = null;
 		if (visitsPlanFragmentDetail != null) {
-			detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
-			if (detailFragment.checkNotForRecordedVisit()) {
-				detailFragment.recordEndVisit(visitResult, note);
+//			detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
+			if (isPlannedVisit()) {
+				recordEndVisit(visitResult, note);
 			} else {
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Kraj posete je vec zabelezen!");
 			}
 		}
+	}
+	
+    private boolean isRecordedVisit() {
+		Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, "visits._id=? and visits.visit_type=?", new String[] { selectedVisitId == null ? "":selectedVisitId, String.valueOf(ApplicationConstants.VISIT_RECORDED) }, null);
+		if (cursor.moveToFirst()) {
+			return true;
+		}
+		return false;
+	}
+
+    private boolean isPlannedVisit() {
+		Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, "visits._id=? and visits.visit_type=?", new String[] { selectedVisitId == null ? "":selectedVisitId, String.valueOf(ApplicationConstants.VISIT_PLANNED) }, null);
+		if (cursor.moveToFirst()) {
+			return true;
+		}
+		return false;
+	}
+    
+	private boolean recordStartVisit(int odometer) {
+		ContentValues cv = new ContentValues();
+
+		if (odometer == -1) {
+			cv.putNull(MobileStoreContract.Visits.ODOMETER);
+		} else {
+			cv.put(MobileStoreContract.Visits.ODOMETER, odometer);
+		}
+
+		Date newDate = new Date();
+		cv.put(Visits.VISIT_DATE, DateUtils.toDbDate(newDate));
+		cv.put(Visits.ARRIVAL_TIME, DateUtils.toDbDate(newDate));
+		cv.put(Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_STARTED);
+		getContentResolver().update(MobileStoreContract.Visits.CONTENT_URI, cv, "visits._id=?", new String[] { selectedVisitId == null ? "":selectedVisitId });
+		return true;
+	}
+    
+	private boolean recordEndVisit(int visit_result, String note) {
+		ContentValues cv = new ContentValues();
+		cv.put(MobileStoreContract.Visits.VISIT_RESULT, visit_result);
+		cv.put(MobileStoreContract.Visits.NOTE, note);
+		cv.put(MobileStoreContract.Visits.VISIT_TYPE, ApplicationConstants.VISIT_RECORDED);
+		cv.put(Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_FINISHED);
+		
+		Date newDate = new Date();
+		cv.put(Visits.DEPARTURE_TIME, DateUtils.toDbDate(newDate));
+		getContentResolver().update(MobileStoreContract.Visits.CONTENT_URI, cv, "visits._id=?", new String[] { selectedVisitId == null ? "":selectedVisitId });
+		return true;
 	}
 }
