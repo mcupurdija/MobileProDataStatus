@@ -11,6 +11,7 @@ import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.RecordVisitsMultipaneActivity;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
@@ -219,17 +220,17 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
         		visit_result = cursor.getInt(VisitsQuery.VISIT_RESULT);
         	}
         	String status = "";
-        	if (visit_type == 0) {
+        	if (visit_type == ApplicationConstants.VISIT_PLANNED) {
         		status = "PLAN";
         	} else {
         		status = "REALIZACIJA";
         	}
         		
-        	if (visit_result == 0) {
+        	if (visit_result == ApplicationConstants.VISIT_TYPE_START_DAY) {
         		customer_no = "POČETAK DANA";
-        	} else if (visit_result == 4) {
+        	} else if (visit_result == ApplicationConstants.VISIT_TYPE_END_DAY) {
         		customer_no = "KRAJ DANA";
-        	} else if (visit_result == 5) {
+        	} else if (visit_result == ApplicationConstants.VISIT_TYPE_BACK_HOME) {
         		customer_no = "POVRATAK KUĆI";
         	}
         	

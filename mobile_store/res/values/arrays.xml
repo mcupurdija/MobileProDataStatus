@@ -163,6 +163,7 @@
         <item>Quality</item>
     </string-array>
     <string-array name="visit_result_type_array">
+        <item>Empty</item>
         <item>P start of day</item>
         <item>+ with closure</item>
         <item>- no closure</item>

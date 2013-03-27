@@ -211,17 +211,17 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
         		visit_result = cursor.getInt(VisitsQuery.VISIT_RESULT);
         	}
         	String status = "";
-        	if (visit_type == 0) {
+        	if (visit_type == ApplicationConstants.VISIT_PLANNED) {
         		status = "PLAN";
         	} else {
         		status = "REALIZACIJA";
         	}
         		
-        	if (visit_result == 0) {
+        	if (visit_result == ApplicationConstants.VISIT_TYPE_START_DAY) {
         		customer_no = "POČETAK DANA";
-        	} else if (visit_result == 4) {
+        	} else if (visit_result == ApplicationConstants.VISIT_TYPE_END_DAY) {
         		customer_no = "KRAJ DANA";
-        	} else if (visit_result == 5) {
+        	} else if (visit_result == ApplicationConstants.VISIT_TYPE_BACK_HOME) {
         		customer_no = "POVRATAK KUĆI";
         	}
         	

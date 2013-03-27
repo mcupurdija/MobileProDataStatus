@@ -164,9 +164,10 @@
         <item>Kvalitet</item>
     </string-array>
     <string-array name="visit_result_type_array">
+        <item>\</item>
         <item>P</item>
-        <item>+</item>
-        <item>-</item>
+        <item>+ sa zaključenjem</item>
+        <item>- bez zaključenja</item>
         <item>O</item>
         <item>R</item>
         <item>K</item>

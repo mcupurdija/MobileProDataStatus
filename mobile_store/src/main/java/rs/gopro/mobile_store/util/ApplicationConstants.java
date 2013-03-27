@@ -18,9 +18,12 @@ public class ApplicationConstants {
 	public static final int VISIT_STATUS_STARTED = 1;
 	public static final int VISIT_STATUS_FINISHED = 2;
 	
-	public static final int VISIT_TYPE_START_DAY = 0;
-	public static final int VISIT_TYPE_END_DAY = 4;
-	public static final int VISIT_TYPE_BACK_HOME = 5;
+	public static final int VISIT_TYPE_START_DAY = 1;
+	public static final int VISIT_TYPE_CLOSURE = 2;
+	public static final int VISIT_TYPE_NO_CLOSURE = 3;
+	public static final int VISIT_TYPE_PAUSE = 4;
+	public static final int VISIT_TYPE_END_DAY = 5;
+	public static final int VISIT_TYPE_BACK_HOME = 6;
 	
 	public static enum USER_ROLE {
 		ADMIN, USER

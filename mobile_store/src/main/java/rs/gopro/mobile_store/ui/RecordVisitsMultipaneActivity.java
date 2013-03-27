@@ -14,28 +14,21 @@ import rs.gopro.mobile_store.ui.dialog.EditFieldDialog.EditNameDialogListener;
 import rs.gopro.mobile_store.ui.fragment.RecordVisitDetailFragment;
 import rs.gopro.mobile_store.ui.fragment.RecordVisitsListFragment;
 import rs.gopro.mobile_store.util.ApplicationConstants;
-import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
-import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObject;
-import rs.gopro.mobile_store.ws.model.SetPlannedVisitsToCustomersSyncObject;
-import rs.gopro.mobile_store.ws.model.SyncResult;
+import rs.gopro.mobile_store.ws.model.SetRealizedVisitsToCustomersSyncObject;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.InputType;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -60,10 +53,10 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 //	private static final String VISITS_FILTER_IS_BACK_HOME = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_RESULT+"="+ApplicationConstants.VISIT_TYPE_BACK_HOME;
 	private static final String VISITS_FILTER_IS_VISIT_OPEN = Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_STATUS+"="+ApplicationConstants.VISIT_STATUS_STARTED;
 	
-	private static final int VISITS_RESULT_START_DAY = 0;
-	private static final int VISITS_RESULT_END_DAY = 4;
-	private static final int VISITS_RESULT_BACK_HOME = 5;
-	private static final int VISITS_RESULT_BREAK = 3;
+	private static final int VISITS_RESULT_START_DAY = ApplicationConstants.VISIT_TYPE_START_DAY;
+	private static final int VISITS_RESULT_END_DAY = ApplicationConstants.VISIT_TYPE_END_DAY;
+	private static final int VISITS_RESULT_BACK_HOME = ApplicationConstants.VISIT_TYPE_BACK_HOME;
+	private static final int VISITS_RESULT_BREAK = ApplicationConstants.VISIT_TYPE_PAUSE;
 	
 	public static final int RECORD_VISIT_ARRIVAL = 0;
 	public static final int RECORD_VISIT_FIXED_ACTIVITIES = 1;
@@ -81,29 +74,29 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	
 	private OnDateSetListener visitFilterDateSetListener;
 
-	private BroadcastReceiver onNotice = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			SyncResult syncResult = intent
-					.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
-			onSOAPResult(syncResult, intent.getAction());
-			// itemLoadProgressDialog.dismiss();
-		}
-	};
-
-	protected void onSOAPResult(SyncResult syncResult, String broadcastAction) {
-		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
-			if (SetPlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION
-					.equalsIgnoreCase(broadcastAction)) {
-				// TODO Auto-generated method stub
-			} else if (PlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION
-					.equalsIgnoreCase(broadcastAction)) {
-				// TODO Auto-generated method stub
-			}
-		} else {
-			DialogUtil.showInfoDialog(RecordVisitsMultipaneActivity.this,getResources().getString(R.string.dialog_title_error_in_sync),syncResult.getResult());
-		}
-	}
+//	private BroadcastReceiver onNotice = new BroadcastReceiver() {
+//		@Override
+//		public void onReceive(Context context, Intent intent) {
+//			SyncResult syncResult = intent
+//					.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
+//			onSOAPResult(syncResult, intent.getAction());
+//			// itemLoadProgressDialog.dismiss();
+//		}
+//	};
+//
+//	protected void onSOAPResult(SyncResult syncResult, String broadcastAction) {
+//		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
+//			if (SetPlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION
+//					.equalsIgnoreCase(broadcastAction)) {
+//				
+//			} else if (PlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION
+//					.equalsIgnoreCase(broadcastAction)) {
+//				
+//			}
+//		} else {
+//			DialogUtil.showInfoDialog(RecordVisitsMultipaneActivity.this,getResources().getString(R.string.dialog_title_error_in_sync),syncResult.getResult());
+//		}
+//	}
 
 	public RecordVisitsMultipaneActivity() {
 	}
@@ -270,8 +263,6 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 
 	@Override
 	public void onVisitLongClick(String visitId, String visitType) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override
@@ -373,23 +364,25 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	}
 	
 	private boolean isVisitRecordCreated(int visitSubType) {
+		boolean signal = false;
 		Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, VISITS_DATE_FILTER + " and " + VISITS_RESULT_FILTER, new String[] { rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date()), String.valueOf(visitSubType) }, null);
 		// there is already back home entry!
 		if (cursor.moveToFirst()) {
-			return true;
+			signal = true;
 		}
 		cursor.close();
-		return false;
+		return signal;
 	}
 	
 	private boolean isVisitOpen() {
+		boolean signal = false;
 		Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, VISITS_DATE_FILTER + " and " + VISITS_FILTER_IS_VISIT_OPEN, new String[] { rs.gopro.mobile_store.util.DateUtils.toDbDate(new Date()) }, null);
 		// there is already back home entry!
 		if (cursor.moveToFirst()) {
-			return true;
+			signal = true;
 		}
 		cursor.close();
-		return false;
+		return signal;
 	}
 	
 	private boolean isRecordedVisitDayStart() {
@@ -427,7 +420,14 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		if (visitSubType != VISITS_RESULT_BREAK) {
 			cv.put(Visits.DEPARTURE_TIME, DateUtils.toDbDate(newDate));
 		}
-		getContentResolver().insert(MobileStoreContract.Visits.CONTENT_URI, cv);
+		
+		cv.put(Visits.SALE_PERSON_NO, salesPersonNo);
+		
+		Uri newRecordUri = getContentResolver().insert(MobileStoreContract.Visits.CONTENT_URI, cv);
+		
+		String visit_id = Visits.getVisitId(newRecordUri);
+		
+		sendRecordedVisit(visit_id);
 		
 		return true;
 	}
@@ -443,14 +443,14 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
     @Override
     public void onResume() {
     	super.onResume();
-    	IntentFilter plannedVisitsToCustomersSync = new IntentFilter(SetPlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION);
-    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, plannedVisitsToCustomersSync);
+//    	IntentFilter plannedVisitsToCustomersSync = new IntentFilter(SetPlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION);
+//    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, plannedVisitsToCustomersSync);
     }
     
     @Override
     public void onPause() {
         super.onPause();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(onNotice);
+//        LocalBroadcastManager.getInstance(this).unregisterReceiver(onNotice);
     }
 
 	@Override
@@ -494,27 +494,33 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		if (visitsPlanFragmentDetail != null) {
 //			detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
 			if (isPlannedVisit()) {
-				recordEndVisit(visitResult, note);
+				if (!recordEndVisit(visitResult, note)) {
+					LogUtils.LOGE(TAG, "Visit recording failed!");
+				}
 			} else {
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Kraj posete je vec zabelezen!");
 			}
 		}
 	}
-	
-    private boolean isRecordedVisit() {
-		Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, "visits._id=? and visits.visit_type=?", new String[] { selectedVisitId == null ? "":selectedVisitId, String.valueOf(ApplicationConstants.VISIT_RECORDED) }, null);
+
+	private boolean isRecordedVisit() {
+    	boolean signal = false;
+    	Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, "visits._id=? and visits.visit_type=?", new String[] { selectedVisitId == null ? "":selectedVisitId, String.valueOf(ApplicationConstants.VISIT_RECORDED) }, null);
 		if (cursor.moveToFirst()) {
-			return true;
+			signal = true;
 		}
-		return false;
+		cursor.close();
+		return signal;
 	}
 
     private boolean isPlannedVisit() {
-		Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, "visits._id=? and visits.visit_type=?", new String[] { selectedVisitId == null ? "":selectedVisitId, String.valueOf(ApplicationConstants.VISIT_PLANNED) }, null);
+		boolean signal = false;
+    	Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, "visits._id=? and visits.visit_type=?", new String[] { selectedVisitId == null ? "":selectedVisitId, String.valueOf(ApplicationConstants.VISIT_PLANNED) }, null);
 		if (cursor.moveToFirst()) {
-			return true;
+			signal = true;
 		}
-		return false;
+		cursor.close();
+		return signal;
 	}
     
 	private boolean recordStartVisit(int odometer) {
@@ -530,7 +536,10 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		cv.put(Visits.VISIT_DATE, DateUtils.toDbDate(newDate));
 		cv.put(Visits.ARRIVAL_TIME, DateUtils.toDbDate(newDate));
 		cv.put(Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_STARTED);
-		getContentResolver().update(MobileStoreContract.Visits.CONTENT_URI, cv, "visits._id=?", new String[] { selectedVisitId == null ? "":selectedVisitId });
+		int result = getContentResolver().update(MobileStoreContract.Visits.CONTENT_URI, cv, "visits._id=?", new String[] { selectedVisitId == null ? "":selectedVisitId });
+		if (result == 0) {
+			return false;
+		}
 		return true;
 	}
     
@@ -543,7 +552,26 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		
 		Date newDate = new Date();
 		cv.put(Visits.DEPARTURE_TIME, DateUtils.toDbDate(newDate));
-		getContentResolver().update(MobileStoreContract.Visits.CONTENT_URI, cv, "visits._id=?", new String[] { selectedVisitId == null ? "":selectedVisitId });
+		int result = getContentResolver().update(MobileStoreContract.Visits.CONTENT_URI, cv, "visits._id=?", new String[] { selectedVisitId == null ? "":selectedVisitId });
+		if (result == 0) {
+			return false;
+		} else {
+			sendRecordedVisit(selectedVisitId);
+		}
 		return true;
+	}
+	
+    private void sendRecordedVisit(String selectedVisitId) {
+    	int visitId = -1;
+    	try {
+    		visitId = Integer.valueOf(selectedVisitId == null ? "-1" : selectedVisitId);
+    	} catch (NumberFormatException ne) {
+    		LogUtils.LOGE(TAG, "", ne);
+    		return;
+    	}
+    	SetRealizedVisitsToCustomersSyncObject visitsToCustomersSyncObject = new SetRealizedVisitsToCustomersSyncObject(visitId);
+    	Intent intent = new Intent(this, NavisionSyncService.class);
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, visitsToCustomersSyncObject);
+		startService(intent);
 	}
 }

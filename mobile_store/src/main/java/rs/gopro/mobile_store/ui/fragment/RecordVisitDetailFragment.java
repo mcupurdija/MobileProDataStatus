@@ -143,7 +143,7 @@ public class RecordVisitDetailFragment extends Fragment implements
 	}
     
     private void showDepartureDialog() {
-    	EditDepartureVisitDialog dialog = new EditDepartureVisitDialog();
+    	EditDepartureVisitDialog dialog = new EditDepartureVisitDialog(0, "Završi posetu");
     	dialog.show(getActivity().getSupportFragmentManager(), "DEPARTURE_RECORD_DIALOG");		
 	}
 	
@@ -220,6 +220,10 @@ public class RecordVisitDetailFragment extends Fragment implements
 		default:
 			break;
 		}
+        
+        if (cursor != null && !cursor.isClosed()) {
+        	cursor.close();
+        }
         
         LogUtils.LOGI(TAG, "Loaded visit id: " + String.valueOf(visitId));
     }

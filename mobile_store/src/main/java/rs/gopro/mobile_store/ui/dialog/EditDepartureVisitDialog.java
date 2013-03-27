@@ -1,6 +1,7 @@
 package rs.gopro.mobile_store.ui.dialog;
 
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
@@ -40,6 +41,12 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
         // Empty constructor required for DialogFragment
     }
     
+	public EditDepartureVisitDialog(int dialogId, String dialogTitle) {
+		super();
+		this.dialogId = dialogId;
+		this.dialogTitle = dialogTitle;
+	}
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -67,7 +74,7 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
         mVisitResult.setAdapter(mVisitResultAdapter);
         
         mNoteCaption = (TextView) view.findViewById(R.id.visit_note_caption);
-        mNoteCaption.setText("Beleška nakon poseteČ");
+        mNoteCaption.setText("Beleška nakon posete:");
         
         mNoteText = (EditText) view.findViewById(R.id.visit_note_edittext);
         mNoteText.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -104,8 +111,20 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
 	private void sendInputValues() {
 		// Return input text to activity
 		EditDepartureVisitDialogListener activity = (EditDepartureVisitDialogListener) getActivity();
-		// plus 1 because NAV expects it in other order
-		activity.onFinishEditDepartureVisitDialog(dialogId, (mVisitResult.getSelectedItemPosition()+1), mNoteText.getText().toString());
+
+		int realization_option = ApplicationConstants.VISIT_TYPE_NO_CLOSURE;
+		switch (mVisitResult.getSelectedItemPosition()) {
+		case 0:
+			realization_option = ApplicationConstants.VISIT_TYPE_CLOSURE;
+			break;
+		case 1:
+			realization_option = ApplicationConstants.VISIT_TYPE_NO_CLOSURE;
+			break;
+		default:
+			realization_option = ApplicationConstants.VISIT_TYPE_NO_CLOSURE;
+			break;
+		}
+		activity.onFinishEditDepartureVisitDialog(dialogId, realization_option, mNoteText.getText().toString());
 		this.dismiss();
 	}
 
