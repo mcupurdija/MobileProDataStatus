@@ -220,8 +220,12 @@ public class CustomersViewListFragment extends ListFragment implements
 //                    .equals(mSelectedVendorId));
             view.setActivated(String.valueOf(cursor.getInt(CustomersQuery._ID))
                     .equals(mSelectedCustomerId));
+            String customer_no = "NOV KUPAC";
+			if (!cursor.isNull(CustomersQuery.CUSTOMER_NO)) {
+				customer_no = cursor.getString(CustomersQuery.CUSTOMER_NO);
+			}
             ((TextView) view.findViewById(R.id.customer_title)).setText(
-                    cursor.getString(CustomersQuery.CUSTOMER_NO) + " - " + cursor.getString(CustomersQuery.CUSTOMER_NAME));
+            		customer_no + " - " + cursor.getString(CustomersQuery.CUSTOMER_NAME));
             ((TextView) view.findViewById(R.id.customer_subtitle)).setText(
                     "Grad: "+ cursor.getString(CustomersQuery.CUSTOMER_CITY) + " - Status: " + cursor.getString(CustomersQuery.CUSTOMER_BLOCKED_STATUS));
         }

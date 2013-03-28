@@ -88,6 +88,7 @@ public class MobileStoreContract {
 		String IS_SENT = "is_sent";
 		String IS_DELETED = "is_deleted";
 		String VISIT_STATUS = "visit_status";
+		String SALES_PERSON_ID = "sales_person_id";
 		// it has audit columns
 	}
 
@@ -645,7 +646,7 @@ public class MobileStoreContract {
 	 * @author vladimirm
 	 * 
 	 */
-	public static class Visits implements VisitsColumns, SalesPersonsColumns, CustomersColumns, AuditColumns, BaseColumns {
+	public static class Visits implements VisitsColumns, SalesPersonsColumns, AuditColumns, BaseColumns {
 
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_VISITS).build();
 		/** Default "ORDER BY" clause. */

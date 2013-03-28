@@ -200,7 +200,10 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
 			final String customer_id = String.valueOf(cursor.getInt(CustomersQuery.ID));
-			final String customer_no = cursor.getString(CustomersQuery.CUSTOMER_NO);
+			String customer_no = "NOV KUPAC";
+			if (!cursor.isNull(CustomersQuery.CUSTOMER_NO)) {
+				customer_no = cursor.getString(CustomersQuery.CUSTOMER_NO);
+			}
 			final String customer_name = cursor.getString(CustomersQuery.NAME);
 			final String customer_phone = cursor.getString(CustomersQuery.PHONE);
 			

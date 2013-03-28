@@ -421,7 +421,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 			cv.put(Visits.DEPARTURE_TIME, DateUtils.toDbDate(newDate));
 		}
 		
-		cv.put(Visits.SALE_PERSON_NO, salesPersonNo);
+		cv.put(Visits.SALES_PERSON_ID, salesPersonId);
 		
 		Uri newRecordUri = getContentResolver().insert(MobileStoreContract.Visits.CONTENT_URI, cv);
 		

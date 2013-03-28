@@ -3,6 +3,7 @@ package rs.gopro.mobile_store.ws.model.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
@@ -35,7 +36,7 @@ public class PlannedVisitsDomain extends Domain {
 		contentValues.put(Visits.SALE_PERSON_NO, getSales_person_no());
 		contentValues.put(Visits.VISIT_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getVisit_date()));
 
-		contentValues.put(Visits.CUSTOMER_NO, getCustomer_no());
+		contentValues.put(Customers.CUSTOMER_NO, getCustomer_no());
 		contentValues.put(Visits.ARRIVAL_TIME,  WsDataFormatEnUsLatin.toDbTimeeFromWsString(getVisit_date(), getArrival_time()));
 		contentValues.put(Visits.DEPARTURE_TIME,  WsDataFormatEnUsLatin.toDbTimeeFromWsString(getVisit_date(), getDeparture_time()));
 		contentValues.put(Visits.NOTE, getNote());
@@ -48,7 +49,7 @@ public class PlannedVisitsDomain extends Domain {
 	public List<RowItemDataHolder> getRowItemsForRepalce() {
 		List<RowItemDataHolder> transferNoToIdList = new ArrayList<RowItemDataHolder>();
 		transferNoToIdList.add(new RowItemDataHolder(Tables.SALES_PERSONS, Visits.SALE_PERSON_NO, getSales_person_no(), Visits.SALES_PERSON_ID));
-		transferNoToIdList.add(new RowItemDataHolder(Tables.CUSTOMERS, Visits.CUSTOMER_NO, getCustomer_no(), Visits.CUSTOMER_ID));
+		transferNoToIdList.add(new RowItemDataHolder(Tables.CUSTOMERS, Customers.CUSTOMER_NO, getCustomer_no(), Visits.CUSTOMER_ID));
 		return transferNoToIdList;
 	}
 

@@ -75,7 +75,7 @@ public class NewVisitActivity extends BaseActivity {
 	
 	private void saveRecord() {
 		ContentValues values = new ContentValues();
-		  values.put(MobileStoreContract.Visits.CUSTOMER_NO, "K00001");
+		  values.put(MobileStoreContract.Customers.CUSTOMER_NO, "K00001");
 		  values.put(MobileStoreContract.Visits.VISIT_DATE, "2012-120=-20 16:00:00");
 		  values.put(MobileStoreContract.Visits.LINE_NO, "1");
 		  this.getContentResolver().insert(MobileStoreContract.Visits.CONTENT_URI, values);

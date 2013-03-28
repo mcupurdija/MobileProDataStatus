@@ -63,6 +63,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int CUSTOMERS_CUSTOM_SEARCH = 124;
 //	private static final int CUSTOMERS_BY_STATUS = 125;
 	private static final int CUSTOMERS_BY_SALES_PERSON = 126;
+	private static final int POTENTIAL_CUSTOMERS_EXPORT = 127;
 
 	private static final int ITEMS = 130;
 	//private static final int ITEMS_NO = 131;
@@ -141,6 +142,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 				INVOICES_SEARCH);
 		
 		mobileStoreURIMatcher.addURI(authority, "customers", CUSTOMERS);
+		mobileStoreURIMatcher.addURI(authority, "customers/potential_customers_export", POTENTIAL_CUSTOMERS_EXPORT);
 		mobileStoreURIMatcher.addURI(authority, "customers_by_sales_person/*",
 				CUSTOMERS_BY_SALES_PERSON);
 		mobileStoreURIMatcher.addURI(authority, "customers/#", CUSTOMERS_ID);
@@ -516,6 +518,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case CUSTOMERS:
 			return builder.addTable(Tables.CUSTOMERS);//.where(
 					//Customers.BLOCKED_STATUS + "= ?", new String[] { "0" }); // TODO delete this!
+		case POTENTIAL_CUSTOMERS_EXPORT:
+			return builder.addTable(Tables.CUSTOMERS_EXPORT);
 		case CUSTOMERS_BY_SALES_PERSON:
 			final String salesPersonIdOnCustomer = Customers
 					.getCustomersSalesPersonId(uri);
@@ -598,9 +602,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(Visits.SALES_PERSON_ID, Tables.VISITS)
 					.mapToTable(Visits.CUSTOMER_ID, Tables.VISITS)
 					.mapToTable(Visits.VISIT_DATE, Tables.VISITS)
-					.mapToTable(Visits.CUSTOMER_NO, Tables.CUSTOMERS)
-					.mapToTable(Visits.NAME, Tables.CUSTOMERS)
-					.mapToTable(Visits.NAME_2, Tables.CUSTOMERS)
+					.mapToTable(Customers.CUSTOMER_NO, Tables.CUSTOMERS)
+					.mapToTable(Customers.NAME, Tables.CUSTOMERS)
+					.mapToTable(Customers.NAME_2, Tables.CUSTOMERS)
 					.mapToTable(Visits.ARRIVAL_TIME, Tables.VISITS)
 					.mapToTable(Visits.DEPARTURE_TIME, Tables.VISITS)
 					.mapToTable(Visits.ODOMETER, Tables.VISITS)
@@ -612,9 +616,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(Visits.SALES_PERSON_ID, Tables.VISITS)
 					.mapToTable(Visits.CUSTOMER_ID, Tables.VISITS)
 					.mapToTable(Visits.VISIT_DATE, Tables.VISITS)
-					.mapToTable(Visits.CUSTOMER_NO, Tables.CUSTOMERS)
-					.mapToTable(Visits.NAME, Tables.CUSTOMERS)
-					.mapToTable(Visits.NAME_2, Tables.CUSTOMERS)
+					.mapToTable(Customers.CUSTOMER_NO, Tables.CUSTOMERS)
+					.mapToTable(Customers.NAME, Tables.CUSTOMERS)
+					.mapToTable(Customers.NAME_2, Tables.CUSTOMERS)
 					.mapToTable(Visits.ARRIVAL_TIME, Tables.VISITS)
 					.mapToTable(Visits.DEPARTURE_TIME, Tables.VISITS)
 					.mapToTable(Visits.ODOMETER, Tables.VISITS)
@@ -627,9 +631,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(Visits.SALES_PERSON_ID, Tables.VISITS)
 					.mapToTable(Visits.CUSTOMER_ID, Tables.VISITS)
 					.mapToTable(Visits.VISIT_DATE, Tables.VISITS)
-					.mapToTable(Visits.CUSTOMER_NO, Tables.CUSTOMERS)
-					.mapToTable(Visits.NAME, Tables.CUSTOMERS)
-					.mapToTable(Visits.NAME_2, Tables.CUSTOMERS)
+					.mapToTable(Customers.CUSTOMER_NO, Tables.CUSTOMERS)
+					.mapToTable(Customers.NAME, Tables.CUSTOMERS)
+					.mapToTable(Customers.NAME_2, Tables.CUSTOMERS)
 					.mapToTable(Visits.ARRIVAL_TIME, Tables.VISITS)
 					.mapToTable(Visits.DEPARTURE_TIME, Tables.VISITS)
 					.mapToTable(Visits.ODOMETER, Tables.VISITS)
@@ -649,9 +653,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.CUSTOMER_ID, Tables.SALE_ORDERS)
-					.mapToTable(Visits.CUSTOMER_NO, Tables.CUSTOMERS)
-					.mapToTable(Visits.NAME, Tables.CUSTOMERS)
-					.mapToTable(Visits.NAME_2, Tables.CUSTOMERS)
+					.mapToTable(Customers.CUSTOMER_NO, Tables.CUSTOMERS)
+					.mapToTable(Customers.NAME, Tables.CUSTOMERS)
+					.mapToTable(Customers.NAME_2, Tables.CUSTOMERS)
 					.mapToTable(SaleOrders.ORDER_DATE, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.LOCATION_CODE, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.SHORTCUT_DIMENSION_1_CODE,
@@ -706,9 +710,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(SaleOrders.SALES_ORDER_NO, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDERS)
 					.mapToTable(SaleOrders.CUSTOMER_ID, Tables.SALE_ORDERS)
-					.mapToTable(Visits.CUSTOMER_NO, Tables.CUSTOMERS)
-					.mapToTable(Visits.NAME, Tables.CUSTOMERS)
-					.mapToTable(Visits.NAME_2, Tables.CUSTOMERS)
+					.mapToTable(Customers.CUSTOMER_NO, Tables.CUSTOMERS)
+					.mapToTable(Customers.NAME, Tables.CUSTOMERS)
+					.mapToTable(Customers.NAME_2, Tables.CUSTOMERS)
 					.mapToTable(SaleOrders.ORDER_DATE, Tables.SALE_ORDERS)
 					.where(Tables.SALE_ORDERS + "."
 							+ SaleOrders.SALES_PERSON_ID + "=?", salesPersonId);

@@ -17,10 +17,12 @@ import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.BaseColumns;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
@@ -109,17 +111,32 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 		}
 	}
 
+	private final ContentObserver mObserver = new ContentObserver(new Handler()) {
+		@Override
+		public void onChange(boolean selfChange) {
+			if (getActivity() == null) {
+				return;
+			}
+			Loader<Cursor> loader = getLoaderManager().getLoader(VisitsQuery._TOKEN);
+			if (loader != null) {
+				loader.forceLoad();
+			}
+		}
+	};
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		actionBarCallback = (MainContextualActionBarCallback) activity;
+		activity.getContentResolver().registerContentObserver(MobileStoreContract.Visits.CONTENT_URI, true, mObserver);
 	}
 
 	@Override
 	public void onDetach() {
 		super.onDetach();
+		getActivity().getContentResolver().unregisterContentObserver(mObserver);
 	}
-
+	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -267,7 +284,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 	private interface VisitsQuery {
 		int _TOKEN = 0x1234;
 
-		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Visits.SALES_PERSON_ID, MobileStoreContract.Visits.CUSTOMER_ID, MobileStoreContract.Visits.CUSTOMER_NO, MobileStoreContract.Visits.NAME, MobileStoreContract.Visits.NAME_2,
+		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Visits.SALES_PERSON_ID, MobileStoreContract.Visits.CUSTOMER_ID, MobileStoreContract.Customers.CUSTOMER_NO, MobileStoreContract.Customers.NAME, MobileStoreContract.Customers.NAME_2,
 				MobileStoreContract.Visits.VISIT_DATE, MobileStoreContract.Visits.VISIT_RESULT, MobileStoreContract.Visits.VISIT_TYPE, MobileStoreContract.Visits.ARRIVAL_TIME, MobileStoreContract.Visits.DEPARTURE_TIME, MobileStoreContract.Visits.ODOMETER };
 
 		int _ID = 0;

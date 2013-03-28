@@ -374,7 +374,7 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 //			String no = salePersonCursor.getString(salePersonCursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_NO));
 //		}
 		ContentValues contentValues = new ContentValues();
-		contentValues.put(Visits.SALES_PERSON_ID, 1);
+		contentValues.put(Visits.SALES_PERSON_ID, salesPersonId);
 		contentValues.put(Visits.VISIT_DATE, DateUtils.formatPickerInputForDb(visitDateEditText.getText().toString()));
 		if (customerPk == null) {
 			contentValues.putNull(Visits.CUSTOMER_ID);
@@ -442,7 +442,7 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 	private interface VisitsQuery {
 		int _TOKEN = 3;
 
-		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Visits.SALES_PERSON_ID, MobileStoreContract.Visits.CUSTOMER_ID, MobileStoreContract.Visits.VISIT_DATE, MobileStoreContract.Visits.CUSTOMER_NO, MobileStoreContract.Visits.NAME,
+		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Visits.SALES_PERSON_ID, MobileStoreContract.Visits.CUSTOMER_ID, MobileStoreContract.Visits.VISIT_DATE, MobileStoreContract.Customers.CUSTOMER_NO, MobileStoreContract.Customers.NAME,
 				MobileStoreContract.Visits.LINE_NO, MobileStoreContract.Visits.ENTRY_TYPE, MobileStoreContract.Visits.ARRIVAL_TIME, MobileStoreContract.Visits.DEPARTURE_TIME, MobileStoreContract.Visits.ODOMETER, MobileStoreContract.Visits.NOTE,
 				MobileStoreContract.Visits.VISIT_RESULT, };
 

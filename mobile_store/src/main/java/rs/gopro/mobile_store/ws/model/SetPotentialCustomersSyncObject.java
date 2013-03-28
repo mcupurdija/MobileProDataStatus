@@ -107,7 +107,7 @@ public class SetPotentialCustomersSyncObject extends SyncObject {
 
 	private String createHeader() {
 		// get header data
-		Cursor cursorHeader = context.getContentResolver().query(MobileStoreContract.Customers.buildPotentialCustomersExport(), PotentialCustomerQuery.PROJECTION, Tables.CUSTOMERS+"._ID=?", new String[] { String.valueOf(customerId) }, null);
+		Cursor cursorHeader = context.getContentResolver().query(MobileStoreContract.Customers.buildPotentialCustomersExport(), PotentialCustomerQuery.PROJECTION, Tables.CUSTOMERS+"._id=?", new String[] { String.valueOf(customerId) }, null);
 		List<String[]> header = CSVDomainWriter.parseCursor(cursorHeader, PotentialCustomerQuery.PROJECTION_TYPE);
 		StringWriter stringWriter = new StringWriter();
 		CSVWriter writer = new CSVWriter(stringWriter, ';', '"');
@@ -165,20 +165,20 @@ public class SetPotentialCustomersSyncObject extends SyncObject {
 	private interface PotentialCustomerQuery {
 		String[] PROJECTION = {
 				MobileStoreContract.Customers.CUSTOMER_NO,
-				MobileStoreContract.Customers.NAME, 
-				MobileStoreContract.Customers.NAME_2,
-				MobileStoreContract.Customers.ADDRESS,
-				MobileStoreContract.Customers.CITY,
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.NAME, 
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.NAME_2,
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.ADDRESS,
+				//MobileStoreContract.Customers.CITY,
 
-				MobileStoreContract.Customers.PHONE, 
-				MobileStoreContract.Customers.MOBILE, 
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.PHONE, 
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.MOBILE, 
 
 				MobileStoreContract.Customers.SALE_PERSON_NO, 
-				MobileStoreContract.Customers.VAT_REG_NO,
-				MobileStoreContract.Customers.POST_CODE,
-				MobileStoreContract.Customers.EMAIL, 
-				MobileStoreContract.Customers.COMPANY_ID, 
-				MobileStoreContract.Customers.GLOBAL_DIMENSION,
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.VAT_REG_NO,
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.POST_CODE,
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.EMAIL, 
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.COMPANY_ID, 
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.GLOBAL_DIMENSION,
 				MobileStoreContract.Customers.NUMBER_OF_BLUE_COAT, 
 				MobileStoreContract.Customers.NUMBER_OF_GREY_COAT
         };
@@ -188,7 +188,7 @@ public class SetPotentialCustomersSyncObject extends SyncObject {
 				String.class,
 				String.class,
 				String.class,
-				String.class,
+				//String.class,
 				
 				String.class,
 				String.class,

@@ -5,6 +5,8 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.SetPotentialCustomersSyncObject;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -162,14 +164,26 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 		contentValues.put(Customers.GLOBAL_DIMENSION, global_dimension.getText().toString());
 		contentValues.put(Customers.NUMBER_OF_BLUE_COAT, numOfBlueCoat.getText().toString());
 		contentValues.put(Customers.NUMBER_OF_GREY_COAT,numOfGrayCoat.getText().toString());
-	
+
 		if (Intent.ACTION_INSERT.equals(mAction)) {
-			contentValues.put(Customers.CUSTOMER_NO, newCustomerNo);
+			//contentValues.put(Customers.CUSTOMER_NO, newCustomerNo);
 		}
 		
-		getContentResolver().update(MobileStoreContract.Customers.CONTENT_URI, contentValues, Tables.CUSTOMERS + "._ID=?", new String[] { String.valueOf(customerId) });
+		int result = getContentResolver().update(MobileStoreContract.Customers.CONTENT_URI, contentValues, Tables.CUSTOMERS + "._ID=?", new String[] { String.valueOf(customerId) });
+		
+		if (result > 0) {
+			sendPotentialCustomer(customerId);
+		}
 	}
 	
+	private void sendPotentialCustomer(int customerId) {    	
+    	SetPotentialCustomersSyncObject potentialCustomersSyncObject = new SetPotentialCustomersSyncObject(customerId);
+    	potentialCustomersSyncObject.setpPendingCustomerCreation(Integer.valueOf(1));
+    	Intent intent = new Intent(this, NavisionSyncService.class);
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, potentialCustomersSyncObject);
+		startService(intent);	
+	}
+
 	private void loadUi(Cursor data) {
 		if (data.moveToFirst()) {
 			primaryName.setText(data.getString(PotentialCustomerQuery.NAME));
