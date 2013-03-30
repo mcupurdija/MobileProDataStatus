@@ -13,25 +13,25 @@ import android.content.ContentValues;
 
 public class SalesInvoiceLinesDomain extends Domain {
 
-	String invoices_no;
-	String line_no;
-	String customer_no;
-	String document_type;
+	public String invoices_no;
+	public String line_no;
+	public String customer_no;
+	public String document_type;
 	
-	String item_no;
-	String location_code;
-	String description;
+	public String item_no;
+	public String location_code;
+	public String description;
 	
-	String quantity;
-	String unit_price;
-	String vat_percent;
-	String line_discount_percent;
+	public String quantity;
+	public String unit_price;
+	public String vat_percent;
+	public String line_discount_percent;
 	
-	String line_discount_amount;
-	String amount_including_vat;
-	String inv_discount_amount;
-	String unit_of_measure_code;
-	String price_include_vat;
+	public String line_discount_amount;
+	public String amount_including_vat;
+	public String inv_discount_amount;
+	public String unit_of_measure_code;
+	public String price_include_vat;
 
 	private static final String[] COLUMNS = new String[] { "invoices_no", "line_no", "customer_no", "document_type", 
 		"item_no", "location_code", "description", 

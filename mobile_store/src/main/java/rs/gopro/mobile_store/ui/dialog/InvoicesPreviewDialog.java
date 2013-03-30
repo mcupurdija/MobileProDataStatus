@@ -1,22 +1,16 @@
-package rs.gopro.mobile_store.ui.fragment;
-
-import java.util.HashMap;
-import java.util.Map;
+package rs.gopro.mobile_store.ui.dialog;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.BaseActivity;
-import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
+import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
-import rs.gopro.mobile_store.ws.model.ItemQtySalesPriceAndDiscSyncObject;
-import rs.gopro.mobile_store.ws.model.SalesHeadersSyncObject;
 import rs.gopro.mobile_store.ws.model.SalesInvoiceLinesSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,7 +29,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
@@ -50,7 +43,7 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 	private Button syncAllLinesForDoc;
 	private String invoiceNo;
 	
-	private ProgressDialog itemLoadProgressDialog;
+//	private ProgressDialog itemLoadProgressDialog;
 	
 	private BroadcastReceiver onNotice = new BroadcastReceiver() {
 		@Override
@@ -110,7 +103,7 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.dialog_fragment_invoice, container);
 		ListView listView=(ListView) view.findViewById(R.id.invoice_dialog_list);
-		ListView  listView2 = new ListView(getActivity());
+//		ListView  listView2 = new ListView(getActivity());
 		listView.setAdapter(mAdapter);
 		
 		syncAllLinesForDoc = (Button) view.findViewById(R.id.invoice_lines_sync_button);
@@ -180,18 +173,30 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
 			Integer  invoice_type =  cursor.getInt(InvoiceLineQuery.TYPE);
+			double quantity = cursor.getDouble(InvoiceLineQuery.QUANTITY);
+			double price = cursor.getDouble(InvoiceLineQuery.UNIT_PRICE);
+			double line_discount = cursor.getDouble(InvoiceLineQuery.LINE_DISCOUNT_AMOUNT);
+			double line_discount_percent = cursor.getDouble(InvoiceLineQuery.LINE_DISCOUNT_PERCENT);
+			
+			double line_amount = quantity*price - line_discount;
+			
+			TextView title1 = (TextView) view.findViewById(R.id.invoice_line_title1);
+			TextView title2 = (TextView) view.findViewById(R.id.invoice_line_title2);
+			TextView subtitle1 = (TextView)view.findViewById(R.id.invoice_line_subtitle);
+			TextView subtitle2 = (TextView)view.findViewById(R.id.invoice_line_subtitle2);
+//			TextView subtitle3 = (TextView)view.findViewById(R.id.invoice_line_subtitle3);
+			
 			String [] invoiceLineType = getResources().getStringArray(R.array.invoice_line_type_array);
-			TextView title = (TextView) view.findViewById(R.id.invoice_line_title);
-			title.setText(invoiceLineType[invoice_type]);
-			TextView  quantity = (TextView)view.findViewById(R.id.invoice_line_subtitle);
-			String 	quantityString = getString(R.string.invoice_line_quantity)+": "+cursor.getString(InvoiceLineQuery.QUANTITY);
-			quantity.setText(quantityString);
-			String unitPriceString = getString(R.string.invoice_line_unit_price) + ": " + cursor.getString(InvoiceLineQuery.UNIT_PRICE);
-			TextView  unitPrice = (TextView)view.findViewById(R.id.invoice_line_subtitle2);
-			unitPrice.setText(unitPriceString);
-			String lineDiscountString = getString(R.string.invoice_line_discount_amount) + ": " + cursor.getString(InvoiceLineQuery.LINE_DISCOUNT_AMOUNT);
-			TextView lineDiscount = (TextView)view.findViewById(R.id.invoice_line_subtitle3);
-			lineDiscount.setText(lineDiscountString);
+			
+			title1.setText(cursor.getString(InvoiceLineQuery.DESCRIPTION));
+			title2.setText(invoiceLineType[invoice_type]);
+			String 	quantityString = getString(R.string.invoice_line_quantity)+": "+ UIUtils.formatDoubleForUI(quantity);
+			subtitle1.setText(quantityString + " Cena: "+ UIUtils.formatDoubleForUI(price) + " Popust: "+ UIUtils.formatDoubleForUI(line_discount_percent) + "%");
+//			String unitPriceString = getString(R.string.invoice_line_unit_price) + ": " + cursor.getString(InvoiceLineQuery.UNIT_PRICE);
+			subtitle2.setText("Iznos: "+UIUtils.formatDoubleForUI(line_amount));
+//			String lineDiscountString = getString(R.string.invoice_line_discount_amount) + ": " + cursor.getString(InvoiceLineQuery.LINE_DISCOUNT_AMOUNT);
+//			
+//			subtitle3.setText(lineDiscountString);
 		}
 
 		@Override
@@ -205,20 +210,22 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 	}
 	
 	private interface InvoiceLineQuery {
-		
-		String[] PROJECTION = {
-				BaseColumns._ID, 
+
+		String[] PROJECTION = { BaseColumns._ID,
 				MobileStoreContract.InvoiceLine.TYPE,
 				MobileStoreContract.InvoiceLine.QUANTITY,
 				MobileStoreContract.InvoiceLine.UNIT_PRICE,
-				MobileStoreContract.InvoiceLine.LINE_DISCOUNT_AMOUNT
-				};
-		
-		int _ID = 0;
+				MobileStoreContract.InvoiceLine.LINE_DISCOUNT_AMOUNT,
+				MobileStoreContract.InvoiceLine.DESCRIPTION,
+				MobileStoreContract.InvoiceLine.LINE_DISCOUNT_PERCENT };
+
+//		int _ID = 0;
 		int TYPE = 1;
 		int QUANTITY = 2;
-		int UNIT_PRICE= 3;
-		int LINE_DISCOUNT_AMOUNT= 4;
-		}
+		int UNIT_PRICE = 3;
+		int LINE_DISCOUNT_AMOUNT = 4;
+		int DESCRIPTION = 5;
+		int LINE_DISCOUNT_PERCENT = 6;
+	}
 
 }

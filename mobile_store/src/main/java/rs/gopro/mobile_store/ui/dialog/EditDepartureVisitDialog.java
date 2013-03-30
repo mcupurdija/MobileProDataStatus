@@ -120,6 +120,9 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
 		case 1:
 			realization_option = ApplicationConstants.VISIT_TYPE_NO_CLOSURE;
 			break;
+		case 2:
+			realization_option = ApplicationConstants.VISIT_TYPE_PAUSE;
+			break;
 		default:
 			realization_option = ApplicationConstants.VISIT_TYPE_NO_CLOSURE;
 			break;

@@ -175,6 +175,7 @@
     <string-array name="record_visit_result_type_array">
         <item>+ poseta sa zaključenjem</item>
         <item>- poseta bez zaključenja</item>
+        <item>O odmor/ostalo</item>
     </string-array>
     <string-array name="order_condition_status_array">
         <item>Ok</item>

@@ -270,6 +270,8 @@ public class RecordVisitsListFragment extends ListFragment implements
         		customer_no = "KRAJ DANA";
         	} else if (visit_result == ApplicationConstants.VISIT_TYPE_BACK_HOME) {
         		customer_no = "POVRATAK KUĆI";
+        	} else if (visit_result == ApplicationConstants.VISIT_TYPE_PAUSE) {
+        		customer_no = "ODMOR/OSTALO";
         	}
 
 			((TextView) view.findViewById(R.id.visit_subtitle1)).setText(customer_no + " " + customer_name);

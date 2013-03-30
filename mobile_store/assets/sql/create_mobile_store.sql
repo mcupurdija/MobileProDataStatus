@@ -18483,6 +18483,46 @@ END;
 --INSERT INTO  `invoice_lines`  (`_id`,`invoices_id`,`line_no`,`customer_id`,`type`,	`no`,`location_code`,`description`,`quantity`,`unit_price`,`vat_percent`,`line_discount_percent`,`line_discount_amount`,`amount_including_vat`,`inv_discount_amount`,`unit_of_measure_code`,`price_include_vat`) VALUES
 --(6, 2, 6, 1, 2, 'noo 2', 'location_code second', 'Description', '12', '2434', '32', '21', '21', '222', '123', '1', '1' );
 
+CREATE TABLE `sent_orders_status_lines` (
+	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
+	`document_type` INTEGER,
+	`customer_id` INTEGER,
+	`sent_order_status_id` INTEGER,
+	`line_no` INTEGER,
+	`line_type` INTEGER,
+	`item_id` INTEGER,
+	`location_code` TEXT,
+	`description` TEXT,
+	`quantity` REAL,
+	`outstanding_quantity` REAL,
+	`unit_price` REAL,
+	`vat_percent` REAL,
+	`line_discount_percent` REAL,
+	`line_discount_amount` REAL,
+	`inv_discount_amount` REAL,
+	`line_amount` REAL,
+	`unit_of_measure_code` REAL,
+	`price_include_vat` INTEGER,
+	`created_date` TEXT,
+	`created_by` TEXT,
+	`updated_date` TEXT,
+	`updated_by` TEXT
+);
+
+CREATE TRIGGER IF NOT EXISTS "log_new_sent_orders_status_lines" AFTER INSERT ON "sent_orders_status_lines" 
+BEGIN 
+	update sent_orders_status_lines set 
+	created_date = datetime('now'),
+	created_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
+CREATE TRIGGER IF NOT EXISTS "log_sent_orders_status_lines_change" AFTER UPDATE ON "sent_orders_status_lines" 
+BEGIN 
+	update sent_orders_status_lines set 
+	updated_date = datetime('now'),
+	updated_by = (select username from users where active = 1)
+	where _id = new._id; 
+END;
 
 CREATE TABLE `electronic_card_customer` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,

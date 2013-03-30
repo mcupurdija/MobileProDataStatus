@@ -142,12 +142,14 @@ public class SentOrdersFragment extends ListFragment implements LoaderCallbacks<
 		if (getActivity() == null) {
 			return;
 		}
-		cursor.moveToFirst();
-		saleAdapter.changeCursor(cursor);
+		if (cursor != null && cursor.moveToFirst()) {
+			saleAdapter.changeCursor(cursor);
+		}
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
+		saleAdapter.changeCursor(null);
 	}
 
 	private final ContentObserver mObserver = new ContentObserver(new Handler()) {

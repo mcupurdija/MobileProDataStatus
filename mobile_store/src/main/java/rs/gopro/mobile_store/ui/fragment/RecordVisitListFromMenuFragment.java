@@ -10,7 +10,6 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.RecordVisitsMultipaneActivity;
-import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
@@ -50,7 +49,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 	private String mSelectedVisitId;
 	private boolean mHasSetEmptyText = false;
 
-	private MainContextualActionBarCallback actionBarCallback;
+//	private MainContextualActionBarCallback actionBarCallback;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -80,8 +79,8 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 			return;
 		}
 
-		mAdapter = new VisitsAdapter(getActivity());
-		visitQueryToken = VisitsQuery._TOKEN;
+		mAdapter = new RecordedVisitsAdapter(getActivity());
+		visitQueryToken = RecordedVisitsQuery._TOKEN;
 
 		setListAdapter(mAdapter);
 
@@ -103,6 +102,10 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		if (savedInstanceState != null) {
+			getLoaderManager().restartLoader(RecordedVisitsQuery._TOKEN, null, this);
+		}
+		
 		if (!mHasSetEmptyText) {
 			// Could be a bug, but calling this twice makes it become visible
 			// when it shouldn't be visible.
@@ -117,7 +120,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 			if (getActivity() == null) {
 				return;
 			}
-			Loader<Cursor> loader = getLoaderManager().getLoader(VisitsQuery._TOKEN);
+			Loader<Cursor> loader = getLoaderManager().getLoader(RecordedVisitsQuery._TOKEN);
 			if (loader != null) {
 				loader.forceLoad();
 			}
@@ -127,7 +130,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		actionBarCallback = (MainContextualActionBarCallback) activity;
+//		actionBarCallback = (MainContextualActionBarCallback) activity;
 		activity.getContentResolver().registerContentObserver(MobileStoreContract.Visits.CONTENT_URI, true, mObserver);
 	}
 
@@ -153,7 +156,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		return new CursorLoader(getActivity(), mVisitsUri, VisitsQuery.PROJECTION, VISITS_DATE_FILTER, new String[] { DateUtils.toDbDate(new Date()) }, ORDER_BY_VISITS_FILTER);
+		return new CursorLoader(getActivity(), mVisitsUri, RecordedVisitsQuery.PROJECTION, VISITS_DATE_FILTER, new String[] { DateUtils.toDbDate(new Date()) }, ORDER_BY_VISITS_FILTER);
 	}
 
 	@Override
@@ -162,7 +165,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 			return;
 		}
 		int token = loader.getId();
-		if (token == VisitsQuery._TOKEN) {
+		if (token == RecordedVisitsQuery._TOKEN) {
 			mAdapter.swapCursor(cursor);
 		} else {
 			cursor.close();
@@ -187,10 +190,10 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 	}
 
 	/**
-	 * {@link CursorAdapter} that renders a {@link VisitsQuery}.
+	 * {@link CursorAdapter} that renders a {@link RecordedVisitsQuery}.
 	 */
-	private class VisitsAdapter extends CursorAdapter {
-		public VisitsAdapter(Context context) {
+	private class RecordedVisitsAdapter extends CursorAdapter {
+		public RecordedVisitsAdapter(Context context) {
 			super(context, null, false);
 		}
 
@@ -206,35 +209,35 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 			// UIUtils.setActivatedCompat(view,
 			// cursor.getString(VisitsQuery.VENDOR_ID)
 			// .equals(mSelectedVendorId));
-			final String visit_id = String.valueOf(cursor.getInt(VisitsQuery._ID));
+			final String visit_id = String.valueOf(cursor.getInt(RecordedVisitsQuery._ID));
 			view.setActivated(visit_id.equals(mSelectedVisitId));
 			String arrivalTime = "\\";
-	        if (!cursor.isNull(VisitsQuery.ARRIVAL_TIME)) { 
-	        	arrivalTime = DateUtils.formatDbTimeForPresentation(cursor.getString(VisitsQuery.ARRIVAL_TIME));
+	        if (!cursor.isNull(RecordedVisitsQuery.ARRIVAL_TIME)) { 
+	        	arrivalTime = DateUtils.formatDbTimeForPresentation(cursor.getString(RecordedVisitsQuery.ARRIVAL_TIME));
 	        }
 	        
 	        String departureTime = "\\";
-	        if (!cursor.isNull(VisitsQuery.DEPARTURE_TIME)) { 
-	        	departureTime = DateUtils.formatDbTimeForPresentation(cursor.getString(VisitsQuery.DEPARTURE_TIME));
+	        if (!cursor.isNull(RecordedVisitsQuery.DEPARTURE_TIME)) { 
+	        	departureTime = DateUtils.formatDbTimeForPresentation(cursor.getString(RecordedVisitsQuery.DEPARTURE_TIME));
 	        }
 	        
 //	        String visit_date = UIUtils.formatDate(UIUtils.getDateTime(cursor.getString(VisitsQuery.VISIT_DATE)));
 			
 	        ((TextView) view.findViewById(R.id.visit_title)).setText(arrivalTime + " - " + departureTime);
-			String customer_no = cursor.getString(VisitsQuery.CUSTOMER_NO);
-			String customer_name = cursor.getString(VisitsQuery.CUSTOMER_NAME);//  + cursor.getString(VisitsQuery.CUSTOMER_NAME2);
+			String customer_no = cursor.getString(RecordedVisitsQuery.CUSTOMER_NO);
+			String customer_name = cursor.getString(RecordedVisitsQuery.CUSTOMER_NAME);//  + cursor.getString(VisitsQuery.CUSTOMER_NAME2);
         	if (customer_no == null || customer_no.length() < 1) {
         		customer_no = "NEPOZNAT KUPAC";
         		customer_name = "-";
         	}
-        	final int visit_type = cursor.getInt(VisitsQuery.VISIT_TYPE);
+        	final int visit_type = cursor.getInt(RecordedVisitsQuery.VISIT_TYPE);
         	int odometer = -1;
-        	if (!cursor.isNull(VisitsQuery.ODOMETER)) {
-        		odometer = cursor.getInt(VisitsQuery.ODOMETER);
+        	if (!cursor.isNull(RecordedVisitsQuery.ODOMETER)) {
+        		odometer = cursor.getInt(RecordedVisitsQuery.ODOMETER);
         	}
         	int visit_result = -1;
-        	if (!cursor.isNull(VisitsQuery.VISIT_RESULT)) {
-        		visit_result = cursor.getInt(VisitsQuery.VISIT_RESULT);
+        	if (!cursor.isNull(RecordedVisitsQuery.VISIT_RESULT)) {
+        		visit_result = cursor.getInt(RecordedVisitsQuery.VISIT_RESULT);
         	}
         	String status = "";
         	if (visit_type == ApplicationConstants.VISIT_PLANNED) {
@@ -249,6 +252,8 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
         		customer_no = "KRAJ DANA";
         	} else if (visit_result == ApplicationConstants.VISIT_TYPE_BACK_HOME) {
         		customer_no = "POVRATAK KUĆI";
+        	} else if (visit_result == ApplicationConstants.VISIT_TYPE_PAUSE) {
+        		customer_no = "ODMOR/OSTALO";
         	}
         	
 			((TextView) view.findViewById(R.id.visit_subtitle1)).setText(customer_no + " " + customer_name);
@@ -271,9 +276,9 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 			view.setOnLongClickListener(new OnLongClickListener() {
 				@Override
 				public boolean onLongClick(View v) {
-					String visitId = visit_id;
-					String visitType = String.valueOf(visit_type);
-					actionBarCallback.onLongClickItem(visitId, visitType);
+//					String visitId = visit_id;
+//					String visitType = String.valueOf(visit_type);
+//					actionBarCallback.onLongClickItem(visitId, visitType);
 					return true;
 				}
 			});
@@ -281,7 +286,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 		}
 	}
 
-	private interface VisitsQuery {
+	private interface RecordedVisitsQuery {
 		int _TOKEN = 0x1234;
 
 		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Visits.SALES_PERSON_ID, MobileStoreContract.Visits.CUSTOMER_ID, MobileStoreContract.Customers.CUSTOMER_NO, MobileStoreContract.Customers.NAME, MobileStoreContract.Customers.NAME_2,

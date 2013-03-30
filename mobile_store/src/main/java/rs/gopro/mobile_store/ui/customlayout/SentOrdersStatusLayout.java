@@ -1,7 +1,6 @@
 package rs.gopro.mobile_store.ui.customlayout;
 
 import rs.gopro.mobile_store.R;
-import rs.gopro.mobile_store.ui.fragment.SentOrdersFragment;
 import rs.gopro.mobile_store.ui.fragment.SentOrdersStatusMainViewFragment;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;

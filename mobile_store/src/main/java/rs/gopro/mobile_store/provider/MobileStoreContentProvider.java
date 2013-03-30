@@ -15,6 +15,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SalesPerson;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SentOrdersStatus;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SentOrdersStatusLineColumns;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
@@ -123,6 +124,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int SENT_ORDERS_STATUS_SEARCH = 1101;
 	
 	private static final int INVOICE_LINES = 1200;
+	
+	private static final int SENT_ORDERS_STATUS_LINES = 1300;
 	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -254,6 +257,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 				SENT_ORDERS_STATUS_SEARCH);
 		
 		mobileStoreURIMatcher.addURI(authority, "invoice_lines", INVOICE_LINES);
+		
+		mobileStoreURIMatcher.addURI(authority, "sent_orders_status_lines", SENT_ORDERS_STATUS_LINES);
 		
 	}
 
@@ -979,6 +984,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder;
 		case INVOICE_LINES:
 			return builder.addTable(Tables.INVOICE_LINES);
+		case SENT_ORDERS_STATUS_LINES:
+			return builder.addTable(Tables.SENT_ORDERS_STATUS_LINES);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -1062,6 +1069,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 			tableName = Tables.INVOICE_LINES;
 			selectionParam = new String[]{InvoiceLine.INVOICES_ID, InvoiceLine.LINE_NO};
 			selectionPhrase = InvoiceLine.INVOICES_ID+ "=? AND " + InvoiceLine.LINE_NO + "=?";
+			break;
+		case SENT_ORDERS_STATUS_LINES:
+			tableName = Tables.SENT_ORDERS_STATUS_LINES;
+			selectionParam = new String[]{SentOrdersStatusLineColumns.SENT_ORDER_STATUS_ID, SentOrdersStatusLineColumns.LINE_NO, SentOrdersStatusLineColumns.DOCUMENT_TYPE};
+			selectionPhrase = SentOrdersStatusLineColumns.SENT_ORDER_STATUS_ID+ "=? AND " + SentOrdersStatusLineColumns.LINE_NO + "=? AND "+SentOrdersStatusLineColumns.DOCUMENT_TYPE+"=?";
 			break;
 		case SALE_ORDERS:
 			tableName = Tables.SALE_ORDERS;

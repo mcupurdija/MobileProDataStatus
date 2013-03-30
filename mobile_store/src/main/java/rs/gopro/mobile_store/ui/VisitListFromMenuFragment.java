@@ -151,6 +151,7 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
+		mAdapter.changeCursor(null);
 	}
 
 	/**

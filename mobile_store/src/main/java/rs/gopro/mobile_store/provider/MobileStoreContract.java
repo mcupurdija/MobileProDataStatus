@@ -50,6 +50,8 @@ public class MobileStoreContract {
 	private static final String PATH_SENT_ORDERS = "sent_orders";
 	private static final String PATH_SENT_ORDERS_STATUS = "sent_orders_status";
 	private static final String PATH_SENT_ORDERS_STATUS_SEARCH = "custom_search";
+	private static final String PATH_SENT_ORDERS_STATUS_LINES = "sent_orders_status_lines";
+	private static final String PATH_SENT_ORDERS_STATUS_LINES_FROM_ORDER = "sent_orders_status_lines_from_order";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -404,6 +406,31 @@ public class MobileStoreContract {
 		String SPECIAL_QUOTE = 	"special_quote";
 		String PRICES_INCLUDE_VAT = 	"prices_include_vat";
 		String SALES_PERSON_ID = 	"sales_person_id"; 
+	}
+	
+	public interface SentOrdersStatusLineColumns {
+		String SENT_ORDER_STATUS_ID = "sent_order_status_id";
+		String LINE_NO = "line_no";
+		String CUSTOMER_ID = "customer_id";
+		String DOCUMENT_TYPE = "document_type";
+		String LINE_TYPE = "line_type";
+		String ITEM_ID = "item_id";
+		String LOCATION_CODE = "location_code";
+		String DESCRIPTION = "description";
+		String QUANTITY = "quantity";
+		String OUTSTANDING_QUANTITY = "outstanding_quantity";
+		String UNIT_PRICE = "unit_price";
+		String VAT_PERCENT = "vat_percent";
+		String LINE_DISCOUNT_PERCENT = "line_discount_percent";
+		String LINE_DISCOUNT_AMOUNT = "line_discount_amount";
+		String LINE_AMOUNT = "line_amount";
+		String INV_DISCOUNT_AMOUNT = "inv_discount_amount";
+		String UNIT_OF_MEASURE_CODE = "unit_of_measure_code";
+		String PRICE_INCLUDE_VAT = "price_include_vat";
+		String CREATED_DATE = "created_date";
+		String CREATED_BY = "created_by";
+		String UPDATED_DATE = "updated_date";
+		String UPDATED_BY = "updated_by";
 	}
 
 	public static class Generic implements BaseColumns {
@@ -939,6 +966,23 @@ public class MobileStoreContract {
 		}
 		
 		
+	}
+	
+	public static class SentOrdersStatusLines implements SentOrdersStatusLineColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SENT_ORDERS_STATUS_LINES).build();
+		/** Default "ORDER BY" clause. */
+		public static final String DEFAULT_SORT = "sent_orders_status_lines." + AuditColumns.CREATED_DATE + " DESC";
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sent_orders_status_lines";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sent_orders_status_lines";
+		
+		public static Uri buildSentOrdersStatusLinesUri(String invoiceId) {
+			return BASE_CONTENT_URI.buildUpon().appendPath(PATH_SENT_ORDERS_STATUS_LINES_FROM_ORDER).appendPath(invoiceId).build();
+		}
+
+		public static String getSentOrdersStatusId(Uri uri) {
+			return uri.getPathSegments().get(2);
+		}
 	}
 	
 	/**
