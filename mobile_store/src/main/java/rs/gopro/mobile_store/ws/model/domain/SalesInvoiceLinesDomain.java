@@ -8,6 +8,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.InvoiceLine;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 import android.content.ContentValues;
 
@@ -54,13 +55,13 @@ public class SalesInvoiceLinesDomain extends Domain {
 		contentValues.put(Items.ITEM_NO, item_no);
 		contentValues.put(InvoiceLine.LOCATION_CODE, location_code);
 		contentValues.put(InvoiceLine.DESCRIPTION, description);
-		contentValues.put(InvoiceLine.QUANTITY, quantity);
-		contentValues.put(InvoiceLine.UNIT_PRICE, unit_price);
-		contentValues.put(InvoiceLine.VAT_PERCENT, vat_percent);
-		contentValues.put(InvoiceLine.LINE_DISCOUNT_PERCENT, line_discount_percent);
-		contentValues.put(InvoiceLine.LINE_DISCOUNT_AMOUNT, line_discount_amount);
-		contentValues.put(InvoiceLine.AMOUNT_INCLUDING_VAT, amount_including_vat);
-		contentValues.put(InvoiceLine.INV_DISCOUNT_AMOUNT, inv_discount_amount);
+		contentValues.put(InvoiceLine.QUANTITY, WsDataFormatEnUsLatin.toDoubleFromWs(quantity));
+		contentValues.put(InvoiceLine.UNIT_PRICE, WsDataFormatEnUsLatin.toDoubleFromWs(unit_price));
+		contentValues.put(InvoiceLine.VAT_PERCENT, WsDataFormatEnUsLatin.toDoubleFromWs(vat_percent));
+		contentValues.put(InvoiceLine.LINE_DISCOUNT_PERCENT, WsDataFormatEnUsLatin.toDoubleFromWs(line_discount_percent));
+		contentValues.put(InvoiceLine.LINE_DISCOUNT_AMOUNT, WsDataFormatEnUsLatin.toDoubleFromWs(line_discount_amount));
+		contentValues.put(InvoiceLine.AMOUNT_INCLUDING_VAT, WsDataFormatEnUsLatin.toDoubleFromWs(amount_including_vat));
+		contentValues.put(InvoiceLine.INV_DISCOUNT_AMOUNT, WsDataFormatEnUsLatin.toDoubleFromWs(inv_discount_amount));
 		contentValues.put(InvoiceLine.UNIT_OF_MEASURE_CODE, unit_of_measure_code);
 		contentValues.put(InvoiceLine.PRICE_INCLUDE_VAT, price_include_vat);
 

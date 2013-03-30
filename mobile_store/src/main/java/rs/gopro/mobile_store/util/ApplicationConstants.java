@@ -25,6 +25,8 @@ public class ApplicationConstants {
 	public static final int VISIT_TYPE_END_DAY = 5;
 	public static final int VISIT_TYPE_BACK_HOME = 6;
 	
+	public static final int SENT_DOCUMENTS_STATUS_HEADER_DOC_TYPE_ORDERS = 0;
+	
 	public static enum USER_ROLE {
 		ADMIN, USER
 	}

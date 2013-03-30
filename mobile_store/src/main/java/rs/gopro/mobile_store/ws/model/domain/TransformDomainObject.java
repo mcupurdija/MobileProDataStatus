@@ -41,6 +41,9 @@ public class TransformDomainObject {
 		if (cursor.moveToNext()) {
 			recordId = cursor.getInt(0);
 		}
+		if (cursor != null && !cursor.isClosed()) {
+			cursor.close();
+		}
 		return recordId;
 	}
 

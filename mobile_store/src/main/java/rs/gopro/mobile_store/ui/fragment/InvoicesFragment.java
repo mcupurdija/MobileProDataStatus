@@ -394,7 +394,7 @@ public class InvoicesFragment extends ListFragment implements
 	private void showDialog(Uri invoiceLineUri, String invoicesNo) {
 		FragmentTransaction ft = getActivity().getSupportFragmentManager()
 				.beginTransaction();
-		Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+		Fragment prev = getFragmentManager().findFragmentByTag("invoice_dialog");
 		if (prev != null) {
 			ft.remove(prev);
 		}

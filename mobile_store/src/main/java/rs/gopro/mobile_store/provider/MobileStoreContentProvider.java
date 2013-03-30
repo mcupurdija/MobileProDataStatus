@@ -16,6 +16,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SalesPerson;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SentOrdersStatus;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SentOrdersStatusLineColumns;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SentOrdersStatusLines;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
@@ -126,6 +127,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int INVOICE_LINES = 1200;
 	
 	private static final int SENT_ORDERS_STATUS_LINES = 1300;
+	private static final int SENT_ORDERS_STATUS_LINES_FROM_ORDER = 1301;
 	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -259,6 +261,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "invoice_lines", INVOICE_LINES);
 		
 		mobileStoreURIMatcher.addURI(authority, "sent_orders_status_lines", SENT_ORDERS_STATUS_LINES);
+		mobileStoreURIMatcher.addURI(authority, "sent_orders_status_lines_from_order/#", SENT_ORDERS_STATUS_LINES_FROM_ORDER);
 		
 	}
 
@@ -986,6 +989,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.INVOICE_LINES);
 		case SENT_ORDERS_STATUS_LINES:
 			return builder.addTable(Tables.SENT_ORDERS_STATUS_LINES);
+		case SENT_ORDERS_STATUS_LINES_FROM_ORDER:
+			return builder.addTable(Tables.SENT_ORDERS_STATUS_LINES)
+					.where(SentOrdersStatusLines.SENT_ORDER_STATUS_ID + " = ? ", new String[] { SentOrdersStatusLines.getSentOrdersStatusId(uri) });
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

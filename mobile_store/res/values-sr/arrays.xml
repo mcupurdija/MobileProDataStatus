@@ -152,6 +152,7 @@
         <item>001</item>
     </string-array>
      <string-array name="invoice_line_type_array">
+        <item>-</item>
         <item>Konto GK</item>
         <item>Artikal</item>
         <item>Resurs</item>

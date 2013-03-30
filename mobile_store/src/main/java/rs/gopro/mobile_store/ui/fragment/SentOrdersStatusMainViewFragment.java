@@ -8,7 +8,9 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.dialog.InvoicesPreviewDialog;
+import rs.gopro.mobile_store.ui.dialog.SentOrdersLinesPreviewDialog;
 import rs.gopro.mobile_store.ui.widget.SimpleSelectionedListAdapter;
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.util.UIUtils;
@@ -172,7 +174,7 @@ public class SentOrdersStatusMainViewFragment extends ListFragment implements
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-					SalesHeadersSyncObject syncObject = new SalesHeadersSyncObject("", Integer.valueOf(-1), "", "", rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), salesPersonNo, Integer.valueOf(-1));
+					SalesHeadersSyncObject syncObject = new SalesHeadersSyncObject("", Integer.valueOf(ApplicationConstants.SENT_DOCUMENTS_STATUS_HEADER_DOC_TYPE_ORDERS), "", "", rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), salesPersonNo, Integer.valueOf(-1));
 					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, syncObject);
 					getActivity().startService(intent);
 					sentOrdersStatusProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_sent_orders_status_load), getActivity().getResources().getString(R.string.dialog_body_sent_orders_status_load), true, true);
@@ -388,9 +390,10 @@ public class SentOrdersStatusMainViewFragment extends ListFragment implements
 			View.OnClickListener allSessionsListener = new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					final Uri invoiceLineUri = MobileStoreContract.InvoiceLine
-							.buildInvoiceLinesUri(sentOrdersId.toString());
-					showDialog(invoiceLineUri);
+					final Uri sentOrderLineLineUri = MobileStoreContract.SentOrdersStatusLines
+							.buildSentOrdersStatusLinesUri(sentOrdersId.toString());
+					// TODO bad hack!!!! NAV regulates this field
+					showDialog(sentOrderLineLineUri, docNo, String.valueOf(doc_type == 1 ? 0 : 1));
 				}
 			};
 
@@ -400,7 +403,7 @@ public class SentOrdersStatusMainViewFragment extends ListFragment implements
 			statusView.setText(shipment_statuses[shipment_status]);
 			statusView.setBackgroundResource(R.drawable.border_normal);
 			
-			subtitleView.setText(getString(R.string.invoice_document_type) + " " + doc_types[doc_type]
+			subtitleView.setText(getString(R.string.invoice_document_type) + " " + doc_types[doc_type == 1 ? 0 : 1]
 					+ " - " + getString(R.string.sent_orders_status_order_date) + " " + rs.gopro.mobile_store.util.DateUtils.toUIfromDbDate(order_date));
 			subtitleView.setTextColor(res.getColorStateList(R.color.body_text_2));
 			
@@ -413,6 +416,26 @@ public class SentOrdersStatusMainViewFragment extends ListFragment implements
 			primaryTouchTargetView.setEnabled(true);
 		}
 
+	}
+	
+	private void showDialog(Uri sentOrdersLineUri, String sentOrdersNo, String sentOrdersDocType) {
+		FragmentTransaction ft = getActivity().getSupportFragmentManager()
+				.beginTransaction();
+		Fragment prev = getFragmentManager().findFragmentByTag("sent_orders_dialog");
+		if (prev != null) {
+			ft.remove(prev);
+		}
+		ft.addToBackStack(null);
+
+		// Create and show the dialog.
+		SentOrdersLinesPreviewDialog fragment = new SentOrdersLinesPreviewDialog();
+		Intent tempIntent = new Intent(Intent.ACTION_VIEW,
+				sentOrdersLineUri);
+		tempIntent.putExtra(SentOrdersLinesPreviewDialog.EXTRA_SALE_ORDER_STATUS_NO, sentOrdersNo);
+		tempIntent.putExtra(SentOrdersLinesPreviewDialog.EXTRA_SALE_ORDER_STATUS_DOC_TYPE, sentOrdersDocType);
+		fragment.setArguments(BaseActivity
+				.intentToFragmentArguments(tempIntent));
+		fragment.show(ft, "sent_orders_dialog");
 	}
 	
 	private interface SentOrdersStatusQuery {
@@ -443,22 +466,5 @@ public class SentOrdersStatusMainViewFragment extends ListFragment implements
 
 		int CUSTOMER_NO = 9;
 		int CUSTOMER_NAME = 10;
-	}
-	
-	private void showDialog(Uri invoiceLineUri) {
-		FragmentTransaction ft = getActivity().getSupportFragmentManager()
-				.beginTransaction();
-		Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-		if (prev != null) {
-			ft.remove(prev);
-		}
-		ft.addToBackStack(null);
-
-		// Create and show the dialog.
-		InvoicesPreviewDialog fragment = new InvoicesPreviewDialog();
-		fragment.setArguments(BaseActivity
-				.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW,
-						invoiceLineUri)));
-		fragment.show(ft, "invoice_dialog");
 	}
 }

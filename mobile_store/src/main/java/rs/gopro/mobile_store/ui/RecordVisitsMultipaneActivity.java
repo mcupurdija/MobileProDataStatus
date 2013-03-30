@@ -354,6 +354,10 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 			}
         	return true;
         case R.id.new_record_visit:
+        	if (isVisitOpen()) {
+        		DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Postoji otvorena poseta!");
+        		return true;
+        	}
         	Intent newRecordVisit = new Intent(this, AddVisitActivity.class);
         	// newRecordVisit.put(AddVisitActivity.VISIT_ID, null);
         	newRecordVisit.putExtra(AddVisitActivity.VISIT_TYPE, "0");

@@ -18503,6 +18503,8 @@ CREATE TABLE `sent_orders_status_lines` (
 	`line_amount` REAL,
 	`unit_of_measure_code` REAL,
 	`price_include_vat` INTEGER,
+	`promised_delivery_date` TEXT,
+	`confirmed_promised_delivery_date` INTEGER,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,

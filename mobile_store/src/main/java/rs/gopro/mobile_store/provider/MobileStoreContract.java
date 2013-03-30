@@ -427,6 +427,8 @@ public class MobileStoreContract {
 		String INV_DISCOUNT_AMOUNT = "inv_discount_amount";
 		String UNIT_OF_MEASURE_CODE = "unit_of_measure_code";
 		String PRICE_INCLUDE_VAT = "price_include_vat";
+		String PROMISED_DELIVERY_DATE =  "promised_delivery_date";
+		String CONFIRMED_PROMISED_DELIVERY_DATE = "confirmed_promised_delivery_date";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
@@ -976,12 +978,12 @@ public class MobileStoreContract {
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.sent_orders_status_lines";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.sent_orders_status_lines";
 		
-		public static Uri buildSentOrdersStatusLinesUri(String invoiceId) {
-			return BASE_CONTENT_URI.buildUpon().appendPath(PATH_SENT_ORDERS_STATUS_LINES_FROM_ORDER).appendPath(invoiceId).build();
+		public static Uri buildSentOrdersStatusLinesUri(String sentOrderId) {
+			return BASE_CONTENT_URI.buildUpon().appendPath(PATH_SENT_ORDERS_STATUS_LINES_FROM_ORDER).appendPath(sentOrderId).build();
 		}
 
 		public static String getSentOrdersStatusId(Uri uri) {
-			return uri.getPathSegments().get(2);
+			return uri.getPathSegments().get(1);
 		}
 	}
 	

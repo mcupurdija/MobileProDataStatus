@@ -7,7 +7,7 @@ import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
-import rs.gopro.mobile_store.ws.model.SalesInvoiceLinesSyncObject;
+import rs.gopro.mobile_store.ws.model.SentOrdersStatusLinesSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -35,20 +35,22 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class InvoicesPreviewDialog extends DialogFragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class SentOrdersLinesPreviewDialog extends DialogFragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
-	public static final String EXTRA_INVOICE_NO= "rs.gopro.mobile_store.extra.INVOICE_NO";
-	public static final String EXTRA_INVOICE_TYPE= "rs.gopro.mobile_store.extra.INVOICE_TYPE";
+	public static final String EXTRA_SALE_ORDER_STATUS_NO= "rs.gopro.mobile_store.extra.SALE_ORDER_STATUS_NO";
+	public static final String EXTRA_SALE_ORDER_STATUS_DOC_TYPE= "rs.gopro.mobile_store.extra.SALE_ORDER_STATUS_DOC_TYPE";
 	
-	private Uri mInvoiceLineUri;
+	private Uri mSentOrderStatusUri;
 	private CursorAdapter mAdapter;
 	private Button syncAllLinesForDoc;
+	private String sentOrderNo;
+	private String sentOrderDocType;
 	private ProgressBar mDialogLoader;
-	private String invoiceNo;
+//	private String salesPersonNo;
 	
 //	private ProgressDialog itemLoadProgressDialog;
 	
-	public InvoicesPreviewDialog() {
+	public SentOrdersLinesPreviewDialog() {
 	}
 	
 	private BroadcastReceiver onNotice = new BroadcastReceiver() {
@@ -93,18 +95,20 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+//		salesPersonNo = SharedPreferencesUtil.getSalePersonNo(getActivity());
 		reloadFromArguments(getArguments());
 	}
 	
 	public void reloadFromArguments(Bundle arguments) {
 	// Load new arguments
 		final Intent intent = BaseActivity.fragmentArgumentsToIntent(arguments);
-		mInvoiceLineUri = intent.getData();
-		invoiceNo = intent.getCharSequenceExtra(EXTRA_INVOICE_NO).toString();
-		if (mInvoiceLineUri == null) {
+		mSentOrderStatusUri = intent.getData();
+		sentOrderNo = intent.getCharSequenceExtra(EXTRA_SALE_ORDER_STATUS_NO).toString();
+		sentOrderDocType = intent.getCharSequenceExtra(EXTRA_SALE_ORDER_STATUS_DOC_TYPE).toString();
+		if (mSentOrderStatusUri == null) {
 			return;
 		}
-		mAdapter = new InvoiceLineAdaper(getActivity());
+		mAdapter = new SaleOrdersSentLineAdaper(getActivity());
 		getLoaderManager().initLoader(0, null, this);
 	}
 	
@@ -121,9 +125,8 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 		syncAllLinesForDoc.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO chech for document type
 				Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-				SalesInvoiceLinesSyncObject syncObject = new SalesInvoiceLinesSyncObject("", invoiceNo, "", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate());
+				SentOrdersStatusLinesSyncObject syncObject = new SentOrdersStatusLinesSyncObject("", Integer.valueOf(sentOrderDocType), sentOrderNo, "", "");
 				intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, syncObject);
 				getActivity().startService(intent);
 				mDialogLoader.setVisibility(View.VISIBLE);
@@ -149,7 +152,7 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 	@Override
     public void onResume() {
     	super.onResume();
-    	IntentFilter salesInvoiceLinesSyncObject = new IntentFilter(SalesInvoiceLinesSyncObject.BROADCAST_SYNC_ACTION);
+    	IntentFilter salesInvoiceLinesSyncObject = new IntentFilter(SentOrdersStatusLinesSyncObject.BROADCAST_SYNC_ACTION);
     	LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, salesInvoiceLinesSyncObject);
     }
     
@@ -161,36 +164,42 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 	
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		return new CursorLoader(getActivity(), mInvoiceLineUri, InvoiceLineQuery.PROJECTION, null, null, MobileStoreContract.InvoiceLine.DEFAULT_SORT);
+		return new CursorLoader(getActivity(), mSentOrderStatusUri, SentOrdersStatusLineQuery.PROJECTION, null, null, MobileStoreContract.SentOrdersStatusLines.DEFAULT_SORT);
 	}
 
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		mAdapter.changeCursor(data);
-		
 	}
 
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {	
+		mAdapter.changeCursor(null);
 	}
 	
 	
-	private class InvoiceLineAdaper extends CursorAdapter{
+	private class SaleOrdersSentLineAdaper extends CursorAdapter{
 		
-		public InvoiceLineAdaper(Context context) {
+		public SaleOrdersSentLineAdaper(Context context) {
 			super(context, null,false);
 		}
 		
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
-			Integer  invoice_type =  cursor.getInt(InvoiceLineQuery.TYPE);
-			double quantity = cursor.getDouble(InvoiceLineQuery.QUANTITY);
-			double price = cursor.getDouble(InvoiceLineQuery.UNIT_PRICE);
-			double line_discount = cursor.getDouble(InvoiceLineQuery.LINE_DISCOUNT_AMOUNT);
-			double line_discount_percent = cursor.getDouble(InvoiceLineQuery.LINE_DISCOUNT_PERCENT);
-			double document_line_discount = cursor.getDouble(InvoiceLineQuery.INV_DISCOUNT_AMOUNT);
+			Integer  invoice_type =  cursor.getInt(SentOrdersStatusLineQuery.TYPE);
+			double quantity = cursor.getDouble(SentOrdersStatusLineQuery.QUANTITY);
+			double price = cursor.getDouble(SentOrdersStatusLineQuery.UNIT_PRICE);
+			double line_discount = cursor.getDouble(SentOrdersStatusLineQuery.LINE_DISCOUNT_AMOUNT);
+			double line_discount_percent = cursor.getDouble(SentOrdersStatusLineQuery.LINE_DISCOUNT_PERCENT);
+			double document_line_discount = cursor.getDouble(SentOrdersStatusLineQuery.INV_DISCOUNT_AMOUNT);
+			String promised_date = "";
+			if (!cursor.isNull(SentOrdersStatusLineQuery.PROMISED_DELIVERY_DATE)) {
+				promised_date = cursor.getString(SentOrdersStatusLineQuery.PROMISED_DELIVERY_DATE);
+			}
+			
+			int promised_date_confirmed = cursor.getInt(SentOrdersStatusLineQuery.CONFIRMED_PROMISED_DELIVERY_DATE);
 			
 			double line_amount = quantity*price - line_discount - document_line_discount;
 			
@@ -198,24 +207,24 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 			TextView title2 = (TextView) view.findViewById(R.id.invoice_line_title2);
 			TextView subtitle1 = (TextView)view.findViewById(R.id.invoice_line_subtitle);
 			TextView subtitle2 = (TextView)view.findViewById(R.id.invoice_line_subtitle2);
-//			TextView subtitle3 = (TextView)view.findViewById(R.id.invoice_line_subtitle3);
+			TextView subtitle3 = (TextView)view.findViewById(R.id.invoice_line_subtitle3);
 			
 			String [] invoiceLineType = getResources().getStringArray(R.array.invoice_line_type_array);
 			
-			title1.setText(cursor.getString(InvoiceLineQuery.DESCRIPTION));
+			title1.setText(cursor.getString(SentOrdersStatusLineQuery.DESCRIPTION));
 			title2.setText(invoiceLineType[invoice_type]);
 			String 	quantityString = getString(R.string.invoice_line_quantity)+": "+ UIUtils.formatDoubleForUI(quantity);
 			subtitle1.setText(quantityString + " Cena: "+ UIUtils.formatDoubleForUI(price) + " Popust: "+ UIUtils.formatDoubleForUI(line_discount_percent) + "%");
-//			String unitPriceString = getString(R.string.invoice_line_unit_price) + ": " + cursor.getString(InvoiceLineQuery.UNIT_PRICE);
+//			String unitPriceString = getString(R.string.invoice_line_unit_price) + ": " + cursor.getString(SentOrdersStatusLineQuery.UNIT_PRICE);
 			subtitle2.setText("Iznos: "+UIUtils.formatDoubleForUI(line_amount));
 //			String lineDiscountString = getString(R.string.invoice_line_discount_amount) + ": " + cursor.getString(InvoiceLineQuery.LINE_DISCOUNT_AMOUNT);
 //			
-//			subtitle3.setText(lineDiscountString);
+			subtitle3.setText("Obećani datum isporuke: " + (promised_date == "" ? "-":DateUtils.formatDbDateForPresentation(promised_date)) + " Potvrdjen: " + (promised_date_confirmed == 0 ? "Ne":"Da"));
 		}
 
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			InvoicesPreviewDialog.this.getDialog().setTitle(getString(R.string.invoice_line_dialog_title));
+			SentOrdersLinesPreviewDialog.this.getDialog().setTitle(getString(R.string.invoice_line_dialog_title));
 			return	getActivity().getLayoutInflater().inflate(R.layout.list_item_invoice_line, parent, false);
 		}
 		
@@ -223,15 +232,17 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 		
 	}
 	
-	private interface InvoiceLineQuery {
+	private interface SentOrdersStatusLineQuery {
 
 		String[] PROJECTION = { BaseColumns._ID,
-				MobileStoreContract.InvoiceLine.TYPE,
-				MobileStoreContract.InvoiceLine.QUANTITY,
-				MobileStoreContract.InvoiceLine.UNIT_PRICE,
-				MobileStoreContract.InvoiceLine.LINE_DISCOUNT_AMOUNT,
-				MobileStoreContract.InvoiceLine.DESCRIPTION,
-				MobileStoreContract.InvoiceLine.LINE_DISCOUNT_PERCENT,
+				MobileStoreContract.SentOrdersStatusLines.DOCUMENT_TYPE,
+				MobileStoreContract.SentOrdersStatusLines.QUANTITY,
+				MobileStoreContract.SentOrdersStatusLines.UNIT_PRICE,
+				MobileStoreContract.SentOrdersStatusLines.LINE_DISCOUNT_AMOUNT,
+				MobileStoreContract.SentOrdersStatusLines.DESCRIPTION,
+				MobileStoreContract.SentOrdersStatusLines.LINE_DISCOUNT_PERCENT,
+				MobileStoreContract.SentOrdersStatusLines.PROMISED_DELIVERY_DATE,
+				MobileStoreContract.SentOrdersStatusLines.CONFIRMED_PROMISED_DELIVERY_DATE,
 				MobileStoreContract.SentOrdersStatusLines.INV_DISCOUNT_AMOUNT };
 
 //		int _ID = 0;
@@ -241,7 +252,9 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 		int LINE_DISCOUNT_AMOUNT = 4;
 		int DESCRIPTION = 5;
 		int LINE_DISCOUNT_PERCENT = 6;
-		int INV_DISCOUNT_AMOUNT = 7;
+		int PROMISED_DELIVERY_DATE = 7;
+		int CONFIRMED_PROMISED_DELIVERY_DATE = 8;
+		int INV_DISCOUNT_AMOUNT = 9;
 	}
 
 }
