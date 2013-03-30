@@ -135,7 +135,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 				mDiscountMin.setText(syncObject.getpMinimumDiscountPctAsTxt());
 				mDiscountMax.setText(syncObject.getpMaximumDiscountPctAsTxt());
 				mQuantityAvailable.setText(syncObject.getpQuantityAsTxt());
-				mDiscount.setText(syncObject.getpDiscountPctAsTxt());
+				mDiscount.setText(UIUtils.getDoubleFromUI(syncObject.getpDiscountPctAsTxt()).toString());
 				mPrice.setText(syncObject.getpSalesPriceRSDAsTxt());
 				//mPriceEur.setText(syncObject.getpSalesPriceEURAsTxt());
 				if ((syncObject.getpMinimumSalesUnitQuantityTxt().length() > 0 && !syncObject.getpMinimumSalesUnitQuantityTxt().equals("anyType{}")) || (syncObject.getpOutstandingPurchaseLinesTxt().length() > 0) && !syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}")) {
@@ -193,7 +193,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         
         // Start background query to load sales line details
         getLoaderManager().initLoader(SaleOrderLinesQuery._TOKEN, null, this);
-        getLoaderManager().initLoader(SaleOrderQuery._TOKEN, null, this);
+        //getLoaderManager().initLoader(SaleOrderQuery._TOKEN, null, this);
         LogUtils.LOGI(TAG, "Created SaleOrderLinesPreviewListFragment");
     }
 	
@@ -302,8 +302,28 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			public void onClick(View v) {
 				isServiceCalled = true;
 				
-				getActivity().getSupportLoaderManager().restartLoader(ItemQuery._TOKEN, null,SaleOrderAddEditLineFragment.this);
-				getActivity().getSupportLoaderManager().restartLoader(SaleOrderQuery._TOKEN, null,SaleOrderAddEditLineFragment.this);
+//				loaderState.put(ItemQuery._TOKEN, false);
+				if (itemId != -1) {
+					Cursor itemCursor = getActivity().getContentResolver().query(MobileStoreContract.Items.buildItemUri(String.valueOf(itemId)), ItemQuery.PROJECTION, null, null,
+							null);
+					buildItem(itemCursor);
+					//return new CursorLoader(getActivity(), );
+					itemCursor.close();
+				}
+				
+				
+//				loaderState.put(SaleOrderQuery._TOKEN, false);
+				if (documentId != -1) { 
+					Cursor documentCursor = getActivity().getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderUri(String.valueOf(documentId)), SaleOrderQuery.PROJECTION, null, null,
+							null);
+					buildSaleOrder(documentCursor);
+					documentCursor.close();
+				}
+				
+				doWsAction();
+				
+//				getActivity().getSupportLoaderManager().restartLoader(ItemQuery._TOKEN, null,SaleOrderAddEditLineFragment.this);
+//				getActivity().getSupportLoaderManager().restartLoader(SaleOrderQuery._TOKEN, null,SaleOrderAddEditLineFragment.this);
 				
 			}
 		});
@@ -365,8 +385,8 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			discount = "0";
 		}
 		try {
-			double price_d = WsDataFormatEnUsLatin.parseForUIDouble(price);
-			double discount_d = WsDataFormatEnUsLatin.parseForUIDouble(discount);
+			double price_d = WsDataFormatEnUsLatin.parseForUIDouble(price.replace('.', ','));
+			double discount_d = WsDataFormatEnUsLatin.parseForUIDouble(discount.replace('.', ','));
 			double discounted_price = price_d - (price_d * (discount_d/100));
 			mPriceEur.setText(UIUtils.formatDoubleForUI(discounted_price));
 		} catch (NumberFormatException e) {
@@ -398,7 +418,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			
 			String quantity = mQuantity.getText().toString().trim();
 			if (quantity != null && !quantity.equals("")) {
-				localValues.put(MobileStoreContract.SaleOrderLines.QUANTITY, UIUtils.getDoubleFromUI(quantity));
+				localValues.put(MobileStoreContract.SaleOrderLines.QUANTITY, UIUtils.getDoubleFromUI(quantity.replace('.', ',')));
 			} else {
 				throw new SaleOrderValidationException("Kolicina nije podesena!");
 				//localValues.putNull(MobileStoreContract.SaleOrderLines.QUANTITY);
@@ -427,7 +447,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			
 			String discount = mDiscount.getText().toString().trim();
 			if (discount != null && !discount.equals("")) {
-				localValues.put(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT, UIUtils.getDoubleFromUI(discount));
+				localValues.put(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT, UIUtils.getDoubleFromUI(discount.replace('.', ',')));
 			} else {
 				localValues.putNull(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT);
 			}
@@ -513,24 +533,24 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			loaderState.put(SaleOrderLinesQuery._TOKEN, false);
 			return new CursorLoader(getActivity(), mSaleOrderLinesUri, SaleOrderLinesQuery.PROJECTION, null, null,
 	                null);
-		case ItemQuery._TOKEN:
-			loaderState.put(ItemQuery._TOKEN, false);
-			if (itemId != -1) { 
-				return new CursorLoader(getActivity(), MobileStoreContract.Items.buildItemUri(String.valueOf(itemId)), ItemQuery.PROJECTION, null, null,
-						null);
-			} else {
-				LogUtils.LOGE(TAG, "Item not selected!");
-				return null;
-			}
-		case SaleOrderQuery._TOKEN:
-			loaderState.put(SaleOrderQuery._TOKEN, false);
-			if (documentId != -1) { 
-				return new CursorLoader(getActivity(), MobileStoreContract.SaleOrders.buildSaleOrderUri(String.valueOf(documentId)), SaleOrderQuery.PROJECTION, null, null,
-						null);
-			} else {
-				LogUtils.LOGE(TAG, "Document not loaded!");
-				return null;
-			}
+//		case ItemQuery._TOKEN:
+//			loaderState.put(ItemQuery._TOKEN, false);
+//			if (itemId != -1) { 
+//				return new CursorLoader(getActivity(), MobileStoreContract.Items.buildItemUri(String.valueOf(itemId)), ItemQuery.PROJECTION, null, null,
+//						null);
+//			} else {
+//				LogUtils.LOGE(TAG, "Item not selected!");
+//				return null;
+//			}
+//		case SaleOrderQuery._TOKEN:
+//			loaderState.put(SaleOrderQuery._TOKEN, false);
+//			if (documentId != -1) { 
+//				return new CursorLoader(getActivity(), MobileStoreContract.SaleOrders.buildSaleOrderUri(String.valueOf(documentId)), SaleOrderQuery.PROJECTION, null, null,
+//						null);
+//			} else {
+//				LogUtils.LOGE(TAG, "Document not loaded!");
+//				return null;
+//			}
 		case CustomerQuery._TOKEN:
 			loaderState.put(CustomerQuery._TOKEN, false);
 			if (documentId != -1) { 
@@ -552,14 +572,14 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			loaderState.put(SaleOrderLinesQuery._TOKEN, true);
 			buildUiFromCursor(cursor);
 			break;
-		case ItemQuery._TOKEN:
-			loaderState.put(ItemQuery._TOKEN, true);
-			buildItem(cursor);
-			break;
-		case SaleOrderQuery._TOKEN:
-			loaderState.put(SaleOrderQuery._TOKEN, true);
-			buildSaleOrder(cursor);
-			break;
+//		case ItemQuery._TOKEN:
+//			loaderState.put(ItemQuery._TOKEN, true);
+//			buildItem(cursor);
+//			break;
+//		case SaleOrderQuery._TOKEN:
+//			loaderState.put(SaleOrderQuery._TOKEN, true);
+//			buildSaleOrder(cursor);
+//			break;
 		case CustomerQuery._TOKEN:
 			loaderState.put(CustomerQuery._TOKEN, true);
 			buildCustomer(cursor);
@@ -583,7 +603,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         	customerNo = cursor.getString(CustomerQuery.CUSTOMER_NO);
         }
         
-        checkLoaderState();
+//        checkLoaderState();
 	}
 
 	private void buildSaleOrder(Cursor cursor) {
@@ -594,7 +614,6 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         if (!cursor.moveToFirst()) {
             return;
         }
-		
         
         if (!cursor.isNull(SaleOrderQuery.DOCUMENT_TYPE)) {
         	documentType = cursor.getInt(SaleOrderQuery.DOCUMENT_TYPE);
@@ -612,11 +631,12 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         
         Cursor cursorCustomer = getActivity().getContentResolver().query(MobileStoreContract.Customers.buildCustomersUri(String.valueOf(customerId)), CustomerQuery.PROJECTION, null, null, null);
         buildCustomer(cursorCustomer);
+        cursorCustomer.close();
         
         Cursor cursorSalesPerson = getActivity().getContentResolver().query(MobileStoreContract.SalesPerson.buildSalesPersonUri(salesPersonId), SalesPersonQuery.PROJECTION, null, null, null);
         buildSalesPerson(cursorSalesPerson);
-        
-        checkLoaderState();
+        cursorSalesPerson.close();
+//        checkLoaderState();
 	}
 
 	private void buildSalesPerson(Cursor cursor) {
@@ -655,14 +675,14 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         	}
         }
         
-        checkLoaderState();
+//        checkLoaderState();
 	}
 
 	private void checkLoaderState() {
-		if (isServiceCalled && loaderState.get(SaleOrderQuery._TOKEN) && loaderState.get(ItemQuery._TOKEN)) {
-			doWsAction();
-			isServiceCalled = false;
-		}
+//		if (isServiceCalled && loaderState.get(SaleOrderQuery._TOKEN) && loaderState.get(ItemQuery._TOKEN)) {
+//			doWsAction();
+//			isServiceCalled = false;
+//		}
 	}
 	
 	private void doWsAction() {
@@ -672,7 +692,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		}
 		itemLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_item_price_qty_load), getActivity().getResources().getString(R.string.dialog_body_item_price_qty_load), true, true);
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		double quantity = UIUtils.getDoubleFromUI(mQuantity.getText().toString());
+		double quantity = UIUtils.getDoubleFromUI(mQuantity.getText().toString().replace('.', ','));
 		int campaign_status = mCampaignStatus.getSelectedItemPosition();
 		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", campaign_status, Integer.valueOf(0),customerNo, quantity, salesPersonNo, documentType, 0, "", "", "", "", "", "", "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQtySalesPriceAndDiscSyncObject);
@@ -721,7 +741,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         double quantity = -1;
         if (!cursor.isNull(SaleOrderLinesQuery.QUANTITY)) {
         	quantity = cursor.getDouble(SaleOrderLinesQuery.QUANTITY);
-        	mQuantity.setText(UIUtils.formatDoubleForUI(quantity));
+        	mQuantity.setText(String.valueOf(quantity));
         }
         
         double quantity_available = -1;
@@ -745,7 +765,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         double discount = -1;
         if (!cursor.isNull(SaleOrderLinesQuery.REAL_DISCOUNT)) {
         	discount = cursor.getDouble(SaleOrderLinesQuery.REAL_DISCOUNT);
-        	mDiscount.setText(UIUtils.formatDoubleForUI(discount));
+        	mDiscount.setText(String.valueOf(discount));
         }
         
         double discount_min = -1;

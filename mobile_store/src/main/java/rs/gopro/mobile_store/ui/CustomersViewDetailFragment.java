@@ -169,7 +169,6 @@ public class CustomersViewDetailFragment extends Fragment implements
         	setFocusable(true);
         	if(actionMode == null){
         		actionMode = getActivity().startActionMode(actionModeCallback);
-        		System.out.println("CONTEXTUAL MENUYYYYY");
         	}
         	
         }else{
