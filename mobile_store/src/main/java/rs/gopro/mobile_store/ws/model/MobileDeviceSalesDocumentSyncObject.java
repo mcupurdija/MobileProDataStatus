@@ -12,6 +12,7 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.csv.CSVDomainWriter;
@@ -136,6 +137,8 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		cSVStringLines.setType(String.class);
 		properies.add(cSVStringLines);
 		
+		createDocumentNotes();
+		
 		PropertyInfo noteForCentralOffice = new PropertyInfo();
 		noteForCentralOffice.setName("pNoteForCentralOffice");
 		noteForCentralOffice.setValue(pNoteForCentralOffice);
@@ -169,6 +172,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		} catch (IOException e) {
 			writer = null;
 		}
+		cursorHeader.close();
 		return stringWriter.toString();
 	}
 	
@@ -184,9 +188,24 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		} catch (IOException e) {
 			writer = null;
 		}
+		cursorLines.close();
 		return stringWriter.toString();
 	}
 
+	private void createDocumentNotes() {
+		Cursor cursorNotes = context.getContentResolver().query(MobileStoreContract.SaleOrders.CONTENT_URI, new String[] { SaleOrders.NOTE1, SaleOrders.NOTE2 }, Tables.SALE_ORDERS+"._ID=?", new String[] { String.valueOf(documentId) }, null);
+		pDocumentNote = ""; pNoteForCentralOffice = "";
+		if (cursorNotes != null && cursorNotes.moveToFirst()) {
+			if (!cursorNotes.isNull(0)) {
+				pDocumentNote = cursorNotes.getString(0);
+			}
+			if (!cursorNotes.isNull(1)) {
+				pNoteForCentralOffice = cursorNotes.getString(1);
+			}
+		}
+		cursorNotes.close();
+	}
+	
 	@Override
 	public String getTag() {
 		return TAG;

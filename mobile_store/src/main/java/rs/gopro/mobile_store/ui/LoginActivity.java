@@ -154,6 +154,7 @@ public class LoginActivity extends Activity {
 						public void onDismiss(DialogInterface dialog) {
 							if (isRegistrationStarted) {
 								syncProgressDialog = ProgressDialog.show(LoginActivity.this, getResources().getString(R.string.dialog_title_sales_person_registration), getResources().getString(R.string.dialog_body_sales_person_registration), true, true);
+								isRegistrationStarted = false;
 							}
 						}
 					});

@@ -9,13 +9,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/so_line_header_label"
-            style="@style/AddEdit_Label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/header_label" />
-
+		<Button
+             android:id="@+id/so_line_save_button"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_vertical|right"
+             android:layout_marginTop="8dip"
+             android:layout_marginLeft="16dip"
+             android:layout_marginRight="16dip"
+             android:gravity="center_vertical"
+             android:text="@string/so_line_save_button_text" />
+	
+        
         <TextView
             android:id="@+id/so_line_item_no_label"
             style="@style/AddEdit_Label"
@@ -327,15 +332,7 @@
             </LinearLayout>
         </LinearLayout>
         
-        <Button
-             android:id="@+id/so_line_save_button"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_gravity="center_vertical"
-             android:layout_marginLeft="16dip"
-             android:layout_marginRight="16dip"
-             android:gravity="center_vertical"
-             android:text="@string/so_line_save_button_text" />
+
     </LinearLayout>
 
 </ScrollView>

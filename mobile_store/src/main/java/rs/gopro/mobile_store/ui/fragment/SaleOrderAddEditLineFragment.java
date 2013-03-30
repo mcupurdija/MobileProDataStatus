@@ -140,7 +140,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 				//mPriceEur.setText(syncObject.getpSalesPriceEURAsTxt());
 				if ((syncObject.getpMinimumSalesUnitQuantityTxt().length() > 0 && !syncObject.getpMinimumSalesUnitQuantityTxt().equals("anyType{}")) || (syncObject.getpOutstandingPurchaseLinesTxt().length() > 0) && !syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}")) {
 				    // Setting Dialog Message
-				    String outstanding = syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}") ? "" : "Poruka: " + syncObject.getpOutstandingPurchaseLinesTxt().replace("\\n", "\n");
+				    String outstanding = syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}") ? "" : "Poruka: " + syncObject.getpOutstandingPurchaseLinesTxt();
 				    String minimum = syncObject.getpMinimumSalesUnitQuantityTxt().equals("anyType{}") ? "" : syncObject.getpMinimumSalesUnitQuantityTxt();
 
 				    DialogUtil.showInfoDialog(getActivity(), getResources().getString(R.string.dialog_title_sync_info), minimum + "\n" +  outstanding);
@@ -666,6 +666,10 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	}
 	
 	private void doWsAction() {
+		if (itemNo == null || itemNo.length() < 1) {
+			DialogUtil.showInfoDialog(getActivity(), getResources().getString(R.string.dialog_title_error_in_sync), "Artikal nije izabran!");
+			return;
+		}
 		itemLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_item_price_qty_load), getActivity().getResources().getString(R.string.dialog_body_item_price_qty_load), true, true);
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 		double quantity = UIUtils.getDoubleFromUI(mQuantity.getText().toString());
