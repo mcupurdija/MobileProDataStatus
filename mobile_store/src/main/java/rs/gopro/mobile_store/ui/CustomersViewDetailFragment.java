@@ -3,11 +3,8 @@ package rs.gopro.mobile_store.ui;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
-import rs.gopro.mobile_store.ui.fragment.SaleOrderAddEditLineFragment.Callbacks;
-import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
-import rs.gopro.mobile_store.ui.fragment.ElectronicCardCustomerFragment;
 import rs.gopro.mobile_store.util.LogUtils;
-
+import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -25,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -66,6 +62,17 @@ public class CustomersViewDetailFragment extends Fragment implements
 	private TextView mDivision;
 	private TextView mNumberOfBlueCoat;
 	private EditText mNumberOfGreyCoat;
+	
+	private TextView mTurnoverInLast3m;
+	private TextView mTurnoverInLast6m;
+	private TextView mTurnoverInLast12m;
+	private TextView mTurnoverGenerated1;
+	private TextView mTurnoverGenerated2;
+	private TextView mTurnoverGenerated3;
+
+	private TextView mTurnoverYtm;
+	private TextView mGrossProfitPfep;
+
 	
 	private ActionMode actionMode;
 	private boolean isInUpdateMode = false;
@@ -142,7 +149,7 @@ public class CustomersViewDetailFragment extends Fragment implements
         mName = (EditText) rootView.findViewById(R.id.customer_name_value);
         mName2 = (EditText) rootView.findViewById(R.id.customer_name2_value);
         mAddress = (EditText) rootView.findViewById(R.id.customer_address_value);
-        //mCity = (TextView) rootView.findViewById(R.id.customer_city_value);
+        mCity = (TextView) rootView.findViewById(R.id.customer_city_value);
         mPostCode = (EditText) rootView.findViewById(R.id.customer_postal_code_value);
         mPhone = (EditText) rootView.findViewById(R.id.customer_phone_value);
         mMobile = (EditText) rootView.findViewById(R.id.customer_phone_mobile_value);
@@ -165,6 +172,17 @@ public class CustomersViewDetailFragment extends Fragment implements
         mDivision = (TextView) rootView.findViewById(R.id.customer_division_value);
         mNumberOfBlueCoat = (TextView) rootView.findViewById(R.id.customer_blue_coat_value);
         mNumberOfGreyCoat = (EditText) rootView.findViewById(R.id.customer_gray_coat_value);
+        
+        mTurnoverInLast3m = (TextView) rootView.findViewById(R.id.customer_turnover_in_last_3m_value);
+        mTurnoverInLast6m = (TextView) rootView.findViewById(R.id.customer_turnover_in_last_6m_value);
+        mTurnoverInLast12m = (TextView) rootView.findViewById(R.id.customer_turnover_in_last_12m_value);
+        mTurnoverGenerated1 = (TextView) rootView.findViewById(R.id.customer_turnover_generated_1_value);
+        mTurnoverGenerated2 = (TextView) rootView.findViewById(R.id.customer_turnover_generated_2_value);
+        mTurnoverGenerated3 = (TextView) rootView.findViewById(R.id.customer_turnover_generated_3_value);
+
+        mTurnoverYtm = (TextView) rootView.findViewById(R.id.customer_turnover_ytm_value);
+        mGrossProfitPfep = (TextView) rootView.findViewById(R.id.customer_turnover_gross_profit_pfep_value);
+        
         if(isInUpdateMode){
         	setFocusable(true);
         	if(actionMode == null){
@@ -190,7 +208,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 		String nameString = cursor.getString(CustomerDetailQuery.NAME);
 		String name2String = cursor.getString(CustomerDetailQuery.NAME_2);
 		String addressString = cursor.getString(CustomerDetailQuery.ADDRESS);
-		//String cityString = cursor.getString(CustomerDetailQuery.CITY);
+		String cityString = cursor.getString(CustomerDetailQuery.CITY);
 		String postcodeString = cursor.getString(CustomerDetailQuery.POST_CODE);
 		String phoneString = cursor.getString(CustomerDetailQuery.PHONE);
 		String mobileString = cursor.getString(CustomerDetailQuery.MOBILE);
@@ -198,27 +216,36 @@ public class CustomersViewDetailFragment extends Fragment implements
 		String companyidString =String.valueOf(cursor.getInt(CustomerDetailQuery.COMPANY_ID)) ;
 		String primarycontactidString = String.valueOf(cursor.getInt(CustomerDetailQuery.PRIMARY_CONTACT_ID));
 		String varregnoString = cursor.getString(CustomerDetailQuery.VAR_REG_NO);
-		String creditlimitlcyString = String.valueOf(cursor.getDouble(CustomerDetailQuery.CREDIT_LIMIT_LCY));
-		String balancelcyString = String.valueOf(cursor.getDouble(CustomerDetailQuery.BALANCE_LCY));
-		String balanceduelcyString = String.valueOf(cursor.getDouble(CustomerDetailQuery.BALANCE_DUE_LCY));
-		String internalbalanceduelcyString = String.valueOf(cursor.getDouble(CustomerDetailQuery.INTERNAL_BALANCE_DUE_LCY));
+		String creditlimitlcyString = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.CREDIT_LIMIT_LCY));
+		String balancelcyString = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.BALANCE_LCY));
+		String balanceduelcyString = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.BALANCE_DUE_LCY));
+		String internalbalanceduelcyString = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.INTERNAL_BALANCE_DUE_LCY));
 		String paymenttermscodeString = String.valueOf(cursor.getInt(CustomerDetailQuery.PAYMENT_TERMS_CODE));
 		String priorityString = String.valueOf(cursor.getInt(CustomerDetailQuery.PRIORITY));
 		String globaldimensionString = cursor.getString(CustomerDetailQuery.GLOBAL_DIMENSION);
 		String channeloranString = cursor.getString(CustomerDetailQuery.CHANNEL_ORAN);
 		String smlString = cursor.getString(CustomerDetailQuery.SML);
-		String adoptedpotentialString = String.valueOf(cursor.getDouble(CustomerDetailQuery.ADOPTED_POTENTIAL));
+		String adoptedpotentialString = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.ADOPTED_POTENTIAL));
 		String focuscustomerString = cursor.getString(CustomerDetailQuery.FOCUS_CUSTOMER);
 		String divisionString = cursor.getString(CustomerDetailQuery.DIVISION);
 		String numberofbluecoatString = String.valueOf(cursor.getInt(CustomerDetailQuery.NUMBER_OF_BLUE_COAT));
 		String numberofgreycoatString = String.valueOf(cursor.getInt(CustomerDetailQuery.NUMBER_OF_GREY_COAT));
 		String blockedstatusString = cursor.getString(CustomerDetailQuery.BLOCKED_STATUS);
+		
+		String turnover_in_last_3m = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_IN_LAST_3M));
+		String turnover_in_last_6m = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_IN_LAST_6M));
+		String turnover_in_last_12m = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_IN_LAST_12M));
+		String turnover_generated_1 = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_GENERATED_1));
+		String turnover_generated_2 = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_GENERATED_2));
+		String turnover_generated_3 = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_GENERATED_3));
+		String gross_profit_pfep = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.GROSS_PROFIT_PFEP));
+		String turnover_ytm = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_YTM));
         
         mCustomer_no.setText(customernoString);
         mName.setText(nameString);
         mName2.setText(name2String);
         mAddress.setText(addressString);
-        //mCity.setText(cityString);
+        mCity.setText(cityString);
         mPostCode.setText(postcodeString);
         mPhone.setText(phoneString);
         mMobile.setText(mobileString);
@@ -242,6 +269,16 @@ public class CustomersViewDetailFragment extends Fragment implements
         mNumberOfBlueCoat.setText(numberofbluecoatString);
         mNumberOfGreyCoat.setText(numberofgreycoatString);
 
+        mTurnoverInLast3m.setText(turnover_in_last_3m);
+        mTurnoverInLast6m.setText(turnover_in_last_6m);
+        mTurnoverInLast12m.setText(turnover_in_last_12m);
+        mTurnoverGenerated1.setText(turnover_generated_1);
+        mTurnoverGenerated2.setText(turnover_generated_2);
+        mTurnoverGenerated3.setText(turnover_generated_3);
+
+        mTurnoverYtm.setText(turnover_ytm);
+        mGrossProfitPfep.setText(gross_profit_pfep);
+        
         int customerId = cursor.getInt(CustomerDetailQuery._ID);
         mCallbacks.onCustomerIdAvailable(String.valueOf(customerId));
         
@@ -375,7 +412,17 @@ private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
                 MobileStoreContract.Customers.FOCUS_CUSTOMER,
                 MobileStoreContract.Customers.DIVISION,
                 MobileStoreContract.Customers.NUMBER_OF_BLUE_COAT,
-                MobileStoreContract.Customers.NUMBER_OF_GREY_COAT
+                MobileStoreContract.Customers.NUMBER_OF_GREY_COAT,
+                MobileStoreContract.Customers.CITY,
+                MobileStoreContract.Customers.TURNOVER_GENERATED_1,
+                MobileStoreContract.Customers.TURNOVER_GENERATED_2,
+                MobileStoreContract.Customers.TURNOVER_GENERATED_3,
+                MobileStoreContract.Customers.TURNOVER_IN_LAST_6M,
+                MobileStoreContract.Customers.TURNOVER_IN_LAST_3M,
+                MobileStoreContract.Customers.TURNOVER_IN_LAST_12M,
+                MobileStoreContract.Customers.TURNOVER_YTM,
+                MobileStoreContract.Customers.GROSS_PROFIT_PFEP
+                
         };
 
         int _ID = 0;
@@ -404,7 +451,16 @@ private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         int FOCUS_CUSTOMER = 23;
         int DIVISION = 24;
         int NUMBER_OF_BLUE_COAT = 25;
-        int NUMBER_OF_GREY_COAT = 26; 
+        int NUMBER_OF_GREY_COAT = 26;
+        int CITY = 27;
+        int TURNOVER_GENERATED_1 = 28;
+		int TURNOVER_GENERATED_2 = 29;
+		int TURNOVER_GENERATED_3 = 30;
+		int TURNOVER_IN_LAST_6M = 31;
+		int TURNOVER_IN_LAST_3M = 32;
+		int TURNOVER_IN_LAST_12M = 33;
+		int TURNOVER_YTM = 34;
+		int GROSS_PROFIT_PFEP = 35;
 	}
 
 

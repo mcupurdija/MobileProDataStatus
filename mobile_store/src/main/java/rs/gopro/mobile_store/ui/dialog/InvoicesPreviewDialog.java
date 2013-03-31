@@ -61,7 +61,6 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 	};
 	
 	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
-		System.out.println("STATUS IS: " + syncResult.getStatus());
 		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
 			if (mDialogLoader != null) {
 				mDialogLoader.setVisibility(View.GONE);

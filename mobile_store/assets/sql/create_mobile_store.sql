@@ -145,7 +145,7 @@ CREATE TABLE `customers` (
 	`number_of_grey_coat` INTEGER,
 	`contact_company_no` TEXT,
 	`sync_object_batch` INTEGER,
-	`sales_lcy` REAL,
+	`turnover_ytm` REAL,
 	`gross_profit_pfep` REAL,
 	`turnover_in_last_3m` REAL,
 	`turnover_in_last_6m` REAL,

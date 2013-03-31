@@ -610,6 +610,17 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			}
 		}
 		
+		if (contact_id != -1) {
+			int spinnerPosition =  contactSpinnerAdapter.getIdPostition(contact_id);
+			if (spinnerPosition != -1) {
+				contactSpinner.setSelection(spinnerPosition);
+			} else {
+//				billingAddressId = sell_to_address_id;
+//				
+//				LogUtils.LOGE(TAG, "No position for value:"+sell_to_address_id);
+			}
+		}
+		
 		if (sell_to_address_id != -1) {
 			int spinnerPosition =  billingAddressAdapter.getIdPostition(sell_to_address_id);
 			if (spinnerPosition != -1) {
@@ -1094,11 +1105,18 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			localValues.putNull(MobileStoreContract.SaleOrders.SHIPP_TO_ADDRESS_ID);
 		}
 		
-		if (customerContactId != null) {
-			localValues.put(MobileStoreContract.SaleOrders.CONTACT_ID, customerContactId);
+		long contact_id = contactSpinner.getSelectedItemId();
+		if (contact_id != AdapterView.INVALID_ROW_ID) {
+			localValues.put(MobileStoreContract.SaleOrders.CONTACT_ID, Long.valueOf(contact_id));
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrders.CONTACT_ID);
 		}
+		
+//		if (customerContactId != null) {
+//			localValues.put(MobileStoreContract.SaleOrders.CONTACT_ID, customerContactId);
+//		} else {
+//			localValues.putNull(MobileStoreContract.SaleOrders.CONTACT_ID);
+//		}
 		
 		String contact_email = contactEmail.getText().toString().trim();
 		if (contact_email != null && !contact_email.equals("")) {

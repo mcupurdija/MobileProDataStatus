@@ -39,7 +39,6 @@ public class CustomerDomain extends Domain {
 	public String number_of_grey_coat;
 	public String contact_company_no;
 	public String balance_lcy;
-	public String sales_lcy;
 	public String balance_due_lcy;
 	public String internal_balance_due_lcy;
 	public String turnover_in_last_3m;
@@ -53,6 +52,7 @@ public class CustomerDomain extends Domain {
 	public String number_of_diff_items_1;
 	public String orsy_shelf_count_at_cust;
 	public String customer_12_months_plan;
+	public String turnover_ytm;
 	public String avarage_payment_days;
 	public String number_of_salespersons_working_with_customer;
 	public String days_since_oldest_open_invoice;
@@ -61,9 +61,9 @@ public class CustomerDomain extends Domain {
 	public String financial_control_status;
 
 	private static final String[] COLUMNS = new String[] { "customer_no", "name", "name2", "address", "city", "phone", "mobile", "global_dimension", "credit_limit_lcy", "payment_terms_code", "sales_person_no", "priority", "vat_reg_no",
-			"post_code", "email", "primary_contact_id", "company_id", "channel_oran", "sml", "adopted_potential", "focus_customer", "division", "gross_profit_pfep", "number_of_blue_coat", "number_of_grey_coat", "contact_company_no", "balance_lcy", "sales_lcy",
+			"post_code", "email", "primary_contact_id", "company_id", "channel_oran", "sml", "adopted_potential", "focus_customer", "division", "gross_profit_pfep", "number_of_blue_coat", "number_of_grey_coat", "contact_company_no", "balance_lcy",
 			"balance_due_lcy", "internal_balance_due_lcy", "turnover_in_last_3m", "turnover_in_last_6m", "turnover_in_last_12m", "turnover_generated_3", "turnover_generated_2", "turnover_generated_1", "number_of_diff_items_3",
-			"number_of_diff_items_2", "number_of_diff_items_1", "orsy_shelf_count_at_cust", "customer_12_months_plan", "avarage_payment_days", "number_of_salespersons_working_with_customer", "days_since_oldest_open_invoice",
+			"number_of_diff_items_2", "number_of_diff_items_1", "orsy_shelf_count_at_cust", "customer_12_months_plan", "turnover_ytm", "avarage_payment_days", "number_of_salespersons_working_with_customer", "days_since_oldest_open_invoice",
 			"next_15_days_invoice_due_amount", "next_15_days_due_invoice_count", "financial_control_status"
 
 	};
@@ -111,7 +111,7 @@ public class CustomerDomain extends Domain {
 		contentValues.put(MobileStoreContract.Customers.CONTACT_COMPANY_NO , contact_company_no);
 		contentValues.put(MobileStoreContract.Customers.SYNC_OBJECT_BATCH , "1");
 		contentValues.put(MobileStoreContract.Customers.SALE_PERSON_NO , getSales_person_no());
-		contentValues.put(MobileStoreContract.Customers.SALES_LCY, WsDataFormatEnUsLatin.toDoubleFromWs(getSales_lcy()));
+		contentValues.put(MobileStoreContract.Customers.TURNOVER_YTM, WsDataFormatEnUsLatin.toDoubleFromWs(getTurnover_ytm()));
 		contentValues.put(MobileStoreContract.Customers.GROSS_PROFIT_PFEP, WsDataFormatEnUsLatin.toDoubleFromWs(getGross_profit_pfep()));
 		contentValues.put(MobileStoreContract.Customers.TURNOVER_IN_LAST_3M , WsDataFormatEnUsLatin.toDoubleFromWs(getTurnover_in_last_3m()));
 		contentValues.put(MobileStoreContract.Customers.TURNOVER_IN_LAST_6M, WsDataFormatEnUsLatin.toDoubleFromWs(getTurnover_in_last_6m()));
@@ -341,14 +341,6 @@ public class CustomerDomain extends Domain {
 		this.balance_lcy = balance_lcy;
 	}
 
-	public String getSales_lcy() {
-		return sales_lcy;
-	}
-
-	public void setSales_lcy(String sales_lcy) {
-		this.sales_lcy = sales_lcy;
-	}
-
 	public String getBalance_due_lcy() {
 		return balance_due_lcy;
 	}
@@ -507,6 +499,14 @@ public class CustomerDomain extends Domain {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public String getTurnover_ytm() {
+		return turnover_ytm;
+	}
+
+	public void setTurnover_ytm(String turnover_ytm) {
+		this.turnover_ytm = turnover_ytm;
 	}
 
 }

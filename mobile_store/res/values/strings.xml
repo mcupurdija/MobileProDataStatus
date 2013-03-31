@@ -168,6 +168,17 @@
     <string name="customer_email_label">Email</string>
     <string name="customer_blue_coat_label">Num. of blue coat</string>
     <string name="customer_gray_coat_label">Num. of gray coat</string>
+    
+    <string name="customer_turnover_in_last_3m_label">Turnover in last 3m</string>
+    <string name="customer_turnover_in_last_6m_label">Turnover in last 6m</string>
+    <string name="customer_turnover_in_last_12m_label">Turnover in last 12m</string>
+    <string name="customer_turnover_generated_1_label">Turnover generated 1</string>
+    <string name="customer_turnover_generated_2_label">Turnover generated 2</string>
+    <string name="customer_turnover_generated_3_label">Turnover generated 3</string>
+    
+    <string name="customer_turnover_ytm_label">Turnover ytm</string>
+    <string name="customer_gross_profit_pfep_label">Gross profit pfep</string>
+    
     <string name="customer_note_label">Note</string>
     <string name="customer_name_label">Name</string>
     <string name="customer_name2_label">Name 2</string>

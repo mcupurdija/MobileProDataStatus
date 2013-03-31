@@ -177,6 +177,15 @@
 	<string name="customer_email_label">E-posta</string>
 	<string name="customer_blue_coat_label">Br. plavih mantila</string>
 	<string name="customer_gray_coat_label">Br. sivih mantila</string>
+	<string name="customer_turnover_in_last_3m_label">Promet u poslednja 3 meseca</string>
+    <string name="customer_turnover_in_last_6m_label">Promet u poslednjih 6 meseci</string>
+    <string name="customer_turnover_in_last_12m_label">Promet u poslednjih 12 meseci</string>
+    <string name="customer_turnover_generated_1_label">Promet u prošloj godini</string>
+    <string name="customer_turnover_generated_2_label">Promet pre 2 godine</string>
+    <string name="customer_turnover_generated_3_label">Promet pre 3 godine</string>
+    
+    <string name="customer_turnover_ytm_label">Promet ytm</string>
+    <string name="customer_gross_profit_pfep_label">Ukupan profit PFEP</string>
 	<string name="customer_note_label">Napomena</string>	
 	
 	<string name="customer_name_label">Ime</string>

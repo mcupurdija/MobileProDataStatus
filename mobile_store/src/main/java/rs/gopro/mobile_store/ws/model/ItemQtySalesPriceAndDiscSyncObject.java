@@ -23,7 +23,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 	private Integer pCampaignStatus;
 	private Integer pPotentialCustomer;
 	private String pCustomerNoa46;
-	private Double pQuantityOnSalesLine;
+	private String pQuantityOnSalesLineAsTxt;
 	private String pSalespersonCode;
 	private Integer pDocumentType;
 	private Integer pAvailableToWholeShip;
@@ -63,7 +63,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		setpPotentialCustomerNoa46(parcel.readInt());
 		setpCustomerNoa46(parcel.readString());
 		
-		setpQuantityOnSalesLine(parcel.readDouble());
+		setpQuantityOnSalesLineAsTxt(parcel.readString());
 		setpSalespersonCode(parcel.readString());
 		setpDocumentType(parcel.readInt());
 		setpAvailableToWholeShip(parcel.readInt());
@@ -78,7 +78,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		setpMinimumSalesUnitQuantityTxt(parcel.readString());
 	}
 
-	public ItemQtySalesPriceAndDiscSyncObject(String pItemNoa46, String pLocationCode, Integer pCampaignStatus, Integer pPotentialCustomer, String pCustomerNoa46, Double pQuantityOnSalesLine, String pSalespersonCode,
+	public ItemQtySalesPriceAndDiscSyncObject(String pItemNoa46, String pLocationCode, Integer pCampaignStatus, Integer pPotentialCustomer, String pCustomerNoa46, String pQuantityOnSalesLineAsTxt, String pSalespersonCode,
 			Integer pDocumentType, Integer pAvailableToWholeShip, String pQuantityAsTxt, String pSalesPriceRSDAsTxt, String pSalesPriceEURAsTxt, String pMinimumDiscountPctAsTxt, String pMaximumDiscountPctAsTxt, String pDiscountPctAsTxt, String pSubstituteItemNoa46, 
 			String pOutstandingPurchaseLinesTxt) {
 		super();
@@ -87,7 +87,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		this.pCampaignStatus = pCampaignStatus;
 		this.pPotentialCustomer = pPotentialCustomer;
 		this.pCustomerNoa46 = pCustomerNoa46;
-		this.pQuantityOnSalesLine = pQuantityOnSalesLine;
+		this.pQuantityOnSalesLineAsTxt = pQuantityOnSalesLineAsTxt;
 		this.pSalespersonCode = pSalespersonCode;
 		this.pDocumentType = pDocumentType;
 		this.pAvailableToWholeShip = pAvailableToWholeShip;
@@ -116,7 +116,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		dest.writeInt(getpPotentialCustomer());
 		dest.writeString(getpCustomerNoa46());
 		
-		dest.writeDouble(getpQuantityOnSalesLine());
+		dest.writeString(getpQuantityOnSalesLineAsTxt());
 		dest.writeString(getpSalespersonCode());
 		dest.writeInt(getpDocumentType());
 		dest.writeInt(getpAvailableToWholeShip());
@@ -170,9 +170,9 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		properies.add(customerNoa46Info);
 
 		PropertyInfo quantityOnSalesLineInfo = new PropertyInfo();
-		quantityOnSalesLineInfo.setName("pQuantityOnSalesLine");
-		quantityOnSalesLineInfo.setValue(pQuantityOnSalesLine);
-		quantityOnSalesLineInfo.setType(Double.class);
+		quantityOnSalesLineInfo.setName("pQuantityOnSalesLineAsTxt");
+		quantityOnSalesLineInfo.setValue(pQuantityOnSalesLineAsTxt);
+		quantityOnSalesLineInfo.setType(String.class);
 		properies.add(quantityOnSalesLineInfo);
 
 		PropertyInfo salespersonCode = new PropertyInfo();
@@ -333,12 +333,12 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		this.pPotentialCustomer = pPotentialCustomer;
 	}
 
-	public Double getpQuantityOnSalesLine() {
-		return pQuantityOnSalesLine;
+	public String getpQuantityOnSalesLineAsTxt() {
+		return pQuantityOnSalesLineAsTxt;
 	}
 
-	public void setpQuantityOnSalesLine(Double pQuantityOnSalesLine) {
-		this.pQuantityOnSalesLine = pQuantityOnSalesLine;
+	public void setpQuantityOnSalesLineAsTxt(String pQuantityOnSalesLineAsTxt) {
+		this.pQuantityOnSalesLineAsTxt = pQuantityOnSalesLineAsTxt;
 	}
 
 	public String getpSalespersonCode() {

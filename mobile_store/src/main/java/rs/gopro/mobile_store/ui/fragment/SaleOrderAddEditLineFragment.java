@@ -385,7 +385,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			discount = "0";
 		}
 		try {
-			double price_d = WsDataFormatEnUsLatin.parseForUIDouble(price.replace('.', ','));
+			double price_d = WsDataFormatEnUsLatin.parseForUIDouble(price);
 			double discount_d = WsDataFormatEnUsLatin.parseForUIDouble(discount.replace('.', ','));
 			double discounted_price = price_d - (price_d * (discount_d/100));
 			mPriceEur.setText(UIUtils.formatDoubleForUI(discounted_price));
@@ -692,7 +692,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		}
 		itemLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_item_price_qty_load), getActivity().getResources().getString(R.string.dialog_body_item_price_qty_load), true, true);
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		double quantity = UIUtils.getDoubleFromUI(mQuantity.getText().toString().replace('.', ','));
+		String quantity = mQuantity.getText().toString().replace('.', ','); // UIUtils.getDoubleFromUI(mQuantity.getText().toString().replace('.', ','));
 		int campaign_status = mCampaignStatus.getSelectedItemPosition();
 		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", campaign_status, Integer.valueOf(0),customerNo, quantity, salesPersonNo, documentType, 0, "", "", "", "", "", "", "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQtySalesPriceAndDiscSyncObject);

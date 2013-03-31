@@ -148,7 +148,7 @@ public class MobileStoreContract {
 		String SYNC_OBJECT_BATCH = "sync_object_batch";
 		String SALES_PERSON_ID = "sales_person_id";
 		
-		String SALES_LCY = "sales_lcy";
+		String TURNOVER_YTM = "turnover_ytm";
 		String GROSS_PROFIT_PFEP = "gross_profit_pfep";
 		String TURNOVER_IN_LAST_3M = "turnover_in_last_3m";
 		String TURNOVER_IN_LAST_6M = "turnover_in_last_6m";
