@@ -187,7 +187,8 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 		
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
-			Integer  invoice_type =  cursor.getInt(SentOrdersStatusLineQuery.TYPE);
+//			Integer  invoice_type =  cursor.getInt(SentOrdersStatusLineQuery.TYPE);
+			Integer line_type = cursor.getInt(SentOrdersStatusLineQuery.LINE_TYPE);
 			double quantity = cursor.getDouble(SentOrdersStatusLineQuery.QUANTITY);
 			double price = cursor.getDouble(SentOrdersStatusLineQuery.UNIT_PRICE);
 			double line_discount = cursor.getDouble(SentOrdersStatusLineQuery.LINE_DISCOUNT_AMOUNT);
@@ -211,7 +212,7 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 			String [] invoiceLineType = getResources().getStringArray(R.array.invoice_line_type_array);
 			
 			title1.setText(cursor.getString(SentOrdersStatusLineQuery.DESCRIPTION));
-			title2.setText(invoiceLineType[invoice_type]);
+			title2.setText(invoiceLineType[line_type]);
 			String 	quantityString = getString(R.string.invoice_line_quantity)+": "+ UIUtils.formatDoubleForUI(quantity);
 			subtitle1.setText(quantityString + " Cena: "+ UIUtils.formatDoubleForUI(price) + " Popust: "+ UIUtils.formatDoubleForUI(line_discount_percent) + "%");
 //			String unitPriceString = getString(R.string.invoice_line_unit_price) + ": " + cursor.getString(SentOrdersStatusLineQuery.UNIT_PRICE);
@@ -242,10 +243,11 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 				MobileStoreContract.SentOrdersStatusLines.LINE_DISCOUNT_PERCENT,
 				MobileStoreContract.SentOrdersStatusLines.PROMISED_DELIVERY_DATE,
 				MobileStoreContract.SentOrdersStatusLines.CONFIRMED_PROMISED_DELIVERY_DATE,
-				MobileStoreContract.SentOrdersStatusLines.INV_DISCOUNT_AMOUNT };
+				MobileStoreContract.SentOrdersStatusLines.INV_DISCOUNT_AMOUNT,
+				MobileStoreContract.SentOrdersStatusLines.LINE_TYPE};
 
 //		int _ID = 0;
-		int TYPE = 1;
+//		int TYPE = 1;
 		int QUANTITY = 2;
 		int UNIT_PRICE = 3;
 		int LINE_DISCOUNT_AMOUNT = 4;
@@ -254,6 +256,7 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 		int PROMISED_DELIVERY_DATE = 7;
 		int CONFIRMED_PROMISED_DELIVERY_DATE = 8;
 		int INV_DISCOUNT_AMOUNT = 9;
+		int LINE_TYPE = 10;
 	}
 
 }

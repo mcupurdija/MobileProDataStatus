@@ -3,9 +3,11 @@ package rs.gopro.mobile_store.ui;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.widget.SaleOrderContextualMenu;
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
@@ -20,8 +22,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -69,7 +73,6 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 	};
 	
 	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
-		System.out.println("STATUS IS: " + syncResult.getStatus());
 		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
 			if (MobileDeviceSalesDocumentSyncObject.BROADCAST_SYNC_ACTION
 					.equalsIgnoreCase(broadcastAction)) {
@@ -83,7 +86,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 				String discount = MobileStoreContract.SaleOrderLines.REAL_DISCOUNT;
 				
 				String[] projection = new String[] { "sum(" + quantity + "*(" + price + "-("+ price + "*(" + discount + "/100)))" + ")" };
-				Cursor cursor = getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderSaldo(), projection, Tables.SALE_ORDERS + "." + MobileStoreContract.SaleOrders._ID + "=?", new String[] { saleOrderId }, null);
+				Cursor cursorSum = getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderSaldo(), projection, Tables.SALE_ORDERS + "." + MobileStoreContract.SaleOrders._ID + "=?", new String[] { saleOrderId }, null);
 				
 				double saldo = 0;
 				
@@ -91,20 +94,45 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 				
 				double total = 0;
 				
-				if (cursor.moveToFirst()) {
-					saldo = cursor.getDouble(0);
-					pdv = 0.2*saldo;
+				if (cursorSum.moveToFirst()) {
+					saldo = cursorSum.getDouble(0);
+					pdv = ApplicationConstants.VAT*saldo;
 					total = saldo+pdv;
 				}
 				
+				if (cursorSum != null && !cursorSum.isClosed()) {
+					cursorSum.close();
+				}
+				
+				final Dialog dialog = new Dialog(this);
+				dialog.setContentView(R.layout.dialog_sale_order_send_info);
+				dialog.setTitle("Status verifikovane/poslate porudžbine");
+				
+				TextView text6 = (TextView) dialog.findViewById(R.id.dialog_sale_order_order_document_master_status_message);
+				String mainStatusMessage = null;
+				// do status message only if it is in send mode, if it is verification only do not do it
+				if (deviceSalesDocumentSyncObject.getpVerifyOnly() == 0) {
+					Cursor cursorStatus = getContentResolver().query(MobileStoreContract.SaleOrders.CONTENT_URI, new String[] {SaleOrders.SALES_ORDER_DEVICE_NO, SaleOrders.SALES_ORDER_NO}, Tables.SALE_ORDERS + "." + MobileStoreContract.SaleOrders._ID + "=?", new String[] { saleOrderId }, null);
+					if (cursorStatus.moveToFirst()) {
+						if (cursorStatus.isNull(1)) {
+							mainStatusMessage = "Dokument nije uspešno poslat!";
+							text6.setTextColor(Color.RED);
+						} else { 
+							mainStatusMessage = "Dokument uspešno poslat! Broj dokumenta je: "+cursorStatus.getString(1);
+							text6.setTextColor(Color.BLACK);
+						}
+					}
+					
+					if (cursorStatus != null && !cursorStatus.isClosed()) {
+						cursorStatus.close();
+					}
+				}
 				int status1 = Integer.valueOf(deviceSalesDocumentSyncObject.getOrder_condition_status());
 				int status2 = Integer.valueOf(deviceSalesDocumentSyncObject.getFinancial_control_status());
 				int status3 = Integer.valueOf(deviceSalesDocumentSyncObject.getOrder_status_for_shipment());
 				int status4 = Integer.valueOf(deviceSalesDocumentSyncObject.getOrder_value_status());
 				
-				final Dialog dialog = new Dialog(this);
-				dialog.setContentView(R.layout.dialog_sale_order_send_info);
-				dialog.setTitle("Status poslate liferice");
+				text6.setText(mainStatusMessage);
 				
 				TextView text1 = (TextView) dialog.findViewById(R.id.dialog_sale_order_order_condition_status_spinner);
 				text1.setText(orderConditionStatusOptions[status1]);

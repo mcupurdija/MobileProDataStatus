@@ -5,6 +5,22 @@
     android:baselineAligned="false"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/dialog_sale_order_order_document_master_status_message"
+        style="@style/AddEdit_Text_Value"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
+        android:gravity="center_vertical" />
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@android:color/black" />
     
     <TextView
         style="@style/AddEdit_Label"
