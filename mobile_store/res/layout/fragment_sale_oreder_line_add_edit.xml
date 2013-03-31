@@ -9,18 +9,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-		<Button
-             android:id="@+id/so_line_save_button"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_gravity="center_vertical|right"
-             android:layout_marginTop="8dip"
-             android:layout_marginLeft="16dip"
-             android:layout_marginRight="16dip"
-             android:gravity="center_vertical"
-             android:text="@string/so_line_save_button_text" />
-	
-        
+        <Button
+            android:id="@+id/so_line_save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:layout_marginTop="6dip"
+            android:gravity="center_vertical"
+            android:text="@string/so_line_save_button_text" />
+
         <TextView
             android:id="@+id/so_line_item_no_label"
             style="@style/AddEdit_Label"
@@ -31,7 +30,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dip"
+            android:layout_marginBottom="6dip"
             android:orientation="horizontal" >
 
             <AutoCompleteTextView
@@ -70,7 +69,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dip"
+            android:layout_marginBottom="6dip"
             android:orientation="horizontal" >
 
             <EditText
@@ -81,8 +80,7 @@
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
                 android:layout_weight="7"
-                android:inputType="numberDecimal"
-                 />
+                android:inputType="numberDecimal" />
 
             <EditText
                 android:id="@+id/so_line_item_max_quantity_value"
@@ -99,13 +97,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="8dip"
             android:layout_marginBottom="8dip"
             android:layout_marginLeft="16dip"
             android:layout_marginRight="16dip"
+            android:layout_marginTop="8dip"
             android:paddingLeft="8dip"
             android:paddingRight="8dip"
-            android:text="@string/so_line_avail_to_whole_ship_check_box_text" />
+            android:text="@string/so_line_avail_to_whole_ship_check_box_text"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/so_line_item_prices_label"
@@ -117,7 +116,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dip"
+            android:layout_marginBottom="6dip"
             android:orientation="horizontal" >
 
             <EditText
@@ -128,8 +127,7 @@
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
                 android:layout_weight="5"
-                android:inputType="numberDecimal"
-                 />
+                android:inputType="numberDecimal" />
 
             <EditText
                 android:id="@+id/so_line_item_sugg_price_value"
@@ -139,8 +137,7 @@
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
                 android:layout_weight="5"
-                android:inputType="numberDecimal"
-                 />
+                android:inputType="numberDecimal" />
         </LinearLayout>
 
         <TextView
@@ -153,7 +150,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dip"
+            android:layout_marginBottom="6dip"
             android:orientation="horizontal" >
 
             <EditText
@@ -164,8 +161,7 @@
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
                 android:layout_weight="5"
-                android:inputType="numberDecimal"
-                 />
+                android:inputType="numberDecimal" />
 
             <EditText
                 android:id="@+id/so_line_item_min_discount_value"
@@ -175,8 +171,7 @@
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
                 android:layout_weight="3"
-                android:inputType="numberDecimal"
-                 />
+                android:inputType="numberDecimal" />
 
             <EditText
                 android:id="@+id/so_line_item_max_discount_value"
@@ -186,14 +181,13 @@
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
                 android:layout_weight="3"
-                android:inputType="numberDecimal"
-                 />
+                android:inputType="numberDecimal" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dip"
+            android:layout_marginBottom="6dip"
             android:baselineAligned="false"
             android:orientation="horizontal" >
 
@@ -224,14 +218,16 @@
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:visibility="gone" >
 
                 <TextView
                     android:id="@+id/so_line_quote_refused_label"
                     style="@style/AddEdit_Label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/so_line_quote_refused_text" />
+                    android:text="@string/so_line_quote_refused_text"
+                    android:visibility="gone" />
 
                 <Spinner
                     android:id="@+id/so_line_quote_refused_spinner"
@@ -240,7 +236,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dip"
-                    android:layout_marginRight="16dip" />
+                    android:layout_marginRight="16dip"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
@@ -266,11 +263,10 @@
                     android:layout_marginRight="16dip" />
             </LinearLayout>
         </LinearLayout>
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dip"
             android:baselineAligned="false"
             android:orientation="horizontal" >
 
@@ -337,8 +333,6 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
-        
-
     </LinearLayout>
 
 </ScrollView>
