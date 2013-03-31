@@ -219,7 +219,7 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 			subtitle2.setText("Iznos: "+UIUtils.formatDoubleForUI(line_amount));
 //			String lineDiscountString = getString(R.string.invoice_line_discount_amount) + ": " + cursor.getString(InvoiceLineQuery.LINE_DISCOUNT_AMOUNT);
 //			
-			subtitle3.setText("Obećani datum isporuke: " + (promised_date == "" ? "-":DateUtils.formatDbDateForPresentation(promised_date)) + " Potvrdjen: " + (promised_date_confirmed == 0 ? "Ne":"Da"));
+			subtitle3.setText("Obećani datum isporuke: " + (promised_date == "" ? "-":DateUtils.toUIfromDbDate(promised_date)) + " Potvrdjen: " + (promised_date_confirmed == 0 ? "Ne":"Da"));
 		}
 
 		@Override

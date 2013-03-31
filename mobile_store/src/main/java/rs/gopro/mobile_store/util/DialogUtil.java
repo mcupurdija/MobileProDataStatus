@@ -32,7 +32,7 @@ public class DialogUtil {
 	    // Showing Alert Message
 	    alertDialog.show();
 	}
-
+	
 	public static Dialog showInfoDialog(Context context, String title, String message) {
 		AlertDialog alertDialog = new AlertDialog.Builder(
 				context).create();

@@ -18388,8 +18388,8 @@ BEGIN
 	where _id = new._id; 
 END;
 
---INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch`, `updated_date` ) VALUES
---(1, 'ItemsSyncObject', 'ItemsSyncObject', 'FAILED', 2,'2012-12-19 15:29:42' );
+INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch`, `updated_date`, `created_date` ) VALUES
+(1, 'ItemsNewSyncObject', 'ItemsNewSyncObject', 'SUCCESS', 1,'2013-03-30 00:00:00','2013-03-30 00:00:00' );
 --INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch`, `updated_date` ) VALUES
 --(2, 'ItemsSyncObject', 'ItemsSyncObject', 'FAILED', 5, '2012-12-19 15:29:42');
 --INSERT INTO `sync_logs` (`_id`,`sync_object_name`,`sync_object_id`,`sync_object_status`,`sync_object_batch`, `updated_date` ) VALUES

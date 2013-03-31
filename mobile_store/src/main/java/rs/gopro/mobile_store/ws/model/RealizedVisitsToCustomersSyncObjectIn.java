@@ -21,8 +21,6 @@ public class RealizedVisitsToCustomersSyncObjectIn extends RealizedVisitsToCusto
 
 	};
 
-	
-	
 	public RealizedVisitsToCustomersSyncObjectIn() {
 		super();
 	}
@@ -35,16 +33,6 @@ public class RealizedVisitsToCustomersSyncObjectIn extends RealizedVisitsToCusto
 		super(cSVString, salespersonCode, visitDateFrom, visitDateTo, customerNoa46);
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@Override
 	public String getTag() {
 		return TAG;

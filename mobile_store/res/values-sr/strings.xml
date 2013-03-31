@@ -349,8 +349,9 @@
     <string name="new_record_visit_menu_title">Nova realizacija</string>
     
 	<string name="items_sync_group_title">Opcije osvežavanja artikala</string>
-	<string name="items_sync_overstock_button_title">Osveži overstock artikle</string>
-	<string name="items_sync_on_action_button_title">Osveži artikle na akciji</string>
+	<string name="items_sync_new_button_title">Preuzmi nove artikle</string>
+	<string name="items_sync_overstock_button_title">Preuzmi overstock artikle</string>
+	<string name="items_sync_on_action_button_title">Preuzmi artikle na akciji</string>
 	<string name = "customer_edit_title">Izmeni</string>
 	<string name = "save_customer_changes_title">Snimi</string>
 	

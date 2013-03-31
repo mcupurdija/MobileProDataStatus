@@ -25,6 +25,8 @@ public class DateUtils {
 	@SuppressLint("SimpleDateFormat")
 	private final static SimpleDateFormat localDbDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	@SuppressLint("SimpleDateFormat")
+	private final static SimpleDateFormat localDbShortDate = new SimpleDateFormat("yyyy-MM-dd");
+	@SuppressLint("SimpleDateFormat")
 	private final static SimpleDateFormat navisionDbDate = new SimpleDateFormat("dd.MM.yy");
 	@SuppressLint("SimpleDateFormat")
 	private final static SimpleDateFormat navisionDbDateTime = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
@@ -145,6 +147,15 @@ public class DateUtils {
 	public static Date getLocalDbDate(String dbDateString) {
 		try {
 			return localDbDate.parse(dbDateString);
+		} catch (ParseException e) {
+			LogUtils.LOGE(TAG, "Bad date format", e);
+			return null;
+		}
+	}
+	
+	public static Date getLocalDbShortDate(String dbShortDateString) {
+		try {
+			return localDbShortDate.parse(dbShortDateString);
 		} catch (ParseException e) {
 			LogUtils.LOGE(TAG, "Bad date format", e);
 			return null;

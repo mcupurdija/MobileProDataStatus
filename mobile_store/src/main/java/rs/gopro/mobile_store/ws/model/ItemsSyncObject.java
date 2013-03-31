@@ -57,7 +57,8 @@ public class ItemsSyncObject extends SyncObject {
 		setmItemNoa46(source.readString());
 		setpCampaignStatus(source.readInt());
 		setmSalespersonCode(source.readString());
-		setmDateModified(new Date(source.readLong()));
+		long dateMod = source.readLong();
+		setmDateModified(dateMod == -1 ? null : new Date(dateMod));
 		setResetTypeSignal(source.readInt());
 	}
 
@@ -103,6 +104,8 @@ public class ItemsSyncObject extends SyncObject {
 		pSalespersonCode.setType(String.class);
 		properies.add(pSalespersonCode);
 
+		calculateDateModified();
+		
 		PropertyInfo pDateModified = new PropertyInfo();
 		pDateModified.setName("pDateModified");
 		pDateModified.setValue(mDateModified);
@@ -112,6 +115,10 @@ public class ItemsSyncObject extends SyncObject {
 		return properies;
 	}
 
+	protected void calculateDateModified() {
+		// only overriden in ItemsNew
+	}
+	
 //	@Override
 //	public void saveSOAPResponse(SoapSerializationEnvelope response, ContentResolver contentResolver) throws SOAPResponseException {
 //		if (response instanceof SoapPrimitive) {
@@ -230,7 +237,7 @@ public class ItemsSyncObject extends SyncObject {
 		dest.writeString(getmItemNoa46());
 		dest.writeInt(getpCampaignStatus());
 		dest.writeString(getmSalespersonCode());
-		dest.writeLong(getmDateModified().getTime());
+		dest.writeLong(getmDateModified() == null ? -1 : getmDateModified().getTime());
 		dest.writeInt(getResetTypeSignal());
 	}
 

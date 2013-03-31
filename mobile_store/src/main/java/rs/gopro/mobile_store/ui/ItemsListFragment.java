@@ -8,6 +8,9 @@ import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.ItemsActionSyncObject;
+import rs.gopro.mobile_store.ws.model.ItemsNewSyncObject;
+import rs.gopro.mobile_store.ws.model.ItemsOverstockSyncObject;
 import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
 import android.content.Intent;
 import android.database.Cursor;
@@ -39,6 +42,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	private static String TAG = "ItemsListFragment";
 	private EditText searchText;
 	private Spinner spinner;
+	private Button loadNewItems;
 	private Button loadOverstock;
 	private Button loadOnAction;
 	private String splitQuerySeparator = ";";
@@ -89,16 +93,27 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 			spinner.setOnItemSelectedListener(this);
 			spinner.setAdapter(adapter);
 			
+			loadNewItems = (Button) getActivity().findViewById(R.id.items_sync_new_button);
+			loadNewItems.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(getActivity(), NavisionSyncService.class);
+					ItemsNewSyncObject itemsSyncObject = new ItemsNewSyncObject(null, null, Integer.valueOf(0), salesPersonNo, null);
+					itemsSyncObject.setResetTypeSignal(1);
+					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
+					getActivity().startService(intent);
+				}
+			});
+			
 			loadOverstock = (Button) getActivity().findViewById(R.id.items_sync_overstock_button);
 			loadOverstock.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-					ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(1), salesPersonNo, DateUtils.getWsDummyDate());
+					ItemsOverstockSyncObject itemsSyncObject = new ItemsOverstockSyncObject(null, null, Integer.valueOf(1), salesPersonNo, DateUtils.getWsDummyDate());
 					itemsSyncObject.setResetTypeSignal(1);
 					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
 					getActivity().startService(intent);
-					
 				}
 			});
 			loadOnAction = (Button) getActivity().findViewById(R.id.items_sync_on_action_button);
@@ -106,7 +121,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-					ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(2), salesPersonNo, DateUtils.getWsDummyDate());
+					ItemsActionSyncObject itemsSyncObject = new ItemsActionSyncObject(null, null, Integer.valueOf(2), salesPersonNo, DateUtils.getWsDummyDate());
 					itemsSyncObject.setResetTypeSignal(2);
 					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
 					getActivity().startService(intent);

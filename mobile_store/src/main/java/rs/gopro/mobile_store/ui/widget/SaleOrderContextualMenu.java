@@ -3,12 +3,15 @@ package rs.gopro.mobile_store.ui.widget;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.UIUtils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,9 +47,18 @@ public class SaleOrderContextualMenu implements ActionMode.Callback {
 			Intent editIntent = new Intent(Intent.ACTION_EDIT, MobileStoreContract.SaleOrders.buildSaleOrderUri(saleOrderId));
 			//intent.putExtra(SaleOrderAddEditActivity.EXTRA_CUSTOMER_ID, saleOrderId);
 //			activity.startActivityForResult(editIntent, SaleOrdersPreviewActivity.CALL_EDIT);
-			activity.startActivity(editIntent);
+			Cursor cursorStatus = activity.getContentResolver().query(MobileStoreContract.SaleOrders.CONTENT_URI, new String[] {SaleOrders.SALES_ORDER_DEVICE_NO, SaleOrders.SALES_ORDER_NO}, Tables.SALE_ORDERS + "." + MobileStoreContract.SaleOrders._ID + "=?", new String[] { saleOrderId }, null);
+			if (cursorStatus.moveToFirst()) {
+				if (cursorStatus.isNull(1)) {
+					activity.startActivity(editIntent);
+				} else {
+					DialogUtil.showInfoDialog(activity, "Poruka", "Dokument je poslat i nije ga moguće menjati.");
+				}
+			}
+			if (cursorStatus != null && !cursorStatus.isClosed()) {
+				cursorStatus.close();
+			}
 			mode.finish();
-			//activity.finish();
 			return true;
 		case R.id.view_sale_order_header:
 			Intent viewIntent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.SaleOrders.buildSaleOrderUri(saleOrderId));

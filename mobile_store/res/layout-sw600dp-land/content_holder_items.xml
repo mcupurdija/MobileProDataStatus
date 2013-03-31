@@ -57,6 +57,14 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:orientation="horizontal" >
+        <Button
+            android:id="@+id/items_sync_new_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="5dp"
+            android:text="@string/items_sync_new_button_title" />
     	<Button
             android:id="@+id/items_sync_overstock_button"
             android:layout_width="wrap_content"
