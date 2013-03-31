@@ -85,16 +85,16 @@ public class CustomersViewDetailFragment extends Fragment implements
 	private Callbacks mCallbacks = sDummyCallbacks;
 
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        	Bundle arguments = getArguments();
-         isInUpdateMode =	arguments.getBoolean(IS_IN_UPDATE_MODE);
-        final Intent intent = BaseActivity.fragmentArgumentsToIntent(arguments);
-        mCustomerdetailUri = intent.getData();
-        if (mCustomerdetailUri == null) {
-            return;
-        }
-    }
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Bundle arguments = getArguments();
+		isInUpdateMode = arguments.getBoolean(IS_IN_UPDATE_MODE);
+		final Intent intent = BaseActivity.fragmentArgumentsToIntent(arguments);
+		mCustomerdetailUri = intent.getData();
+		if (mCustomerdetailUri == null) {
+			return;
+		}
+	}
 	
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -256,7 +256,6 @@ public class CustomersViewDetailFragment extends Fragment implements
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-		System.out.println("LOADER IS FINIDES");
 		buildUiFromCursor(cursor);
 	}
 
@@ -341,18 +340,11 @@ private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
 	};
 
 
- public void	onEditButtonClick(){
+	public void	onEditButtonClick(){
 		setFocusable(true);
 	   // actionMode = getActivity().startActionMode(actionModeCallback);
 	}
-	
-	
-		
-	
 
-	
-	
-	
 	private interface CustomerDetailQuery {
 		int _TOKEN = 0x8;
 

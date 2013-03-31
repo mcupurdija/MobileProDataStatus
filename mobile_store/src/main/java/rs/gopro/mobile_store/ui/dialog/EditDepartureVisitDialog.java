@@ -24,6 +24,7 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
 	private int dialogId;
 	private String dialogTitle;
 	private String valueCaption;
+	private int defaultOption = 0;
 	
     public interface EditDepartureVisitDialogListener {
         void onFinishEditDepartureVisitDialog(int id, int visitResult, String note);
@@ -53,6 +54,7 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
 		outState.putString("DIALOG_TITLE", dialogTitle);
 		outState.putString("VALUE_CAPTION", valueCaption);
 		outState.putInt("DIALOG_ID", dialogId);
+		outState.putInt("DEFAULT_OPTION", defaultOption);
 	}
 	
 	@Override
@@ -62,6 +64,7 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
 			dialogTitle = savedInstanceState.getString("DIALOG_TITLE");
 			valueCaption = savedInstanceState.getString("VALUE_CAPTION");
 			dialogId = savedInstanceState.getInt("DIALOG_ID");
+			defaultOption = savedInstanceState.getInt("DEFAULT_OPTION");
 		}
         View view = inflater.inflate(R.layout.fragment_edit_departure_visit, container);
         
@@ -72,6 +75,7 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
         mVisitResultAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mVisitResult = (Spinner) view.findViewById(R.id.visit_result_spinner);
         mVisitResult.setAdapter(mVisitResultAdapter);
+        mVisitResult.setSelection(defaultOption);
         
         mNoteCaption = (TextView) view.findViewById(R.id.visit_note_caption);
         mNoteCaption.setText("Beleška nakon posete:");
@@ -144,5 +148,13 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
 	  if (getDialog() != null && getRetainInstance())
 	    getDialog().setDismissMessage(null);
 	  super.onDestroyView();
+	}
+
+	public int getDefaultOption() {
+		return defaultOption;
+	}
+
+	public void setDefaultOption(int defaultOption) {
+		this.defaultOption = defaultOption;
 	}
 }

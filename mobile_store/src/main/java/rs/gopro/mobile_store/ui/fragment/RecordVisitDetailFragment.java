@@ -128,12 +128,7 @@ public class RecordVisitDetailFragment extends Fragment implements
 			}
 		});
         mEndVisit = (Button) rootView.findViewById(R.id.end_visit_button);
-        mEndVisit.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				showDepartureDialog();
-			}
-		});
+        
         return rootView; 
     }
 	
@@ -142,8 +137,9 @@ public class RecordVisitDetailFragment extends Fragment implements
     	dialog.show(getActivity().getSupportFragmentManager(), "ARRIVAL_RECORD_DIALOG");		
 	}
     
-    private void showDepartureDialog() {
+    private void showDepartureDialog(int defaultOption) {
     	EditDepartureVisitDialog dialog = new EditDepartureVisitDialog(0, "Završi posetu");
+    	dialog.setDefaultOption(defaultOption);
     	dialog.show(getActivity().getSupportFragmentManager(), "DEPARTURE_RECORD_DIALOG");		
 	}
 	
@@ -221,6 +217,21 @@ public class RecordVisitDetailFragment extends Fragment implements
 			break;
 		}
         
+        final int defaultOption;
+        if (!cursor.isNull(VisitsQuery.VISIT_RESULT)) {
+        	defaultOption = cursor.getInt(VisitsQuery.VISIT_RESULT) == ApplicationConstants.VISIT_TYPE_PAUSE ? 2 : 0;
+        } else {
+        	defaultOption = 0;
+        }
+        
+        
+        mEndVisit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showDepartureDialog(defaultOption);
+			}
+		});
+        
         if (cursor != null && !cursor.isClosed()) {
         	cursor.close();
         }
@@ -258,7 +269,8 @@ public class RecordVisitDetailFragment extends Fragment implements
                 MobileStoreContract.Visits.DEPARTURE_TIME,
                 MobileStoreContract.Visits.ODOMETER,
                 MobileStoreContract.Visits.NOTE,
-                MobileStoreContract.Visits.VISIT_STATUS
+                MobileStoreContract.Visits.VISIT_STATUS,
+                MobileStoreContract.Visits.VISIT_RESULT
         };
 
         int _ID = 0;
@@ -273,5 +285,6 @@ public class RecordVisitDetailFragment extends Fragment implements
         int ODOMETER = 9;
         int NOTE = 10;
         int VISIT_STATUS = 11;
+        int VISIT_RESULT = 12;
 	}
 }

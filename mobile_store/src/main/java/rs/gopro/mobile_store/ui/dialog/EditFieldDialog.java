@@ -31,6 +31,7 @@ public class EditFieldDialog extends DialogFragment implements OnEditorActionLis
     private TextView mEditCaption;
     private Button mSubmitButton;
     private Button mCancelButton;
+    private TextView mError;
 
     public EditFieldDialog() {
         // Empty constructor required for DialogFragment
@@ -91,6 +92,7 @@ public class EditFieldDialog extends DialogFragment implements OnEditorActionLis
         mEditText.setInputType(editValueInputType);
         mEditCaption = (TextView) view.findViewById(R.id.lbl_caption);
         mSubmitButton = (Button) view.findViewById(R.id.button_submit_dialog);
+        mError = (TextView) view.findViewById(R.id.lbl_error);
         //mSubmitButton.setText("OK");
         mCancelButton = (Button) view.findViewById(R.id.button_cancel_dialog);
         mEditCaption.setText(valueCaption);
@@ -123,8 +125,15 @@ public class EditFieldDialog extends DialogFragment implements OnEditorActionLis
 	private void sendInputValues() {
 		// Return input text to activity
 		EditNameDialogListener activity = (EditNameDialogListener) getActivity();
-		activity.onFinishEditDialog(dialogId, mEditText.getText().toString());
-		this.dismiss();
+		String inputValue = mEditText.getText().toString();
+		if (inputValue == null || inputValue.length() < 1) {
+			mError.setVisibility(View.VISIBLE);
+			mError.setText("Unestite vrednost!");
+		} else {
+			mError.setVisibility(View.GONE);
+			activity.onFinishEditDialog(dialogId, inputValue);
+			this.dismiss();
+		}	
 	}
 
 	@Override

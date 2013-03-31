@@ -69,7 +69,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	private int currentVisitResult = -1;
 	private String selectedVisitId = null;
 	
-	private Fragment visitsPlanFragmentDetail;
+	private Fragment planRealizationFragmentDetail;
 	private ShowHideMasterLayout mShowHideMasterLayout;
 	
 	private OnDateSetListener visitFilterDateSetListener;
@@ -105,7 +105,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_visits);
+		setContentView(R.layout.activity_realization);
 		final FragmentManager fm = getSupportFragmentManager();
 
 		visitFilterDateSetListener = new OnDateSetListener() {
@@ -144,8 +144,8 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		if (savedInstanceState != null) {
 			// @TODO needs to handle this
 
-			visitsPlanFragmentDetail = fm
-					.findFragmentById(R.id.fragment_visitsplan_detail);
+			planRealizationFragmentDetail = fm
+					.findFragmentById(R.id.fragment_realization_detail);
 			updateDetailBackground();
 		}
 	}
@@ -198,12 +198,12 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	}
 
 	private void updateDetailBackground() {
-		if (visitsPlanFragmentDetail == null) {
-			findViewById(R.id.fragment_visitsplan_detail)
+		if (planRealizationFragmentDetail == null) {
+			findViewById(R.id.fragment_realization_detail)
 					.setBackgroundResource(
 							R.drawable.grey_frame_on_white_empty_sandbox);
 		} else {
-			findViewById(R.id.fragment_visitsplan_detail)
+			findViewById(R.id.fragment_realization_detail)
 					.setBackgroundResource(R.drawable.grey_frame_on_white);
 		}
 	}
@@ -225,7 +225,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		fragment.setArguments(BaseActivity
 				.intentToFragmentArguments(listIntent));
 		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.fragment_visitsplan_list, fragment).commit();
+				.replace(R.id.fragment_realization_list, fragment).commit();
 
 	}
 
@@ -235,8 +235,8 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 				.intentToFragmentArguments(new Intent(Intent.ACTION_VIEW,
 						visitUri)));
 		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.fragment_visitsplan_detail, fragment).commit();
-		visitsPlanFragmentDetail = fragment;
+				.replace(R.id.fragment_realization_detail, fragment).commit();
+		planRealizationFragmentDetail = fragment;
 		updateDetailBackground();
 
 		// If loading session details in portrait, hide the master pane
@@ -414,8 +414,10 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		// break will finish in detail fragment
 		if (visitSubType == VISITS_RESULT_BREAK) {
 			cv.put(MobileStoreContract.Visits.VISIT_TYPE, 0);
+			cv.put(MobileStoreContract.Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_STARTED);
 		} else {
 			cv.put(MobileStoreContract.Visits.VISIT_TYPE, 1);
+			cv.put(MobileStoreContract.Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_FINISHED);
 		}
 		Date newDate = new Date();
 		cv.put(Visits.VISIT_DATE, DateUtils.toDbDate(newDate));
@@ -463,7 +465,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		// here goes arrivals
 		case RECORD_VISIT_ARRIVAL:
 //			RecordVisitDetailFragment detailFragment = null;
-			if (visitsPlanFragmentDetail != null) {
+			if (planRealizationFragmentDetail != null) {
 //				detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
 				if (isRecordedVisitDayStart()) {
 					if (!isRecordedVisit()) {
@@ -495,7 +497,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	public void onFinishEditDepartureVisitDialog(int id, int visitResult, String note) {
 		// here goes departures
 //		RecordVisitDetailFragment detailFragment = null;
-		if (visitsPlanFragmentDetail != null) {
+		if (planRealizationFragmentDetail != null) {
 //			detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
 			if (isPlannedVisit()) {
 				if (!recordEndVisit(visitResult, note)) {

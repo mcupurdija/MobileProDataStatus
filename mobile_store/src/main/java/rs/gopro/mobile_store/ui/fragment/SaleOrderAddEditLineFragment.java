@@ -140,8 +140,8 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 				//mPriceEur.setText(syncObject.getpSalesPriceEURAsTxt());
 				if ((syncObject.getpMinimumSalesUnitQuantityTxt().length() > 0 && !syncObject.getpMinimumSalesUnitQuantityTxt().equals("anyType{}")) || (syncObject.getpOutstandingPurchaseLinesTxt().length() > 0) && !syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}")) {
 				    // Setting Dialog Message
-				    String outstanding = syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}") ? "" : "Poruka: " + syncObject.getpOutstandingPurchaseLinesTxt();
-				    String minimum = syncObject.getpMinimumSalesUnitQuantityTxt().equals("anyType{}") ? "" : syncObject.getpMinimumSalesUnitQuantityTxt();
+				    String outstanding = syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}") ? "" : "Poruka: " + syncObject.getpOutstandingPurchaseLinesTxt().replace("\\n", "\n");
+				    String minimum = syncObject.getpMinimumSalesUnitQuantityTxt().equals("anyType{}") ? "" : syncObject.getpMinimumSalesUnitQuantityTxt().replace("\\n", "\n");
 
 				    DialogUtil.showInfoDialog(getActivity(), getResources().getString(R.string.dialog_title_sync_info), minimum + "\n" +  outstanding);
 				}
