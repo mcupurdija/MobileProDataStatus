@@ -39,6 +39,10 @@ public class DateUtils {
 		return calendar.getTime();
 	}
 	
+	public static String getDbDummyDate() {
+		return "01.01.00";
+	}
+	
 	public static Date getTodayDateIgnoringWeekend(Date date) {
 		Calendar calendar = GregorianCalendar.getInstance();
 		calendar.setTime(date);

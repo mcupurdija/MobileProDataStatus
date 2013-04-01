@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
+import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 import android.content.ContentValues;
@@ -58,13 +59,13 @@ public class ItemsDomain extends Domain {
 		contentValues.put(Items.GROUP_CODE, getGroup_code());
 		contentValues.put(Items.CAMPAIGN_STATUS, getCampaign_status());
 		contentValues.put(Items.OVERSTOCK_STATUS, getOverstock_status());
-		contentValues.put(Items.CONNECTED_SPEC_SHIP_ITEM, WsDataFormatEnUsLatin.toDoubleFromWs(getConnected_spec_ship_item()));
+		contentValues.put(Items.CONNECTED_SPEC_SHIP_ITEM, WsDataFormatEnUsLatin.toDoubleFromWs(getConnected_spec_ship_item().length() < 1 ? "0.0" : getConnected_spec_ship_item()));
 		// TODO data conversion
-		contentValues.put(Items.UNIT_SALES_PRICE_DIN, WsDataFormatEnUsLatin.toDoubleFromWs(getUnit_sales_price_din()));
+		contentValues.put(Items.UNIT_SALES_PRICE_DIN, WsDataFormatEnUsLatin.toDoubleFromWs(getUnit_sales_price_din().length() < 1 ? "0.0" : getUnit_sales_price_din()));
 		contentValues.put(Items.CAMPAIGN_CODE, getCampaign_code());
 		// TODO data conversion
-		contentValues.put(Items.CMPAIGN_START_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getCmpaign_start_date()));
-		contentValues.put(Items.CAMPAIGN_END_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getCampaign_end_date()));
+		contentValues.put(Items.CMPAIGN_START_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getCmpaign_start_date().length() < 1 ? DateUtils.getDbDummyDate() : getCmpaign_start_date()));
+		contentValues.put(Items.CAMPAIGN_END_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getCampaign_end_date().length() < 1 ? DateUtils.getDbDummyDate() : getCampaign_end_date()));
 		return contentValues;
 	}
 

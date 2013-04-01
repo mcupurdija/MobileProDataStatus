@@ -60,7 +60,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		MobileStoreContract.CustomerAddresses.CITY, 
 		MobileStoreContract.CustomerAddresses.POST_CODE, 
 		MobileStoreContract.CustomerAddresses.CONTANCT,  
-		MobileStoreContract.CustomerAddresses.PHONE_NO 
+		MobileStoreContract.CustomerAddresses.PHONE_NO
 	};
 	private static String[]  SALES_ORDER_PROJECTION = new String[] { 
 		MobileStoreContract.SaleOrders._ID,
@@ -121,8 +121,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		MobileStoreContract.Customers.CITY,
 		MobileStoreContract.Customers.ADDRESS,
 		MobileStoreContract.Customers.POST_CODE,
-		MobileStoreContract.Customers.CONTACT_COMPANY_NO
-		
+		MobileStoreContract.Customers.CONTACT_COMPANY_NO,
+		MobileStoreContract.Customers.EMAIL
 	};
 	
 	private static String DEFAULT_VIEW_TYPE = MobileStoreContract.SaleOrders.CONTENT_ITEM_TYPE;
@@ -839,6 +839,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		}
 		final int codeIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
 		final int nameIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
+		final int emailIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.EMAIL);
 		final String result = data.getString(codeIndex) + " - " + data.getString(nameIndex);
 		selectedCustomerNo = data.getString(codeIndex);
 		CustomerAutocompleteCursorAdapter dummyAdapter = null;
@@ -847,6 +848,13 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		// when this loads adapter wont run query, it is ran only on filter, so we must set id manually for latter use
 		customerAutoCompleteAdapter.setIdForTitle(result, data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Customers._ID)));
 		customerAutoComplete.setAdapter(customerAutoCompleteAdapter);
+		
+		if (contactEmail != null) {
+			contactEmail.setText("");
+			if (!data.isNull(emailIndex)) {
+				contactEmail.setText(data.getString(emailIndex));
+			}
+		}
 		
 		//shippingAddressId = shipp_to_address_id;
 		initialLoadOfFormData = true;

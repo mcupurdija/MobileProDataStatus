@@ -110,21 +110,37 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 				TextView text6 = (TextView) dialog.findViewById(R.id.dialog_sale_order_order_document_master_status_message);
 				String mainStatusMessage = null;
 				// do status message only if it is in send mode, if it is verification only do not do it
+				Cursor cursorStatus = getContentResolver().query(MobileStoreContract.SaleOrders.CONTENT_URI, new String[] {SaleOrders.DOCUMENT_TYPE, SaleOrders.SALES_ORDER_NO}, Tables.SALE_ORDERS + "." + MobileStoreContract.SaleOrders._ID + "=?", new String[] { saleOrderId }, null);
 				if (deviceSalesDocumentSyncObject.getpVerifyOnly() == 0) {
-					Cursor cursorStatus = getContentResolver().query(MobileStoreContract.SaleOrders.CONTENT_URI, new String[] {SaleOrders.SALES_ORDER_DEVICE_NO, SaleOrders.SALES_ORDER_NO}, Tables.SALE_ORDERS + "." + MobileStoreContract.SaleOrders._ID + "=?", new String[] { saleOrderId }, null);
 					if (cursorStatus.moveToFirst()) {
 						if (cursorStatus.isNull(1)) {
 							mainStatusMessage = "Dokument nije uspešno poslat!";
 							text6.setTextColor(Color.RED);
-						} else { 
+						} else {
 							mainStatusMessage = "Dokument uspešno poslat! Broj dokumenta je: "+cursorStatus.getString(1);
+							Cursor cursorAdHock = getContentResolver().query(MobileStoreContract.SaleOrderLines.CONTENT_URI, new String[] {SaleOrderLines.SALE_ORDER_ID}, Tables.SALE_ORDER_LINES + "." + SaleOrderLines.SALE_ORDER_ID + "=? and " + Tables.SALE_ORDER_LINES + "." + SaleOrderLines.PRICE_DISCOUNT_STATUS+ "=?", new String[] { saleOrderId, ApplicationConstants.PRICE_AND_DISCOUNT_ARE_NOT_OK }, null);
+							if (cursorStatus.getInt(0) == 0 && cursorAdHock.moveToFirst()) {
+								mainStatusMessage += "\n" +"Ova porudžbina biće pretvorena u Ad-Hoc Porudžbinu zbog cena van cenovnika i poslata na odobrenje!";
+							}
+							if (cursorAdHock != null && !cursorAdHock.isClosed()) {
+								cursorAdHock.close();
+							}
 							text6.setTextColor(Color.BLACK);
 						}
 					}
-					
-					if (cursorStatus != null && !cursorStatus.isClosed()) {
-						cursorStatus.close();
+
+				} else {
+					Cursor cursorAdHock = getContentResolver().query(MobileStoreContract.SaleOrderLines.CONTENT_URI, new String[] {SaleOrderLines.SALE_ORDER_ID}, Tables.SALE_ORDER_LINES + "." + SaleOrderLines.SALE_ORDER_ID + "=? and " + Tables.SALE_ORDER_LINES + "." + SaleOrderLines.PRICE_DISCOUNT_STATUS+ "=?", new String[] { saleOrderId, ApplicationConstants.PRICE_AND_DISCOUNT_ARE_NOT_OK }, null);
+					if (cursorStatus.moveToFirst() && cursorStatus.getInt(0) == 0 && cursorAdHock.moveToFirst()) {
+						mainStatusMessage = "Ova porudžbina je kandidat za Ad-Hoc Porudžbinu zbog cena van cenovnika i biće poslata na odobrenje!";
 					}
+					if (cursorAdHock != null && !cursorAdHock.isClosed()) {
+						cursorAdHock.close();
+					}
+					text6.setTextColor(Color.BLACK);
+				}
+				if (cursorStatus != null && !cursorStatus.isClosed()) {
+					cursorStatus.close();
 				}
 				int status1 = Integer.valueOf(deviceSalesDocumentSyncObject.getOrder_condition_status());
 				int status2 = Integer.valueOf(deviceSalesDocumentSyncObject.getFinancial_control_status());

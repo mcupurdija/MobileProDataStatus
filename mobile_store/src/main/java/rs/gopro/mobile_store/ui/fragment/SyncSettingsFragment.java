@@ -3,13 +3,17 @@ package rs.gopro.mobile_store.ui.fragment;
 import java.util.Date;
 
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
+import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.CustomerAddressesSyncObject;
 import rs.gopro.mobile_store.ws.model.CustomerSyncObject;
+import rs.gopro.mobile_store.ws.model.GetContactsSyncObject;
 import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
 import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObjectOut;
@@ -145,10 +149,12 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 			doItemsSync();
 		}
 		if (plannedVisitSyncCheckBox.isChecked()) {
-			doPlannedVisitSync();
+			//doPlannedVisitSync();
+			doSyncAddresses();
 		}
 		if (realizedVisistSyncCheckBox.isChecked()) {
-			doRealizedVisitSync();
+			//doRealizedVisitSync();
+			doSynccontacts();
 		}
 		if (customerSyncCheckBox.isChecked()) {
 			doCustomerSync();
@@ -202,6 +208,24 @@ public class SyncSettingsFragment extends PreferenceFragment implements OnPrefer
 		getActivity().startService(intent);
 	}
 
+	private void doSyncAddresses() {
+//		Cursor cursor = activity.getContentResolver().query(MobileStoreContract.Customers.buildCustomersUri(customerId), new String[] { Customers._ID, Customers.CUSTOMER_NO }, null, null, null);
+//		if (cursor.moveToFirst()) {
+//			String customerNo = cursor.getString(1);
+			Intent syncAddressIntent = new Intent(getActivity(), NavisionSyncService.class);
+			CustomerAddressesSyncObject addressesSyncObject = new CustomerAddressesSyncObject("", "", "", DateUtils.getWsDummyDate());
+			syncAddressIntent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, addressesSyncObject);
+			getActivity().startService(syncAddressIntent);
+//		}
+	}	
+	
+	private void doSynccontacts() {
+		Intent syncAddressIntent = new Intent(getActivity(), NavisionSyncService.class);
+		GetContactsSyncObject contactsSyncObject = new GetContactsSyncObject("", "", "", "", DateUtils.getWsDummyDate());
+		syncAddressIntent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, contactsSyncObject);
+		getActivity().startService(syncAddressIntent);
+	}
+	
 	public void onSOAPResult(SyncStatus syncStatus, String result, String broadcastAction) {
 		System.out.println("STATUS IS: " + syncStatus);
 		if (syncStatus.equals(SyncStatus.SUCCESS)) {
