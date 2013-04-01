@@ -7,13 +7,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>apk</packaging>
 	<name>mobile_store</name>
-	<!-- comment test -->
-	<!-- comment test two-->
-	<!-- comment test three from Vlaada-->
-	<!-- comment test from Aca-->
-	<!-- comment test fifth Aca-->
-	<!-- comment test sixth Aca-->
-	<!-- comment test seventh Aca-->
+	<scm>
+		<connection>scm:git:git://github.com/mcevich/rs.gopro.mobile_store.git</connection>
+		<developerConnection>scm:git:https://mcevich@github.com/mcevich/rs.gopro.mobile_store.git</developerConnection>
+		<url>https://github.com/mcevich/rs.gopro.mobile_store.git</url>
+	</scm>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
