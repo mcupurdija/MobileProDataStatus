@@ -25,6 +25,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -109,7 +110,7 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.dialog_fragment_invoice, container);
+		View view = inflater.inflate(R.layout.dialog_fragment_invoice, container, false);
 		ListView listView=(ListView) view.findViewById(R.id.invoice_dialog_list);
 //		ListView  listView2 = new ListView(getActivity());
 		listView.setAdapter(mAdapter);
@@ -128,7 +129,7 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 				mDialogLoader.setVisibility(View.VISIBLE);
 			}
 		});
-		
+//		getDialog().getWindow().setLayout(650, android.view.ViewGroup.LayoutParams.FILL_PARENT);
 		return view;
 	}
 	
@@ -195,6 +196,7 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 			
 			TextView title1 = (TextView) view.findViewById(R.id.invoice_line_title1);
 			TextView title2 = (TextView) view.findViewById(R.id.invoice_line_title2);
+			title2.setGravity(Gravity.RIGHT);		
 			TextView subtitle1 = (TextView)view.findViewById(R.id.invoice_line_subtitle);
 			TextView subtitle2 = (TextView)view.findViewById(R.id.invoice_line_subtitle2);
 //			TextView subtitle3 = (TextView)view.findViewById(R.id.invoice_line_subtitle3);

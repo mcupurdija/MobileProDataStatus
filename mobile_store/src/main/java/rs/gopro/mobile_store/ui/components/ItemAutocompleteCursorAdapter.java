@@ -3,6 +3,7 @@ package rs.gopro.mobile_store.ui.components;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
+import rs.gopro.mobile_store.provider.Tables;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
@@ -69,7 +70,7 @@ public class ItemAutocompleteCursorAdapter extends CursorAdapter implements
 			cursor = mContext.getContentResolver().query(
 					Items.buildAutocompleteSearchUri(constraint == null ? ""
 							: constraint.toString()), ITEM_PROJECTION,
-					null, null, null);
+					null, null, Tables.ITEMS+"." + Items.ITEM_NO + " ASC");
 		}
 		if (cursor.moveToFirst()) {
 			if (!cursor.isNull(cursor.getColumnIndexOrThrow(MobileStoreContract.Items._ID))) {

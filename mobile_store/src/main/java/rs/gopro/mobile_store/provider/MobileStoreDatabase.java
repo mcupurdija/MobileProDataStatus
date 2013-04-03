@@ -38,7 +38,7 @@ public class MobileStoreDatabase extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		try {
-			LogUtils.log(Log.INFO, TAG, "Create database");
+			LogUtils.log(Log.INFO, TAG, "Create database!");
 			execSqlFile(CREATE_FILE, SQL_DIR, db);
 		} catch (IOException exception) {
 			throw new RuntimeException("Database creation failed", exception);
@@ -47,6 +47,7 @@ public class MobileStoreDatabase extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		LogUtils.log(Log.INFO, TAG, "Upgrade database!");
 		try {
 			LogUtils.log(Log.INFO, TAG, "Upgrade database from " + oldVersion + " to " + newVersion);
 			// if exist file with prefix upgrade use it, regardless of create
@@ -62,6 +63,7 @@ public class MobileStoreDatabase extends SQLiteOpenHelper {
 				}
 			} else {
 				// if upgrade file does not exist use create file
+				LogUtils.log(Log.INFO, TAG, "No upgrade go to create database!");
 				execSqlFile(CREATE_FILE, SQL_DIR, db);
 			}
 

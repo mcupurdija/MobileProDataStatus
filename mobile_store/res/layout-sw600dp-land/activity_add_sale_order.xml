@@ -10,6 +10,7 @@
     android:paddingLeft="80dp"
     android:paddingRight="80dp" >
 
+
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +21,27 @@
         android:paddingTop="28dip"
         android:shrinkColumns="1"
         android:stretchColumns="1" >
+<TableRow
+          android:id="@+id/edit_sale_order_test_test_test_group"
+          android:layout_marginBottom="8dip"
+          android:focusable="true"
+          android:gravity="center_vertical" >
 
+          <TextView
+              android:id="@+id/edit_sale_order_customer_label"
+              style="@style/AddEdit_Label"
+              android:gravity="center_vertical"
+              android:text="test test test" />
+
+          <Button 
+	    android:id="@+id/selection_test_button"
+	    style="@style/EditEvent_SpinnerButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="3dp"
+		android:layout_marginBottom="3dp"
+	    android:text="Selection test"/>
+      </TableRow>
         <TableRow
             android:id="@+id/edit_sale_order_customer_group"
             android:layout_marginBottom="8dip"

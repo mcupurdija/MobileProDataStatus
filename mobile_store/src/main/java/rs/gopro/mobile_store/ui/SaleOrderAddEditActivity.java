@@ -12,6 +12,9 @@ import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.components.ContactSpinnerAdapter;
 import rs.gopro.mobile_store.ui.components.CustomerAddressSpinnerAdapter;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
+import rs.gopro.mobile_store.ui.dialog.AddressSelectDialog;
+import rs.gopro.mobile_store.ui.dialog.InvoicesPreviewDialog;
+import rs.gopro.mobile_store.ui.dialog.AddressSelectDialog.AddressSelectDialogListener;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.exceptions.SaleOrderValidationException;
@@ -32,18 +35,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCallbacks<Cursor>, OnItemClickListener {
+public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCallbacks<Cursor>, OnItemClickListener, AddressSelectDialogListener {
 
 	private static final String TAG = "SaleOrderAddEditActivity";
 	
@@ -209,6 +214,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private String orderDate = null;
     
     private StatementHandler statementHandler;
+    
+    private Button test;
     
     /**
      * Signaling form load finish to because loaders do things in background and it is hard to follow.
@@ -423,6 +430,20 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		financialControlStatus = (TextView) findViewById(R.id.edit_sale_order_financial_control_status_text);
 		orderShipmentStatus = (TextView) findViewById(R.id.edit_sale_order_order_status_for_shipment_text);
 		orderValueStatus = (TextView) findViewById(R.id.edit_sale_order_order_value_status_text);
+		
+		test = (Button) findViewById(R.id.selection_test_button);
+		test.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AddressSelectDialog addressSelectDialog = new AddressSelectDialog();
+				Intent tempIntent = new Intent(Intent.ACTION_VIEW,
+						null);
+				tempIntent.putExtra(AddressSelectDialog.EXTRA_CUSTOMER_NO, selectedCustomerNo);
+				addressSelectDialog.setArguments(BaseActivity
+						.intentToFragmentArguments(tempIntent));
+				addressSelectDialog.show(getSupportFragmentManager(), "ADDRESS_DIALOG_1");
+			}
+		});
 	}
 
 	private void loadData(Cursor data, String action) {
@@ -1306,5 +1327,16 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 				break;
 			}
 		}
+	}
+
+	@Override
+	public void onAddressSelected(int address_id, String address,
+			String address_no, String city, String post_code, String phone_no,
+			String contact) {
+		shippingAddressField.setText(address_no);
+		shippingAddressCity.setText(city);
+		shippingAddressPostalCode.setText(post_code);
+		shippingAddressContact.setText(contact);
+		
 	}
 }

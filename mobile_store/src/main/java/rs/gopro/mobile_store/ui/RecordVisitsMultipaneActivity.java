@@ -497,16 +497,16 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	public void onFinishEditDepartureVisitDialog(int id, int visitResult, String note) {
 		// here goes departures
 //		RecordVisitDetailFragment detailFragment = null;
-		if (planRealizationFragmentDetail != null) {
+//		if (planRealizationFragmentDetail != null) {
 //			detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
-			if (isPlannedVisit()) {
-				if (!recordEndVisit(visitResult, note)) {
-					LogUtils.LOGE(TAG, "Visit recording failed!");
-				}
-			} else {
-				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Kraj posete je vec zabelezen!");
+		if (isPlannedVisit()) {
+			if (!recordEndVisit(visitResult, note)) {
+				LogUtils.LOGE(TAG, "Visit recording failed!");
 			}
+		} else {
+			DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Kraj posete je vec zabelezen!");
 		}
+//		}
 	}
 
 	private boolean isRecordedVisit() {

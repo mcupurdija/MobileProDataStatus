@@ -3,11 +3,11 @@ package rs.gopro.mobile_store.ui.dialog;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerAddresses;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.CustomerAddressesSyncObject;
 import rs.gopro.mobile_store.ws.model.GetContactsSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.AlertDialog;
@@ -30,6 +30,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
@@ -43,11 +46,13 @@ public class AddressSelectDialog extends DialogFragment implements
 	public static final String EXTRA_CUSTOMER_ID = "rs.gopro.mobile_store.extra.EXTRA_CUSTOMER_ID";
 
 	private Uri mLoadCustomerAddressesUri;
-	private CursorAdapter mAdapter;
+//	private CursorAdapter mAdapter;
 	private Button syncAllLinesForDoc;
 	private ProgressBar mDialogLoader;
 	private String customerNo;
 	private String customerId;
+	
+	private ArrayAdapter<CustomerAddressSelectionEntry> mAdapterForList;
 	
 	public interface AddressSelectDialogListener {
         void onAddressSelected(int address_id, String address, String address_no, String city, String post_code, String phone_no, String contact);
@@ -109,12 +114,13 @@ public class AddressSelectDialog extends DialogFragment implements
 		mLoadCustomerAddressesUri = intent.getData();
 		customerNo = intent.getCharSequenceExtra(EXTRA_CUSTOMER_NO)
 				.toString();
-		customerId = intent.getCharSequenceExtra(
-				EXTRA_CUSTOMER_ID).toString();
+//		customerId = intent.getCharSequenceExtra(
+//				EXTRA_CUSTOMER_ID).toString();
 //		if (mLoadCustomerAddressesUri == null) {
 //			return;
 //		}
-		mAdapter = new CustomerAddressLineAdaper(getActivity());
+//		mAdapter = new CustomerAddressLineAdaper(getActivity());
+		mAdapterForList = new ArrayAdapter<AddressSelectDialog.CustomerAddressSelectionEntry>(getActivity(), android.R.layout.simple_expandable_list_item_1);
 		getLoaderManager().initLoader(0, null, this);
 	}
 
@@ -126,28 +132,41 @@ public class AddressSelectDialog extends DialogFragment implements
 		ListView listView = (ListView) view
 				.findViewById(R.id.invoice_dialog_list);
 		// ListView listView2 = new ListView(getActivity());
-		listView.setAdapter(mAdapter);
+		listView.setAdapter(mAdapterForList);
 
 		mDialogLoader = (ProgressBar) view
-				.findViewById(R.id.dialog_load_progress);
+				.findViewById(rs.gopro.mobile_store.R.id.dialog_load_progress);
 
 		syncAllLinesForDoc = (Button) view
 				.findViewById(R.id.invoice_lines_sync_button);
 		syncAllLinesForDoc.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Cursor cursor = getActivity().getContentResolver().query(MobileStoreContract.Customers.buildCustomersUri(customerId), new String[] { Customers._ID, Customers.CONTACT_COMPANY_NO }, null, null, null);
-				if (cursor.moveToFirst()) {
-					String potentialCustomerNo = cursor.getString(1);
+//				Cursor cursor = getActivity().getContentResolver().query(MobileStoreContract.Customers.buildCustomersUri(customerId), new String[] { Customers._ID, Customers.CONTACT_COMPANY_NO }, null, null, null);
+//				if (cursor.moveToFirst()) {
+//					String potentialCustomerNo = cursor.getString(1);
+					
 					Intent syncAddressIntent = new Intent(getActivity(), NavisionSyncService.class);
-					GetContactsSyncObject contactsSyncObject = new GetContactsSyncObject("", "", potentialCustomerNo, "", DateUtils.getWsDummyDate());
-					syncAddressIntent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, contactsSyncObject);
+					CustomerAddressesSyncObject addressesSyncObject = new CustomerAddressesSyncObject("", customerNo, "", DateUtils.getWsDummyDate());
+					syncAddressIntent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, addressesSyncObject);
 					getActivity().startService(syncAddressIntent);
+					
 					mDialogLoader.setVisibility(View.VISIBLE);
-				}
+//				}
+//				cursor.close();
 			}
 		});
 
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
+				CustomerAddressSelectionEntry selectedEntry = mAdapterForList.getItem(position);
+				AddressSelectDialogListener activity = (AddressSelectDialogListener) getActivity();
+				activity.onAddressSelected(selectedEntry.getId(), selectedEntry.getAddress(), selectedEntry.getAddress_no(), selectedEntry.getCity(), selectedEntry.getPost_code(), selectedEntry.getPhone_no(), selectedEntry.getContanct());
+				AddressSelectDialog.this.dismiss();
+			}
+		});
+		
 		return view;
 	}
 
@@ -190,14 +209,35 @@ public class AddressSelectDialog extends DialogFragment implements
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		mAdapter.changeCursor(data);
+		if (data != null && data.moveToFirst()) {
+			int i = 1;
+			mAdapterForList.add(new CustomerAddressSelectionEntry(i++, "Podrazumevana adresa", ""));
+			do {
+				int address_id = data.getInt(CustomerAddressQuery._ID);
+				String address_no = data.getString(CustomerAddressQuery.ADDRESS_NO);
+				String address = ""; String city = "";
+				String post_code = data.getString(CustomerAddressQuery.POST_CODE);
+				String contact = data.getString(CustomerAddressQuery.CONTANCT);
+				String phone_no = data.getString(CustomerAddressQuery.PHONE_NO);
+				if (!data.isNull(CustomerAddressQuery.ADDRESS)) {
+					address = data.getString(CustomerAddressQuery.ADDRESS);
+				}
+				if (!data.isNull(CustomerAddressQuery.CITY)) {
+					city = data.getString(CustomerAddressQuery.CITY);
+				}
+				mAdapterForList.add(new CustomerAddressSelectionEntry(address_id, i++, address, city, post_code, phone_no, address_no, contact));
+			} while(data.moveToNext());
+			
+			data.close();
+		}
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		mAdapter.changeCursor(null);
+		mAdapterForList.clear();
 	}
 
+	
 	private class CustomerAddressLineAdaper extends CursorAdapter {
 
 		public CustomerAddressLineAdaper(Context context) {
@@ -255,6 +295,112 @@ public class AddressSelectDialog extends DialogFragment implements
 
 	}
 
+	private class CustomerAddressSelectionEntry {
+		
+		private int _id;
+		private int line_no;
+		private String address;
+		private String city;
+		
+		private String post_code;
+		private String phone_no;
+		private String address_no;
+		private String contanct;
+		
+		
+
+		public CustomerAddressSelectionEntry(int line_no, String address,
+				String city) {
+			super();
+			this.line_no = line_no;
+			this.address = address;
+			this.city = city;
+		}
+
+		public CustomerAddressSelectionEntry(int _id, int line_no,
+				String address, String city, String post_code, String phone_no,
+				String address_no, String contanct) {
+			super();
+			this._id = _id;
+			this.line_no = line_no;
+			this.address = address;
+			this.city = city;
+			this.post_code = post_code;
+			this.phone_no = phone_no;
+			this.address_no = address_no;
+			this.contanct = contanct;
+		}
+
+		public int getId() {
+			return _id;
+		}
+		
+		public void setId(int _id) {
+			this._id = _id;
+		}
+		
+		public String getAddress() {
+			return address;
+		}
+		
+		public void setAddress(String address) {
+			this.address = address;
+		}
+		
+		public String getCity() {
+			return city;
+		}
+		
+		public void setCity(String city) {
+			this.city = city;
+		}
+		
+		@Override
+		public String toString() {
+			return line_no + " - " + address + " - " + city;
+		}
+
+		public int getLine_no() {
+			return line_no;
+		}
+
+		public void setLine_no(int line_no) {
+			this.line_no = line_no;
+		}
+
+		public String getPost_code() {
+			return post_code;
+		}
+
+		public void setPost_code(String post_code) {
+			this.post_code = post_code;
+		}
+
+		public String getPhone_no() {
+			return phone_no;
+		}
+
+		public void setPhone_no(String phone_no) {
+			this.phone_no = phone_no;
+		}
+
+		public String getAddress_no() {
+			return address_no;
+		}
+
+		public void setAddress_no(String address_no) {
+			this.address_no = address_no;
+		}
+
+		public String getContanct() {
+			return contanct;
+		}
+
+		public void setContanct(String contanct) {
+			this.contanct = contanct;
+		}
+	}
+	
 	private interface CustomerAddressQuery {
 
 		String[] PROJECTION = { BaseColumns._ID,

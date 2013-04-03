@@ -49,6 +49,7 @@ public class CustomerContextualMenu implements ActionMode.Callback {
 				syncAddressIntent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, contactsSyncObject);
 				activity.startService(syncAddressIntent);
 			}
+			cursor.close();
 			mode.finish();
 			return true;
 		default:
@@ -66,6 +67,7 @@ public class CustomerContextualMenu implements ActionMode.Callback {
 			syncAddressIntent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, addressesSyncObject);
 			activity.startService(syncAddressIntent);
 		}
+		cursor.close();
 	}
 	
 	@Override

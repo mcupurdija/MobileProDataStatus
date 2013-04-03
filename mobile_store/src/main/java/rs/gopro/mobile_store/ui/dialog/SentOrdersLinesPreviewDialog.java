@@ -25,6 +25,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -205,8 +206,10 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 			
 			TextView title1 = (TextView) view.findViewById(R.id.invoice_line_title1);
 			TextView title2 = (TextView) view.findViewById(R.id.invoice_line_title2);
+			title2.setGravity(Gravity.RIGHT);
 			TextView subtitle1 = (TextView)view.findViewById(R.id.invoice_line_subtitle);
 			TextView subtitle2 = (TextView)view.findViewById(R.id.invoice_line_subtitle2);
+			subtitle2.setGravity(Gravity.RIGHT);
 			TextView subtitle3 = (TextView)view.findViewById(R.id.invoice_line_subtitle3);
 			
 			String [] invoiceLineType = getResources().getStringArray(R.array.invoice_line_type_array);
@@ -219,7 +222,7 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 			subtitle2.setText("Iznos: "+UIUtils.formatDoubleForUI(line_amount));
 //			String lineDiscountString = getString(R.string.invoice_line_discount_amount) + ": " + cursor.getString(InvoiceLineQuery.LINE_DISCOUNT_AMOUNT);
 //			
-			subtitle3.setText("Obećani datum isporuke: " + (promised_date == "" ? "-":DateUtils.toUIfromDbDate(promised_date)) + " Potvrdjen: " + (promised_date_confirmed == 0 ? "Ne":"Da"));
+			subtitle3.setText(" Potvrdjen: " + (promised_date_confirmed == 0 ? "Ne":"Da") + " Obećani datum isporuke: " + (promised_date == "" ? "-":DateUtils.toUIfromDbDate(promised_date)));
 		}
 
 		@Override
