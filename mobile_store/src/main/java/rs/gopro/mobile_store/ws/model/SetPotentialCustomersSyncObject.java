@@ -16,7 +16,7 @@ import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.csv.CSVDomainWriter;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
-import rs.gopro.mobile_store.ws.model.domain.SetPotentialCustomerDomain;
+import rs.gopro.mobile_store.ws.model.domain.SetShortPotentialCustomerDomain;
 import rs.gopro.mobile_store.ws.model.domain.TransformDomainObject;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -64,6 +64,7 @@ public class SetPotentialCustomersSyncObject extends SyncObject {
 
 	public SetPotentialCustomersSyncObject(Parcel source) {
 		super(source);
+		setCustomerId(source.readInt());
 		setcSVString(source.readString());
 		setpPendingCustomerCreation(source.readInt());
 	}
@@ -76,6 +77,7 @@ public class SetPotentialCustomersSyncObject extends SyncObject {
 	@Override
 	public void writeToParcel(Parcel dest, int flag) {
 		dest.writeString(getStatusMessage());
+		dest.writeInt(getCustomerId());
 		dest.writeString(getcSVString());
 		dest.writeInt(getpPendingCustomerCreation());
 	}
@@ -133,9 +135,9 @@ public class SetPotentialCustomersSyncObject extends SyncObject {
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver,
 			SoapPrimitive soapResponse) throws CSVParseException {
-		List<SetPotentialCustomerDomain> parsedItems = CSVDomainReader.parse(new StringReader(soapResponse.toString()), SetPotentialCustomerDomain.class);
+		List<SetShortPotentialCustomerDomain> parsedItems = CSVDomainReader.parse(new StringReader(soapResponse.toString()), SetShortPotentialCustomerDomain.class);
 		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedItems);
-		//valuesForInsert[0].put(Customers._ID, customerId);
+		valuesForInsert[0].put(MobileStoreContract.Customers._ID, customerId);
 		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.Customers.CONTENT_URI, valuesForInsert);
 		return numOfInserted;
 	}
@@ -202,6 +204,14 @@ public class SetPotentialCustomersSyncObject extends SyncObject {
 				String.class,
 				String.class,
 		};
+	}
+
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
 	}
 	
 }

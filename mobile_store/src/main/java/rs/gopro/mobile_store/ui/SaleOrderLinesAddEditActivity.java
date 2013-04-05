@@ -2,6 +2,8 @@ package rs.gopro.mobile_store.ui;
 	
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.fragment.SaleOrderAddEditLineFragment;
 import rs.gopro.mobile_store.ui.fragment.SaleOrderLinesAddEditPreviewListFragment;
@@ -12,7 +14,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +33,7 @@ public class SaleOrderLinesAddEditActivity extends BaseActivity implements
 	private Uri mUri;
 	private String mAction;
 	private String mActiveSaleOrderLine;
+	private String mSelectedDocumentId;
 	
 	public SaleOrderLinesAddEditActivity() {
 	}
@@ -72,6 +74,8 @@ public class SaleOrderLinesAddEditActivity extends BaseActivity implements
 			LogUtils.LOGE(TAG, "No URI. Activity will not load.");
 			return;
 		}
+		
+		mSelectedDocumentId = SaleOrders.getSaleOrderId(uri);
 		
 		mAction = intent.getAction();
 
@@ -197,7 +201,7 @@ public class SaleOrderLinesAddEditActivity extends BaseActivity implements
 			ContentValues cv = new ContentValues();
 			cv.put(MobileStoreContract.SaleOrderLines.SALE_ORDER_ID, MobileStoreContract.SaleOrderLines.getSaleOrderId(mUri));
 			
-			Cursor lineNoCursor = getContentResolver().query(MobileStoreContract.SaleOrderLines.CONTENT_URI, new String[]{"MAX(line_no) AS max_line_no"}, null, null, null);
+			Cursor lineNoCursor = getContentResolver().query(MobileStoreContract.SaleOrderLines.CONTENT_URI, new String[]{"MAX(line_no) AS max_line_no"}, SaleOrderLines.SALE_ORDER_ID+"=?", new String[] { mSelectedDocumentId }, null);
 			int maxLineNo = 0;
 			if (lineNoCursor.moveToFirst() && lineNoCursor.getColumnIndex("max_line_no") != -1) {
 				maxLineNo = lineNoCursor.getInt(lineNoCursor.getColumnIndex("max_line_no"));

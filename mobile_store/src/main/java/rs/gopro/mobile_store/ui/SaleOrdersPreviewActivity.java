@@ -1,5 +1,7 @@
 package rs.gopro.mobile_store.ui;
 
+import java.util.Date;
+
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
@@ -8,6 +10,7 @@ import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.widget.SaleOrderContextualMenu;
 import rs.gopro.mobile_store.util.ApplicationConstants;
+import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
@@ -400,7 +403,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		Cursor documentHeaderCursor = getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderClone(), null, Tables.SALE_ORDERS+"._id=?", new String[] { saleOrderId }, null);
 		if (documentHeaderCursor.moveToFirst()) {
 			DatabaseUtils.cursorRowToContentValues(documentHeaderCursor, documentHeaderContentValues);
-			documentHeaderContentValues.put(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO, "LIF/C/"+salesPersonNo+"-"+saleOrderId);
+			documentHeaderContentValues.put(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO, "LIF/C/"+salesPersonNo+"/"+DateUtils.toTempCodeFormat(new Date())+"-"+saleOrderId);
 			documentHeaderContentValues.putNull(MobileStoreContract.SaleOrders.SALES_ORDER_NO);
 			documentHeaderContentValues.remove(MobileStoreContract.SaleOrders._ID);
 			

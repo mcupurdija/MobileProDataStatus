@@ -1047,9 +1047,15 @@ public class MobileStoreContentProvider extends ContentProvider {
 			selectionPhrase = Items.ITEM_NO + "=?";
 			break;
 		case CUSTOMERS:
-			tableName = Tables.CUSTOMERS;
-			selectionParam = new String[] { Customers.CUSTOMER_NO};
-			selectionPhrase = Customers.CUSTOMER_NO + "=?";
+			if (values.length > 0 && values[0].containsKey(Customers._ID)) {
+				tableName = Tables.CUSTOMERS;
+				selectionParam = new String[] { Customers._ID};
+				selectionPhrase = Customers._ID + "=?";
+			} else {
+				tableName = Tables.CUSTOMERS;
+				selectionParam = new String[] { Customers.CUSTOMER_NO};
+				selectionPhrase = Customers.CUSTOMER_NO + "=?";
+			}
 			break;
 		case VISITS:
 			tableName = Tables.VISITS;

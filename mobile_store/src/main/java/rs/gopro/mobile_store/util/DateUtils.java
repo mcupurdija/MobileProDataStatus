@@ -25,6 +25,8 @@ public class DateUtils {
 	@SuppressLint("SimpleDateFormat")
 	private final static SimpleDateFormat localDbDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	@SuppressLint("SimpleDateFormat")
+	private final static SimpleDateFormat codeDbDate = new SimpleDateFormat("ddMMyy");
+	@SuppressLint("SimpleDateFormat")
 	private final static SimpleDateFormat localDbShortDate = new SimpleDateFormat("yyyy-MM-dd");
 	@SuppressLint("SimpleDateFormat")
 	private final static SimpleDateFormat navisionDbDate = new SimpleDateFormat("dd.MM.yy");
@@ -184,7 +186,11 @@ public class DateUtils {
 		}
 	}
 	
-	
+	public static String toTempCodeFormat(Date dbDate) {
+		// it can be passed null by another parser that caught error
+		if (dbDate == null) return null;
+		return codeDbDate.format(dbDate);
+	}
 	
 	public static String formatDbDate(Date dbDate) {
 		// it can be passed null by another parser that caught error

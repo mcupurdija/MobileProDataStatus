@@ -133,7 +133,7 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 		switch (item.getItemId()) {
 		case R.id.cancel_save_potential_customer_menu_option:
 			if (Intent.ACTION_INSERT.equals(mAction)) {
-				getContentResolver().delete(MobileStoreContract.Customers.CONTENT_URI, Tables.CUSTOMERS+".ID=?", new String[] { String.valueOf(customerId) });
+				getContentResolver().delete(MobileStoreContract.Customers.CONTENT_URI, Tables.CUSTOMERS+"._ID=?", new String[] { String.valueOf(customerId) });
 			}
 			finish();
 			return true;
@@ -162,8 +162,8 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 		contentValues.put(Customers.VAT_REG_NO, vatRegistration.getText().toString());
 		contentValues.put(Customers.SALES_PERSON_ID, salesPersonId);
 		contentValues.put(Customers.GLOBAL_DIMENSION, global_dimension.getText().toString());
-		contentValues.put(Customers.NUMBER_OF_BLUE_COAT, numOfBlueCoat.getText().toString());
-		contentValues.put(Customers.NUMBER_OF_GREY_COAT,numOfGrayCoat.getText().toString());
+		contentValues.put(Customers.NUMBER_OF_BLUE_COAT, numOfBlueCoat.getText().toString().length() < 1  ? "0":numOfBlueCoat.getText().toString());
+		contentValues.put(Customers.NUMBER_OF_GREY_COAT,numOfGrayCoat.getText().toString().length() < 1  ? "0":numOfGrayCoat.getText().toString());
 
 		if (Intent.ACTION_INSERT.equals(mAction)) {
 			//contentValues.put(Customers.CUSTOMER_NO, newCustomerNo);

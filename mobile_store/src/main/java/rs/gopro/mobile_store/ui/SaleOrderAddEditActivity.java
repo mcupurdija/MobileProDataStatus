@@ -8,14 +8,14 @@ import java.util.Date;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.components.ContactSpinnerAdapter;
-import rs.gopro.mobile_store.ui.components.CustomerAddressSpinnerAdapter;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.ui.dialog.AddressSelectDialog;
-import rs.gopro.mobile_store.ui.dialog.InvoicesPreviewDialog;
 import rs.gopro.mobile_store.ui.dialog.AddressSelectDialog.AddressSelectDialogListener;
 import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.exceptions.SaleOrderValidationException;
 import android.app.AlertDialog;
@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -56,17 +57,11 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	
 	public static final String LOADED_CONTENT_VALUES = "LOADED_CONTENT_VALUES";
 	
+	private static final int BILLING_ADDRESS_SELECTOR = 0;
+	private static final int SHIPPING_ADDRESS_SELECTOR = 1;
+	
 	//private static String[] CUSTOMER_PROJECTION = new String[] { MobileStoreContract.Customers._ID, MobileStoreContract.Customers.CUSTOMER_NO, MobileStoreContract.Customers.NAME };
 	
-	private static String[] CUSTOMER_ADDRESS_PROJECTION = new String[] { 
-		MobileStoreContract.CustomerAddresses._ID, 
-		MobileStoreContract.CustomerAddresses.ADDRESS_NO,  
-		MobileStoreContract.CustomerAddresses.ADDRESS, 
-		MobileStoreContract.CustomerAddresses.CITY, 
-		MobileStoreContract.CustomerAddresses.POST_CODE, 
-		MobileStoreContract.CustomerAddresses.CONTANCT,  
-		MobileStoreContract.CustomerAddresses.PHONE_NO
-	};
 	private static String[]  SALES_ORDER_PROJECTION = new String[] { 
 		MobileStoreContract.SaleOrders._ID,
 		MobileStoreContract.SaleOrders.SALES_PERSON_ID,
@@ -135,19 +130,12 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	private static String DEFAULT_INSERT_EDIT_TYPE = MobileStoreContract.SaleOrders.CONTENT_TYPE;
 	
 	private static final int SALE_ORDER_HEADER_LOADER = 1;
-	private static final int SHIPPING_ADDRESS_LOADER = 2;
-	private static final int BILLING_ADDRESS_LOADER = 3;
 	private static final int CONTACT_HEADER_LOADER = 4;
 	private static final int CUSTOMER_HEADER_LOADER = 5;
 	private static final int CUSTOMER_HEADER_LOADER_TRANSIT = 6;
 	
 	private static final int SALE_ORDER_INSERT_TOKEN = 0x1;
 	private static final int SALE_ORDER_UPDATE_TOKEN = 0x2;
-	
-	private String mAction;
-    private Uri mUri;
-    private String mViewType;
-    private String selectedCustomerNo = null;
     
     private AutoCompleteTextView customerAutoComplete;
     private CustomerAutocompleteCursorAdapter customerAutoCompleteAdapter;
@@ -158,21 +146,17 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     
     private TextView documentNo;
     private Spinner documentType;
-    ArrayAdapter<CharSequence> docAdapter;
+    private ArrayAdapter<CharSequence> docAdapter;
     private Spinner paymentType;
-    ArrayAdapter<CharSequence> paymentAdapter;
+    private ArrayAdapter<CharSequence> paymentAdapter;
     private Spinner backorderType;
-    ArrayAdapter<CharSequence> backorderAdapter;
+    private ArrayAdapter<CharSequence> backorderAdapter;
     private Spinner salesType;
-    ArrayAdapter<CharSequence> salesAdapter;
+    private ArrayAdapter<CharSequence> salesAdapter;
     private Spinner locationType;
-    ArrayAdapter<CharSequence> locationAdapter;
-    private Spinner billingAddress;
-    private Spinner shippingAddress;
-    private CustomerAddressSpinnerAdapter billingAddressAdapter;
-    private CustomerAddressSpinnerAdapter shippingAddressAdapter;
-    private Integer customerContactId;
-   // private TextView customerContactNo;
+    private ArrayAdapter<CharSequence> locationAdapter;
+    private Button shippingAddressSelector;
+    private Button billingAddressSelector;
     private EditText contactName;
     private EditText contactPhone;
     private EditText contactEmail;
@@ -195,7 +179,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private EditText documentNote;
     private EditText headquartersNote;
     
-    ArrayAdapter<CharSequence> orderConditionStatusAdapter;
+    private ArrayAdapter<CharSequence> orderConditionStatusAdapter;
     private Spinner orderConditionStatus;
     private String[] financialControlStatusOptions;
     private TextView financialControlStatus;
@@ -204,9 +188,11 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private String[] orderValueStatusOptions;
     private TextView orderValueStatus;
 
-    private ContentValues initialLoadedContentValues;
-    private boolean shouldLoadInitialValues = false;
-
+    private String mAction;
+    private Uri mUri;
+    private String mViewType;
+    private String selectedCustomerNo = null;
+    
     private int shippingAddressId = -1;
     private int billingAddressId = -1;
     private int contactId = -1;
@@ -214,13 +200,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private String orderDate = null;
     
     private StatementHandler statementHandler;
-    
-    private Button test;
-    
-    /**
-     * Signaling form load finish to because loaders do things in background and it is hard to follow.
-     */
-    private boolean initialLoadOfFormData = false;
     
 	public SaleOrderAddEditActivity() {
 	}
@@ -266,10 +245,10 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		boolean savedInstanceStateStatus = savedInstanceState != null;
 		
-		if (savedInstanceStateStatus && savedInstanceState.containsKey(LOADED_CONTENT_VALUES)) {
-			initialLoadedContentValues = (ContentValues) savedInstanceState.get(LOADED_CONTENT_VALUES);
+		if (savedInstanceState != null) {
+			//initialLoadedContentValues = (ContentValues) savedInstanceState.get(LOADED_CONTENT_VALUES);
 		} else {
-			shouldLoadInitialValues = true; // saved instance null
+			//shouldLoadInitialValues = true; // saved instance null
 		}
 		
 		// check action and route from there
@@ -358,42 +337,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		paymentType = (Spinner) findViewById(R.id.edit_sale_order_payment_type_spinner);
 		paymentType.setAdapter(paymentAdapter);
 		
-		shippingAddress = (Spinner) findViewById(R.id.edit_sale_order_shipping_address_spinner);
-		shippingAddressAdapter = new CustomerAddressSpinnerAdapter(this, null, 0);
-		shippingAddress.setAdapter(shippingAddressAdapter);
-		getSupportLoaderManager().initLoader(SHIPPING_ADDRESS_LOADER, null, this);
-		shippingAddress.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				Cursor selectedData = (Cursor) shippingAddressAdapter.getItem(arg2);
-				loadShippingAddressValues(selectedData);
-				//getSupportLoaderManager().restartLoader(SHIPPING_ADDRESS_LOADER, null, SaleOrderAddEditActivity.this);		
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}
-		});
-		
-		billingAddress = (Spinner) findViewById(R.id.edit_sale_order_address_invoice_spinner);
-		billingAddressAdapter = new CustomerAddressSpinnerAdapter(this, null, 0);
-		billingAddress.setAdapter(billingAddressAdapter);
-		getSupportLoaderManager().initLoader(BILLING_ADDRESS_LOADER, null, this);
-		billingAddress.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				Cursor selectedData = (Cursor) billingAddressAdapter.getItem(arg2);
-				loadBillingAddressValues(selectedData);
-				//getSupportLoaderManager().restartLoader(BILLING_ADDRESS_LOADER, null, SaleOrderAddEditActivity.this);	
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}
-		});
-		
+		// before spinner button because we use them to set value to this fields
 		shippingAddressField = (EditText) findViewById(R.id.edit_sale_order_address_value);
 		shippingAddressField.setFocusable(false);
 	    shippingAddressCity = (EditText) findViewById(R.id.edit_sale_order_city);
@@ -402,7 +346,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	    shippingAddressPostalCode.setFocusable(false);
 	    shippingAddressContact = (EditText) findViewById(R.id.edit_sale_order_address_contact_value);
 	    shippingAddressContact.setFocusable(false);
-	    
+	    // before spinner button because we use them to set value to this fields
 	    billingAddressField = (EditText) findViewById(R.id.edit_sale_order_address_invoice_value);
 	    billingAddressField.setFocusable(false);
 	    billingAddressCity = (EditText) findViewById(R.id.edit_sale_address_invoice_order_city);
@@ -411,6 +355,22 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	    billingAddressPostalCode.setFocusable(false);
 	    billingAddressContact = (EditText) findViewById(R.id.edit_sale_order_address_invoice_contact_value);
 	    billingAddressContact.setFocusable(false);
+		
+		shippingAddressSelector = (Button) findViewById(R.id.edit_sale_order_shipping_address_spinner);
+		shippingAddressSelector.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialogSetShippingAddress();
+			}
+		});
+		
+		billingAddressSelector = (Button) findViewById(R.id.edit_sale_order_address_invoice_spinner);
+		billingAddressSelector.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialogSetBillingAddress();
+			}
+		});
 	    
 	    hideDiscount = (CheckBox) findViewById(R.id.edit_sale_order_hide_discount_check_box);
 	    showDeclaration = (CheckBox) findViewById(R.id.edit_sale_order_show_declaration_check_box);
@@ -430,20 +390,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		financialControlStatus = (TextView) findViewById(R.id.edit_sale_order_financial_control_status_text);
 		orderShipmentStatus = (TextView) findViewById(R.id.edit_sale_order_order_status_for_shipment_text);
 		orderValueStatus = (TextView) findViewById(R.id.edit_sale_order_order_value_status_text);
-		
-		test = (Button) findViewById(R.id.selection_test_button);
-		test.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				AddressSelectDialog addressSelectDialog = new AddressSelectDialog();
-				Intent tempIntent = new Intent(Intent.ACTION_VIEW,
-						null);
-				tempIntent.putExtra(AddressSelectDialog.EXTRA_CUSTOMER_NO, selectedCustomerNo);
-				addressSelectDialog.setArguments(BaseActivity
-						.intentToFragmentArguments(tempIntent));
-				addressSelectDialog.show(getSupportFragmentManager(), "ADDRESS_DIALOG_1");
-			}
-		});
 	}
 
 	private void loadData(Cursor data, String action) {
@@ -461,7 +407,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO))) {	
 			document_no = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO));
 		} else {
-			document_no = "LIF/"+salesPersonNo+"-"+ data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders._ID));
+			document_no = "LIF/"+salesPersonNo+"/"+DateUtils.toTempCodeFormat(new Date())+"-"+ data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders._ID));
 		}
 		
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.ORDER_DATE))) {	
@@ -560,8 +506,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		}
 		
 		// globals because in init customer it will load combo box
-		shippingAddressId = shipp_to_address_id;
-		billingAddressId = sell_to_address_id;
+		
 		contactId = contact_id;
 				
 		if (customer_id != -1) {
@@ -635,50 +580,15 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			int spinnerPosition =  contactSpinnerAdapter.getIdPostition(contact_id);
 			if (spinnerPosition != -1) {
 				contactSpinner.setSelection(spinnerPosition);
-			} else {
-//				billingAddressId = sell_to_address_id;
-//				
-//				LogUtils.LOGE(TAG, "No position for value:"+sell_to_address_id);
 			}
 		}
 		
-		if (sell_to_address_id != -1) {
-			int spinnerPosition =  billingAddressAdapter.getIdPostition(sell_to_address_id);
-			if (spinnerPosition != -1) {
-				billingAddress.setSelection(spinnerPosition);
-			} else {
-//				billingAddressId = sell_to_address_id;
-//				
-//				LogUtils.LOGE(TAG, "No position for value:"+sell_to_address_id);
-			}
-		}
+		billingAddressId = sell_to_address_id;
+		loadAndSetCustomerAddressData(BILLING_ADDRESS_SELECTOR, billingAddressId);
 		
-		if (shipp_to_address_id != -1) {
-			int spinnerPosition =  shippingAddressAdapter.getIdPostition(shipp_to_address_id);
-			if (spinnerPosition != -1) {
-				shippingAddress.setSelection(spinnerPosition);
-			} else {
-//				shippingAddressId = shipp_to_address_id;
-				
-//				getSupportLoaderManager().restartLoader(SHIPPING_ADDRESS_LOADER, null, this);
-//				LogUtils.LOGE(TAG, "No position for value:"+shipp_to_address_id);
-			}
-		}
+		shippingAddressId = shipp_to_address_id;
+		loadAndSetCustomerAddressData(SHIPPING_ADDRESS_SELECTOR, shippingAddressId);
 		
-		
-	}
-	
-	protected void onFormLoadFinish() {
-		if (shouldLoadInitialValues) {
-			try {
-				initialLoadedContentValues = getInputData();
-			} catch (SaleOrderValidationException e) {
-				LogUtils.LOGE(TAG, "Validation error.", e);
-				initialLoadedContentValues = null;
-			}
-		}
-		// reset state
-		initialLoadOfFormData = false;
 	}
 	
 	/**
@@ -696,8 +606,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		paymentType.setFocusable(false);
 		customerAutoComplete.setFocusable(false);
 		transitCustomerAutoComplete.setFocusable(false);
-		shippingAddress.setFocusable(false);
-		billingAddress.setFocusable(false);
+		shippingAddressSelector.setFocusable(false);
+		billingAddressSelector.setFocusable(false);
 		contactSpinner.setFocusable(false);
 		hideDiscount.setFocusable(false);
 		showDeclaration.setFocusable(false);
@@ -706,22 +616,10 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		CursorLoader cursorLoader = null;
-		String customerFilter = "dummy";
+//		String customerFilter = "dummy";
 		switch (id) {
 		case SALE_ORDER_HEADER_LOADER:
 			cursorLoader = new CursorLoader(this, mUri, SALES_ORDER_PROJECTION, null, null, null);
-			return cursorLoader;
-		case SHIPPING_ADDRESS_LOADER:
-			if (selectedCustomerNo != null) {
-				customerFilter = selectedCustomerNo;
-			}
-			cursorLoader = new CursorLoader(this, MobileStoreContract.CustomerAddresses.buildSearchByCustomerNoUri(customerFilter), CUSTOMER_ADDRESS_PROJECTION, null, null, MobileStoreContract.CustomerAddresses.DEFAULT_SORT);
-			return cursorLoader;
-		case BILLING_ADDRESS_LOADER:
-			if (selectedCustomerNo != null) {
-				customerFilter = selectedCustomerNo;	
-			}
-			cursorLoader = new CursorLoader(this, MobileStoreContract.CustomerAddresses.buildSearchByCustomerNoUri(customerFilter), CUSTOMER_ADDRESS_PROJECTION, null, null, MobileStoreContract.CustomerAddresses.DEFAULT_SORT);
 			return cursorLoader;
 		case CONTACT_HEADER_LOADER:
 			//int contactId = args.getInt("PRIMARY_CONTACT_ID");
@@ -749,46 +647,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 				loadData(data, null);
 			} else {
 				LogUtils.LOGE(TAG, "Cursor empty for URI:"+mUri.toString());
-			}
-			break;
-		case SHIPPING_ADDRESS_LOADER:
-			if (data != null && data.moveToFirst()) {
-				shippingAddressAdapter.swapCursor(data);
-				if (shippingAddressId != -1) {
-					int spinnerPosition =  shippingAddressAdapter.getIdPostition(shippingAddressId);
-					if (spinnerPosition != -1) {
-						shippingAddress.setSelection(spinnerPosition);
-						data.moveToPosition(spinnerPosition);
-					}
-					shippingAddressId = -1;
-				}
-				loadShippingAddressValues(data);
-			} else {
-				shippingAddressAdapter.swapCursor(null);
-				LogUtils.LOGE(TAG, "Cursor empty for SHIPPING_ADDRESS_LOADER!");
-			}
-			/**
-			 * Last loader on form, on form load finish things.
-			 */
-			if (initialLoadOfFormData) {
-				onFormLoadFinish();
-			}
-			break;
-		case BILLING_ADDRESS_LOADER:
-			if (data != null && data.moveToFirst()) {
-				billingAddressAdapter.swapCursor(data);
-				if (billingAddressId != -1) {
-					int spinnerPosition =  billingAddressAdapter.getIdPostition(billingAddressId);
-					if (spinnerPosition != -1) {
-						billingAddress.setSelection(spinnerPosition);
-						data.moveToPosition(spinnerPosition);
-					}
-					billingAddressId = -1;
-				}
-				loadBillingAddressValues(data);
-			} else {
-				billingAddressAdapter.swapCursor(null);
-				LogUtils.LOGE(TAG, "Cursor empty for BILLING_ADDRESS_LOADER!");
 			}
 			break;
 		case CONTACT_HEADER_LOADER:
@@ -835,14 +693,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		switch (loader.getId()) {
 		case SALE_ORDER_HEADER_LOADER:
 			break;
-		case SHIPPING_ADDRESS_LOADER:
-			shippingAddressAdapter.swapCursor(null);
-			loadShippingAddressValues(null);
-			break;
-		case BILLING_ADDRESS_LOADER:
-			billingAddressAdapter.swapCursor(null);
-			loadBillingAddressValues(null);
-			break;
 		case CONTACT_HEADER_LOADER:
 			contactSpinnerAdapter.swapCursor(null);
 			break;
@@ -877,26 +727,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			}
 		}
 		
-		//shippingAddressId = shipp_to_address_id;
-		initialLoadOfFormData = true;
-		
-		String shippingAddressFieldLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Customers.ADDRESS));
-		String shippingAddressCityLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Customers.CITY));
-		String shippingAddressPostalCodeLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Customers.POST_CODE));
-		String shippingAddressContactLocal = "";//data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Customers.P));
-		billingAddressField.setText(shippingAddressFieldLocal!=null?shippingAddressFieldLocal:"");
-		billingAddressCity.setText(shippingAddressCityLocal!=null?shippingAddressCityLocal:"");
-		billingAddressPostalCode.setText(shippingAddressPostalCodeLocal!=null?shippingAddressPostalCodeLocal:"");
-		billingAddressContact.setText(shippingAddressContactLocal!=null?shippingAddressContactLocal:"");
-		
-		shippingAddressField.setText(shippingAddressFieldLocal!=null?shippingAddressFieldLocal:"");
-		shippingAddressCity.setText(shippingAddressCityLocal!=null?shippingAddressCityLocal:"");
-		shippingAddressPostalCode.setText(shippingAddressPostalCodeLocal!=null?shippingAddressPostalCodeLocal:"");
-		shippingAddressContact.setText(shippingAddressContactLocal!=null?shippingAddressContactLocal:"");
-		
-		getSupportLoaderManager().restartLoader(SHIPPING_ADDRESS_LOADER, null, this);
-		getSupportLoaderManager().restartLoader(BILLING_ADDRESS_LOADER, null, this);
-		//LogUtils.LOGE(TAG, "No position for value:"+shipp_to_address_id);
+		loadAndSetCustomerAddressData(BILLING_ADDRESS_SELECTOR, -1);
+		loadAndSetCustomerAddressData(BILLING_ADDRESS_SELECTOR, -1);
 	}
 
 	private void loadCustomerTransit(Cursor data) {
@@ -921,7 +753,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			LogUtils.LOGI(TAG, "No contact data!");
 			return;
 		}
-		customerContactId = Integer.valueOf(data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Contacts._ID)));
+//		customerContactId = Integer.valueOf(data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Contacts._ID)));
 		//customerContactNo.setText(data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.CONTACT_NO)));
 		String contactName1 = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.NAME));
 		String contactName2 = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.NAME2));
@@ -938,52 +770,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		if (contactEmail.getText().toString().trim().equals("")) {
 			contactEmail.setText(contactEmailLocal != null?contactEmailLocal:"");
 		}
-	}
-
-	private void loadShippingAddressValues(Cursor data) {
-		if (data == null) {
-//			shippingAddressField.setText("");
-//			shippingAddressCity.setText("");
-//			shippingAddressPostalCode.setText("");
-//			shippingAddressContact.setText("");
-			return;
-		}
-		
-		if (data.getCount() < 1) {
-			LogUtils.LOGI(TAG, "No shipping address data!");
-			return;
-		}
-		
-		String shippingAddressFieldLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.CustomerAddresses.ADDRESS));
-		String shippingAddressCityLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.CustomerAddresses.CITY));
-		String shippingAddressPostalCodeLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.CustomerAddresses.POST_CODE));
-		String shippingAddressContactLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.CustomerAddresses.CONTANCT));
-		shippingAddressField.setText(shippingAddressFieldLocal!=null?shippingAddressFieldLocal:"");
-		shippingAddressCity.setText(shippingAddressCityLocal!=null?shippingAddressCityLocal:"");
-		shippingAddressPostalCode.setText(shippingAddressPostalCodeLocal!=null?shippingAddressPostalCodeLocal:"");
-		shippingAddressContact.setText(shippingAddressContactLocal!=null?shippingAddressContactLocal:"");
-	}
-
-	private void loadBillingAddressValues(Cursor data) {
-		if (data == null) {
-//			billingAddressField.setText("");
-//			billingAddressCity.setText("");
-//			billingAddressPostalCode.setText("");
-//			billingAddressContact.setText("");
-			return;
-		}
-		if (data.getCount() < 1) {
-			LogUtils.LOGI(TAG, "No billing address data!");
-			return;
-		}
-		String shippingAddressFieldLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.CustomerAddresses.ADDRESS));
-		String shippingAddressCityLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.CustomerAddresses.CITY));
-		String shippingAddressPostalCodeLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.CustomerAddresses.POST_CODE));
-		String shippingAddressContactLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.CustomerAddresses.CONTANCT));
-		billingAddressField.setText(shippingAddressFieldLocal!=null?shippingAddressFieldLocal:"");
-		billingAddressCity.setText(shippingAddressCityLocal!=null?shippingAddressCityLocal:"");
-		billingAddressPostalCode.setText(shippingAddressPostalCodeLocal!=null?shippingAddressPostalCodeLocal:"");
-		billingAddressContact.setText(shippingAddressContactLocal!=null?shippingAddressContactLocal:"");
 	}
 
 	/**
@@ -1065,7 +851,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		
-		outState.putParcelable(LOADED_CONTENT_VALUES, initialLoadedContentValues);
+//		outState.putParcelable(LOADED_CONTENT_VALUES, initialLoadedContentValues);
 	}
 	
 	private ContentValues getInputData() throws SaleOrderValidationException {
@@ -1120,16 +906,16 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		String[] pay = getResources().getStringArray(R.array.payment_type_array);
 		localValues.put(MobileStoreContract.SaleOrders.PAYMENT_OPTION, pay[payment_type]);
 		
-		long sell_address_id = billingAddress.getSelectedItemId();
-		if (sell_address_id != AdapterView.INVALID_ROW_ID) {
-			localValues.put(MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID, Long.valueOf(sell_address_id));
+		
+		if (billingAddressId != -1) {
+			localValues.put(MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID, Integer.valueOf(billingAddressId));
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID);
 		}
 		
-		long shipp_address_id = shippingAddress.getSelectedItemId();
-		if (shipp_address_id != AdapterView.INVALID_ROW_ID) {
-			localValues.put(MobileStoreContract.SaleOrders.SHIPP_TO_ADDRESS_ID, Long.valueOf(shipp_address_id));
+		
+		if (shippingAddressId != -1) {
+			localValues.put(MobileStoreContract.SaleOrders.SHIPP_TO_ADDRESS_ID, Integer.valueOf(shippingAddressId));
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrders.SHIPP_TO_ADDRESS_ID);
 		}
@@ -1212,9 +998,10 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		case R.id.cancel_sale_order_main_menu_option:
 			if (mAction.equals(Intent.ACTION_INSERT)) {
 				getContentResolver().delete(mUri, null, null);
-			} else {
-				getContentResolver().update(mUri, initialLoadedContentValues, null, null);
 			}
+//			} else {
+//				getContentResolver().update(mUri, initialLoadedContentValues, null, null);
+//			}
 			finish();
 			return true;
 		case R.id.save_sale_order_main_menu_option:
@@ -1329,14 +1116,151 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		}
 	}
 
+	private void dialogSetShippingAddress() {
+		if (selectedCustomerNo == null) {
+			DialogUtil.showInfoDialog(this, "Upozorenje", "Kupac nije izabran!");
+			return;
+		}
+		AddressSelectDialog addressSelectDialog = new AddressSelectDialog();
+		Intent tempIntent = new Intent(Intent.ACTION_VIEW,
+				null);
+		tempIntent.putExtra(AddressSelectDialog.EXTRA_CUSTOMER_NO, selectedCustomerNo);
+		tempIntent.putExtra(AddressSelectDialog.EXTRA_DIALOG_ID, SHIPPING_ADDRESS_SELECTOR);
+		addressSelectDialog.setArguments(BaseActivity
+				.intentToFragmentArguments(tempIntent));
+		addressSelectDialog.show(getSupportFragmentManager(), "ADDRESS_DIALOG_SHIPPING");
+	}
+	
+	private void dialogSetBillingAddress() {
+		if (selectedCustomerNo == null) {
+			DialogUtil.showInfoDialog(this, "Upozorenje", "Kupac nije izabran!");
+			return;
+		}
+		AddressSelectDialog addressSelectDialog = new AddressSelectDialog();
+		Intent tempIntent = new Intent(Intent.ACTION_VIEW,
+				null);
+		tempIntent.putExtra(AddressSelectDialog.EXTRA_CUSTOMER_NO, selectedCustomerNo);
+		tempIntent.putExtra(AddressSelectDialog.EXTRA_DIALOG_ID, BILLING_ADDRESS_SELECTOR);
+		addressSelectDialog.setArguments(BaseActivity
+				.intentToFragmentArguments(tempIntent));
+		addressSelectDialog.show(getSupportFragmentManager(), "ADDRESS_DIALOG_BILLING");
+	}
+	
 	@Override
-	public void onAddressSelected(int address_id, String address,
+	public void onAddressSelected(int dialogId, int address_id, String address,
 			String address_no, String city, String post_code, String phone_no,
 			String contact) {
-		shippingAddressField.setText(address_no);
-		shippingAddressCity.setText(city);
-		shippingAddressPostalCode.setText(post_code);
-		shippingAddressContact.setText(contact);
+		if (address_id == -1) {
+			// to load default customer data
+			loadAndSetCustomerAddressData(dialogId, address_id);
+		} else {
+			// just take data from dialog
+			setCustomerAdressUIData(dialogId, address_id, address, address_no,
+					city, post_code, phone_no, contact);
+		}
+	}
+
+	private void setCustomerAdressUIData(int dialogId, int address_id,
+			String address, String address_no, String city, String post_code, String phone_no,
+			String contact) {
+		switch (dialogId) {
+		case BILLING_ADDRESS_SELECTOR:
+			billingAddressId = address_id;
+			billingAddressField.setText(address);
+			billingAddressCity.setText(city);
+			billingAddressPostalCode.setText(post_code);
+			billingAddressContact.setText(contact + " - " + phone_no);
+			billingAddressSelector.setText(address_no + " - " + city + " - " + address);
+			if (address_id == -1) {
+				billingAddressSelector.setText(getResources().getString(R.string.customer_address_default_text));
+			}
+			break;
+		case SHIPPING_ADDRESS_SELECTOR:
+			shippingAddressId = address_id;
+			shippingAddressField.setText(address);
+			shippingAddressCity.setText(city);
+			shippingAddressPostalCode.setText(post_code);
+			shippingAddressContact.setText(contact + " - " + phone_no);
+			shippingAddressSelector.setText(address_no + " - " + city + " - " + address);
+			if (address_id == -1) {
+				shippingAddressSelector.setText(getResources().getString(R.string.customer_address_default_text));
+			}
+			break;
+		default:
+			LogUtils.LOGE(TAG, "Address dialog not supported!");
+			break;
+		}
+	}
+	
+	private void loadAndSetCustomerAddressData(int addressType, int customerAddressId) {
+		if (customerAddressId != -1) {
+			Cursor addressCursor = getContentResolver().query(MobileStoreContract.CustomerAddresses.CONTENT_URI, CustomerAddressQuery.PROJECTION, Tables.CUSTOMER_ADDRESSES+"._id=?", new String[] { String.valueOf(customerAddressId)  }, null);
+			if (addressCursor != null && addressCursor.moveToFirst()) {
+				int address_id = addressCursor.getInt(CustomerAddressQuery._ID);
+				String address_no = addressCursor.getString(CustomerAddressQuery.ADDRESS_NO);
+				String address = addressCursor.getString(CustomerAddressQuery.ADDRESS);
+				String city = addressCursor.getString(CustomerAddressQuery.CITY);
+				String post_code = addressCursor.getString(CustomerAddressQuery.POST_CODE);
+				String contact = addressCursor.getString(CustomerAddressQuery.CONTANCT);
+				String phone_no = addressCursor.getString(CustomerAddressQuery.PHONE_NO);
+				
+				setCustomerAdressUIData(addressType, address_id, address, address_no, city, post_code, phone_no, contact);
+			}
+			if (addressCursor != null && !addressCursor.isClosed()) {
+				addressCursor.close();
+			}
+		} else {
+			if (selectedCustomerNo != null) {
+				Cursor addressDefaultCursor = getContentResolver().query(MobileStoreContract.Customers.CONTENT_URI, DefaultCustomerAddressQuery.PROJECTION, Tables.CUSTOMERS+"." + Customers.CUSTOMER_NO + "=?", new String[] { String.valueOf( selectedCustomerNo )  }, null);
+				if (addressDefaultCursor != null && addressDefaultCursor.moveToFirst()) {
+					String address = addressDefaultCursor.getString(DefaultCustomerAddressQuery.ADDRESS);
+					String city = addressDefaultCursor.getString(DefaultCustomerAddressQuery.CITY);
+					String post_code = addressDefaultCursor.getString(DefaultCustomerAddressQuery.POST_CODE);
+					String phone = addressDefaultCursor.getString(DefaultCustomerAddressQuery.PHONE);
+					setCustomerAdressUIData(addressType, -1, address, "", city, post_code, phone, "");
+				}
+				if (addressDefaultCursor != null && !addressDefaultCursor.isClosed()) {
+					addressDefaultCursor.close();
+				}
+			} else {
+				setCustomerAdressUIData(addressType, -1, "-", "", "", "", "", "");
+			}
+		}
 		
+	}
+	
+	private interface CustomerAddressQuery {
+
+		String[] PROJECTION = { BaseColumns._ID,
+				MobileStoreContract.CustomerAddresses.ADDRESS_NO,
+				MobileStoreContract.CustomerAddresses.ADDRESS,
+				MobileStoreContract.CustomerAddresses.CITY,
+				MobileStoreContract.CustomerAddresses.POST_CODE,
+				MobileStoreContract.CustomerAddresses.CONTANCT,
+				MobileStoreContract.CustomerAddresses.PHONE_NO };
+
+		int _ID = 0;
+		int ADDRESS_NO = 1;
+		int ADDRESS = 2;
+		int CITY = 3;
+		int POST_CODE = 4;
+		int CONTANCT = 5;
+		int PHONE_NO = 6;
+	}
+	
+	private interface DefaultCustomerAddressQuery {
+
+		String[] PROJECTION = { BaseColumns._ID,
+				MobileStoreContract.Customers.ADDRESS,
+				MobileStoreContract.Customers.CITY,
+				MobileStoreContract.Customers.POST_CODE,
+				MobileStoreContract.Customers.PHONE
+				};
+
+//		int _ID = 0;
+		int ADDRESS = 1;
+		int CITY = 2;
+		int POST_CODE = 3;
+		int PHONE = 4;
 	}
 }

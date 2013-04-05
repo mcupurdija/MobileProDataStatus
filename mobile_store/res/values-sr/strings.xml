@@ -42,6 +42,8 @@
 	<string name="invoice_due_date">Datum dospeća:</string>
 	
 	<string name="invoice_lines_sync_button_title">Preuzmi sve stavke izabranog dokumenta</string>
+	<string name="dialog_customer_address_sync">Preuzmi adrese izabranog kupca</string>
+	<string name="dialog_customer_contacts_sync">Preuzmi kontakte izabranog kupca</string>
 	
 	<string name="sent_orders_status_sync_open_headers_button_title">Preuzmi statuse poslatih porudžbina</string>
 	<string name="sent_orders_status_order_date">Datum porudžbine:</string>
@@ -170,6 +172,7 @@
 	
 	<string name="customer_no_label">Br. kupca</string>
 	<string name="customer_address_label">Adresa</string>
+	<string name="customer_address_default_text">Podrazumevana adresa kupca</string>
 	<string name="customer_city_label">Grad</string>
 	<string name="customer_postal_code_label">Postanski broj</string>
 	<string name="customer_phone_label">Telefon</string>	

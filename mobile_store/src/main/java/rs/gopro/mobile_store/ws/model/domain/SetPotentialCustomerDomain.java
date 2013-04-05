@@ -70,7 +70,7 @@ public class SetPotentialCustomerDomain extends Domain {
 	public List<RowItemDataHolder> getRowItemsForRepalce() {
 		List<RowItemDataHolder> transferNoToIdList = new ArrayList<RowItemDataHolder>();
 		transferNoToIdList.add(new RowItemDataHolder(Tables.SALES_PERSONS, SalesPerson.SALE_PERSON_NO, sales_person_no, Contacts.SALES_PERSON_ID));	
-		return new ArrayList<RowItemDataHolder>();
+		return transferNoToIdList;
 	}
 
 }
