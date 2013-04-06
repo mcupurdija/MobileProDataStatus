@@ -6,6 +6,7 @@ import java.util.Date;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.util.ApplicationConstants;
@@ -298,8 +299,17 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		if (customerPk == null) {
 			contentValues.putNull(Visits.CUSTOMER_ID);
 		} else {
-			contentValues.put(Visits.CUSTOMER_ID, customerPk);
+			Cursor isPotentialCustomer = getContentResolver().query(MobileStoreContract.Customers.CONTENT_URI, new String[] {Customers.CONTACT_COMPANY_NO}, 
+					"("+Customers.CONTACT_COMPANY_NO + " is null or " + Customers.CONTACT_COMPANY_NO + "='')" + " and " + Customers._ID + "=?" , new String[] { String.valueOf(customerPk) }, null);
+			if (isPotentialCustomer.moveToFirst()) {
+				contentValues.put(Visits.POTENTIAL_CUSTOMER, 1);
+			} else {
+				contentValues.put(Visits.POTENTIAL_CUSTOMER, 0);
+			}
+			isPotentialCustomer.close();
+			contentValues.put(Visits.CUSTOMER_ID, customerPk);		
 		}
+		
 		contentValues.put(Visits.VISIT_TYPE, ApplicationConstants.VISIT_PLANNED);
 		contentValues.put(MobileStoreContract.Visits.IS_SENT, Integer.valueOf(0));
 		contentValues.put(Visits.ARRIVAL_TIME, DateUtils.formatPickerTimeInputForDb(arrivalTimeEditText.getText().toString()));

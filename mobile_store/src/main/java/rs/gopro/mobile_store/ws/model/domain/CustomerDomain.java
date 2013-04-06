@@ -108,7 +108,11 @@ public class CustomerDomain extends Domain {
 		contentValues.put(MobileStoreContract.Customers.DIVISION , getDivision());
 		contentValues.put(MobileStoreContract.Customers.NUMBER_OF_BLUE_COAT , getNumber_of_blue_coat());
 		contentValues.put(MobileStoreContract.Customers.NUMBER_OF_GREY_COAT , getNumber_of_grey_coat());
-		contentValues.put(MobileStoreContract.Customers.CONTACT_COMPANY_NO , contact_company_no);
+		if (contact_company_no == null || contact_company_no.length() < 1) {
+			contentValues.putNull(MobileStoreContract.Customers.CONTACT_COMPANY_NO);
+		} else {
+			contentValues.put(MobileStoreContract.Customers.CONTACT_COMPANY_NO, contact_company_no);
+		}
 		contentValues.put(MobileStoreContract.Customers.SYNC_OBJECT_BATCH , "1");
 		contentValues.put(MobileStoreContract.Customers.SALE_PERSON_NO , getSales_person_no());
 		contentValues.put(MobileStoreContract.Customers.TURNOVER_YTM, WsDataFormatEnUsLatin.toDoubleFromWs(getTurnover_ytm()));

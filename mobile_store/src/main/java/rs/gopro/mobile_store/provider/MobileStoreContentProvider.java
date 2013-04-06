@@ -1053,8 +1053,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 				selectionPhrase = Customers._ID + "=?";
 			} else {
 				tableName = Tables.CUSTOMERS;
-				selectionParam = new String[] { Customers.CUSTOMER_NO};
-				selectionPhrase = Customers.CUSTOMER_NO + "=?";
+				selectionParam = new String[] { Customers.CUSTOMER_NO, Customers.CONTACT_COMPANY_NO};
+				selectionPhrase = Customers.CUSTOMER_NO + "=? or "+ Customers.CUSTOMER_NO + "=?";
 			}
 			break;
 		case VISITS:
