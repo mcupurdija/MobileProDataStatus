@@ -12,6 +12,7 @@ import rs.gopro.mobile_store.ui.customlayout.CustomLinearLayout;
 import rs.gopro.mobile_store.ui.customlayout.CustomerLedgerEntriesLayout;
 import rs.gopro.mobile_store.ui.customlayout.CustomersLayout;
 import rs.gopro.mobile_store.ui.customlayout.ItemsLayout;
+import rs.gopro.mobile_store.ui.customlayout.PlanAndTurnoverLayout;
 import rs.gopro.mobile_store.ui.customlayout.PlanOfVisitsLayout;
 import rs.gopro.mobile_store.ui.customlayout.RecordVisitsLayout;
 import rs.gopro.mobile_store.ui.customlayout.SentOrdersStatusLayout;
@@ -194,6 +195,13 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				view = new SentOrdersLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(SentOrdersLayout.SENT_ORDERS_URI.toString(), view);
 			}
+		} else if (PlanAndTurnoverLayout.PLAN_AND_TURNOVER_URI.equals(uri)) {
+			if (savedLayoutInstances.containsKey(PlanAndTurnoverLayout.PLAN_AND_TURNOVER_URI.toString())) {
+				view = savedLayoutInstances.get(PlanAndTurnoverLayout.PLAN_AND_TURNOVER_URI.toString());
+			} else {
+				view = new PlanAndTurnoverLayout(getSupportFragmentManager(), this);
+				savedLayoutInstances.put(PlanAndTurnoverLayout.PLAN_AND_TURNOVER_URI.toString(), view);
+			}
 		}
 		currentCustomLinearLayout = view;
 		if (view != null) {
@@ -247,6 +255,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				menu.getItem(2).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);
 			} else if (RecordVisitsLayout.RECORD_VISITS_URI.equals(uri)) {
 				menu.getItem(0).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(true);
+			 }else if (PlanAndTurnoverLayout.PLAN_AND_TURNOVER_URI.equals(uri)) {
+				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);
 			}
 		}
 		return super.onPrepareOptionsMenu(menu);

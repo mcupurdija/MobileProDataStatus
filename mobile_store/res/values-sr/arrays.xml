@@ -11,6 +11,8 @@
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
+        <item>@null</item>
+        <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@null</item>
@@ -19,15 +21,17 @@
 
     <string-array name="actions_names">
         <item>Glavni meni</item>
-        <item>Realizacije</item>
+        <item>Realizacije poseta</item>
         <item>Plan poseta</item>
         <item>Porudžbine/Ponude</item>
         <item>Poslate porudžbine/ponude</item>
         <item>Kupci</item>
         <item>Kontakti</item>
         <item>Artikli</item>
+        <item>Izveštaji</item>
         <item>Stavke kupaca</item>
         <item>Status poslatih porudžbina</item>
+        <item>Ralizacija plana i promet</item>
         <item>Podešavanja</item>
         <item>Podešavanja</item>
     </string-array>
@@ -40,8 +44,10 @@
         <item>settings://customers</item>
         <item>settings://contacts</item>
         <item>settings://items</item>
+        <item>category://reports</item>
         <item>settings://customer_ledger_entries</item>
         <item>settings://sent_orders_status</item>
+        <item>settings://plan_and_turnover</item>
         <item>category://settings</item>
         <item>settings://settings</item>
     </string-array>

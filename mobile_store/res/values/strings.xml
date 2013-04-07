@@ -145,6 +145,8 @@
     <string name="dialog_body_customers_receive">Receiving all customers</string>
     <string name="dialog_title_sales_person_registration">Sales person registration</string>
     <string name="dialog_body_sales_person_registration">Registration is in process</string>
+        <string name="dialog_title_payment_and_turnover_load">Payment and turnover</string>
+    <string name="dialog_body_payment_and_turnover_load">Loading payment and turnover</string>
     <string name="document_no">Document No</string>
     <string name="dokument_type_no_title">Document no and type </string>
     <string name="contact_title">Kontakt</string>
@@ -362,4 +364,12 @@
     <string name="visit_time_label_title">Realisation time:</string>
     <string name="visit_odometer_label_title">Odometer value:</string>
     <string name="visit_note_label_title">Note:</string>
+    
+    <string name="this_month_label">This month plan and turnover</string>
+    <string name="this_month_plan_label">This month plan</string>
+    <string name="this_month_turnover_label">This month turnover</string>
+    <string name="last_month_label">Last month plan and turnover</string>
+    <string name="last_month_plan_label">Last month plan</string>
+    <string name="last_month_turnover_label">Last month turnover</string>
+    <string name="sync_sales_person_plan_and_turnover_button_title">Sync plan and turnover</string>
 </resources>

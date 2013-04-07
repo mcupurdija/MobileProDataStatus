@@ -21,7 +21,7 @@
 	<string name="second_section_title">Informacije o kupcu</string>
 	<string name="third_section_title">Treća sekcija</string>
 	<string name="next_button_title">Dalje</string>
-	<string name="empty_waiting_for_sync">Sacekajte</string>
+	<string name="empty_waiting_for_sync"></string>
 	<string name="sale_order_amount_total_template">Iznos je: </string>
 	<string name="customer_search_title">Pronađi kupca: </string>
 	<string name="customer_search_filter">Filtriraj po broju kupca:</string>
@@ -152,6 +152,8 @@
     <string name="dialog_body_customers_receive">Preuzimanje svih kupaca</string>
     <string name="dialog_title_sales_person_registration">Registracija prodavca</string>
     <string name="dialog_body_sales_person_registration">Registrovanje prodavca je u toku </string>
+    <string name="dialog_title_payment_and_turnover_load">Plan i promet</string>
+    <string name="dialog_body_payment_and_turnover_load">Preuzimanje podataka o planu i prometu</string>
     
 	<string name="document_no">Broj dokumenta</string>
 	<string name="dokument_type_no_title">Broj i tip dokumenta</string>
@@ -379,4 +381,12 @@
     <string name="visit_time_label_title">Vreme realizacije:</string>
     <string name="visit_odometer_label_title">Kilometraža:</string>
     <string name="visit_note_label_title">Poruka:</string>
+    
+    <string name="this_month_label">Tekući mesec</string>
+    <string name="this_month_plan_label">Tekući mesec plan</string>
+    <string name="this_month_turnover_label">Tekući mesec realizacija</string>
+    <string name="last_month_label">Prošli mesec</string>
+    <string name="last_month_plan_label">Prošli mesec plan</string>
+    <string name="last_month_turnover_label">Prošli mesec realizacija</string>
+    <string name="sync_sales_person_plan_and_turnover_button_title">Preuzmi podatke o planu i realizaciji</string>
 </resources>
