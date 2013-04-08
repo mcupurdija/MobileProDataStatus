@@ -22,7 +22,6 @@ public class ItemAutocompleteCursorAdapter extends CursorAdapter implements
 		MobileStoreContract.Items.DESCRIPTION
 	};
 
-	private int selectedId;
 	private Context mContext;
 	private LayoutInflater mInflater;
 	
@@ -72,21 +71,7 @@ public class ItemAutocompleteCursorAdapter extends CursorAdapter implements
 							: constraint.toString()), ITEM_PROJECTION,
 					null, null, Tables.ITEMS+"." + Items.ITEM_NO + " ASC");
 		}
-		if (cursor.moveToFirst()) {
-			if (!cursor.isNull(cursor.getColumnIndexOrThrow(MobileStoreContract.Items._ID))) {
-				selectedId = cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.Items._ID));
-			}
-		}
-		
 		return cursor;
-	}
-
-	public int getSelectedId() {
-		return selectedId;
-	}
-	
-	public void setSelectedId(int selectedId) {
-		this.selectedId = selectedId;
 	}
 	
 	private String getResult(Cursor cursor) {

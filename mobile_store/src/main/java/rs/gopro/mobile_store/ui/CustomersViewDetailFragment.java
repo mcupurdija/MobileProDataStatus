@@ -5,6 +5,8 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
+import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.SetPotentialCustomersSyncObject;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -330,12 +332,25 @@ public class CustomersViewDetailFragment extends Fragment implements
 		contentValues.put(Customers.VAT_REG_NO, mVarRegNo.getText().toString());
 		contentValues.put(Customers.PHONE, mPhone.getText().toString());
 		contentValues.put(Customers.NUMBER_OF_GREY_COAT, mNumberOfGreyCoat.getText().toString());
-		getActivity().getContentResolver().update(mCustomerdetailUri, contentValues, null, null);
-		
+		int result = getActivity().getContentResolver().update(mCustomerdetailUri, contentValues, null, null);
+		if (result > 0) {
+			try {
+				sendPotentialCustomer(Integer.valueOf(MobileStoreContract.Customers.getCustomersId(mCustomerdetailUri)));
+			} catch (Exception e) {
+				LogUtils.LOGE(TAG, "Big problem!", e);
+			}
+		}
 	}
 	
+	private void sendPotentialCustomer(int customerId) {    	
+    	SetPotentialCustomersSyncObject potentialCustomersSyncObject = new SetPotentialCustomersSyncObject(customerId);
+    	potentialCustomersSyncObject.setpPendingCustomerCreation(Integer.valueOf(1));
+    	Intent intent = new Intent(getActivity(), NavisionSyncService.class);
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, potentialCustomersSyncObject);
+		getActivity().startService(intent);	
+	}
 	
-private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
+	private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
 		
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {

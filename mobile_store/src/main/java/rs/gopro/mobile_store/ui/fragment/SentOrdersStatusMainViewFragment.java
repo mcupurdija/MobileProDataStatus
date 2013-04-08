@@ -7,7 +7,6 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.BaseActivity;
-import rs.gopro.mobile_store.ui.dialog.InvoicesPreviewDialog;
 import rs.gopro.mobile_store.ui.dialog.SentOrdersLinesPreviewDialog;
 import rs.gopro.mobile_store.ui.widget.SimpleSelectionedListAdapter;
 import rs.gopro.mobile_store.util.ApplicationConstants;
@@ -400,7 +399,9 @@ public class SentOrdersStatusMainViewFragment extends ListFragment implements
 			titleView.setText(customerNo + " - " + customerName + "   " + getString(R.string.invoice_document_no) + " " + docNo);
 			titleView.setTextColor(res.getColorStateList(R.color.body_text_1));
 			
-			statusView.setText(shipment_statuses[shipment_status]);
+			// +1 because all status
+			// TODO find way to system handling of first options that can be disregarded
+			statusView.setText(shipment_statuses[(shipment_status+1)]);
 			statusView.setBackgroundResource(R.drawable.border_normal);
 			
 			subtitleView.setText(getString(R.string.invoice_document_type) + " " + doc_types[doc_type == 1 ? 0 : 1]

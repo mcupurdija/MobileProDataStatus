@@ -678,12 +678,12 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 //        checkLoaderState();
 	}
 
-	private void checkLoaderState() {
+//	private void checkLoaderState() {
 //		if (isServiceCalled && loaderState.get(SaleOrderQuery._TOKEN) && loaderState.get(ItemQuery._TOKEN)) {
 //			doWsAction();
 //			isServiceCalled = false;
 //		}
-	}
+//	}
 	
 	private void doWsAction() {
 		if (itemNo == null || itemNo.length() < 1) {
@@ -734,7 +734,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	    				+ c.getString(nameIndex);
 	        	mItemAutocomplete.setText(result);
 //	        	itemAutocompleteAdapter.setIdForTitle(result, cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrderLines.ITEM_ID)));
-	        	itemAutocompleteAdapter.setSelectedId(cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrderLines.ITEM_ID)));
+//	        	itemAutocompleteAdapter.setSelectedId(cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.SaleOrderLines.ITEM_ID)));
         	}
         }
         

@@ -64,7 +64,8 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 	private OnTimeSetListener arrivalTimeSetListener;
 	private OnDateSetListener visitDateSetListener;
 
-	private String selectedCustomerNo = null; 
+	private String selectedCustomerNo = null;
+	private int selectedCustomerId = -1;
 
 	private String selectedVisitId;
 	private String selectedVisitType;
@@ -174,7 +175,9 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 			public void onItemClick(AdapterView<?> parent, View arg1, int position, long id) {
 				Cursor cursor = (Cursor)parent.getAdapter().getItem(position);
 				int customerNoPosition = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
+				int customeridPosition = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID);
 				selectedCustomerNo = cursor.getString(customerNoPosition);
+				selectedCustomerId = cursor.getInt(customeridPosition);
 			}
 		});
 
@@ -234,15 +237,17 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 		data.moveToFirst();
 		arrivalTimeEditText.setText(DateUtils.formatDbTimeForPresentation(data.getString(VisitsQuery.ARRIVAL_TIME)));
 //		customerAutoComplete.setText(data.getString(VisitsQuery.NAME));
+		int customeridPosition = data.getColumnIndexOrThrow(MobileStoreContract.Customers._ID);
 		final int codeIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
 		final int nameIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
 		final String result = data.getString(codeIndex) + " - " + data.getString(nameIndex);
 		selectedCustomerNo = data.getString(codeIndex);
-		CustomerAutocompleteCursorAdapter dummyAdapter = null;
-		customerAutoComplete.setAdapter(dummyAdapter);
+		selectedCustomerId = data.getInt(customeridPosition);
+//		CustomerAutocompleteCursorAdapter dummyAdapter = null;
+//		customerAutoComplete.setAdapter(dummyAdapter);
 		customerAutoComplete.setText(result);
-		customerCursorAdapter.setIdForTitle(result, data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Customers._ID)));
-		customerAutoComplete.setAdapter(customerCursorAdapter);
+		//customerCursorAdapter.setIdForTitle(result, data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Customers._ID)));
+		//customerAutoComplete.setAdapter(customerCursorAdapter);
 		visitDateEditText.setText(DateUtils.formatDbDateForPresentation(data.getString(VisitsQuery.VISIT_DATE)));
 //		lineNumberEditText.setText(data.getString(VisitsQuery.VISIT_DATE));
 //		entryTypeEditText.setText(data.getString(VisitsQuery.ENTRY_TYPE));
@@ -284,11 +289,11 @@ public class AddVisitActivity extends BaseActivity implements LoaderCallbacks<Cu
 	private void submitForm() {
 		Integer customerPk = null;
 		
-		String customer_auto_complete = customerAutoComplete.getText().toString().trim();
-		if (customerCursorAdapter.getIdForTitle(customer_auto_complete) != -1) {
+//		String customer_auto_complete = customerAutoComplete.getText().toString().trim();
+		if (selectedCustomerId != -1) {
 			//Cursor customerItemCursor = (Cursor) customerAutoCompleteAdapter.getItem(customerAutoCompleteAdapter.getIdForTitle(customer_auto_complete));
-			int customer_id = customerCursorAdapter.getIdForTitle(customer_auto_complete);//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
-			customerPk = Integer.valueOf(customer_id);
+//			int customer_id = customerCursorAdapter.getIdForTitle(customer_auto_complete);//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
+			customerPk = Integer.valueOf(selectedCustomerId);
 		} else {
 			LogUtils.LOGE(TAG, "Kupac nije izabran!");
 		}

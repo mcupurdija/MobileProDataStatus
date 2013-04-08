@@ -982,7 +982,17 @@ public class MobileStoreContentProvider extends ContentProvider {
 							new String[] { "%" + customer_no + "%" });
 			}
 			if (!shipmentStatus.equals("-1")) {
-				builder.where(Tables.SENT_ORDERS_STATUS+"."+MobileStoreContract.SentOrdersStatus.ORDER_STATUS_FOR_SHIPMENT + " = ? ",new String[] { shipmentStatus });
+				if (shipmentStatus.equals("0")) {
+					builder.where(Tables.SENT_ORDERS_STATUS+"."+MobileStoreContract.SentOrdersStatus.ORDER_STATUS_FOR_SHIPMENT + " >= ? ", new String[] { "0" });
+				} else {
+					int option = 0;
+					try {
+						option = Integer.valueOf(shipmentStatus);
+					} catch (Exception e) {
+						LogUtils.LOGE(TAG, "", e);
+					}			
+					builder.where(Tables.SENT_ORDERS_STATUS+"."+MobileStoreContract.SentOrdersStatus.ORDER_STATUS_FOR_SHIPMENT + " = ? ", new String[] { String.valueOf((option-1)) });
+				}
 			}
 			return builder;
 		case INVOICE_LINES:

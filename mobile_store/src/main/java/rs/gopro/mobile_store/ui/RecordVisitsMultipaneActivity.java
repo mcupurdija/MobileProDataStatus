@@ -550,6 +550,9 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	}
     
 	private boolean recordEndVisit(int visit_result, String note) {
+		if (selectedVisitId == null) {
+			DialogUtil.showInfoDialog(this, "Upozorenje", "Poseta mora biti izabrana kako bi bila realizovana!\nIzaberite posetu za realizaciju u listi poseta sa leve strane!");
+		}
 		ContentValues cv = new ContentValues();
 		cv.put(MobileStoreContract.Visits.VISIT_RESULT, visit_result);
 		cv.put(MobileStoreContract.Visits.NOTE, note);

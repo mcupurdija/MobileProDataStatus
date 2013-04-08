@@ -64,10 +64,10 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 	};
 	
 	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
-		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
-			if (mDialogLoader != null) {
-				mDialogLoader.setVisibility(View.GONE);
-			}
+		if (mDialogLoader != null) {
+			mDialogLoader.setVisibility(View.GONE);
+		}
+		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {	
 			getLoaderManager().restartLoader(0, null, this);
 		} else {
 			this.dismiss();

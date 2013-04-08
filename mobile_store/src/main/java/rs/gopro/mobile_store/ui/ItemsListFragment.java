@@ -4,6 +4,7 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.ui.fragment.ItemPreviewDialogFragment;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
@@ -12,7 +13,14 @@ import rs.gopro.mobile_store.ws.model.ItemsActionSyncObject;
 import rs.gopro.mobile_store.ws.model.ItemsNewSyncObject;
 import rs.gopro.mobile_store.ws.model.ItemsOverstockSyncObject;
 import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
+import rs.gopro.mobile_store.ws.model.SyncResult;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +30,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.Editable;
@@ -49,6 +58,45 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	private CursorAdapter cursorAdapter;
 //	private String salesPersonId;
 	private String salesPersonNo;
+	private ProgressDialog invoicesLoadProgressDialog;
+	
+	private BroadcastReceiver onNotice = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
+			invoicesLoadProgressDialog.dismiss();
+			onSOAPResult(syncResult, intent.getAction());
+		}
+	};
+	
+	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
+		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
+			if (ItemsSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				// TODO some nice info here
+//				SalesDocumentsSyncObject syncObject = (SalesDocumentsSyncObject) syncResult.getComplexResult();
+				
+			}
+		} else {
+			AlertDialog alertDialog = new AlertDialog.Builder(
+					getActivity()).create();
+
+		    // Setting Dialog Title
+		    alertDialog.setTitle(getResources().getString(R.string.dialog_title_error_in_sync));
+		    // Setting Dialog Message
+		    alertDialog.setMessage(syncResult.getResult());
+		    // Setting Icon to Dialog
+		    alertDialog.setIcon(R.drawable.ic_launcher);
+		    // Setting OK Button
+		    alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int which) {
+	            	// Write your code here to execute after dialog closed
+	            }
+		    });
+		
+		    // Showing Alert Message
+		    alertDialog.show();
+		}
+	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -102,6 +150,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 					itemsSyncObject.setResetTypeSignal(1);
 					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
 					getActivity().startService(intent);
+					invoicesLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_items_load), getActivity().getResources().getString(R.string.dialog_body_items_load), true, true);
 				}
 			});
 			
@@ -114,6 +163,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 					itemsSyncObject.setResetTypeSignal(1);
 					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
 					getActivity().startService(intent);
+					invoicesLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_items_load), getActivity().getResources().getString(R.string.dialog_body_items_load), true, true);
 				}
 			});
 			loadOnAction = (Button) getActivity().findViewById(R.id.items_sync_on_action_button);
@@ -125,7 +175,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 					itemsSyncObject.setResetTypeSignal(2);
 					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
 					getActivity().startService(intent);
-					
+					invoicesLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_items_load), getActivity().getResources().getString(R.string.dialog_body_items_load), true, true);
 				}
 			});
 		}
@@ -152,9 +202,16 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	}
 	
 	@Override
+	public void onResume() {
+		super.onResume();	
+		IntentFilter itemsSyncObject = new IntentFilter(ItemsSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, itemsSyncObject);
+	}
+	
+	@Override
 	public void onPause() {
 		super.onPause();
-		System.out.println("ITEM FRAGMENT IDE U PAUZU");
+		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(onNotice);
 	}
 
 	@Override

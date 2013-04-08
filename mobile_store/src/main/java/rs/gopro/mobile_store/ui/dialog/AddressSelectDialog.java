@@ -47,6 +47,10 @@ public class AddressSelectDialog extends DialogFragment implements
 	private String customerNo;
 	private int dialogId;
 	
+	private String default_address = "";
+	private String default_city = "";
+	private String default_post_code = "";
+	
 	private ArrayAdapter<CustomerAddressSelectionEntry> mAdapterForList;
 	
 	public interface AddressSelectDialogListener {
@@ -67,10 +71,11 @@ public class AddressSelectDialog extends DialogFragment implements
 	};
 
 	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
+		// success or error we should hide progress
+		if (mDialogLoader != null) {
+			mDialogLoader.setVisibility(View.GONE);
+		}
 		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
-			if (mDialogLoader != null) {
-				mDialogLoader.setVisibility(View.GONE);
-			}
 			getLoaderManager().restartLoader(0, null, this);
 		} else {
 			this.dismiss();
@@ -119,6 +124,10 @@ public class AddressSelectDialog extends DialogFragment implements
 		super.onSaveInstanceState(outState);
 		outState.putInt("DIALOG_ID", dialogId);
 		outState.putString("CUSTOMER_NO", customerNo);
+		
+		outState.putString("DEFAULT_ADDRESS", default_address);
+		outState.putString("DEFAULT_CITY", default_city);
+		outState.putString("DEFAULT_POST_CODE", default_post_code);
 	}
 	
 	@Override
@@ -127,6 +136,10 @@ public class AddressSelectDialog extends DialogFragment implements
 		if (savedInstanceState != null) {
 			dialogId = savedInstanceState.getInt("DIALOG_ID");
 			customerNo = savedInstanceState.getString("CUSTOMER_NO");
+			
+			default_address = savedInstanceState.getString("DEFAULT_ADDRESS");
+			default_city = savedInstanceState.getString("DEFAULT_CITY");
+			default_post_code = savedInstanceState.getString("DEFAULT_POST_CODE");
 		}
 		View view = inflater.inflate(R.layout.dialog_fragment_customer_address_selector,
 				container);
@@ -135,7 +148,7 @@ public class AddressSelectDialog extends DialogFragment implements
 		listView.setAdapter(mAdapterForList);
 
 		mDialogLoader = (ProgressBar) view
-				.findViewById(rs.gopro.mobile_store.R.id.dialog_load_progress);
+				.findViewById(R.id.customer_address_dialog_load_progress);
 
 		syncAllLinesForDoc = (Button) view
 				.findViewById(R.id.dialog_customer_address_sync_button);
@@ -173,17 +186,17 @@ public class AddressSelectDialog extends DialogFragment implements
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
-		dialog.setTitle(getString(R.string.invoice_line_dialog_alternative_title));
+		dialog.setTitle(getString(R.string.title_address_selector));
 		return dialog;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		IntentFilter getContactsSyncObject = new IntentFilter(
-				GetContactsSyncObject.BROADCAST_SYNC_ACTION);
+		IntentFilter getAddressSyncObject = new IntentFilter(
+				CustomerAddressesSyncObject.BROADCAST_SYNC_ACTION);
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
-				onNotice, getContactsSyncObject);
+				onNotice, getAddressSyncObject);
 	}
 
 	@Override
@@ -203,8 +216,9 @@ public class AddressSelectDialog extends DialogFragment implements
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		if (data != null && data.moveToFirst()) {
+			mAdapterForList.clear();
 			int i = 1;
-			mAdapterForList.add(new CustomerAddressSelectionEntry(-1, i++, "Podrazumevana adresa", ""));
+			mAdapterForList.add(new CustomerAddressSelectionEntry(-1, i++, default_address, default_city, default_post_code, "", "", ""));
 			do {
 				int address_id = data.getInt(CustomerAddressQuery._ID);
 				String address_no = data.getString(CustomerAddressQuery.ADDRESS_NO);
@@ -242,16 +256,14 @@ public class AddressSelectDialog extends DialogFragment implements
 		private String address_no;
 		private String contanct;
 		
-		
-
-		public CustomerAddressSelectionEntry(int _id, int line_no, String address,
-				String city) {
-			super();
-			this._id = _id;
-			this.line_no = line_no;
-			this.address = address;
-			this.city = city;
-		}
+//		public CustomerAddressSelectionEntry(int _id, int line_no, String address,
+//				String city) {
+//			super();
+//			this._id = _id;
+//			this.line_no = line_no;
+//			this.address = address;
+//			this.city = city;
+//		}
 
 		public CustomerAddressSelectionEntry(int _id, int line_no,
 				String address, String city, String post_code, String phone_no,
@@ -282,7 +294,7 @@ public class AddressSelectDialog extends DialogFragment implements
 		@Override
 		public String toString() {
 			if (_id == -1) {
-				return address;
+				return "(* Primarna) " + address_no + " - " + address + "\n" + city + " - " + post_code;
 			}
 			return address_no + " - " + address + "\n" + city + " - " + post_code;
 		}
@@ -321,5 +333,29 @@ public class AddressSelectDialog extends DialogFragment implements
 		int POST_CODE = 4;
 		int CONTANCT = 5;
 		int PHONE_NO = 6;
+	}
+
+	public String getDefault_address() {
+		return default_address;
+	}
+
+	public void setDefault_address(String default_address) {
+		this.default_address = default_address;
+	}
+
+	public String getDefault_city() {
+		return default_city;
+	}
+
+	public void setDefault_city(String default_city) {
+		this.default_city = default_city;
+	}
+
+	public String getDefault_post_code() {
+		return default_post_code;
+	}
+
+	public void setDefault_post_code(String default_post_code) {
+		this.default_post_code = default_post_code;
 	}
 }

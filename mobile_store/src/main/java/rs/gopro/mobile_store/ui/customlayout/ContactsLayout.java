@@ -39,7 +39,7 @@ public class ContactsLayout extends CustomLinearLayout {
 
 	@Override
 	public Callback getContextualActionBar(String identifier, String visitType) {
-		return new ContactContextualActionBar(activity, identifier);
+		return null;// new ContactContextualActionBar(activity, identifier);
 	}
 
 }

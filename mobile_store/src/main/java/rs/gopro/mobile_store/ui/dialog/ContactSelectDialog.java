@@ -45,6 +45,9 @@ public class ContactSelectDialog extends DialogFragment implements
 	private ProgressBar mDialogLoader;
 	private String potentialCustomerNo;
 	private int dialogId;
+	private String defaultName = "";
+	private String defaultPhone_no = "";
+	private String defaultEmail = "";
 	
 	private ArrayAdapter<CustomerContactSelectionEntry> mAdapterForList;
 	
@@ -66,10 +69,10 @@ public class ContactSelectDialog extends DialogFragment implements
 	};
 
 	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
+		if (mDialogLoader != null) {
+			mDialogLoader.setVisibility(View.GONE);
+		}
 		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
-			if (mDialogLoader != null) {
-				mDialogLoader.setVisibility(View.GONE);
-			}
 			getLoaderManager().restartLoader(0, null, this);
 		} else {
 			this.dismiss();
@@ -118,6 +121,10 @@ public class ContactSelectDialog extends DialogFragment implements
 		super.onSaveInstanceState(outState);
 		outState.putInt("DIALOG_ID", dialogId);
 		outState.putString("POTENTIAL_CUSTOMER_NO", potentialCustomerNo);
+		
+		outState.putString("DEFAULT_NAME", defaultName);
+		outState.putString("DEFAULT_PHONE_NO", defaultPhone_no);
+		outState.putString("DEFAULT_EMAIL", defaultEmail);
 	}
 	
 	@Override
@@ -126,18 +133,22 @@ public class ContactSelectDialog extends DialogFragment implements
 		if (savedInstanceState != null) {
 			dialogId = savedInstanceState.getInt("DIALOG_ID");
 			potentialCustomerNo = savedInstanceState.getString("POTENTIAL_CUSTOMER_NO");
+			
+			defaultName = savedInstanceState.getString("DEFAULT_NAME");
+			defaultPhone_no = savedInstanceState.getString("DEFAULT_PHONE_NO");
+			defaultEmail = savedInstanceState.getString("DEFAULT_EMAIL");
 		}
-		View view = inflater.inflate(R.layout.dialog_fragment_customer_address_selector,
+		View view = inflater.inflate(R.layout.dialog_fragment_contact_selector,
 				container);
 		ListView listView = (ListView) view
-				.findViewById(R.id.customer_address_dialog_list);
+				.findViewById(R.id.contact_dialog_list);
 		listView.setAdapter(mAdapterForList);
 
 		mDialogLoader = (ProgressBar) view
-				.findViewById(rs.gopro.mobile_store.R.id.dialog_load_progress);
+				.findViewById(rs.gopro.mobile_store.R.id.contact_dialog_load_progress);
 
 		syncAllLinesForDoc = (Button) view
-				.findViewById(R.id.dialog_customer_address_sync_button);
+				.findViewById(R.id.dialog_contact_sync_button);
 		syncAllLinesForDoc.setText(getResources().getString(R.string.dialog_customer_contacts_sync));
 		syncAllLinesForDoc.setOnClickListener(new OnClickListener() {
 			@Override
@@ -173,7 +184,7 @@ public class ContactSelectDialog extends DialogFragment implements
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
-		dialog.setTitle(getString(R.string.invoice_line_dialog_alternative_title));
+		dialog.setTitle(getString(R.string.title_contact_selector));
 		return dialog;
 	}
 
@@ -203,8 +214,9 @@ public class ContactSelectDialog extends DialogFragment implements
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		if (data != null && data.moveToFirst()) {
+			mAdapterForList.clear();
 			int i = 1;
-			mAdapterForList.add(new CustomerContactSelectionEntry(-1, i++, "Podrazumevan kontakt", "", ""));
+			mAdapterForList.add(new CustomerContactSelectionEntry(-1, i++, defaultName, defaultPhone_no, defaultEmail));
 			do {
 				int contact_id = data.getInt(CustomerContactQuery._ID);
 				String name = data.getString(CustomerContactQuery.NAME);
@@ -256,11 +268,25 @@ public class ContactSelectDialog extends DialogFragment implements
 		@Override
 		public String toString() {
 			if (_id == -1) {
-				return name;
+				return "(* Primaran) " + cleanToString(name, email, phone_no);
 			}
-			return name + "\n" + email + " - " + phone_no;
+			return cleanToString(name, email, phone_no);
 		}
 
+		private String cleanToString(String name, String email, String phone_no) {
+			StringBuilder contactCaption = new StringBuilder();
+			if (name != null && name.length() > 0) {
+				contactCaption.append(name);
+			}
+			if (phone_no != null && phone_no.length() > 0) {
+				contactCaption.append(" - ").append(phone_no);
+			}
+			if (email != null && email.length() > 0) {
+				contactCaption.append(" - ").append(email);
+			}
+			return contactCaption.toString();
+		}
+		
 		public String getPhone_no() {
 			return phone_no;
 		}
@@ -284,5 +310,29 @@ public class ContactSelectDialog extends DialogFragment implements
 //		int NAME2 = 2;
 		int PHONE = 3;
 		int EMAIL = 4;
+	}
+
+	public String getDefaultName() {
+		return defaultName;
+	}
+
+	public void setDefaultName(String defaultName) {
+		this.defaultName = defaultName;
+	}
+
+	public String getDefaultPhone_no() {
+		return defaultPhone_no;
+	}
+
+	public void setDefaultPhone_no(String defaultPhone_no) {
+		this.defaultPhone_no = defaultPhone_no;
+	}
+
+	public String getDefaultEmail() {
+		return defaultEmail;
+	}
+
+	public void setDefaultEmail(String defaultEmail) {
+		this.defaultEmail = defaultEmail;
 	}
 }

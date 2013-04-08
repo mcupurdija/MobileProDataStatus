@@ -101,9 +101,9 @@
                 android:gravity="center_vertical"
                 android:text="@string/contact_no_label" />
 
-            <Spinner
-                android:id="@+id/edit_sale_order_contact_no_text"
-                style="EditEvent_Spinner"
+            <Button
+                android:id="@+id/edit_sale_order_contact_spinner"
+                style="@style/EditEvent_SpinnerButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -405,12 +405,11 @@
             <Button
                 android:id="@+id/edit_sale_order_shipping_address_spinner"
                 style="@style/EditEvent_SpinnerButton"
-                android:layout_width="0px"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:layout_weight="5"
                 android:gravity="center_vertical" />
         </TableRow>
 

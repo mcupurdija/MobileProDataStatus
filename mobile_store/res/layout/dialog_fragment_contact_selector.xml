@@ -14,7 +14,7 @@
         android:layout_marginTop="15dp" >
 
         <Button
-            android:id="@+id/dialog_customer_address_sync_button"
+            android:id="@+id/dialog_contact_sync_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
@@ -33,7 +33,7 @@
         android:orientation="vertical" >
 
         <ProgressBar
-            android:id="@+id/customer_address_dialog_load_progress"
+            android:id="@+id/contact_dialog_load_progress"
             style="?android:progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/customer_address_dialog_list"
+        android:id="@+id/contact_dialog_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

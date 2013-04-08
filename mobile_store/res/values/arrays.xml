@@ -199,6 +199,7 @@
 		<item>Over Due and Credit</item>
     </string-array>
     <string-array name="order_status_for_shipment_array">
+        <item>All</item>
         <item>Order in preparation</item>
 		<item>Finance Forbbiden</item>
 		<item>Lines Forbbiden</item>

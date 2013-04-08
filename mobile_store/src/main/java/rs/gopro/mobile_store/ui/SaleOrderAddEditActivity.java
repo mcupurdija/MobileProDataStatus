@@ -10,10 +10,11 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.Tables;
-import rs.gopro.mobile_store.ui.components.ContactSpinnerAdapter;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.ui.dialog.AddressSelectDialog;
 import rs.gopro.mobile_store.ui.dialog.AddressSelectDialog.AddressSelectDialogListener;
+import rs.gopro.mobile_store.ui.dialog.ContactSelectDialog;
+import rs.gopro.mobile_store.ui.dialog.ContactSelectDialog.ContactSelectDialogListener;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
@@ -39,7 +40,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -49,7 +49,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCallbacks<Cursor>, OnItemClickListener, AddressSelectDialogListener {
+public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCallbacks<Cursor>, AddressSelectDialogListener, ContactSelectDialogListener {
 
 	private static final String TAG = "SaleOrderAddEditActivity";
 	
@@ -103,15 +103,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		MobileStoreContract.SaleOrders.NOTE3
 	};
 	
-	private static String[]  CONTACT_PROJECTION = new String[] { 
-		MobileStoreContract.Contacts._ID,
-		MobileStoreContract.Contacts.CONTACT_NO,
-		MobileStoreContract.Contacts.NAME,
-		MobileStoreContract.Contacts.NAME2,
-		MobileStoreContract.Contacts.PHONE,
-		MobileStoreContract.Contacts.EMAIL
-	};
-	
 	private static String[]  CUSTOMER_PROJECTION = new String[] { 
 		MobileStoreContract.Customers._ID,
 		MobileStoreContract.Customers.CUSTOMER_NO,
@@ -130,9 +121,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	private static String DEFAULT_INSERT_EDIT_TYPE = MobileStoreContract.SaleOrders.CONTENT_TYPE;
 	
 	private static final int SALE_ORDER_HEADER_LOADER = 1;
-	private static final int CONTACT_HEADER_LOADER = 4;
-	private static final int CUSTOMER_HEADER_LOADER = 5;
-	private static final int CUSTOMER_HEADER_LOADER_TRANSIT = 6;
+//	private static final int CUSTOMER_HEADER_LOADER = 5;
+//	private static final int CUSTOMER_HEADER_LOADER_TRANSIT = 6;
 	
 	private static final int SALE_ORDER_INSERT_TOKEN = 0x1;
 	private static final int SALE_ORDER_UPDATE_TOKEN = 0x2;
@@ -141,8 +131,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private CustomerAutocompleteCursorAdapter customerAutoCompleteAdapter;
     private AutoCompleteTextView transitCustomerAutoComplete;
     private CustomerAutocompleteCursorAdapter transitCustomerAutoCompleteAdapter;
-    private Spinner contactSpinner;
-    private ContactSpinnerAdapter contactSpinnerAdapter;
     
     private TextView documentNo;
     private Spinner documentType;
@@ -155,6 +143,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private ArrayAdapter<CharSequence> salesAdapter;
     private Spinner locationType;
     private ArrayAdapter<CharSequence> locationAdapter;
+    private Button contactSelector;
     private Button shippingAddressSelector;
     private Button billingAddressSelector;
     private EditText contactName;
@@ -192,10 +181,13 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private Uri mUri;
     private String mViewType;
     private String selectedCustomerNo = null;
+    private String potentialCustomerNo = null;
     
     private int shippingAddressId = -1;
     private int billingAddressId = -1;
     private int contactId = -1;
+    private int customerId = -1;
+    private int transitCustomerId = -1;
     
     private String orderDate = null;
     
@@ -281,11 +273,29 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		customerAutoCompleteAdapter = new CustomerAutocompleteCursorAdapter(this, null);
 		customerAutoComplete.setAdapter(customerAutoCompleteAdapter);
-		
-		customerAutoComplete.setOnItemClickListener(this);
+		customerAutoComplete.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+				Cursor cursor = (Cursor) customerAutoCompleteAdapter.getItem(arg2);
+				customerId = cursor.getInt(0);
+				fillOtherCustomerData(customerId);
+				loadAndSetCustomerAddressData(BILLING_ADDRESS_SELECTOR, -1);
+				loadAndSetCustomerAddressData(SHIPPING_ADDRESS_SELECTOR, -1);
+				loadAndSetContactData(0, -1);
+			}
+		});
+		//customerAutoComplete.setOnItemClickListener(this);
 		
 		transitCustomerAutoCompleteAdapter = new CustomerAutocompleteCursorAdapter(this, null);
 		transitCustomerAutoComplete.setAdapter(transitCustomerAutoCompleteAdapter);
+		transitCustomerAutoComplete.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+				Cursor cursor = (Cursor) transitCustomerAutoCompleteAdapter.getItem(arg2);
+				transitCustomerId = cursor.getInt(0);
+			}
+		});
+		
 		
 		docAdapter = ArrayAdapter.createFromResource(this, R.array.sale_order_block_status_array, android.R.layout.simple_spinner_item);
 		docAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -298,24 +308,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	    contactPhone = (EditText) findViewById(R.id.edit_sale_order_contact_phone_text);
 	    orderNo = (EditText) findViewById(R.id.edit_sale_order_quote_no_edit_text);
 	    contactEmail = (EditText) findViewById(R.id.edit_sale_order_contact_email_text);
-		
-		contactSpinner = (Spinner) findViewById(R.id.edit_sale_order_contact_no_text);
-		contactSpinnerAdapter = new ContactSpinnerAdapter(this, null, 0);
-		contactSpinner.setAdapter(contactSpinnerAdapter);
-		getSupportLoaderManager().initLoader(CONTACT_HEADER_LOADER, null, this);
-		contactSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				Cursor selectedData = (Cursor) contactSpinnerAdapter.getItem(arg2);
-				loadContactValues(selectedData);
-				//getSupportLoaderManager().restartLoader(SHIPPING_ADDRESS_LOADER, null, SaleOrderAddEditActivity.this);		
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}
-		});
 	    
 		backorderAdapter = ArrayAdapter.createFromResource(this, R.array.backorder_type_array, android.R.layout.simple_spinner_item);
 		backorderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -356,6 +348,14 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	    billingAddressContact = (EditText) findViewById(R.id.edit_sale_order_address_invoice_contact_value);
 	    billingAddressContact.setFocusable(false);
 		
+	    contactSelector = (Button) findViewById(R.id.edit_sale_order_contact_spinner);
+	    contactSelector.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialogSetContact();
+			}
+		});
+	    
 		shippingAddressSelector = (Button) findViewById(R.id.edit_sale_order_shipping_address_spinner);
 		shippingAddressSelector.setOnClickListener(new OnClickListener() {
 			@Override
@@ -392,15 +392,47 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		orderValueStatus = (TextView) findViewById(R.id.edit_sale_order_order_value_status_text);
 	}
 
+	protected void fillOtherCustomerData(int customerId2) {
+		Cursor cursor = getContentResolver().query(Customers.CONTENT_URI, new String[]{ Customers.CUSTOMER_NO, Customers.CONTACT_COMPANY_NO } , Customers._ID+"=?", new String[]{ String.valueOf(customerId2) }, null);
+		if (cursor.moveToNext()) {
+			selectedCustomerNo = cursor.getString(0);
+			potentialCustomerNo = cursor.getString(1);
+		} else {
+			LogUtils.LOGE(TAG, "Big trouble in sale order!");
+		}
+		if (cursor != null && !cursor.isClosed()) {
+			cursor.close();
+		}
+	}
+
 	private void loadData(Cursor data, String action) {
-		int customer_id = -1;
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CUSTOMER_ID))) {
-			customer_id = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CUSTOMER_ID));
+			customerId = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CUSTOMER_ID));
+			Cursor customerCursor = getContentResolver().query(MobileStoreContract.Customers.buildCustomersUri(String.valueOf(customerId)), CUSTOMER_PROJECTION, null, null, null);
+			if (customerCursor.moveToFirst()) {
+				final int codeIndex = customerCursor
+						.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
+				final int nameIndex = customerCursor
+						.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
+				final String result = customerCursor.getString(codeIndex) + " - "
+						+ customerCursor.getString(nameIndex);
+				customerAutoComplete.setText(result);
+			}
+			fillOtherCustomerData(customerId);
 		}
 		
-		int transit_customer_id = -1;
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST))) {
-			transit_customer_id = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST));
+			transitCustomerId = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST));
+			Cursor customerCursor = getContentResolver().query(MobileStoreContract.Customers.buildCustomersUri(String.valueOf(transitCustomerId)), CUSTOMER_PROJECTION, null, null, null);
+			if (customerCursor.moveToFirst()) {
+				final int codeIndex = customerCursor
+						.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
+				final int nameIndex = customerCursor
+						.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
+				final String result = customerCursor.getString(codeIndex) + " - "
+						+ customerCursor.getString(nameIndex);
+				transitCustomerAutoComplete.setText(result);
+			}
 		}
 		
 		String document_no = null;
@@ -417,11 +449,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		int document_type = -1;
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.DOCUMENT_TYPE))) {
 			document_type = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.DOCUMENT_TYPE));
-		}
-		
-		int customer_contact_id = -1;
-		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CONTACT_ID))) {
-			customer_contact_id = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CONTACT_ID));
 		}
 		
 		String contact_name = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CONTACT_NAME));
@@ -447,7 +474,14 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		int contact_id = -1;
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CONTACT_ID))) {
-			contact_id = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CONTACT_ID));
+			contactId = contact_id = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CONTACT_ID));
+			Cursor cursor = getContentResolver().query(Contacts.CONTENT_URI, new String[]{ Contacts.NAME }, Contacts._ID+"=?", new String[] { String.valueOf(contact_id) }, null);
+			if (cursor.moveToFirst()) {
+				contactSelector.setText(cursor.getString(0));
+			}
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
 		}
 		
 		int shipp_to_address_id = -1;
@@ -507,24 +541,20 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		// globals because in init customer it will load combo box
 		
-		contactId = contact_id;
-				
-		if (customer_id != -1) {
-			initCustomerLoad(customer_id, "MAIN");
-		}
 		
-		if (transit_customer_id != -1) {
-			initCustomerLoad(transit_customer_id, "TRANSIT");
-		}
+				
+//		if (customer_id != -1) {
+//			initCustomerLoad(customer_id, "MAIN");
+//		}
+		
+//		if (transit_customer_id != -1) {
+//			initCustomerLoad(transit_customer_id, "TRANSIT");
+//		}
 		
 		documentNo.setText(document_no);
 		
 		if (document_type != -1) {
 			documentType.setSelection(document_type);
-		}
-		
-		if (customer_contact_id != -1) {
-			initCustomerContactLoad(customer_contact_id);
 		}
 		
 		if (contact_name != null) {
@@ -576,18 +606,14 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			}
 		}
 		
-		if (contact_id != -1) {
-			int spinnerPosition =  contactSpinnerAdapter.getIdPostition(contact_id);
-			if (spinnerPosition != -1) {
-				contactSpinner.setSelection(spinnerPosition);
-			}
-		}
-		
 		billingAddressId = sell_to_address_id;
 		loadAndSetCustomerAddressData(BILLING_ADDRESS_SELECTOR, billingAddressId);
 		
 		shippingAddressId = shipp_to_address_id;
 		loadAndSetCustomerAddressData(SHIPPING_ADDRESS_SELECTOR, shippingAddressId);
+		
+		
+//		loadAndSetContactData(0, contactId);
 		
 	}
 	
@@ -608,7 +634,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		transitCustomerAutoComplete.setFocusable(false);
 		shippingAddressSelector.setFocusable(false);
 		billingAddressSelector.setFocusable(false);
-		contactSpinner.setFocusable(false);
+		contactSelector.setFocusable(false);
 		hideDiscount.setFocusable(false);
 		showDeclaration.setFocusable(false);
 	}
@@ -621,19 +647,14 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		case SALE_ORDER_HEADER_LOADER:
 			cursorLoader = new CursorLoader(this, mUri, SALES_ORDER_PROJECTION, null, null, null);
 			return cursorLoader;
-		case CONTACT_HEADER_LOADER:
-			//int contactId = args.getInt("PRIMARY_CONTACT_ID");
-			String potentialCustomerNo = args == null ? null : args.getString("POTENTIAL_CUSTOMER_NO");
-			cursorLoader = new CursorLoader(this, MobileStoreContract.Contacts.CONTENT_URI, CONTACT_PROJECTION, Tables.CONTACTS+"."+Contacts.COMPANY_NO+"=?", new String[] { potentialCustomerNo == null ? "" : potentialCustomerNo }, null);
-			return cursorLoader;
-		case CUSTOMER_HEADER_LOADER:
-			int customerId = args.getInt("CUSTOMER_ID");
-			cursorLoader = new CursorLoader(this, MobileStoreContract.Customers.buildCustomersUri(String.valueOf(customerId)), CUSTOMER_PROJECTION, null, null, null);
-			return cursorLoader;
-		case CUSTOMER_HEADER_LOADER_TRANSIT:
-			int customerTransitId = args.getInt("CUSTOMER_ID");
-			cursorLoader = new CursorLoader(this, MobileStoreContract.Customers.buildCustomersUri(String.valueOf(customerTransitId)), CUSTOMER_PROJECTION, null, null, null);
-			return cursorLoader;
+//		case CUSTOMER_HEADER_LOADER:
+//			int customerId = args.getInt("CUSTOMER_ID");
+//			cursorLoader = new CursorLoader(this, MobileStoreContract.Customers.buildCustomersUri(String.valueOf(customerId)), CUSTOMER_PROJECTION, null, null, null);
+//			return cursorLoader;
+//		case CUSTOMER_HEADER_LOADER_TRANSIT:
+//			int customerTransitId = args.getInt("CUSTOMER_ID");
+//			cursorLoader = new CursorLoader(this, MobileStoreContract.Customers.buildCustomersUri(String.valueOf(customerTransitId)), CUSTOMER_PROJECTION, null, null, null);
+//			return cursorLoader;
 		default:
 			return null;
 		}
@@ -649,39 +670,20 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 				LogUtils.LOGE(TAG, "Cursor empty for URI:"+mUri.toString());
 			}
 			break;
-		case CONTACT_HEADER_LOADER:
-			if (data != null && data.moveToFirst()) {
-				contactSpinnerAdapter.swapCursor(data);
-				
-				if (contactId != -1) {
-					int spinnerPosition =  contactSpinnerAdapter.getIdPostition(contactId);
-					if (spinnerPosition != -1) {
-						contactSpinner.setSelection(spinnerPosition);
-						data.moveToPosition(spinnerPosition);
-					}
-					contactId = -1;
-				}
-				
-				loadContactValues(data);
-			} else {
-				contactSpinnerAdapter.swapCursor(null);
-				LogUtils.LOGE(TAG, "Cursor empty for CONTACT_HEADER_LOADER!");
-			}
-			break;
-		case CUSTOMER_HEADER_LOADER:
-			if (data != null && data.moveToFirst()) {
-				loadCustomer(data);
-			} else {
-				LogUtils.LOGE(TAG, "Cursor empty for CUSTOMER_HEADER_LOADER!");
-			}
-			break;
-		case CUSTOMER_HEADER_LOADER_TRANSIT:
-			if (data != null && data.moveToFirst()) {
-				loadCustomerTransit(data);
-			} else {
-				LogUtils.LOGE(TAG, "Cursor empty for CUSTOMER_HEADER_LOADER!");
-			}
-			break;
+//		case CUSTOMER_HEADER_LOADER:
+//			if (data != null && data.moveToFirst()) {
+//				loadCustomer(data, initialCustomerLoad);
+//			} else {
+//				LogUtils.LOGE(TAG, "Cursor empty for CUSTOMER_HEADER_LOADER!");
+//			}
+//			break;
+//		case CUSTOMER_HEADER_LOADER_TRANSIT:
+//			if (data != null && data.moveToFirst()) {
+//				loadCustomerTransit(data);
+//			} else {
+//				LogUtils.LOGE(TAG, "Cursor empty for CUSTOMER_HEADER_LOADER!");
+//			}
+//			break;
 		default:
 			data.close();
 			break;
@@ -693,115 +695,117 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		switch (loader.getId()) {
 		case SALE_ORDER_HEADER_LOADER:
 			break;
-		case CONTACT_HEADER_LOADER:
-			contactSpinnerAdapter.swapCursor(null);
-			break;
-		case CUSTOMER_HEADER_LOADER:
-			break;
+//		case CUSTOMER_HEADER_LOADER:
+//			break;
 		default:
 			break;
 		}
 	}
 	
-	private void loadCustomer(Cursor data) {
-		if (data.getCount() < 1) {
-			LogUtils.LOGI(TAG, "No customer data!");
-			return;
-		}
-		final int codeIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
-		final int nameIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
-		final int emailIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.EMAIL);
-		final String result = data.getString(codeIndex) + " - " + data.getString(nameIndex);
-		selectedCustomerNo = data.getString(codeIndex);
-		CustomerAutocompleteCursorAdapter dummyAdapter = null;
-		customerAutoComplete.setAdapter(dummyAdapter);
-		customerAutoComplete.setText(result);
-		// when this loads adapter wont run query, it is ran only on filter, so we must set id manually for latter use
-		customerAutoCompleteAdapter.setIdForTitle(result, data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Customers._ID)));
-		customerAutoComplete.setAdapter(customerAutoCompleteAdapter);
-		
-		if (contactEmail != null) {
-			contactEmail.setText("");
-			if (!data.isNull(emailIndex)) {
-				contactEmail.setText(data.getString(emailIndex));
-			}
-		}
-		
-		loadAndSetCustomerAddressData(BILLING_ADDRESS_SELECTOR, -1);
-		loadAndSetCustomerAddressData(BILLING_ADDRESS_SELECTOR, -1);
-	}
+//	private void loadCustomer(Cursor data, boolean initialLoad) {
+//		if (data.getCount() < 1) {
+//			LogUtils.LOGI(TAG, "No customer data!");
+//			return;
+//		}
+//		final int codeIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
+//		final int nameIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
+//		final int emailIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.EMAIL);
+//		final int contactIdIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.PRIMARY_CONTACT_ID);
+//		
+//		final String result = data.getString(codeIndex) + " - " + data.getString(nameIndex);
+//		selectedCustomerNo = data.getString(codeIndex);
+//		int potentialCustomerNoPosition = data.getColumnIndexOrThrow(MobileStoreContract.Customers.CONTACT_COMPANY_NO);
+//		potentialCustomerNo = data.getString(potentialCustomerNoPosition);
+//		CustomerAutocompleteCursorAdapter dummyAdapter = null;
+//		customerAutoComplete.setAdapter(dummyAdapter);
+//		customerAutoComplete.setText(result);
+//		// when this loads adapter wont run query, it is ran only on filter, so we must set id manually for latter use
+////		customerAutoCompleteAdapter.setIdForTitle(result, data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Customers._ID)));
+//		customerAutoComplete.setAdapter(customerAutoCompleteAdapter);
+//		
+//		if (data.isNull(contactIdIndex)) {
+//			if (contactEmail != null) {
+//				contactEmail.setText("");
+//				if (!data.isNull(emailIndex)) {
+//					contactEmail.setText(data.getString(emailIndex));
+//				}
+//			}
+//			contactId = -1;
+//		} else {
+//			contactId = data.getInt(contactIdIndex);
+//		}
+//		
+//		
+//	}
 
-	private void loadCustomerTransit(Cursor data) {
-		if (data.getCount() < 1) {
-			LogUtils.LOGI(TAG, "No customer data!");
-			return;
-		}
-		final int codeIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
-		final int nameIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
-		final String result = data.getString(codeIndex) + " - " + data.getString(nameIndex);
-		//selectedCustomerNo = data.getString(codeIndex);
-		CustomerAutocompleteCursorAdapter dummyAdapter = null;
-		transitCustomerAutoComplete.setAdapter(dummyAdapter);
-		transitCustomerAutoComplete.setText(result);
+//	private void loadCustomerTransit(Cursor data) {
+//		if (data.getCount() < 1) {
+//			LogUtils.LOGI(TAG, "No customer data!");
+//			return;
+//		}
+//		final int codeIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
+//		final int nameIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
+//		final String result = data.getString(codeIndex) + " - " + data.getString(nameIndex);
+//		//selectedCustomerNo = data.getString(codeIndex);
+//		CustomerAutocompleteCursorAdapter dummyAdapter = null;
+//		transitCustomerAutoComplete.setAdapter(dummyAdapter);
+//		transitCustomerAutoComplete.setText(result);
 		// when this loads adapter wont run query, it is ran only on filter, so we must set id manually for latter use
-		transitCustomerAutoCompleteAdapter.setIdForTitle(result, data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Customers._ID)));
-		transitCustomerAutoComplete.setAdapter(transitCustomerAutoCompleteAdapter);
-	}
+//		transitCustomerAutoCompleteAdapter.setIdForTitle(result, data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Customers._ID)));
+//		transitCustomerAutoComplete.setAdapter(transitCustomerAutoCompleteAdapter);
+//	}
 	
-	private void loadContactValues(Cursor data) {
-		if (data.getCount() < 1) {
-			LogUtils.LOGI(TAG, "No contact data!");
-			return;
-		}
-//		customerContactId = Integer.valueOf(data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Contacts._ID)));
-		//customerContactNo.setText(data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.CONTACT_NO)));
-		String contactName1 = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.NAME));
-		String contactName2 = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.NAME2));
-		String contactNameWhole = (contactName1 != null ? contactName1:"") + (contactName2 != null ? contactName2:"");
-		// this field can be edited manually, not override it only on click 
-		if (contactName.getText().toString().trim().equals("")) {
-			contactName.setText(contactNameWhole);
-		}
-		String contactPhoneLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.PHONE));
-		if (contactPhone.getText().toString().trim().equals("")) {
-			contactPhone.setText(contactPhoneLocal != null?contactPhoneLocal:"");
-		}
-		String contactEmailLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.EMAIL));
-		if (contactEmail.getText().toString().trim().equals("")) {
-			contactEmail.setText(contactEmailLocal != null?contactEmailLocal:"");
-		}
-	}
+//	private void loadContactValues(Cursor data) {
+//		if (data.getCount() < 1) {
+//			LogUtils.LOGI(TAG, "No contact data!");
+//			return;
+//		}
+////		customerContactId = Integer.valueOf(data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Contacts._ID)));
+//		//customerContactNo.setText(data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.CONTACT_NO)));
+//		String contactName1 = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.NAME));
+//		String contactName2 = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.NAME2));
+//		String contactNameWhole = (contactName1 != null ? contactName1:"") + (contactName2 != null ? contactName2:"");
+//		// this field can be edited manually, not override it only on click 
+//		if (contactName.getText().toString().trim().equals("")) {
+//			contactName.setText(contactNameWhole);
+//		}
+//		String contactPhoneLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.PHONE));
+//		if (contactPhone.getText().toString().trim().equals("")) {
+//			contactPhone.setText(contactPhoneLocal != null?contactPhoneLocal:"");
+//		}
+//		String contactEmailLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.EMAIL));
+//		if (contactEmail.getText().toString().trim().equals("")) {
+//			contactEmail.setText(contactEmailLocal != null?contactEmailLocal:"");
+//		}
+//	}
 
 	/**
 	 * {@inheritDoc}
 	 * This is done with restart loaders, because onclick when happens customer is changed.
 	 */
-	@Override
-	public void onItemClick(AdapterView<?> parent, View arg1, int position, long id) {
-		Cursor cursor = (Cursor)parent.getAdapter().getItem(position);
-		int customerNoPosition = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
-		int potentialCustomerNoPosition = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.CONTACT_COMPANY_NO);
-		String potentialCustomerNo = cursor.getString(potentialCustomerNoPosition);
-		this.selectedCustomerNo = cursor.getString(customerNoPosition);
-		int customerContactId = -1;
-		if (!cursor.isNull(cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.PRIMARY_CONTACT_ID))) {
-			customerContactId = cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.PRIMARY_CONTACT_ID));
-		}
+//	@Override
+//	public void onItemClick(AdapterView<?> parent, View arg1, int position, long id) {
+//		Cursor cursor = (Cursor)parent.getAdapter().getItem(position);
+//		int customerNoPosition = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
+//		int potentialCustomerNoPosition = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.CONTACT_COMPANY_NO);
+//		String potentialCustomerNo = cursor.getString(potentialCustomerNoPosition);
+//		this.selectedCustomerNo = cursor.getString(customerNoPosition);
+//		int customerContactId = -1;
+//		if (!cursor.isNull(cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.PRIMARY_CONTACT_ID))) {
+//			customerContactId = cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.PRIMARY_CONTACT_ID));
+//		}
 		
-		Bundle customerIdbundle = new Bundle();
-		customerIdbundle.putInt("CUSTOMER_ID", cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID)));
-		
-		getSupportLoaderManager().restartLoader(CUSTOMER_HEADER_LOADER, customerIdbundle, this);
+//		Bundle customerIdbundle = new Bundle();
+//		customerIdbundle.putInt("CUSTOMER_ID", cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID)));
+//		customerIdbundle.putBoolean("INIT_LOAD", false);
+//		initialCustomerLoad = false;
+//		getSupportLoaderManager().restartLoader(CUSTOMER_HEADER_LOADER, customerIdbundle, this);
 		
 		//getSupportLoaderManager().restartLoader(BILLING_ADDRESS_LOADER, null, this);
 		//getSupportLoaderManager().restartLoader(SHIPPING_ADDRESS_LOADER, null, this);
 //		if (customerContactId != -1) {
-		Bundle contactBundle = new Bundle();
-		contactBundle.putInt("PRIMARY_CONTACT_ID", customerContactId);
-		contactBundle.putString("POTENTIAL_CUSTOMER_NO", potentialCustomerNo);
-		getSupportLoaderManager().restartLoader(CONTACT_HEADER_LOADER, contactBundle, this);
 //		}
-	}
+//	}
 
 	/**
 	 * Restarts loader an gets data for customer. It is used to disable autocomplete when we have already customer id from db.
@@ -810,28 +814,18 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	 * So we are stucked with requery allways. Maybe should put from first requery in bundle and save for rotation.
 	 * @param customer_contact_id
 	 */
-	private void initCustomerLoad(int customer_id, String identification) {
-		Bundle customerIdbundle = new Bundle();
-		customerIdbundle.putInt("CUSTOMER_ID", customer_id);
-		if (identification.equals("MAIN")) {
-			getSupportLoaderManager().restartLoader(CUSTOMER_HEADER_LOADER, customerIdbundle, this);
-		} else if (identification.equals("TRANSIT")) {
-			getSupportLoaderManager().restartLoader(CUSTOMER_HEADER_LOADER_TRANSIT, customerIdbundle, this);
-		}
-	}
+//	private void initCustomerLoad(int customer_id, String identification) {
+//		Bundle customerIdbundle = new Bundle();
+//		customerIdbundle.putInt("CUSTOMER_ID", customer_id);
+//		customerIdbundle.putBoolean("INIT_LOAD", true);
+//		initialCustomerLoad = true;
+//		if (identification.equals("MAIN")) {
+//			getSupportLoaderManager().restartLoader(CUSTOMER_HEADER_LOADER, customerIdbundle, this);
+//		} else if (identification.equals("TRANSIT")) {
+//			getSupportLoaderManager().restartLoader(CUSTOMER_HEADER_LOADER_TRANSIT, customerIdbundle, this);
+//		}
+//	}
 
-	/**
-	 * Restarts loader an gets data for primary contact. Also on rotation it executes but it should not.
-	 * If we change from reset to init, there is problem because init must be called from onCreate.
-	 * So we are stucked with requery allways. Maybe should put from first requery in bundle and save for rotation.
-	 * @param customer_contact_id
-	 */
-	private void initCustomerContactLoad(int customer_contact_id) {
-		Bundle contactBundle = new Bundle();
-		contactBundle.putInt("PRIMARY_CONTACT_ID", customer_contact_id);
-		getSupportLoaderManager().restartLoader(CONTACT_HEADER_LOADER, contactBundle, this);
-	}
-	
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -857,21 +851,21 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	private ContentValues getInputData() throws SaleOrderValidationException {
 		ContentValues localValues = new ContentValues();
 		
-		String customer_auto_complete = customerAutoComplete.getText().toString().trim();
-		if (customerAutoCompleteAdapter.getIdForTitle(customer_auto_complete) != -1) {
+//		String customer_auto_complete = customerAutoComplete.getText().toString().trim();
+		if (customerId != -1) {
 			//Cursor customerItemCursor = (Cursor) customerAutoCompleteAdapter.getItem(customerAutoCompleteAdapter.getIdForTitle(customer_auto_complete));
-			int customer_id = customerAutoCompleteAdapter.getIdForTitle(customer_auto_complete);//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
-			localValues.put(MobileStoreContract.SaleOrders.CUSTOMER_ID, Integer.valueOf(customer_id));
+//			int customer_id = customerAutoCompleteAdapter.getIdForTitle(customer_auto_complete);//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
+			localValues.put(MobileStoreContract.SaleOrders.CUSTOMER_ID, Integer.valueOf(customerId));
 		} else {
 			throw new SaleOrderValidationException("Kupac nije izabran!");
 			//localValues.putNull(MobileStoreContract.SaleOrders.CUSTOMER_ID);
 		}
 		
-		String transfer_customer_auto_complete = transitCustomerAutoComplete.getText().toString().trim();
-		if (transitCustomerAutoCompleteAdapter.getIdForTitle(transfer_customer_auto_complete) != -1) {
+//		String transfer_customer_auto_complete = transitCustomerAutoComplete.getText().toString().trim();
+		if (transitCustomerId != -1) {
 			//Cursor customerItemCursor = (Cursor) transitCustomerAutoCompleteAdapter.getItem(transitCustomerAutoCompleteAdapter.getIdForTitle(transfer_customer_auto_complete));
-			int transit_customer_id = transitCustomerAutoCompleteAdapter.getIdForTitle(transfer_customer_auto_complete);//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
-			localValues.put(MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST, Integer.valueOf(transit_customer_id));
+//			int transit_customer_id = transitCustomerAutoCompleteAdapter.getIdForTitle(transfer_customer_auto_complete);//customerItemCursor.getInt(customerItemCursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID));
+			localValues.put(MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST, Integer.valueOf(transitCustomerId));
 		}  else {
 			localValues.putNull(MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST);
 		}
@@ -920,9 +914,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			localValues.putNull(MobileStoreContract.SaleOrders.SHIPP_TO_ADDRESS_ID);
 		}
 		
-		long contact_id = contactSpinner.getSelectedItemId();
-		if (contact_id != AdapterView.INVALID_ROW_ID) {
-			localValues.put(MobileStoreContract.SaleOrders.CONTACT_ID, Long.valueOf(contact_id));
+		if (contactId != -1) {
+			localValues.put(MobileStoreContract.SaleOrders.CONTACT_ID, Integer.valueOf(contactId));
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrders.CONTACT_ID);
 		}
@@ -1126,6 +1119,24 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 				null);
 		tempIntent.putExtra(AddressSelectDialog.EXTRA_CUSTOMER_NO, selectedCustomerNo);
 		tempIntent.putExtra(AddressSelectDialog.EXTRA_DIALOG_ID, SHIPPING_ADDRESS_SELECTOR);
+		
+		Cursor addressDefaultCursor = getContentResolver().query(MobileStoreContract.Customers.CONTENT_URI, DefaultCustomerAddressQuery.PROJECTION, Tables.CUSTOMERS+"." + Customers.CUSTOMER_NO + "=?", new String[] { String.valueOf( selectedCustomerNo )  }, null);
+		if (addressDefaultCursor != null && addressDefaultCursor.moveToFirst()) {
+			String address = addressDefaultCursor.getString(DefaultCustomerAddressQuery.ADDRESS);
+			String city = addressDefaultCursor.getString(DefaultCustomerAddressQuery.CITY);
+			String post_code = addressDefaultCursor.getString(DefaultCustomerAddressQuery.POST_CODE);
+			String phone = addressDefaultCursor.getString(DefaultCustomerAddressQuery.PHONE);
+			
+			addressSelectDialog.setDefault_address(address);
+			addressSelectDialog.setDefault_city(city);
+			addressSelectDialog.setDefault_post_code(post_code);
+			
+			setCustomerAdressUIData(SHIPPING_ADDRESS_SELECTOR, -1, address, "", city, post_code, phone, "");
+		}
+		if (addressDefaultCursor != null && !addressDefaultCursor.isClosed()) {
+			addressDefaultCursor.close();
+		}
+		
 		addressSelectDialog.setArguments(BaseActivity
 				.intentToFragmentArguments(tempIntent));
 		addressSelectDialog.show(getSupportFragmentManager(), "ADDRESS_DIALOG_SHIPPING");
@@ -1141,47 +1152,155 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 				null);
 		tempIntent.putExtra(AddressSelectDialog.EXTRA_CUSTOMER_NO, selectedCustomerNo);
 		tempIntent.putExtra(AddressSelectDialog.EXTRA_DIALOG_ID, BILLING_ADDRESS_SELECTOR);
+		
+		Cursor addressDefaultCursor = getContentResolver().query(MobileStoreContract.Customers.CONTENT_URI, DefaultCustomerAddressQuery.PROJECTION, Tables.CUSTOMERS+"." + Customers.CUSTOMER_NO + "=?", new String[] { String.valueOf( selectedCustomerNo )  }, null);
+		if (addressDefaultCursor != null && addressDefaultCursor.moveToFirst()) {
+			String address = addressDefaultCursor.getString(DefaultCustomerAddressQuery.ADDRESS);
+			String city = addressDefaultCursor.getString(DefaultCustomerAddressQuery.CITY);
+			String post_code = addressDefaultCursor.getString(DefaultCustomerAddressQuery.POST_CODE);
+			String phone = addressDefaultCursor.getString(DefaultCustomerAddressQuery.PHONE);
+			
+			addressSelectDialog.setDefault_address(address);
+			addressSelectDialog.setDefault_city(city);
+			addressSelectDialog.setDefault_post_code(post_code);
+			
+			setCustomerAdressUIData(BILLING_ADDRESS_SELECTOR, -1, address, "", city, post_code, phone, "");
+		}
+		if (addressDefaultCursor != null && !addressDefaultCursor.isClosed()) {
+			addressDefaultCursor.close();
+		}
+		
 		addressSelectDialog.setArguments(BaseActivity
 				.intentToFragmentArguments(tempIntent));
 		addressSelectDialog.show(getSupportFragmentManager(), "ADDRESS_DIALOG_BILLING");
+	}
+	
+	private void dialogSetContact() {
+		if (potentialCustomerNo == null) {
+			DialogUtil.showInfoDialog(this, "Upozorenje", "Kupac nije izabran!");
+			return;
+		}
+		ContactSelectDialog addressSelectDialog = new ContactSelectDialog();
+		Intent tempIntent = new Intent(Intent.ACTION_VIEW, null);
+		
+		tempIntent.putExtra(ContactSelectDialog.EXTRA_POTENTIAL_CUSTOMER_NO, potentialCustomerNo);
+		tempIntent.putExtra(ContactSelectDialog.EXTRA_DIALOG_ID, 0);
+		addressSelectDialog.setArguments(BaseActivity
+				.intentToFragmentArguments(tempIntent));
+		addressSelectDialog.show(getSupportFragmentManager(), "CONTACT_DIALOG");
 	}
 	
 	@Override
 	public void onAddressSelected(int dialogId, int address_id, String address,
 			String address_no, String city, String post_code, String phone_no,
 			String contact) {
-		if (address_id == -1) {
-			// to load default customer data
-			loadAndSetCustomerAddressData(dialogId, address_id);
-		} else {
-			// just take data from dialog
-			setCustomerAdressUIData(dialogId, address_id, address, address_no,
-					city, post_code, phone_no, contact);
-		}
+//		if (address_id == -1) {
+//			// to load default customer data
+//			loadAndSetCustomerAddressData(dialogId, address_id);
+//		} else {
+//			// just take data from dialog
+//			setCustomerAdressUIData(dialogId, address_id, address, address_no,
+//					city, post_code, phone_no, contact);
+//		}
+		setCustomerAdressUIData(dialogId, address_id, address, address_no,
+				city, post_code, phone_no, contact);
 	}
 
+	private void setContactUIData(int dialogId, int contact_id,
+			String contact_name, String contact_phone, String contact_email) {
+		switch (dialogId) {
+		case 0:
+			contactId = contact_id;
+			
+			contactName.setText("");
+			contactPhone.setText("");
+			contactEmail.setText("");
+
+			
+			contactName.setText(contact_name);
+			contactPhone.setText(contact_phone);
+			contactEmail.setText(contact_email);
+
+			StringBuilder contactCaption = new StringBuilder();
+			if (contact_name != null && contact_name.length() > 0) {
+				contactCaption.append(contact_name);
+			}
+			if (contact_phone != null && contact_phone.length() > 0) {
+				contactCaption.append(" - ").append(contact_phone);
+			}
+			if (contact_email != null && contact_email.length() > 0) {
+				contactCaption.append(" - ").append(contact_email);
+			}
+			contactSelector.setText(contactCaption.toString());
+
+			if (contact_id == -1) {
+				contactSelector.setText(getResources().getString(R.string.customer_contact_default_text));
+			}
+			break;
+		default:
+			LogUtils.LOGE(TAG, "Contact dialog not supported!");
+			break;
+		}
+	}
+	
 	private void setCustomerAdressUIData(int dialogId, int address_id,
 			String address, String address_no, String city, String post_code, String phone_no,
 			String contact) {
 		switch (dialogId) {
 		case BILLING_ADDRESS_SELECTOR:
 			billingAddressId = address_id;
+			
+			billingAddressField.setText("");
+			billingAddressCity.setText("");
+			billingAddressPostalCode.setText("");
+			billingAddressContact.setText("");
+			
 			billingAddressField.setText(address);
 			billingAddressCity.setText(city);
 			billingAddressPostalCode.setText(post_code);
-			billingAddressContact.setText(contact + " - " + phone_no);
-			billingAddressSelector.setText(address_no + " - " + city + " - " + address);
+			String contactExtend = "";
+			if (phone_no != null && phone_no.length() > 0) {
+				contactExtend = phone_no;
+			}
+			billingAddressContact.setText(contactExtend);
+			StringBuilder addressCaption = new StringBuilder();
+			if (address_no != null && address_no.length() > 0) {
+				addressCaption.append(address_no);
+			}
+			if (city != null && city.length() > 0) {
+				addressCaption.append(" - ").append(city);
+			}
+			if (address != null && address.length() > 0) {
+				addressCaption.append(" - ").append(address);
+			}
+			billingAddressSelector.setText(addressCaption.toString());
 			if (address_id == -1) {
 				billingAddressSelector.setText(getResources().getString(R.string.customer_address_default_text));
 			}
 			break;
 		case SHIPPING_ADDRESS_SELECTOR:
 			shippingAddressId = address_id;
+			
+			shippingAddressField.setText("");
+			shippingAddressCity.setText("");
+			shippingAddressPostalCode.setText("");
+			shippingAddressContact.setText("");
+			
 			shippingAddressField.setText(address);
 			shippingAddressCity.setText(city);
 			shippingAddressPostalCode.setText(post_code);
-			shippingAddressContact.setText(contact + " - " + phone_no);
-			shippingAddressSelector.setText(address_no + " - " + city + " - " + address);
+			shippingAddressContact.setText(phone_no);
+			StringBuilder addressShippCaption = new StringBuilder();
+			if (address_no != null && address_no.length() > 0) {
+				addressShippCaption.append(address_no);
+			}
+			if (city != null && city.length() > 0) {
+				addressShippCaption.append(" - ").append(city);
+			}
+			if (address != null && address.length() > 0) {
+				addressShippCaption.append(" - ").append(address);
+			}
+			shippingAddressSelector.setText(addressShippCaption.toString());
 			if (address_id == -1) {
 				shippingAddressSelector.setText(getResources().getString(R.string.customer_address_default_text));
 			}
@@ -1189,6 +1308,27 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		default:
 			LogUtils.LOGE(TAG, "Address dialog not supported!");
 			break;
+		}
+	}
+	
+	private void loadAndSetContactData(int contactType, int contact_id) {
+		if (contact_id != -1) {
+			Cursor contactCursor = getContentResolver().query(MobileStoreContract.Contacts.CONTENT_URI, ContactQuery.PROJECTION, Tables.CONTACTS+"._id=?", new String[] { String.valueOf(contact_id)  }, null);
+			if (contactCursor != null && contactCursor.moveToFirst()) {
+//				int address_id = contactCursor.getInt(ContactQuery._ID);
+				String name = contactCursor.getString(ContactQuery.NAME);
+				String email = contactCursor.getString(ContactQuery.EMAIL);
+				String phone_no = contactCursor.getString(ContactQuery.PHONE);
+				
+				setContactUIData(contactType, contact_id, name, phone_no, email);
+			} else {
+				setContactUIData(contactType, -1, "", "", "");
+			}
+			if (contactCursor != null && !contactCursor.isClosed()) {
+				contactCursor.close();
+			}
+		} else {
+			setContactUIData(contactType, -1, "", "", "");
 		}
 	}
 	
@@ -1205,11 +1345,14 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 				String phone_no = addressCursor.getString(CustomerAddressQuery.PHONE_NO);
 				
 				setCustomerAdressUIData(addressType, address_id, address, address_no, city, post_code, phone_no, contact);
+			} else {
+				setCustomerAdressUIData(addressType, -1, "-", "", "", "", "", "");
 			}
 			if (addressCursor != null && !addressCursor.isClosed()) {
 				addressCursor.close();
 			}
 		} else {
+			// this check is here when this method is called not after dialog but from this activity
 			if (selectedCustomerNo != null) {
 				Cursor addressDefaultCursor = getContentResolver().query(MobileStoreContract.Customers.CONTENT_URI, DefaultCustomerAddressQuery.PROJECTION, Tables.CUSTOMERS+"." + Customers.CUSTOMER_NO + "=?", new String[] { String.valueOf( selectedCustomerNo )  }, null);
 				if (addressDefaultCursor != null && addressDefaultCursor.moveToFirst()) {
@@ -1226,7 +1369,12 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 				setCustomerAdressUIData(addressType, -1, "-", "", "", "", "", "");
 			}
 		}
-		
+	}
+	
+	@Override
+	public void onContactSelected(int dialogId, int contact_id,
+			String contact_name, String contact_phone, String contact_email) {
+		setContactUIData(dialogId, contact_id, contact_name, contact_phone, contact_email);
 	}
 	
 	private interface CustomerAddressQuery {
@@ -1262,5 +1410,27 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		int CITY = 2;
 		int POST_CODE = 3;
 		int PHONE = 4;
+	}
+	
+	private interface ContactQuery {
+
+		String[] PROJECTION = { BaseColumns._ID,
+				MobileStoreContract.Contacts.NAME,
+				MobileStoreContract.Contacts.NAME2,
+				MobileStoreContract.Contacts.ADDRESS,
+				MobileStoreContract.Contacts.CITY,
+				MobileStoreContract.Contacts.POST_CODE,
+				MobileStoreContract.Contacts.EMAIL,
+				MobileStoreContract.Contacts.PHONE
+				};
+
+//		int _ID = 0;
+		int NAME = 1;
+//		int NAME2 = 2;
+//		int ADDRESS = 3;
+//		int CITY = 4;
+//		int POST_CODE = 5;
+		int EMAIL = 6;
+		int PHONE = 7;
 	}
 }

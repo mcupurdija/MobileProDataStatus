@@ -200,6 +200,7 @@
 		<item>Prekoracen kreditni limit i valuta</item>
     </string-array>
     <string-array name="order_status_for_shipment_array">
+        <item>Svi</item>
         <item>Porudžbina u pripremi</item>
 		<item>Finans. zabrana</item>
 		<item>Redovi na zabrani</item>

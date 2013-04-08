@@ -145,8 +145,10 @@
     <string name="dialog_body_customers_receive">Receiving all customers</string>
     <string name="dialog_title_sales_person_registration">Sales person registration</string>
     <string name="dialog_body_sales_person_registration">Registration is in process</string>
-        <string name="dialog_title_payment_and_turnover_load">Payment and turnover</string>
+    <string name="dialog_title_payment_and_turnover_load">Payment and turnover</string>
     <string name="dialog_body_payment_and_turnover_load">Loading payment and turnover</string>
+    <string name="dialog_title_items_load">Items</string>
+    <string name="dialog_body_items_load">Loading items</string>
     <string name="document_no">Document No</string>
     <string name="dokument_type_no_title">Document no and type </string>
     <string name="contact_title">Kontakt</string>
@@ -166,6 +168,7 @@
     <string name="customer_no_label">Customer No.</string>
     <string name="customer_address_label">Adsress</string>
     <string name="customer_address_default_text">Default customer address</string>
+    <string name="customer_contact_default_text">Default customer contact</string>
     <string name="customer_city_label">City</string>
     <string name="customer_postal_code_label">Postal code</string>
     <string name="customer_phone_label">Phone</string>
@@ -233,6 +236,8 @@
     <!-- title -->
 
     <string name="title_sale_order_lines_add_edit_activity">Add/Edit sales lines</string>
+    <string name="title_address_selector">Select address</string>
+    <string name="title_contact_selector">Select contact</string>
 
     <!-- settings -->
     <string name="title_settings">Settings</string>

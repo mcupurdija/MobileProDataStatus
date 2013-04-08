@@ -154,6 +154,8 @@
     <string name="dialog_body_sales_person_registration">Registrovanje prodavca je u toku </string>
     <string name="dialog_title_payment_and_turnover_load">Plan i promet</string>
     <string name="dialog_body_payment_and_turnover_load">Preuzimanje podataka o planu i prometu</string>
+    <string name="dialog_title_items_load">Artikli</string>
+    <string name="dialog_body_items_load">Preuzimanje artikala</string>
     
 	<string name="document_no">Broj dokumenta</string>
 	<string name="dokument_type_no_title">Broj i tip dokumenta</string>
@@ -175,6 +177,7 @@
 	<string name="customer_no_label">Br. kupca</string>
 	<string name="customer_address_label">Adresa</string>
 	<string name="customer_address_default_text">Podrazumevana adresa kupca</string>
+	<string name="customer_contact_default_text">Podrazumevani kontakt kupca</string>
 	<string name="customer_city_label">Grad</string>
 	<string name="customer_postal_code_label">Postanski broj</string>
 	<string name="customer_phone_label">Telefon</string>	
@@ -240,7 +243,8 @@
 	<string name="sync_failed_title">Sinhronizacija nije uspešno izvršena</string>
 	
 	<!-- title -->
-	
+	<string name="title_address_selector">Izaberi adresu</string>
+    <string name="title_contact_selector">Izaberi kontakt</string>
 	<string name="title_sale_order_lines_add_edit_activity">Dodaj/izmeni stavke porudžbine/ponude</string>
 	
 	<!-- settings -->
