@@ -238,9 +238,9 @@
             android:layout_marginBottom="8dip"
             android:orientation="horizontal" >
 
-            <EditText
+            <Spinner
                 android:id="@+id/add_customer_global_dimension"
-                style="@style/AddEdit_Text_Value"
+                style="EditEvent_Spinner"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"

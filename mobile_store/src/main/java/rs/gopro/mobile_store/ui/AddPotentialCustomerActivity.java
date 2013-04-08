@@ -1,5 +1,8 @@
 package rs.gopro.mobile_store.ui;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
@@ -18,7 +21,9 @@ import android.support.v4.content.Loader;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 public class AddPotentialCustomerActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
 
@@ -35,7 +40,7 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 //	private EditText companyNo;
 	private EditText companyId;
 	private EditText vatRegistration;
-	private EditText global_dimension;
+	private Spinner global_dimension;
 	private EditText numOfBlueCoat;
 	private EditText numOfGrayCoat;
 	
@@ -44,6 +49,8 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 	
     private int customerId;
     private String newCustomerNo;
+    
+    private ArrayAdapter<CharSequence> globalDimensionAdapter;
     
 	public AddPotentialCustomerActivity() {
 	}
@@ -76,7 +83,10 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 //		companyNo = (EditText) findViewById(R.id.contact_company_no_input);
 		
 		vatRegistration = (EditText) findViewById(R.id.add_customer_company_vat_no);
-		global_dimension = (EditText) findViewById(R.id.add_customer_global_dimension);
+		globalDimensionAdapter = ArrayAdapter.createFromResource(this, R.array.bransa_array, android.R.layout.simple_spinner_item);
+		globalDimensionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		global_dimension = (Spinner) findViewById(R.id.add_customer_global_dimension);
+		global_dimension.setAdapter(globalDimensionAdapter);
 		numOfBlueCoat = (EditText) findViewById(R.id.add_customer_blue_coats);
 		numOfGrayCoat = (EditText) findViewById(R.id.add_customer_grey_coats);
 	}
@@ -161,7 +171,9 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 //		contentValues.put(Customers.COMPANY_NO, companyNo.getText().toString());
 		contentValues.put(Customers.VAT_REG_NO, vatRegistration.getText().toString());
 		contentValues.put(Customers.SALES_PERSON_ID, salesPersonId);
-		contentValues.put(Customers.GLOBAL_DIMENSION, global_dimension.getText().toString());
+		int global_dimension_option = global_dimension.getSelectedItemPosition();
+		String[] branse = getResources().getStringArray(R.array.bransa_id_array);
+		contentValues.put(Customers.GLOBAL_DIMENSION, branse[global_dimension_option]);
 		contentValues.put(Customers.NUMBER_OF_BLUE_COAT, numOfBlueCoat.getText().toString().length() < 1  ? "0":numOfBlueCoat.getText().toString());
 		contentValues.put(Customers.NUMBER_OF_GREY_COAT,numOfGrayCoat.getText().toString().length() < 1  ? "0":numOfGrayCoat.getText().toString());
 
@@ -197,7 +209,16 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 			//companyNo.setText(data.getString(PotentialCustomerQuery.COMPANY_NO));
 			companyId.setText(data.getString(PotentialCustomerQuery.COMPANY_ID));
 			vatRegistration.setText(data.getString(PotentialCustomerQuery.VAT_REG_NO));
-			global_dimension.setText(data.getString(PotentialCustomerQuery.GLOBAL_DIMENSION));
+			String bransa_selected = data.getString(PotentialCustomerQuery.GLOBAL_DIMENSION);
+			if (bransa_selected != null) {
+				ArrayList<String> slc1ids = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.bransa_id_array)));
+				int spinnerPosition = slc1ids.indexOf(bransa_selected);
+				if (spinnerPosition != -1) {
+					global_dimension.setSelection(spinnerPosition);
+				} else {
+					LogUtils.LOGE(TAG, "No position for value:"+bransa_selected);
+				}
+			}
 			numOfBlueCoat.setText(data.getString(PotentialCustomerQuery.NUMBER_OF_BLUE_COAT));
 			numOfGrayCoat.setText(data.getString(PotentialCustomerQuery.NUMBER_OF_GREY_COAT));
 			customerId = data.getInt(PotentialCustomerQuery.ID);

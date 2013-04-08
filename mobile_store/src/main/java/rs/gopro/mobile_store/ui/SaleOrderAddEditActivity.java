@@ -883,6 +883,12 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		int document_type = documentType.getSelectedItemPosition();
 		localValues.put(MobileStoreContract.SaleOrders.DOCUMENT_TYPE, Integer.valueOf(document_type));
 		
+		if (isPotentialCustomer(customerId)) {
+			if (document_type != 1) {
+				throw new SaleOrderValidationException("Potencijalni kupac može biti izabran samo na ponudi!");
+			}
+		}
+		
 		int backorder_type = backorderType.getSelectedItemPosition();
 		if (backorder_type == 0) {
 			throw new SaleOrderValidationException("Način obrade nije izabran!");
@@ -978,6 +984,16 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		return localValues;
 	}
 	
+	private boolean isPotentialCustomer(int customerId2) {
+		Cursor potentialCustomerCursor = getContentResolver().query(MobileStoreContract.Customers.CONTENT_URI, new String[] {Customers.CONTACT_COMPANY_NO}, 
+				"("+Customers.CONTACT_COMPANY_NO + " is null or " + Customers.CONTACT_COMPANY_NO + "='')" + " and " + Customers._ID + "=?" , new String[] { String.valueOf(customerId2) }, null);
+		if (potentialCustomerCursor.moveToFirst()) {
+			return true;
+		}
+		potentialCustomerCursor.close();
+		return false;
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater menuInflater = getMenuInflater();
