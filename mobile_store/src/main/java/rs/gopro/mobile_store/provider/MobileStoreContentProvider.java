@@ -66,6 +66,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 //	private static final int CUSTOMERS_BY_STATUS = 125;
 	private static final int CUSTOMERS_BY_SALES_PERSON = 126;
 	private static final int POTENTIAL_CUSTOMERS_EXPORT = 127;
+	private static final int UPDATE_CUSTOMERS_EXPORT = 128;
 
 	private static final int ITEMS = 130;
 	//private static final int ITEMS_NO = 131;
@@ -148,6 +149,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		
 		mobileStoreURIMatcher.addURI(authority, "customers", CUSTOMERS);
 		mobileStoreURIMatcher.addURI(authority, "customers/potential_customers_export", POTENTIAL_CUSTOMERS_EXPORT);
+		mobileStoreURIMatcher.addURI(authority, "customers/update_customers_export", UPDATE_CUSTOMERS_EXPORT);
 		mobileStoreURIMatcher.addURI(authority, "customers_by_sales_person/*",
 				CUSTOMERS_BY_SALES_PERSON);
 		mobileStoreURIMatcher.addURI(authority, "customers/#", CUSTOMERS_ID);
@@ -528,6 +530,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 					//Customers.BLOCKED_STATUS + "= ?", new String[] { "0" }); // TODO delete this!
 		case POTENTIAL_CUSTOMERS_EXPORT:
 			return builder.addTable(Tables.CUSTOMERS_EXPORT);
+		case UPDATE_CUSTOMERS_EXPORT:
+			return builder.addTable(Tables.CUSTOMERS_UPDATE_EXPORT);
 		case CUSTOMERS_BY_SALES_PERSON:
 			final String salesPersonIdOnCustomer = Customers
 					.getCustomersSalesPersonId(uri);

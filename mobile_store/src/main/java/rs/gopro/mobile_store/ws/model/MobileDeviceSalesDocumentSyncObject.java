@@ -12,8 +12,10 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.csv.CSVDomainWriter;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
@@ -32,6 +34,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.MOBILE_DEVICE_SALES_DOCUMENT_SYNC_ACTION";
 	
 	private int documentId;
+	private int potentialCustomer = 0;
 	private String pCSVStringHeader;
 	private String pCSVStringLines;
 	private String pNoteForCentralOffice;
@@ -65,6 +68,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	public MobileDeviceSalesDocumentSyncObject(Parcel source) {
 		super(source);
 		setDocumentId(source.readInt());
+		setPotentialCustomer(source.readInt());
 		setpCSVStringHeader(source.readString());
 		setpCSVStringLines(source.readString());
 		setpNoteForCentralOffice(source.readString());
@@ -102,6 +106,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(getStatusMessage());
 		dest.writeInt(getDocumentId());
+		dest.writeInt(isPotentialCustomer());
 		dest.writeString(getpCSVStringHeader());
 		dest.writeString(getpCSVStringLines());
 		dest.writeString(getpNoteForCentralOffice());
@@ -164,6 +169,19 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		// get header data
 		Cursor cursorHeader = context.getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderExport(), SalesOrderHeaderQuery.PROJECTION, Tables.SALE_ORDERS+"._ID=?", new String[] { String.valueOf(documentId) }, null);
 		List<String[]> header = CSVDomainWriter.parseCursor(cursorHeader, SalesOrderHeaderQuery.PROJECTION_TYPE);
+		if (header.size() > 0) {
+			String[] headerLine = header.get(0);
+			int document_type_pos = 0;
+			int customer_no_pos = 2;
+			int contact_no_pos = 11;
+			// it is document type ponuda and customer is potential customer
+			if (headerLine[document_type_pos].equals("1") && isPotentialCustomer(headerLine[customer_no_pos])) {
+				headerLine[contact_no_pos] = headerLine[customer_no_pos];
+				headerLine[customer_no_pos] = "";
+			}
+		} else {
+			LogUtils.LOGE(TAG, "Sale document header is empty!!!");
+		}
 		StringWriter stringWriter = new StringWriter();
 		CSVWriter writer = new CSVWriter(stringWriter, ';', '"');
 		writer.writeAll(header);
@@ -174,6 +192,16 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		}
 		cursorHeader.close();
 		return stringWriter.toString();
+	}
+	
+	private boolean isPotentialCustomer(String customerNo) {
+		Cursor potentialCustomerCursor = context.getContentResolver().query(MobileStoreContract.Customers.CONTENT_URI, new String[] {Customers.CONTACT_COMPANY_NO}, 
+				"("+Customers.CONTACT_COMPANY_NO + " is null or " + Customers.CONTACT_COMPANY_NO + "='')" + " and " + Customers.CUSTOMER_NO + "=?" , new String[] { customerNo }, null);
+		if (potentialCustomerCursor.moveToFirst()) {
+			return true;
+		}
+		potentialCustomerCursor.close();
+		return false;
 	}
 	
 	private String createLines() {
@@ -473,5 +501,13 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 
 	public void setpVerifyOnly(Integer pVerifyOnly) {
 		this.pVerifyOnly = pVerifyOnly;
+	}
+
+	public int isPotentialCustomer() {
+		return potentialCustomer;
+	}
+
+	public void setPotentialCustomer(int potentialCustomer) {
+		this.potentialCustomer = potentialCustomer;
 	}
 }

@@ -27,6 +27,7 @@ import android.widget.Spinner;
 
 public class AddPotentialCustomerActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
 
+	private static final int CREATE_CUSTOMER_FROM_POTENTIAL = 0;
 	private static final String TAG = "AddPotentialCustomerActivity";
 	
 	private EditText primaryName;
@@ -190,7 +191,8 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 	
 	private void sendPotentialCustomer(int customerId) {    	
     	SetPotentialCustomersSyncObject potentialCustomersSyncObject = new SetPotentialCustomersSyncObject(customerId);
-    	potentialCustomersSyncObject.setpPendingCustomerCreation(Integer.valueOf(1));
+    	// it will not send signal to create customer
+    	potentialCustomersSyncObject.setpPendingCustomerCreation(Integer.valueOf(CREATE_CUSTOMER_FROM_POTENTIAL));
     	Intent intent = new Intent(this, NavisionSyncService.class);
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, potentialCustomersSyncObject);
 		startService(intent);	
