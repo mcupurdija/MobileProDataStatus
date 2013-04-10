@@ -16,13 +16,13 @@ package au.com.bytecode.opencsv.bean;
  limitations under the License.
  */
 
-import au.com.bytecode.opencsv.CSVReader;
-
 import java.io.Reader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 public class CsvToBean<T> {
 //    private Map<Class<?>, Field> editorMap = null;

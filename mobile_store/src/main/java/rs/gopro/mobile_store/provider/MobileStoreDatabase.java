@@ -39,7 +39,7 @@ public class MobileStoreDatabase extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		try {
 			LogUtils.log(Log.INFO, TAG, "Create database!");
-			execSqlFile(CREATE_FILE, SQL_DIR, db);
+			execSqlFile(CREATE_FILE, SQL_DIR, db, true);
 		} catch (IOException exception) {
 			throw new RuntimeException("Database creation failed", exception);
 		}
@@ -57,14 +57,14 @@ public class MobileStoreDatabase extends SQLiteOpenHelper {
 					if (sqlFile.startsWith(UPGRADEFILE_PREFIX)) {
 						int fileVersion = Integer.parseInt(sqlFile.substring(UPGRADEFILE_PREFIX.length(), sqlFile.length() - UPGRADEFILE_SUFFIX.length()));
 						if (fileVersion > oldVersion && fileVersion <= newVersion) {
-							execSqlFile(sqlFile, SQL_DIR, db);
+							execSqlFile(sqlFile, SQL_DIR, db, false);
 						}
 					}
 				}
 			} else {
 				// if upgrade file does not exist use create file
 				LogUtils.log(Log.INFO, TAG, "No upgrade go to create database!");
-				execSqlFile(CREATE_FILE, SQL_DIR, db);
+				execSqlFile(CREATE_FILE, SQL_DIR, db, true);
 			}
 
 		} catch (IOException exception) {
@@ -72,15 +72,18 @@ public class MobileStoreDatabase extends SQLiteOpenHelper {
 		}
 	}
 
-	protected void execSqlFile(String sqlFile, String filePath, SQLiteDatabase db) throws SQLException, IOException {
+	protected void execSqlFile(String sqlFile, String filePath, SQLiteDatabase db, boolean isCreate) throws SQLException, IOException {
 		
 		String trigger = "";
 		for (String sqlInstruction : SqlParserUtil.parseSqlFile(filePath + "/" + sqlFile, this.context.getAssets())) {
 			if (SqlParserUtil.isScriptForTableCreation(sqlInstruction)) {
 				String tableName = SqlParserUtil.getTableName(sqlInstruction);
-				LogUtils.log(Log.INFO, TAG, "Table " + tableName + " is dropped");
-				db.execSQL("DROP TABLE IF EXISTS " + tableName);
-				LogUtils.log(Log.INFO, TAG, "Execute sql file: " + "DROP TABLE IF EXISTS " + tableName);
+				// do delete only on create, on update just do what it is in file 
+				if (isCreate) {
+					LogUtils.log(Log.INFO, TAG, "Table " + tableName + " is dropped");
+					db.execSQL("DROP TABLE IF EXISTS " + tableName);
+					LogUtils.log(Log.INFO, TAG, "Execute sql file: " + "DROP TABLE IF EXISTS " + tableName);
+				}
 				db.execSQL(sqlInstruction);
 				LogUtils.log(Log.INFO, TAG, "Execute sql file: " + sqlInstruction);
 			} else if (SqlParserUtil.isScriptForTriggerCreation(sqlInstruction)) {

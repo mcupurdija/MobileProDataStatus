@@ -3,9 +3,6 @@ package rs.gopro.mobile_store.ui.fragment;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.BaseActivity;
-import rs.gopro.mobile_store.ui.CustomersViewDetailFragment;
-import rs.gopro.mobile_store.ui.CustomersViewDetailFragment.Callbacks;
-
 import rs.gopro.mobile_store.util.LogUtils;
 import android.content.Intent;
 import android.database.Cursor;

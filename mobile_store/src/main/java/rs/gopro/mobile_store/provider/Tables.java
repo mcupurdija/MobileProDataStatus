@@ -45,5 +45,5 @@ public interface Tables {
 	String SENT_ORDERS_STATUS_JOIN_CUSTOMERS = "sent_orders_status left outer join customers on sent_orders_status.customer_id = customers._id";
 	String CUSTOMERS_EXPORT = "customers left outer join sales_persons on customers.sales_person_id = sales_persons._id";
 	String CUSTOMERS_UPDATE_EXPORT = "customers left outer join sales_persons on customers.sales_person_id = sales_persons._id " +
-			"left outer join contacts on customers.contact_id = contacts._id";
+			"left outer join contacts on customers.primary_contact_id = contacts._id";
 }

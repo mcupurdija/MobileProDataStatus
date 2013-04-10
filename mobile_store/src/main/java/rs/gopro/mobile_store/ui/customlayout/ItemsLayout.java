@@ -3,7 +3,6 @@ package rs.gopro.mobile_store.ui.customlayout;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.ui.ItemsListFragment;
 import rs.gopro.mobile_store.util.LogUtils;
-
 import android.app.Activity;
 import android.net.Uri;
 import android.support.v4.app.Fragment;

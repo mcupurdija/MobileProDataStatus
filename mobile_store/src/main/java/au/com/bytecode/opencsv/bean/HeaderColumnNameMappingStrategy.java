@@ -1,11 +1,11 @@
 package au.com.bytecode.opencsv.bean;
 
-import au.com.bytecode.opencsv.CSVReader;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Copyright 2007 Kyle Miller.

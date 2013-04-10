@@ -75,7 +75,7 @@ public class UpdateCustomerSyncObject extends SyncObject {
 
 	@Override
 	public String getWebMethodName() {
-		return "SetPotentialCustomers";
+		return "UpdateCustomers";
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class UpdateCustomerSyncObject extends SyncObject {
 
 	private interface PotentialCustomerQuery {
 		String[] PROJECTION = {
-				MobileStoreContract.Customers.CUSTOMER_NO,
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.CUSTOMER_NO,
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.NAME, 
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.NAME_2,
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.ADDRESS,
@@ -159,8 +159,8 @@ public class UpdateCustomerSyncObject extends SyncObject {
 				Tables.CONTACTS+"."+MobileStoreContract.Contacts.CONTACT_NO, 
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.COMPANY_ID,
 				
-				MobileStoreContract.Customers.NUMBER_OF_BLUE_COAT, 
-				MobileStoreContract.Customers.NUMBER_OF_GREY_COAT
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.NUMBER_OF_BLUE_COAT, 
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.NUMBER_OF_GREY_COAT
         };
 		
 		Type[] PROJECTION_TYPE = {

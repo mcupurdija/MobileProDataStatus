@@ -127,7 +127,7 @@ public class SqlParserUtil {
 				stringBuffer.append(content[i]);
 			}
 		}
-		if (stringBuffer.length() > 0) {
+		if (stringBuffer.toString().trim().length() > 0) {
 			statements.add(stringBuffer.toString().trim() + "; ");
 		}
 		return statements;

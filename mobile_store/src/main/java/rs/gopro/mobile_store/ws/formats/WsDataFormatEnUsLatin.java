@@ -1,7 +1,5 @@
 package rs.gopro.mobile_store.ws.formats;
 
-import android.annotation.SuppressLint;
-
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -11,6 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import rs.gopro.mobile_store.util.LogUtils;
+import android.annotation.SuppressLint;
 
 public class WsDataFormatEnUsLatin {
 	

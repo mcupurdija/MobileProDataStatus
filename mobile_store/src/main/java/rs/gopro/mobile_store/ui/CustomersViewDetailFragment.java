@@ -6,7 +6,6 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
-import rs.gopro.mobile_store.ws.model.SetPotentialCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.UpdateCustomerSyncObject;
 import android.app.Activity;
 import android.content.ContentValues;

@@ -8,7 +8,6 @@ import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.CustomerAddressesSyncObject;
-import rs.gopro.mobile_store.ws.model.GetContactsSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.AlertDialog;
 import android.app.Dialog;

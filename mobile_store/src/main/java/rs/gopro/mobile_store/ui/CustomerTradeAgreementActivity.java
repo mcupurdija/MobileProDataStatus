@@ -2,7 +2,6 @@ package rs.gopro.mobile_store.ui;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.ui.fragment.CustomerTradeAgreementFragment;
-import rs.gopro.mobile_store.ui.fragment.ElectronicCardCustomerFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;

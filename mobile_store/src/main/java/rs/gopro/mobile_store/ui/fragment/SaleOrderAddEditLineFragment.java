@@ -7,6 +7,7 @@ import java.util.Map;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.components.ItemAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
@@ -694,12 +695,24 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 		String quantity = mQuantity.getText().toString().replace('.', ','); // UIUtils.getDoubleFromUI(mQuantity.getText().toString().replace('.', ','));
 		int campaign_status = mCampaignStatus.getSelectedItemPosition();
-		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", campaign_status, Integer.valueOf(0),customerNo, quantity, salesPersonNo, documentType, 0, "", "", "", "", "", "", "", "");
+		int potentialCustomerSignal = isPotentialCustomer(customerId) == false ? 0 : 1;
+		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", campaign_status, Integer.valueOf(potentialCustomerSignal),customerNo, quantity, salesPersonNo, documentType, 0, "", "", "", "", "", "", "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQtySalesPriceAndDiscSyncObject);
 		getActivity().startService(intent);
 		
 	}
 
+	private boolean isPotentialCustomer(int customerId) {
+		Cursor potentialCustomerCursor = getActivity().getContentResolver().query(MobileStoreContract.Customers.CONTENT_URI, new String[] {Customers.CONTACT_COMPANY_NO}, 
+				"("+Customers.CONTACT_COMPANY_NO + " is null or " + Customers.CONTACT_COMPANY_NO + "='')" + " and " + Customers._ID + "=?" , new String[] { String.valueOf(customerId) }, null);
+		
+		if (potentialCustomerCursor.moveToFirst()) {
+			return true;
+		}
+		potentialCustomerCursor.close();
+		return false;
+	}
+	
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 	}

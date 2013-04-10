@@ -2,12 +2,10 @@ package rs.gopro.mobile_store.util.csv;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
-
 import android.database.Cursor;
 import android.text.format.Time;
 

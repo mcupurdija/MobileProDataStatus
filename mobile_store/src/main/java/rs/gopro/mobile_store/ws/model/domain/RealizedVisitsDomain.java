@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
-import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
+import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 import android.content.ContentValues;

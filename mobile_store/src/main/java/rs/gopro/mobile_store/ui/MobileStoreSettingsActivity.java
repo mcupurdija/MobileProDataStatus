@@ -3,7 +3,6 @@ package rs.gopro.mobile_store.ui;
 import java.util.List;
 
 import rs.gopro.mobile_store.R;
-
 import android.preference.PreferenceActivity;
 import android.view.Menu;
 import android.view.MenuItem;
