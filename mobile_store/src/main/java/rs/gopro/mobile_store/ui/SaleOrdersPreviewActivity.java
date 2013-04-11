@@ -1,5 +1,7 @@
 package rs.gopro.mobile_store.ui;
 
+import java.util.Date;
+
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
@@ -9,6 +11,7 @@ import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.widget.SaleOrderContextualMenu;
 import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
+import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DocumentUtils;
 import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
@@ -379,6 +382,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 				return true;
 			}
 			Intent intent = new Intent(this, NavisionSyncService.class);
+			updateOrderDate(saleOrderId);
 			MobileDeviceSalesDocumentSyncObject mobileDeviceSalesDocumentSyncObject = new MobileDeviceSalesDocumentSyncObject(Integer.valueOf(saleOrderId), SAVE_SALE_DOC);
 			//mobileDeviceSalesDocumentSyncObject.setpDocumentNote()
 			intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, mobileDeviceSalesDocumentSyncObject);
@@ -394,6 +398,18 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		}
 		
 		return super.onOptionsItemSelected(item);
+	}
+
+	private boolean updateOrderDate(String saleOrderId2) {
+		ContentValues cv = new ContentValues();
+		cv.put(SaleOrders.ORDER_DATE, DateUtils.toDbDate(new Date()));
+		
+		int result = getContentResolver().update(MobileStoreContract.SaleOrders.CONTENT_URI, cv, SaleOrders._ID+"=?", new String[] { saleOrderId2 });
+		
+		if (result > 0)
+			return true;
+		else 
+			return false;
 	}
 
 	private void cloneDocument() {

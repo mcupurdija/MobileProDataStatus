@@ -181,6 +181,7 @@ public class SetPotentialCustomersSyncObject extends SyncObject {
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.EMAIL, 
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.COMPANY_ID, 
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.GLOBAL_DIMENSION,
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.CHANNEL_ORAN,
 				MobileStoreContract.Customers.NUMBER_OF_BLUE_COAT, 
 				MobileStoreContract.Customers.NUMBER_OF_GREY_COAT
         };
@@ -200,7 +201,8 @@ public class SetPotentialCustomersSyncObject extends SyncObject {
 				String.class,
 				String.class,
 				String.class,
-				String.class,			
+				String.class,
+				String.class,
 				String.class,
 				String.class,
 		};
