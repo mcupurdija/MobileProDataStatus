@@ -4,9 +4,8 @@ import java.util.Date;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
-import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
-
+import rs.gopro.mobile_store.util.DateUtils;
 import android.database.Cursor;
 import android.os.Parcel;
 

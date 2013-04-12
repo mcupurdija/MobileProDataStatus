@@ -18,9 +18,8 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import android.os.AsyncTask;
-
 import rs.gopro.mobile_store.ws.util.NTLMSchemeFactory;
+import android.os.AsyncTask;
 
 /**
  * Testing purpose only!

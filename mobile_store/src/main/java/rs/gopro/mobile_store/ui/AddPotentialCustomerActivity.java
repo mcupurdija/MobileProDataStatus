@@ -7,7 +7,9 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.exceptions.PotentialCustomerValidationException;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.SetPotentialCustomersSyncObject;
 import android.content.ContentValues;
@@ -18,6 +20,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +30,7 @@ import android.widget.Spinner;
 
 public class AddPotentialCustomerActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
 
+	private static final int CREATE_CUSTOMER_FROM_POTENTIAL = 0;
 	private static final String TAG = "AddPotentialCustomerActivity";
 	
 	private EditText primaryName;
@@ -41,6 +45,7 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 	private EditText companyId;
 	private EditText vatRegistration;
 	private Spinner global_dimension;
+	private EditText channelOran;
 	private EditText numOfBlueCoat;
 	private EditText numOfGrayCoat;
 	
@@ -48,7 +53,7 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
     private Uri mUri;
 	
     private int customerId;
-    private String newCustomerNo;
+//    private String newCustomerNo;
     
     private ArrayAdapter<CharSequence> globalDimensionAdapter;
     
@@ -71,22 +76,33 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 		setContentView(R.layout.activity_add_potential_customer);
 
 		primaryName = (EditText) findViewById(R.id.add_customer_name1);
+		primaryName.setFilters( new InputFilter[] { new InputFilter.LengthFilter(50)} );
 		secondaryName = (EditText) findViewById(R.id.add_customer_name2);
+		secondaryName.setFilters( new InputFilter[] { new InputFilter.LengthFilter(50)} );
 		address = (EditText) findViewById(R.id.add_customer_address_value);
+		address.setFilters( new InputFilter[] { new InputFilter.LengthFilter(50)} );
 		city = (EditText) findViewById(R.id.add_customer_city);
+		city.setFilters( new InputFilter[] { new InputFilter.LengthFilter(30)} );
 		postCode = (EditText) findViewById(R.id.add_customer_postal_code);
+		postCode.setFilters( new InputFilter[] { new InputFilter.LengthFilter(10)} );
 		phone = (EditText) findViewById(R.id.add_customer_phone);
+		phone.setFilters( new InputFilter[] { new InputFilter.LengthFilter(30)} );
 		mobilePhone = (EditText) findViewById(R.id.add_customer_mobile);
+		mobilePhone.setFilters( new InputFilter[] { new InputFilter.LengthFilter(20)} );
 		email = (EditText) findViewById(R.id.add_customer_email_value);
+		email.setFilters( new InputFilter[] { new InputFilter.LengthFilter(80)} );
 		companyId = (EditText) findViewById(R.id.add_customer_company_id);
+		companyId.setFilters( new InputFilter[] { new InputFilter.LengthFilter(8)} );
 		
 //		companyNo = (EditText) findViewById(R.id.contact_company_no_input);
 		
 		vatRegistration = (EditText) findViewById(R.id.add_customer_company_vat_no);
+		vatRegistration.setFilters( new InputFilter[] { new InputFilter.LengthFilter(9)} );
 		globalDimensionAdapter = ArrayAdapter.createFromResource(this, R.array.bransa_array, android.R.layout.simple_spinner_item);
 		globalDimensionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		global_dimension = (Spinner) findViewById(R.id.add_customer_global_dimension);
 		global_dimension.setAdapter(globalDimensionAdapter);
+		channelOran = (EditText) findViewById(R.id.add_customer_oran);
 		numOfBlueCoat = (EditText) findViewById(R.id.add_customer_blue_coats);
 		numOfGrayCoat = (EditText) findViewById(R.id.add_customer_grey_coats);
 	}
@@ -110,8 +126,8 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 			ContentValues contentValues = new ContentValues();
 			contentValues.putNull(MobileStoreContract.Customers.CUSTOMER_NO); // this is signal that customer is potential
 			mUri = getContentResolver().insert(MobileStoreContract.Customers.CONTENT_URI, contentValues);
-			String customer_id = MobileStoreContract.Customers.getCustomersId(mUri);
-			newCustomerNo = "CUST/"+salesPersonNo+"-"+customer_id;
+//			String customer_id = MobileStoreContract.Customers.getCustomersId(mUri);
+//			newCustomerNo = "CUST/"+salesPersonNo+"-"+customer_id;
 		}
 		
 		getSupportLoaderManager().initLoader(0, null, this);
@@ -148,7 +164,13 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 			finish();
 			return true;
 		case R.id.save_potential_customer_menu_option:
-			submitForm();
+			try {
+				submitForm();
+			} catch (PotentialCustomerValidationException pe) {
+				LogUtils.LOGE(TAG, "", pe);
+				DialogUtil.showInfoDialog(this, "Greska pri unosu podataka", pe.getMessage());
+				return false;
+			}
 			finish();
 			return true;
 		default:
@@ -157,7 +179,7 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 		return super.onOptionsItemSelected(item);
 	}
 	
-	private void submitForm() {
+	private void submitForm() throws PotentialCustomerValidationException {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(Customers.NAME, primaryName.getText().toString());
 		contentValues.put(Customers.NAME_2, secondaryName.getText().toString());
@@ -167,14 +189,30 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 		contentValues.put(Customers.PHONE, phone.getText().toString());
 		contentValues.put(Customers.MOBILE, mobilePhone.getText().toString());
 		contentValues.put(Customers.EMAIL, email.getText().toString());
+		if (companyId.getText().toString().length() < 1) {
+			throw new PotentialCustomerValidationException("Niste uneli maticni broj kupca!");
+		}
 		contentValues.put(Customers.COMPANY_ID,companyId.getText().toString());
 //		contentValues.put(Customers.COMPANY_NO, companyNo.getText().toString());
+		if (vatRegistration.getText().toString().length() < 1) {
+			throw new PotentialCustomerValidationException("Niste uneli PIB kupca!");
+		}
 		contentValues.put(Customers.VAT_REG_NO, vatRegistration.getText().toString());
 		contentValues.put(Customers.SALES_PERSON_ID, salesPersonId);
 		int global_dimension_option = global_dimension.getSelectedItemPosition();
 		String[] branse = getResources().getStringArray(R.array.bransa_id_array);
 		contentValues.put(Customers.GLOBAL_DIMENSION, branse[global_dimension_option]);
+		if (channelOran.getText().toString().length() < 1) {
+			throw new PotentialCustomerValidationException("Niste uneli kanal (ORAN) kupca!");
+		}
+		contentValues.put(Customers.CHANNEL_ORAN, channelOran.getText().toString());
+		if (numOfBlueCoat.getText().toString().length() < 1) {
+			throw new PotentialCustomerValidationException("Niste uneli broj plavih mantila kupca!");
+		}
 		contentValues.put(Customers.NUMBER_OF_BLUE_COAT, numOfBlueCoat.getText().toString().length() < 1  ? "0":numOfBlueCoat.getText().toString());
+		if (numOfGrayCoat.getText().toString().length() < 1) {
+			throw new PotentialCustomerValidationException("Niste uneli broj sivih mantila kupca!");
+		}
 		contentValues.put(Customers.NUMBER_OF_GREY_COAT,numOfGrayCoat.getText().toString().length() < 1  ? "0":numOfGrayCoat.getText().toString());
 
 		if (Intent.ACTION_INSERT.equals(mAction)) {
@@ -190,7 +228,8 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 	
 	private void sendPotentialCustomer(int customerId) {    	
     	SetPotentialCustomersSyncObject potentialCustomersSyncObject = new SetPotentialCustomersSyncObject(customerId);
-    	potentialCustomersSyncObject.setpPendingCustomerCreation(Integer.valueOf(1));
+    	// it will not send signal to create customer
+    	potentialCustomersSyncObject.setpPendingCustomerCreation(Integer.valueOf(CREATE_CUSTOMER_FROM_POTENTIAL));
     	Intent intent = new Intent(this, NavisionSyncService.class);
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, potentialCustomersSyncObject);
 		startService(intent);	
@@ -219,6 +258,7 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 					LogUtils.LOGE(TAG, "No position for value:"+bransa_selected);
 				}
 			}
+			channelOran.setText(data.getString(PotentialCustomerQuery.CHANNEL_ORAN));
 			numOfBlueCoat.setText(data.getString(PotentialCustomerQuery.NUMBER_OF_BLUE_COAT));
 			numOfGrayCoat.setText(data.getString(PotentialCustomerQuery.NUMBER_OF_GREY_COAT));
 			customerId = data.getInt(PotentialCustomerQuery.ID);
@@ -246,10 +286,11 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 				MobileStoreContract.Customers.GLOBAL_DIMENSION,
 				MobileStoreContract.Customers.NUMBER_OF_BLUE_COAT, 
 				MobileStoreContract.Customers.NUMBER_OF_GREY_COAT,
-				MobileStoreContract.Customers._ID
+				MobileStoreContract.Customers._ID,
+				MobileStoreContract.Customers.CHANNEL_ORAN
         };
 		
-		int CUSTOMER_NO = 0;
+//		int CUSTOMER_NO = 0;
 		int NAME = 1; 
 		int NAME_2 = 2;
 		int ADDRESS = 3;
@@ -258,7 +299,7 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 		int PHONE = 5; 
 		int MOBILE = 6; 
 
-		int SALES_PERSON_ID = 7; 
+//		int SALES_PERSON_ID = 7; 
 		int VAT_REG_NO = 8;
 		int POST_CODE = 9;
 		int EMAIL = 10; 
@@ -267,6 +308,7 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 		int NUMBER_OF_BLUE_COAT = 13; 
 		int NUMBER_OF_GREY_COAT = 14;
 		int ID = 15;
+		int CHANNEL_ORAN = 16;
 	}
 
 }

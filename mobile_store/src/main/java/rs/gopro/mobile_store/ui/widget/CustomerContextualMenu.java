@@ -7,6 +7,7 @@ import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.CustomerAddressesSyncObject;
 import rs.gopro.mobile_store.ws.model.GetContactsSyncObject;
+import rs.gopro.mobile_store.ws.model.SetPotentialCustomersSyncObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 
 public class CustomerContextualMenu implements ActionMode.Callback {
 	
+	private static final int CREATE_CUSTOMER_FROM_POTENTIAL = 0;
 	String customerId;
 	Activity activity;
 	ProgressDialog syncProgressDialog;
@@ -34,6 +36,12 @@ public class CustomerContextualMenu implements ActionMode.Callback {
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.sync_potential_customer:
+			if (isPotentialCustomer(Integer.valueOf(customerId))) {
+				sendPotentialCustomer(Integer.valueOf(customerId));
+			}
+			mode.finish();
+			return true;
 		case R.id.sync_customer_address:
 			//syncProgressDialog = ProgressDialog.show(activity, activity.getResources().getString(R.string.dialog_title_item_price_qty_load), activity.getResources().getString(R.string.dialog_body_item_price_qty_load), true, true);
 			doSyncAddresses();
@@ -58,6 +66,26 @@ public class CustomerContextualMenu implements ActionMode.Callback {
 		return false;
 	}
 
+	private boolean isPotentialCustomer(int customerId) {
+		Cursor potentialCustomerCursor = activity.getContentResolver().query(MobileStoreContract.Customers.CONTENT_URI, new String[] {Customers.CONTACT_COMPANY_NO}, 
+				"("+Customers.CONTACT_COMPANY_NO + " is null or " + Customers.CONTACT_COMPANY_NO + "='')" + " and " + Customers._ID + "=?" , new String[] { String.valueOf(customerId) }, null);
+		
+		if (potentialCustomerCursor.moveToFirst()) {
+			return true;
+		}
+		potentialCustomerCursor.close();
+		return false;
+	}
+	
+	private void sendPotentialCustomer(int customerId) {    	
+    	SetPotentialCustomersSyncObject potentialCustomersSyncObject = new SetPotentialCustomersSyncObject(customerId);
+    	// it will not send signal to create customer
+    	potentialCustomersSyncObject.setpPendingCustomerCreation(Integer.valueOf(CREATE_CUSTOMER_FROM_POTENTIAL));
+    	Intent intent = new Intent(activity, NavisionSyncService.class);
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, potentialCustomersSyncObject);
+		activity.startService(intent);	
+	}
+	
 	private void doSyncAddresses() {
 		Cursor cursor = activity.getContentResolver().query(MobileStoreContract.Customers.buildCustomersUri(customerId), new String[] { Customers._ID, Customers.CUSTOMER_NO }, null, null, null);
 		if (cursor.moveToFirst()) {

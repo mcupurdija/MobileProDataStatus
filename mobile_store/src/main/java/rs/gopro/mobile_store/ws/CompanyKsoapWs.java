@@ -7,9 +7,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 
-import android.os.AsyncTask;
-
 import rs.gopro.mobile_store.ws.util.HttpTransportApache;
+import android.os.AsyncTask;
 
 /**
  * Testing purpose only!

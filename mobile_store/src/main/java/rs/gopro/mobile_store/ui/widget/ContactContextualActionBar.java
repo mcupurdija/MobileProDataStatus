@@ -6,10 +6,10 @@ import rs.gopro.mobile_store.ui.AddContactActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.ActionMode;
+import android.view.ActionMode.Callback;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.ActionMode.Callback;
 
 public class ContactContextualActionBar implements Callback {
 

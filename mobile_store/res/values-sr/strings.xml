@@ -296,6 +296,7 @@
 	<string name="cus_trade_agree_activity_title">Korisnicki sporazum</string>
 	<string name="sync_sub_menu_title">Preuzimanje podataka</string>
 	<string name="sync_customer_address_menu_title">Preuzmi adrese</string>
+	<string name="sync_potential_customer_menu_title">Pošalji potencijalnog kupca</string>
 	<string name="sync_customer_contacts_menu_title">Preuzmi kontakte</string>
 	<string name="sync_all_customers_menu_title">Preuzmi kupce</string>
 	
@@ -377,6 +378,7 @@
 	<string name="add_customer_email_title">E-mail</string>
 	<string name="add_customer_company_data_title">PIB - Matični broj</string>
 	<string name="add_customer_global_dimension_title">Globalna dimenzija 2</string>
+	<string name="add_customer_oran_title">Kanal (ORAN)</string>
 	<string name="add_customer_blue_coats_title">Br. plavih mantila</string>
 	<string name="add_customer_grey_coats_title">Br. sivih mantila</string>
 	

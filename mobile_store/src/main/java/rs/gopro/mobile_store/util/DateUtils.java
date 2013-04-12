@@ -1,6 +1,5 @@
 package rs.gopro.mobile_store.util;
 
-import android.annotation.SuppressLint;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -8,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import android.annotation.SuppressLint;
 
 public class DateUtils {
 	public static String TAG = "DateUtils";

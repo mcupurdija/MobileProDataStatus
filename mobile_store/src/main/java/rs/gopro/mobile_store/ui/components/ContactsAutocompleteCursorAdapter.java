@@ -1,12 +1,8 @@
 package rs.gopro.mobile_store.ui.components;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;

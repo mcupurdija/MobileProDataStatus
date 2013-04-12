@@ -17,6 +17,7 @@ import rs.gopro.mobile_store.ui.dialog.ContactSelectDialog;
 import rs.gopro.mobile_store.ui.dialog.ContactSelectDialog.ContactSelectDialogListener;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DialogUtil;
+import rs.gopro.mobile_store.util.DocumentUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.exceptions.SaleOrderValidationException;
 import android.app.AlertDialog;
@@ -32,6 +33,7 @@ import android.provider.BaseColumns;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.InputFilter;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -305,9 +307,13 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		documentNo = (TextView) findViewById(R.id.edit_sale_order_dokument_no_text);
 
 	    contactName = (EditText) findViewById(R.id.edit_sale_order_contact_name_text);
+	    contactName.setFilters( new InputFilter[] { new InputFilter.LengthFilter(50)} );
 	    contactPhone = (EditText) findViewById(R.id.edit_sale_order_contact_phone_text);
+	    contactName.setFilters( new InputFilter[] { new InputFilter.LengthFilter(30)} );
 	    orderNo = (EditText) findViewById(R.id.edit_sale_order_quote_no_edit_text);
+	    orderNo.setFilters( new InputFilter[] { new InputFilter.LengthFilter(20)} );
 	    contactEmail = (EditText) findViewById(R.id.edit_sale_order_contact_email_text);
+	    contactName.setFilters( new InputFilter[] { new InputFilter.LengthFilter(80)} );
 	    
 		backorderAdapter = ArrayAdapter.createFromResource(this, R.array.backorder_type_array, android.R.layout.simple_spinner_item);
 		backorderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -376,7 +382,9 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	    showDeclaration = (CheckBox) findViewById(R.id.edit_sale_order_show_declaration_check_box);
 	    
 	    documentNote = (EditText) findViewById(R.id.edit_sale_order_document_note_value);
+	    documentNote.setFilters( new InputFilter[] { new InputFilter.LengthFilter(300)} );
 	    headquartersNote = (EditText) findViewById(R.id.edit_sale_order_headquarters_note_value);
+	    headquartersNote.setFilters( new InputFilter[] { new InputFilter.LengthFilter(300)} );
 	    
 	    orderConditionStatusAdapter = ArrayAdapter.createFromResource(this, R.array.order_condition_status_array, android.R.layout.simple_spinner_item);
 	    orderConditionStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -439,7 +447,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO))) {	
 			document_no = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO));
 		} else {
-			document_no = "LIF/"+salesPersonNo+"/"+DateUtils.toTempCodeFormat(new Date())+"-"+ data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders._ID));
+			document_no = DocumentUtils.generateSaleOrderDeviceNo(salesPersonNo);
 		}
 		
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.ORDER_DATE))) {	

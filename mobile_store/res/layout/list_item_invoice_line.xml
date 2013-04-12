@@ -62,7 +62,8 @@
             android:layout_marginRight="@dimen/listPreferredItemPaddingRight"
             android:layout_weight="3"
             android:focusable="false"
-            android:textIsSelectable="false" />
+            android:textIsSelectable="false"
+            android:gravity="right" />
     </LinearLayout>
 
     <TextView

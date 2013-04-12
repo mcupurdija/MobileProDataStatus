@@ -37,6 +37,7 @@ public class MobileStoreContract {
 	private static final String PATH_CUSTOMER_ADDRESSES = "customer_addresses";
 	private static final String PATH_CUSTOMER_NO = "customer_no";
 	private static final String PATH_POTENTIAL_CUSTOMERS_EXPORT = "potential_customers_export";
+	private static final String PATH_UPDATE_CUSTOMERS_EXPORT = "update_customers_export";
 	//private static final String PATH_CONTACTS_SEARCH_CUSTOM = "custom_search";
 	private static final String PATH_VISITS_DATE = "visits_date";
 	private static final String PATH_SYNC_LOGS = "sync_logs";
@@ -622,6 +623,10 @@ public class MobileStoreContract {
 
 		public static Uri buildPotentialCustomersExport() {
 			return CONTENT_URI.buildUpon().appendPath(PATH_POTENTIAL_CUSTOMERS_EXPORT).build();
+		}
+		
+		public static Uri buildUpdateCustomersExport() {
+			return CONTENT_URI.buildUpon().appendPath(PATH_UPDATE_CUSTOMERS_EXPORT).build();
 		}
 	}
 

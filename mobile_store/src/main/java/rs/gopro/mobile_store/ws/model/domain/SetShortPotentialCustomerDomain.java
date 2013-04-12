@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
-import rs.gopro.mobile_store.provider.Tables;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
-import rs.gopro.mobile_store.provider.MobileStoreContract.SalesPerson;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 import android.content.ContentValues;
 

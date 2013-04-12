@@ -26,6 +26,7 @@ public class ContactsDomain extends Domain {
 	public String company_no;
 	public String company_id;
 	public String global_dimension;
+	public String channel_oran;
 	public String number_of_blue_coat;
 	public String number_of_grey_coat;
 	public String department;
@@ -33,7 +34,7 @@ public class ContactsDomain extends Domain {
 	
 	private static final String[] COLUMNS = new String[] { "contact_no", "name", "name2", "address", "city", "phone", "mobile", 
 		"sales_person_no", "vat_reg_no", "post_code", "email", "company_no",
-		"company_id", "global_dimension", "number_of_blue_coat", "number_of_grey_coat", "department", "position"
+		"company_id", "global_dimension", "channel_oran", "number_of_blue_coat", "number_of_grey_coat", "department", "position"
 	};
 	
 	public ContactsDomain() {

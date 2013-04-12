@@ -16,6 +16,8 @@
 
 package rs.gopro.mobile_store.ui.customlayout;
 
+import static rs.gopro.mobile_store.util.LogUtils.LOGW;
+import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -28,9 +30,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-
-import static rs.gopro.mobile_store.util.LogUtils.LOGW;
-import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 
 /**
  * A layout that supports the Show/Hide pattern for portrait tablet layouts. See <a

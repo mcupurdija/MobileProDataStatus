@@ -284,6 +284,7 @@
     <string name="cus_trade_agree_activity_title">Customer trade agreement</string>
     <string name="sync_sub_menu_title">Sync data</string>
     <string name="sync_customer_address_menu_title">Sync addresses</string>
+    <string name="sync_potential_customer_menu_title">Send potential customer</string>
     <string name="sync_customer_contacts_menu_title">Sync contacts</string>
     <string name="sync_all_customers_menu_title">Sync customers</string>
 
@@ -361,6 +362,7 @@
     <string name="add_customer_email_title">E-mail</string>
     <string name="add_customer_company_data_title">VAT number - copmany id</string>
     <string name="add_customer_global_dimension_title">Global dimension 2</string>
+    <string name="add_customer_oran_title">Channel (ORAN)</string>
     <string name="add_customer_blue_coats_title">Num of blue coats</string>
     <string name="add_customer_grey_coats_title">Num of grey coats</string>
 

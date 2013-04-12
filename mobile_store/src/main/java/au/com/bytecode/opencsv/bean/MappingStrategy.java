@@ -17,10 +17,10 @@ package au.com.bytecode.opencsv.bean;
  limitations under the License.
  */
 
-import au.com.bytecode.opencsv.CSVReader;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 public interface MappingStrategy<T> {
 

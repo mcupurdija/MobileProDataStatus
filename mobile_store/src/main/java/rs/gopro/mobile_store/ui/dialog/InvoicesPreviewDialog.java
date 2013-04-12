@@ -199,6 +199,7 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 			title2.setGravity(Gravity.RIGHT);		
 			TextView subtitle1 = (TextView)view.findViewById(R.id.invoice_line_subtitle);
 			TextView subtitle2 = (TextView)view.findViewById(R.id.invoice_line_subtitle2);
+			subtitle2.setGravity(Gravity.RIGHT);
 //			TextView subtitle3 = (TextView)view.findViewById(R.id.invoice_line_subtitle3);
 			
 			String [] invoiceLineType = getResources().getStringArray(R.array.invoice_line_type_array);
