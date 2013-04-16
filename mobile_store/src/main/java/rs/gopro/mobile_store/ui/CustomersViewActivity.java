@@ -157,10 +157,16 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 			startActivity(potentialCustIntent);
 			return true;
 		case R.id.create_ecc_activity:
+			if (customerId == null || customerId.length() < 1) {
+				return true;
+			}
 			Intent eccIntent = new Intent(Intent.ACTION_VIEW, ElectronicCardCustomer.buildUri(customerId));
 			startActivity(eccIntent);
 			return true;
 		case R.id.create_cus_trade_agree_activity:
+			if (customerId == null || customerId.length() < 1) {
+				return true;
+			}
 			Intent customerTradeAgreementIntent = new Intent(Intent.ACTION_VIEW, CustomerTradeAgreemnt.buildUri(customerId));
 			startActivity(customerTradeAgreementIntent);
 			return true;
@@ -172,7 +178,7 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 			syncProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.dialog_title_customers_receive), getResources().getString(R.string.dialog_body_customers_receive), true, true);
 			return true;
 		case R.id.edit_customers:
-			if (customerId == null) {
+			if (customerId == null || customerId.length() < 1) {
 				return true;
 			}
 			loadCustomersViewDetail(MobileStoreContract.Customers.buildCustomersUri(customerId), true);

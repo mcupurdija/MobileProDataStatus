@@ -12,7 +12,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
@@ -50,7 +49,7 @@ public class ElectronicCardCustomerFragment extends ListFragment implements Load
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		getLoaderManager().initLoader(0, null, this);
-		int[] to = new int[] { android.R.id.empty, R.id.el_card_customer_no, R.id.el_card_item_no, R.id.el_card_jan_qty, R.id.el_card_feb_qty, R.id.el_card_mart_qty, R.id.el_card_apr_qty, R.id.el_card_may_qty, R.id.el_card_june_qty, R.id.el_card_july_qty,
+		int[] to = new int[] { R.id.el_card_item_no, R.id.el_card_jan_qty, R.id.el_card_feb_qty, R.id.el_card_mart_qty, R.id.el_card_apr_qty, R.id.el_card_may_qty, R.id.el_card_june_qty, R.id.el_card_july_qty,
 				R.id.el_card_aug_qty, R.id.el_card_sep_qty, R.id.el_card_oct_qty, R.id.el_card_nov_qty, R.id.el_card_dec_qty, R.id.el_card_total_sale_curr_qty, R.id.el_card_total_sale_prior_qty, R.id.el_card_turnover_curr_qty,
 				R.id.el_card_turnover_prior_qty, R.id.el_card_sales_line_counts_curr_qty, R.id.el_card_sales_line_counts_prior_qty, R.id.el_card_sales_line_last_line_discount };
 		cursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(), R.layout.list_item_el_card_customer, null, ElectronicCardCustomerQuery.PROJECTION, to, 0);
@@ -103,8 +102,8 @@ public class ElectronicCardCustomerFragment extends ListFragment implements Load
 
 	private interface ElectronicCardCustomerQuery {
 		String[] PROJECTION = new String[] {
-				Tables.ELECTRONIC_CARD_CUSTOMER+"."+BaseColumns._ID,
-				Tables.CUSTOMERS+"."+ElectronicCardCustomer.CUSTOMER_NO,
+//				Tables.ELECTRONIC_CARD_CUSTOMER+"."+BaseColumns._ID,
+//				Tables.CUSTOMERS+"."+ElectronicCardCustomer.CUSTOMER_NO,
 				Tables.ITEMS+"."+ElectronicCardCustomer.ITEM_NO,
 				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.JANUARY_QTY,
 				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.FEBRUARY_QTY,
@@ -127,8 +126,8 @@ public class ElectronicCardCustomerFragment extends ListFragment implements Load
 				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.LAST_LINE_DISCOUNT
 		};
 
-		int _ID = 0;
-		int CUSTOMER_ID = 1;
+//		int _ID = 0;
+//		int CUSTOMER_ID = 1;
 		int ITEM_ID = 2;
 		int JANUARY_QTY = 3;
 		int FEBRUARY_QTY = 4;

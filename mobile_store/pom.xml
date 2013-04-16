@@ -16,7 +16,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<platform.version>4.1.1.4</platform.version>
-		<ksoap2-android.version>3.0.0-RC.1</ksoap2-android.version>
+		<ksoap2-android.version>3.0.0</ksoap2-android.version>
 		<jcifs.version>1.3.17</jcifs.version>
 	</properties>
 

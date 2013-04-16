@@ -11,6 +11,7 @@ import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.ui.dialog.InvoicesPreviewDialog;
 import rs.gopro.mobile_store.ui.widget.SimpleSelectionedListAdapter;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
+import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
@@ -20,6 +21,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -60,6 +62,8 @@ import android.widget.TextView;
 public class InvoicesFragment extends ListFragment implements
 		LoaderCallbacks<Cursor>, TextWatcher, OnItemSelectedListener {
 
+	private static final String TAG = "InvoicesFragment";
+	
 	private SimpleSelectionedListAdapter adapter;
 	private InvoicesListAdapter invoicesAdapter;
 	
@@ -170,6 +174,16 @@ public class InvoicesFragment extends ListFragment implements
 			syncOpenForCustomerButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					// update all open documents to closed
+					// than check for open ones
+					// TODO if breaks in service call, we have bad data until service is successfully called, should be moved in service method
+					ContentValues cv = new ContentValues();
+					cv.put(MobileStoreContract.Invoices.OPEN, 0);
+					cv.put(MobileStoreContract.Invoices.REMAINING_AMOUNT, 0.0);
+					int result = getActivity().getContentResolver().update(MobileStoreContract.Invoices.CONTENT_URI, cv, MobileStoreContract.Invoices.OPEN+"=?", new String[] { "1" });
+					if (result > 0) {
+						LogUtils.LOGI(TAG, "Switch " + result + "open documents to closed, now loading open  ones.");
+					}
 					Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 					SalesDocumentsSyncObject syncObject = new SalesDocumentsSyncObject("", Integer.valueOf(-1), "", customerNo.getText().toString(), rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), salesPersonNo,Integer.valueOf(1));
 					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, syncObject);

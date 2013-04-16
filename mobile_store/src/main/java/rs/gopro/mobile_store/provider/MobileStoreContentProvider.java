@@ -485,6 +485,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			String customerId = Customers.getCustomersId(uri);
 			return builder.addTable(Tables.CUSTOMERS)
 					.where(Customers._ID + "=?", new String[]{customerId});
+		case INVOICES:
+			return builder.addTable(Tables.INVOICES);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -852,30 +854,30 @@ public class MobileStoreContentProvider extends ContentProvider {
 			final String tableName = Generic.getTableName(uri);
 			return builder.addTable(tableName);
 		case ELECTRONIC_CARD_CUSTOMER :
-			return builder.addTable(Tables.EL_CARD_CUSTOMER_JOIN_CUSTOMER_JOIN_ITEM)
-					.mapToTable(ElectronicCardCustomer._ID, Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.CUSTOMER_ID , Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.CUSTOMER_NO, Tables.CUSTOMERS)
-					.mapToTable(ElectronicCardCustomer.ITEM_ID , Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.ITEM_NO, Tables.ITEMS)
-					.mapToTable(ElectronicCardCustomer.JANUARY_QTY, Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.FEBRUARY_QTY, Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.MARCH_QTY, Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.APRIL_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.MAY_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.JUNE_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.JULY_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.AUGUST_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.SEPTEMBER_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.OCTOBER_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.NOVEMBER_QTY, Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.DECEMBER_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.TOTAL_SALE_QTY_CURRENT_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.TOTAL_SALE_QTY_PRIOR_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.TOTAL_TURNOVER_CURRENT_YEAR, Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.TOTAL_TURNOVER_PRIOR_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.SALES_LINE_COUNTS_CURRENT_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
-					.mapToTable(ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER );
+			return builder.addTable(Tables.EL_CARD_CUSTOMER_JOIN_CUSTOMER_JOIN_ITEM);
+//					.mapToTable(ElectronicCardCustomer._ID, Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.CUSTOMER_ID , Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.CUSTOMER_NO, Tables.CUSTOMERS)
+//					.mapToTable(ElectronicCardCustomer.ITEM_ID , Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.ITEM_NO, Tables.ITEMS)
+//					.mapToTable(ElectronicCardCustomer.JANUARY_QTY, Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.FEBRUARY_QTY, Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.MARCH_QTY, Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.APRIL_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.MAY_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.JUNE_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.JULY_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.AUGUST_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.SEPTEMBER_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.OCTOBER_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.NOVEMBER_QTY, Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.DECEMBER_QTY , Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.TOTAL_SALE_QTY_CURRENT_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.TOTAL_SALE_QTY_PRIOR_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.TOTAL_TURNOVER_CURRENT_YEAR, Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.TOTAL_TURNOVER_PRIOR_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.SALES_LINE_COUNTS_CURRENT_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
+//					.mapToTable(ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER );
 		case SALES_PERSONS:
 			return builder.addTable(Tables.SALES_PERSONS);
 		case SALES_PERSON_ID:

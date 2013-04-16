@@ -145,4 +145,13 @@ public class ServiceConnectionApache implements ServiceConnection  {
 	public void setFixedLengthStreamingMode(int contentLength) {
 		
 	}
+
+	@Override
+	public int getResponseCode() throws IOException {
+		if (httpresponse.getStatusLine() == null ) {
+			return 0;
+		} else {
+			return httpresponse.getStatusLine().getStatusCode();
+		}
+	}
 }

@@ -1,9 +1,13 @@
 package rs.gopro.mobile_store.ws.util;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -52,6 +56,13 @@ public class HttpTransportApache extends Transport {
 	@Override
 	@SuppressWarnings({ "rawtypes" })
 	public List call(String soapAction, SoapEnvelope envelope, List headers)
+	        throws IOException, XmlPullParserException {
+	    return call(soapAction, envelope, headers, null);
+	}
+	
+	@Override
+	@SuppressWarnings({ "rawtypes" })
+	public List call(String soapAction, SoapEnvelope envelope, List headers, File outputFile)
 			throws IOException, XmlPullParserException {
 		if (soapAction == null) {
             soapAction = "\"\"";
@@ -104,16 +115,35 @@ public class HttpTransportApache extends Transport {
         requestData = null;
         InputStream is = null;
         List<HeaderProperty> retHeaders = null;
+        int contentLength = 8192;
+        boolean gZippedContent = false;
         
         try {
+        	//first check the response code....
+            int status = serviceConnection.getResponseCode();
+            if(status != 200) {
+                throw new IOException("HTTP request failed, HTTP status: " + status);
+            }
+            
             retHeaders = serviceConnection.getResponseProperties();
-            boolean gZippedContent = false;
             for (int i = 0; i < retHeaders.size(); i++) {
                 HeaderProperty hp = retHeaders.get(i);
                 // HTTP response code has null key
                 if (null == hp.getKey()) {
                     continue;
                 }
+                
+             // If we know the size of the response, we should use the size to initiate vars
+                if (hp.getKey().equalsIgnoreCase("content-length") ) {
+                    if ( hp.getValue() != null ) {
+                        try {
+                            contentLength = Integer.parseInt( hp.getValue() );
+                        } catch ( NumberFormatException nfe ) {
+                            contentLength = 8192;
+                        }
+                    }
+                }  
+                
                 // ignoring case since users found that all smaller case is used on some server
                 // and even if it is wrong according to spec, we rather have it work..
                 if (hp.getKey().equalsIgnoreCase("Content-Encoding")
@@ -123,49 +153,39 @@ public class HttpTransportApache extends Transport {
                 }
             }
             if (gZippedContent) {
-                /* workaround for Android 2.3 
-                   (see http://stackoverflow.com/questions/5131016/)
-                */
-                InputStream origStream = serviceConnection.openInputStream();
-                try {
-                    is = (GZIPInputStream) origStream;
-                } catch (ClassCastException e) {
-                    is = new GZIPInputStream(origStream);
-                }
+                is = getUnZippedInputStream (
+                		new BufferedInputStream(serviceConnection.openInputStream(), contentLength));
             } else {
-                is = serviceConnection.openInputStream();
+                is = new BufferedInputStream(serviceConnection.openInputStream(),contentLength);
             }
         } catch (IOException e) {
-        	// don't understand this line!!!, if error stream exist it is never used
-        	// because of that line is commented 
-            //is = serviceConnection.getErrorStream();
-            if (is == null) {
-            	serviceConnection.disconnect();
-                throw (e);
+        	if(gZippedContent) {
+                is = getUnZippedInputStream(
+                        new BufferedInputStream(serviceConnection.getErrorStream(),contentLength));
+            } else {
+                is = new BufferedInputStream(serviceConnection.getErrorStream(),contentLength);
             }
-            is.close();
+        	
+        	if (debug && is != null) {
+                //go ahead and read the error stream into the debug buffers/file if needed.
+                readDebug(is, contentLength, outputFile);
+            }
+        	//we never want to drop through to attempting to parse the HTTP error stream as a SOAP response.
+        	//is.close();
+        	serviceConnection.disconnect();
+            throw e;
         }
         
         if (debug) {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            byte[] buf = new byte[256];
-                    
-            while (true) {
-                int rd = is.read(buf, 0, 256);
-                if (rd == -1) {
-                    break;
-                }
-                bos.write(buf, 0, rd);
-            }
-                    
-            bos.flush();
-            buf = bos.toByteArray();
-            responseDump = new String(buf);
-            is.close();
-            is = new ByteArrayInputStream(buf);
+        	is = readDebug(is, contentLength, outputFile);
         }
       
         parseResponse(envelope, is);
+        // release all resources 
+        // input stream is will be released inside parseResponse
+        // Vladimir: we don't use this, apache has another mechanism
+//        os = null;
+//        buf = null;
         return retHeaders;
 	}
 
@@ -208,6 +228,46 @@ public class HttpTransportApache extends Transport {
         return retVal;
 	}
 
+    private InputStream readDebug(InputStream is, int contentLength, File outputFile) throws IOException {
+        OutputStream bos;
+        if (outputFile != null) {
+            bos = new FileOutputStream(outputFile);
+        } else {
+            // If known use the size if not use default value
+            bos = new ByteArrayOutputStream( (contentLength > 0 ) ? contentLength : 256*1024);
+        }
+
+        byte[] buf = new byte[256];
+
+        while (true) {
+            int rd = is.read(buf, 0, 256);
+            if (rd == -1) {
+                break;
+            }
+            bos.write(buf, 0, rd);
+        }
+
+        bos.flush();
+        if (bos instanceof ByteArrayOutputStream) {
+            buf = ((ByteArrayOutputStream) bos).toByteArray();
+        }
+        bos = null;
+        responseDump = new String(buf);
+        is.close();
+        return new ByteArrayInputStream(buf);
+    }
+	
+    private InputStream getUnZippedInputStream(InputStream inputStream) throws IOException {
+        /* workaround for Android 2.3 
+           (see http://stackoverflow.com/questions/5131016/)
+        */
+        try {
+            return (GZIPInputStream) inputStream;
+        } catch (ClassCastException e) {
+            return new GZIPInputStream(inputStream);
+        }
+    }
+	
 	@Override
 	public ServiceConnectionApache getServiceConnection() throws IOException {
 		if (serviceConnection == null) {
