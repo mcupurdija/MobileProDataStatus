@@ -121,8 +121,8 @@ public class HttpTransportApache extends Transport {
         try {
         	//first check the response code....
             int status = serviceConnection.getResponseCode();
-            if(status != 200) {
-                throw new IOException("HTTP request failed, HTTP status: " + status);
+            if(status != 200 && status != 500) {
+                throw new IOException("HTTP zahtev neuspesan. HTTP status kod: " + status);
             }
             
             retHeaders = serviceConnection.getResponseProperties();
