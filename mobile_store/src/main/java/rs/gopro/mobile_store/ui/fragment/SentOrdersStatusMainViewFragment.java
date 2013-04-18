@@ -389,10 +389,10 @@ public class SentOrdersStatusMainViewFragment extends ListFragment implements
 			View.OnClickListener allSessionsListener = new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					final Uri sentOrderLineLineUri = MobileStoreContract.SentOrdersStatusLines
-							.buildSentOrdersStatusLinesUri(sentOrdersId.toString());
+//					final Uri sentOrderLineLineUri = MobileStoreContract.SentOrdersStatusLines
+//							.buildSentOrdersStatusLinesUri(sentOrdersId.toString());
 					// TODO bad hack!!!! NAV regulates this field
-					showDialog(sentOrderLineLineUri, docNo, String.valueOf(doc_type == 1 ? 0 : 1));
+					showDialog(sentOrdersId, docNo, String.valueOf(doc_type == 1 ? 0 : 1));
 				}
 			};
 
@@ -419,7 +419,7 @@ public class SentOrdersStatusMainViewFragment extends ListFragment implements
 
 	}
 	
-	private void showDialog(Uri sentOrdersLineUri, String sentOrdersNo, String sentOrdersDocType) {
+	private void showDialog(Integer sentOrdersId, String sentOrdersNo, String sentOrdersDocType) {
 		FragmentTransaction ft = getActivity().getSupportFragmentManager()
 				.beginTransaction();
 		Fragment prev = getFragmentManager().findFragmentByTag("sent_orders_dialog");
@@ -431,7 +431,8 @@ public class SentOrdersStatusMainViewFragment extends ListFragment implements
 		// Create and show the dialog.
 		SentOrdersLinesPreviewDialog fragment = new SentOrdersLinesPreviewDialog();
 		Intent tempIntent = new Intent(Intent.ACTION_VIEW,
-				sentOrdersLineUri);
+				null);
+		tempIntent.putExtra(SentOrdersLinesPreviewDialog.EXTRA_SALE_ORDER_STATUS_ID, sentOrdersId);
 		tempIntent.putExtra(SentOrdersLinesPreviewDialog.EXTRA_SALE_ORDER_STATUS_NO, sentOrdersNo);
 		tempIntent.putExtra(SentOrdersLinesPreviewDialog.EXTRA_SALE_ORDER_STATUS_DOC_TYPE, sentOrdersDocType);
 		fragment.setArguments(BaseActivity

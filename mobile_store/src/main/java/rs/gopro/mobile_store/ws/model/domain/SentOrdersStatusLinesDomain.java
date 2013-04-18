@@ -31,19 +31,22 @@ public class SentOrdersStatusLinesDomain extends Domain {
 	public String line_discount_percent;
 	
 	public String line_discount_amount;
+	public String quantity_shipped;
+	public String quantity_invoiced;
 	public String inv_discount_amount;
 	public String line_amount;
 	public String unit_of_measure_code;
 	
 	
 	public String promised_delivery_date;
+	public String price_and_disc_are_correct;
 	public String confirmed_promised_delivery_date;
 	public String price_include_vat;
 
 	private static final String[] COLUMNS = new String[] { "document_type", "sent_order_status_no", "line_no", "customer_no", "line_type",
 		"item_no", "location_code", "description", 
 		"quantity", "outstanding_quantity", "unit_price", "vat_percent", "line_discount_percent",
-		"line_discount_amount", "inv_discount_amount", "line_amount", "unit_of_measure_code",
+		"line_discount_amount", "quantity_shipped", "quantity_invoiced", "inv_discount_amount", "line_amount", "unit_of_measure_code",
 		"promised_delivery_date", "confirmed_promised_delivery_date", "price_include_vat"};
 
 	@Override
@@ -77,6 +80,9 @@ public class SentOrdersStatusLinesDomain extends Domain {
 		contentValues.put(SentOrdersStatusLines.PROMISED_DELIVERY_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(promised_delivery_date));
 		contentValues.put(SentOrdersStatusLines.CONFIRMED_PROMISED_DELIVERY_DATE, confirmed_promised_delivery_date);
 		
+		contentValues.put(SentOrdersStatusLines.QUANTITY_SHIPPED, WsDataFormatEnUsLatin.toDoubleFromWs(quantity_shipped));
+		contentValues.put(SentOrdersStatusLines.QUANTITY_INVOICED, WsDataFormatEnUsLatin.toDoubleFromWs(quantity_invoiced));
+		contentValues.put(SentOrdersStatusLines.PRICE_AND_DISC_ARE_CORRECT, price_and_disc_are_correct);
 		return contentValues;
 	}
 

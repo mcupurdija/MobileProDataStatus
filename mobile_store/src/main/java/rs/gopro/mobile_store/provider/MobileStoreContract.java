@@ -43,6 +43,7 @@ public class MobileStoreContract {
 	private static final String PATH_SYNC_LOGS = "sync_logs";
 	private static final String PATH_INVOICE_LINES = "invoice_lines";
 	private static final String PATH_INVOICE_LINES_FROM_ORDER = "invoice_lines_from_order";
+	private static final String PATH_INVOICE_LINES_REPORT = "invoice_lines_report";
 	private static final String PATH_SYNC_LOGS_ID = "sync_logs_obejct_id";
 	private static final String PATH_SALES_PERSON = "sales_persons";
 	private static final String PATH_GENRIC = "generic";
@@ -53,6 +54,7 @@ public class MobileStoreContract {
 	private static final String PATH_SENT_ORDERS_STATUS_SEARCH = "custom_search";
 	private static final String PATH_SENT_ORDERS_STATUS_LINES = "sent_orders_status_lines";
 	private static final String PATH_SENT_ORDERS_STATUS_LINES_FROM_ORDER = "sent_orders_status_lines_from_order";
+	private static final String PATH_SENT_ORDERS_STATUS_LINES_REPORT = "sent_orders_status_lines_report";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -430,6 +432,9 @@ public class MobileStoreContract {
 		String PRICE_INCLUDE_VAT = "price_include_vat";
 		String PROMISED_DELIVERY_DATE =  "promised_delivery_date";
 		String CONFIRMED_PROMISED_DELIVERY_DATE = "confirmed_promised_delivery_date";
+		String QUANTITY_SHIPPED = "quantity_shipped";
+		String QUANTITY_INVOICED = "quantity_invoiced";
+		String PRICE_AND_DISC_ARE_CORRECT = "price_and_disc_are_correct";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
@@ -567,6 +572,10 @@ public class MobileStoreContract {
 
 		public static String getInvoiceId(Uri uri) {
 			return uri.getPathSegments().get(1);
+		}
+		
+		public static Uri buildInvoiceLinesReportUri() {
+			return CONTENT_URI.buildUpon().appendPath(PATH_INVOICE_LINES_REPORT).build();
 		}
 	}
 	
@@ -989,6 +998,10 @@ public class MobileStoreContract {
 
 		public static String getSentOrdersStatusId(Uri uri) {
 			return uri.getPathSegments().get(1);
+		}
+		
+		public static Uri buildSentOrdersStatusLinesReportUri() {
+			return CONTENT_URI.buildUpon().appendPath(PATH_SENT_ORDERS_STATUS_LINES_REPORT).build();
 		}
 	}
 	

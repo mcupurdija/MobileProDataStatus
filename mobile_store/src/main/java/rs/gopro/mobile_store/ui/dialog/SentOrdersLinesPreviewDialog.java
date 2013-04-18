@@ -2,6 +2,8 @@ package rs.gopro.mobile_store.ui.dialog;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SentOrdersStatusLines;
+import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
@@ -17,7 +19,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.v4.app.DialogFragment;
@@ -38,15 +39,17 @@ import android.widget.TextView;
 
 public class SentOrdersLinesPreviewDialog extends DialogFragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
+	public static final String EXTRA_SALE_ORDER_STATUS_ID= "rs.gopro.mobile_store.extra.SALE_ORDER_STATUS_ID";
 	public static final String EXTRA_SALE_ORDER_STATUS_NO= "rs.gopro.mobile_store.extra.SALE_ORDER_STATUS_NO";
 	public static final String EXTRA_SALE_ORDER_STATUS_DOC_TYPE= "rs.gopro.mobile_store.extra.SALE_ORDER_STATUS_DOC_TYPE";
 	
-	private Uri mSentOrderStatusUri;
 	private CursorAdapter mAdapter;
 	private Button syncAllLinesForDoc;
+	private int sentOrderId;
 	private String sentOrderNo;
 	private String sentOrderDocType;
 	private ProgressBar mDialogLoader;
+	private String[] priceStatusOptions;
 //	private String salesPersonNo;
 	
 //	private ProgressDialog itemLoadProgressDialog;
@@ -102,12 +105,10 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 	public void reloadFromArguments(Bundle arguments) {
 	// Load new arguments
 		final Intent intent = BaseActivity.fragmentArgumentsToIntent(arguments);
-		mSentOrderStatusUri = intent.getData();
+		sentOrderId = intent.getIntExtra(EXTRA_SALE_ORDER_STATUS_ID, -1);
 		sentOrderNo = intent.getCharSequenceExtra(EXTRA_SALE_ORDER_STATUS_NO).toString();
 		sentOrderDocType = intent.getCharSequenceExtra(EXTRA_SALE_ORDER_STATUS_DOC_TYPE).toString();
-		if (mSentOrderStatusUri == null) {
-			return;
-		}
+
 		mAdapter = new SaleOrdersSentLineAdaper(getActivity());
 		getLoaderManager().initLoader(0, null, this);
 	}
@@ -164,7 +165,7 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 	
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		return new CursorLoader(getActivity(), mSentOrderStatusUri, SentOrdersStatusLineQuery.PROJECTION, null, null, MobileStoreContract.SentOrdersStatusLines.DEFAULT_SORT);
+		return new CursorLoader(getActivity(), SentOrdersStatusLines.buildSentOrdersStatusLinesReportUri(), SentOrdersStatusLineQuery.PROJECTION, SentOrdersStatusLines.SENT_ORDER_STATUS_ID+"=?", new String[] { String.valueOf( sentOrderId ) }, MobileStoreContract.SentOrdersStatusLines.DEFAULT_SORT);
 	}
 
 
@@ -189,6 +190,11 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
 //			Integer  invoice_type =  cursor.getInt(SentOrdersStatusLineQuery.TYPE);
+			
+			if (priceStatusOptions == null || priceStatusOptions.length < 0) {
+				priceStatusOptions = getResources().getStringArray(R.array.price_and_discount_are_correct_array);
+			}
+			
 			Integer line_type = cursor.getInt(SentOrdersStatusLineQuery.LINE_TYPE);
 			double quantity = cursor.getDouble(SentOrdersStatusLineQuery.QUANTITY);
 			double price = cursor.getDouble(SentOrdersStatusLineQuery.UNIT_PRICE);
@@ -202,6 +208,11 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 			
 			int promised_date_confirmed = cursor.getInt(SentOrdersStatusLineQuery.CONFIRMED_PROMISED_DELIVERY_DATE);
 			
+			double quantity_shipped = cursor.getDouble(SentOrdersStatusLineQuery.QUANTITY_SHIPPED);
+			double quantity_invoiced = cursor.getDouble(SentOrdersStatusLineQuery.QUANTITY_INVOICED);
+			int price_and_disc_are_correct = cursor.getInt(SentOrdersStatusLineQuery.PRICE_AND_DISC_ARE_CORRECT);
+			String item_no = cursor.getString(SentOrdersStatusLineQuery.ITEM_NO);
+			
 			double line_amount = quantity*price - line_discount - document_line_discount;
 			
 			TextView title1 = (TextView) view.findViewById(R.id.invoice_line_title1);
@@ -214,15 +225,17 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 			
 			String [] invoiceLineType = getResources().getStringArray(R.array.invoice_line_type_array);
 			
-			title1.setText(cursor.getString(SentOrdersStatusLineQuery.DESCRIPTION));
+			title1.setText(item_no + " - " + cursor.getString(SentOrdersStatusLineQuery.DESCRIPTION));
 			title2.setText(invoiceLineType[line_type]);
-			String 	quantityString = getString(R.string.invoice_line_quantity)+": "+ UIUtils.formatDoubleForUI(quantity);
-			subtitle1.setText(quantityString + " Cena: "+ UIUtils.formatDoubleForUI(price) + " Popust: "+ UIUtils.formatDoubleForUI(line_discount_percent) + "%");
+			String 	quantityString = getString(R.string.invoice_line_quantity)+": "+ UIUtils.formatQuantityForUI(quantity);
+			
+			String 	additional_quantity = "(Isporučeno:"+UIUtils.formatQuantityForUI(quantity_shipped) + " - Fakturisano:"+UIUtils.formatQuantityForUI(quantity_invoiced)+")";
+			subtitle1.setText(quantityString + " " + additional_quantity  + "   Cena: "+ UIUtils.formatDoubleForUI(price) + " Popust: "+ UIUtils.formatDoubleForUI(line_discount_percent) + "%");
 //			String unitPriceString = getString(R.string.invoice_line_unit_price) + ": " + cursor.getString(SentOrdersStatusLineQuery.UNIT_PRICE);
 			subtitle2.setText("Iznos: "+UIUtils.formatDoubleForUI(line_amount));
 //			String lineDiscountString = getString(R.string.invoice_line_discount_amount) + ": " + cursor.getString(InvoiceLineQuery.LINE_DISCOUNT_AMOUNT);
 //			
-			subtitle3.setText(" Potvrdjen: " + (promised_date_confirmed == 0 ? "Ne":"Da") + " Obećani datum isporuke: " + (promised_date == "" ? "-":DateUtils.toUIfromDbDate(promised_date)));
+			subtitle3.setText(" Potvrdjen: " + (promised_date_confirmed == 0 ? "Ne":"Da") + "; Obećani datum isporuke: " + (promised_date == "" ? "-":DateUtils.toUIfromDbDate(promised_date)) + "; Status cene:" + priceStatusOptions[price_and_disc_are_correct]);
 		}
 
 		@Override
@@ -237,17 +250,23 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 	
 	private interface SentOrdersStatusLineQuery {
 
-		String[] PROJECTION = { BaseColumns._ID,
-				MobileStoreContract.SentOrdersStatusLines.DOCUMENT_TYPE,
-				MobileStoreContract.SentOrdersStatusLines.QUANTITY,
-				MobileStoreContract.SentOrdersStatusLines.UNIT_PRICE,
-				MobileStoreContract.SentOrdersStatusLines.LINE_DISCOUNT_AMOUNT,
-				MobileStoreContract.SentOrdersStatusLines.DESCRIPTION,
-				MobileStoreContract.SentOrdersStatusLines.LINE_DISCOUNT_PERCENT,
-				MobileStoreContract.SentOrdersStatusLines.PROMISED_DELIVERY_DATE,
-				MobileStoreContract.SentOrdersStatusLines.CONFIRMED_PROMISED_DELIVERY_DATE,
-				MobileStoreContract.SentOrdersStatusLines.INV_DISCOUNT_AMOUNT,
-				MobileStoreContract.SentOrdersStatusLines.LINE_TYPE};
+		String[] PROJECTION = { 
+				Tables.SENT_ORDERS_STATUS_LINES + "." + BaseColumns._ID,
+				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.DOCUMENT_TYPE,
+				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.QUANTITY,
+				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.UNIT_PRICE,
+				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.LINE_DISCOUNT_AMOUNT,
+				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.DESCRIPTION,
+				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.LINE_DISCOUNT_PERCENT,
+				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.PROMISED_DELIVERY_DATE,
+				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.CONFIRMED_PROMISED_DELIVERY_DATE,
+				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.INV_DISCOUNT_AMOUNT,
+				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.LINE_TYPE,
+				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.QUANTITY_SHIPPED,
+				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.QUANTITY_INVOICED,
+				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.PRICE_AND_DISC_ARE_CORRECT,
+				Tables.ITEMS + "." + MobileStoreContract.Items.ITEM_NO
+		};
 
 //		int _ID = 0;
 //		int TYPE = 1;
@@ -260,6 +279,11 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 		int CONFIRMED_PROMISED_DELIVERY_DATE = 8;
 		int INV_DISCOUNT_AMOUNT = 9;
 		int LINE_TYPE = 10;
+		
+		int QUANTITY_SHIPPED = 11;
+		int QUANTITY_INVOICED = 12;
+		int PRICE_AND_DISC_ARE_CORRECT = 13;
+		int ITEM_NO = 14;
 	}
 
 }

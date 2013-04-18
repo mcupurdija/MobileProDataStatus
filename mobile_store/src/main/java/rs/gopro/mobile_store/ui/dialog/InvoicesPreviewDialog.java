@@ -2,6 +2,8 @@ package rs.gopro.mobile_store.ui.dialog;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.InvoiceLine;
+import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
@@ -17,7 +19,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.v4.app.DialogFragment;
@@ -38,13 +39,14 @@ import android.widget.TextView;
 
 public class InvoicesPreviewDialog extends DialogFragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
-	public static final String EXTRA_INVOICE_NO= "rs.gopro.mobile_store.extra.INVOICE_NO";
-	public static final String EXTRA_INVOICE_TYPE= "rs.gopro.mobile_store.extra.INVOICE_TYPE";
+	public static final String EXTRA_INVOICE_ID = "rs.gopro.mobile_store.extra.INVOICE_ID";
+	public static final String EXTRA_INVOICE_NO = "rs.gopro.mobile_store.extra.INVOICE_NO";
+	public static final String EXTRA_INVOICE_TYPE = "rs.gopro.mobile_store.extra.INVOICE_TYPE";
 	
-	private Uri mInvoiceLineUri;
 	private CursorAdapter mAdapter;
 	private Button syncAllLinesForDoc;
 	private ProgressBar mDialogLoader;
+	private int invoiceId;
 	private String invoiceNo;
 	
 //	private ProgressDialog itemLoadProgressDialog;
@@ -99,11 +101,9 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 	public void reloadFromArguments(Bundle arguments) {
 	// Load new arguments
 		final Intent intent = BaseActivity.fragmentArgumentsToIntent(arguments);
-		mInvoiceLineUri = intent.getData();
+		invoiceId = intent.getIntExtra(EXTRA_INVOICE_ID, -1);
 		invoiceNo = intent.getCharSequenceExtra(EXTRA_INVOICE_NO).toString();
-		if (mInvoiceLineUri == null) {
-			return;
-		}
+
 		mAdapter = new InvoiceLineAdaper(getActivity());
 		getLoaderManager().initLoader(0, null, this);
 	}
@@ -161,14 +161,13 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 	
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		return new CursorLoader(getActivity(), mInvoiceLineUri, InvoiceLineQuery.PROJECTION, null, null, MobileStoreContract.InvoiceLine.DEFAULT_SORT);
+		return new CursorLoader(getActivity(), InvoiceLine.buildInvoiceLinesReportUri(), InvoiceLineQuery.PROJECTION, MobileStoreContract.InvoiceLine.INVOICES_ID + "=?", new String[] { String.valueOf(invoiceId) }, MobileStoreContract.InvoiceLine.DEFAULT_SORT);
 	}
 
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		mAdapter.changeCursor(data);
-		
 	}
 
 
@@ -201,12 +200,13 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 			TextView subtitle2 = (TextView)view.findViewById(R.id.invoice_line_subtitle2);
 			subtitle2.setGravity(Gravity.RIGHT);
 //			TextView subtitle3 = (TextView)view.findViewById(R.id.invoice_line_subtitle3);
+			String item_no = cursor.getString(InvoiceLineQuery.ITEM_NO);
 			
 			String [] invoiceLineType = getResources().getStringArray(R.array.invoice_line_type_array);
 			
-			title1.setText(cursor.getString(InvoiceLineQuery.DESCRIPTION));
+			title1.setText(item_no + " - " + cursor.getString(InvoiceLineQuery.DESCRIPTION));
 			title2.setText(invoiceLineType[invoice_type]);
-			String 	quantityString = getString(R.string.invoice_line_quantity)+": "+ UIUtils.formatDoubleForUI(quantity);
+			String 	quantityString = getString(R.string.invoice_line_quantity)+": "+ UIUtils.formatQuantityForUI(quantity);
 			subtitle1.setText(quantityString + " Cena: "+ UIUtils.formatDoubleForUI(price) + " Popust: "+ UIUtils.formatDoubleForUI(line_discount_percent) + "%");
 //			String unitPriceString = getString(R.string.invoice_line_unit_price) + ": " + cursor.getString(InvoiceLineQuery.UNIT_PRICE);
 			subtitle2.setText("Iznos: "+UIUtils.formatDoubleForUI(line_amount));
@@ -220,21 +220,21 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 			InvoicesPreviewDialog.this.getDialog().setTitle(getString(R.string.invoice_line_dialog_title));
 			return	getActivity().getLayoutInflater().inflate(R.layout.list_item_invoice_line, parent, false);
 		}
-		
-			
-		
 	}
 	
 	private interface InvoiceLineQuery {
 
-		String[] PROJECTION = { BaseColumns._ID,
-				MobileStoreContract.InvoiceLine.TYPE,
-				MobileStoreContract.InvoiceLine.QUANTITY,
-				MobileStoreContract.InvoiceLine.UNIT_PRICE,
-				MobileStoreContract.InvoiceLine.LINE_DISCOUNT_AMOUNT,
-				MobileStoreContract.InvoiceLine.DESCRIPTION,
-				MobileStoreContract.InvoiceLine.LINE_DISCOUNT_PERCENT,
-				MobileStoreContract.SentOrdersStatusLines.INV_DISCOUNT_AMOUNT };
+		String[] PROJECTION = { 
+				Tables.INVOICE_LINES + "." + BaseColumns._ID,
+				Tables.INVOICE_LINES + "." + MobileStoreContract.InvoiceLine.TYPE,
+				Tables.INVOICE_LINES + "." + MobileStoreContract.InvoiceLine.QUANTITY,
+				Tables.INVOICE_LINES + "." + MobileStoreContract.InvoiceLine.UNIT_PRICE,
+				Tables.INVOICE_LINES + "." + MobileStoreContract.InvoiceLine.LINE_DISCOUNT_AMOUNT,
+				Tables.INVOICE_LINES + "." + MobileStoreContract.InvoiceLine.DESCRIPTION,
+				Tables.INVOICE_LINES + "." + MobileStoreContract.InvoiceLine.LINE_DISCOUNT_PERCENT,
+				Tables.INVOICE_LINES + "." + MobileStoreContract.InvoiceLine.INV_DISCOUNT_AMOUNT,
+				Tables.ITEMS + "." + MobileStoreContract.Items.ITEM_NO
+		};
 
 //		int _ID = 0;
 		int TYPE = 1;
@@ -244,6 +244,8 @@ public class InvoicesPreviewDialog extends DialogFragment implements LoaderManag
 		int DESCRIPTION = 5;
 		int LINE_DISCOUNT_PERCENT = 6;
 		int INV_DISCOUNT_AMOUNT = 7;
+		
+		int ITEM_NO = 8;
 	}
 
 }

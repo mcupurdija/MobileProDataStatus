@@ -303,17 +303,13 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			public void onClick(View v) {
 				isServiceCalled = true;
 				
-//				loaderState.put(ItemQuery._TOKEN, false);
 				if (itemId != -1) {
 					Cursor itemCursor = getActivity().getContentResolver().query(MobileStoreContract.Items.buildItemUri(String.valueOf(itemId)), ItemQuery.PROJECTION, null, null,
 							null);
 					buildItem(itemCursor);
-					//return new CursorLoader(getActivity(), );
 					itemCursor.close();
 				}
 				
-				
-//				loaderState.put(SaleOrderQuery._TOKEN, false);
 				if (documentId != -1) { 
 					Cursor documentCursor = getActivity().getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderUri(String.valueOf(documentId)), SaleOrderQuery.PROJECTION, null, null,
 							null);
@@ -321,11 +317,14 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 					documentCursor.close();
 				}
 				
+				// clear fields
+				mDiscountMin.setText("");
+				mDiscountMax.setText("");
+				mQuantityAvailable.setText("");
+				mDiscount.setText("");
+				mPrice.setText("");
+				
 				doWsAction();
-				
-//				getActivity().getSupportLoaderManager().restartLoader(ItemQuery._TOKEN, null,SaleOrderAddEditLineFragment.this);
-//				getActivity().getSupportLoaderManager().restartLoader(SaleOrderQuery._TOKEN, null,SaleOrderAddEditLineFragment.this);
-				
 			}
 		});
         

@@ -126,9 +126,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int SENT_ORDERS_STATUS_SEARCH = 1101;
 	
 	private static final int INVOICE_LINES = 1200;
+	private static final int INVOICE_LINES_REPORT = 1201;
 	
 	private static final int SENT_ORDERS_STATUS_LINES = 1300;
 	private static final int SENT_ORDERS_STATUS_LINES_FROM_ORDER = 1301;
+	private static final int SENT_ORDERS_STATUS_LINES_REPORT = 1302;
 	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -261,8 +263,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 				SENT_ORDERS_STATUS_SEARCH);
 		
 		mobileStoreURIMatcher.addURI(authority, "invoice_lines", INVOICE_LINES);
+		mobileStoreURIMatcher.addURI(authority, "invoice_lines/invoice_lines_report", INVOICE_LINES_REPORT);
 		
 		mobileStoreURIMatcher.addURI(authority, "sent_orders_status_lines", SENT_ORDERS_STATUS_LINES);
+		mobileStoreURIMatcher.addURI(authority, "sent_orders_status_lines/sent_orders_status_lines_report", SENT_ORDERS_STATUS_LINES_REPORT);
 		mobileStoreURIMatcher.addURI(authority, "sent_orders_status_lines_from_order/#", SENT_ORDERS_STATUS_LINES_FROM_ORDER);
 		
 	}
@@ -1008,6 +1012,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case SENT_ORDERS_STATUS_LINES_FROM_ORDER:
 			return builder.addTable(Tables.SENT_ORDERS_STATUS_LINES)
 					.where(SentOrdersStatusLines.SENT_ORDER_STATUS_ID + " = ? ", new String[] { SentOrdersStatusLines.getSentOrdersStatusId(uri) });
+		case SENT_ORDERS_STATUS_LINES_REPORT:
+			return builder.addTable(Tables.SENT_ORDERS_STATUS_LINES_REPORT);
+		case INVOICE_LINES_REPORT:
+			return builder.addTable(Tables.INVOICE_LINES_REPORT);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

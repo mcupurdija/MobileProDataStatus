@@ -62,11 +62,13 @@ public class DateUtils {
 		calendar.setTime(date);
 		
 		if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
-			calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-		} else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
 			calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+		} else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+		} else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) {
+			calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
 		} else {
-			calendar.set(Calendar.DAY_OF_WEEK, calendar.get(Calendar.DAY_OF_WEEK) - 1);
+			calendar.set(Calendar.DAY_OF_WEEK, calendar.get(Calendar.DAY_OF_WEEK) - 2);
 		}
 		
 		return calendar.getTime();

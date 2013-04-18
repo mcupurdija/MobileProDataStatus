@@ -21,8 +21,10 @@ public interface Tables {
 	String INVOICES = "invoices";
 	String INVOICES_JOIN_CUSTOMER = "invoices left outer join customers on invoices.customer_id = customers._id";
 	String INVOICE_LINES = "invoice_lines";
+	String INVOICE_LINES_REPORT = "invoice_lines left outer join items on invoice_lines.item_no = items._id";
 	String SALE_ORDERS = "sale_orders";
 	String SENT_ORDERS_STATUS_LINES = "sent_orders_status_lines";
+	String SENT_ORDERS_STATUS_LINES_REPORT = "sent_orders_status_lines left outer join items on sent_orders_status_lines.item_id = items._id";
 	String SALE_ORDERS_JOIN_CUSTOMERS = "sale_orders left outer join customers on sale_orders.customer_id = customers._id";
 	String SALE_ORDERS_EXPORT = "sale_orders left outer join customers on sale_orders.customer_id = customers._id " +
 			"left outer join sales_persons on sale_orders.sales_person_id = sales_persons._id " +

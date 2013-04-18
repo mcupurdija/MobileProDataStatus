@@ -38,7 +38,7 @@
 	<string name="invoice_amount_total">Ukupan iznos: </string>
 	<string name="invoice_amount_remaining">Preostali iznos: </string>
 	<string name="invoice_sync_open_docs_per_customer_button_title">Preuzmi otvorene stavke kupca</string>
-	<string name="invoice_sync_per_days_button_title">Preuzmi sve stavke za juče i danas</string>
+	<string name="invoice_sync_per_days_button_title">Preuzmi sve stavke od 2 dana unazad do danas</string>
 	<string name="invoice_due_date">Datum dospeća:</string>
 	
 	<string name="invoice_lines_sync_button_title">Preuzmi sve stavke izabranog dokumenta</string>

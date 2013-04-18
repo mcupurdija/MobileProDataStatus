@@ -30,6 +30,18 @@ public class UIUtils {
 		decimalFormat.setMaximumFractionDigits(2);
     }
 	
+private static DecimalFormat quantityDecimalFormat = (DecimalFormat)NumberFormat.getInstance();
+	
+	static {
+		DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
+		formatSymbols.setDecimalSeparator(',');
+		formatSymbols.setGroupingSeparator('.');
+		quantityDecimalFormat.setDecimalFormatSymbols(formatSymbols);
+		quantityDecimalFormat.setDecimalSeparatorAlwaysShown(false);
+		//quantityDecimalFormat.setMinimumFractionDigits(2);
+		quantityDecimalFormat.setMaximumFractionDigits(2);
+    }
+	
 	//@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public static void setActivatedCompat(View view, boolean activated) {
 		if (hasHoneycomb()) {
@@ -115,6 +127,15 @@ public class UIUtils {
 	public static String formatDoubleForUI(Double uiDouble) {
 //		try {
 			return decimalFormat.format(uiDouble);
+//		} catch (ParseException e) {
+//			LogUtils.LOGE(TAG, "Ui double not in good fromat", e);
+//			return null;
+//		}
+	}
+	
+	public static String formatQuantityForUI(Double uiDouble) {
+//		try {
+			return quantityDecimalFormat.format(uiDouble);
 //		} catch (ParseException e) {
 //			LogUtils.LOGE(TAG, "Ui double not in good fromat", e);
 //			return null;

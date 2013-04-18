@@ -8,7 +8,7 @@ import android.annotation.SuppressLint;
 public class DocumentUtils {
 
 	@SuppressLint("SimpleDateFormat")
-	private final static SimpleDateFormat codeDbDate = new SimpleDateFormat("ddMMyyHHss");
+	private final static SimpleDateFormat codeDbDate = new SimpleDateFormat("ddMMyyHHmm");
 	
 	public DocumentUtils() {
 		// TODO Auto-generated constructor stub
