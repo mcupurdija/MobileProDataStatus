@@ -11,6 +11,7 @@
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
+<!--         <item>@drawable/ic_action_settings</item> -->
         <item>@null</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
@@ -28,6 +29,7 @@
         <item>Kupci</item>
         <item>Kontakti</item>
         <item>Artikli</item>
+<!--         <item>Servisni nalog</item> -->
         <item>Izveštaji</item>
         <item>Stavke kupaca</item>
         <item>Status poslatih porudžbina</item>
@@ -44,6 +46,7 @@
         <item>settings://customers</item>
         <item>settings://contacts</item>
         <item>settings://items</item>
+<!--         <item>action://service_order</item> -->
         <item>category://reports</item>
         <item>settings://customer_ledger_entries</item>
         <item>settings://sent_orders_status</item>

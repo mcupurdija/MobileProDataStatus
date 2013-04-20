@@ -55,6 +55,8 @@ public class MobileStoreContract {
 	private static final String PATH_SENT_ORDERS_STATUS_LINES = "sent_orders_status_lines";
 	private static final String PATH_SENT_ORDERS_STATUS_LINES_FROM_ORDER = "sent_orders_status_lines_from_order";
 	private static final String PATH_SENT_ORDERS_STATUS_LINES_REPORT = "sent_orders_status_lines_report";
+	private static final String PATH_SERVICE_ORDERS = "service_orders";
+	private static final String PATH_SERVICE_ORDERS_EXPORT = "service_orders_export";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -441,6 +443,16 @@ public class MobileStoreContract {
 		String UPDATED_BY = "updated_by";
 	}
 
+	public interface ServiceOrdersColumns {
+		String SERVICE_ORDER_NO = "service_order_no";
+		String CUSTOMER_ID = "customer_id";
+		String ITEM_ID = "item_id";
+		String ADDRESS = "address";
+		String PHONE_NO = "phone_no";
+		String QUANTITY_FOR_RECLAMATION = "quantity_for_reclamation";
+		String NOTE = "note";
+	}
+	
 	public static class Generic implements BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_GENRIC).build();
 		
@@ -1002,6 +1014,27 @@ public class MobileStoreContract {
 		
 		public static Uri buildSentOrdersStatusLinesReportUri() {
 			return CONTENT_URI.buildUpon().appendPath(PATH_SENT_ORDERS_STATUS_LINES_REPORT).build();
+		}
+	}
+	
+	public static class SrviceOrders implements ServiceOrdersColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SERVICE_ORDERS).build();
+		/** Default "ORDER BY" clause. */
+		public static final String DEFAULT_SORT = "service_orders." + AuditColumns.CREATED_DATE + " DESC";
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.service_orders";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.service_orders";
+		
+		public static Uri buildServiceOrderUri(String serviceOrderId) {
+			return CONTENT_URI.buildUpon().appendPath(serviceOrderId).build();
+		}
+
+		public static String getServiceOrderId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+		
+		public static Uri buildServiceOrdersExportUri() {
+			return CONTENT_URI.buildUpon().appendPath(PATH_SERVICE_ORDERS_EXPORT).build();
 		}
 	}
 	

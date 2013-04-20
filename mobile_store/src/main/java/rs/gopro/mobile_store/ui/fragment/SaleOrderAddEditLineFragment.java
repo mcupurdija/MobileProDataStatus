@@ -70,6 +70,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	private int salesPersonId;
 	private String salesPersonNo;
 	private int documentId = -1;
+	private String deviceDocumentNo = null;
 	private int itemId = -1;
 	private String itemNo;
 	private int itemCampaignStatus;
@@ -622,6 +623,10 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         	customerId = cursor.getInt(SaleOrderQuery.CUSTOMER_ID);
         }
         
+        if (!cursor.isNull(SaleOrderQuery.SALES_ORDER_DEVICE_NO)) {
+        	deviceDocumentNo = cursor.getString(SaleOrderQuery.SALES_ORDER_DEVICE_NO);
+        }
+        
         if (!cursor.isNull(SaleOrderQuery.BACKORDER_SHIPMENT_STATUS)) {
         	defaultBackOrderStatus = cursor.getInt(SaleOrderQuery.BACKORDER_SHIPMENT_STATUS);
         	if (mBackorderStatus != null) {
@@ -690,12 +695,20 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			DialogUtil.showInfoDialog(getActivity(), getResources().getString(R.string.dialog_title_error_in_sync), "Artikal nije izabran!");
 			return;
 		}
+		if (deviceDocumentNo == null && documentId != -1) { 
+			Cursor documentCursor = getActivity().getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderUri(String.valueOf(documentId)), SaleOrderQuery.PROJECTION, null, null,
+					null);
+			if (!documentCursor.isNull(SaleOrderQuery.SALES_ORDER_DEVICE_NO)) {
+	        	deviceDocumentNo = documentCursor.getString(SaleOrderQuery.SALES_ORDER_DEVICE_NO);
+	        }
+			documentCursor.close();
+		}
 		itemLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_item_price_qty_load), getActivity().getResources().getString(R.string.dialog_body_item_price_qty_load), true, true);
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 		String quantity = mQuantity.getText().toString().replace('.', ','); // UIUtils.getDoubleFromUI(mQuantity.getText().toString().replace('.', ','));
 		int campaign_status = mCampaignStatus.getSelectedItemPosition();
 		int potentialCustomerSignal = isPotentialCustomer(customerId) == false ? 0 : 1;
-		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", campaign_status, Integer.valueOf(potentialCustomerSignal),customerNo, quantity, salesPersonNo, documentType, 0, "", "", "", "", "", "", "", "");
+		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", campaign_status, Integer.valueOf(potentialCustomerSignal),customerNo, quantity, salesPersonNo, documentType, deviceDocumentNo, 0, "", "", "", "", "", "", "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQtySalesPriceAndDiscSyncObject);
 		getActivity().startService(intent);
 		
@@ -915,7 +928,8 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
                 MobileStoreContract.SaleOrders.SALES_ORDER_NO,
                 MobileStoreContract.SaleOrders.DOCUMENT_TYPE,
                 MobileStoreContract.SaleOrders.CUSTOMER_ID,
-                MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS
+                MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS,
+                MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO
         };
 
         int _ID = 0;
@@ -923,6 +937,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         int DOCUMENT_TYPE = 2;
         int CUSTOMER_ID = 3;
         int BACKORDER_SHIPMENT_STATUS = 4;
+        int SALES_ORDER_DEVICE_NO = 5;
 	}
 	
 	private interface ItemQuery {

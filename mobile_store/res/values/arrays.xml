@@ -11,6 +11,7 @@
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
+<!--         <item>@drawable/ic_action_settings</item> -->
         <item>@null</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
@@ -28,6 +29,7 @@
         <item>Customers</item>
         <item>Contacts</item>
         <item>Items</item>
+<!--         <item>Service order</item> -->
         <item>Reports</item>
         <item>Customer ledger entries</item>
         <item>Sent orders status</item>
@@ -44,6 +46,7 @@
         <item>settings://customers</item>
         <item>settings://contacts</item>
         <item>settings://items</item>
+<!--         <item>action://service_order</item> -->
         <item>category://reports</item>
         <item>settings://customer_ledger_entries</item>
         <item>settings://sent_orders_status</item>
