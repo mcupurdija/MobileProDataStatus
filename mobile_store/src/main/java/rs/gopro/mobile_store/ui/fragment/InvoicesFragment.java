@@ -182,7 +182,7 @@ public class InvoicesFragment extends ListFragment implements
 					cv.put(MobileStoreContract.Invoices.REMAINING_AMOUNT, 0.0);
 					int result = getActivity().getContentResolver().update(MobileStoreContract.Invoices.CONTENT_URI, cv, MobileStoreContract.Invoices.OPEN+"=?", new String[] { "1" });
 					if (result > 0) {
-						LogUtils.LOGI(TAG, "Switch " + result + "open documents to closed, now loading open  ones.");
+						LogUtils.LOGI(TAG, "Switch " + result + "open documents to closed, now loading open ones.");
 					}
 					Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 					SalesDocumentsSyncObject syncObject = new SalesDocumentsSyncObject("", Integer.valueOf(-1), "", customerNo.getText().toString(), rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), rs.gopro.mobile_store.util.DateUtils.getWsDummyDate(), salesPersonNo,Integer.valueOf(1));

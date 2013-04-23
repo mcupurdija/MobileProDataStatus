@@ -57,21 +57,30 @@ public class DateUtils {
 		return calendar.getTime();
 	}
 	
+	
+	
 	public static Date getPreviousDateIgnoringWeekend(Date date) {
 		Calendar calendar = GregorianCalendar.getInstance();
 		calendar.setTime(date);
 		
 		if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
-			calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
-		} else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-			calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+//			calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) - 1);
+//			calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+			return org.apache.commons.lang3.time.DateUtils.addDays(date, -4);
+		} else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+			return org.apache.commons.lang3.time.DateUtils.addDays(date, -3);
+		} else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+//			calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+			return org.apache.commons.lang3.time.DateUtils.addDays(date, -4);
 		} else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) {
-			calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+//			calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) - 1);
+//			calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+			return org.apache.commons.lang3.time.DateUtils.addDays(date, -4);
 		} else {
-			calendar.set(Calendar.DAY_OF_WEEK, calendar.get(Calendar.DAY_OF_WEEK) - 2);
+//			calendar.set(Calendar.DAY_OF_WEEK, calendar.get(Calendar.DAY_OF_WEEK) - 2);
+			return org.apache.commons.lang3.time.DateUtils.addDays(date, -2);
 		}
-		
-		return calendar.getTime();
+//		return calendar.getTime();
 	}
 	
 	public static String marshaleDate(Date date) {

@@ -167,6 +167,10 @@ public class ActionsAdapter extends BaseAdapter {
 		TextView text;
 	}
 
+//	private static class TestClass extends ViewHolder {
+//		
+//	}
+	
 	private static class ActionHolder {
 		Button button;
 	}

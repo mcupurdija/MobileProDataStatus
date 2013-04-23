@@ -172,13 +172,11 @@ public class SalesDocumentsSyncObject extends SyncObject {
 
 	@Override
 	public String getTag() {
-		// TODO Auto-generated method stub
 		return TAG;
 	}
 
 	@Override
 	public String getBroadcastAction() {
-		// TODO Auto-generated method stub
 		return BROADCAST_SYNC_ACTION;
 	}
 
@@ -257,7 +255,6 @@ public class SalesDocumentsSyncObject extends SyncObject {
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver,
 			SoapObject soapResponse) throws CSVParseException {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
