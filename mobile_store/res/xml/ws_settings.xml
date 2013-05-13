@@ -19,7 +19,7 @@
         android:key="@string/key_ws_server_address"
         android:title="@string/title_ws_server_address" />
     <EditTextPreference
-        android:defaultValue="Test%20Wurth"
+        android:defaultValue="Wurth"
         android:key="@string/key_company"
         android:title="@string/title_company" />
 
