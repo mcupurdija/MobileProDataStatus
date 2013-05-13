@@ -21,6 +21,16 @@
             android:layout_marginRight="16dip"
             android:gravity="center_vertical"
             android:textStyle="bold" />
+        
+        <TextView
+            android:id="@+id/dialog_sale_order_order_document_additional_status_message"
+            style="@style/AddEdit_Text_Value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:gravity="center_vertical"
+            android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"

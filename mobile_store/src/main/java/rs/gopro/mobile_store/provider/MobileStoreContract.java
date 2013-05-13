@@ -85,6 +85,7 @@ public class MobileStoreContract {
 		String POTENTIAL_CUSTOMER = "potential_customer";
 		String LINE_NO = "line_no";
 		String ENTRY_TYPE = "entry_type";
+		String ENTRY_SUBTYPE = "entry_subtype";
 		String ODOMETER = "odometer";
 		String DEPARTURE_TIME = "departure_time";
 		String ARRIVAL_TIME = "arrival_time";
@@ -171,7 +172,11 @@ public class MobileStoreContract {
 		String DAYS_SINCE_OLDEST_OPEN_INVOICE = "days_since_oldest_open_invoice";
 		String NEXT_15_DAYS_INVOICE_DUE_AMOUNT = "next_15_days_invoice_due_amount";
 		String NEXT_15_DAYS_DUE_INVOICE_COUNT = "next_15_days_due_invoice_count";
-		String FINANCIAL_CONTROL_STATUS = "financial_control_status";	
+		String FINANCIAL_CONTROL_STATUS = "financial_control_status";
+		
+		String IS_ACTIVE = "is_active";
+		String IS_DELETED = "is_deleted";
+		String IS_SENT = "is_sent";
 	}
 
 	public interface ItemsColumns {
@@ -189,6 +194,7 @@ public class MobileStoreContract {
 		String CAMPAIGN_CODE = "campaign_code";
 		String CMPAIGN_START_DATE = "cmpaign_start_date";
 		String CAMPAIGN_END_DATE = "campaign_end_date";
+		String INVENTORY_ITEM_CATEGORY = "inventory_item_category";
 		String SYNC_OBJECT_BATCH = "sync_object_batch";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
@@ -233,6 +239,7 @@ public class MobileStoreContract {
 		String HIDE_REBATE = "hide_rebate";
 		String FURTHER_SALE = "further_sale";
 		String CUSTOMER_BUSINESS_UNIT_CODE = "customer_business_unit_code";
+		String MIN_MAX_DISCOUNT_TOTAL_AMOUNT_DIFFERENCE = "min_max_discount_total_amount_difference";
 		String NOTE1 = "note1";
 		String NOTE2 = "note2";
 		String NOTE3 = "note3";
@@ -448,6 +455,7 @@ public class MobileStoreContract {
 		String CUSTOMER_ID = "customer_id";
 		String ITEM_ID = "item_id";
 		String ADDRESS = "address";
+		String POST_CODE = "post_code";
 		String PHONE_NO = "phone_no";
 		String QUANTITY_FOR_RECLAMATION = "quantity_for_reclamation";
 		String NOTE = "note";
@@ -1017,7 +1025,7 @@ public class MobileStoreContract {
 		}
 	}
 	
-	public static class SrviceOrders implements ServiceOrdersColumns, BaseColumns {
+	public static class ServiceOrders implements ServiceOrdersColumns, BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SERVICE_ORDERS).build();
 		/** Default "ORDER BY" clause. */
 		public static final String DEFAULT_SORT = "service_orders." + AuditColumns.CREATED_DATE + " DESC";
@@ -1025,8 +1033,8 @@ public class MobileStoreContract {
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.service_orders";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.service_orders";
 		
-		public static Uri buildServiceOrderUri(String serviceOrderId) {
-			return CONTENT_URI.buildUpon().appendPath(serviceOrderId).build();
+		public static Uri buildServiceOrderUri(int serviceOrderId) {
+			return CONTENT_URI.buildUpon().appendPath(String.valueOf(serviceOrderId)).build();
 		}
 
 		public static String getServiceOrderId(Uri uri) {

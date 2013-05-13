@@ -21,7 +21,9 @@ public class CustomerAutocompleteCursorAdapter extends CursorAdapter implements
 		MobileStoreContract.Customers.NAME,
 		MobileStoreContract.Customers.PRIMARY_CONTACT_ID,
 		MobileStoreContract.Customers.PHONE,
-		MobileStoreContract.Customers.CONTACT_COMPANY_NO
+		MobileStoreContract.Customers.CONTACT_COMPANY_NO,
+		MobileStoreContract.Customers.ADDRESS,
+		MobileStoreContract.Customers.POST_CODE
 	};
 	
 	private Context mContext;
@@ -71,7 +73,7 @@ public class CustomerAutocompleteCursorAdapter extends CursorAdapter implements
 			cursor = mContext.getContentResolver().query(
 					Customers.buildCustomSearchUri(constraint == null ? "noNoOrName"
 							: constraint.toString(), "-1"), CUSTOMER_PROJECTION,
-					null, null, null);
+					Customers.IS_ACTIVE+"=?", new String[] { "1" }, null);
 		}
 		return cursor;
 	}

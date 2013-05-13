@@ -13,6 +13,7 @@ import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DocumentUtils;
+import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.MobileDeviceSalesDocumentSyncObject;
@@ -152,6 +153,21 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 				int status4 = Integer.valueOf(deviceSalesDocumentSyncObject.getOrder_value_status());
 				
 				text6.setText(mainStatusMessage);
+				
+				TextView text7 = (TextView) dialog.findViewById(R.id.dialog_sale_order_order_document_additional_status_message);
+				double minDiff = 0.0;
+				try {
+					minDiff = Double.valueOf(deviceSalesDocumentSyncObject.getMin_max_discount_total_amount_difference());
+				} catch (NumberFormatException nme) {
+					LogUtils.LOGE(SALE_ORDER_LIST_TAG, "", nme);
+				}
+				
+				if (minDiff < 0.0) {
+					text7.setVisibility(View.VISIBLE);
+					text7.setText("Korekcija porudžbine: " + UIUtils.formatDoubleForUI(minDiff));
+				} else {
+					text7.setVisibility(View.GONE);
+				}
 				
 				TextView text1 = (TextView) dialog.findViewById(R.id.dialog_sale_order_order_condition_status_spinner);
 				text1.setText(orderConditionStatusOptions[status1]);
@@ -433,6 +449,8 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 						DatabaseUtils.cursorRowToContentValues(documentLinesCursor, documentLineContentValues);
 						documentLineContentValues.remove(SaleOrderLines._ID);
 						documentLineContentValues.put(SaleOrderLines.SALE_ORDER_ID, clonedDocumentId);
+						// reset prices
+						documentLineContentValues.putNull(SaleOrderLines.PRICE);
 						getContentResolver().insert(SaleOrderLines.CONTENT_URI, documentLineContentValues);
 					} while(documentLinesCursor.moveToNext());
 					documentLinesCursor.close();

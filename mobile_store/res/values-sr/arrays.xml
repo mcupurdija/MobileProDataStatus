@@ -11,8 +11,8 @@
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
-<!--         <item>@drawable/ic_action_settings</item> -->
         <item>@null</item>
+        <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
@@ -29,11 +29,11 @@
         <item>Kupci</item>
         <item>Kontakti</item>
         <item>Artikli</item>
-<!--         <item>Servisni nalog</item> -->
         <item>Izveštaji</item>
         <item>Stavke kupaca</item>
         <item>Status poslatih porudžbina</item>
         <item>Ralizacija plana i promet</item>
+        <item>Servisni nalog</item>
         <item>Podešavanja</item>
         <item>Podešavanja</item>
     </string-array>
@@ -46,11 +46,11 @@
         <item>settings://customers</item>
         <item>settings://contacts</item>
         <item>settings://items</item>
-<!--         <item>action://service_order</item> -->
         <item>category://reports</item>
         <item>settings://customer_ledger_entries</item>
         <item>settings://sent_orders_status</item>
         <item>settings://plan_and_turnover</item>
+        <item>settings://service_order</item>
         <item>category://settings</item>
         <item>settings://settings</item>
     </string-array>
@@ -255,6 +255,20 @@
         <item>Sve</item>
         <item>Zatvorene</item>
         <item>Otvorene</item>
+    </string-array>
+    <string-array name="ekk_months">
+        <item>Januar (Kol)</item>
+		<item>Februar (Kol)</item>
+		<item>Mart (Kol)</item>
+		<item>April (Kol)</item>
+		<item>Maj (Kol)</item>
+		<item>Jun (Kol)</item>
+		<item>Jul (Kol)</item>
+		<item>Avgust (Kol)</item>
+		<item>Septembar (Kol)</item>
+		<item>Oktobar (Kol)</item>
+		<item>Novembar (Kol)</item>
+		<item>Decembar (Kol)</item>
     </string-array>
     <string-array name="bransa_array">
         <item>AUTO CENTRI (PROD+MEH+KAROS+EL)</item>

@@ -18,16 +18,20 @@ import rs.gopro.mobile_store.ui.customlayout.RecordVisitsLayout;
 import rs.gopro.mobile_store.ui.customlayout.SaleOrdersLayout;
 import rs.gopro.mobile_store.ui.customlayout.SentOrdersLayout;
 import rs.gopro.mobile_store.ui.customlayout.SentOrdersStatusLayout;
+import rs.gopro.mobile_store.ui.dialog.ServiceOrderDialog;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
+import rs.gopro.mobile_store.ws.model.ServiceOrderSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -55,7 +59,7 @@ import android.widget.TextView;
  * 
  */
 
-public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener, MainContextualActionBarCallback {
+public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener, MainContextualActionBarCallback, ServiceOrderDialog.ServiceOrderDialogListener {
 	private static String TAG = "MainActivity";
 	public static final String CURRENT_POSITION_KEY = "current_position";
 	
@@ -63,7 +67,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	private Integer currentItemPosition = Integer.valueOf(1);
 	private CustomLinearLayout currentCustomLinearLayout;
 	private Map<String, CustomLinearLayout> savedLayoutInstances = new HashMap<String, CustomLinearLayout>();
-
+	
+	private ProgressDialog serviceLoaderProgressDialog;
+	
 	/**
 	 * Create menu as list view on left side of screen. Create content space
 	 * right of menu.
@@ -96,9 +102,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long flags) {
-		setContentTitle(position);
-		this.currentItemPosition = position;
-		actionsAdapter.markSecletedItem(view);
+		
+		
 		updateContent(position);
 		invalidateOptionsMenu();
 		LogUtils.LOGI(TAG, "onItemClick");
@@ -129,7 +134,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
 	public void updateContent(int position) {
 		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.content);
-		linearLayout.removeAllViews();
+		
 		Uri uri = actionsAdapter.getItem(position);
 		CustomLinearLayout view = null;
 		if (SaleOrdersLayout.SALE_ORDER_URI.equals(uri)) {
@@ -202,9 +207,17 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				view = new PlanAndTurnoverLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(PlanAndTurnoverLayout.PLAN_AND_TURNOVER_URI.toString(), view);
 			}
+		} else if (ServiceOrderDialog.SERVICE_ORDER_URI.equals(uri)) {
+			ServiceOrderDialog serviceOrderDialog = new ServiceOrderDialog(0, "Kreiraj servisni nalog");
+			serviceOrderDialog.show(getSupportFragmentManager(), "SERVICE_ORDER_DIALOG");
 		}
-		currentCustomLinearLayout = view;
+		
 		if (view != null) {
+			linearLayout.removeAllViews();
+			setContentTitle(position);
+			this.currentItemPosition = position;
+			actionsAdapter.markSecletedItem(view);
+			currentCustomLinearLayout = view;
 			linearLayout.addView(view);
 		}
 	}
@@ -316,7 +329,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	@Override
 	protected void onResume() {
 		super.onResume();
-		IntentFilter navSyncFilter = new IntentFilter(ItemsSyncObject.BROADCAST_SYNC_ACTION);
+		IntentFilter navSyncFilter = new IntentFilter(ServiceOrderSyncObject.BROADCAST_SYNC_ACTION);
 		// registering broadcast receiver to listen BROADCAST_SYNC_ACTION
 		// broadcast
 		LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, navSyncFilter);
@@ -329,25 +342,36 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	}
 
 	private BroadcastReceiver onNotice = new BroadcastReceiver() {
-
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
-			onSOAPResult(syncResult.getStatus(), syncResult.getResult());
+			if (serviceLoaderProgressDialog != null)
+				serviceLoaderProgressDialog.dismiss();
+			SyncResult syncResult = intent
+					.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
+			onSOAPResult(syncResult, intent.getAction());
+			// itemLoadProgressDialog.dismiss();
 		}
 	};
+	
+	protected void onSOAPResult(SyncResult syncResult, String broadcastAction) {
+		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
+			if (ServiceOrderSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				ServiceOrderSyncObject serviceOrderSyncObject = (ServiceOrderSyncObject) syncResult.getComplexResult();
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Broj servisnog naloga: "+serviceOrderSyncObject.getpServiceHeaderNoa46());
+			}
+		} else {
+			DialogUtil.showInfoDialog(MainActivity.this,getResources().getString(R.string.dialog_title_error_in_sync),syncResult.getResult());
+		}
+	}
 
-//	private void doSynchronization() {
-//		Intent intent = new Intent(this, NavisionSyncService.class);
-//		ItemsSyncObject itemsSyncObject = new ItemsSyncObject(null, null, Integer.valueOf(1), null, DateUtils.getWsDummyDate());
-//		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
-//		this.startService(intent);
-//
-//	}
-
-	public void onSOAPResult(SyncStatus syncStatus, String result) {
-		System.out.println("Status: " + syncStatus);
-		return;
+	@Override
+	public void onFinishServiceOrderDialog(int service_order_id) {
+		serviceLoaderProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.dialog_title_service_order_load), getResources().getString(R.string.dialog_body_service_order_load), true, true);
+		ServiceOrderSyncObject serviceOrderSyncObject = new ServiceOrderSyncObject(service_order_id);
+    	Intent intent = new Intent(this, NavisionSyncService.class);
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, serviceOrderSyncObject);
+		startService(intent);
+		
 	}
 
 }

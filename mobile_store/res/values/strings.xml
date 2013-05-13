@@ -149,6 +149,8 @@
     <string name="dialog_body_payment_and_turnover_load">Loading payment and turnover</string>
     <string name="dialog_title_items_load">Items</string>
     <string name="dialog_body_items_load">Loading items</string>
+    <string name="dialog_title_service_order_load">Service Order</string>
+    <string name="dialog_body_service_order_load">Loading service order no</string>
     <string name="document_no">Document No</string>
     <string name="dokument_type_no_title">Document no and type </string>
     <string name="contact_title">Kontakt</string>
@@ -166,7 +168,7 @@
     <string name="quote_status">Quote status</string>
     <string name="transit_customer">Transit customer</string>
     <string name="customer_no_label">Customer No.</string>
-    <string name="customer_address_label">Adsress</string>
+    <string name="customer_address_label">Address</string>
     <string name="customer_address_default_text">Default customer address</string>
     <string name="customer_contact_default_text">Default customer contact</string>
     <string name="customer_city_label">City</string>
@@ -291,7 +293,7 @@
     <!-- ecc header label -->
     <string name="el_card_customer_no_label">Customer No.</string>
     <string name="el_card_item_no_label">Item No.</string>
-    <string name="el_card_jan_qty_label">January (Qty)</string>
+    <string name="el_card_jan_qty_label">January(Qty)</string>
     <string name="el_card_feb_qty_label">February(Qty)</string>
     <string name="el_card_mart_qty_label">March(Qty)</string>
     <string name="el_card_apr_qty_label">April(Qty)</string>
@@ -379,4 +381,7 @@
     <string name="last_month_plan_label">Last month plan</string>
     <string name="last_month_turnover_label">Last month turnover</string>
     <string name="sync_sales_person_plan_and_turnover_button_title">Sync plan and turnover</string>
+    
+    <string name="service_order_address_post_code_label">Address and Post code</string>
+    <string name="service_order_item_quantity_label">Quantity</string>
 </resources>

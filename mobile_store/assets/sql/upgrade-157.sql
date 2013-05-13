@@ -1,5 +1,4 @@
 -- upgrade older 156 version to 157
--- this is first upgrade file
 -- date 17.4.2013.
 
 ALTER TABLE `sent_orders_status_lines` ADD `quantity_shipped` REAL DEFAULT 0;

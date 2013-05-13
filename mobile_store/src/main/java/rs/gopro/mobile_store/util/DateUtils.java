@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 
@@ -218,5 +220,17 @@ public class DateUtils {
 		return pickerDate.format(pickerDateInput);
 	}
 	
+	/**
+	 * Get months backwards from previous one.
+	 * @return
+	 */
+	public static List<Date> getMonthsBackwards() {
+		Date monthEarlier = org.apache.commons.lang3.time.DateUtils.addMonths(new Date(), -1);
+		List<Date> months = new ArrayList<Date>();
+		for (int i = 0; i<12; i++) {
+			months.add(org.apache.commons.lang3.time.DateUtils.addMonths(monthEarlier, -i));
+		}
+		return months;
+	}
 }
 

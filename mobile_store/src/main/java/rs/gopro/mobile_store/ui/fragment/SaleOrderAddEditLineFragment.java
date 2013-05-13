@@ -216,6 +216,15 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				try {
+					// clear fields
+					if (mDiscountMin != null) {
+						mDiscountMin.setText("");
+						mDiscountMax.setText("");
+						mQuantityAvailable.setText("");
+						mDiscount.setText("");
+						mPrice.setText("");
+					}
+					
 					Cursor cursor = (Cursor) itemAutocompleteAdapter.getItem(arg2);
 					itemId = cursor.getInt(0);
 					saveForm(NOT_THROW_EXCEPTION);

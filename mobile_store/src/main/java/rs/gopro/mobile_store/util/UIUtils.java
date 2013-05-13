@@ -27,7 +27,7 @@ public class UIUtils {
 		decimalFormat.setDecimalFormatSymbols(formatSymbols);
 		decimalFormat.setDecimalSeparatorAlwaysShown(true);
 		decimalFormat.setMinimumFractionDigits(2);
-		decimalFormat.setMaximumFractionDigits(2);
+		decimalFormat.setMaximumFractionDigits(4);
     }
 	
 private static DecimalFormat quantityDecimalFormat = (DecimalFormat)NumberFormat.getInstance();

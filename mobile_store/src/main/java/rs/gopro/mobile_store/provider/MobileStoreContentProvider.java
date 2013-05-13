@@ -17,6 +17,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.SalesPerson;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SentOrdersStatus;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SentOrdersStatusLineColumns;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SentOrdersStatusLines;
+import rs.gopro.mobile_store.provider.MobileStoreContract.ServiceOrders;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Users;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
@@ -131,6 +132,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int SENT_ORDERS_STATUS_LINES = 1300;
 	private static final int SENT_ORDERS_STATUS_LINES_FROM_ORDER = 1301;
 	private static final int SENT_ORDERS_STATUS_LINES_REPORT = 1302;
+	
+	private static final int SERVICE_ORDERS = 1400;
+	private static final int SERVICE_ORDER_ID = 1401;
+	private static final int SERVICE_ORDERS_EXPORT = 1402;
 	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -269,6 +274,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "sent_orders_status_lines/sent_orders_status_lines_report", SENT_ORDERS_STATUS_LINES_REPORT);
 		mobileStoreURIMatcher.addURI(authority, "sent_orders_status_lines_from_order/#", SENT_ORDERS_STATUS_LINES_FROM_ORDER);
 		
+		mobileStoreURIMatcher.addURI(authority, "service_orders", SERVICE_ORDERS);
+		mobileStoreURIMatcher.addURI(authority, "service_orders/service_orders_export", SERVICE_ORDERS_EXPORT);
+		mobileStoreURIMatcher.addURI(authority, "service_orders/*", SERVICE_ORDER_ID);
 	}
 
 	@Override
@@ -385,6 +393,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.SENT_ORDERS_STATUS,null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return SentOrdersStatus.buildSentOrdersStatusUri((int)id);
+		case SERVICE_ORDERS:
+			id = database.insertOrThrow(Tables.SERVICE_ORDERS,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return ServiceOrders.buildServiceOrderUri((int)id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -491,6 +503,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.where(Customers._ID + "=?", new String[]{customerId});
 		case INVOICES:
 			return builder.addTable(Tables.INVOICES);
+		case SERVICE_ORDERS:
+			return builder.addTable(Tables.SERVICE_ORDERS);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -1016,6 +1030,13 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.SENT_ORDERS_STATUS_LINES_REPORT);
 		case INVOICE_LINES_REPORT:
 			return builder.addTable(Tables.INVOICE_LINES_REPORT);
+		case SERVICE_ORDERS:
+			return builder.addTable(Tables.SERVICE_ORDERS);
+		case SERVICE_ORDER_ID:
+			return builder.addTable(Tables.SERVICE_ORDERS)
+					.where(Tables.SERVICE_ORDERS+".id=?", new String[] { ServiceOrders.getServiceOrderId(uri) });
+		case SERVICE_ORDERS_EXPORT:
+			return builder.addTable(Tables.SERVICE_ORDERS_EXPORT);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -1071,7 +1092,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 			selectionPhrase = Items.ITEM_NO + "=?";
 			break;
 		case CUSTOMERS:
+			// this check for potential customers
 			if (values.length > 0 && values[0].containsKey(Customers._ID)) {
+				// here we are updating potential customer that is earlier saved in db before sending
 				tableName = Tables.CUSTOMERS;
 				selectionParam = new String[] { Customers._ID};
 				selectionPhrase = Customers._ID + "=?";

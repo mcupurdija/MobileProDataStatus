@@ -26,6 +26,7 @@ public class ItemsDomain extends Domain {
 	public String group_code;
 	public String campaign_status;
 	public String overstock_status;
+	public String inventory_item_category;
 	public String connected_spec_ship_item;
 	public String unit_sales_price_eur;
 	public String unit_sales_price_din;
@@ -41,7 +42,7 @@ public class ItemsDomain extends Domain {
 	public ItemsDomain() {
 	}
 
-	private static final String[] COLUMNS = new String[] { "item_no", "description", "unit_of_measure", "category_code", "group_code", "campaign_status", "overstock_status", "connected_spec_ship_item", "unit_sales_price_din",
+	private static final String[] COLUMNS = new String[] { "item_no", "description", "unit_of_measure", "category_code", "group_code", "campaign_status", "overstock_status", "inventory_item_category", "connected_spec_ship_item", "unit_sales_price_din",
 			"campaign_code", "cmpaign_start_date", "campaign_end_date" };
 
 	@Override
@@ -59,6 +60,7 @@ public class ItemsDomain extends Domain {
 		contentValues.put(Items.GROUP_CODE, getGroup_code());
 		contentValues.put(Items.CAMPAIGN_STATUS, getCampaign_status());
 		contentValues.put(Items.OVERSTOCK_STATUS, getOverstock_status());
+		contentValues.put(Items.INVENTORY_ITEM_CATEGORY, inventory_item_category);
 		contentValues.put(Items.CONNECTED_SPEC_SHIP_ITEM, WsDataFormatEnUsLatin.toDoubleFromWs(getConnected_spec_ship_item().length() < 1 ? "0.0" : getConnected_spec_ship_item()));
 		// TODO data conversion
 		contentValues.put(Items.UNIT_SALES_PRICE_DIN, WsDataFormatEnUsLatin.toDoubleFromWs(getUnit_sales_price_din().length() < 1 ? "0.0" : getUnit_sales_price_din()));

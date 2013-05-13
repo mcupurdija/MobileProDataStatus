@@ -46,6 +46,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	private String financial_control_status;
 	private String order_status_for_shipment;
 	private String order_value_status;
+	private String min_max_discount_total_amount_difference;
 	
 	public static final Creator<MobileDeviceSalesDocumentSyncObject> CREATOR = new Creator<MobileDeviceSalesDocumentSyncObject>() {
 
@@ -79,6 +80,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		setFinancial_control_status(source.readString());
 		setOrder_status_for_shipment(source.readString());
 		setOrder_value_status(source.readString());
+		setMin_max_discount_total_amount_difference(source.readString());
 	}
 	
 	public MobileDeviceSalesDocumentSyncObject(int document_id, Integer pVerifyOnly) {
@@ -117,6 +119,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		dest.writeString(getFinancial_control_status());
 		dest.writeString(getOrder_status_for_shipment());
 		dest.writeString(getOrder_value_status());
+		dest.writeString(getMin_max_discount_total_amount_difference());
 	}
 
 	@Override
@@ -283,6 +286,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		setFinancial_control_status(deviceSalesDocumentHeaderDomain.financial_control_status);
 		setOrder_status_for_shipment(deviceSalesDocumentHeaderDomain.order_status_for_shipment);
 		setOrder_value_status(deviceSalesDocumentHeaderDomain.order_value_status);
+		setMin_max_discount_total_amount_difference(deviceSalesDocumentHeaderDomain.min_max_discount_total_amount_difference);
 		
 		return numOfInserted;
 	}
@@ -509,5 +513,17 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 
 	public void setPotentialCustomer(int potentialCustomer) {
 		this.potentialCustomer = potentialCustomer;
+	}
+
+	public String getMin_max_discount_total_amount_difference() {
+		if (min_max_discount_total_amount_difference == null || min_max_discount_total_amount_difference.length() < 1) {
+			return "0";
+		}
+		return min_max_discount_total_amount_difference;
+	}
+
+	public void setMin_max_discount_total_amount_difference(
+			String min_max_discount_total_amount_difference) {
+		this.min_max_discount_total_amount_difference = min_max_discount_total_amount_difference;
 	}
 }

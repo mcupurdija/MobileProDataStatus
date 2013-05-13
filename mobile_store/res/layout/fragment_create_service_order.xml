@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center_horizontal|top"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="800dp"
+        android:minWidth="600dp"
+        android:orientation="vertical" >
+
+        <AutoCompleteTextView
+            android:id="@+id/service_order_customer_autocomplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:layout_marginTop="15dip"
+            android:completionThreshold="1"
+            android:hint="@string/customer_hint"
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:focusable="true" />
+
+        <TextView
+            style="@style/AddEdit_Label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/service_order_address_post_code_label" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/service_order_address_edittext"
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="7" />
+
+            <EditText
+                android:id="@+id/service_order_post_code_edittext"
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="3"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/AddEdit_Label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/customer_phone_label" />
+
+        <EditText
+            android:id="@+id/service_order_phone_edittext"
+            style="@style/AddEdit_Text_Value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp" />
+
+        <AutoCompleteTextView
+            android:id="@+id/service_order_item_no_autocomplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:layout_marginTop="20dp"
+            android:completionThreshold="1"
+            android:hint="@string/item_no_hint"
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            style="@style/AddEdit_Label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/service_order_item_quantity_label" />
+
+        <EditText
+            android:id="@+id/service_order_item_quantity_edittext"
+            style="@style/AddEdit_Text_Value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            style="@style/AddEdit_Label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/note_title" />
+
+        <EditText
+            android:id="@+id/service_order_note_edittext"
+            style="@style/AddEdit_Text_Value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/button_submit_dialog"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:text=" Ok " />
+
+            <Button
+                android:id="@+id/button_cancel_dialog"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:text=" Zatvori " />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

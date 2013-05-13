@@ -78,23 +78,57 @@ public abstract class SyncObject implements Parcelable {
 		return getNamespace() + "/:" + getWebMethodName();
 	}
 
+	/**
+	 * Web service method name.
+	 * @return
+	 */
 	public abstract String getWebMethodName();
 
+	/**
+	 * Here we are creating request by inserting each property in list.
+	 * @return
+	 */
 	public abstract List<PropertyInfo> getSOAPRequestProperties();
 
 	/**
-	 * Tag represent name of class
-	 * 
+	 * Tag represent name of class, important because this is tag that is inserted in sync log.
 	 * @return
 	 */
 	public abstract String getTag();
 
+	/**
+	 * Action identifier string for for broadcasting result to caller.
+	 * @return
+	 */
 	public abstract String getBroadcastAction();
 
+	/**
+	 * Method that handles response with one parameter.
+	 * 
+	 * @param contentResolver so we can work with db
+	 * @param soapResponse web service response with one parameter
+	 * @return
+	 * @throws CSVParseException
+	 */
 	protected abstract int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException;
 
+	/**
+	 * Method that handles response with multiple parameters.
+	 * 
+	 * @param contentResolver so we can work with db
+	 * @param soapResponse web service response with multiple parameters
+	 * @return number of changed record in db, usually not correct info
+	 * @throws CSVParseException
+	 */
 	protected abstract int parseAndSave(ContentResolver contentResolver, SoapObject soapResponse) throws CSVParseException;
 	
+	/**
+	 * Initial soap parser. It handles faults an separates response with one and multiple parameters.
+	 * After this we are using concrete parser per class in form pasreAndSave method. 
+	 * @param response
+	 * @param contentResolver
+	 * @throws SOAPResponseException
+	 */
 	public void saveSOAPResponse(SoapSerializationEnvelope response, ContentResolver contentResolver) throws SOAPResponseException {
 		int inserted = 0;
 //		SoapObject resp = (SoapObject) response;
@@ -135,6 +169,10 @@ public abstract class SyncObject implements Parcelable {
 
 	}
 
+	/**
+	 * Logs web service call start.
+	 * @param contentResolver
+	 */
 	public void logSyncStart(ContentResolver contentResolver) {
 		Integer maxBatch = Integer.valueOf(0);
 		Cursor cursor = contentResolver.query(SyncLogs.buildSyncLogsObjectIdUri(getTag()), new String[] { "MAX(" + SyncLogs.SYNC_OBJECT_BATCH + ")" }, null, null, null);
@@ -161,6 +199,11 @@ public abstract class SyncObject implements Parcelable {
 		return maxDate;
 	}
 	
+	/**
+	 * Logs web service call end.
+	 * @param contentResolver
+	 * @param syncStatus
+	 */
 	public void logSyncEnd(ContentResolver contentResolver, SyncStatus syncStatus) {
 		ContentValues values = new ContentValues();
 		values.put(SyncLogs.SYNC_OBJECT_STATUS, syncStatus.toString());

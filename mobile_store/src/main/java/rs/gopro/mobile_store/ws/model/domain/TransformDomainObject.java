@@ -17,6 +17,13 @@ public class TransformDomainObject {
 		return new TransformDomainObject();
 	}
 
+	/**
+	 * Transforms domain objects to content values
+	 * 
+	 * @param contentResolver
+	 * @param parsedDomains
+	 * @return
+	 */
 	public <T extends Domain> ContentValues[] transformDomainToContentValues(ContentResolver contentResolver, List<T> parsedDomains) {
 		List<ContentValues> valuesForDb = new ArrayList<ContentValues>();
 		for (Domain domain : parsedDomains) {
@@ -34,6 +41,43 @@ public class TransformDomainObject {
 		return valuesForInsert;
 	}
 
+	/**
+	 * Transforms domain objects to content values with adding some default values
+	 * 
+	 * @param contentResolver
+	 * @param parsedDomains
+	 * @param additionalStaticValues
+	 * @return
+	 */
+	public <T extends Domain> ContentValues[] transformDomainToContentValues(ContentResolver contentResolver, List<T> parsedDomains, ContentValues additionalStaticValues) {
+		List<ContentValues> valuesForDb = new ArrayList<ContentValues>();
+		for (Domain domain : parsedDomains) {
+			ContentValues contentValues = domain.getContentValues();
+			if (domain.getRowItemsForRepalce() != null) {
+				for (RowItemDataHolder dataHolder : domain.getRowItemsForRepalce()) {
+					Integer recordId = getRecordId(dataHolder, contentResolver);
+					contentValues.remove(dataHolder.getNoColumn());
+					contentValues.put(dataHolder.getIdColumn(), recordId);
+				}
+			}
+			
+			if (additionalStaticValues != null && additionalStaticValues.size() > 0) {
+				contentValues.putAll(additionalStaticValues);
+			}
+			
+			valuesForDb.add(contentValues);
+		}
+		ContentValues[] valuesForInsert = valuesForDb.toArray(new ContentValues[valuesForDb.size()]);
+		return valuesForInsert;
+	}
+	
+	/**
+	 * Resolves _id to no
+	 * 
+	 * @param dataHolder
+	 * @param contentResolver
+	 * @return
+	 */
 	private Integer getRecordId(RowItemDataHolder dataHolder, ContentResolver contentResolver) {
 		Integer recordId = null;
 		Uri uri = Generic.buildTableUri(dataHolder.getTable());

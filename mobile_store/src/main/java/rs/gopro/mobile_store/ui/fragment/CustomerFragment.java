@@ -84,18 +84,18 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
         // First, pick the base URI to use depending on whether we are
         // currently filtering.
         Uri baseUri;
-        String filter = null;
+//        String filter = null;
         if (customer_no.equals(DUMMY_SEARCH) && customer_status == -1) {
         	baseUri = MobileStoreContract.Customers.CONTENT_URI;
-        	filter = null;
+//        	filter = null;
         } else {
         	baseUri = Customers.buildCustomSearchUri(customer_no, String.valueOf(customer_status));
-        	filter = null;
+//        	filter = null;
         }
 		
 		CursorLoader cursorLoader = new CursorLoader(getActivity(),
 				baseUri,
-				CustomersQuery.PROJECTION, filter, null,
+				CustomersQuery.PROJECTION, Customers.IS_ACTIVE+"=?", new String[] { "1" },
 				Customers.DEFAULT_SORT);
 		return cursorLoader;
 	}

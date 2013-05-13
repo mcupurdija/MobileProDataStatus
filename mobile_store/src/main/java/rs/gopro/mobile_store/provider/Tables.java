@@ -17,6 +17,7 @@ public interface Tables {
 	String CUSTOMER_TRADE_AGREEMENT = "customer_trade_agreement";
 	String CUSTOMER_ADDRESSES = "customer_addresses";
 	String SENT_ORDERS_STATUS = "sent_orders_status";
+	String SERVICE_ORDERS = "service_orders";
 	
 	String INVOICES = "invoices";
 	String INVOICES_JOIN_CUSTOMER = "invoices left outer join customers on invoices.customer_id = customers._id";
@@ -48,4 +49,6 @@ public interface Tables {
 	String CUSTOMERS_EXPORT = "customers left outer join sales_persons on customers.sales_person_id = sales_persons._id";
 	String CUSTOMERS_UPDATE_EXPORT = "customers left outer join sales_persons on customers.sales_person_id = sales_persons._id " +
 			"left outer join contacts on customers.primary_contact_id = contacts._id";
+	String SERVICE_ORDERS_EXPORT = "service_orders left outer join customers on service_orders.customer_id = customers._id " +
+			"left outer join items on service_orders.item_id = items._id";
 }

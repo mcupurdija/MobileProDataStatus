@@ -10,6 +10,7 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import rs.gopro.mobile_store.ws.model.domain.CustomerDomain;
@@ -114,9 +115,20 @@ public class CustomerSyncObject extends SyncObject {
 
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException {
+		
+		
 		List<CustomerDomain> parsedItems = CSVDomainReader.parse(new StringReader(soapResponse.toString()), CustomerDomain.class);
-		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedItems);
-		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.Customers.CONTENT_URI, valuesForInsert);
+		// every received should be active
+		ContentValues defaultCV= new ContentValues();
+		defaultCV.put(Customers.IS_ACTIVE, 1);
+		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedItems, defaultCV);
+		// there is customers, now to reset who is active first, all are inactive
+		if (parsedItems != null && parsedItems.size() > 0) {
+			ContentValues cv= new ContentValues();
+			cv.put(Customers.IS_ACTIVE, 0);
+			context.getContentResolver().update(Customers.CONTENT_URI, cv, null, null);
+		}
+		int numOfInserted = contentResolver.bulkInsert(Customers.CONTENT_URI, valuesForInsert);
 		return numOfInserted;
 	}
 
