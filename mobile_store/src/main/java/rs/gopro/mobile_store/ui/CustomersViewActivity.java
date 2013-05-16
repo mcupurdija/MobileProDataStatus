@@ -14,6 +14,7 @@ import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.CustomerAddressesSyncObject;
 import rs.gopro.mobile_store.ws.model.CustomerSyncObject;
 import rs.gopro.mobile_store.ws.model.GetContactsSyncObject;
+import rs.gopro.mobile_store.ws.model.SetPotentialCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -63,6 +64,8 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Adrese preuzete!");
 			} else if (CustomerSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Kupci preuzeti!");
+			} else if (SetPotentialCustomersSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Potencijalni kupac uspesno poslat!");
 			}
 		} else {
 			DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_error_in_sync), syncResult.getResult());
@@ -250,6 +253,8 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
     	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, addressesSyncObject);
     	IntentFilter customerSyncObject = new IntentFilter(CustomerSyncObject.BROADCAST_SYNC_ACTION);
     	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, customerSyncObject);
+    	IntentFilter potentialCustomerSyncObject = new IntentFilter(SetPotentialCustomersSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, potentialCustomerSyncObject);
     }
     
     @Override

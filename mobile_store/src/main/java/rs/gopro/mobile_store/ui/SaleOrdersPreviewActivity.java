@@ -16,6 +16,7 @@ import rs.gopro.mobile_store.util.DocumentUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.model.MobileDeviceSalesDocumentSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.AlertDialog;
@@ -137,7 +138,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 				} else {
 					Cursor cursorAdHock = getContentResolver().query(MobileStoreContract.SaleOrderLines.CONTENT_URI, new String[] {SaleOrderLines.SALE_ORDER_ID}, Tables.SALE_ORDER_LINES + "." + SaleOrderLines.SALE_ORDER_ID + "=? and " + Tables.SALE_ORDER_LINES + "." + SaleOrderLines.PRICE_DISCOUNT_STATUS+ "=?", new String[] { saleOrderId, ApplicationConstants.PRICE_AND_DISCOUNT_ARE_NOT_OK }, null);
 					if (cursorStatus.moveToFirst() && cursorStatus.getInt(0) == 0 && cursorAdHock.moveToFirst()) {
-						mainStatusMessage = "Ova porudžbina je kandidat za Ad-Hoc Porudžbinu zbog cena van cenovnika i biće poslata na odobrenje!";
+//						mainStatusMessage = "Ova porudžbina je kandidat za Ad-Hoc Porudžbinu zbog cena van cenovnika i biće poslata na odobrenje!";
 					}
 					if (cursorAdHock != null && !cursorAdHock.isClosed()) {
 						cursorAdHock.close();
@@ -157,18 +158,18 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 				TextView text7 = (TextView) dialog.findViewById(R.id.dialog_sale_order_order_document_additional_status_message);
 				double minDiff = 0.0;
 				try {
-					minDiff = Double.valueOf(deviceSalesDocumentSyncObject.getMin_max_discount_total_amount_difference());
+					minDiff = Double.valueOf(WsDataFormatEnUsLatin.toDoubleFromWs(deviceSalesDocumentSyncObject.getMin_max_discount_total_amount_difference()));
 				} catch (NumberFormatException nme) {
 					LogUtils.LOGE(SALE_ORDER_LIST_TAG, "", nme);
 				}
 				
 				if (minDiff < 0.0) {
 					text7.setVisibility(View.VISIBLE);
-					text6.setVisibility(View.VISIBLE);
+//					text6.setVisibility(View.VISIBLE);
 					text7.setText("Korekcija porudžbine: " + UIUtils.formatDoubleForUI(minDiff));
 				} else {
 					text7.setVisibility(View.GONE);
-					text6.setVisibility(View.GONE);
+//					text6.setVisibility(View.GONE);
 				}
 				
 				TextView text1 = (TextView) dialog.findViewById(R.id.dialog_sale_order_order_condition_status_spinner);

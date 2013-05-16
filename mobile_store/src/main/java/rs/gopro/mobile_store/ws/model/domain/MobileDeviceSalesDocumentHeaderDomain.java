@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
+import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 import android.content.ContentValues;
 
@@ -40,7 +41,7 @@ public class MobileDeviceSalesDocumentHeaderDomain extends Domain {
 		contentValues.put(SaleOrders.FIN_CONTROL_STATUS, financial_control_status == "" ? "0" : financial_control_status);
 		contentValues.put(SaleOrders.ORDER_STATUS_FOR_SHIPMENT, order_status_for_shipment == "" ? "0" : order_status_for_shipment);
 		contentValues.put(SaleOrders.ORDER_VALUE_STATUS, order_value_status == "" ? "0" : order_value_status);
-		contentValues.put(SaleOrders.CURR_MAX_DISCOUNT_TOTAL_AMOUNT_DIFFERENCE, curr_max_discount_total_amount_difference == "" ? "0" : curr_max_discount_total_amount_difference);
+		contentValues.put(SaleOrders.CURR_MAX_DISCOUNT_TOTAL_AMOUNT_DIFFERENCE, curr_max_discount_total_amount_difference == "" ? Double.valueOf("0.0") : WsDataFormatEnUsLatin.toDoubleFromWs(curr_max_discount_total_amount_difference));
 		return contentValues;
 	}
 

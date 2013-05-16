@@ -13,9 +13,7 @@ import android.support.v4.content.Loader;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 public class AddContactActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
 

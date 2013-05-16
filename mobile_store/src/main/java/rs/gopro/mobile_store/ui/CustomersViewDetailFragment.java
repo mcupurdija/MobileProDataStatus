@@ -339,11 +339,24 @@ public class CustomersViewDetailFragment extends Fragment implements
 		int result = getActivity().getContentResolver().update(mCustomerdetailUri, contentValues, null, null);
 		if (result > 0) {
 			try {
-				updateCustomer(Integer.valueOf(MobileStoreContract.Customers.getCustomersId(mCustomerdetailUri)));
+				if (!isPotentialCustomer(Integer.valueOf(Customers.getCustomersId(mCustomerdetailUri)))) {
+					updateCustomer(Integer.valueOf(MobileStoreContract.Customers.getCustomersId(mCustomerdetailUri)));
+				}
 			} catch (Exception e) {
 				LogUtils.LOGE(TAG, "Big problem!", e);
 			}
 		}
+	}
+	
+	private boolean isPotentialCustomer(int customerId) {
+		Cursor potentialCustomerCursor = getActivity().getContentResolver().query(MobileStoreContract.Customers.CONTENT_URI, new String[] {Customers.CONTACT_COMPANY_NO}, 
+				"("+Customers.CONTACT_COMPANY_NO + " is null or " + Customers.CONTACT_COMPANY_NO + "='')" + " and " + Customers._ID + "=?" , new String[] { String.valueOf(customerId) }, null);
+		
+		if (potentialCustomerCursor.moveToFirst()) {
+			return true;
+		}
+		potentialCustomerCursor.close();
+		return false;
 	}
 	
 	private void updateCustomer(int customerId) {    	
