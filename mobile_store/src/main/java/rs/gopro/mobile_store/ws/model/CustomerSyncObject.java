@@ -126,7 +126,7 @@ public class CustomerSyncObject extends SyncObject {
 		if (parsedItems != null && parsedItems.size() > 0) {
 			ContentValues cv= new ContentValues();
 			cv.put(Customers.IS_ACTIVE, 0);
-			context.getContentResolver().update(Customers.CONTENT_URI, cv, null, null);
+			context.getContentResolver().update(Customers.CONTENT_URI, cv, Customers.CONTACT_COMPANY_NO+" is not null or " + Customers.CONTACT_COMPANY_NO + " not like ''", null);
 		}
 		int numOfInserted = contentResolver.bulkInsert(Customers.CONTENT_URI, valuesForInsert);
 		return numOfInserted;

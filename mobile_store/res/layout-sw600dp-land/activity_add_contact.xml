@@ -1,304 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_vertical|center_horizontal"
-    android:baselineAligned="false" >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal|top"
+    android:animateLayoutChanges="false"
+    android:background="#FFE9E9E9"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:paddingLeft="80dp"
+    android:paddingRight="80dp" >
 
-    
-    
-    <TableLayout
-        android:id="@+id/contact_first_table"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dip" >
+        android:layout_gravity="center_horizontal|top"
+        android:background="#FFFFFFFF"
+        android:orientation="vertical"
+        android:paddingLeft="80dp"
+        android:paddingRight="80dp"
+        android:paddingTop="28dip" >
 
-        <!-- 2 columns -->
-
-        <TableRow
-            android:id="@+id/contact_name_row"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dip" >
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
 
             <TextView
                 android:id="@+id/contact_name_title"
-                android:text="@string/contact_name_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                style="@style/AddEdit_Label"
+                android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_name_title" />
 
             <EditText
                 android:id="@+id/contact_name_input"
-                android:hint="@string/contact_name_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
-        <TableRow
-            android:id="@+id/contact_name_2_row"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dip" >
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
 
             <TextView
                 android:id="@+id/contact_name_2_title"
-                android:text="@string/contact_name_2_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                style="@style/AddEdit_Label"
+                android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_name_2_title" />
 
             <EditText
                 android:id="@+id/contact_name_2_input"
-                android:hint="@string/contact_name_2_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
-        <!-- edittext span 2 column -->
-
-        <TableRow
-            android:id="@+id/contact_type_row"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dip" >
-
-            <TextView
-                android:id="@+id/contact_type_title"
-                android:text="@string/contact_type_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <Spinner
-                android:id="@+id/contact_type_sppiner"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/contact_address_row"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dip" >
-
-            <TextView
-                android:id="@+id/contact_address_title"
-                android:text="@string/contact_address_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/contact_address_input"
-                android:hint="@string/contact_address_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
-
-        <!-- display this button in 3rd column via layout_column(zero based) -->
-
-        <TableRow
-            android:id="@+id/contact_contact_contact_phone_row"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dip" >
-
-            <TextView
-                android:id="@+id/contact_city_title"
-                android:text="@string/contact_city_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/contact_city_input"
-                android:hint="@string/contact_city_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
-
-        <!-- display this button in 2nd column via layout_column(zero based) -->
-
-        <TableRow
-            android:id="@+id/post_code_row"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dip" >
-
-            <TextView
-                android:id="@+id/contact_post_code_title"
-                android:text="@string/contact_post_code_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/contact_post_code_input"
-                android:hint="@string/contact_post_code_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/phone_row"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dip" >
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
 
             <TextView
                 android:id="@+id/contact_phone_title"
-                android:text="@string/contact_phone_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                style="@style/AddEdit_Label"
+               android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_phone_title" />
 
             <EditText
                 android:id="@+id/contact_phone_input"
-                android:hint="@string/contact_phone_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
-        <TableRow
-            android:id="@+id/contact_mobile_phone_row"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dip" >
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
 
             <TextView
                 android:id="@+id/contact_mobile_phone_title"
-                android:text="@string/contact_mobile_phone_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                style="@style/AddEdit_Label"
+                android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_mobile_phone_title" />
 
             <EditText
                 android:id="@+id/contact_mobile_phone_input"
-                android:hint="@string/contact_mobile_phone_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
-       
-    </TableLayout>
-
-    <TableLayout
-        android:id="@+id/contact_second_table"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="15dip" >
-         <TableRow
-            android:id="@+id/contact_email_row"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dip" >
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
 
             <TextView
                 android:id="@+id/contact_email_title"
-                android:text="@string/contact_email_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                style="@style/AddEdit_Label"
+                android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_email_title" />
 
             <EditText
                 android:id="@+id/contact_email_input"
-                android:hint="@string/contact_email_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
-        <TableRow
-            android:id="@+id/contact_company_no_row"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dip" >
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
 
             <TextView
                 android:id="@+id/contact_company_no_title"
-                android:text="@string/contact_company_no_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                style="@style/AddEdit_Label"
+                android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_company_no_title" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/contact_company_no_input"
-                android:hint="@string/contact_company_no_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="match_parent" />
+        </LinearLayout>
 
-        <TableRow
-            android:id="@+id/contact_company_id_row"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dip" >
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/contact_company_id_title"
-                android:text="@string/contact_company_id_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:id="@+id/contact_department_title"
+                style="@style/AddEdit_Label"
+                android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:text="Odeljenje" />
 
             <EditText
-                android:id="@+id/contact_company_id_input"
-                android:hint="@string/contact_company_id_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
+                android:id="@+id/contact_department_input"
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
-        <TableRow
-            android:id="@+id/contact_vat_registration_row"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dip" >
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/contact_vat_registration_title"
-                android:text="@string/contact_vat_registration_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:id="@+id/contact_position_title"
+                style="@style/AddEdit_Label"
+                android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:text="Pozicija" />
 
             <EditText
-                android:id="@+id/contact_vat_registration_input"
-                android:hint="@string/contact_vat_registration_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
+                android:id="@+id/contact_position_input"
+                style="@style/AddEdit_Text_Value"
+                android:layout_width="0px"
+                android:layout_weight="5"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
 
-        <TableRow
-            android:id="@+id/contact_division_row"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dip" >
-
-            <TextView
-                android:id="@+id/contact_division_title"
-                android:text="@string/contact_division_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/contact_division_input"
-                android:hint="@string/contact_division_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/contact_number_of_blue_coat_row"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dip" >
-
-            <TextView
-                android:id="@+id/contact_number_of_blue_coat_title"
-                android:text="@string/contact_number_of_blue_coat_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/contact_number_of_blue_coat_input"
-                android:hint="@string/contact_number_of_blue_coat_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
-        <TableRow
-            android:id="@+id/contact_number_of_grey_coat_row"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dip" >
-
-            <TextView
-                android:id="@+id/contact_number_of_grey_coat_title"
-                android:text="@string/contact_number_of_grey_coat_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/contact_number_of_grey_coat_input"
-                android:hint="@string/contact_number_of_grey_coat_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
-         <TableRow
-            android:id="@+id/contact_job_title_row"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dip" >
-
-            <TextView
-                android:id="@+id/contact_job_title"
-                android:text="@string/contact_job_title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/contact_job_title_input"
-                android:hint="@string/contact_job_title_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
-    </TableLayout>
-
-</LinearLayout>
+</ScrollView>

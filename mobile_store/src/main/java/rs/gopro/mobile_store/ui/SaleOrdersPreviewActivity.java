@@ -164,9 +164,11 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 				
 				if (minDiff < 0.0) {
 					text7.setVisibility(View.VISIBLE);
+					text6.setVisibility(View.VISIBLE);
 					text7.setText("Korekcija porudžbine: " + UIUtils.formatDoubleForUI(minDiff));
 				} else {
 					text7.setVisibility(View.GONE);
+					text6.setVisibility(View.GONE);
 				}
 				
 				TextView text1 = (TextView) dialog.findViewById(R.id.dialog_sale_order_order_condition_status_spinner);

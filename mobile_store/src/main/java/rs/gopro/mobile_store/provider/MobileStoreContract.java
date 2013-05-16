@@ -148,6 +148,7 @@ public class MobileStoreContract {
 		String ADOPTED_POTENTIAL = "adopted_potential";
 		String FOCUS_CUSTOMER = "focus_customer";
 		String DIVISION = "division";
+		String APR_CUSTOMER_TURNOVER = "apr_customer_turnover";
 		String NUMBER_OF_BLUE_COAT = "number_of_blue_coat";
 		String NUMBER_OF_GREY_COAT = "number_of_grey_coat";
 		String CONTACT_COMPANY_NO = "contact_company_no";
@@ -239,7 +240,7 @@ public class MobileStoreContract {
 		String HIDE_REBATE = "hide_rebate";
 		String FURTHER_SALE = "further_sale";
 		String CUSTOMER_BUSINESS_UNIT_CODE = "customer_business_unit_code";
-		String MIN_MAX_DISCOUNT_TOTAL_AMOUNT_DIFFERENCE = "min_max_discount_total_amount_difference";
+		String CURR_MAX_DISCOUNT_TOTAL_AMOUNT_DIFFERENCE = "min_max_discount_total_amount_difference";
 		String NOTE1 = "note1";
 		String NOTE2 = "note2";
 		String NOTE3 = "note3";

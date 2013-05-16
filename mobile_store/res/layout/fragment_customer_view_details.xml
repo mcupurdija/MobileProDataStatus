@@ -928,7 +928,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:inputType="text"
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -953,7 +952,30 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:inputType="text"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/customer_apr_customer_turnover_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_apr_customer_turnover_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_apr_customer_turnover_label" />
+
+            <TextView
+                android:id="@+id/customer_apr_customer_turnover_value"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />

@@ -27,6 +27,11 @@
         android:title="@string/menu_record_visits_option"
         android:visible="false"/>
     <item
+        android:id="@+id/main_options_add_contact"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/contextual_contact_add"
+        android:visible="false"/>
+    <item
         android:id="@+id/shortcuts"
         android:icon="@drawable/ic_action_settings"
         android:showAsAction="ifRoom|withText"

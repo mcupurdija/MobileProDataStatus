@@ -134,7 +134,9 @@
 	<string name="contextual_verify_sale_order">Verifikuj porudžbinu/ponudu</string>
 	<string name="contextual_complete_visit">Realizuj posetu</string>
 	<string name="contextual_clone_sale_order">Kloniraj porudžbinu/ponudu</string>
-	
+	    <string name="contextual_contact_edit">Izmeni kontakt</string>
+    <string name="contextual_contact_add">Novi kontakt</string>
+    
 	<string name="dialog_title_item_price_qty_load">Cena, popust i količina</string>
 	<string name="dialog_body_item_price_qty_load">Učitavanje cene, popusta i količine</string>
 	<string name="dialog_title_sale_order_send">Porudžbine/Ponude</string>
@@ -196,6 +198,7 @@
     
     <string name="customer_turnover_ytm_label">Promet ytm</string>
     <string name="customer_gross_profit_pfep_label">Ukupan profit PFEP</string>
+    <string name="customer_apr_customer_turnover_label">Sopstveni promet kupca</string>
 	<string name="customer_note_label">Napomena</string>	
 	
 	<string name="customer_name_label">Ime</string>

@@ -286,7 +286,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		setFinancial_control_status(deviceSalesDocumentHeaderDomain.financial_control_status);
 		setOrder_status_for_shipment(deviceSalesDocumentHeaderDomain.order_status_for_shipment);
 		setOrder_value_status(deviceSalesDocumentHeaderDomain.order_value_status);
-		setMin_max_discount_total_amount_difference(deviceSalesDocumentHeaderDomain.min_max_discount_total_amount_difference);
+		setMin_max_discount_total_amount_difference(deviceSalesDocumentHeaderDomain.curr_max_discount_total_amount_difference);
 		
 		return numOfInserted;
 	}

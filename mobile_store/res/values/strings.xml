@@ -128,6 +128,8 @@
     <string name="contextual_verify_sale_order">Verify document</string>
     <string name="contextual_complete_visit">Complete visit</string>
     <string name="contextual_clone_sale_order">Clone sale order</string>
+    <string name="contextual_contact_edit">Edit contact</string>
+    <string name="contextual_contact_add">Add contact</string>
     <string name="dialog_title_item_price_qty_load">Price and Quantity</string>
     <string name="dialog_body_item_price_qty_load">Loading price and quantity</string>
     <string name="dialog_title_sale_order_send">Sale Order</string>
@@ -188,6 +190,7 @@
     
     <string name="customer_turnover_ytm_label">Turnover ytm</string>
     <string name="customer_gross_profit_pfep_label">Gross profit pfep</string>
+    <string name="customer_apr_customer_turnover_label">APR customer turnover</string>
     
     <string name="customer_note_label">Note</string>
     <string name="customer_name_label">Name</string>

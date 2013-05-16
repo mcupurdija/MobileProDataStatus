@@ -3,7 +3,6 @@ package rs.gopro.mobile_store.ws.model.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 import android.content.ContentValues;
@@ -18,13 +17,13 @@ public class MobileDeviceSalesDocumentHeaderDomain extends Domain {
 	public String financial_control_status;
 	public String order_status_for_shipment;
 	public String order_value_status;
-	public String min_max_discount_total_amount_difference;
+	public String curr_max_discount_total_amount_difference;
 	
 	public MobileDeviceSalesDocumentHeaderDomain() {
 	}
 
 	private static final String[] COLUMNS = new String[] { "document_type", "sales_order_device_no", "sales_order_no", 
-		"order_condition_status", "financial_control_status", "order_status_for_shipment", "order_value_status", "min_max_discount_total_amount_difference" };
+		"order_condition_status", "financial_control_status", "order_status_for_shipment", "order_value_status", "curr_max_discount_total_amount_difference" };
 	
 	@Override
 	public String[] getCSVMappingStrategy() {
@@ -41,7 +40,7 @@ public class MobileDeviceSalesDocumentHeaderDomain extends Domain {
 		contentValues.put(SaleOrders.FIN_CONTROL_STATUS, financial_control_status == "" ? "0" : financial_control_status);
 		contentValues.put(SaleOrders.ORDER_STATUS_FOR_SHIPMENT, order_status_for_shipment == "" ? "0" : order_status_for_shipment);
 		contentValues.put(SaleOrders.ORDER_VALUE_STATUS, order_value_status == "" ? "0" : order_value_status);
-		contentValues.put(SaleOrders.MIN_MAX_DISCOUNT_TOTAL_AMOUNT_DIFFERENCE, min_max_discount_total_amount_difference == "" ? "0" : min_max_discount_total_amount_difference);
+		contentValues.put(SaleOrders.CURR_MAX_DISCOUNT_TOTAL_AMOUNT_DIFFERENCE, curr_max_discount_total_amount_difference == "" ? "0" : curr_max_discount_total_amount_difference);
 		return contentValues;
 	}
 

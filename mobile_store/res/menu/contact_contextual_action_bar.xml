@@ -2,19 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/deactivate_contact"
-        android:title="@string/contextual_deactivate"
-        android:showAsAction="ifRoom|withText"/>
-    
-    <item
         android:id="@+id/add_contact"
-        android:title="Add"
-        android:showAsAction="ifRoom|withText"/>
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/contextual_contact_add"/>
     <item
         android:id="@+id/edit_contact"
-        android:title="@string/contextual_edit"
-        android:showAsAction="ifRoom|withText"/>
-    
-    
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/contextual_contact_edit"/>
 
 </menu>

@@ -35,6 +35,7 @@ public class CustomerDomain extends Domain {
 	public String focus_customer;
 	public String division;
 	public String gross_profit_pfep;
+	public String apr_customer_turnover;
 	public String number_of_blue_coat;
 	public String number_of_grey_coat;
 	public String contact_company_no;
@@ -61,7 +62,7 @@ public class CustomerDomain extends Domain {
 	public String financial_control_status;
 
 	private static final String[] COLUMNS = new String[] { "customer_no", "name", "name2", "address", "city", "phone", "mobile", "global_dimension", "credit_limit_lcy", "payment_terms_code", "sales_person_no", "priority", "vat_reg_no",
-			"post_code", "email", "primary_contact_id", "company_id", "channel_oran", "sml", "adopted_potential", "focus_customer", "division", "gross_profit_pfep", "number_of_blue_coat", "number_of_grey_coat", "contact_company_no", "balance_lcy",
+			"post_code", "email", "primary_contact_id", "company_id", "channel_oran", "sml", "adopted_potential", "focus_customer", "division", "gross_profit_pfep", "apr_customer_turnover", "number_of_blue_coat", "number_of_grey_coat", "contact_company_no", "balance_lcy",
 			"balance_due_lcy", "internal_balance_due_lcy", "turnover_in_last_3m", "turnover_in_last_6m", "turnover_in_last_12m", "turnover_generated_3", "turnover_generated_2", "turnover_generated_1", "number_of_diff_items_3",
 			"number_of_diff_items_2", "number_of_diff_items_1", "orsy_shelf_count_at_cust", "customer_12_months_plan", "turnover_ytm", "avarage_payment_days", "number_of_salespersons_working_with_customer", "days_since_oldest_open_invoice",
 			"next_15_days_invoice_due_amount", "next_15_days_due_invoice_count", "financial_control_status"
@@ -113,8 +114,9 @@ public class CustomerDomain extends Domain {
 		} else {
 			contentValues.put(MobileStoreContract.Customers.CONTACT_COMPANY_NO, contact_company_no);
 		}
-		contentValues.put(MobileStoreContract.Customers.SYNC_OBJECT_BATCH , "1");
-		contentValues.put(MobileStoreContract.Customers.SALE_PERSON_NO , getSales_person_no());
+		contentValues.put(MobileStoreContract.Customers.SYNC_OBJECT_BATCH, "1");
+		contentValues.put(MobileStoreContract.Customers.SALE_PERSON_NO, getSales_person_no());
+		contentValues.put(MobileStoreContract.Customers.APR_CUSTOMER_TURNOVER, WsDataFormatEnUsLatin.toDoubleFromWs(apr_customer_turnover));
 		contentValues.put(MobileStoreContract.Customers.TURNOVER_YTM, WsDataFormatEnUsLatin.toDoubleFromWs(getTurnover_ytm()));
 		contentValues.put(MobileStoreContract.Customers.GROSS_PROFIT_PFEP, WsDataFormatEnUsLatin.toDoubleFromWs(getGross_profit_pfep()));
 		contentValues.put(MobileStoreContract.Customers.TURNOVER_IN_LAST_3M , WsDataFormatEnUsLatin.toDoubleFromWs(getTurnover_in_last_3m()));

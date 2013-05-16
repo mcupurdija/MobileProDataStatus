@@ -1,4 +1,4 @@
--- upgrade older 156 version to 157
+-- upgrade older 157 version to 158
 -- date 18.4.2013.
 
 CREATE TABLE `service_orders` ( 

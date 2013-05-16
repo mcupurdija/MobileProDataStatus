@@ -1,7 +1,6 @@
 package rs.gopro.mobile_store.ui.widget;
 
 import rs.gopro.mobile_store.R;
-import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.ui.AddContactActivity;
 import android.app.Activity;
 import android.content.Intent;
@@ -24,10 +23,10 @@ public class ContactContextualActionBar implements Callback {
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.deactivate_contact:
-			activity.getContentResolver().delete(MobileStoreContract.Contacts.buildContactsUri(contactId), null, null);
-			mode.finish();
-			return true;
+//		case R.id.deactivate_contact:
+//			activity.getContentResolver().delete(MobileStoreContract.Contacts.buildContactsUri(contactId), null, null);
+//			mode.finish();
+//			return true;
 		case R.id.edit_contact:
 			Intent editContactIntent = new Intent(activity, AddContactActivity.class);
 			editContactIntent.putExtra(AddContactActivity.CONTACT_ID, contactId);

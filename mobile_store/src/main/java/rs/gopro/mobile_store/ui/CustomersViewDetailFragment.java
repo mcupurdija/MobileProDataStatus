@@ -74,6 +74,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 
 	private TextView mTurnoverYtm;
 	private TextView mGrossProfitPfep;
+	private TextView aprCustomerTurnover;
 
 	
 	private ActionMode actionMode;
@@ -184,6 +185,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 
         mTurnoverYtm = (TextView) rootView.findViewById(R.id.customer_turnover_ytm_value);
         mGrossProfitPfep = (TextView) rootView.findViewById(R.id.customer_turnover_gross_profit_pfep_value);
+        aprCustomerTurnover = (TextView) rootView.findViewById(R.id.customer_apr_customer_turnover_value);
         
         if(isInUpdateMode){
         	setFocusable(true);
@@ -241,6 +243,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 		String turnover_generated_2 = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_GENERATED_2));
 		String turnover_generated_3 = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_GENERATED_3));
 		String gross_profit_pfep = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.GROSS_PROFIT_PFEP));
+		String apr_customer_turnover = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.APR_CUSTOMER_TURNOVER));
 		String turnover_ytm = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_YTM));
         
         mCustomer_no.setText(customernoString);
@@ -280,6 +283,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 
         mTurnoverYtm.setText(turnover_ytm);
         mGrossProfitPfep.setText(gross_profit_pfep);
+        aprCustomerTurnover.setText(apr_customer_turnover);
         
         int customerId = cursor.getInt(CustomerDetailQuery._ID);
         mCallbacks.onCustomerIdAvailable(String.valueOf(customerId));
@@ -435,8 +439,8 @@ public class CustomersViewDetailFragment extends Fragment implements
                 MobileStoreContract.Customers.TURNOVER_IN_LAST_3M,
                 MobileStoreContract.Customers.TURNOVER_IN_LAST_12M,
                 MobileStoreContract.Customers.TURNOVER_YTM,
-                MobileStoreContract.Customers.GROSS_PROFIT_PFEP
-                
+                MobileStoreContract.Customers.GROSS_PROFIT_PFEP,
+                MobileStoreContract.Customers.APR_CUSTOMER_TURNOVER
         };
 
         int _ID = 0;
@@ -475,6 +479,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 		int TURNOVER_IN_LAST_12M = 33;
 		int TURNOVER_YTM = 34;
 		int GROSS_PROFIT_PFEP = 35;
+		int APR_CUSTOMER_TURNOVER = 36;
 	}
 
 

@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.ui.customlayout;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.ui.fragment.ContactsFragment;
+import rs.gopro.mobile_store.ui.widget.ContactContextualActionBar;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
 import android.net.Uri;
@@ -38,7 +39,7 @@ public class ContactsLayout extends CustomLinearLayout {
 
 	@Override
 	public Callback getContextualActionBar(String identifier, String visitType) {
-		return null;// new ContactContextualActionBar(activity, identifier);
+		return new ContactContextualActionBar(activity, identifier);
 	}
 
 }
