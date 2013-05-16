@@ -53,8 +53,8 @@ public class CustomerDomain extends Domain {
 	public String number_of_diff_items_1;
 	public String orsy_shelf_count_at_cust;
 	public String customer_12_months_plan;
-	public String turnover_ytm;
 	public String avarage_payment_days;
+	public String turnover_ytm;
 	public String number_of_salespersons_working_with_customer;
 	public String days_since_oldest_open_invoice;
 	public String next_15_days_invoice_due_amount;
@@ -64,7 +64,7 @@ public class CustomerDomain extends Domain {
 	private static final String[] COLUMNS = new String[] { "customer_no", "name", "name2", "address", "city", "phone", "mobile", "global_dimension", "credit_limit_lcy", "payment_terms_code", "sales_person_no", "priority", "vat_reg_no",
 			"post_code", "email", "primary_contact_id", "company_id", "channel_oran", "sml", "adopted_potential", "focus_customer", "division", "gross_profit_pfep", "apr_customer_turnover", "number_of_blue_coat", "number_of_grey_coat", "contact_company_no", "balance_lcy",
 			"balance_due_lcy", "internal_balance_due_lcy", "turnover_in_last_3m", "turnover_in_last_6m", "turnover_in_last_12m", "turnover_generated_3", "turnover_generated_2", "turnover_generated_1", "number_of_diff_items_3",
-			"number_of_diff_items_2", "number_of_diff_items_1", "orsy_shelf_count_at_cust", "customer_12_months_plan", "turnover_ytm", "avarage_payment_days", "number_of_salespersons_working_with_customer", "days_since_oldest_open_invoice",
+			"number_of_diff_items_2", "number_of_diff_items_1", "orsy_shelf_count_at_cust", "customer_12_months_plan", "avarage_payment_days", "turnover_ytm", "number_of_salespersons_working_with_customer", "days_since_oldest_open_invoice",
 			"next_15_days_invoice_due_amount", "next_15_days_due_invoice_count", "financial_control_status"
 
 	};
