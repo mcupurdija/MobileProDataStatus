@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>rs.gopro</groupId>
 	<artifactId>mobile_store</artifactId>
-	<version>1.0.7-SNAPSHOT</version>
+	<version>1.0.7</version>
 	<packaging>apk</packaging>
 	<name>mobile_store</name>
 	<scm>
