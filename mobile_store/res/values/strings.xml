@@ -229,6 +229,8 @@
     <string name="item_campaign_start_date_label">Campaign start date</string>
     <string name="item_campaign_end_date_label">Campaign end date</string>
     <string name="item_dialog_title">Item information</string>
+    <string name="item_inventory_category_label">Inventory category</string>
+    <string name="item_availability_label">Available on locations:</string>
 
     <!-- invoice_line -->
     <string name="invoice_line_quantity">Quantity</string>

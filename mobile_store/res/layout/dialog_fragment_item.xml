@@ -39,6 +39,30 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/item_availability_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/item_availability_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/item_availability_label" />
+
+            <TextView
+                android:id="@+id/item_availability_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+        
+        <TableRow
             android:id="@+id/item_desc_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
@@ -62,6 +86,30 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
+        <TableRow
+            android:id="@+id/item_inventory_category_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/item_inventory_category_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/item_inventory_category_label" />
+
+            <TextView
+                android:id="@+id/item_inventory_category_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+        
         <TableRow
             android:id="@+id/item_category_code_group"
             android:layout_marginBottom="1dip"
@@ -100,30 +148,6 @@
 
             <TextView
                 android:id="@+id/item_group_code_value"
-                style="@style/TextBody"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dip"
-                android:layout_marginRight="16dip"
-                android:paddingLeft="12dip"
-                android:paddingRight="12dip"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/item_unit_sales_price_eur_group"
-            android:layout_marginBottom="1dip"
-            android:focusable="true"
-            android:gravity="center_vertical" >
-
-            <TextView
-                android:id="@+id/item_unit_sales_price_eur_label"
-                style="@style/AddEdit_Label"
-                android:gravity="center_vertical"
-                android:text="@string/item_unit_sales_price_eur_label" />
-
-            <TextView
-                android:id="@+id/item_unit_sales_price_eur_value"
                 style="@style/TextBody"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

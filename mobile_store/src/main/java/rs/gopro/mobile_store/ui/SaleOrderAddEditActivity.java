@@ -9,6 +9,7 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.ui.dialog.AddressSelectDialog;
@@ -448,6 +449,10 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			document_no = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO));
 		} else {
 			document_no = DocumentUtils.generateSaleOrderDeviceNo(salesPersonNo);
+//			Cursor docNoCursor = getContentResolver().query(SaleOrders.CONTENT_URI, new String[] { SaleOrders.SALES_ORDER_NO }, SaleOrders.SALES_ORDER_NO+"=?", new String[] { document_no }, null);
+//			if (docNoCursor.moveToFirst()) {
+//				
+//			}
 		}
 		
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.ORDER_DATE))) {	

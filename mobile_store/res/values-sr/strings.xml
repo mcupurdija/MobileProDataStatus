@@ -237,6 +237,8 @@
 	<string name="item_campaign_start_date_label">Početak akcije</string>
 	<string name="item_campaign_end_date_label">Kraj akcije</string>
 	<string name="item_dialog_title">Informacije o artiklu</string>
+	<string name="item_inventory_category_label">Skladišna kategorija</string>
+	<string name="item_availability_label">Artikal raspoloživ:</string>
 
 	<!-- invoice_line -->
 	<string name="invoice_line_quantity">Količina</string>

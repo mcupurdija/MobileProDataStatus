@@ -1,11 +1,19 @@
 package rs.gopro.mobile_store.ui.fragment;
 
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.ui.BaseActivity;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
+import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.ItemAvailabilitySyncObject;
+import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +22,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +33,13 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	
 	
 //	private static final String STOCK_STATUS = "stock_status";
-//	private static final String IS_STOCK_SYNC_COMPLETED = "is_stock_sync_completed";
-//	private static final String IS_STOCK_SYNC_STARTED = "is_stock_sync_started";
+	private static final String IS_STOCK_SYNC_COMPLETED = "is_stock_sync_completed";
+	private static final String IS_STOCK_SYNC_STARTED = "is_stock_sync_started";
 
 	private Uri mItemUri;
 //	private String stockStatusValue;
-//	private boolean isStockSyncCompleted = false;
-//	private boolean isStockSyncStarted = false;
+	private boolean isStockSyncCompleted = false;
+	private boolean isStockSyncStarted = false;
 
 	private TextView itemNo;
 	private TextView description;
@@ -41,26 +50,42 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	private TextView campaingStatus;
 	private TextView overstockStatus;
 	private TextView conntectedSpecShipItem;
-	private TextView unitSalePriceEur;
 	private TextView unitSalePriceDin;
 	private TextView campaignCode;
 	private TextView campaignStartDate;
 	private TextView campaingEndDate;
+	private TextView inventoryCategory;
+	private TextView itemAvailability;
 
-	// private ResultReceiver mReceiver;
-//	private ItemQuantitySyncObject itemQuantitySyncObject;
+//	 private ResultReceiver mReceiver;
+	private ItemAvailabilitySyncObject itemAvailabilitySyncObject;
 //	private Activity activity;
 
-//	private BroadcastReceiver onNotice = new BroadcastReceiver() {
-//
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
-//			stockStatusValue = syncResult.getResult();
-//			addStockStatusToFrame(syncResult.getResult());
-//
-//		}
-//	};
+	private BroadcastReceiver onNotice = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
+			if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
+				if (ItemAvailabilitySyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(intent.getAction())) {
+					ItemAvailabilitySyncObject returnValue = (ItemAvailabilitySyncObject) syncResult.getComplexResult();
+					if (returnValue.getpAvailableQtyPerLocFilterTxt() != null) {
+						String availibilityMessage = returnValue.getpAvailableQtyPerLocFilterTxt().replace("\\n", "\n");
+						String[] splitmessage = availibilityMessage.split("\n");
+						if (splitmessage.length > 1) {
+							availibilityMessage = "";
+							for (int i=1;i<splitmessage.length;i++) {
+								availibilityMessage +="\n" + splitmessage[i];
+							}
+						}
+						itemAvailability.setText(availibilityMessage);
+					}
+				}
+			} else {
+				itemAvailability.setText("-");
+			}
+		}
+	};
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,14 +98,14 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 
 		if (savedInstanceState != null) {
 //			stockStatusValue = savedInstanceState.getString(STOCK_STATUS);
-//			isStockSyncCompleted = savedInstanceState.getBoolean(IS_STOCK_SYNC_COMPLETED);
-//			isStockSyncStarted = savedInstanceState.getBoolean(IS_STOCK_SYNC_STARTED);
+			isStockSyncCompleted = savedInstanceState.getBoolean(IS_STOCK_SYNC_COMPLETED);
+			isStockSyncStarted = savedInstanceState.getBoolean(IS_STOCK_SYNC_STARTED);
 		}
 
-//		if (!isStockSyncStarted) {
-//			String itemId = MobileStoreContract.Items.getItemId(mItemUri);
-//			doSynchronization(itemId);
-//		}
+		if (!isStockSyncStarted) {
+			String itemNo = MobileStoreContract.Items.getItemNo(mItemUri);
+			doSynchronization(itemNo);
+		}
 
 	}
 
@@ -105,11 +130,12 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		campaingStatus = (TextView) view.findViewById(R.id.item_campaign_status_value);
 		overstockStatus = (TextView) view.findViewById(R.id.item_overstock_status_value);
 		conntectedSpecShipItem = (TextView) view.findViewById(R.id.item_connected_spec_ship_item_value);
-		unitSalePriceEur = (TextView) view.findViewById(R.id.item_unit_sales_price_eur_value);
 		unitSalePriceDin = (TextView) view.findViewById(R.id.item_unit_sales_price_din_value);
 		campaignCode = (TextView) view.findViewById(R.id.item_campaign_code_value);
 		campaignStartDate = (TextView) view.findViewById(R.id.item_campaign_start_date_value);
 		campaingEndDate = (TextView) view.findViewById(R.id.item_campaign_end_date_value);
+		inventoryCategory = (TextView) view.findViewById(R.id.item_inventory_category_value);
+		itemAvailability = (TextView) view.findViewById(R.id.item_availability_value);
 //		stockStatusFrame = (FrameLayout) view.findViewById(R.id.item_stock_status_holder);
 //		if (!isStockSyncCompleted) {
 //			addWaitingLayoutToFrame();
@@ -130,15 +156,15 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	public void onResume() {
 		super.onResume();
 
-//		IntentFilter intentFilter = new IntentFilter(ItemQuantitySyncObject.BROADCAST_SYNC_ACTION);
+		IntentFilter intentFilter = new IntentFilter(ItemAvailabilitySyncObject.BROADCAST_SYNC_ACTION);
 		//registering broadcast receiver to listen BROADCAST_SYNC_ACTION broadcast 
-//		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, intentFilter);
+		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, intentFilter);
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-//		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(onNotice);
+		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(onNotice);
 	}
 
 	@Override
@@ -171,7 +197,6 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		String campaignStatusString = cursor.getString(ItemsQuery.CAMPAIGN_STATUS);
 		String overstockStatusString = cursor.getString(ItemsQuery.OVERSTOCK_STATUS);
 		String connetectedSpecShipItemString = cursor.getString(ItemsQuery.CONNECTED_SPEC_SHIP_ITEM);
-		String unitSalesPriceEurString = String.valueOf(cursor.getDouble(ItemsQuery.UNIT_SALES_PRICE_EUR));
 		String unitSalesPriceDinString = String.valueOf(cursor.getDouble(ItemsQuery.UNIT_SALES_PRICE_DIN));
 		String campaignCodeString = cursor.getString(ItemsQuery.CAMPAIGN_CODE);
 		String campaignStartDateString = cursor.getString(ItemsQuery.CMPAIGN_START_DATE);
@@ -188,7 +213,7 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		overstockStatus.setText(overstockStatusString);
 		conntectedSpecShipItem.setText(connetectedSpecShipItemString);
 		unitSalePriceDin.setText(unitSalesPriceDinString);
-		unitSalePriceEur.setText(unitSalesPriceEurString);
+		inventoryCategory.setText(cursor.getString(ItemsQuery.INVENTORY_ITEM_CATEGORY));
 	}
 
 	@Override
@@ -216,25 +241,33 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 //		outState.putString(STOCK_STATUS, stockStatusValue);
-//		outState.putBoolean(IS_STOCK_SYNC_COMPLETED, isStockSyncCompleted);
-//		outState.putBoolean(IS_STOCK_SYNC_STARTED, isStockSyncStarted);
+		outState.putBoolean(IS_STOCK_SYNC_COMPLETED, isStockSyncCompleted);
+		outState.putBoolean(IS_STOCK_SYNC_STARTED, isStockSyncStarted);
 		super.onSaveInstanceState(outState);
 	}
 
 
 
-//	private void doSynchronization(final String itemId) {
-//		isStockSyncStarted = true;
-//		itemQuantitySyncObject = new ItemQuantitySyncObject(itemId, "300", Integer.valueOf(-1));
-//		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-//		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQuantitySyncObject);
-//		getActivity().startService(intent);
-//
-//	}
+	private void doSynchronization(final String itemNo) {
+		isStockSyncStarted = true;
+		// TODO convert to item no
+//		Cursor itemCursor = getActivity().getContentResolver().query(MobileStoreContract.Items.CONTENT_URI, new String[] { Items.ITEM_NO }, 
+//				"_ID=?", new String[] { itemId }, null);
+//		String item_no = "";
+//		if (itemCursor.moveToFirst()) {
+//			item_no = itemCursor.getString(0);
+			
+			itemAvailabilitySyncObject = new ItemAvailabilitySyncObject(itemNo);
+			Intent intent = new Intent(getActivity(), NavisionSyncService.class);
+			intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemAvailabilitySyncObject);
+			getActivity().startService(intent);
+//		}
+	}
 
 //	public void onSOAPResult(int code, String result, String itemId) {
-//		stockStatusValue = result;
-//		addStockStatusToFrame(result);
+////		stockStatusValue = result;
+////		addStockStatusToFrame(result);
+//		itemAvailability.setText(result);
 //	}
 	
 	
@@ -256,7 +289,8 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 				Items.UNIT_SALES_PRICE_DIN,
 				Items.CAMPAIGN_CODE,
 				Items.CMPAIGN_START_DATE,
-				Items.CAMPAIGN_END_DATE
+				Items.CAMPAIGN_END_DATE,
+				Items.INVENTORY_ITEM_CATEGORY
 		};
 		
 		int _ID = 0;
@@ -269,10 +303,11 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		int CAMPAIGN_STATUS = 7;
 		int OVERSTOCK_STATUS = 8;
 		int CONNECTED_SPEC_SHIP_ITEM = 9;
-		int UNIT_SALES_PRICE_EUR = 10;
+//		int UNIT_SALES_PRICE_EUR = 10;
 		int UNIT_SALES_PRICE_DIN = 11;
 		int CAMPAIGN_CODE = 12;
 		int CMPAIGN_START_DATE = 13;
 		int CAMPAIGN_END_DATE = 14;
+		int INVENTORY_ITEM_CATEGORY = 15;
 	}
 }
