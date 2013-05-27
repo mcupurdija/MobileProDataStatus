@@ -79,7 +79,7 @@ public class NavisionSyncService extends IntentService {
 		envelope.setOutputSoapObject(request);
 		HttpTransportApache androidHttpTransport = new HttpTransportApache(syncObject.getUrl(), 15000, new NTCredentials(USER_NAME, PASS, "", DOMAIN), new AuthScope(null, -1));
 		ContentResolver contentResolver = getContentResolver();
-		androidHttpTransport.debug = true;
+		androidHttpTransport.debug = false;
 		SyncResult syncResult = new SyncResult();
 		try {
 			syncObject.logSyncStart(contentResolver);
