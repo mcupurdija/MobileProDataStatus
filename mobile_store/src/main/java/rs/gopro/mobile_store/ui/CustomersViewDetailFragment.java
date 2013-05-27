@@ -217,7 +217,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 		String phoneString = cursor.getString(CustomerDetailQuery.PHONE);
 		String mobileString = cursor.getString(CustomerDetailQuery.MOBILE);
 		String emailString = cursor.getString(CustomerDetailQuery.EMAIL);
-		String companyidString =String.valueOf(cursor.getInt(CustomerDetailQuery.COMPANY_ID)) ;
+		String companyidString =String.valueOf(cursor.getString(CustomerDetailQuery.COMPANY_ID)) ;
 		String primarycontactidString = String.valueOf(cursor.getInt(CustomerDetailQuery.PRIMARY_CONTACT_ID));
 		String varregnoString = cursor.getString(CustomerDetailQuery.VAR_REG_NO);
 		String creditlimitlcyString = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.CREDIT_LIMIT_LCY));

@@ -148,7 +148,7 @@ public class RecordVisitDetailFragment extends Fragment implements
             return;
         }
 
-        if (!cursor.moveToFirst()) {
+        if (cursor.isClosed() || !cursor.moveToFirst()) {
             return;
         }
         

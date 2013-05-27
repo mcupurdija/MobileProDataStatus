@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
@@ -50,6 +51,9 @@ public class RecordVisitsListFragment extends ListFragment implements
 	private CursorAdapter mVisitAdapter;
 	private String mSelectedVisitId;
 	private boolean mHasSetEmptyText = false;
+	
+	private static final String LIST_STATE = "listState";
+	private Parcelable mListState = null;
 	
 	public interface Callbacks {
         /** Return true to select (activate) the vendor in the list, false otherwise. */
@@ -81,6 +85,7 @@ public class RecordVisitsListFragment extends ListFragment implements
 
 		if (savedInstanceState != null) {
 			mSelectedVisitId = savedInstanceState.getString(STATE_SELECTED_ID);
+			mListState = savedInstanceState.getParcelable(LIST_STATE);
 		}
 
 		reloadFromArguments(getArguments());
@@ -141,11 +146,23 @@ public class RecordVisitsListFragment extends ListFragment implements
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        mListState = getListView().onSaveInstanceState();
+        outState.putParcelable(LIST_STATE, mListState);
         if (mSelectedVisitId != null) {
             outState.putString(STATE_SELECTED_ID, mSelectedVisitId);
         }
     }
 
+    @Override
+    public void onResume() {
+    	super.onResume();
+    	// in some tutorial it shoud repopulate db data from here. needs consideration 
+    	//loadData();
+        if (mListState != null)
+            getListView().onRestoreInstanceState(mListState);
+        mListState = null;
+    }
+    
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		if (mDateFilterValue == null) {
@@ -289,6 +306,7 @@ public class RecordVisitsListFragment extends ListFragment implements
 			        if (mCallbacks.onVisitSelected(visit_id)) {
 			            mSelectedVisitId = visit_id;
 			            mVisitAdapter.notifyDataSetChanged();
+//			            v.setSelected(true);
 			        }
 				}
 			});
