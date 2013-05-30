@@ -1150,8 +1150,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			break;
 		case CUSTOMER_ADDRESSES:
 			tableName = Tables.CUSTOMER_ADDRESSES;
-			selectionParam = new String[] {CustomerAddresses.ADDRESS_NO};
-			selectionPhrase = CustomerAddresses.ADDRESS_NO + "=?";
+			selectionParam = new String[] {CustomerAddresses.ADDRESS_NO, CustomerAddresses.CUSTOMER_NO};
+			selectionPhrase = CustomerAddresses.ADDRESS_NO + "=? AND " + CustomerAddresses.CUSTOMER_NO + "=?";
 			break;
 		case SENT_ORDERS_STATUS:
 			tableName = Tables.SENT_ORDERS_STATUS;
