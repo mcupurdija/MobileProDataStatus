@@ -10,6 +10,9 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SentOrdersStatus;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SentOrdersStatusLines;
+import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import rs.gopro.mobile_store.ws.model.domain.SalesHeadersDomain;
@@ -157,7 +160,12 @@ public class SalesHeadersSyncObject extends SyncObject {
 		List<SalesHeadersDomain> parsedItems = CSVDomainReader.parse(new StringReader(soapResponse.toString()), SalesHeadersDomain.class);
 		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedItems);
 		//valuesForInsert.put(SalesPerson.SALE_PERSON_NO, salespersonCode);
-		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.SentOrdersStatus.CONTENT_URI, valuesForInsert);
+		int del_res = 0;
+		if (valuesForInsert.length > 0) {
+			del_res = contentResolver.delete(SentOrdersStatus.CONTENT_URI, null, null);
+			LogUtils.LOGD(TAG, "Deleted pre bulk insert rows:"+del_res);
+		}
+		int numOfInserted = contentResolver.bulkInsert(SentOrdersStatus.CONTENT_URI, valuesForInsert);
 		return numOfInserted;
 	}
 

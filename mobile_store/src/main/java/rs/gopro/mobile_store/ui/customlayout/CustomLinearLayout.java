@@ -9,42 +9,43 @@ import android.view.LayoutInflater;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 
-public abstract class CustomLinearLayout extends LinearLayout implements OnDateSetListener {
+public abstract class CustomLinearLayout extends LinearLayout implements
+		OnDateSetListener {
 
-	FragmentManager  fragmentManager;
+	FragmentManager fragmentManager;
 	Activity activity;
-	
+
 	public CustomLinearLayout(Context context) {
 		super(context);
 	}
-	
+
 	public CustomLinearLayout(FragmentManager fragmentManager, Activity activity) {
 		super(activity);
 		this.fragmentManager = fragmentManager;
 		this.activity = activity;
 		inflateLayout(activity.getLayoutInflater());
-		
+
 	}
-	
-	
+
 	protected abstract void inflateLayout(LayoutInflater layoutInflater);
-	
-	public abstract ActionMode.Callback getContextualActionBar(String identifier, String visitType);
-	
+
+	public abstract ActionMode.Callback getContextualActionBar(
+			String identifier, String visitType);
+
 	/**
 	 * method for sync implementation called from main activity
 	 */
-	public void doSynchronization(){
-		
-	}
-	
-	
+//	public void doSynchronization() {
+//
+//	}
+
 	/**
 	 * On default implementation
 	 */
 	@Override
-	public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-		
+	public void onDateSet(DatePicker view, int year, int monthOfYear,
+			int dayOfMonth) {
+
 	}
 
 }

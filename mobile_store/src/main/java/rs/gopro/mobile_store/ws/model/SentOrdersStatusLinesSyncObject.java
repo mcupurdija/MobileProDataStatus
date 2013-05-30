@@ -9,6 +9,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SentOrdersStatusLines;
+import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import rs.gopro.mobile_store.ws.model.domain.SentOrdersStatusLinesDomain;
@@ -19,7 +21,8 @@ import android.os.Parcel;
 
 public class SentOrdersStatusLinesSyncObject extends SyncObject {
 
-	public static String TAG = "SentOrdersStatusLinesSyncObject";
+	public static String TAG = LogUtils
+			.makeLogTag(SentOrdersStatusLinesSyncObject.class);
 	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.SENT_ORDERS_STATUS_LINES_SYNC_ACTION";
 
 	private String cSVString;
@@ -27,6 +30,7 @@ public class SentOrdersStatusLinesSyncObject extends SyncObject {
 	private String pDocumentNoa46;
 	private String customerNoa46;
 	private String pSalespersonCode;
+	private int sentOrderId;
 
 	public static final Creator<SentOrdersStatusLinesSyncObject> CREATOR = new Creator<SentOrdersStatusLinesSyncObject>() {
 
@@ -52,19 +56,21 @@ public class SentOrdersStatusLinesSyncObject extends SyncObject {
 		setpDocumentNoa46(parcel.readString());
 		setCustomerNoa46(parcel.readString());
 		setpSalespersonCode(parcel.readString());
+		this.sentOrderId = parcel.readInt();
 	}
 	
 	
 
 	public SentOrdersStatusLinesSyncObject(String cSVString,
 			Integer pDocumentType, String pDocumentNoa46, String customerNoa46,
-			String pSalespersonCode) {
+			String pSalespersonCode, int sentOrderId) {
 		super();
 		this.cSVString = cSVString;
 		this.pDocumentType = pDocumentType;
 		this.pDocumentNoa46 = pDocumentNoa46;
 		this.customerNoa46 = customerNoa46;
 		this.pSalespersonCode = pSalespersonCode;
+		this.sentOrderId = sentOrderId;
 	}
 
 	@Override
@@ -80,7 +86,7 @@ public class SentOrdersStatusLinesSyncObject extends SyncObject {
 		dest.writeString(getpDocumentNoa46());
 		dest.writeString(getCustomerNoa46());
 		dest.writeString(getpSalespersonCode());
-
+		dest.writeInt(sentOrderId);
 	}
 
 	@Override
@@ -129,6 +135,11 @@ public class SentOrdersStatusLinesSyncObject extends SyncObject {
 	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException {
 		List<SentOrdersStatusLinesDomain> parsedItems = CSVDomainReader.parse(new StringReader(soapResponse.toString()), SentOrdersStatusLinesDomain.class);
 		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedItems);
+		int del_res = 0;
+		if (valuesForInsert.length > 0) {
+			del_res = contentResolver.delete(SentOrdersStatusLines.CONTENT_URI, SentOrdersStatusLines.SENT_ORDER_STATUS_ID+"=?", new String[] { String.valueOf(sentOrderId) });
+			LogUtils.LOGD(TAG, "Deleted, pre bulk insert, rows:"+del_res);
+		}
 		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.SentOrdersStatusLines.CONTENT_URI, valuesForInsert);
 		return numOfInserted;
 	}

@@ -15,7 +15,7 @@
     <!-- GRESKE -->
 	<string name="login_error">* Greška prilikom prijave za rad!</string>
 	<string name="hi_label">Ćaos!</string>
-	<string name="get_company">uzmi podatke o kompaniji</string>
+	<string name="get_company">Uzmi podatke o kompaniji</string>
 	<string name="s">* Greška prilikom prijave za rad!</string>
 	<string name="first_section_title">Plan poseta na dan</string>
 	<string name="second_section_title">Informacije o kupcu</string>
@@ -26,11 +26,11 @@
 	<string name="customer_search_title">Pronađi kupca: </string>
 	<string name="customer_search_filter">Filtriraj po broju kupca:</string>
 	<string name="customer_block_status_spinner_title">Filtriraj po statusu:</string>
-	<string name="contact_search_title">Pronadji kontakt: </string>
+	<string name="contact_search_title">Pronađi kontakt: </string>
 	<string name="invoice_document_type_label_text">Filtriraj po tipu dokumenta:</string>
 	<string name="invoice_document_open_status_label_text">Filtriraj po statusu dokumenta:</string>
 	
-	<string name="item_search_title">Pronadji artikl: </string>
+	<string name="item_search_title">Pronađi artikl: </string>
 	<string name="item_block_status_spinner_title">Filtriraj po statusu:</string>
 	
 	<string name="invoice_document_no">Broj dok.: </string>
@@ -98,8 +98,8 @@
 	<string name="contact_address_hint">Adresa</string>
 	<string name="contact_city_title">Grad</string>
 	<string name="contact_city_hint">Grad</string>
-	<string name="contact_post_code_title">Postanski broj</string>
-	<string name="contact_post_code_hint">Postanski broj</string>
+	<string name="contact_post_code_title">Poštanski broj</string>
+	<string name="contact_post_code_hint">Poštanski broj</string>
 	<string name="contact_phone_title">Telefon</string>
 	<string name="contact_phone_hint">Telefon</string>
 	<string name="contact_mobile_phone_title">Mobilni telefon</string>
@@ -108,8 +108,8 @@
 	<string name="contact_email_hint">Email</string>
 	<string name="contact_company_no_title">Broj kompanije</string>
 	<string name="contact_company_no_hint">Broj kompanije</string>
-	<string name="contact_company_id_title">Maticni broj</string>
-	<string name="contact_company_id_hint">Maticni broj</string>
+	<string name="contact_company_id_title">Matični broj</string>
+	<string name="contact_company_id_hint">Matični broj</string>
 	<string name="contact_vat_registration_title">Pib</string>
 	<string name="contact_vat_registration_hint">Pib</string>
 	<string name="contact_division_title">Divizija</string>
@@ -183,7 +183,7 @@
 	<string name="customer_address_default_text">Podrazumevana adresa kupca</string>
 	<string name="customer_contact_default_text">Podrazumevani kontakt kupca</string>
 	<string name="customer_city_label">Grad</string>
-	<string name="customer_postal_code_label">Postanski broj</string>
+	<string name="customer_postal_code_label">Poštanski broj</string>
 	<string name="customer_phone_label">Telefon</string>	
 	<string name="customer_phone_mobile_label">Mobilni tel.</string>
 	<string name="customer_email_label">E-posta</string>
@@ -203,14 +203,14 @@
 	
 	<string name="customer_name_label">Ime</string>
 	<string name="customer_name2_label">Ime 2</string>
-	<string name="customer_company_id_label">Maticni borj</string>
+	<string name="customer_company_id_label">Matični broj</string>
 	<string name="customer_primary_contact_id_label">Br. primarnog kontakta</string>
 	<string name="customer_vat_reg_no_label">Poreski broj</string>	
 	<string name="customer_credit_limit_lcy_label">Kreditni limit (LVT)</string>
 	<string name="customer_balance_lcy_label">Saldo (LVT)</string>
 	<string name="customer_balance_due_lcy_label">Dospeli saldo (LVT)</string>
 	<string name="customer_internal_balance_lcy_label">Dospeli saldo preko i.v. (LVT)</string>
-	<string name="customer_payment_terms_code_label">Šifra uslova placanja</string>		
+	<string name="customer_payment_terms_code_label">Šifra uslova plaćanja</string>		
 	<string name="customer_priority_label">Prioritet</string>
 	<string name="customer_global_dimension_label">Branša</string>
 	<string name="customer_channel_oran_label">Kanal (ORAN)</string>

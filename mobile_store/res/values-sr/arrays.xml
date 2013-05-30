@@ -270,6 +270,18 @@
 		<item>Novembar (Kol)</item>
 		<item>Decembar (Kol)</item>
     </string-array>
+    <string-array name="inventory_category_options">
+        <item>-</item>
+		<item>NOV</item>
+		<item>STA NOV</item>
+		<item>STA MARK.</item>
+		<item>STA</item>
+		<item>EX STA</item>
+		<item>NSTD</item>
+		<item>SPEC</item>
+		<item>TO BE DISC</item>
+		<item>DISC</item>
+    </string-array>
     <string-array name="bransa_array">
         <item>AUTO CENTRI (PROD+MEH+KAROS+EL)</item>
         <item>AUTO CENTRI BEZ PRODAJE VOZILA</item>

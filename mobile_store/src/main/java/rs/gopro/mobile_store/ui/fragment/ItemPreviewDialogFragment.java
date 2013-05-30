@@ -5,6 +5,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
+import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.ItemAvailabilitySyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
@@ -30,7 +31,7 @@ import android.widget.TextView;
 
 
 public class ItemPreviewDialogFragment extends DialogFragment implements LoaderManager.LoaderCallbacks<Cursor>{
-	
+	private static final String TAG = LogUtils.makeLogTag(ItemPreviewDialogFragment.class); 
 	
 //	private static final String STOCK_STATUS = "stock_status";
 	private static final String IS_STOCK_SYNC_COMPLETED = "is_stock_sync_completed";
@@ -57,6 +58,8 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	private TextView inventoryCategory;
 	private TextView itemAvailability;
 
+	private String[] inventoryCategoryOptions;
+	
 //	 private ResultReceiver mReceiver;
 	private ItemAvailabilitySyncObject itemAvailabilitySyncObject;
 //	private Activity activity;
@@ -136,6 +139,9 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		campaingEndDate = (TextView) view.findViewById(R.id.item_campaign_end_date_value);
 		inventoryCategory = (TextView) view.findViewById(R.id.item_inventory_category_value);
 		itemAvailability = (TextView) view.findViewById(R.id.item_availability_value);
+		
+		inventoryCategoryOptions = getResources().getStringArray(R.array.inventory_category_options);
+		
 //		stockStatusFrame = (FrameLayout) view.findViewById(R.id.item_stock_status_holder);
 //		if (!isStockSyncCompleted) {
 //			addWaitingLayoutToFrame();
@@ -213,7 +219,18 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		overstockStatus.setText(overstockStatusString);
 		conntectedSpecShipItem.setText(connetectedSpecShipItemString);
 		unitSalePriceDin.setText(unitSalesPriceDinString);
-		inventoryCategory.setText(cursor.getString(ItemsQuery.INVENTORY_ITEM_CATEGORY));
+		String inventory_category = null;
+		int inventory_category_option = 0;
+		if (!cursor.isNull(ItemsQuery.INVENTORY_ITEM_CATEGORY)) {
+			inventory_category = cursor.getString(ItemsQuery.INVENTORY_ITEM_CATEGORY);
+			try {
+				inventory_category_option = Integer.valueOf(inventory_category);
+			} catch (NumberFormatException ne) {
+				inventory_category_option = 0;
+				LogUtils.LOGE(TAG, "", ne);
+			}
+		}
+		inventoryCategory.setText(inventoryCategoryOptions[inventory_category_option]);
 	}
 
 	@Override

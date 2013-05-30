@@ -267,4 +267,16 @@
 		<item>November(Qty)</item>
 		<item>December(Qty)</item>
     </string-array>
+    <string-array name="inventory_category_options">
+        <item>-</item>
+		<item>NEW</item>
+		<item>STA NEW</item>
+		<item>STA MARKETING</item>
+		<item>STA</item>
+		<item>EX STA</item>
+		<item>NSTD</item>
+		<item>SPEC</item>
+		<item>TO BE DISC</item>
+		<item>DISC</item>
+    </string-array>
 </resources>

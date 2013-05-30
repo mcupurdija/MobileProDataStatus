@@ -505,6 +505,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.INVOICES);
 		case SERVICE_ORDERS:
 			return builder.addTable(Tables.SERVICE_ORDERS);
+		case SENT_ORDERS_STATUS:
+			return builder.addTable(Tables.SENT_ORDERS_STATUS);
+		case SENT_ORDERS_STATUS_LINES:
+			return builder.addTable(Tables.SENT_ORDERS_STATUS_LINES);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

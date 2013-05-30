@@ -127,7 +127,7 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-				SentOrdersStatusLinesSyncObject syncObject = new SentOrdersStatusLinesSyncObject("", Integer.valueOf(sentOrderDocType), sentOrderNo, "", "");
+				SentOrdersStatusLinesSyncObject syncObject = new SentOrdersStatusLinesSyncObject("", Integer.valueOf(sentOrderDocType), sentOrderNo, "", "", sentOrderId);
 				intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, syncObject);
 				getActivity().startService(intent);
 				mDialogLoader.setVisibility(View.VISIBLE);

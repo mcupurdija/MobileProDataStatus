@@ -181,6 +181,7 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
 		} catch (NumberFormatException nex) {
 			LogUtils.LOGE(TAG, "Bad number", nex);
 		}
+		String note = mNoteText.getText().toString();
 		
 		ContentValues cv = new ContentValues();
 		
@@ -190,6 +191,7 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
 		cv.put(ServiceOrders.QUANTITY_FOR_RECLAMATION, quantity_double);
 		cv.put(ServiceOrders.CUSTOMER_ID, customerId);
 		cv.put(ServiceOrders.ITEM_ID, itemId);
+		cv.put(ServiceOrders.NOTE, note);
 		
 		Uri uriAfterInsert = getActivity().getContentResolver().insert(ServiceOrders.CONTENT_URI, cv);
 		int service_order_id = Integer.valueOf(ServiceOrders.getServiceOrderId(uriAfterInsert));
