@@ -81,6 +81,7 @@
 	<string name="visit_result_title">Rezultat posete</string>
 	<string name="visit_result_hint">Rezultat posete</string>
 	<string name="note_title">Beleške</string>
+	<string name="reclamation_title">Reklamacija</string>
 	<string name="note_hint">Beleške</string>
 	<string name="action_button_refresh">Osveži</string>
 	
@@ -239,6 +240,7 @@
 	<string name="item_dialog_title">Informacije o artiklu</string>
 	<string name="item_inventory_category_label">Skladišna kategorija</string>
 	<string name="item_availability_label">Artikal raspoloživ:</string>
+	<string name="item_outstanding_purchase_lines_label">Pristizanje:</string>
 
 	<!-- invoice_line -->
 	<string name="invoice_line_quantity">Količina</string>

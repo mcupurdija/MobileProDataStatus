@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dip"
-            android:layout_marginRight="16dip"
+            android:layout_marginRight="11dip"
             android:layout_marginTop="15dip"
             android:completionThreshold="1"
             android:hint="@string/customer_hint"
@@ -37,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
             android:gravity="center"
             android:orientation="horizontal" >
 
@@ -77,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dip"
-            android:layout_marginRight="16dip"
+            android:layout_marginRight="11dip"
             android:layout_marginTop="20dp"
             android:completionThreshold="1"
             android:hint="@string/item_no_hint"
@@ -105,8 +106,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@string/note_title" />
+            android:text="@string/reclamation_title" />
 
+        <EditText
+            android:id="@+id/service_order_reclamation_edittext"
+            style="@style/AddEdit_Text_Value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp" />
+        
+        <TextView
+            style="@style/AddEdit_Label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/note_title" />
+        
         <EditText
             android:id="@+id/service_order_note_edittext"
             style="@style/AddEdit_Text_Value"

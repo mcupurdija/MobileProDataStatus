@@ -207,7 +207,11 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				savedLayoutInstances.put(PlanAndTurnoverLayout.PLAN_AND_TURNOVER_URI.toString(), view);
 			}
 		} else if (ServiceOrderDialog.SERVICE_ORDER_URI.equals(uri)) {
-			ServiceOrderDialog serviceOrderDialog = new ServiceOrderDialog(0, "Kreiraj servisni nalog");
+			if (salesPersonId == null) {
+				LogUtils.LOGE(TAG, "Big problem! Should be value here!");
+				salesPersonId = "1";
+			}
+			ServiceOrderDialog serviceOrderDialog = new ServiceOrderDialog(0, "Kreiraj servisni nalog", Integer.valueOf(salesPersonId));
 			serviceOrderDialog.show(getSupportFragmentManager(), "SERVICE_ORDER_DIALOG");
 		}
 		

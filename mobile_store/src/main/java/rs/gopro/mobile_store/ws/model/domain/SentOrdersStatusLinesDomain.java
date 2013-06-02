@@ -42,12 +42,13 @@ public class SentOrdersStatusLinesDomain extends Domain {
 	public String price_and_disc_are_correct;
 	public String confirmed_promised_delivery_date;
 	public String price_include_vat;
+	public String reserved;
 
 	private static final String[] COLUMNS = new String[] { "document_type", "sent_order_status_no", "line_no", "customer_no", "line_type",
 		"item_no", "location_code", "description", 
 		"quantity", "outstanding_quantity", "unit_price", "vat_percent", "line_discount_percent",
 		"line_discount_amount", "quantity_shipped", "quantity_invoiced", "inv_discount_amount", "line_amount", "unit_of_measure_code",
-		"promised_delivery_date", "confirmed_promised_delivery_date", "price_include_vat"};
+		"promised_delivery_date", "confirmed_promised_delivery_date", "price_include_vat", "reserved"};
 
 	@Override
 	public String[] getCSVMappingStrategy() {
@@ -83,6 +84,7 @@ public class SentOrdersStatusLinesDomain extends Domain {
 		contentValues.put(SentOrdersStatusLines.QUANTITY_SHIPPED, WsDataFormatEnUsLatin.toDoubleFromWs(quantity_shipped));
 		contentValues.put(SentOrdersStatusLines.QUANTITY_INVOICED, WsDataFormatEnUsLatin.toDoubleFromWs(quantity_invoiced));
 		contentValues.put(SentOrdersStatusLines.PRICE_AND_DISC_ARE_CORRECT, price_and_disc_are_correct);
+		contentValues.put(SentOrdersStatusLines.RESERVED, WsDataFormatEnUsLatin.toDoubleFromWs(reserved));
 		return contentValues;
 	}
 

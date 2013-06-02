@@ -9,6 +9,7 @@ import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SalesPerson;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ServiceOrders;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.LogUtils;
@@ -29,7 +30,9 @@ public class ServiceOrderSyncObject extends SyncObject {
 	private String pPhoneNoa46;
 	private String pItemNoa46;
 	private Integer pQuantityForReclamation = -1;
+	private String pSalespersonCode;
 	private String pNote;
+	private String pReclamationText;
 	private String pServiceHeaderNoa46;
 	private int serviceOrderId = -1;
 	
@@ -66,6 +69,7 @@ public class ServiceOrderSyncObject extends SyncObject {
 		this.pPhoneNoa46 = pPhoneNoa46;
 		this.pItemNoa46 = pItemNoa46;
 		this.pQuantityForReclamation = pQuantityForReclamation;
+		
 		this.pNote = pNote;
 	}
 
@@ -77,7 +81,9 @@ public class ServiceOrderSyncObject extends SyncObject {
 		setpPhoneNoa46(source.readString());
 		setpItemNoa46(source.readString());
 		setpQuantityForReclamation(source.readInt());
+		setpSalespersonCode(source.readString());
 		setpNote(source.readString());
+		setpReclamationText(source.readString());
 		setpServiceHeaderNoa46(source.readString());
 		serviceOrderId = source.readInt();
 	}
@@ -95,7 +101,9 @@ public class ServiceOrderSyncObject extends SyncObject {
 		dest.writeString(getpPhoneNoa46());
 		dest.writeString(getpItemNoa46());
 		dest.writeInt(getpQuantityForReclamation());
+		dest.writeString(getpSalespersonCode());
 		dest.writeString(getpNote());
+		dest.writeString(getpReclamationText());
 		dest.writeString(getpServiceHeaderNoa46());
 		dest.writeInt(serviceOrderId);
 	}
@@ -147,11 +155,23 @@ public class ServiceOrderSyncObject extends SyncObject {
 		quantityForReclamation.setType(Integer.class);
 		properties.add(quantityForReclamation);
 		
+		PropertyInfo salespersonCode = new PropertyInfo();
+		salespersonCode.setName("pSalespersonCode");
+		salespersonCode.setValue(pSalespersonCode);
+		salespersonCode.setType(String.class);
+		properties.add(salespersonCode);
+		
 		PropertyInfo note = new PropertyInfo();
 		note.setName("pNote");
 		note.setValue(pNote);
 		note.setType(String.class);
 		properties.add(note);
+		
+		PropertyInfo reclamationText = new PropertyInfo();
+		reclamationText.setName("pReclamationText");
+		reclamationText.setValue(pReclamationText);
+		reclamationText.setType(String.class);
+		properties.add(reclamationText);
 		
 		PropertyInfo serviceHeaderNoa46 = new PropertyInfo();
 		serviceHeaderNoa46.setName("pServiceHeaderNoa46");
@@ -183,6 +203,8 @@ public class ServiceOrderSyncObject extends SyncObject {
 			setpItemNoa46(cursorServiceOrder.getString(ServiceOrderQuery.ITEM_NO));
 			setpQuantityForReclamation(Double.valueOf(cursorServiceOrder.getDouble(ServiceOrderQuery.QUANTITY_FOR_RECLAMATION)).intValue());
 			setpNote(cursorServiceOrder.getString(ServiceOrderQuery.NOTE));
+			setpSalespersonCode(cursorServiceOrder.getString(ServiceOrderQuery.SALE_PERSON_NO));
+			setpReclamationText(cursorServiceOrder.getString(ServiceOrderQuery.RECLAMATION_DESCRIPTION));
 		} else {
 			LogUtils.LOGE(TAG, "This should never happen!!!");
 		}
@@ -216,7 +238,9 @@ public class ServiceOrderSyncObject extends SyncObject {
 			Tables.SERVICE_ORDERS + "." + ServiceOrders.PHONE_NO,
 			Tables.ITEMS + "." + Items.ITEM_NO,
 			Tables.SERVICE_ORDERS + "." + ServiceOrders.QUANTITY_FOR_RECLAMATION,
-			Tables.SERVICE_ORDERS + "." + ServiceOrders.NOTE
+			Tables.SERVICE_ORDERS + "." + ServiceOrders.NOTE,
+			Tables.SALES_PERSONS + "." + SalesPerson.SALE_PERSON_NO,
+			Tables.SERVICE_ORDERS + "." + ServiceOrders.RECLAMATION_DESCRIPTION
 		};
 		
 //		int ID = 0;
@@ -227,6 +251,8 @@ public class ServiceOrderSyncObject extends SyncObject {
 		int ITEM_NO = 5;
 		int QUANTITY_FOR_RECLAMATION = 6;
 		int NOTE = 7;
+		int SALE_PERSON_NO = 8;
+		int RECLAMATION_DESCRIPTION = 9;
 	}
 	
 	public String getpCustomerNoa46() {
@@ -291,6 +317,22 @@ public class ServiceOrderSyncObject extends SyncObject {
 
 	public void setpServiceHeaderNoa46(String pServiceHeaderNoa46) {
 		this.pServiceHeaderNoa46 = pServiceHeaderNoa46;
+	}
+
+	public String getpSalespersonCode() {
+		return pSalespersonCode;
+	}
+
+	public void setpSalespersonCode(String pSalespersonCode) {
+		this.pSalespersonCode = pSalespersonCode;
+	}
+
+	public String getpReclamationText() {
+		return pReclamationText;
+	}
+
+	public void setpReclamationText(String pReclamationText) {
+		this.pReclamationText = pReclamationText;
 	}
 
 }

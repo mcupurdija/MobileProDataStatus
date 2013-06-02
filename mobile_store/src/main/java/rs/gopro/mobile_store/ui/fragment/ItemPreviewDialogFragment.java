@@ -57,6 +57,7 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	private TextView campaingEndDate;
 	private TextView inventoryCategory;
 	private TextView itemAvailability;
+	private TextView outstandingPurchaseLines;
 
 	private String[] inventoryCategoryOptions;
 	
@@ -72,7 +73,8 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 			if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
 				if (ItemAvailabilitySyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(intent.getAction())) {
 					ItemAvailabilitySyncObject returnValue = (ItemAvailabilitySyncObject) syncResult.getComplexResult();
-					if (returnValue.getpAvailableQtyPerLocFilterTxt() != null) {
+					// set availability
+					if (returnValue.getpAvailableQtyPerLocFilterTxt() != null && !returnValue.getpAvailableQtyPerLocFilterTxt().equals("anyType{}")) {
 						String availibilityMessage = returnValue.getpAvailableQtyPerLocFilterTxt().replace("\\n", "\n");
 						String[] splitmessage = availibilityMessage.split("\n");
 						if (splitmessage.length > 1) {
@@ -82,10 +84,27 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 							}
 						}
 						itemAvailability.setText(availibilityMessage);
+					} else {
+						itemAvailability.setText("-");
+					}
+					// set outstanding purchase lines
+					if (returnValue.getpOutstandingPurchaseLinesTxt() != null && !returnValue.getpOutstandingPurchaseLinesTxt().equals("anyType{}")) {
+						String outstandingPurchaseLinesMessage = returnValue.getpOutstandingPurchaseLinesTxt().replace("\\n", "\n");
+						String[] splitmessage = outstandingPurchaseLinesMessage.split("\n");
+						if (splitmessage.length > 1) {
+							outstandingPurchaseLinesMessage = "";
+							for (int i=1;i<splitmessage.length;i++) {
+								outstandingPurchaseLinesMessage +="\n" + splitmessage[i];
+							}
+						}
+						outstandingPurchaseLines.setText(outstandingPurchaseLinesMessage);
+					} else {
+						outstandingPurchaseLines.setText("-");
 					}
 				}
 			} else {
 				itemAvailability.setText("-");
+				outstandingPurchaseLines.setText("-");
 			}
 		}
 	};
@@ -139,6 +158,7 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		campaingEndDate = (TextView) view.findViewById(R.id.item_campaign_end_date_value);
 		inventoryCategory = (TextView) view.findViewById(R.id.item_inventory_category_value);
 		itemAvailability = (TextView) view.findViewById(R.id.item_availability_value);
+		outstandingPurchaseLines = (TextView) view.findViewById(R.id.item_outstanding_purchase_lines_value);
 		
 		inventoryCategoryOptions = getResources().getStringArray(R.array.inventory_category_options);
 		
@@ -267,7 +287,6 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 
 	private void doSynchronization(final String itemNo) {
 		isStockSyncStarted = true;
-		// TODO convert to item no
 //		Cursor itemCursor = getActivity().getContentResolver().query(MobileStoreContract.Items.CONTENT_URI, new String[] { Items.ITEM_NO }, 
 //				"_ID=?", new String[] { itemId }, null);
 //		String item_no = "";
@@ -289,7 +308,7 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	
 	
 	private interface ItemsQuery {
-		int _TOKEN = 0x8;
+//		int _TOKEN = 0x8;
 		
 		String[] PROJECTION = { 
 				BaseColumns._ID, 
@@ -310,10 +329,10 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 				Items.INVENTORY_ITEM_CATEGORY
 		};
 		
-		int _ID = 0;
+//		int _ID = 0;
 		int ITEM_NO = 1;
 		int DESCRIPTION = 2;
-		int DESCRIPTION2 = 3;
+//		int DESCRIPTION2 = 3;
 		int UNIT_OF_MEASURE = 4;
 		int CATEGORY_CODE = 5;
 		int GROUP_CODE = 6;

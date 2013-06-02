@@ -18,6 +18,7 @@ public class ItemAvailabilitySyncObject extends SyncObject {
 	
 	private String pItemNo;
 	private String pAvailableQtyPerLocFilterTxt;
+	private String pOutstandingPurchaseLinesTxt;
 	
 	public static final Creator<ItemAvailabilitySyncObject> CREATOR = new Creator<ItemAvailabilitySyncObject>() {
 
@@ -46,6 +47,7 @@ public class ItemAvailabilitySyncObject extends SyncObject {
 		super(source);
 		setpItemNo(source.readString());
 		setpAvailableQtyPerLocFilterTxt(source.readString());
+		setpOutstandingPurchaseLinesTxt(source.readString());
 	}
 
 	@Override
@@ -58,11 +60,12 @@ public class ItemAvailabilitySyncObject extends SyncObject {
 		dest.writeString(getStatusMessage());
 		dest.writeString(getpItemNo());
 		dest.writeString(getpAvailableQtyPerLocFilterTxt());
+		dest.writeString(getpOutstandingPurchaseLinesTxt());
 	}
 
 	@Override
 	public String getWebMethodName() {
-		return "GetItemAvailability";
+		return "GetItemAvailabilityPerLocation";
 	}
 
 	@Override
@@ -81,6 +84,12 @@ public class ItemAvailabilitySyncObject extends SyncObject {
 		availableQtyPerLocFilterTxt.setType(String.class);
 		properies.add(availableQtyPerLocFilterTxt);
 		
+		PropertyInfo outstandingPurchaseLinesTxt = new PropertyInfo();
+		outstandingPurchaseLinesTxt.setName("pOutstandingPurchaseLinesTxt");
+		outstandingPurchaseLinesTxt.setValue(getpOutstandingPurchaseLinesTxt());
+		outstandingPurchaseLinesTxt.setType(String.class);
+		properies.add(outstandingPurchaseLinesTxt);
+		
 		return properies;
 	}
 
@@ -97,14 +106,15 @@ public class ItemAvailabilitySyncObject extends SyncObject {
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver,
 			SoapPrimitive soapResponse) throws CSVParseException {
-		setpAvailableQtyPerLocFilterTxt(soapResponse.toString());
+		//setpAvailableQtyPerLocFilterTxt(soapResponse.toString());
 		return 0;
 	}
 
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver,
 			SoapObject soapResponse) throws CSVParseException {
-		// TODO Auto-generated method stub
+		setpAvailableQtyPerLocFilterTxt(soapResponse.getPropertyAsString("pAvailableQtyPerLocFilterTxt"));
+		setpOutstandingPurchaseLinesTxt(soapResponse.getPropertyAsString("pOutstandingPurchaseLinesTxt"));
 		return 0;
 	}
 
@@ -122,6 +132,14 @@ public class ItemAvailabilitySyncObject extends SyncObject {
 
 	public void setpAvailableQtyPerLocFilterTxt(String pAvailableQtyPerLocFilterTxt) {
 		this.pAvailableQtyPerLocFilterTxt = pAvailableQtyPerLocFilterTxt;
+	}
+
+	public String getpOutstandingPurchaseLinesTxt() {
+		return pOutstandingPurchaseLinesTxt;
+	}
+
+	public void setpOutstandingPurchaseLinesTxt(String pOutstandingPurchaseLinesTxt) {
+		this.pOutstandingPurchaseLinesTxt = pOutstandingPurchaseLinesTxt;
 	}
 
 }

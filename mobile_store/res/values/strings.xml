@@ -76,6 +76,7 @@
     <string name="visit_result_title">Visit result</string>
     <string name="visit_result_hint">Visit result</string>
     <string name="note_title">Note</string>
+    <string name="reclamation_title">Reclamation</string>
     <string name="note_hint">Note</string>
     <string name="action_button_refresh">Refresh</string>
 
@@ -231,6 +232,7 @@
     <string name="item_dialog_title">Item information</string>
     <string name="item_inventory_category_label">Inventory category</string>
     <string name="item_availability_label">Available on locations:</string>
+    <string name="item_outstanding_purchase_lines_label">Outstanding purchase lines:</string>
 
     <!-- invoice_line -->
     <string name="invoice_line_quantity">Quantity</string>

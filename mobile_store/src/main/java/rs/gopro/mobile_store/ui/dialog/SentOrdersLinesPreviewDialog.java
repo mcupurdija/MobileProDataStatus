@@ -210,6 +210,7 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 			
 			double quantity_shipped = cursor.getDouble(SentOrdersStatusLineQuery.QUANTITY_SHIPPED);
 			double quantity_invoiced = cursor.getDouble(SentOrdersStatusLineQuery.QUANTITY_INVOICED);
+			double quantity_reserved = cursor.getDouble(SentOrdersStatusLineQuery.RESERVED);
 			int price_and_disc_are_correct = cursor.getInt(SentOrdersStatusLineQuery.PRICE_AND_DISC_ARE_CORRECT);
 			String item_no = cursor.getString(SentOrdersStatusLineQuery.ITEM_NO);
 			
@@ -229,7 +230,7 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 			title2.setText(invoiceLineType[line_type]);
 			String 	quantityString = getString(R.string.invoice_line_quantity)+": "+ UIUtils.formatQuantityForUI(quantity);
 			
-			String 	additional_quantity = "(Isporučeno:"+UIUtils.formatQuantityForUI(quantity_shipped) + " - Fakturisano:"+UIUtils.formatQuantityForUI(quantity_invoiced)+")";
+			String 	additional_quantity = "(Isporučeno:"+UIUtils.formatQuantityForUI(quantity_shipped) + " - Fakturisano:"+UIUtils.formatQuantityForUI(quantity_invoiced)+" - Rezervisano:"+UIUtils.formatQuantityForUI(quantity_reserved)+")";
 			subtitle1.setText(quantityString + " " + additional_quantity  + "   Cena: "+ UIUtils.formatDoubleForUI(price) + " Popust: "+ UIUtils.formatDoubleForUI(line_discount_percent) + "%");
 //			String unitPriceString = getString(R.string.invoice_line_unit_price) + ": " + cursor.getString(SentOrdersStatusLineQuery.UNIT_PRICE);
 			subtitle2.setText("Iznos: "+UIUtils.formatDoubleForUI(line_amount));
@@ -265,7 +266,8 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.QUANTITY_SHIPPED,
 				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.QUANTITY_INVOICED,
 				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.PRICE_AND_DISC_ARE_CORRECT,
-				Tables.ITEMS + "." + MobileStoreContract.Items.ITEM_NO
+				Tables.ITEMS + "." + MobileStoreContract.Items.ITEM_NO,
+				Tables.SENT_ORDERS_STATUS_LINES + "." + MobileStoreContract.SentOrdersStatusLines.RESERVED
 		};
 
 //		int _ID = 0;
@@ -284,6 +286,7 @@ public class SentOrdersLinesPreviewDialog extends DialogFragment implements Load
 		int QUANTITY_INVOICED = 12;
 		int PRICE_AND_DISC_ARE_CORRECT = 13;
 		int ITEM_NO = 14;
+		int RESERVED = 15;
 	}
 
 }

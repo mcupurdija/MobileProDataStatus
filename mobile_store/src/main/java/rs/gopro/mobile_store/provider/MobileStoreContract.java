@@ -418,7 +418,7 @@ public class MobileStoreContract {
 		String ORDER_VALUE_STATUS = 	"order_value_status";
 		String SPECIAL_QUOTE = 	"special_quote";
 		String PRICES_INCLUDE_VAT = 	"prices_include_vat";
-		String SALES_PERSON_ID = 	"sales_person_id"; 
+		String SALES_PERSON_ID = 	"sales_person_id";
 	}
 	
 	public interface SentOrdersStatusLineColumns {
@@ -445,6 +445,7 @@ public class MobileStoreContract {
 		String QUANTITY_SHIPPED = "quantity_shipped";
 		String QUANTITY_INVOICED = "quantity_invoiced";
 		String PRICE_AND_DISC_ARE_CORRECT = "price_and_disc_are_correct";
+		String RESERVED = "reserved";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
@@ -460,6 +461,8 @@ public class MobileStoreContract {
 		String PHONE_NO = "phone_no";
 		String QUANTITY_FOR_RECLAMATION = "quantity_for_reclamation";
 		String NOTE = "note";
+		String SALES_PERSON_ID = "sales_person_id";
+		String RECLAMATION_DESCRIPTION = "reclamation_description";
 	}
 	
 	public static class Generic implements BaseColumns {

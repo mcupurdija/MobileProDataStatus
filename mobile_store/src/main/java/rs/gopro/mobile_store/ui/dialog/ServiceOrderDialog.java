@@ -39,6 +39,7 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
 	private String dialogTitle;
 	private String valueCaption;
 	private int defaultOption = 0;
+	private int salesPersonId = -1; 
 	
     public interface ServiceOrderDialogListener {
         void onFinishServiceOrderDialog(int service_order_id);
@@ -57,6 +58,7 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
     private EditText mQuantity;
     
     private EditText mNoteText;
+    private EditText mReclamationText;
     
     private Button mSubmitButton;
     private Button mCancelButton;
@@ -65,10 +67,11 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
         // Empty constructor required for DialogFragment
     }
     
-	public ServiceOrderDialog(int dialogId, String dialogTitle) {
+	public ServiceOrderDialog(int dialogId, String dialogTitle, int salesPersonId) {
 		super();
 		this.dialogId = dialogId;
 		this.dialogTitle = dialogTitle;
+		this.salesPersonId = salesPersonId;
 	}
 
 	@Override
@@ -78,6 +81,7 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
 		outState.putString("VALUE_CAPTION", valueCaption);
 		outState.putInt("DIALOG_ID", dialogId);
 		outState.putInt("DEFAULT_OPTION", defaultOption);
+		outState.putInt("SALES_PERSON_ID", salesPersonId);
 	}
 	
 	@Override
@@ -88,6 +92,7 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
 			valueCaption = savedInstanceState.getString("VALUE_CAPTION");
 			dialogId = savedInstanceState.getInt("DIALOG_ID");
 			defaultOption = savedInstanceState.getInt("DEFAULT_OPTION");
+			salesPersonId = savedInstanceState.getInt("SALES_PERSON_ID");
 		}
         View view = inflater.inflate(R.layout.fragment_create_service_order, container);
         
@@ -127,6 +132,9 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
         
         mQuantity = (EditText) view.findViewById(R.id.service_order_item_quantity_edittext);
         
+        mReclamationText = (EditText) view.findViewById(R.id.service_order_reclamation_edittext);
+        mReclamationText.setInputType(InputType.TYPE_CLASS_TEXT);
+        
         mNoteText = (EditText) view.findViewById(R.id.service_order_note_edittext);
         mNoteText.setInputType(InputType.TYPE_CLASS_TEXT);
         
@@ -162,10 +170,6 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
         return false;
     }
 
-    //TODO 
-    /**
-     * Save and send service order! Need to handle response need to display service order number!
-     */
 	private void sendInputValues() {
 		// Return input text to activity
 		ServiceOrderDialogListener activity = (ServiceOrderDialogListener) getActivity();
@@ -181,7 +185,11 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
 		} catch (NumberFormatException nex) {
 			LogUtils.LOGE(TAG, "Bad number", nex);
 		}
+		
+		String reclamation = mReclamationText.getText().toString();
+		
 		String note = mNoteText.getText().toString();
+		
 		
 		ContentValues cv = new ContentValues();
 		
@@ -192,6 +200,8 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
 		cv.put(ServiceOrders.CUSTOMER_ID, customerId);
 		cv.put(ServiceOrders.ITEM_ID, itemId);
 		cv.put(ServiceOrders.NOTE, note);
+		cv.put(ServiceOrders.RECLAMATION_DESCRIPTION, reclamation);
+		cv.put(ServiceOrders.SALES_PERSON_ID, salesPersonId);
 		
 		Uri uriAfterInsert = getActivity().getContentResolver().insert(ServiceOrders.CONTENT_URI, cv);
 		int service_order_id = Integer.valueOf(ServiceOrders.getServiceOrderId(uriAfterInsert));

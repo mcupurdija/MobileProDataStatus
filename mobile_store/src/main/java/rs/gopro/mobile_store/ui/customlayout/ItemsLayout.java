@@ -34,6 +34,8 @@ public class ItemsLayout extends CustomLinearLayout {
 			tr.replace(R.id.items_content, fragment);
 			tr.commit();
 			LogUtils.LOGI(TAG, "inflateLayout"+fragment.getId());
+		} else {
+//			fragment.getView().clearFocus();
 		}
 	}
 
