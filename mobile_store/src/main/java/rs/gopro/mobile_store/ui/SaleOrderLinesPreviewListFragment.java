@@ -204,7 +204,10 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
             final TextView subtitleView = (TextView) view.findViewById(R.id.block_subtitle);
             String salesOrderDate = cursor.getString(SaleOrderLinesQuery.LINE_NO);
             String salesOrderNo = cursor.getString(SaleOrderLinesQuery.ITEM_NO) + " - " + cursor.getString(SaleOrderLinesQuery.DESCRIPTION);
-            
+            double quantity_available = 0.0;
+    		if (!cursor.isNull(SaleOrderLinesQuery.QUANTITY_AVAILABLE)) {
+    			quantity_available = cursor.getDouble(SaleOrderLinesQuery.QUANTITY_AVAILABLE);
+            }
             double quantity = 0;
             if (!cursor.isNull(SaleOrderLinesQuery.QUANTITY)) {
             	quantity = cursor.getDouble(SaleOrderLinesQuery.QUANTITY);
@@ -249,7 +252,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
             	status = "Problem";
             }
             
-            String salesOrderCust = "Količina: "+UIUtils.formatDoubleForUI(quantity) + "  -  Cena:" + UIUtils.formatDoubleForUI(price) + "  -  Popust:" + UIUtils.formatDoubleForUI(discount) + "%  -  Jedinicna cena:" + UIUtils.formatDoubleForUI(discounted_price) + "  -  Iznos:" + UIUtils.formatDoubleForUI(ammount);
+            String salesOrderCust = "Naručeno: "+UIUtils.formatDoubleForUI(quantity) + " Raspoloživo: "+UIUtils.formatDoubleForUI(quantity_available)+"  -  Cena:" + UIUtils.formatDoubleForUI(price) + "  -  Popust:" + UIUtils.formatDoubleForUI(discount) + "%  -  Jedinicna cena:" + UIUtils.formatDoubleForUI(discounted_price) + "  -  Iznos:" + UIUtils.formatDoubleForUI(ammount);
             timeView.setText(salesOrderDate);
             titleView.setText(salesOrderNo);
             titleStatusView.setText("Status: "+status);
@@ -273,7 +276,8 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
                 MobileStoreContract.SaleOrderLines.REAL_DISCOUNT,
                 MobileStoreContract.SaleOrderLines.PRICE_DISCOUNT_STATUS,
                 MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS,
-                MobileStoreContract.SaleOrderLines.VERIFY_STATUS
+                MobileStoreContract.SaleOrderLines.VERIFY_STATUS,
+                MobileStoreContract.SaleOrderLines.QUANTITY_AVAILABLE
         };
 
         int _ID = 0;
@@ -288,6 +292,7 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
         int PRICE_DISCOUNT_STATUS = 9;
         int QUOTE_REFUSED_STATUS = 10;
         int VERIFY_STATUS = 11;
+        int QUANTITY_AVAILABLE = 12;
 	}
 
 }

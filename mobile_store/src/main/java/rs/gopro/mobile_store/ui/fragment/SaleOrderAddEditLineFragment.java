@@ -80,11 +80,12 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	private String customerNo;
 	private boolean isServiceCalled = false;
 	private int defaultBackOrderStatus = -1;
+	private double originalAvailability = 0;
 	
 	private ItemAutocompleteCursorAdapter itemAutocompleteAdapter;
-	ArrayAdapter<CharSequence> backorderAdapter;
-	ArrayAdapter<CharSequence> campaignStatusAdapter;
-	ArrayAdapter<CharSequence> quoteRefusedAdapter;
+	private ArrayAdapter<CharSequence> backorderAdapter;
+	private ArrayAdapter<CharSequence> campaignStatusAdapter;
+	private ArrayAdapter<CharSequence> quoteRefusedAdapter;
 	
 	private AutoCompleteTextView mItemAutocomplete;
 	
