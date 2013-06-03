@@ -282,6 +282,14 @@
 		<item>TO BE DISC</item>
 		<item>DISC</item>
     </string-array>
+    <string-array name="visit_subtype">
+        <item>-</item>
+		<item>Dan u kancelariji</item>
+		<item>Sastanak</item>
+		<item>Pick&amp;Go</item>
+		<item>Privatno</item>
+		<item>Ostalo</item>
+	</string-array>
     <string-array name="bransa_array">
         <item>AUTO CENTRI (PROD+MEH+KAROS+EL)</item>
         <item>AUTO CENTRI BEZ PRODAJE VOZILA</item>
