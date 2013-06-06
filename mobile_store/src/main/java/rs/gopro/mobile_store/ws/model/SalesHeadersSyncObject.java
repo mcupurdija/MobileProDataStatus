@@ -163,7 +163,9 @@ public class SalesHeadersSyncObject extends SyncObject {
 		int del_res = 0;
 		if (valuesForInsert.length > 0) {
 			del_res = contentResolver.delete(SentOrdersStatus.CONTENT_URI, null, null);
-			LogUtils.LOGD(TAG, "Deleted pre bulk insert rows:"+del_res);
+			LogUtils.LOGD(TAG, "Deleted pre bulk-insert rows:"+del_res);
+			del_res = contentResolver.delete(SentOrdersStatusLines.CONTENT_URI, null, null);
+			LogUtils.LOGD(TAG, "Deleted pre bulk-insert rows:"+del_res);
 		}
 		int numOfInserted = contentResolver.bulkInsert(SentOrdersStatus.CONTENT_URI, valuesForInsert);
 		return numOfInserted;

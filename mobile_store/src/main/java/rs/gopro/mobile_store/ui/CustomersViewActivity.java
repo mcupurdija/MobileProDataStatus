@@ -14,6 +14,7 @@ import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.CustomerAddressesSyncObject;
 import rs.gopro.mobile_store.ws.model.CustomerSyncObject;
 import rs.gopro.mobile_store.ws.model.GetContactsSyncObject;
+import rs.gopro.mobile_store.ws.model.GetPotentialCustomerSyncObject;
 import rs.gopro.mobile_store.ws.model.SetPotentialCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.ProgressDialog;
@@ -63,9 +64,12 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 			} else if (CustomerAddressesSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Adrese preuzete!");
 			} else if (CustomerSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
-				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Kupci preuzeti!");
+				// after this step there is sync potential and there is message
+				//DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Kupci preuzeti!");
 			} else if (SetPotentialCustomersSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Potencijalni kupac uspesno poslat!");
+			} else if (GetPotentialCustomerSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Kupci i potencijalni kupci uspešno preuzeti!");
 			}
 		} else {
 			DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_error_in_sync), syncResult.getResult());
@@ -178,6 +182,10 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 			CustomerSyncObject syncObject = new CustomerSyncObject("", "", salesPersonNo, DateUtils.getWsDummyDate());
 			intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT,syncObject);
 			startService(intent);
+			Intent intentPotentialCust = new Intent(this, NavisionSyncService.class);
+			GetPotentialCustomerSyncObject potentialCustSyncObject = new GetPotentialCustomerSyncObject("", "", salesPersonNo, DateUtils.getWsDummyDate());
+			intentPotentialCust.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT,potentialCustSyncObject);
+			startService(intentPotentialCust);
 			syncProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.dialog_title_customers_receive), getResources().getString(R.string.dialog_body_customers_receive), true, true);
 			return true;
 		case R.id.edit_customers:
@@ -255,6 +263,8 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
     	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, customerSyncObject);
     	IntentFilter potentialCustomerSyncObject = new IntentFilter(SetPotentialCustomersSyncObject.BROADCAST_SYNC_ACTION);
     	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, potentialCustomerSyncObject);
+    	IntentFilter getPotentialCustomersSyncObject = new IntentFilter(GetPotentialCustomerSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, getPotentialCustomersSyncObject);
     }
     
     @Override

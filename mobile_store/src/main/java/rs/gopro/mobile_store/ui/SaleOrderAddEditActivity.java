@@ -466,7 +466,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		String contact_name = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CONTACT_NAME));
 		String contact_phone = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CONTACT_PHONE));
 		String contact_email = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CONTACT_EMAIL));
-		String order_no = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.QUOTE_NO));
+		String order_no = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.EXTERNAL_DOCUMENT_NO));
 		
 		int backorder_status = -1;
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS))) {
@@ -971,9 +971,9 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		String order_no = orderNo.getText().toString().trim();
 		if (order_no != null && !order_no.equals("")) {
-			localValues.put(MobileStoreContract.SaleOrders.QUOTE_NO, order_no);
+			localValues.put(MobileStoreContract.SaleOrders.EXTERNAL_DOCUMENT_NO, order_no);
 		} else {
-			localValues.putNull(MobileStoreContract.SaleOrders.QUOTE_NO);
+			localValues.putNull(MobileStoreContract.SaleOrders.EXTERNAL_DOCUMENT_NO);
 		}
 		
 		String doc_note = documentNote.getText().toString().trim();

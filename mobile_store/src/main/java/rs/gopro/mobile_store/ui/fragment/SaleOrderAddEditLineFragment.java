@@ -30,6 +30,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -110,6 +111,8 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	
 	private Button loadItemData;
 	private Button saveData;
+	
+	private TextView mDisc;
 	
 	ArrayAdapter<CharSequence> availableToWholeShipAdapter;
     private Spinner availableToWholeShipStatus;
@@ -208,6 +211,9 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_sale_oreder_line_add_edit, null);
+        
+        mDisc = (TextView) rootView.findViewById(R.id.so_line_disc_label);
+        mDisc.setText("");
         
         itemAutocompleteAdapter = new ItemAutocompleteCursorAdapter(getActivity(), null);
         mItemAutocomplete = (AutoCompleteTextView) rootView.findViewById(R.id.so_line_item_no_value);
@@ -681,6 +687,16 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         	itemNo = cursor.getString(ItemQuery.ITEM_NO);
         }
         
+        if (!cursor.isNull(ItemQuery.INVENTORY_ITEM_CATEGORY)) {
+        	int item_category = cursor.getInt(ItemQuery.INVENTORY_ITEM_CATEGORY);
+        	if (item_category == 9) {
+        		mDisc.setText("DISC");
+        		mDisc.setTextColor(Color.RED);
+        	} else {
+        		mDisc.setText("");
+        	}
+        }
+        
         if (!cursor.isNull(ItemQuery.ITEM_CAMPAIGN_STATUS)) {
         	itemCampaignStatus = cursor.getInt(ItemQuery.ITEM_CAMPAIGN_STATUS);
         	// if empty it is first time load, then we need to load value
@@ -956,12 +972,14 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         String[] PROJECTION = {
                 BaseColumns._ID,
                 MobileStoreContract.Items.ITEM_NO,
-                MobileStoreContract.Items.CAMPAIGN_STATUS
+                MobileStoreContract.Items.CAMPAIGN_STATUS,
+                MobileStoreContract.Items.INVENTORY_ITEM_CATEGORY
         };
 
         int _ID = 0;
         int ITEM_NO = 1;
         int ITEM_CAMPAIGN_STATUS = 2;
+        int INVENTORY_ITEM_CATEGORY = 3;
 	}
 	
 	private interface SalesPersonQuery {
