@@ -294,7 +294,7 @@
 	<string name="load_item_data_button">Preuzmi podatke o artiklu</string>
 	<string name="so_line_item_quantities_text">Količina - izabrana i na stanju</string>
 	<string name="so_line_item_prices_text">Jedinicna cena - bez popusta i sa popustom</string>
-	<string name="so_line_item_discounts_text">Popusti - izabrani, min i max</string>
+	<string name="so_line_item_discounts_text">Rabat izabrani i Rabat C</string>
 	<string name="so_line_quote_refused_text">Status odbijanja ponude</string>
 	<string name="so_line_avail_to_whole_ship_check_box_text">Dostupno za isporuku u celosti</string>
 	<string name="so_line_save_button_text">Sačuvaj promene</string>

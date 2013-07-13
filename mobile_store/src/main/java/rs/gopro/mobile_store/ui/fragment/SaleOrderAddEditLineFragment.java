@@ -291,6 +291,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         mDiscountMin.setFocusable(false);
         mDiscountMax = (EditText) rootView.findViewById(R.id.so_line_item_max_discount_value);
         mDiscountMax.setFocusable(false);
+        mDiscountMax.setVisibility(View.GONE);
         
         mAvailableToWholeShipment = (CheckBox) rootView.findViewById(R.id.so_line_avail_to_whole_ship_check_box);
         mAvailableToWholeShipment.setVisibility(View.GONE);
@@ -687,13 +688,12 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         	itemNo = cursor.getString(ItemQuery.ITEM_NO);
         }
         
+        mDisc.setText("");
         if (!cursor.isNull(ItemQuery.INVENTORY_ITEM_CATEGORY)) {
         	int item_category = cursor.getInt(ItemQuery.INVENTORY_ITEM_CATEGORY);
-        	if (item_category == 9) {
+        	if (item_category == 9 || item_category == 8) {
         		mDisc.setText("DISC");
         		mDisc.setTextColor(Color.RED);
-        	} else {
-        		mDisc.setText("");
         	}
         }
         
