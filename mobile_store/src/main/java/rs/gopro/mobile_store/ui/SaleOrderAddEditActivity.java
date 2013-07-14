@@ -313,7 +313,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	    orderNo = (EditText) findViewById(R.id.edit_sale_order_quote_no_edit_text);
 	    orderNo.setFilters( new InputFilter[] { new InputFilter.LengthFilter(20)} );
 	    contactEmail = (EditText) findViewById(R.id.edit_sale_order_contact_email_text);
-	    contactName.setFilters( new InputFilter[] { new InputFilter.LengthFilter(80)} );
+	    contactEmail.setFilters( new InputFilter[] { new InputFilter.LengthFilter(200)} );
 	    
 		backorderAdapter = ArrayAdapter.createFromResource(this, R.array.backorder_type_array, android.R.layout.simple_spinner_item);
 		backorderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

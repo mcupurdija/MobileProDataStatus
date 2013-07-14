@@ -55,6 +55,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 //	public static final int CALL_EDIT = 2;
 	private static final int NEW_SALE_ORDER_REQUEST_CODE = 1;
 	private static final String SALE_ORDER_LIST_TAG = "SaleOrderListTag";
+	private static final int SALE_OFFER = 1;
 	
 	ActionMode actionMod;
 	
@@ -437,9 +438,15 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		if (documentHeaderCursor.moveToFirst()) {
 			DatabaseUtils.cursorRowToContentValues(documentHeaderCursor, documentHeaderContentValues);
 			documentHeaderContentValues.put(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO, DocumentUtils.generateClonedSaleOrderDeviceNo(salesPersonNo));
+			// save doc_no to save it in QUOTE_NO field, only if it is sales offer
+			Object doc_no = documentHeaderContentValues.get(MobileStoreContract.SaleOrders.SALES_ORDER_NO);
 			documentHeaderContentValues.putNull(MobileStoreContract.SaleOrders.SALES_ORDER_NO);
 			documentHeaderContentValues.remove(MobileStoreContract.SaleOrders._ID);
 			
+			Object order_type  = documentHeaderContentValues.get(MobileStoreContract.SaleOrders.DOCUMENT_TYPE);
+			if (doc_no != null && order_type != null && (Integer.valueOf((String)order_type)).intValue() == SALE_OFFER) {
+				documentHeaderContentValues.put(MobileStoreContract.SaleOrders.QUOTE_NO, (String) doc_no);
+			}
 			Uri clonedDocumentUri = getContentResolver().insert(MobileStoreContract.SaleOrders.CONTENT_URI, documentHeaderContentValues);
 			
 			String clonedDocumentId = MobileStoreContract.SaleOrders.getSaleOrderId(clonedDocumentUri);
