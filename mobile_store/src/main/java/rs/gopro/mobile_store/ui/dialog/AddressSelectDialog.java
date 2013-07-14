@@ -40,6 +40,7 @@ public class AddressSelectDialog extends DialogFragment implements
 
 	public static final String EXTRA_DIALOG_ID = "rs.gopro.mobile_store.extra.DIALOG_ID";
 	public static final String EXTRA_CUSTOMER_NO = "rs.gopro.mobile_store.extra.EXTRA_CUSTOMER_NO";
+	public static final String EXTRA_CUSTOMER_ID = "rs.gopro.mobile_store.extra.EXTRA_CUSTOMER_ID";
 
 	private Button syncAllLinesForDoc;
 	private ProgressBar mDialogLoader;

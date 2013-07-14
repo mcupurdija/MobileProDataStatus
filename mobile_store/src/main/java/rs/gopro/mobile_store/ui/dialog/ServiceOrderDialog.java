@@ -1,14 +1,21 @@
 package rs.gopro.mobile_store.ui.dialog;
 
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerAddresses;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ServiceOrders;
+import rs.gopro.mobile_store.ui.SaleOrderAddEditActivity.CustomerAddressQuery;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.ui.components.ItemAutocompleteCursorAdapter;
+import rs.gopro.mobile_store.ui.components.SpinnerCustomAdapter;
+import rs.gopro.mobile_store.ui.components.SpinnerItem;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -20,9 +27,11 @@ import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -33,7 +42,6 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
 	private static final String SERVICE_ORDER_SCHEME = "settings";
 	private static final String SERVICE_ORDER_AUTHORITY = "service_order";
 	public static final Uri SERVICE_ORDER_URI = new Uri.Builder().scheme(SERVICE_ORDER_SCHEME).authority(SERVICE_ORDER_AUTHORITY).build();
-
 	
 	private int dialogId;
 	private String dialogTitle;
@@ -51,7 +59,9 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
     private int itemId = -1;
     private AutoCompleteTextView mItem;
     private ItemAutocompleteCursorAdapter mItemAdapter;
-    
+
+    private Spinner addressSelector;
+    private SpinnerCustomAdapter addressAdapter;
     private EditText mAddress;
     private EditText mPostCode;
     private EditText mPhone;
@@ -66,14 +76,15 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
     public ServiceOrderDialog() {
         // Empty constructor required for DialogFragment
     }
-    
-	public ServiceOrderDialog(int dialogId, String dialogTitle, int salesPersonId) {
-		super();
-		this.dialogId = dialogId;
-		this.dialogTitle = dialogTitle;
-		this.salesPersonId = salesPersonId;
-	}
 
+	@Override
+	public void setArguments(Bundle args) {
+		this.dialogId = args.getInt("DIALOG_ID");
+		this.dialogTitle = args.getString("DIALOG_TITLE");
+		this.salesPersonId = args.getInt("SALES_PERSON_ID");
+		super.setArguments(args);
+	}
+	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -110,7 +121,29 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
 				if (mPostCode != null) {
 					mPostCode.setText(cursor.getString(7));
 				}
+				loadAddresses(customerId);
 			}
+		});
+        
+        addressAdapter = new SpinnerCustomAdapter(getActivity(), 0);
+        addressSelector = (Spinner) view.findViewById(R.id.service_order_address_spinner);
+        addressSelector.setAdapter(addressAdapter);
+        addressSelector.setOnItemSelectedListener(new OnItemSelectedListener() {
+				@Override
+				public void onItemSelected(AdapterView<?> arg0, View arg1,
+						int position, long id) {
+					SpinnerItem selectedItem = addressAdapter.getItem(position);
+					if (selectedItem.getId() == -1) {
+						return;
+					} else {
+						selectAddress(selectedItem);
+					}
+					
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> arg0) {	
+				}
 		});
         
         mAddress = (EditText) view.findViewById(R.id.service_order_address_edittext);
@@ -160,8 +193,23 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
         
         return view;
     }
+	
+    protected void loadAddresses(String customerNo) {
+    	Cursor addressCursor = getActivity().getContentResolver().query(MobileStoreContract.CustomerAddresses.CONTENT_URI, CustomerAddressQuery.PROJECTION,  CustomerAddresses.CUSTOMER_NO+"=?", new String[] { customerNo }, null);
+    	if (addressCursor.moveToFirst()) {
+    		do {
+    			addressAdapter.add(new SpinnerItem(addressCursor.getInt(CustomerAddressQuery._ID), addressCursor.getString(CustomerAddressQuery.ADDRESS_NO), addressCursor.getString(CustomerAddressQuery.ADDRESS) + " - " + addressCursor.getString(CustomerAddressQuery.CITY)));
+    		} while (addressCursor.moveToNext());
+    	}
+    	addressCursor.close();
+	}
 
-    @Override
+	protected void selectAddress(SpinnerItem selectedItem) {
+		mAddress.se
+		
+	}
+
+	@Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (EditorInfo.IME_ACTION_DONE == actionId) {
             sendInputValues();
@@ -231,5 +279,24 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
 
 	public void setDefaultOption(int defaultOption) {
 		this.defaultOption = defaultOption;
+	}
+	
+	private interface CustomerAddressQuery {
+
+		String[] PROJECTION = { BaseColumns._ID,
+				MobileStoreContract.CustomerAddresses.ADDRESS_NO,
+				MobileStoreContract.CustomerAddresses.ADDRESS,
+				MobileStoreContract.CustomerAddresses.CITY,
+				MobileStoreContract.CustomerAddresses.POST_CODE,
+				MobileStoreContract.CustomerAddresses.CONTANCT,
+				MobileStoreContract.CustomerAddresses.PHONE_NO };
+
+		int _ID = 0;
+		int ADDRESS_NO = 1;
+		int ADDRESS = 2;
+		int CITY = 3;
+		int POST_CODE = 4;
+		int CONTANCT = 5;
+		int PHONE_NO = 6;
 	}
 }

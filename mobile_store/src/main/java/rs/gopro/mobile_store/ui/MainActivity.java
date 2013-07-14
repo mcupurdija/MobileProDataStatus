@@ -211,7 +211,13 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				LogUtils.LOGE(TAG, "Big problem! Should be value here!");
 				salesPersonId = "1";
 			}
-			ServiceOrderDialog serviceOrderDialog = new ServiceOrderDialog(0, "Kreiraj servisni nalog", Integer.valueOf(salesPersonId));
+			ServiceOrderDialog serviceOrderDialog = new ServiceOrderDialog();
+			Bundle sendInitValues = new Bundle();
+			sendInitValues.putInt("DIALOG_ID", 0);
+			sendInitValues.putString("DIALOG_TITLE", "Kreiraj servisni nalog");
+			sendInitValues.putInt("SALES_PERSON_ID", Integer.valueOf(salesPersonId).intValue());
+			serviceOrderDialog.setArguments(sendInitValues);
+			
 			serviceOrderDialog.show(getSupportFragmentManager(), "SERVICE_ORDER_DIALOG");
 		}
 		
