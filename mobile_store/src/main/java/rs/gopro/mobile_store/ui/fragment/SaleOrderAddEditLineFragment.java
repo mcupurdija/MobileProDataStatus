@@ -697,15 +697,22 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         	}
         }
         
-        if (!cursor.isNull(ItemQuery.ITEM_CAMPAIGN_STATUS)) {
-        	itemCampaignStatus = cursor.getInt(ItemQuery.ITEM_CAMPAIGN_STATUS);
+        /**
+         * Commented out because new request. Sales people does not need to see what is on action.
+         * begin
+         */
+//        if (!cursor.isNull(ItemQuery.ITEM_CAMPAIGN_STATUS)) {
+//        	itemCampaignStatus = cursor.getInt(ItemQuery.ITEM_CAMPAIGN_STATUS);
         	// if empty it is first time load, then we need to load value
         	// if not then is second time load and we need not to change selection
-        	if (TextUtils.isEmpty(mDiscountMax.getText()) && TextUtils.isEmpty(mDiscountMin.getText())) {
-        		mCampaignStatus.setSelection(itemCampaignStatus);
-        	}
-        }
-        
+//        	if (TextUtils.isEmpty(mDiscountMax.getText()) && TextUtils.isEmpty(mDiscountMin.getText())) {
+//        		mCampaignStatus.setSelection(itemCampaignStatus);
+//        	}
+//        }
+        /**
+         * Commented out because new request. Sales people does not need to see what is on action.
+         * end
+         */
 //        checkLoaderState();
 	}
 
