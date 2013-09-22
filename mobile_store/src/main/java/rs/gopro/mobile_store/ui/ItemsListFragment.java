@@ -1,11 +1,15 @@
 package rs.gopro.mobile_store.ui;
 
+import java.util.UUID;
+
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
 import rs.gopro.mobile_store.ui.fragment.ItemPreviewDialogFragment;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
@@ -49,6 +53,7 @@ import android.widget.Spinner;
 
 public class ItemsListFragment extends ListFragment implements LoaderCallbacks<Cursor>, TextWatcher, OnItemSelectedListener {
 	private static String TAG = "ItemsListFragment";
+	private static final String WEB_SERVICE_REQUEST_ID = "web_service_request_id";
 	private EditText searchText;
 	private Spinner spinner;
 	private Button loadNewItems;
@@ -59,12 +64,15 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 //	private String salesPersonId;
 	private String salesPersonNo;
 	private ProgressDialog invoicesLoadProgressDialog;
+	private String webServiceRequestId;
 	
 	private BroadcastReceiver onNotice = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
 			invoicesLoadProgressDialog.dismiss();
+			// reset request id because it is finished
+			webServiceRequestId = null;
 			onSOAPResult(syncResult, intent.getAction());
 		}
 	};
@@ -74,7 +82,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 			if (ItemsSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 				// TODO some nice info here
 //				SalesDocumentsSyncObject syncObject = (SalesDocumentsSyncObject) syncResult.getComplexResult();
-				
+				DialogUtil.showInfoDialog(getActivity(), getResources().getString(R.string.dialog_title_sync_info), "Artikli uspešno ažurirani!");
 			}
 		} else {
 			AlertDialog alertDialog = new AlertDialog.Builder(
@@ -148,6 +156,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 					Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 					ItemsNewSyncObject itemsSyncObject = new ItemsNewSyncObject(null, null, Integer.valueOf(0), salesPersonNo, null);
 					itemsSyncObject.setResetTypeSignal(1);
+					itemsSyncObject.setSessionId(webServiceRequestId = UUID.randomUUID().toString());
 					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
 					getActivity().startService(intent);
 					invoicesLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_items_load), getActivity().getResources().getString(R.string.dialog_body_items_load), true, true);
@@ -160,6 +169,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 				public void onClick(View v) {
 					Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 					ItemsOverstockSyncObject itemsSyncObject = new ItemsOverstockSyncObject(null, null, Integer.valueOf(1), salesPersonNo, DateUtils.getWsDummyDate());
+					itemsSyncObject.setSessionId(webServiceRequestId = UUID.randomUUID().toString());
 					itemsSyncObject.setResetTypeSignal(1);
 					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
 					getActivity().startService(intent);
@@ -173,11 +183,14 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 					Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 					ItemsActionSyncObject itemsSyncObject = new ItemsActionSyncObject(null, null, Integer.valueOf(2), salesPersonNo, DateUtils.getWsDummyDate());
 					itemsSyncObject.setResetTypeSignal(2);
+					itemsSyncObject.setSessionId(webServiceRequestId = UUID.randomUUID().toString());
 					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);
 					getActivity().startService(intent);
 					invoicesLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_items_load), getActivity().getResources().getString(R.string.dialog_body_items_load), true, true);
 				}
 			});
+		} else {
+			webServiceRequestId = savedInstanceState.getString(WEB_SERVICE_REQUEST_ID);
 		}
 	}
 
@@ -203,7 +216,22 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	
 	@Override
 	public void onResume() {
-		super.onResume();	
+		super.onResume();
+		// check is service call is finished or is in process so we can shut down progress bar
+		if (webServiceRequestId != null) {
+			Cursor syncLog = getActivity().getContentResolver().query(SyncLogs.CONTENT_URI, new String[] { SyncLogs.SYNC_OBJECT_STATUS }, SyncLogs.SYNC_OBJECT_NAME+"=?", new String[] { webServiceRequestId }, null);
+			if (syncLog.moveToFirst()) {
+				String status = syncLog.getString(0);
+				if (invoicesLoadProgressDialog != null && invoicesLoadProgressDialog.isShowing() && !status.equals(SyncStatus.IN_PROCCESS.toString())) {
+					invoicesLoadProgressDialog.dismiss();
+					if (status.equals(SyncStatus.SUCCESS.toString())) {
+						DialogUtil.showInfoDialog(getActivity(), getResources().getString(R.string.dialog_title_sync_info), "Artikli uspešno ažurirani!");
+					} else {
+						DialogUtil.showInfoDialog(getActivity(), getResources().getString(R.string.dialog_title_error_in_sync), "Artikli nisu uspešno ažurirani!");
+					}
+				}
+			}
+		}
 		IntentFilter itemsSyncObject = new IntentFilter(ItemsSyncObject.BROADCAST_SYNC_ACTION);
     	LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, itemsSyncObject);
 	}
@@ -214,6 +242,12 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(onNotice);
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(WEB_SERVICE_REQUEST_ID, webServiceRequestId);
+	}
+	
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 	}
