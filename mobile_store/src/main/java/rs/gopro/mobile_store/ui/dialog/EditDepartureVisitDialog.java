@@ -12,6 +12,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,13 +23,13 @@ import android.widget.TextView.OnEditorActionListener;
 
 public class EditDepartureVisitDialog extends DialogFragment implements OnEditorActionListener, OnClickListener {
 
-	private int dialogId;
-	private String dialogTitle;
+	private int dialogId = 0;
+	private String dialogTitle = "Završi posetu";
 	private String valueCaption;
 	private int defaultOption = 0;
 	
     public interface EditDepartureVisitDialogListener {
-        void onFinishEditDepartureVisitDialog(int id, int visitResult, String note);
+        void onFinishEditDepartureVisitDialog(int id, int visitResult, String note, int visitSubType);
     }
 
     private EditText mNoteText;
@@ -38,15 +40,19 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
     ArrayAdapter<CharSequence> mVisitResultAdapter;
     private Spinner mVisitResult;
 
+    private TextView mVisitSubTypeCaption;
+    ArrayAdapter<CharSequence> mVisitSubTypeAdapter;
+    private Spinner mVisitSubType;
+    
     public EditDepartureVisitDialog() {
         // Empty constructor required for DialogFragment
     }
     
-	public EditDepartureVisitDialog(int dialogId, String dialogTitle) {
-		super();
-		this.dialogId = dialogId;
-		this.dialogTitle = dialogTitle;
-	}
+//	public EditDepartureVisitDialog(int dialogId, String dialogTitle) {
+//		super();
+//		this.dialogId = dialogId;
+//		this.dialogTitle = dialogTitle;
+//	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -76,6 +82,31 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
         mVisitResult = (Spinner) view.findViewById(R.id.visit_result_spinner);
         mVisitResult.setAdapter(mVisitResultAdapter);
         mVisitResult.setSelection(defaultOption);
+        mVisitResult.setOnItemSelectedListener(new OnItemSelectedListener() {
+					@Override
+					public void onItemSelected(AdapterView<?> arg0, View arg1,
+							int pos, long id) {
+						if (pos == 2) {
+							mVisitSubType.setEnabled(true);
+						} else {
+							mVisitSubType.setSelection(0);
+							mVisitSubType.setEnabled(false);
+						}
+					}
+					@Override
+					public void onNothingSelected(AdapterView<?> arg0) {
+					}
+		});
+        
+        mVisitSubTypeCaption = (TextView) view.findViewById(R.id.visit_sub_type_caption);
+        mVisitSubTypeCaption.setText("Poseta ostalo:");
+        
+        mVisitSubTypeAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.visit_subtype, android.R.layout.simple_spinner_item);
+        mVisitSubTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mVisitSubType = (Spinner) view.findViewById(R.id.visit_sub_type_spinner);
+        mVisitSubType.setAdapter(mVisitSubTypeAdapter);
+        mVisitSubType.setSelection(0);
+        mVisitSubType.setEnabled(false);
         
         mNoteCaption = (TextView) view.findViewById(R.id.visit_note_caption);
         mNoteCaption.setText("Beleška nakon posete:");
@@ -131,7 +162,7 @@ public class EditDepartureVisitDialog extends DialogFragment implements OnEditor
 			realization_option = ApplicationConstants.VISIT_TYPE_NO_CLOSURE;
 			break;
 		}
-		activity.onFinishEditDepartureVisitDialog(dialogId, realization_option, mNoteText.getText().toString());
+		activity.onFinishEditDepartureVisitDialog(dialogId, realization_option, mNoteText.getText().toString(), mVisitSubType.getSelectedItemPosition());
 		this.dismiss();
 	}
 

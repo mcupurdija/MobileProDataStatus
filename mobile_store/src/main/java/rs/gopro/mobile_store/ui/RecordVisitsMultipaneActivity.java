@@ -494,13 +494,13 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	 * Callback method on calling save departure dialog.
 	 */
 	@Override
-	public void onFinishEditDepartureVisitDialog(int id, int visitResult, String note) {
+	public void onFinishEditDepartureVisitDialog(int id, int visitResult, String note, int visitSubType) {
 		// here goes departures
 //		RecordVisitDetailFragment detailFragment = null;
 //		if (planRealizationFragmentDetail != null) {
 //			detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
 		if (isPlannedVisit()) {
-			if (!recordEndVisit(visitResult, note)) {
+			if (!recordEndVisit(visitResult, note, visitSubType)) {
 				LogUtils.LOGE(TAG, "Visit recording failed!");
 			}
 		} else {
@@ -549,12 +549,13 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		return true;
 	}
     
-	private boolean recordEndVisit(int visit_result, String note) {
+	private boolean recordEndVisit(int visit_result, String note, int visitSubType) {
 		if (selectedVisitId == null) {
 			DialogUtil.showInfoDialog(this, "Upozorenje", "Poseta mora biti izabrana kako bi bila realizovana!\nIzaberite posetu za realizaciju u listi poseta sa leve strane!");
 		}
 		ContentValues cv = new ContentValues();
 		cv.put(MobileStoreContract.Visits.VISIT_RESULT, visit_result);
+		cv.put(MobileStoreContract.Visits.ENTRY_SUBTYPE, visitSubType);
 		cv.put(MobileStoreContract.Visits.NOTE, note);
 		cv.put(MobileStoreContract.Visits.VISIT_TYPE, ApplicationConstants.VISIT_RECORDED);
 		cv.put(Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_FINISHED);

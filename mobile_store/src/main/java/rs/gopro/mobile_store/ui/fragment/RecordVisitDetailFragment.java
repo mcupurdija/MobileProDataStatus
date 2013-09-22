@@ -138,7 +138,7 @@ public class RecordVisitDetailFragment extends Fragment implements
 	}
     
     private void showDepartureDialog(int defaultOption) {
-    	EditDepartureVisitDialog dialog = new EditDepartureVisitDialog(0, "Završi posetu");
+    	EditDepartureVisitDialog dialog = new EditDepartureVisitDialog();
     	dialog.setDefaultOption(defaultOption);
     	dialog.show(getActivity().getSupportFragmentManager(), "DEPARTURE_RECORD_DIALOG");		
 	}
