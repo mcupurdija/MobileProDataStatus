@@ -227,6 +227,7 @@ public class MobileStoreContract {
 		// String SALES_PERSON_ID = "sales_person_id";
 		String SELL_TO_ADDRESS_ID = "sell_to_address_id";
 		String SHIPP_TO_ADDRESS_ID = "shipp_to_address_id";
+		String REQUESTED_DELIVERY_DATE = "requested_delivery_date";
 		String CONTACT_ID = "contact_id";
 		String CONTACT_NAME = "contact_name";
 		String CONTACT_PHONE = "contact_phone";
@@ -250,6 +251,7 @@ public class MobileStoreContract {
 		String SALE_ORDER_ID = "sale_order_id";
 		String LINE_NO = "line_no";
 		String ITEM_ID = "item_id";
+		String LOCATION_CODE = "location_code";
 		String QUANTITY = "quantity";
 		String QUANTITY_AVAILABLE = "quantity_available";
 		String UNIT_OF_MEASURE = "unit_of_measure";

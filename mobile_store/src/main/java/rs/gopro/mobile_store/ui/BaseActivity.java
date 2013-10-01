@@ -16,9 +16,18 @@
 
 package rs.gopro.mobile_store.ui;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
+import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
+import rs.gopro.mobile_store.ws.model.CustomerSyncObject;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -40,10 +49,42 @@ public abstract class BaseActivity extends FragmentActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true); // from sherlock -> .setHomeButtonEnabled(true);
         salesPersonId = SharedPreferencesUtil.getSalePersonId(this);
         salesPersonNo = SharedPreferencesUtil.getSalePersonNo(this);
+        
+        checkVersionAndSyncDates();
     }
 
-    
-    @Override
+    /**
+     * Checks to prevent data difference between server and client.
+     */
+    protected void checkVersionAndSyncDates() {
+    	Cursor syncLogCustomers = getContentResolver().query(SyncLogs.CONTENT_URI, new String[] { SyncLogs.CREATED_DATE }, SyncLogs.SYNC_OBJECT_ID+"=? and " + SyncLogs.SYNC_OBJECT_STATUS + "=?", new String[] { CustomerSyncObject.TAG, SyncStatus.SUCCESS.toString() }, SyncLogs._ID+" desc limit 1");
+//    	Cursor syncLogItemsAction = getContentResolver().query(SyncLogs.CONTENT_URI, new String[] { SyncLogs.CREATED_DATE }, SyncLogs.SYNC_OBJECT_ID+" like ? and " + SyncLogs.SYNC_OBJECT_STATUS + "=?", new String[] { "Items%", SyncStatus.SUCCESS.toString() }, SyncLogs._ID+" desc limit 1");
+ 	
+    	if (syncLogCustomers.moveToFirst()) {
+			String createdDateFromDb = syncLogCustomers.getString(0);
+			Date createdDate = DateUtils.getLocalDbDate(createdDateFromDb);
+			long days = DateUtils.getDateDiff(createdDate, new Date(), TimeUnit.DAYS);
+			if (days >= 1) {
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_warn), "Kupci nisu sinhronizovani '"+days+"' dan/a");			
+			}
+		} else {
+			//DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_warn), "Kupci nisu sinhronizovani");
+		}
+    	syncLogCustomers.close();
+    	
+//    	if (syncLogItemsAction.moveToFirst()) {
+//			String createdDateFromDb = syncLogItemsAction.getString(0);
+//			Date createdDate = DateUtils.getLocalDbDate(createdDateFromDb);
+//			long days = DateUtils.getDateDiff(createdDate, new Date(), TimeUnit.DAYS);
+//			if (days >= 1) {
+//				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_warn), "Artikli nisu sinhronizovani '"+days+"' dan/a");			
+//			}
+//		}
+//    	syncLogItemsAction.close();
+	}
+
+
+	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home : // home back, not do it on main

@@ -154,6 +154,7 @@
     <string name="dialog_body_items_load">Loading items</string>
     <string name="dialog_title_service_order_load">Service Order</string>
     <string name="dialog_body_service_order_load">Loading service order no</string>
+    <string name="dialog_title_warn">Sync warning</string>
     <string name="document_no">Document No</string>
     <string name="dokument_type_no_title">Document no and type </string>
     <string name="contact_title">Kontakt</string>
@@ -163,6 +164,7 @@
     <string name="location_no">Location no.</string>
     <string name="shortcut_dimension1_code">Shortcut dimension 1</string>
     <string name="backorder">Backorder status</string>
+    <string name="so_line_location_text">Select location</string>
     <string name="payment_type">Payment</string>
     <string name="hide_discount">Hide discount</string>
     <string name="show_declaration">Show declaration</string>
@@ -170,6 +172,7 @@
     <string name="quote_date">Quote date</string>
     <string name="quote_status">Quote status</string>
     <string name="transit_customer">Transit customer</string>
+    <string name="desired_delivery_date">Delivery date</string>
     <string name="customer_no_label">Customer No.</string>
     <string name="customer_address_label">Address</string>
     <string name="customer_address_default_text">Default customer address</string>

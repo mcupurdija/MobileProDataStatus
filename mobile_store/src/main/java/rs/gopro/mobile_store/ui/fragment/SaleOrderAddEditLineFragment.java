@@ -85,6 +85,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	
 	private ItemAutocompleteCursorAdapter itemAutocompleteAdapter;
 	private ArrayAdapter<CharSequence> backorderAdapter;
+	private ArrayAdapter<CharSequence> locationAdapter;
 	private ArrayAdapter<CharSequence> campaignStatusAdapter;
 	private ArrayAdapter<CharSequence> quoteRefusedAdapter;
 	
@@ -106,6 +107,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	
 	private CheckBox mAvailableToWholeShipment;
 	private Spinner mBackorderStatus;
+	private Spinner mLocation;
 	private Spinner mQuoteRefused;
 	private Spinner mCampaignStatus;
 	
@@ -304,6 +306,11 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			mBackorderStatus.setSelection(defaultBackOrderStatus);
 		}
 		
+		locationAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.location_line_type_array, android.R.layout.simple_spinner_item);
+		locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mLocation = (Spinner) rootView.findViewById(R.id.so_line_location_spinner);
+		mLocation.setAdapter(locationAdapter);
+		
 		campaignStatusAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.item_camp_status_array, android.R.layout.simple_spinner_item);
 		campaignStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mCampaignStatus = (Spinner) rootView.findViewById(R.id.so_line_item_campaign_spinner);
@@ -486,6 +493,9 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			
 			int backorder_status = mBackorderStatus.getSelectedItemPosition();
 			localValues.put(MobileStoreContract.SaleOrderLines.BACKORDER_STATUS, Integer.valueOf(backorder_status));
+			
+			String location = mLocation.getSelectedItem().toString();
+			localValues.put(MobileStoreContract.SaleOrderLines.LOCATION_CODE, location);
 			
 			int campaign_status = mCampaignStatus.getSelectedItemPosition();
 			localValues.put(MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS, Integer.valueOf(campaign_status));
@@ -741,7 +751,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		String quantity = mQuantity.getText().toString().replace('.', ','); // UIUtils.getDoubleFromUI(mQuantity.getText().toString().replace('.', ','));
 		int campaign_status = mCampaignStatus.getSelectedItemPosition();
 		int potentialCustomerSignal = isPotentialCustomer(customerId) == false ? 0 : 1;
-		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", campaign_status, Integer.valueOf(potentialCustomerSignal),customerNo, quantity, salesPersonNo, documentType, deviceDocumentNo, 0, "", "", "", "", "", "", "", "");
+		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, mLocation.getSelectedItem().toString(), campaign_status, Integer.valueOf(potentialCustomerSignal),customerNo, quantity, salesPersonNo, documentType, deviceDocumentNo, 0, "", "", "", "", "", "", "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQtySalesPriceAndDiscSyncObject);
 		getActivity().startService(intent);
 		
@@ -850,6 +860,12 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			mBackorderStatus.setSelection(backorder_status);
 		}
         
+		String location = "001";
+		if (!cursor.isNull(SaleOrderLinesQuery.LOCATION_CODE)) {
+			location = cursor.getString(SaleOrderLinesQuery.LOCATION_CODE);	
+		}
+		mLocation.setSelection(locationAdapter.getPosition(location));
+		
 		int quote_refused = -1;
 		if (!cursor.isNull(SaleOrderLinesQuery.QUOTE_REFUSED_STATUS)) {
 			quote_refused = cursor.getInt(SaleOrderLinesQuery.QUOTE_REFUSED_STATUS);
@@ -916,7 +932,8 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
                 MobileStoreContract.SaleOrderLines.VERIFY_STATUS,
                 MobileStoreContract.SaleOrderLines.LINE_CAMPAIGN_STATUS,
                 MobileStoreContract.SaleOrderLines.PRICE_DISCOUNT_STATUS,
-                MobileStoreContract.SaleOrderLines.ITEM_ID
+                MobileStoreContract.SaleOrderLines.ITEM_ID,
+                MobileStoreContract.SaleOrderLines.LOCATION_CODE
         };
 
         int _ID = 0;
@@ -939,6 +956,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         int LINE_CAMPAIGN_STATUS = 14;
         int PRICE_DISCOUNT_STATUS = 15;
         int ITEM_ID = 16;
+        int LOCATION_CODE = 17;
 	}
 	
 	private interface CustomerQuery {

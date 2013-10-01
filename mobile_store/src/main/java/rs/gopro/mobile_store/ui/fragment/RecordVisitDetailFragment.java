@@ -10,6 +10,7 @@ import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class RecordVisitDetailFragment extends Fragment implements
@@ -35,12 +37,14 @@ public class RecordVisitDetailFragment extends Fragment implements
 	private Uri mVisitUri;
     private TextView mCustomerNoName;
     private TextView mVisitDate;
-    private TextView mOdometer;
+    private EditText mOdometer;
     private TextView mRecordedTime;
     private TextView mNote;
     
     private Button mStartVisit;
     private Button mEndVisit;
+    
+    private String visitId;
     
 	public interface Callbacks {
 		public void onVisitIdAvailable(String visitId);
@@ -73,11 +77,11 @@ public class RecordVisitDetailFragment extends Fragment implements
             return;
         }
         
-//        try {
-//        	visitId = Integer.valueOf(MobileStoreContract.Visits.getVisitId(mVisitUri));
-//        } catch (NumberFormatException ne) {
-//        	LogUtils.LOGE(TAG, "", ne);
-//        }
+        try {
+        	visitId = MobileStoreContract.Visits.getVisitId(mVisitUri);
+        } catch (NumberFormatException ne) {
+        	LogUtils.LOGE(TAG, "", ne);
+        }
 
         // Start background query to load vendor details
         getLoaderManager().initLoader(VisitsQuery._TOKEN, null, this);
@@ -116,7 +120,7 @@ public class RecordVisitDetailFragment extends Fragment implements
         mCustomerNoName = (TextView) rootView.findViewById(R.id.visit_customer_no_name);
         //mCustomerNo =  (TextView) rootView.findViewById(R.id.visit_customer_no);
         mVisitDate = (TextView) rootView.findViewById(R.id.visit_date);
-        mOdometer = (TextView) rootView.findViewById(R.id.visit_odometer);
+        mOdometer = (EditText) rootView.findViewById(R.id.visit_odometer);
         mRecordedTime = (TextView) rootView.findViewById(R.id.visit_time);
         //mDepartureTime = (TextView) rootView.findViewById(R.id.visit_departure_time);
         mNote = (TextView) rootView.findViewById(R.id.visit_note);
@@ -138,6 +142,14 @@ public class RecordVisitDetailFragment extends Fragment implements
 	}
     
     private void showDepartureDialog(int defaultOption) {
+    	// code for updating odometer before send
+    	// to change common mistakes
+    	// not good design, but visits will be rewritten
+    	ContentValues cv = new ContentValues();
+    	cv.put(MobileStoreContract.Visits.ODOMETER, mOdometer.getText().toString());
+    	getActivity().getContentResolver().update(MobileStoreContract.Visits.CONTENT_URI, cv, "visits._id=?", new String[] { visitId });
+//		if (result == 0) {
+//			return false;
     	EditDepartureVisitDialog dialog = new EditDepartureVisitDialog();
     	dialog.setDefaultOption(defaultOption);
     	dialog.show(getActivity().getSupportFragmentManager(), "DEPARTURE_RECORD_DIALOG");		
@@ -204,14 +216,17 @@ public class RecordVisitDetailFragment extends Fragment implements
 		case ApplicationConstants.VISIT_STATUS_NEW:
 			mStartVisit.setEnabled(true);
 			mEndVisit.setEnabled(false);
+			mOdometer.setFocusable(true);
 			break;
 		case ApplicationConstants.VISIT_STATUS_STARTED:
 			mStartVisit.setEnabled(false);
 			mEndVisit.setEnabled(true);
+			mOdometer.setFocusable(true);
 			break;
 		case ApplicationConstants.VISIT_STATUS_FINISHED:
 			mStartVisit.setEnabled(false);
 			mEndVisit.setEnabled(false);
+			mOdometer.setFocusable(false);
 			break;
 		default:
 			break;

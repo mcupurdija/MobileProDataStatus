@@ -468,7 +468,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 			if (planRealizationFragmentDetail != null) {
 //				detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
 				if (isRecordedVisitDayStart()) {
-					if (!isRecordedVisit()) {
+					if (!isVisitSTarted()) {
 						recordStartVisit(Integer.valueOf(inputText));
 					} else {
 						DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Pocetak posete je vec zabelezen!");
@@ -509,9 +509,13 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 //		}
 	}
 
-	private boolean isRecordedVisit() {
+	/**
+	 * Checks if there is already started visit. Cannot be in two places at same time.
+	 * @return
+	 */
+	private boolean isVisitSTarted() {
     	boolean signal = false;
-    	Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, "visits._id=? and visits.visit_type=?", new String[] { selectedVisitId == null ? "":selectedVisitId, String.valueOf(ApplicationConstants.VISIT_RECORDED) }, null);
+    	Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, MobileStoreContract.Visits.VISIT_STATUS+"=?", new String[] { String.valueOf(ApplicationConstants.VISIT_STATUS_STARTED) }, null);
 		if (cursor.moveToFirst()) {
 			signal = true;
 		}
