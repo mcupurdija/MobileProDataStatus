@@ -43,6 +43,7 @@ public abstract class SyncObject implements Parcelable {
 	private String statusMessage;
 	protected String result;
 	protected Context context;
+	private String sessionId;
 	
 	protected boolean lastSyncDateNeeded = false;
 
@@ -181,8 +182,14 @@ public abstract class SyncObject implements Parcelable {
 		}
 		maxBatch = maxBatch + 1;
 		ContentValues values = new ContentValues();
-		values.put(SyncLogs.SYNC_OBJECT_NAME, getTag());
 		values.put(SyncLogs.SYNC_OBJECT_ID, getTag());
+		// this is UI session id, shpud be in id field ut id is used in app and name is not
+		// so now we are using name for UI id
+		if (getSessionId() == null) {
+			values.putNull(SyncLogs.SYNC_OBJECT_NAME);
+		} else {		
+			values.put(SyncLogs.SYNC_OBJECT_NAME, getSessionId());
+		}
 		values.put(SyncLogs.SYNC_OBJECT_STATUS, ApplicationConstants.SyncStatus.IN_PROCCESS.toString());
 		values.put(SyncLogs.SYNC_OBJECT_BATCH, maxBatch);
 		currentUri = contentResolver.insert(SyncLogs.CONTENT_URI, values);
@@ -236,6 +243,14 @@ public abstract class SyncObject implements Parcelable {
 
 	public void setLastSyncDateNeeded(boolean lastSyncDateNeeded) {
 		this.lastSyncDateNeeded = lastSyncDateNeeded;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
 
 }

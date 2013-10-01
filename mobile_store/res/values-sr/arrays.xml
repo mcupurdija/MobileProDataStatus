@@ -131,6 +131,10 @@
         <item>Sa zaliha isporuči i izbriši ostatak</item>
         <item>Sačekaj i isporuči sve odjednom</item>
     </string-array>
+    <string-array name="location_line_type_array">
+        <item>001</item>
+        <item>993</item>
+    </string-array>
     <string-array name="slc1_type_array">
         <item>Poseta kupcu</item>
         <item>Poziv kupcu</item>

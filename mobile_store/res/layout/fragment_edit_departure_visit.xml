@@ -19,6 +19,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp" />
+    
+    <TextView
+        android:id="@+id/visit_sub_type_caption"
+        style="@style/AddEdit_Label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
+
+    <Spinner
+        android:id="@+id/visit_sub_type_spinner"
+        style="@style/EditEvent_Spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp" />
 
     <TextView
         android:id="@+id/visit_note_caption"

@@ -60,6 +60,7 @@ public class ItemsSyncObject extends SyncObject {
 		long dateMod = source.readLong();
 		setmDateModified(dateMod == -1 ? null : new Date(dateMod));
 		setResetTypeSignal(source.readInt());
+		setSessionId(source.readString());
 	}
 
 	public ItemsSyncObject(String mCSVString, String mItemNoa46, Integer mOverstockAndCampaignOnly, String mSalespersonCode, Date mDateModified) {
@@ -239,6 +240,7 @@ public class ItemsSyncObject extends SyncObject {
 		dest.writeString(getmSalespersonCode());
 		dest.writeLong(getmDateModified() == null ? -1 : getmDateModified().getTime());
 		dest.writeInt(getResetTypeSignal());
+		dest.writeString(getSessionId());
 	}
 
 	public String getmSalespersonCode() {
