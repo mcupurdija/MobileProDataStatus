@@ -12,15 +12,17 @@ public class SpinnerItem {
 	private int id;
 	private String code;
 	private String description;
+	private String postCode;
 	
 	public SpinnerItem() {
 	}
 
-	public SpinnerItem(int id, String code, String description) {
+	public SpinnerItem(int id, String code, String description, String postCode) {
 		super();
 		this.id = id;
 		this.code = code;
 		this.description = description;
+		this.postCode = postCode;
 	}
 
 	public int getId() {
@@ -45,6 +47,14 @@ public class SpinnerItem {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getPostCode() {
+		return postCode;
+	}
+
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
 	}
 
 }

@@ -2,10 +2,8 @@ package rs.gopro.mobile_store.ui.dialog;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
-import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerAddresses;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ServiceOrders;
-import rs.gopro.mobile_store.ui.SaleOrderAddEditActivity.CustomerAddressQuery;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.ui.components.ItemAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.ui.components.SpinnerCustomAdapter;
@@ -28,6 +26,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,6 +52,8 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
         void onFinishServiceOrderDialog(int service_order_id);
     }
 
+    private String address_no = null;
+    private String customerNo = "";
     private int customerId = -1;
     private AutoCompleteTextView mCustomer;
     private CustomerAutocompleteCursorAdapter mCustomerAdapter;
@@ -115,17 +116,20 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 				Cursor cursor = (Cursor) mCustomerAdapter.getItem(arg2);
 				customerId = cursor.getInt(0);
+				customerNo = cursor.getString(1);
+				address_no = null;
 				if (mAddress != null) {
 					mAddress.setText(cursor.getString(6));
 				}
 				if (mPostCode != null) {
 					mPostCode.setText(cursor.getString(7));
 				}
-				loadAddresses(customerId);
+				loadAddresses(customerNo);
 			}
 		});
         
-        addressAdapter = new SpinnerCustomAdapter(getActivity(), 0);
+        addressAdapter = new SpinnerCustomAdapter(getActivity(), android.R.layout.simple_spinner_item);
+        addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         addressSelector = (Spinner) view.findViewById(R.id.service_order_address_spinner);
         addressSelector.setAdapter(addressAdapter);
         addressSelector.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -198,15 +202,16 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
     	Cursor addressCursor = getActivity().getContentResolver().query(MobileStoreContract.CustomerAddresses.CONTENT_URI, CustomerAddressQuery.PROJECTION,  CustomerAddresses.CUSTOMER_NO+"=?", new String[] { customerNo }, null);
     	if (addressCursor.moveToFirst()) {
     		do {
-    			addressAdapter.add(new SpinnerItem(addressCursor.getInt(CustomerAddressQuery._ID), addressCursor.getString(CustomerAddressQuery.ADDRESS_NO), addressCursor.getString(CustomerAddressQuery.ADDRESS) + " - " + addressCursor.getString(CustomerAddressQuery.CITY)));
+    			addressAdapter.add(new SpinnerItem(addressCursor.getInt(CustomerAddressQuery._ID), addressCursor.getString(CustomerAddressQuery.ADDRESS_NO), addressCursor.getString(CustomerAddressQuery.ADDRESS) + " - " + addressCursor.getString(CustomerAddressQuery.CITY), addressCursor.getString(CustomerAddressQuery.POST_CODE)));
     		} while (addressCursor.moveToNext());
     	}
     	addressCursor.close();
 	}
 
 	protected void selectAddress(SpinnerItem selectedItem) {
-		mAddress.se
-		
+		address_no = selectedItem.getCode();
+		mAddress.setText(selectedItem.getDescription());
+		mPostCode.setText(selectedItem.getPostCode());
 	}
 
 	@Override
@@ -250,6 +255,11 @@ public class ServiceOrderDialog extends DialogFragment implements OnEditorAction
 		cv.put(ServiceOrders.NOTE, note);
 		cv.put(ServiceOrders.RECLAMATION_DESCRIPTION, reclamation);
 		cv.put(ServiceOrders.SALES_PERSON_ID, salesPersonId);
+		if (address_no != null && !address.equals("-1")) {
+			cv.put(ServiceOrders.ADDRESS_NO, address_no);
+		} else {
+			cv.putNull(ServiceOrders.ADDRESS_NO);
+		}
 		
 		Uri uriAfterInsert = getActivity().getContentResolver().insert(ServiceOrders.CONTENT_URI, cv);
 		int service_order_id = Integer.valueOf(ServiceOrders.getServiceOrderId(uriAfterInsert));

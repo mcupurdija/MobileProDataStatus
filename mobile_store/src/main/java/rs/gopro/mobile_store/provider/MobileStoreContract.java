@@ -458,6 +458,7 @@ public class MobileStoreContract {
 		String SERVICE_ORDER_NO = "service_order_no";
 		String CUSTOMER_ID = "customer_id";
 		String ITEM_ID = "item_id";
+		String ADDRESS_NO = "address_no";
 		String ADDRESS = "address";
 		String POST_CODE = "post_code";
 		String PHONE_NO = "phone_no";

@@ -19,7 +19,7 @@ public class SpinnerCustomAdapter extends ArrayAdapter<SpinnerItem> {
     private Context context;
     // Your custom values for the spinner (User)
     private ArrayList<SpinnerItem> values = new ArrayList<SpinnerItem>();
-	private SpinnerItem defautItem = new SpinnerItem(-1, "-1", "Izaberi adresu...");
+	private SpinnerItem defautItem = new SpinnerItem(-1, "-1", "Izaberi adresu...", "");
     
     
 	public SpinnerCustomAdapter(Context context, int textViewResourceId) {
