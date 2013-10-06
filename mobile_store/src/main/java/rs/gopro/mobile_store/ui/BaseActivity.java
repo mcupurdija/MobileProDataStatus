@@ -58,7 +58,7 @@ public abstract class BaseActivity extends FragmentActivity {
      */
     protected void checkVersionAndSyncDates() {
     	Cursor syncLogCustomers = getContentResolver().query(SyncLogs.CONTENT_URI, new String[] { SyncLogs.CREATED_DATE }, SyncLogs.SYNC_OBJECT_ID+"=? and " + SyncLogs.SYNC_OBJECT_STATUS + "=?", new String[] { CustomerSyncObject.TAG, SyncStatus.SUCCESS.toString() }, SyncLogs._ID+" desc limit 1");
-//    	Cursor syncLogItemsAction = getContentResolver().query(SyncLogs.CONTENT_URI, new String[] { SyncLogs.CREATED_DATE }, SyncLogs.SYNC_OBJECT_ID+" like ? and " + SyncLogs.SYNC_OBJECT_STATUS + "=?", new String[] { "Items%", SyncStatus.SUCCESS.toString() }, SyncLogs._ID+" desc limit 1");
+    	Cursor syncLogItemsAction = getContentResolver().query(SyncLogs.CONTENT_URI, new String[] { SyncLogs.CREATED_DATE }, SyncLogs.SYNC_OBJECT_ID+" like ? and " + SyncLogs.SYNC_OBJECT_STATUS + "=?", new String[] { "Items%", SyncStatus.SUCCESS.toString() }, SyncLogs._ID+" desc limit 1");
  	
     	if (syncLogCustomers.moveToFirst()) {
 			String createdDateFromDb = syncLogCustomers.getString(0);
@@ -72,15 +72,15 @@ public abstract class BaseActivity extends FragmentActivity {
 		}
     	syncLogCustomers.close();
     	
-//    	if (syncLogItemsAction.moveToFirst()) {
-//			String createdDateFromDb = syncLogItemsAction.getString(0);
-//			Date createdDate = DateUtils.getLocalDbDate(createdDateFromDb);
-//			long days = DateUtils.getDateDiff(createdDate, new Date(), TimeUnit.DAYS);
-//			if (days >= 1) {
-//				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_warn), "Artikli nisu sinhronizovani '"+days+"' dan/a");			
-//			}
-//		}
-//    	syncLogItemsAction.close();
+    	if (syncLogItemsAction.moveToFirst()) {
+			String createdDateFromDb = syncLogItemsAction.getString(0);
+			Date createdDate = DateUtils.getLocalDbDate(createdDateFromDb);
+			long days = DateUtils.getDateDiff(createdDate, new Date(), TimeUnit.DAYS);
+			if (days >= 1) {
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_warn), "Artikli nisu sinhronizovani '"+days+"' dan/a");			
+			}
+		}
+    	syncLogItemsAction.close();
 	}
 
 

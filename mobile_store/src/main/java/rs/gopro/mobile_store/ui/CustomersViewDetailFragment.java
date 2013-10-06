@@ -6,6 +6,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.SetPotentialCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.UpdateCustomerSyncObject;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -341,6 +342,8 @@ public class CustomersViewDetailFragment extends Fragment implements
 			try {
 				if (!isPotentialCustomer(Integer.valueOf(Customers.getCustomersId(mCustomerdetailUri)))) {
 					updateCustomer(Integer.valueOf(MobileStoreContract.Customers.getCustomersId(mCustomerdetailUri)));
+				} else {
+					sendPotentialCustomer(Integer.valueOf(MobileStoreContract.Customers.getCustomersId(mCustomerdetailUri)));
 				}
 			} catch (Exception e) {
 				LogUtils.LOGE(TAG, "Big problem!", e);
@@ -363,6 +366,15 @@ public class CustomersViewDetailFragment extends Fragment implements
     	UpdateCustomerSyncObject updateCustomersSyncObject = new UpdateCustomerSyncObject(customerId);
     	Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, updateCustomersSyncObject);
+		getActivity().startService(intent);	
+	}
+	
+	private void sendPotentialCustomer(int customerId) {    	
+    	SetPotentialCustomersSyncObject potentialCustomersSyncObject = new SetPotentialCustomersSyncObject(customerId);
+    	// it will not send signal to create customer
+    	potentialCustomersSyncObject.setpPendingCustomerCreation(Integer.valueOf(0));
+    	Intent intent = new Intent(getActivity(), NavisionSyncService.class);
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, potentialCustomersSyncObject);
 		getActivity().startService(intent);	
 	}
 	
