@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.provider;
 
 import java.util.ArrayList;
 
+import rs.gopro.mobile_store.provider.MobileStoreContract.AppSettings;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerAddresses;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerTradeAgreemnt;
@@ -136,6 +137,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int SERVICE_ORDERS = 1400;
 	private static final int SERVICE_ORDER_ID = 1401;
 	private static final int SERVICE_ORDERS_EXPORT = 1402;
+	
+	private static final int APP_SETTINGS = 1500;
+	private static final int APP_SETTINGS_ID = 1501;
 	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -277,6 +281,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "service_orders", SERVICE_ORDERS);
 		mobileStoreURIMatcher.addURI(authority, "service_orders/service_orders_export", SERVICE_ORDERS_EXPORT);
 		mobileStoreURIMatcher.addURI(authority, "service_orders/*", SERVICE_ORDER_ID);
+		
+		mobileStoreURIMatcher.addURI(authority, "app_settings", APP_SETTINGS);
+		mobileStoreURIMatcher.addURI(authority, "app_settings/*", APP_SETTINGS);
 	}
 
 	@Override
@@ -397,6 +404,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.SERVICE_ORDERS,null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return ServiceOrders.buildServiceOrderUri((int)id);
+		case APP_SETTINGS:
+			id = database.insertOrThrow(Tables.APP_SETTINGS,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return AppSettings.buildAppSettingsUri((int)id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -505,6 +516,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.INVOICES);
 		case SERVICE_ORDERS:
 			return builder.addTable(Tables.SERVICE_ORDERS);
+		case APP_SETTINGS:
+			return builder.addTable(Tables.APP_SETTINGS);
 		case SENT_ORDERS_STATUS:
 			return builder.addTable(Tables.SENT_ORDERS_STATUS);
 		case SENT_ORDERS_STATUS_LINES:
@@ -1038,6 +1051,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.INVOICE_LINES_REPORT);
 		case SERVICE_ORDERS:
 			return builder.addTable(Tables.SERVICE_ORDERS);
+		case APP_SETTINGS:
+			return builder.addTable(Tables.APP_SETTINGS);
 		case SERVICE_ORDER_ID:
 			return builder.addTable(Tables.SERVICE_ORDERS)
 					.where(Tables.SERVICE_ORDERS+".id=?", new String[] { ServiceOrders.getServiceOrderId(uri) });

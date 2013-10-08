@@ -15,7 +15,7 @@
         android:key="@string/key_ws_navisition_codeunit"
         android:title="@string/title_ws_navisition_codeunit" />
     <EditTextPreference
-        android:defaultValue="http://10.94.1.12:7047/DynamicsNAV/ws"
+        android:defaultValue="http://10.94.1.5:7047/Wurth/ws"
         android:key="@string/key_ws_server_address"
         android:title="@string/title_ws_server_address" />
     <EditTextPreference

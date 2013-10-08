@@ -123,6 +123,9 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
     private String[] priceAndDiscountAreCorrectStatusOptions;
     private TextView priceAndDiscountAreCorrectStatus;
 	
+    private TextView mItemNoLable;
+    private String replaceItem = null;
+    
     private ProgressDialog itemLoadProgressDialog;
     
 	private Map<Integer, Boolean> loaderState = new HashMap<Integer, Boolean>();
@@ -145,6 +148,12 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 				mQuantityAvailable.setText(syncObject.getpQuantityAsTxt());
 				mDiscount.setText(UIUtils.getDoubleFromUI(syncObject.getpDiscountPctAsTxt()).toString());
 				mPrice.setText(syncObject.getpSalesPriceRSDAsTxt());
+				if (syncObject.getpSubstituteItemNoa46() != null && !syncObject.getpSubstituteItemNoa46().equals("") && !syncObject.getpSubstituteItemNoa46().equals("anyType{}")) {
+					// mItemNoLable.setText(getResources().getString(R.string.item_no_label));
+					mItemNoLable.setText("Postoji zamenski artikal broj:"+syncObject.getpSubstituteItemNoa46());
+					mItemNoLable.setTextColor(Color.RED);
+				}
+//				replaceItem = syncObject.getpSubstituteItemNoa46();
 				//mPriceEur.setText(syncObject.getpSalesPriceEURAsTxt());
 				if ((syncObject.getpMinimumSalesUnitQuantityTxt().length() > 0 && !syncObject.getpMinimumSalesUnitQuantityTxt().equals("anyType{}")) || (syncObject.getpOutstandingPurchaseLinesTxt().length() > 0) && !syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}")) {
 				    // Setting Dialog Message
@@ -216,6 +225,10 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         
         mDisc = (TextView) rootView.findViewById(R.id.so_line_disc_label);
         mDisc.setText("");
+        
+        mItemNoLable = (TextView) rootView.findViewById(R.id.so_line_item_no_label);
+        mItemNoLable.setText(getResources().getString(R.string.item_no_label));
+        mItemNoLable.setTextColor(Color.BLACK);
         
         itemAutocompleteAdapter = new ItemAutocompleteCursorAdapter(getActivity(), null);
         mItemAutocomplete = (AutoCompleteTextView) rootView.findViewById(R.id.so_line_item_no_value);
@@ -348,6 +361,9 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 				mQuantityAvailable.setText("");
 				mDiscount.setText("");
 				mPrice.setText("");
+				
+				mItemNoLable.setText(getResources().getString(R.string.item_no_label));
+				mItemNoLable.setTextColor(Color.BLACK);
 				
 				doWsAction();
 			}
