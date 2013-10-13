@@ -131,6 +131,7 @@
     <string name="contextual_clone_sale_order">Clone sale order</string>
     <string name="contextual_contact_edit">Edit contact</string>
     <string name="contextual_contact_add">Add contact</string>
+    <string name="contextual_get_history_sale_order">Get sent document history</string>
     <string name="dialog_title_item_price_qty_load">Price and Quantity</string>
     <string name="dialog_body_item_price_qty_load">Loading price and quantity</string>
     <string name="dialog_title_sale_order_send">Sale Order</string>

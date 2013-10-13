@@ -21,4 +21,8 @@
         android:id="@+id/clone_sale_order_menu_option"
         android:showAsAction="ifRoom|withText"
         android:title="@string/contextual_clone_sale_order"/>
+     <item
+        android:id="@+id/get_history_sale_order_menu_option"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/contextual_get_history_sale_order"/>
 </menu>
