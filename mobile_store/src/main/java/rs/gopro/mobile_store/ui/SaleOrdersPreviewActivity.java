@@ -1,5 +1,7 @@
 package rs.gopro.mobile_store.ui;
 
+import java.lang.reflect.Field;
+import java.util.Calendar;
 import java.util.Date;
 
 import rs.gopro.mobile_store.R;
@@ -17,9 +19,12 @@ import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
+import rs.gopro.mobile_store.ws.model.HistorySalesDocumentsSyncObject;
 import rs.gopro.mobile_store.ws.model.MobileDeviceSalesDocumentSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -43,11 +48,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 public class SaleOrdersPreviewActivity extends BaseActivity implements
 		SaleOrdersPreviewListFragment.Callbacks, SaleOrderLinesPreviewListFragment.Callbacks {
 
+	private static final String TAG = "SaleOrdersPreviewActivity";
 	public static final String EXTRA_MASTER_URI = "rs.gopro.mobile_store.extra.MASTER_URI";
 	private static final int SAVE_SALE_DOC = 0;
 	private static final int VERIFY_SALE_DOC = 1;
@@ -56,8 +63,8 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 	private static final int NEW_SALE_ORDER_REQUEST_CODE = 1;
 	private static final String SALE_ORDER_LIST_TAG = "SaleOrderListTag";
 	private static final int SALE_OFFER = 1;
-	
-	ActionMode actionMod;
+	private static final int GET_HISTORY_DIALOG = 0;
+	private ActionMode actionMod;
 	
 	private Fragment saleOrderLinesFragment;
 	private ShowHideMasterLayout mShowHideMasterLayout;
@@ -69,6 +76,16 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
     private String[] orderShipmentStatusOptions;
     private String[] orderValueStatusOptions;
 	
+    private OnDateSetListener getHistoryDateSet = new OnDateSetListener() {
+    	public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+    		
+    		Date startDate = DateUtils.getFirstDayInMonth(monthOfYear, year);
+    		Date endDate = DateUtils.getLastDayInMonth(monthOfYear, year);
+    		// TODO call web service
+    		getHistoryData(startDate, endDate, salesPersonNo);
+    	};	
+    };
+    
 	private BroadcastReceiver onNotice = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -77,6 +94,17 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			sendSaleOrderProgressDialog.dismiss();
 		}
 	};
+	
+	private void getHistoryData(Date startDate, Date endDate, String salesPersonNo) {
+		
+		sendSaleOrderProgressDialog = ProgressDialog.show(this, "Istorija porudžbina", "Istorija se preuzima sa servera", true, true);
+		
+		HistorySalesDocumentsSyncObject historySalesDocumentsSyncObject = new HistorySalesDocumentsSyncObject(startDate, endDate, salesPersonNo);
+		
+		Intent serviceIntent = new Intent(this, NavisionSyncService.class);
+		serviceIntent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, historySalesDocumentsSyncObject);
+		startService(serviceIntent);
+	}
 	
 	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
 		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
@@ -198,6 +226,14 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 				});
 	 
 				dialog.show();
+			} else if (HistorySalesDocumentsSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				HistorySalesDocumentsSyncObject historySalesDocumentSyncObject = (HistorySalesDocumentsSyncObject) syncResult
+						.getComplexResult();
+				
+				for (String document_no : historySalesDocumentSyncObject.getDocumentNumbers()) {
+					//TODO call web service for items
+					LogUtils.LOGI(TAG, document_no);
+				}
 			}
 		} else {
 			AlertDialog alertDialog = new AlertDialog.Builder(
@@ -415,11 +451,52 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			}
 			cloneDocument();
 			return true;
+		case R.id.get_history_sale_order_menu_option:
+			this.showDialog(GET_HISTORY_DIALOG);
+			return true;
 		}
 		
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case GET_HISTORY_DIALOG:
+			Calendar calendar = Calendar.getInstance();
+			DatePickerDialog datePickerDialog = new DatePickerDialog(this, getHistoryDateSet, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+			try {
+		        Field fields[] = datePickerDialog.getClass().getDeclaredFields();
+		        for (Field field : fields) {
+		        	 if (field.getName().equals("mDatePicker")) {
+		        		 field.setAccessible(true);
+		        	     DatePicker datePicker = (DatePicker) field.get(datePickerDialog);
+		        	     Field datePickerFields[] = field.getType().getDeclaredFields();
+		        	     for (Field dField : datePickerFields) {
+				            if (dField.getName().equals("mDayPicker") || "mDaySpinner".equals(dField.getName()) || "mCalendarView".equals(dField.getName())) {
+				            	dField.setAccessible(true);
+				                Object dayPicker = new Object();
+				                dayPicker = dField.get(datePicker);
+				                ((View) dayPicker).setVisibility(View.GONE);
+				            }
+		        	     }
+		        	 }
+		        } 
+			} catch (SecurityException e) {
+		        LogUtils.LOGE(TAG, "", e);
+		    } 
+		    catch (IllegalArgumentException e) {
+		    	LogUtils.LOGE(TAG, "", e);
+		    } 
+		    catch (IllegalAccessException e) {
+		    	LogUtils.LOGE(TAG, "", e);
+		    }
+			
+			return datePickerDialog;
+		}
+		return super.onCreateDialog(id);
+	}
+	
 	private boolean updateOrderDate(String saleOrderId2) {
 		ContentValues cv = new ContentValues();
 		cv.put(SaleOrders.ORDER_DATE, DateUtils.toDbDate(new Date()));
@@ -497,6 +574,8 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		super.onResume();
 		IntentFilter mobileDeviceSalesDocumentSync = new IntentFilter(MobileDeviceSalesDocumentSyncObject.BROADCAST_SYNC_ACTION);
 		LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, mobileDeviceSalesDocumentSync);
+		IntentFilter historyDocumentSync = new IntentFilter(HistorySalesDocumentsSyncObject.BROADCAST_SYNC_ACTION);
+		LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, historyDocumentSync);
 	}
 	
 	@Override

@@ -337,6 +337,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
                 MobileStoreContract.SaleOrders.QUOTE_NO,
                 MobileStoreContract.SalesPerson.SALE_PERSON_NO,
                 
+                // this is here like this because of join
                 "sell_to_address_no",
                 "shipp_to_address_no",
                 MobileStoreContract.SaleOrders.REQUESTED_DELIVERY_DATE,

@@ -57,6 +57,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	private static final int VISITS_RESULT_END_DAY = ApplicationConstants.VISIT_TYPE_END_DAY;
 	private static final int VISITS_RESULT_BACK_HOME = ApplicationConstants.VISIT_TYPE_BACK_HOME;
 	private static final int VISITS_RESULT_BREAK = ApplicationConstants.VISIT_TYPE_PAUSE;
+	private static final int VISITS_RESULT_NORMAL_VISIT = ApplicationConstants.VISIT_TYPE_CLOSURE;
 	
 	public static final int RECORD_VISIT_ARRIVAL = 0;
 	public static final int RECORD_VISIT_FIXED_ACTIVITIES = 1;
@@ -358,6 +359,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 			}
         	return true;
         case R.id.new_record_visit:
+        	currentVisitResult = VISITS_RESULT_NORMAL_VISIT;
         	if (isVisitOpen()) {
         		DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Postoji otvorena poseta!");
         		return true;
@@ -473,7 +475,13 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 //				detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
 				if (isRecordedVisitDayStart()) {
 					if (!isVisitSTarted()) {
-						recordStartVisit(currentVisitResult, Integer.valueOf(inputText));
+						int km = 0;
+						try {
+							km = Integer.valueOf(inputText);
+						} catch (Exception e) {
+							LogUtils.LOGE(TAG, "", e);
+						}
+						recordStartVisit(currentVisitResult, km);
 					} else {
 						DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Pocetak posete je vec zabelezen!");
 					}
