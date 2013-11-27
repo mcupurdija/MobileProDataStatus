@@ -19,7 +19,7 @@
 		<ksoap2-android.version>3.0.0</ksoap2-android.version>
 		<jcifs.version>1.3.17</jcifs.version>
 		<support_platform.version>r7</support_platform.version>
-		<android.sdk.path>c:\Users\gopro\android-sdks</android.sdk.path>
+		<android.sdk.path>c:\Users\vmakevic\AppData\Local\Android\android-sdk</android.sdk.path>
 	</properties>
 
 	<repositories>
@@ -68,7 +68,7 @@
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
-				<version>3.6.1</version>
+				<version>3.8.0</version>
 				<configuration>
 					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
 					<assetsDirectory>${project.basedir}/assets</assetsDirectory>
@@ -127,6 +127,7 @@
 										<versionRange>[3.4.1,)</versionRange>
 										<goals>
 											<goal>manifest-update</goal>
+											<goal>consume-aar</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
