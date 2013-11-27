@@ -154,7 +154,7 @@
                     android:layout_marginRight="16dip"
                     android:layout_weight="3"
                     android:gravity="center_vertical"
-                    android:hint="Email" />
+                    android:hint="Email 1,Email 2..." />
             </LinearLayout>
         </TableRow>
         
@@ -358,7 +358,7 @@
                 <LinearLayout
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
-                    android:layout_weight="8"
+                    android:layout_weight="4"
                     android:animateLayoutChanges="false"
                     android:orientation="vertical" >
 
@@ -384,6 +384,33 @@
                         android:paddingRight="12dip"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
                 </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:animateLayoutChanges="false"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_desired_delivery_date_label"
+                        style="@style/AddEdit_Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical"
+                        android:text="@string/desired_delivery_date" />
+
+                    <Button
+                        android:id="@+id/edit_sale_order_desired_delivery_date_text"
+                        style="@style/EditEvent_SpinnerButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip" />
+                </LinearLayout>
+                
             </LinearLayout>
         </TableRow>
 

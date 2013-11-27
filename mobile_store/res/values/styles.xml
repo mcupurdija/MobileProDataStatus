@@ -24,7 +24,7 @@
 
     <!--
          SimpleListItems are items whose containers provides the appropriate padding, and
-         usually the container and content are a single view.
+         usually the container and content are a single view.
     -->
     <style name="SimpleListItem" parent="ListItemContainerBase">
         <item name="android:paddingLeft">8dp</item>

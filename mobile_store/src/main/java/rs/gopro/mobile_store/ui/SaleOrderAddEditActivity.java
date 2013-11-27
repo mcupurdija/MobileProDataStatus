@@ -3,6 +3,7 @@ package rs.gopro.mobile_store.ui;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 
 import rs.gopro.mobile_store.R;
@@ -21,6 +22,9 @@ import rs.gopro.mobile_store.util.DocumentUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.exceptions.SaleOrderValidationException;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Context;
@@ -46,6 +50,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -88,6 +93,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST,
 		MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID,
 		MobileStoreContract.SaleOrders.SHIPP_TO_ADDRESS_ID,
+		MobileStoreContract.SaleOrders.REQUESTED_DELIVERY_DATE,
 		MobileStoreContract.SaleOrders.CONTACT_ID,
 		MobileStoreContract.SaleOrders.CONTACT_NAME,
 		MobileStoreContract.SaleOrders.CONTACT_PHONE,
@@ -170,6 +176,9 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private EditText documentNote;
     private EditText headquartersNote;
     
+    private Button requestedDeliveryDate;
+    private OnDateSetListener requestedDeliveryDateSetListener;
+    
     private ArrayAdapter<CharSequence> orderConditionStatusAdapter;
     private Spinner orderConditionStatus;
     private String[] financialControlStatusOptions;
@@ -205,6 +214,26 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		setContentView(R.layout.activity_add_sale_order);
 
 		statementHandler = new StatementHandler(this);
+		
+		requestedDeliveryDateSetListener = new OnDateSetListener() {
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+				Calendar input = Calendar.getInstance();
+				input.set(year, monthOfYear, dayOfMonth);
+				
+				Calendar today = Calendar.getInstance();
+				
+				if (org.apache.commons.lang3.time.DateUtils.isSameDay(input, today)) {
+					String date = DateUtils.formatDatePickerDate(year, monthOfYear, dayOfMonth);
+					requestedDeliveryDate.setText(date);
+				} else if (input.before(today)) {
+				   DialogUtil.showInfoDialog(SaleOrderAddEditActivity.this, "Greska", "Ne mozete planirati unazad!");
+				} else {
+					String date = DateUtils.formatDatePickerDate(year, monthOfYear, dayOfMonth);
+					requestedDeliveryDate.setText(date);
+				}
+			}
+		};
 		
 		// routes data from intent that called this activity to business logic
 		routeIntent(getIntent(), savedInstanceState);
@@ -313,7 +342,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	    orderNo = (EditText) findViewById(R.id.edit_sale_order_quote_no_edit_text);
 	    orderNo.setFilters( new InputFilter[] { new InputFilter.LengthFilter(20)} );
 	    contactEmail = (EditText) findViewById(R.id.edit_sale_order_contact_email_text);
-	    contactName.setFilters( new InputFilter[] { new InputFilter.LengthFilter(80)} );
+	    contactEmail.setFilters( new InputFilter[] { new InputFilter.LengthFilter(200)} );
 	    
 		backorderAdapter = ArrayAdapter.createFromResource(this, R.array.backorder_type_array, android.R.layout.simple_spinner_item);
 		backorderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -386,6 +415,16 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	    headquartersNote = (EditText) findViewById(R.id.edit_sale_order_headquarters_note_value);
 	    headquartersNote.setFilters( new InputFilter[] { new InputFilter.LengthFilter(300)} );
 	    
+	    requestedDeliveryDate = (Button) findViewById(R.id.edit_sale_order_desired_delivery_date_text);
+	    requestedDeliveryDate.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showDialog(0);
+				return;
+				
+			}
+		});
+	    
 	    orderConditionStatusAdapter = ArrayAdapter.createFromResource(this, R.array.order_condition_status_array, android.R.layout.simple_spinner_item);
 	    orderConditionStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    orderConditionStatus = (Spinner) findViewById(R.id.edit_sale_order_order_condition_status_spinner);
@@ -400,6 +439,16 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		orderValueStatus = (TextView) findViewById(R.id.edit_sale_order_order_value_status_text);
 	}
 
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		Calendar calendar = Calendar.getInstance();
+		if (id == 0) {
+			DatePickerDialog deliveryDate = new DatePickerDialog(this, requestedDeliveryDateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+			return deliveryDate;
+		}
+		return super.onCreateDialog(id);
+	}
+	
 	protected void fillOtherCustomerData(int customerId2) {
 		Cursor cursor = getContentResolver().query(Customers.CONTENT_URI, new String[]{ Customers.CUSTOMER_NO, Customers.CONTACT_COMPANY_NO } , Customers._ID+"=?", new String[]{ String.valueOf(customerId2) }, null);
 		if (cursor.moveToNext()) {
@@ -518,6 +567,14 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		documentNote.setText(document_note);
 		headquartersNote.setText(headquarters_note);
+		
+		int delivery_date_column = data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.REQUESTED_DELIVERY_DATE);
+		if (!data.isNull(delivery_date_column)) {
+			String delivery_date = DateUtils.formatDbDateForPresentation(data.getString(delivery_date_column));
+			requestedDeliveryDate.setText(delivery_date);
+		} else {
+			requestedDeliveryDate.setText("");
+		}
 		
 		int order_condition_status = -1;
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS))) {
@@ -649,6 +706,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		contactSelector.setFocusable(false);
 		hideDiscount.setFocusable(false);
 		showDeclaration.setFocusable(false);
+		requestedDeliveryDate.setFocusable(false);
 	}
 
 	@Override
@@ -659,14 +717,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		case SALE_ORDER_HEADER_LOADER:
 			cursorLoader = new CursorLoader(this, mUri, SALES_ORDER_PROJECTION, null, null, null);
 			return cursorLoader;
-//		case CUSTOMER_HEADER_LOADER:
-//			int customerId = args.getInt("CUSTOMER_ID");
-//			cursorLoader = new CursorLoader(this, MobileStoreContract.Customers.buildCustomersUri(String.valueOf(customerId)), CUSTOMER_PROJECTION, null, null, null);
-//			return cursorLoader;
-//		case CUSTOMER_HEADER_LOADER_TRANSIT:
-//			int customerTransitId = args.getInt("CUSTOMER_ID");
-//			cursorLoader = new CursorLoader(this, MobileStoreContract.Customers.buildCustomersUri(String.valueOf(customerTransitId)), CUSTOMER_PROJECTION, null, null, null);
-//			return cursorLoader;
 		default:
 			return null;
 		}
@@ -682,20 +732,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 				LogUtils.LOGE(TAG, "Cursor empty for URI:"+mUri.toString());
 			}
 			break;
-//		case CUSTOMER_HEADER_LOADER:
-//			if (data != null && data.moveToFirst()) {
-//				loadCustomer(data, initialCustomerLoad);
-//			} else {
-//				LogUtils.LOGE(TAG, "Cursor empty for CUSTOMER_HEADER_LOADER!");
-//			}
-//			break;
-//		case CUSTOMER_HEADER_LOADER_TRANSIT:
-//			if (data != null && data.moveToFirst()) {
-//				loadCustomerTransit(data);
-//			} else {
-//				LogUtils.LOGE(TAG, "Cursor empty for CUSTOMER_HEADER_LOADER!");
-//			}
-//			break;
 		default:
 			data.close();
 			break;
@@ -707,136 +743,10 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		switch (loader.getId()) {
 		case SALE_ORDER_HEADER_LOADER:
 			break;
-//		case CUSTOMER_HEADER_LOADER:
-//			break;
 		default:
 			break;
 		}
 	}
-	
-//	private void loadCustomer(Cursor data, boolean initialLoad) {
-//		if (data.getCount() < 1) {
-//			LogUtils.LOGI(TAG, "No customer data!");
-//			return;
-//		}
-//		final int codeIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
-//		final int nameIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
-//		final int emailIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.EMAIL);
-//		final int contactIdIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.PRIMARY_CONTACT_ID);
-//		
-//		final String result = data.getString(codeIndex) + " - " + data.getString(nameIndex);
-//		selectedCustomerNo = data.getString(codeIndex);
-//		int potentialCustomerNoPosition = data.getColumnIndexOrThrow(MobileStoreContract.Customers.CONTACT_COMPANY_NO);
-//		potentialCustomerNo = data.getString(potentialCustomerNoPosition);
-//		CustomerAutocompleteCursorAdapter dummyAdapter = null;
-//		customerAutoComplete.setAdapter(dummyAdapter);
-//		customerAutoComplete.setText(result);
-//		// when this loads adapter wont run query, it is ran only on filter, so we must set id manually for latter use
-////		customerAutoCompleteAdapter.setIdForTitle(result, data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Customers._ID)));
-//		customerAutoComplete.setAdapter(customerAutoCompleteAdapter);
-//		
-//		if (data.isNull(contactIdIndex)) {
-//			if (contactEmail != null) {
-//				contactEmail.setText("");
-//				if (!data.isNull(emailIndex)) {
-//					contactEmail.setText(data.getString(emailIndex));
-//				}
-//			}
-//			contactId = -1;
-//		} else {
-//			contactId = data.getInt(contactIdIndex);
-//		}
-//		
-//		
-//	}
-
-//	private void loadCustomerTransit(Cursor data) {
-//		if (data.getCount() < 1) {
-//			LogUtils.LOGI(TAG, "No customer data!");
-//			return;
-//		}
-//		final int codeIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
-//		final int nameIndex = data.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
-//		final String result = data.getString(codeIndex) + " - " + data.getString(nameIndex);
-//		//selectedCustomerNo = data.getString(codeIndex);
-//		CustomerAutocompleteCursorAdapter dummyAdapter = null;
-//		transitCustomerAutoComplete.setAdapter(dummyAdapter);
-//		transitCustomerAutoComplete.setText(result);
-		// when this loads adapter wont run query, it is ran only on filter, so we must set id manually for latter use
-//		transitCustomerAutoCompleteAdapter.setIdForTitle(result, data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Customers._ID)));
-//		transitCustomerAutoComplete.setAdapter(transitCustomerAutoCompleteAdapter);
-//	}
-	
-//	private void loadContactValues(Cursor data) {
-//		if (data.getCount() < 1) {
-//			LogUtils.LOGI(TAG, "No contact data!");
-//			return;
-//		}
-////		customerContactId = Integer.valueOf(data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.Contacts._ID)));
-//		//customerContactNo.setText(data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.CONTACT_NO)));
-//		String contactName1 = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.NAME));
-//		String contactName2 = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.NAME2));
-//		String contactNameWhole = (contactName1 != null ? contactName1:"") + (contactName2 != null ? contactName2:"");
-//		// this field can be edited manually, not override it only on click 
-//		if (contactName.getText().toString().trim().equals("")) {
-//			contactName.setText(contactNameWhole);
-//		}
-//		String contactPhoneLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.PHONE));
-//		if (contactPhone.getText().toString().trim().equals("")) {
-//			contactPhone.setText(contactPhoneLocal != null?contactPhoneLocal:"");
-//		}
-//		String contactEmailLocal = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.Contacts.EMAIL));
-//		if (contactEmail.getText().toString().trim().equals("")) {
-//			contactEmail.setText(contactEmailLocal != null?contactEmailLocal:"");
-//		}
-//	}
-
-	/**
-	 * {@inheritDoc}
-	 * This is done with restart loaders, because onclick when happens customer is changed.
-	 */
-//	@Override
-//	public void onItemClick(AdapterView<?> parent, View arg1, int position, long id) {
-//		Cursor cursor = (Cursor)parent.getAdapter().getItem(position);
-//		int customerNoPosition = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
-//		int potentialCustomerNoPosition = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.CONTACT_COMPANY_NO);
-//		String potentialCustomerNo = cursor.getString(potentialCustomerNoPosition);
-//		this.selectedCustomerNo = cursor.getString(customerNoPosition);
-//		int customerContactId = -1;
-//		if (!cursor.isNull(cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.PRIMARY_CONTACT_ID))) {
-//			customerContactId = cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.PRIMARY_CONTACT_ID));
-//		}
-		
-//		Bundle customerIdbundle = new Bundle();
-//		customerIdbundle.putInt("CUSTOMER_ID", cursor.getInt(cursor.getColumnIndexOrThrow(MobileStoreContract.Customers._ID)));
-//		customerIdbundle.putBoolean("INIT_LOAD", false);
-//		initialCustomerLoad = false;
-//		getSupportLoaderManager().restartLoader(CUSTOMER_HEADER_LOADER, customerIdbundle, this);
-		
-		//getSupportLoaderManager().restartLoader(BILLING_ADDRESS_LOADER, null, this);
-		//getSupportLoaderManager().restartLoader(SHIPPING_ADDRESS_LOADER, null, this);
-//		if (customerContactId != -1) {
-//		}
-//	}
-
-	/**
-	 * Restarts loader an gets data for customer. It is used to disable autocomplete when we have already customer id from db.
-	 * Also on rotation it executes but it should not.
-	 * If we change from reset to init, there is problem because init must be called from onCreate.
-	 * So we are stucked with requery allways. Maybe should put from first requery in bundle and save for rotation.
-	 * @param customer_contact_id
-	 */
-//	private void initCustomerLoad(int customer_id, String identification) {
-//		Bundle customerIdbundle = new Bundle();
-//		customerIdbundle.putInt("CUSTOMER_ID", customer_id);
-//		customerIdbundle.putBoolean("INIT_LOAD", true);
-//		initialCustomerLoad = true;
-//		if (identification.equals("MAIN")) {
-//			getSupportLoaderManager().restartLoader(CUSTOMER_HEADER_LOADER, customerIdbundle, this);
-//		} else if (identification.equals("TRANSIT")) {
-//			getSupportLoaderManager().restartLoader(CUSTOMER_HEADER_LOADER_TRANSIT, customerIdbundle, this);
-//		}
-//	}
 
 	@Override
 	protected void onPause() {
@@ -988,6 +898,13 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			localValues.put(MobileStoreContract.SaleOrders.NOTE2, headq_note);
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrders.NOTE2);
+		}
+		
+		String delivery_date = requestedDeliveryDate.getText().toString().trim();
+		if (!delivery_date.equals("")) {
+			localValues.put(MobileStoreContract.SaleOrders.REQUESTED_DELIVERY_DATE, DateUtils.formatPickerInputForDb(delivery_date));
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrders.REQUESTED_DELIVERY_DATE);
 		}
 		
 		int order_condition_status = orderConditionStatus.getSelectedItemPosition();

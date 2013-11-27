@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import android.annotation.SuppressLint;
 
@@ -231,6 +232,27 @@ public class DateUtils {
 			months.add(org.apache.commons.lang3.time.DateUtils.addMonths(monthEarlier, -i));
 		}
 		return months;
+	}
+	
+	public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+	    long diffInMillies = date2.getTime() - date1.getTime();
+	    return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
+	}
+	
+	public static Date getFirstDayInMonth(int month, int year) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.MONTH, month);
+		calendar.set(Calendar.DATE, 1);
+		return calendar.getTime();
+	}
+	
+	public static Date getLastDayInMonth(int month, int year) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.MONTH, month);
+		calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE)); 
+		return calendar.getTime();
 	}
 }
 

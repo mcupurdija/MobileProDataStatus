@@ -113,7 +113,8 @@ public class WsDataFormatEnUsLatin {
 	}
 	
 	public static String toDbDateFromWsString(String wsDate) {
-		if (wsDate == null || wsDate.length() < 1) return null;
+		if (wsDate == null || wsDate.length() < 1) 
+			return null;
 		Date localWsDate = null;
 		try {
 			localWsDate = dateWsFormat.parse(wsDate);

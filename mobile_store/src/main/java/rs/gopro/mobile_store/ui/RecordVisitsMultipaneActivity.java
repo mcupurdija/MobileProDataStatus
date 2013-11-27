@@ -57,6 +57,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	private static final int VISITS_RESULT_END_DAY = ApplicationConstants.VISIT_TYPE_END_DAY;
 	private static final int VISITS_RESULT_BACK_HOME = ApplicationConstants.VISIT_TYPE_BACK_HOME;
 	private static final int VISITS_RESULT_BREAK = ApplicationConstants.VISIT_TYPE_PAUSE;
+	private static final int VISITS_RESULT_NORMAL_VISIT = ApplicationConstants.VISIT_TYPE_CLOSURE;
 	
 	public static final int RECORD_VISIT_ARRIVAL = 0;
 	public static final int RECORD_VISIT_FIXED_ACTIVITIES = 1;
@@ -68,7 +69,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	private Button filterVisitDateButton;
 	private int currentVisitResult = -1;
 	private String selectedVisitId = null;
-	
+	private int dialogId;
 	private Fragment planRealizationFragmentDetail;
 	private ShowHideMasterLayout mShowHideMasterLayout;
 	
@@ -302,7 +303,8 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
         		return true;
         	}
 			if (!isVisitRecordCreated(currentVisitResult)) {
-				showDialog();
+				dialogId = RecordVisitsMultipaneActivity.RECORD_VISIT_FIXED_ACTIVITIES;
+        		showDialog();
 			} else {
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Početak dana je zabeležen!");
 			}
@@ -315,7 +317,8 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
         	}
         	if (!isVisitRecordCreated(currentVisitResult)) {
         		if (isRecordedVisitDayStart()) {
-        			showDialog();
+        			dialogId = RecordVisitsMultipaneActivity.RECORD_VISIT_FIXED_ACTIVITIES;
+            		showDialog();
         		} else {
         			DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Dan nije započet!");
         		}
@@ -331,7 +334,8 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
         	}
         	if (!isVisitRecordCreated(currentVisitResult)) {
         		if (isRecordedVisitDayEnd()) {
-        			showDialog();
+        			dialogId = RecordVisitsMultipaneActivity.RECORD_VISIT_FIXED_ACTIVITIES;
+            		showDialog();
         		} else {
         			DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Dan nije završen!");
         		}
@@ -347,6 +351,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
         	}
 //        	if (!checkForRecordedVisit(currentVisitResult)) {
         	if (isRecordedVisitDayStart()) {
+        		dialogId = RecordVisitsMultipaneActivity.RECORD_VISIT_ARRIVAL;
         		showDialog();
 			} else {
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Dan nije započet!");
@@ -354,6 +359,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 			}
         	return true;
         case R.id.new_record_visit:
+        	currentVisitResult = VISITS_RESULT_NORMAL_VISIT;
         	if (isVisitOpen()) {
         		DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Postoji otvorena poseta!");
         		return true;
@@ -442,7 +448,7 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	 * Shows input dialog. Result is on callback. Method onFinishEditDepartureVisitDialog.
 	 */
 	private void showDialog() {
-		EditFieldDialog dialog = new EditFieldDialog(RecordVisitsMultipaneActivity.RECORD_VISIT_FIXED_ACTIVITIES, "Realizacija", "Unesite kilometražu", InputType.TYPE_CLASS_NUMBER);
+		EditFieldDialog dialog = new EditFieldDialog(dialogId, "Realizacija", "Unesite kilometražu", InputType.TYPE_CLASS_NUMBER);
     	dialog.show(getSupportFragmentManager(), "FIXED_RECORD_DIALOG");
 	}
 	
@@ -465,18 +471,24 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		// here goes arrivals
 		case RECORD_VISIT_ARRIVAL:
 //			RecordVisitDetailFragment detailFragment = null;
-			if (planRealizationFragmentDetail != null) {
+//			if (planRealizationFragmentDetail != null) { // TODO here i went to sleep
 //				detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
 				if (isRecordedVisitDayStart()) {
-					if (!isRecordedVisit()) {
-						recordStartVisit(Integer.valueOf(inputText));
+					if (!isVisitSTarted()) {
+						int km = 0;
+						try {
+							km = Integer.valueOf(inputText);
+						} catch (Exception e) {
+							LogUtils.LOGE(TAG, "", e);
+						}
+						recordStartVisit(currentVisitResult, km);
 					} else {
 						DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Pocetak posete je vec zabelezen!");
 					}
 				} else {
 					DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_record_visit), "Dan nije otvoren!");
 				}
-			}
+//			}
 			break;
 		// fixed activities = activities as shortcuts on action bar!
 		case RECORD_VISIT_FIXED_ACTIVITIES:
@@ -494,13 +506,13 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 	 * Callback method on calling save departure dialog.
 	 */
 	@Override
-	public void onFinishEditDepartureVisitDialog(int id, int visitResult, String note) {
+	public void onFinishEditDepartureVisitDialog(int id, int visitResult, String note, int visitSubType) {
 		// here goes departures
 //		RecordVisitDetailFragment detailFragment = null;
 //		if (planRealizationFragmentDetail != null) {
 //			detailFragment = (RecordVisitDetailFragment)visitsPlanFragmentDetail;
 		if (isPlannedVisit()) {
-			if (!recordEndVisit(visitResult, note)) {
+			if (!recordEndVisit(visitResult, note, visitSubType)) {
 				LogUtils.LOGE(TAG, "Visit recording failed!");
 			}
 		} else {
@@ -509,9 +521,13 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 //		}
 	}
 
-	private boolean isRecordedVisit() {
+	/**
+	 * Checks if there is already started visit. Cannot be in two places at same time.
+	 * @return
+	 */
+	private boolean isVisitSTarted() {
     	boolean signal = false;
-    	Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, "visits._id=? and visits.visit_type=?", new String[] { selectedVisitId == null ? "":selectedVisitId, String.valueOf(ApplicationConstants.VISIT_RECORDED) }, null);
+    	Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, new String[] { MobileStoreContract.Visits._ID }, MobileStoreContract.Visits.VISIT_STATUS+"=?", new String[] { String.valueOf(ApplicationConstants.VISIT_STATUS_STARTED) }, null);
 		if (cursor.moveToFirst()) {
 			signal = true;
 		}
@@ -529,9 +545,23 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		return signal;
 	}
     
-	private boolean recordStartVisit(int odometer) {
+	private boolean recordStartVisit(int visitSubType, int odometer) {
 		ContentValues cv = new ContentValues();
 
+		if (visitSubType == VISITS_RESULT_BREAK) {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Visits.SALES_PERSON_ID, salesPersonId);
+			contentValues.putNull(Visits.CUSTOMER_ID);
+			contentValues.put(Visits.POTENTIAL_CUSTOMER, 0);
+			contentValues.put(Visits.VISIT_TYPE, ApplicationConstants.VISIT_PLANNED);
+			contentValues.put(MobileStoreContract.Visits.IS_SENT, Integer.valueOf(0));
+			contentValues.putNull(Visits.ODOMETER);
+			contentValues.put(Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_NEW);
+
+			Uri resultedUri = getContentResolver().insert(MobileStoreContract.Visits.CONTENT_URI, contentValues);
+			selectedVisitId = resultedUri.getPathSegments().get(1);
+		}
+		
 		if (odometer == -1) {
 			cv.putNull(MobileStoreContract.Visits.ODOMETER);
 		} else {
@@ -549,12 +579,13 @@ public class RecordVisitsMultipaneActivity extends BaseActivity implements
 		return true;
 	}
     
-	private boolean recordEndVisit(int visit_result, String note) {
+	private boolean recordEndVisit(int visit_result, String note, int visitSubType) {
 		if (selectedVisitId == null) {
 			DialogUtil.showInfoDialog(this, "Upozorenje", "Poseta mora biti izabrana kako bi bila realizovana!\nIzaberite posetu za realizaciju u listi poseta sa leve strane!");
 		}
 		ContentValues cv = new ContentValues();
 		cv.put(MobileStoreContract.Visits.VISIT_RESULT, visit_result);
+		cv.put(MobileStoreContract.Visits.ENTRY_SUBTYPE, visitSubType);
 		cv.put(MobileStoreContract.Visits.NOTE, note);
 		cv.put(MobileStoreContract.Visits.VISIT_TYPE, ApplicationConstants.VISIT_RECORDED);
 		cv.put(Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_FINISHED);

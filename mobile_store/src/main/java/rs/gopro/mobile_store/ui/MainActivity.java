@@ -1,12 +1,15 @@
 package rs.gopro.mobile_store.ui;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.adapter.ActionsAdapter;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
 import rs.gopro.mobile_store.ui.customlayout.ContactsLayout;
 import rs.gopro.mobile_store.ui.customlayout.CustomLinearLayout;
 import rs.gopro.mobile_store.ui.customlayout.CustomerLedgerEntriesLayout;
@@ -22,10 +25,12 @@ import rs.gopro.mobile_store.ui.dialog.ServiceOrderDialog;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
+import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.CustomerSyncObject;
 import rs.gopro.mobile_store.ws.model.ServiceOrderSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.DatePickerDialog;
@@ -35,6 +40,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -115,7 +122,46 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	 */
 	private void setContentTitle(int position) {
 		TextView contentTitle = (TextView) findViewById(R.id.content_title);
-		contentTitle.setText(actionsAdapter.getItemTitle(position));
+		if (actionsAdapter.getItemTitle(position).equals("Kupci")) {
+			Cursor syncLogCustomers = getContentResolver().query(SyncLogs.CONTENT_URI, new String[] { SyncLogs.CREATED_DATE }, SyncLogs.SYNC_OBJECT_ID+"=? and " + SyncLogs.SYNC_OBJECT_STATUS + "=?", new String[] { CustomerSyncObject.TAG, SyncStatus.SUCCESS.toString() }, SyncLogs._ID+" desc limit 1");
+			if (syncLogCustomers.moveToFirst()) {
+				String createdDateFromDb = syncLogCustomers.getString(0);
+				contentTitle.setText("Datum poslednje sinhronizacije kupaca: " + DateUtils.formatDbDateForPresentation(createdDateFromDb));
+				
+				Date createdDate = DateUtils.getLocalDbDate(createdDateFromDb);
+				long days = DateUtils.getDateDiff(createdDate, new Date(), TimeUnit.DAYS);
+				if (days >= 1) {
+					contentTitle.setTextColor(Color.RED);
+				} else {
+					contentTitle.setTextColor(Color.BLACK);
+				}
+			} else {
+				contentTitle.setText("Kupci");
+				contentTitle.setTextColor(Color.BLACK);
+			}
+			syncLogCustomers.close();
+		} else if (actionsAdapter.getItemTitle(position).equals("Artikli")) {
+			Cursor syncLogItemsAction = getContentResolver().query(SyncLogs.CONTENT_URI, new String[] { SyncLogs.CREATED_DATE }, SyncLogs.SYNC_OBJECT_ID+" like ? and " + SyncLogs.SYNC_OBJECT_STATUS + "=?", new String[] { "Items%", SyncStatus.SUCCESS.toString() }, SyncLogs._ID+" desc limit 1");
+			if (syncLogItemsAction.moveToFirst()) {
+				String createdDateFromDb = syncLogItemsAction.getString(0);
+				contentTitle.setText("Datum poslednje sinhronizacije artikala: " + DateUtils.formatDbDateForPresentation(createdDateFromDb));
+				
+				Date createdDate = DateUtils.getLocalDbDate(createdDateFromDb);
+				long days = DateUtils.getDateDiff(createdDate, new Date(), TimeUnit.DAYS);
+				if (days >= 1) {
+					contentTitle.setTextColor(Color.RED);
+				} else {
+					contentTitle.setTextColor(Color.BLACK);
+				}
+			} else {
+				contentTitle.setText("Artikli");
+				contentTitle.setTextColor(Color.BLACK);
+			}
+			syncLogItemsAction.close();
+		} else {
+			contentTitle.setText(actionsAdapter.getItemTitle(position));
+			contentTitle.setTextColor(Color.BLACK);
+		}
 
 	}
 
@@ -211,7 +257,13 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				LogUtils.LOGE(TAG, "Big problem! Should be value here!");
 				salesPersonId = "1";
 			}
-			ServiceOrderDialog serviceOrderDialog = new ServiceOrderDialog(0, "Kreiraj servisni nalog", Integer.valueOf(salesPersonId));
+			ServiceOrderDialog serviceOrderDialog = new ServiceOrderDialog();
+			Bundle sendInitValues = new Bundle();
+			sendInitValues.putInt("DIALOG_ID", 0);
+			sendInitValues.putString("DIALOG_TITLE", "Kreiraj servisni nalog");
+			sendInitValues.putInt("SALES_PERSON_ID", Integer.valueOf(salesPersonId).intValue());
+			serviceOrderDialog.setArguments(sendInitValues);
+			
 			serviceOrderDialog.show(getSupportFragmentManager(), "SERVICE_ORDER_DIALOG");
 		}
 		

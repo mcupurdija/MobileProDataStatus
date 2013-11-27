@@ -218,6 +218,7 @@
                     android:layout_marginRight="16dip" />
             </LinearLayout>
 
+            <!-- invisible one, left here for code behind not to break -->
             <LinearLayout
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
@@ -244,6 +245,29 @@
                     android:visibility="gone" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/so_line_location_label"
+                    style="@style/AddEdit_Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/so_line_location_text" />
+
+                <Spinner
+                    android:id="@+id/so_line_location_spinner"
+                    style="EditEvent_Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dip"
+                    android:layout_marginRight="16dip" />
+            </LinearLayout>
+            
             <LinearLayout
                 android:layout_width="0px"
                 android:layout_height="wrap_content"

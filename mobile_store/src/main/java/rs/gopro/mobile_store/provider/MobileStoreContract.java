@@ -56,6 +56,7 @@ public class MobileStoreContract {
 	private static final String PATH_SENT_ORDERS_STATUS_LINES_FROM_ORDER = "sent_orders_status_lines_from_order";
 	private static final String PATH_SENT_ORDERS_STATUS_LINES_REPORT = "sent_orders_status_lines_report";
 	private static final String PATH_SERVICE_ORDERS = "service_orders";
+	private static final String PATH_APP_SETTINGS = "app_settings";
 	private static final String PATH_SERVICE_ORDERS_EXPORT = "service_orders_export";
 
 	public interface AuditColumns {
@@ -227,6 +228,7 @@ public class MobileStoreContract {
 		// String SALES_PERSON_ID = "sales_person_id";
 		String SELL_TO_ADDRESS_ID = "sell_to_address_id";
 		String SHIPP_TO_ADDRESS_ID = "shipp_to_address_id";
+		String REQUESTED_DELIVERY_DATE = "requested_delivery_date";
 		String CONTACT_ID = "contact_id";
 		String CONTACT_NAME = "contact_name";
 		String CONTACT_PHONE = "contact_phone";
@@ -250,6 +252,7 @@ public class MobileStoreContract {
 		String SALE_ORDER_ID = "sale_order_id";
 		String LINE_NO = "line_no";
 		String ITEM_ID = "item_id";
+		String LOCATION_CODE = "location_code";
 		String QUANTITY = "quantity";
 		String QUANTITY_AVAILABLE = "quantity_available";
 		String UNIT_OF_MEASURE = "unit_of_measure";
@@ -456,6 +459,7 @@ public class MobileStoreContract {
 		String SERVICE_ORDER_NO = "service_order_no";
 		String CUSTOMER_ID = "customer_id";
 		String ITEM_ID = "item_id";
+		String ADDRESS_NO = "address_no";
 		String ADDRESS = "address";
 		String POST_CODE = "post_code";
 		String PHONE_NO = "phone_no";
@@ -463,6 +467,13 @@ public class MobileStoreContract {
 		String NOTE = "note";
 		String SALES_PERSON_ID = "sales_person_id";
 		String RECLAMATION_DESCRIPTION = "reclamation_description";
+	}
+	
+	public interface AppSettingsColumns {
+		String APP_VERSION = "app_version";
+		String APP_SYNC_WARNNING_DATE = "app_sync_warnning_date";
+		String CUSTOMERS_SYNC_WARNNING_DATE = "customers_sync_warnning_date";
+		String ITEMS_SYNC_WARNNING_DATE = "items_sync_warnning_date";
 	}
 	
 	public static class Generic implements BaseColumns {
@@ -1047,6 +1058,21 @@ public class MobileStoreContract {
 		
 		public static Uri buildServiceOrdersExportUri() {
 			return CONTENT_URI.buildUpon().appendPath(PATH_SERVICE_ORDERS_EXPORT).build();
+		}
+	}
+	
+	public static class AppSettings implements AppSettingsColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_APP_SETTINGS).build();
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.app_settings";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.app_settings";
+		
+		public static Uri buildAppSettingsUri(int appSettingsId) {
+			return CONTENT_URI.buildUpon().appendPath(String.valueOf(appSettingsId)).build();
+		}
+
+		public static String getAppSettingsId(Uri uri) {
+			return uri.getPathSegments().get(1);
 		}
 	}
 	

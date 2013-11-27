@@ -135,8 +135,9 @@
 	<string name="contextual_verify_sale_order">Verifikuj porudžbinu/ponudu</string>
 	<string name="contextual_complete_visit">Realizuj posetu</string>
 	<string name="contextual_clone_sale_order">Kloniraj porudžbinu/ponudu</string>
-	    <string name="contextual_contact_edit">Izmeni kontakt</string>
+	<string name="contextual_contact_edit">Izmeni kontakt</string>
     <string name="contextual_contact_add">Novi kontakt</string>
+    <string name="contextual_get_history_sale_order">Preuzmi istoriju porudžbina</string>
     
 	<string name="dialog_title_item_price_qty_load">Cena, popust i količina</string>
 	<string name="dialog_body_item_price_qty_load">Učitavanje cene, popusta i količine</string>
@@ -161,6 +162,7 @@
     <string name="dialog_body_items_load">Preuzimanje artikala</string>
     <string name="dialog_title_service_order_load">Servisni nalog</string>
     <string name="dialog_body_service_order_load">Slanje servisnog naloga</string>
+    <string name="dialog_title_warn">Upozorenje</string>
     
 	<string name="document_no">Broj dokumenta</string>
 	<string name="dokument_type_no_title">Broj i tip dokumenta</string>
@@ -171,6 +173,7 @@
 	<string name="location_no">Šifra lokacije</string>
 	<string name="shortcut_dimension1_code">Vrsta prodaje</string>
 	<string name="backorder">Način obrade</string>
+	<string name="so_line_location_text">Skladište:</string>
 	<string name="payment_type">Plaćanje</string>
 	<string name="hide_discount">Sakrij popust</string>
 	<string name="show_declaration">Deklaracija</string>
@@ -178,6 +181,7 @@
 	<string name="quote_date">Rok vazenja porudžbine</string>
 	<string name="quote_status">Status porudžbine</string>
 	<string name="transit_customer">Krajnji kupac (preko tranzitnog isporuka)</string>
+	<string name="desired_delivery_date">Datum isporuke</string>
 	
 	<string name="customer_no_label">Br. kupca</string>
 	<string name="customer_address_label">Adresa</string>

@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.ksoap2.serialization.PropertyInfo;
@@ -335,8 +336,12 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
                 MobileStoreContract.SaleOrders.EXTERNAL_DOCUMENT_NO,
                 MobileStoreContract.SaleOrders.QUOTE_NO,
                 MobileStoreContract.SalesPerson.SALE_PERSON_NO,
+                
+                // this is here like this because of join
                 "sell_to_address_no",
                 "shipp_to_address_no",
+                MobileStoreContract.SaleOrders.REQUESTED_DELIVERY_DATE,
+                
                 MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST,
                 MobileStoreContract.Contacts.CONTACT_NO,
                 MobileStoreContract.SaleOrders.CONTACT_NAME,
@@ -364,6 +369,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 				
 				String.class,
 				String.class,
+				Date.class,
 				
 				String.class,
 				String.class,
@@ -410,6 +416,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
                 MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO,
                 MobileStoreContract.SaleOrderLines.LINE_NO,
                 MobileStoreContract.Items.ITEM_NO,
+                MobileStoreContract.SaleOrderLines.LOCATION_CODE,
                 MobileStoreContract.SaleOrderLines.QUANTITY,
                 MobileStoreContract.SaleOrderLines.PRICE,
                 MobileStoreContract.SaleOrderLines.REAL_DISCOUNT,
@@ -424,7 +431,8 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 				String.class,
 				Integer.class,
 				String.class,
-				Double.class,
+				String.class,
+				Double.class,	
 				Double.class,
 				Double.class,
 				Integer.class,

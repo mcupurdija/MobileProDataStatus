@@ -25,6 +25,7 @@ public class ServiceOrderSyncObject extends SyncObject {
 	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.SET_SERVICE_ORDER_SYNC_ACTION";
 	
 	private String pCustomerNoa46;
+	private String pAddressNo;
 	private String pAddress;
 	private String pPostCode;
 	private String pPhoneNoa46;
@@ -76,6 +77,7 @@ public class ServiceOrderSyncObject extends SyncObject {
 	public ServiceOrderSyncObject(Parcel source) {
 		super(source);
 		setpCustomerNoa46(source.readString());
+		setpAddressNo(source.readString());
 		setpAddress(source.readString());
 		setpPostCode(source.readString());
 		setpPhoneNoa46(source.readString());
@@ -96,6 +98,7 @@ public class ServiceOrderSyncObject extends SyncObject {
 	public void writeToParcel(Parcel dest, int flag) {
 		dest.writeString(getStatusMessage());
 		dest.writeString(getpCustomerNoa46());
+		dest.writeString(getpAddressNo());
 		dest.writeString(getpAddress());
 		dest.writeString(getpPostCode());
 		dest.writeString(getpPhoneNoa46());
@@ -126,16 +129,16 @@ public class ServiceOrderSyncObject extends SyncObject {
 		properties.add(customerNoa46);
 		
 		PropertyInfo address = new PropertyInfo();
-		address.setName("pAddress");
-		address.setValue(pAddress);
+		address.setName("pAddressCode");
+		address.setValue(pAddressNo);
 		address.setType(String.class);
 		properties.add(address);
 		
-		PropertyInfo postCode = new PropertyInfo();
-		postCode.setName("pPostCode");
-		postCode.setValue(pPostCode);
-		postCode.setType(String.class);
-		properties.add(postCode);
+//		PropertyInfo postCode = new PropertyInfo();
+//		postCode.setName("pPostCode");
+//		postCode.setValue(pPostCode);
+//		postCode.setType(String.class);
+//		properties.add(postCode);
 		
 		PropertyInfo phoneNoa46 = new PropertyInfo();
 		phoneNoa46.setName("pPhoneNoa46");
@@ -197,6 +200,7 @@ public class ServiceOrderSyncObject extends SyncObject {
 		// must be only one member, if not big error
 		if (cursorServiceOrder.moveToFirst()) {
 			setpCustomerNoa46(cursorServiceOrder.getString(ServiceOrderQuery.CUSTOMER_NO));
+			setpAddressNo(cursorServiceOrder.getString(ServiceOrderQuery.ADDRESS_NO));
 			setpAddress(cursorServiceOrder.getString(ServiceOrderQuery.ADDRESS));
 			setpPostCode(cursorServiceOrder.getString(ServiceOrderQuery.POST_CODE));
 			setpPhoneNoa46(cursorServiceOrder.getString(ServiceOrderQuery.PHONE_NO));
@@ -233,6 +237,7 @@ public class ServiceOrderSyncObject extends SyncObject {
 		String[] PROJECTION = {
 			Tables.SERVICE_ORDERS + "." + ServiceOrders._ID,
 			Tables.CUSTOMERS + "." + Customers.CUSTOMER_NO,
+			
 			Tables.SERVICE_ORDERS + "." + ServiceOrders.ADDRESS,
 			Tables.SERVICE_ORDERS + "." + ServiceOrders.POST_CODE,
 			Tables.SERVICE_ORDERS + "." + ServiceOrders.PHONE_NO,
@@ -240,7 +245,8 @@ public class ServiceOrderSyncObject extends SyncObject {
 			Tables.SERVICE_ORDERS + "." + ServiceOrders.QUANTITY_FOR_RECLAMATION,
 			Tables.SERVICE_ORDERS + "." + ServiceOrders.NOTE,
 			Tables.SALES_PERSONS + "." + SalesPerson.SALE_PERSON_NO,
-			Tables.SERVICE_ORDERS + "." + ServiceOrders.RECLAMATION_DESCRIPTION
+			Tables.SERVICE_ORDERS + "." + ServiceOrders.RECLAMATION_DESCRIPTION,
+			Tables.SERVICE_ORDERS + "." + ServiceOrders.ADDRESS_NO
 		};
 		
 //		int ID = 0;
@@ -253,6 +259,7 @@ public class ServiceOrderSyncObject extends SyncObject {
 		int NOTE = 7;
 		int SALE_PERSON_NO = 8;
 		int RECLAMATION_DESCRIPTION = 9;
+		int ADDRESS_NO = 10;
 	}
 	
 	public String getpCustomerNoa46() {
@@ -333,6 +340,14 @@ public class ServiceOrderSyncObject extends SyncObject {
 
 	public void setpReclamationText(String pReclamationText) {
 		this.pReclamationText = pReclamationText;
+	}
+
+	public String getpAddressNo() {
+		return pAddressNo;
+	}
+
+	public void setpAddressNo(String pAddressNo) {
+		this.pAddressNo = pAddressNo;
 	}
 
 }

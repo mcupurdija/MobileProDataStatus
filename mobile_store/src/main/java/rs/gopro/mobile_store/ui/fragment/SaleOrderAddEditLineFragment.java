@@ -85,6 +85,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	
 	private ItemAutocompleteCursorAdapter itemAutocompleteAdapter;
 	private ArrayAdapter<CharSequence> backorderAdapter;
+	private ArrayAdapter<CharSequence> locationAdapter;
 	private ArrayAdapter<CharSequence> campaignStatusAdapter;
 	private ArrayAdapter<CharSequence> quoteRefusedAdapter;
 	
@@ -106,6 +107,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	
 	private CheckBox mAvailableToWholeShipment;
 	private Spinner mBackorderStatus;
+	private Spinner mLocation;
 	private Spinner mQuoteRefused;
 	private Spinner mCampaignStatus;
 	
@@ -121,6 +123,9 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
     private String[] priceAndDiscountAreCorrectStatusOptions;
     private TextView priceAndDiscountAreCorrectStatus;
 	
+    private TextView mItemNoLable;
+    private String replaceItem = null;
+    
     private ProgressDialog itemLoadProgressDialog;
     
 	private Map<Integer, Boolean> loaderState = new HashMap<Integer, Boolean>();
@@ -143,6 +148,12 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 				mQuantityAvailable.setText(syncObject.getpQuantityAsTxt());
 				mDiscount.setText(UIUtils.getDoubleFromUI(syncObject.getpDiscountPctAsTxt()).toString());
 				mPrice.setText(syncObject.getpSalesPriceRSDAsTxt());
+				if (syncObject.getpSubstituteItemNoa46() != null && !syncObject.getpSubstituteItemNoa46().equals("") && !syncObject.getpSubstituteItemNoa46().equals("anyType{}")) {
+					// mItemNoLable.setText(getResources().getString(R.string.item_no_label));
+					mItemNoLable.setText("Postoji zamenski artikal broj:"+syncObject.getpSubstituteItemNoa46());
+					mItemNoLable.setTextColor(Color.RED);
+				}
+//				replaceItem = syncObject.getpSubstituteItemNoa46();
 				//mPriceEur.setText(syncObject.getpSalesPriceEURAsTxt());
 				if ((syncObject.getpMinimumSalesUnitQuantityTxt().length() > 0 && !syncObject.getpMinimumSalesUnitQuantityTxt().equals("anyType{}")) || (syncObject.getpOutstandingPurchaseLinesTxt().length() > 0) && !syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}")) {
 				    // Setting Dialog Message
@@ -214,6 +225,10 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         
         mDisc = (TextView) rootView.findViewById(R.id.so_line_disc_label);
         mDisc.setText("");
+        
+        mItemNoLable = (TextView) rootView.findViewById(R.id.so_line_item_no_label);
+        mItemNoLable.setText(getResources().getString(R.string.item_no_label));
+        mItemNoLable.setTextColor(Color.BLACK);
         
         itemAutocompleteAdapter = new ItemAutocompleteCursorAdapter(getActivity(), null);
         mItemAutocomplete = (AutoCompleteTextView) rootView.findViewById(R.id.so_line_item_no_value);
@@ -304,6 +319,11 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			mBackorderStatus.setSelection(defaultBackOrderStatus);
 		}
 		
+		locationAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.location_line_type_array, android.R.layout.simple_spinner_item);
+		locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mLocation = (Spinner) rootView.findViewById(R.id.so_line_location_spinner);
+		mLocation.setAdapter(locationAdapter);
+		
 		campaignStatusAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.item_camp_status_array, android.R.layout.simple_spinner_item);
 		campaignStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mCampaignStatus = (Spinner) rootView.findViewById(R.id.so_line_item_campaign_spinner);
@@ -341,6 +361,9 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 				mQuantityAvailable.setText("");
 				mDiscount.setText("");
 				mPrice.setText("");
+				
+				mItemNoLable.setText(getResources().getString(R.string.item_no_label));
+				mItemNoLable.setTextColor(Color.BLACK);
 				
 				doWsAction();
 			}
@@ -486,6 +509,9 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			
 			int backorder_status = mBackorderStatus.getSelectedItemPosition();
 			localValues.put(MobileStoreContract.SaleOrderLines.BACKORDER_STATUS, Integer.valueOf(backorder_status));
+			
+			String location = mLocation.getSelectedItem().toString();
+			localValues.put(MobileStoreContract.SaleOrderLines.LOCATION_CODE, location);
 			
 			int campaign_status = mCampaignStatus.getSelectedItemPosition();
 			localValues.put(MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS, Integer.valueOf(campaign_status));
@@ -697,15 +723,22 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         	}
         }
         
-        if (!cursor.isNull(ItemQuery.ITEM_CAMPAIGN_STATUS)) {
-        	itemCampaignStatus = cursor.getInt(ItemQuery.ITEM_CAMPAIGN_STATUS);
+        /**
+         * Commented out because new request. Sales people does not need to see what is on action.
+         * begin
+         */
+//        if (!cursor.isNull(ItemQuery.ITEM_CAMPAIGN_STATUS)) {
+//        	itemCampaignStatus = cursor.getInt(ItemQuery.ITEM_CAMPAIGN_STATUS);
         	// if empty it is first time load, then we need to load value
         	// if not then is second time load and we need not to change selection
-        	if (TextUtils.isEmpty(mDiscountMax.getText()) && TextUtils.isEmpty(mDiscountMin.getText())) {
-        		mCampaignStatus.setSelection(itemCampaignStatus);
-        	}
-        }
-        
+//        	if (TextUtils.isEmpty(mDiscountMax.getText()) && TextUtils.isEmpty(mDiscountMin.getText())) {
+//        		mCampaignStatus.setSelection(itemCampaignStatus);
+//        	}
+//        }
+        /**
+         * Commented out because new request. Sales people does not need to see what is on action.
+         * end
+         */
 //        checkLoaderState();
 	}
 
@@ -734,7 +767,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		String quantity = mQuantity.getText().toString().replace('.', ','); // UIUtils.getDoubleFromUI(mQuantity.getText().toString().replace('.', ','));
 		int campaign_status = mCampaignStatus.getSelectedItemPosition();
 		int potentialCustomerSignal = isPotentialCustomer(customerId) == false ? 0 : 1;
-		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, "001", campaign_status, Integer.valueOf(potentialCustomerSignal),customerNo, quantity, salesPersonNo, documentType, deviceDocumentNo, 0, "", "", "", "", "", "", "", "");
+		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, mLocation.getSelectedItem().toString(), campaign_status, Integer.valueOf(potentialCustomerSignal),customerNo, quantity, salesPersonNo, documentType, deviceDocumentNo, 0, "", "", "", "", "", "", "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQtySalesPriceAndDiscSyncObject);
 		getActivity().startService(intent);
 		
@@ -843,6 +876,12 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			mBackorderStatus.setSelection(backorder_status);
 		}
         
+		String location = "001";
+		if (!cursor.isNull(SaleOrderLinesQuery.LOCATION_CODE)) {
+			location = cursor.getString(SaleOrderLinesQuery.LOCATION_CODE);	
+		}
+		mLocation.setSelection(locationAdapter.getPosition(location));
+		
 		int quote_refused = -1;
 		if (!cursor.isNull(SaleOrderLinesQuery.QUOTE_REFUSED_STATUS)) {
 			quote_refused = cursor.getInt(SaleOrderLinesQuery.QUOTE_REFUSED_STATUS);
@@ -909,7 +948,8 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
                 MobileStoreContract.SaleOrderLines.VERIFY_STATUS,
                 MobileStoreContract.SaleOrderLines.LINE_CAMPAIGN_STATUS,
                 MobileStoreContract.SaleOrderLines.PRICE_DISCOUNT_STATUS,
-                MobileStoreContract.SaleOrderLines.ITEM_ID
+                MobileStoreContract.SaleOrderLines.ITEM_ID,
+                MobileStoreContract.SaleOrderLines.LOCATION_CODE
         };
 
         int _ID = 0;
@@ -932,6 +972,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         int LINE_CAMPAIGN_STATUS = 14;
         int PRICE_DISCOUNT_STATUS = 15;
         int ITEM_ID = 16;
+        int LOCATION_CODE = 17;
 	}
 	
 	private interface CustomerQuery {

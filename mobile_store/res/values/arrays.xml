@@ -130,6 +130,10 @@
         <item>Don\'t order</item>
         <item>Reserve and order</item>
     </string-array>
+    <string-array name="location_line_type_array">
+        <item>001</item>
+        <item>993</item>
+    </string-array>
     <string-array name="slc1_type_array">
         <item>Wisit to customer</item>
         <item>Call to customer</item>
