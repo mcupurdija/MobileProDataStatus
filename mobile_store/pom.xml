@@ -19,7 +19,7 @@
 		<ksoap2-android.version>3.0.0</ksoap2-android.version>
 		<jcifs.version>1.3.17</jcifs.version>
 		<support_platform.version>r7</support_platform.version>
-		<android.sdk.path>c:\Users\vmakevic\AppData\Local\Android\android-sdk</android.sdk.path>
+		<android.sdk.path>C:\Users\mcupurdija\android-sdks</android.sdk.path>
 	</properties>
 
 	<repositories>
@@ -37,11 +37,11 @@
 			<version>${platform.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>annotations</artifactId>
 			<version>${platform.version}</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>com.google.code.ksoap2-android</groupId>
 			<artifactId>ksoap2-android</artifactId>

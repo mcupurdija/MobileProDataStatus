@@ -40,7 +40,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 
 public class RecordVisitsMultipaneActivity extends BaseActivity implements
-		RecordVisitsListFragment.Callbacks, RecordVisitDetailFragment.Callbacks, EditNameDialogListener, EditDepartureVisitDialogListener {
+	RecordVisitsListFragment.Callbacks, RecordVisitDetailFragment.Callbacks, EditNameDialogListener, EditDepartureVisitDialogListener {
 
 	private static final String TAG = "RecordVisitsMultipaneActivity";
 	public static final String RECORD_VISITS_INTENT = "rs.gopro.mobile_store.intent.action.RECORD_VISITS";

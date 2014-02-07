@@ -11,9 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="right|center_vertical"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginRight="30dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,9 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="right|center_vertical"
-        android:layout_marginBottom="5dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="10dp"
         android:text="@string/this_month_label" />
 
     <LinearLayout
@@ -53,22 +49,18 @@
 
         <TextView
             style="@style/AddEdit_Label"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right|center_vertical"
-            android:layout_marginBottom="5dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="10dp"
             android:text="@string/this_month_plan_label" />
 
         <TextView
             style="@style/AddEdit_Label"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right|center_vertical"
-            android:layout_marginBottom="5dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="10dp"
             android:text="@string/this_month_turnover_label" />
     </LinearLayout>
 
@@ -83,9 +75,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:gravity="right|center_vertical"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginRight="30dp" />
 
         <TextView
             android:id="@+id/this_month_turnover_value"
@@ -93,9 +83,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:gravity="right|center_vertical"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginRight="30dp" />
     </LinearLayout>
 
     <TextView
@@ -103,9 +91,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="right|center_vertical"
-        android:layout_marginBottom="5dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="10dp"
         android:text="@string/last_month_label" />
 
     <LinearLayout
@@ -115,23 +101,19 @@
 
         <TextView
             style="@style/AddEdit_Label"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
-            android:layout_marginBottom="5dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="10dp"
             android:gravity="right|center_vertical"
             android:text="@string/last_month_plan_label" />
 
         <TextView
             style="@style/AddEdit_Label"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
-            android:layout_marginBottom="5dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="10dp"
             android:gravity="right|center_vertical"
             android:text="@string/last_month_turnover_label" />
 
@@ -149,9 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:gravity="right|center_vertical"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginRight="30dp" />
 
         <TextView
             android:id="@+id/last_month_turnover_value"
@@ -160,9 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:gravity="right|center_vertical"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginRight="30dp" />
     </LinearLayout>
 
 </LinearLayout>
