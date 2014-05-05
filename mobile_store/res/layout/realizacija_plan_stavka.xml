@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical" >
+
+    <RelativeLayout
+        android:id="@+id/layoutPlanInfo"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_toLeftOf="@+id/layoutPlanRealizacija"
+        android:background="@drawable/background"
+        android:clickable="true"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/tvPlanNaslov"
+            style="@style/ListItemTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:lines="1" />
+
+        <TextView
+            android:id="@+id/tvPlanDatum"
+            style="@style/ListItemSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tvPlanNaslov" />
+
+        <TextView
+            android:id="@+id/tvPlanVreme"
+            style="@style/ListItemSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tvPlanNaslov" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutPlanRealizacija"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="1dp"
+        android:background="@drawable/background"
+        android:clickable="true"
+        android:gravity="center" >
+
+        <ImageView
+            android:id="@+id/ivPlanRealizuj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_status_realizuj" />
+    </RelativeLayout>
+
+</RelativeLayout>
