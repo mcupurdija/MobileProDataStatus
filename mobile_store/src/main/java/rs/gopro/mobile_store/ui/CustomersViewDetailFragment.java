@@ -1,14 +1,20 @@
 package rs.gopro.mobile_store.ui;
 
+import java.util.Locale;
+
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
+import rs.gopro.mobile_store.util.ApplicationConstants;
+import rs.gopro.mobile_store.util.AssetUtil;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.SetPotentialCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.UpdateCustomerSyncObject;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -26,6 +32,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -52,6 +59,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 	private EditText mVarRegNo;
 	private TextView mCreditLimitLcy;
 	private TextView mBalanceLcy;
+	private TextView mWrDebt;
 	private TextView mBalanceDueLcy;
 	private TextView mPaymentTermsCode;
 	private TextView mPriority;
@@ -163,6 +171,7 @@ public class CustomersViewDetailFragment extends Fragment implements
         mVarRegNo = (EditText) rootView.findViewById(R.id.customer_vat_reg_no_value);
         mCreditLimitLcy = (TextView) rootView.findViewById(R.id.customer_credit_limit_lcy_value);
         mBalanceLcy = (TextView) rootView.findViewById(R.id.customer_balance_lcy_value);
+        mWrDebt = (TextView) rootView.findViewById(R.id.customer_wr_debt_label);
         mBalanceDueLcy = (TextView) rootView.findViewById(R.id.customer_balance_due_lcy_value);
         mPaymentTermsCode = (TextView) rootView.findViewById(R.id.customer_payment_terms_code_value);
         mPriority = (TextView) rootView.findViewById(R.id.customer_priority_value);
@@ -188,14 +197,52 @@ public class CustomersViewDetailFragment extends Fragment implements
         mGrossProfitPfep = (TextView) rootView.findViewById(R.id.customer_turnover_gross_profit_pfep_value);
         aprCustomerTurnover = (TextView) rootView.findViewById(R.id.customer_apr_customer_turnover_value);
         
-        if(isInUpdateMode){
+        mWrDebt.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				final Dialog dialog = new Dialog(getActivity());
+				dialog.setContentView(R.layout.dialog_wr_password);
+				dialog.setTitle("Unesite Web Reporting lozinku");
+				
+				final EditText etLozinka = (EditText) dialog.findViewById(R.id.dialog_wr_password);
+				Button bDialogOk = (Button) dialog.findViewById(R.id.dialogWrButtonOK);
+				
+				bDialogOk.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						
+						String lozinka = etLozinka.getText().toString();
+						if (lozinka.trim().length() > 0) {
+							String salt = ApplicationConstants.SALT;
+							lozinka = AssetUtil.computeMD5Hash(salt + lozinka.toUpperCase(Locale.getDefault()) + salt).toUpperCase(Locale.getDefault());
+							String url = String.format(Locale.getDefault(), "http://10.94.1.11/goproreporting/Login.aspx?mpu=%s&mpp=%s&mpr=%d&mprd=%s", 
+									SharedPreferencesUtil.getSalePersonNo(getActivity()).toUpperCase(Locale.getDefault()), 
+									lozinka, 
+									11, 
+									mCustomer_no.getText().toString());
+							//Log.d("WR1", SharedPreferencesUtil.getSalePersonNo(getActivity()).toUpperCase(Locale.getDefault()));
+							//Log.d("WR2", lozinka);
+							//Log.d("WR3", mCustomer_no.getText().toString());
+							startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+						}
+						dialog.dismiss();
+					}
+				});
+				dialog.show();
+				
+			}
+		});
+        
+        if (isInUpdateMode) {
         	setFocusable(true);
         	if(actionMode == null){
         		actionMode = getActivity().startActionMode(actionModeCallback);
         	}
-        	
-        }else{
-        setFocusable(false);
+        } else {
+        	setFocusable(false);
         }
         return rootView;
     }

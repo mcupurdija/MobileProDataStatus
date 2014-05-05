@@ -454,4 +454,17 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 	public void setpDocumentNoa46(String pDocumentNoa46) {
 		this.pDocumentNoa46 = pDocumentNoa46;
 	}
+
+	public String getpMinimumSalesQuantityTxt() {
+		return pMinimumSalesQuantityTxt;
+	}
+
+	public void setpMinimumSalesQuantityTxt(String pMinimumSalesQuantityTxt) {
+		this.pMinimumSalesQuantityTxt = pMinimumSalesQuantityTxt;
+	}
+
+	public void setpPotentialCustomer(Integer pPotentialCustomer) {
+		this.pPotentialCustomer = pPotentialCustomer;
+	}
+	
 }

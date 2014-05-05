@@ -854,7 +854,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 //			localValues.putNull(MobileStoreContract.SaleOrders.CONTACT_ID);
 //		}
 		
-		String contact_email = contactEmail.getText().toString().trim();
+		String contact_email = contactEmail.getText().toString().trim().replace(";", ",");
 		if (contact_email != null && !contact_email.equals("")) {
 			localValues.put(MobileStoreContract.SaleOrders.CONTACT_EMAIL, contact_email);
 		} else {

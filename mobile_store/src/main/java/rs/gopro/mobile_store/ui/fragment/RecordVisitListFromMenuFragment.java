@@ -2,6 +2,7 @@ package rs.gopro.mobile_store.ui.fragment;
 
 import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import rs.gopro.mobile_store.R;
@@ -9,11 +10,13 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.BaseActivity;
-import rs.gopro.mobile_store.ui.RecordVisitsMultipaneActivity;
 import rs.gopro.mobile_store.util.ApplicationConstants;
+import rs.gopro.mobile_store.util.DatePickerFragment;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
+import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.ContentObserver;
@@ -27,11 +30,14 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -48,6 +54,11 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 	private CursorAdapter mAdapter;
 	private String mSelectedVisitId;
 	private boolean mHasSetEmptyText = false;
+	
+	private Button realizacijaDatumFilter;
+	private Calendar calender = Calendar.getInstance();
+	private Date odabraniDatum = new Date();
+	private final int visitQueryToken = RecordedVisitsQuery._TOKEN;
 
 //	private MainContextualActionBarCallback actionBarCallback;
 
@@ -62,7 +73,17 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 		reloadFromArguments(getArguments());
 		
 		LogUtils.LOGI(TAG, "Fragment created");
+		
 	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		return super.onCreateView(inflater, container, savedInstanceState);
+	}
+
+
 
 	public void reloadFromArguments(Bundle arguments) {
 		// Teardown from previous arguments
@@ -72,7 +93,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 		Intent intent = BaseActivity.fragmentArgumentsToIntent(arguments);
 		mVisitsUri = intent.getData();
 //		mAction = intent.getAction();
-		final int visitQueryToken;
+		
 
 		if (mVisitsUri == null) {
 			LogUtils.LOGE(TAG, "Uri or action is null!");
@@ -80,7 +101,6 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 		}
 
 		mAdapter = new RecordedVisitsAdapter(getActivity());
-		visitQueryToken = RecordedVisitsQuery._TOKEN;
 
 		setListAdapter(mAdapter);
 
@@ -112,7 +132,44 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 			setEmptyText(getString(R.string.empty_recorded_visits));
 			mHasSetEmptyText = true;
 		}
+		
+		realizacijaDatumFilter = (Button) getActivity().findViewById(R.id.realizacijaDatumFilter);
+		realizacijaDatumFilter.setText(DateUtils.toUIDate(odabraniDatum));
+		realizacijaDatumFilter.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				showDatePicker();
+			}
+		});
 	}
+	
+	private void showDatePicker() {
+		DatePickerFragment date = new DatePickerFragment();
+
+		Bundle args = new Bundle();
+		args.putInt("year", calender.get(Calendar.YEAR));
+		args.putInt("month", calender.get(Calendar.MONTH));
+		args.putInt("day", calender.get(Calendar.DAY_OF_MONTH));
+		date.setArguments(args);
+		
+		date.setCallBack(ondate);
+		date.show(getActivity().getSupportFragmentManager(), "Date Picker");
+	}
+
+	private OnDateSetListener ondate = new OnDateSetListener() {
+		@Override
+		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+		    calender.set(Calendar.YEAR, year);
+		    calender.set(Calendar.MONTH, monthOfYear);
+		    calender.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+		    odabraniDatum = calender.getTime();
+		    realizacijaDatumFilter.setText(DateUtils.toUIDate(odabraniDatum));
+		    
+		    getLoaderManager().destroyLoader(visitQueryToken);
+			getLoaderManager().initLoader(visitQueryToken, null, RecordVisitListFromMenuFragment.this);
+		}
+	};
 
 	private final ContentObserver mObserver = new ContentObserver(new Handler()) {
 		@Override
@@ -156,7 +213,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		return new CursorLoader(getActivity(), mVisitsUri, RecordedVisitsQuery.PROJECTION, VISITS_DATE_FILTER, new String[] { DateUtils.toDbDate(new Date()) }, ORDER_BY_VISITS_FILTER);
+		return new CursorLoader(getActivity(), mVisitsUri, RecordedVisitsQuery.PROJECTION, VISITS_DATE_FILTER, new String[] { DateUtils.toDbDate(odabraniDatum) }, ORDER_BY_VISITS_FILTER);
 	}
 
 	@Override
@@ -188,11 +245,82 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 			mAdapter.notifyDataSetChanged();
 		}
 	}
+	
+	public void infoDijalog(int visitId) {
+		
+		final Dialog dialog = new Dialog(getActivity());
+		dialog.setContentView(R.layout.dialog_realizacija_info);
+		
+		Date datum = null;
+		String naslov = null, kupacSifra = null, kupacNaziv = null, vremed = "", vremeo = null, vreme = null, kilometraza = null, poruka = null;
+		
+		TextView tvRealizacijaInfoDatum = (TextView) dialog.findViewById(R.id.tvRealizacijaInfoDatum);
+		TextView tvRealizacijaInfoVreme = (TextView) dialog.findViewById(R.id.tvRealizacijaInfoVreme);
+		TextView tvRealizacijaInfoKilometraza = (TextView) dialog.findViewById(R.id.tvRealizacijaInfoKilometraza);
+		TextView tvRealizacijaInfoPoruka = (TextView) dialog.findViewById(R.id.tvRealizacijaInfoPoruka);
+
+		Cursor cursor = getActivity().getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, RecordedVisitsQuery.PROJECTION, "visits._id=?", new String[] { String.valueOf(visitId) }, null);
+		cursor.moveToFirst();
+		
+		int tip = cursor.getInt(RecordedVisitsQuery.VISIT_RESULT);
+		kilometraza = cursor.getString(RecordedVisitsQuery.ODOMETER);
+		
+		try {
+			kupacSifra = cursor.getString(RecordedVisitsQuery.CUSTOMER_NO);
+			kupacNaziv = cursor.getString(RecordedVisitsQuery.CUSTOMER_NAME);
+			datum = DateUtils.getLocalDbDate(cursor.getString(RecordedVisitsQuery.VISIT_DATE));
+			vremeo = DateUtils.formatDbTimeForPresentation(cursor.getString(RecordedVisitsQuery.ARRIVAL_TIME));
+			vremed = DateUtils.formatDbTimeForPresentation(cursor.getString(RecordedVisitsQuery.DEPARTURE_TIME));
+			poruka = cursor.getString(RecordedVisitsQuery.NOTE);
+		} catch (Exception e) {
+		}
+		
+		switch (tip) {
+		case 1:
+			naslov = "POČETAK DANA";
+			vreme = vremeo;
+			break;
+		case 2:
+			naslov = kupacSifra + " - " + kupacNaziv;
+			vreme = vremeo + " - " + vremed;
+			break;
+		case 3:
+			naslov = kupacSifra + " - " + kupacNaziv;
+			vreme = vremeo + " - " + vremed;
+			break;
+		case 4:
+			naslov = "PAUZA";
+			vreme = vremeo + " - " + vremed;
+			break;
+		case 5:
+			naslov = "KRAJ DANA";
+			vreme = vremeo;
+			break;
+		case 6:
+			naslov = "POVRATAK KUĆI";
+			vreme = vremeo;
+			break;
+		default:
+			break;
+		}
+		
+		dialog.setTitle(naslov);
+		tvRealizacijaInfoDatum.setText(getString(R.string.visit_date_label_title) + " " + DateUtils.toDbDate(datum));
+		tvRealizacijaInfoVreme.setText(getString(R.string.visit_time_label_title) + " " + vreme);
+		tvRealizacijaInfoKilometraza.setText(getString(R.string.visit_odometer_label_title) + " " + kilometraza);
+		if (poruka != null) {
+			tvRealizacijaInfoPoruka.setVisibility(View.VISIBLE);
+			tvRealizacijaInfoPoruka.setText(getString(R.string.visit_note_label_title) + " " + poruka);
+		}
+		
+		dialog.show();
+	}
 
 	/**
 	 * {@link CursorAdapter} that renders a {@link RecordedVisitsQuery}.
 	 */
 	private class RecordedVisitsAdapter extends CursorAdapter {
+		
 		public RecordedVisitsAdapter(Context context) {
 			super(context, null, false);
 		}
@@ -264,12 +392,14 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 				@Override
 				public void onClick(View v) {
 					mSelectedVisitId = visit_id;
-					mAdapter.notifyDataSetChanged();
+					/*mAdapter.notifyDataSetChanged();
 					final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
 					// mAction is from main menu sent, and it is in par with expected actions in activities
 					final Intent intent = new Intent(RecordVisitsMultipaneActivity.RECORD_VISITS_INTENT, MobileStoreContract.Visits.buildVisitUri(visit_id));
 					intent.putExtra(RecordVisitsMultipaneActivity.EXTRA_MASTER_URI, visitsUri);
-					startActivity(intent);	
+					startActivity(intent);*/
+					
+					infoDijalog(Integer.parseInt(mSelectedVisitId));
 				}
 			});
 			
@@ -289,8 +419,21 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 	private interface RecordedVisitsQuery {
 		int _TOKEN = 0x1234;
 
-		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Visits.SALES_PERSON_ID, MobileStoreContract.Visits.CUSTOMER_ID, MobileStoreContract.Customers.CUSTOMER_NO, MobileStoreContract.Customers.NAME, MobileStoreContract.Customers.NAME_2,
-				MobileStoreContract.Visits.VISIT_DATE, MobileStoreContract.Visits.VISIT_RESULT, MobileStoreContract.Visits.VISIT_TYPE, MobileStoreContract.Visits.ARRIVAL_TIME, MobileStoreContract.Visits.DEPARTURE_TIME, MobileStoreContract.Visits.ODOMETER };
+		String[] PROJECTION = { 
+				BaseColumns._ID, 
+				MobileStoreContract.Visits.SALES_PERSON_ID, 
+				MobileStoreContract.Visits.CUSTOMER_ID, 
+				MobileStoreContract.Customers.CUSTOMER_NO, 
+				MobileStoreContract.Customers.NAME, 
+				MobileStoreContract.Customers.NAME_2,
+				MobileStoreContract.Visits.VISIT_DATE, 
+				MobileStoreContract.Visits.VISIT_RESULT, 
+				MobileStoreContract.Visits.VISIT_TYPE, 
+				MobileStoreContract.Visits.ARRIVAL_TIME, 
+				MobileStoreContract.Visits.DEPARTURE_TIME, 
+				MobileStoreContract.Visits.ODOMETER,
+				MobileStoreContract.Visits.NOTE 
+		};
 
 		int _ID = 0;
 //		int SALES_PERSON_ID = 1;
@@ -298,12 +441,13 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 		int CUSTOMER_NO = 3;
 		int CUSTOMER_NAME = 4;
 //		int CUSTOMER_NAME2 = 5;
-//		int VISIT_DATE = 6;
+		int VISIT_DATE = 6;
 		int VISIT_RESULT = 7;
 		int VISIT_TYPE = 8;
 		int ARRIVAL_TIME = 9;
 		int DEPARTURE_TIME = 10;
 		int ODOMETER = 11;
+		int NOTE = 12;
 	}
 
 //	@Override

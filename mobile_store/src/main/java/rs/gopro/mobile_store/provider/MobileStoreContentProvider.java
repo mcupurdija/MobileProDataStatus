@@ -654,10 +654,13 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(Customers.CUSTOMER_NO, Tables.CUSTOMERS)
 					.mapToTable(Customers.NAME, Tables.CUSTOMERS)
 					.mapToTable(Customers.NAME_2, Tables.CUSTOMERS)
+					.mapToTable(Visits.ENTRY_TYPE, Tables.VISITS)
+					.mapToTable(Visits.VISIT_STATUS, Tables.VISITS)
 					.mapToTable(Visits.ARRIVAL_TIME, Tables.VISITS)
 					.mapToTable(Visits.DEPARTURE_TIME, Tables.VISITS)
 					.mapToTable(Visits.ODOMETER, Tables.VISITS)
-					.mapToTable(Visits.NOTE, Tables.VISITS);
+					.mapToTable(Visits.NOTE, Tables.VISITS)
+					.mapToTable(Visits.IS_SENT, Tables.VISITS);
 		case VISIT_ID:
 			final String visitId = Visits.getVisitId(uri);
 			return builder.addTable(Tables.VISITS_JOIN_CUSTOMERS)
@@ -976,7 +979,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(MobileStoreContract.Visits.DEPARTURE_TIME, Tables.VISITS)
 					.mapToTable(MobileStoreContract.Visits.POTENTIAL_CUSTOMER, Tables.VISITS)
 					.mapToTable(MobileStoreContract.Customers.CUSTOMER_NO, Tables.CUSTOMERS)
-					.mapToTable(MobileStoreContract.Visits.NOTE, Tables.VISITS);
+					.mapToTable(MobileStoreContract.Visits.NOTE, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.IS_DELETED, Tables.VISITS);
 		case VISITS_REALIZED_EXPORT:
 			return builder.addTable(Tables.VISITS_EXPORT)
 					.mapToTable(MobileStoreContract.SalesPerson.SALE_PERSON_NO, Tables.SALES_PERSONS)

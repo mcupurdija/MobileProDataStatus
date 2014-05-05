@@ -23,7 +23,7 @@ public class MobileStoreDatabase extends SQLiteOpenHelper {
 	private static final String TAG = LogUtils.makeLogTag(MobileStoreDatabase.class);
 
 	private static final String SQL_DIR = "sql";
-	private static final String CREATE_FILE = "create_mobile_store.sql";
+	private static final String[] CREATE_FILES = {"create_mobile_store.sql", "create_mobile_store2.sql"};
 	private static final String UPGRADEFILE_PREFIX = "upgrade-";
 	private static final String UPGRADEFILE_SUFFIX = ".sql";
 	private static final String DATABSE_NAME = "mobile_store.db";
@@ -38,8 +38,10 @@ public class MobileStoreDatabase extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		try {
-			LogUtils.log(Log.INFO, TAG, "Create database!");
-			execSqlFile(CREATE_FILE, SQL_DIR, db, true);
+			for (String s : CREATE_FILES) {
+				LogUtils.log(Log.INFO, TAG, "Database creation: " + s);
+				execSqlFile(s, SQL_DIR, db, true);
+			}
 		} catch (IOException exception) {
 			throw new RuntimeException("Database creation failed", exception);
 		}
@@ -64,7 +66,10 @@ public class MobileStoreDatabase extends SQLiteOpenHelper {
 			} else {
 				// if upgrade file does not exist use create file
 				LogUtils.log(Log.INFO, TAG, "No upgrade go to create database!");
-				execSqlFile(CREATE_FILE, SQL_DIR, db, true);
+				for (String s : CREATE_FILES) {
+					LogUtils.log(Log.INFO, TAG, "Database creation: " + s);
+					execSqlFile(s, SQL_DIR, db, true);
+				}
 			}
 
 		} catch (IOException exception) {

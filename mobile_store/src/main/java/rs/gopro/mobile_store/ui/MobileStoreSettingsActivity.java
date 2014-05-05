@@ -14,8 +14,12 @@ public class MobileStoreSettingsActivity extends PreferenceActivity {
 		loadHeadersFromResource(R.xml.header_settings_main, target);
 
 	}
-
 	
+	@Override
+	protected boolean isValidFragment(String fragmentName) {
+		return true;
+	}
+
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
 		return super.onCreateOptionsMenu(menu);

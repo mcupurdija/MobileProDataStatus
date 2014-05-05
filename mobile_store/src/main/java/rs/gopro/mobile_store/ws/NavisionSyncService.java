@@ -37,9 +37,9 @@ public class NavisionSyncService extends IntentService {
 	public static final String EXTRA_WS_SYNC_OBJECT = "rs.gopro.mobile_store.EXTRA_WS_SYNC_OBJECT";
 	public static final String SYNC_RESULT = "rs.gopro.mobile_store.sync_result";
 	
-	public static final String USER_NAME = "gopro4";// "wurthtest";
-	public static final String PASS = "pakg7otj";//"remote";
-	public static final String DOMAIN = "wurth";// "gopro";
+	public static final String USER_NAME = "gopro4";// "wurthtest"   "gopro4"
+	public static final String PASS = "pakg7otj";//    "remote"      "pakg7otj"
+	public static final String DOMAIN = "wurth";//     "gopro"       "wurth"
 	
 	
 	public NavisionSyncService() {

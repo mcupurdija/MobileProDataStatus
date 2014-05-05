@@ -14,10 +14,12 @@
         android:defaultValue="/Codeunit/MobileDeviceSync"
         android:key="@string/key_ws_navisition_codeunit"
         android:title="@string/title_ws_navisition_codeunit" />
+    <!-- http://10.94.1.5:7047/Wurth/ws http://sqlserver.gopro.rs:7047/Wurth/ws http://10.94.1.12:7047/DynamicsNAV/WS -->
     <EditTextPreference
         android:defaultValue="http://10.94.1.5:7047/Wurth/ws"
         android:key="@string/key_ws_server_address"
         android:title="@string/title_ws_server_address" />
+    <!-- Wurth Wurth Test%20Wurth W%20U%20R%20T%20H%20-%20T%20E%20S%20T%20%20B%20A%20Z%20A -->
     <EditTextPreference
         android:defaultValue="Wurth"
         android:key="@string/key_company"

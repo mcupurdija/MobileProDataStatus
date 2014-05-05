@@ -113,6 +113,10 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	
 	private Button loadItemData;
 	private Button saveData;
+	private Button bPlusOne;
+	private Button bMinusOne;
+	private Button bMultiply;
+	private Double minQty;
 	
 	private TextView mDisc;
 	
@@ -153,6 +157,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 					mItemNoLable.setText("Postoji zamenski artikal broj:"+syncObject.getpSubstituteItemNoa46());
 					mItemNoLable.setTextColor(Color.RED);
 				}
+				
 //				replaceItem = syncObject.getpSubstituteItemNoa46();
 				//mPriceEur.setText(syncObject.getpSalesPriceEURAsTxt());
 				if ((syncObject.getpMinimumSalesUnitQuantityTxt().length() > 0 && !syncObject.getpMinimumSalesUnitQuantityTxt().equals("anyType{}")) || (syncObject.getpOutstandingPurchaseLinesTxt().length() > 0) && !syncObject.getpOutstandingPurchaseLinesTxt().equals("anyType{}")) {
@@ -413,6 +418,58 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			}
 		});
         
+        bPlusOne = (Button) rootView.findViewById(R.id.so_line_plus_one);
+        bPlusOne.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					double quantity = UIUtils.getDoubleFromUI(mQuantity.getText().toString());
+					quantity += 1;
+					mQuantity.setText(UIUtils.formatDoubleForUI(quantity));
+				} catch (NumberFormatException nfe) {
+					LogUtils.LOGE(TAG, nfe.toString());
+				} catch (Exception e) {
+					LogUtils.LOGE(TAG, e.toString());
+				}
+			}
+		});
+        bMinusOne = (Button) rootView.findViewById(R.id.so_line_minus_one);
+        bMinusOne.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					double quantity = UIUtils.getDoubleFromUI(mQuantity.getText().toString());
+					quantity -= 1;
+					if (quantity > 0) {
+						mQuantity.setText(UIUtils.formatDoubleForUI(quantity));
+					}
+				} catch (NumberFormatException nfe) {
+					LogUtils.LOGE(TAG, nfe.toString());
+				} catch (Exception e) {
+					LogUtils.LOGE(TAG, e.toString());
+				}
+			}
+		});
+        bMultiply = (Button) rootView.findViewById(R.id.so_line_add_min);
+        bMultiply.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					double quantity = UIUtils.getDoubleFromUI(mQuantity.getText().toString());
+					if (quantity < minQty) {
+						mQuantity.setText(UIUtils.formatDoubleForUI(minQty));
+					} else {
+						quantity += minQty;
+						mQuantity.setText(UIUtils.formatDoubleForUI(quantity));
+					}
+				} catch (NumberFormatException nfe) {
+					LogUtils.LOGE(TAG, nfe.toString());
+				} catch (Exception e) {
+					LogUtils.LOGE(TAG, e.toString());
+				}
+			}
+		});
+        
         return rootView;
     }
 	
@@ -459,7 +516,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			
 			String quantity = mQuantity.getText().toString().trim();
 			if (quantity != null && !quantity.equals("")) {
-				localValues.put(MobileStoreContract.SaleOrderLines.QUANTITY, UIUtils.getDoubleFromUI(quantity.replace('.', ',')));
+				localValues.put(MobileStoreContract.SaleOrderLines.QUANTITY, UIUtils.getDoubleFromUI(quantity));
 			} else {
 				throw new SaleOrderValidationException("Kolicina nije podesena!");
 				//localValues.putNull(MobileStoreContract.SaleOrderLines.QUANTITY);
@@ -825,7 +882,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         double quantity = -1;
         if (!cursor.isNull(SaleOrderLinesQuery.QUANTITY)) {
         	quantity = cursor.getDouble(SaleOrderLinesQuery.QUANTITY);
-        	mQuantity.setText(String.valueOf(quantity));
+        	mQuantity.setText(String.valueOf(quantity).replace('.', ','));
         }
         
         double quantity_available = -1;

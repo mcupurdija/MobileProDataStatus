@@ -42,6 +42,10 @@
                 android:showAsAction="ifRoom|withText"
                 android:title="Nova porudzbina"/>
             <item
+                android:id="@+id/main_shortcuts_sync_all"
+                android:showAsAction="ifRoom|withText"
+                android:title="Sinhronizacija"/>
+            <item
                 android:id="@+id/create_settings_activity"
                 android:icon="@drawable/ic_action_settings"
                 android:showAsAction="ifRoom|withText"

@@ -291,4 +291,8 @@
 		<item>Private</item>
 		<item>Other</item>
 	</string-array>
+	<string-array name="record_visit_result_type_array_v2">
+        <item>+ with closure</item>
+        <item>- no closure</item>
+    </string-array>
 </resources>

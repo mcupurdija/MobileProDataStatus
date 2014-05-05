@@ -26,16 +26,16 @@ public class SetPlannedVisitsToCustomersSyncObject extends SyncObject {
 
 	public static String TAG = "SetPlannedVisitsToCustomersSyncObject";
 	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.SET_PLANNED_VISITS_TO_CUSTOMERS_SYNC_ACTION";
-	
-	
+
 	private int visitId;
 	private Date requestSyncDate;
 	private String pCSVString;
-	
+
 	public static final Creator<SetPlannedVisitsToCustomersSyncObject> CREATOR = new Creator<SetPlannedVisitsToCustomersSyncObject>() {
 
 		@Override
-		public SetPlannedVisitsToCustomersSyncObject createFromParcel(Parcel source) {
+		public SetPlannedVisitsToCustomersSyncObject createFromParcel(
+				Parcel source) {
 			return new SetPlannedVisitsToCustomersSyncObject(source);
 		}
 
@@ -45,7 +45,7 @@ public class SetPlannedVisitsToCustomersSyncObject extends SyncObject {
 		}
 
 	};
-	
+
 	public SetPlannedVisitsToCustomersSyncObject() {
 		super();
 	}
@@ -54,12 +54,12 @@ public class SetPlannedVisitsToCustomersSyncObject extends SyncObject {
 		super();
 		this.visitId = visitId;
 	}
-	
+
 	public SetPlannedVisitsToCustomersSyncObject(Date requestSyncDate) {
 		super();
 		this.requestSyncDate = requestSyncDate;
 	}
-	
+
 	public SetPlannedVisitsToCustomersSyncObject(Parcel source) {
 		super(source);
 		setVisitId(source.readInt());
@@ -78,7 +78,8 @@ public class SetPlannedVisitsToCustomersSyncObject extends SyncObject {
 		dest.writeString(getStatusMessage());
 		dest.writeInt(getVisitId());
 		dest.writeString(getpCSVString());
-		dest.writeLong(getRequestSyncDate() == null ? -1 : getRequestSyncDate().getTime());
+		dest.writeLong(getRequestSyncDate() == null ? -1 : getRequestSyncDate()
+				.getTime());
 	}
 
 	@Override
@@ -96,14 +97,22 @@ public class SetPlannedVisitsToCustomersSyncObject extends SyncObject {
 		cSVString.setValue(pCSVString);
 		cSVString.setType(String.class);
 		properies.add(cSVString);
-		
+
 		return properies;
 	}
 
 	private String createVisitsData() {
 		// get header data
-		Cursor cursorHeader = context.getContentResolver().query(MobileStoreContract.Visits.buildVisitsPlannedExport(), VisitsQuery.PROJECTION, "DATE("+Tables.VISITS+"."+MobileStoreContract.Visits.VISIT_DATE+")=DATE(?) AND IS_DELETED = 0", new String[] { WsDataFormatEnUsLatin.toDbDateString(getRequestSyncDate()) }, null);
-		List<String[]> header = CSVDomainWriter.parseCursor(cursorHeader, VisitsQuery.PROJECTION_TYPE);
+		Cursor cursorHeader = context.getContentResolver().query(
+				MobileStoreContract.Visits.buildVisitsPlannedExport(),
+				VisitsQuery.PROJECTION,
+				"DATE(" + Tables.VISITS + "."
+						+ MobileStoreContract.Visits.VISIT_DATE
+						+ ")=DATE(?) AND " 
+						+ Tables.VISITS + "." + MobileStoreContract.Visits.IS_DELETED + "=0",
+				new String[] { WsDataFormatEnUsLatin.toDbDateString(getRequestSyncDate()) }, null);
+		List<String[]> header = CSVDomainWriter.parseCursor(cursorHeader,
+				VisitsQuery.PROJECTION_TYPE);
 		StringWriter stringWriter = new StringWriter();
 		CSVWriter writer = new CSVWriter(stringWriter, ';', '"');
 		writer.writeAll(header);
@@ -160,28 +169,20 @@ public class SetPlannedVisitsToCustomersSyncObject extends SyncObject {
 
 	private interface VisitsQuery {
 
-        String[] PROJECTION = {
-        		MobileStoreContract.SalesPerson.SALE_PERSON_NO,
-        		MobileStoreContract.Visits.VISIT_DATE,
-        		MobileStoreContract.Visits.ARRIVAL_TIME,
-        		MobileStoreContract.Visits.IS_DELETED,
-        		MobileStoreContract.Visits.DEPARTURE_TIME,
-        		MobileStoreContract.Visits.POTENTIAL_CUSTOMER,
-        		MobileStoreContract.Customers.CUSTOMER_NO,
-        		MobileStoreContract.Visits.NOTE
-        		
-        };
-        
-        Type[] PROJECTION_TYPE = {
-        		String.class,
-        		Date.class,
-        		Time.class,
-        		Integer.class,
-        		Time.class,
-        		Integer.class,
-        		String.class,
-        		String.class
-        };
+		String[] PROJECTION = { MobileStoreContract.SalesPerson.SALE_PERSON_NO,
+				MobileStoreContract.Visits.VISIT_DATE,
+				MobileStoreContract.Visits.ARRIVAL_TIME,
+				MobileStoreContract.Visits.IS_DELETED,
+				MobileStoreContract.Visits.DEPARTURE_TIME,
+				MobileStoreContract.Visits.POTENTIAL_CUSTOMER,
+				MobileStoreContract.Customers.CUSTOMER_NO,
+				MobileStoreContract.Visits.NOTE
+
+		};
+
+		Type[] PROJECTION_TYPE = { String.class, Date.class, Time.class,
+				Integer.class, Time.class, Integer.class, String.class,
+				String.class };
 	}
 
 	public Date getRequestSyncDate() {

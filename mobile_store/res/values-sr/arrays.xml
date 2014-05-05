@@ -590,5 +590,9 @@
         <item>W01</item>
         <item>Y01</item>
     </string-array>
+    <string-array name="record_visit_result_type_array_v2">
+        <item>+ posjeta sa zaključenjem</item>
+        <item>- posjeta bez zaključenja</item>
+    </string-array>
 
 </resources>

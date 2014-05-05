@@ -29,7 +29,6 @@ import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.CustomerSyncObject;
-import rs.gopro.mobile_store.ws.model.ItemQtySalesPriceAndDiscSyncObject;
 import rs.gopro.mobile_store.ws.model.MobileDeviceSetup;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.content.BroadcastReceiver;
@@ -42,7 +41,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NavUtils;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.MenuItem;
 
@@ -173,7 +171,8 @@ public abstract class BaseActivity extends FragmentActivity {
                 if (this instanceof HomeScreenActivity) {
                     return false;
                 }
-                NavUtils.navigateUpFromSameTask(this);
+                //NavUtils.navigateUpFromSameTask(this);
+                finish();
                 return true;
             case R.id.create_main_activity : // next button
 	            Intent intent = new Intent(getApplicationContext(), MainActivity.class);

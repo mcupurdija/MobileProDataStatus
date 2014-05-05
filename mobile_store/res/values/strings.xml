@@ -8,6 +8,7 @@
     <string name="login">Login</string>
     <string name="register">Register user</string>
     <string name="register_user_no">User no</string>
+    <string name="wr_password">Your Web Reporting password</string>
     <string name="app_logo_desc">Application image logo</string>
     <string name="login_title">Login</string>
     <string name="home_title">Home</string>
@@ -207,6 +208,7 @@
     <string name="customer_balance_lcy_label">Balance (LVT))</string>
     <string name="customer_balance_due_lcy_label">Balance due (LVT</string>
     <string name="customer_internal_balance_lcy_label">Internal balance (LVT)</string>
+    <string name="customer_wr_debt_label"><u>Web Reporting - Debt review</u></string>
     <string name="customer_payment_terms_code_label">Payment term code</string>
     <string name="customer_priority_label">Priority</string>
     <string name="customer_global_dimension_label">Global dimension</string>
@@ -395,4 +397,34 @@
     
     <string name="service_order_address_post_code_label">Address and Post code</string>
     <string name="service_order_item_quantity_label">Quantity</string>
+    
+    <string name="button_add_label">+1</string>
+	<string name="button_subtract_label">-1</string>
+	<string name="button_multiply_label">X</string>
+	
+	<string name="error_internet_status">Trenutno nije moguće poslati realizaciju. Proverite internet konekciju.</string>
+	
+	<string name="pocetak_posete_zabelezen">Početak posete je već zabeležen!</string>
+	<string name="kraj_posete_zabelezen">Kraj posete je već zabeležen!</string>
+	<string name="postoji_otvorena_poseta">Postoji otvorena realizacija!</string>
+	<string name="pocetak_dana_zabelezen">Početak dana je zabeležen!</string>
+	<string name="dan_nije_zapocet">Dan nije započet!</string>
+	<string name="kraj_dana_zabelezen">Kraj dana je zabeležen!</string>
+	<string name="dan_nije_zavrsen">Dan nije završen!</string>
+	<string name="dan_nije_otvoren">Dan nije otvoren!</string>
+	<string name="dolazak_kuci_zabelezen">Dolazak kući je zabeležen!</string>
+	
+	<string name="title_unesite_kilometrazu">Unesite kilometražu</string>
+	<string name="title_unesite_vrednost">Niste uneli vrednost</string>
+	<string name="pocetak_dana_nije_zabelezen">Početak dana nije zabeležen!</string>
+	<string name="kraj_dana_nije_zabelezen">Kraj dana nije zabeležen!</string>
+	<string name="kraj_realizacije_zabelezen">Kraj realizacije uspešno zabeležen!</string>
+	<string name="kraj_pauze_zabelezen">Kraj pauze uspešno zabeležen!</string>
+	<string name="kupac_nije_izabran">Kupac nije izabran!</string>
+	<string name="datum_format">Molimo proverite format unesenih podataka!</string>
+	<string name="postavi_datum">Postavi datum</string>
+	<string name="postavi_vreme">Postavi vreme</string>
+	<string name="plan_kreiran">Plan je uspešno kreiran</string>
+	<string name="plan_azuriran">Plan je uspešno ažuriran</string>
+	<string name="plan_obrisan">Plan je uspešno izbrisan</string>
 </resources>

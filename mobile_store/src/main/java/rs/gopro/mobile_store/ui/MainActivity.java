@@ -85,7 +85,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		PreferenceManager.setDefaultValues(this, R.xml.ws_settings,false);
+		PreferenceManager.getDefaultSharedPreferences(this).edit().remove("ws_entry_point").remove("ws_schema").remove("ws_navisition_codeunit").remove("ws_server_address").remove("company_address").commit();
+		PreferenceManager.setDefaultValues(this, R.xml.ws_settings, true);
 		boolean isUserLogged = SharedPreferencesUtil.isUserLoggedIn(getApplicationContext());
 		if (!isUserLogged) {
 			Intent loginScreen = new Intent(this, LoginActivity.class);
@@ -345,14 +346,16 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 //			currentCustomLinearLayout.doSynchronization();
 //			return true;
 		case R.id.main_options_record_visits_details:
-			final Uri recordVisitsUri = MobileStoreContract.Visits.CONTENT_URI;
+			/*final Uri recordVisitsUri = MobileStoreContract.Visits.CONTENT_URI;
 			final Intent recordIntent = new Intent(RecordVisitsMultipaneActivity.RECORD_VISITS_INTENT, recordVisitsUri);
-			startActivity(recordIntent);
+			startActivity(recordIntent);*/
+			startActivity(new Intent(getApplicationContext(), NovaRealizacijaActivity.class));
 			return true;
 		case R.id.main_options_visits_details:
-			final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
+			/*final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
 			final Intent intent = new Intent(Intent.ACTION_VIEW, visitsUri);
-			startActivity(intent);
+			startActivity(intent);*/
+			startActivity(new Intent(getApplicationContext(), NoviPlanActivity.class));
 			return true;
 		case R.id.main_options_sale_order_details:
 			final Uri saleOrdersUri = MobileStoreContract.SaleOrders.CONTENT_URI;
@@ -374,6 +377,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 					MobileStoreContract.SaleOrders.CONTENT_URI);
 //			startActivityForResult(newSaleOrderIntent, CALL_INSERT);
 			startActivity(newSaleOrderIntent);
+			return true;
+		case R.id.main_shortcuts_sync_all:
+			startActivity(new Intent(this, SinhonizacijaActivity.class));
 			return true;
 		case R.id.main_options_add_contact:
 			Intent addContactIntent = new Intent(this, AddContactActivity.class);

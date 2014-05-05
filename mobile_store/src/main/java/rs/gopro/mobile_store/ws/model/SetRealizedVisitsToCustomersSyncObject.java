@@ -92,6 +92,12 @@ public class SetRealizedVisitsToCustomersSyncObject extends SyncObject {
 		cSVString.setType(String.class);
 		properies.add(cSVString);
 		
+		PropertyInfo statusOK = new PropertyInfo();
+		statusOK.setName("statusOK");
+		statusOK.setValue(false);
+		statusOK.setType(Boolean.class);
+		properies.add(statusOK);
+		
 		return properies;
 	}
 
@@ -121,21 +127,14 @@ public class SetRealizedVisitsToCustomersSyncObject extends SyncObject {
 	}
 
 	@Override
-	protected int parseAndSave(ContentResolver contentResolver,
-			SoapPrimitive soapResponse) throws CSVParseException {
-		if (soapResponse == null || soapResponse.toString().equals("")) {
+	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException {
+		if (soapResponse.toString().equals("true")) {
 			// ok servis no error response
 			ContentValues cv = new ContentValues();
 			cv.put(MobileStoreContract.Visits.IS_SENT, 1);
-			int result = context.getContentResolver().update(MobileStoreContract.Visits.CONTENT_URI, cv, Tables.VISITS + "._id=?", new String[] { String.valueOf(visitId) });
-			if (result == 0) {
-				throw new CSVParseException("Realized visit not marked as sent!");
-			}
-			return result;
-		} else {
-			throw new CSVParseException("Unexpected response!");
+			return context.getContentResolver().update(MobileStoreContract.Visits.CONTENT_URI, cv, Tables.VISITS + "._id=?", new String[] { String.valueOf(visitId) });
 		}
-		//return 0;
+		return 0;
 	}
 
 	@Override

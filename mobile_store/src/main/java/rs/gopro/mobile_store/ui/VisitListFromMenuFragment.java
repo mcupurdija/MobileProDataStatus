@@ -233,22 +233,22 @@ public class VisitListFromMenuFragment extends ListFragment implements LoaderMan
 			view.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					mSelectedVisitId = visit_id;
+					/*mSelectedVisitId = visit_id;
 					mAdapter.notifyDataSetChanged();
 					final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
 					// mAction is from main menu sent, and it is in par with expected actions in activities
 					final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.Visits.buildVisitUri(visit_id));
 					intent.putExtra(VisitsMultipaneActivity.EXTRA_MASTER_URI, visitsUri);
-					startActivity(intent);	
+					startActivity(intent);*/	
 				}
 			});
 			
 			view.setOnLongClickListener(new OnLongClickListener() {
 				@Override
 				public boolean onLongClick(View v) {
-					String visitId = visit_id;
+					/*String visitId = visit_id;
 					String visitType = String.valueOf(visit_type);
-					actionBarCallback.onLongClickItem(visitId, visitType);
+					actionBarCallback.onLongClickItem(visitId, visitType);*/
 					return true;
 				}
 			});
