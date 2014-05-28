@@ -32,9 +32,11 @@ public class ElectronicCardCustomerDomain extends Domain {
 	public String sales_line_counts_current_year;
 	public String sales_line_counts_prior_year;
 	public String last_line_discount;
+	public String color;
+	public String sorting_index;
 
 	private static final String[] COLUMNS = new String[] { "customer_no", "item_no", "january_qty", "february_qty", "march_qty", "april_qty", "may_qty", "june_qty", "july_qty", "august_qty", "september_qty", "october_qty", "november_qty",
-			"december_qty", "total_sale_qty_current_year", "total_sale_qty_prior_year", "total_turnover_current_year", "total_turnover_prior_year", "sales_line_counts_current_year", "sales_line_counts_prior_year", "last_line_discount" };
+			"december_qty", "total_sale_qty_current_year", "total_sale_qty_prior_year", "total_turnover_current_year", "total_turnover_prior_year", "sales_line_counts_current_year", "sales_line_counts_prior_year", "last_line_discount", "color", "sorting_index" };
 
 	@Override
 	public String[] getCSVMappingStrategy() {
@@ -50,7 +52,7 @@ public class ElectronicCardCustomerDomain extends Domain {
 		contentValues.put(ElectronicCardCustomer.FEBRUARY_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getFebruary_qty()));
 		contentValues.put(ElectronicCardCustomer.MARCH_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getMarch_qty()));
 		contentValues.put(ElectronicCardCustomer.APRIL_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getApril_qty()));
-		contentValues.put(ElectronicCardCustomer.MAY_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getMay_qty() ));
+		contentValues.put(ElectronicCardCustomer.MAY_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getMay_qty()));
 		contentValues.put(ElectronicCardCustomer.JUNE_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getJune_qty()));
 		contentValues.put(ElectronicCardCustomer.JULY_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getJuly_qty()));
 		contentValues.put(ElectronicCardCustomer.AUGUST_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getAugust_qty()));
@@ -65,6 +67,8 @@ public class ElectronicCardCustomerDomain extends Domain {
 		contentValues.put(ElectronicCardCustomer.SALES_LINE_COUNTS_CURRENT_YEAR, WsDataFormatEnUsLatin.toDoubleFromWs(getSales_line_counts_current_year()));
 		contentValues.put(ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR, WsDataFormatEnUsLatin.toDoubleFromWs(getSales_line_counts_prior_year()));
 		contentValues.put(ElectronicCardCustomer.LAST_LINE_DISCOUNT, WsDataFormatEnUsLatin.toDoubleFromWs(getLast_line_discount()));
+		contentValues.put(ElectronicCardCustomer.COLOR, getColor());
+		contentValues.put(ElectronicCardCustomer.SORTING_INDEX, getSorting_index());
 		return contentValues;
 	}
 
@@ -245,8 +249,20 @@ public class ElectronicCardCustomerDomain extends Domain {
 		this.last_line_discount = last_line_discount;
 	}
 
-	
-	
-	
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public String getSorting_index() {
+		return sorting_index;
+	}
+
+	public void setSorting_index(String sorting_index) {
+		this.sorting_index = sorting_index;
+	}
 	
 }

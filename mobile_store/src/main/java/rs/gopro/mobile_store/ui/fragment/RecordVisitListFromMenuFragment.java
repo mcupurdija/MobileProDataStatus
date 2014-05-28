@@ -116,6 +116,22 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 		listView.setSelector(android.R.color.transparent);
 		listView.setCacheColorHint(Color.WHITE);
 		//listView.setOnItemLongClickListener(this);
+		
+		
+		try {
+			realizacijaDatumFilter = (Button) getActivity().findViewById(R.id.realizacijaDatumFilter);
+			realizacijaDatumFilter.setText(DateUtils.toUIDate(odabraniDatum));
+			realizacijaDatumFilter.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					showDatePicker();
+				}
+			});
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 	}
 
 	@Override
@@ -133,15 +149,6 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 			mHasSetEmptyText = true;
 		}
 		
-		realizacijaDatumFilter = (Button) getActivity().findViewById(R.id.realizacijaDatumFilter);
-		realizacijaDatumFilter.setText(DateUtils.toUIDate(odabraniDatum));
-		realizacijaDatumFilter.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				showDatePicker();
-			}
-		});
 	}
 	
 	private void showDatePicker() {

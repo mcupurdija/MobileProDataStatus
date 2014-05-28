@@ -21,11 +21,29 @@
         android:layout_height="wrap_content"
         android:completionThreshold="1" />
 
+    <TextView
+        style="@style/AddEdit_Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
+        android:gravity="center_vertical"
+        android:text="@string/customer_address_label" />
+
+    <Button
+        android:id="@+id/dialog_nova_realizacija_adresa_input"
+        style="?android:attr/spinnerStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:visibility="gone" >
 
         <LinearLayout
             android:layout_width="0dp"

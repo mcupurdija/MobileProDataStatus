@@ -60,7 +60,7 @@
             android:id="@+id/spacer"
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:background="?android:attr/listDivider" />
+            android:background="#A9A9A9" />
 
         <ListView
             android:id="@+id/lvPlan"
@@ -90,10 +90,16 @@
             android:background="@drawable/white_button"
             android:text="@string/day_end_record_visit_menu_title" />
 
-        <View
+        <TextView
+            android:id="@+id/tvGpsIskljucen"
             android:layout_width="0dp"
-            android:layout_height="5dp"
-            android:layout_weight="2" />
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="@string/gps_iskljucen"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/red"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/bPovratakKuci"

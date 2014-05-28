@@ -167,8 +167,11 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 			if (customerId == null || customerId.length() < 1) {
 				return true;
 			}
-			Intent eccIntent = new Intent(Intent.ACTION_VIEW, ElectronicCardCustomer.buildUri(customerId));
+			Intent eccIntent = new Intent(getApplicationContext(), NoviEkkPregled.class);
+			eccIntent.putExtra("customerId", customerId);
 			startActivity(eccIntent);
+			/*Intent eccIntent = new Intent(Intent.ACTION_VIEW, ElectronicCardCustomer.buildUri(customerId));
+			startActivity(eccIntent);*/
 			return true;
 		case R.id.create_cus_trade_agree_activity:
 			if (customerId == null || customerId.length() < 1) {

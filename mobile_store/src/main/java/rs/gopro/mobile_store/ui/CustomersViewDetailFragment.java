@@ -6,17 +6,22 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.util.ApplicationConstants;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.AssetUtil;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.SalespersonUpdateSyncObject;
 import rs.gopro.mobile_store.ws.model.SetPotentialCustomersSyncObject;
+import rs.gopro.mobile_store.ws.model.SyncResult;
 import rs.gopro.mobile_store.ws.model.UpdateCustomerSyncObject;
 import android.app.Activity;
-import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +30,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,7 +38,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -89,7 +94,23 @@ public class CustomersViewDetailFragment extends Fragment implements
 	private ActionMode actionMode;
 	private boolean isInUpdateMode = false;
 	
+	private BroadcastReceiver onNotice = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
+			onSOAPResult(syncResult, intent.getAction());
+		}
+	};
 	
+	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
+		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
+			if (SalespersonUpdateSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				checkForWrData();
+			}
+		} else {
+			openWebReportingLoginPage();
+		}
+	}
     
 	public interface Callbacks {
 		public void onCustomerIdAvailable(String customerId);
@@ -146,9 +167,17 @@ public class CustomersViewDetailFragment extends Fragment implements
     @Override
     public void onPause() {
         super.onPause();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(onNotice);
     }
 
     @Override
+	public void onResume() {
+		super.onResume();
+		IntentFilter salesPersonSyncObject = new IntentFilter(SalespersonUpdateSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, salesPersonSyncObject);
+	}
+
+	@Override
     public void onDestroy() {
         super.onDestroy();
     }
@@ -201,38 +230,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 			
 			@Override
 			public void onClick(View v) {
-				
-				final Dialog dialog = new Dialog(getActivity());
-				dialog.setContentView(R.layout.dialog_wr_password);
-				dialog.setTitle("Unesite Web Reporting lozinku");
-				
-				final EditText etLozinka = (EditText) dialog.findViewById(R.id.dialog_wr_password);
-				Button bDialogOk = (Button) dialog.findViewById(R.id.dialogWrButtonOK);
-				
-				bDialogOk.setOnClickListener(new View.OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						
-						String lozinka = etLozinka.getText().toString();
-						if (lozinka.trim().length() > 0) {
-							String salt = ApplicationConstants.SALT;
-							lozinka = AssetUtil.computeMD5Hash(salt + lozinka.toUpperCase(Locale.getDefault()) + salt).toUpperCase(Locale.getDefault());
-							String url = String.format(Locale.getDefault(), "http://10.94.1.11/goproreporting/Login.aspx?mpu=%s&mpp=%s&mpr=%d&mprd=%s", 
-									SharedPreferencesUtil.getSalePersonNo(getActivity()).toUpperCase(Locale.getDefault()), 
-									lozinka, 
-									11, 
-									mCustomer_no.getText().toString());
-							//Log.d("WR1", SharedPreferencesUtil.getSalePersonNo(getActivity()).toUpperCase(Locale.getDefault()));
-							//Log.d("WR2", lozinka);
-							//Log.d("WR3", mCustomer_no.getText().toString());
-							startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-						}
-						dialog.dismiss();
-					}
-				});
-				dialog.show();
-				
+				checkForWrData();
 			}
 		});
         
@@ -245,6 +243,40 @@ public class CustomersViewDetailFragment extends Fragment implements
         	setFocusable(false);
         }
         return rootView;
+    }
+    
+    private void checkForWrData() {
+    	String salesPersonNo = SharedPreferencesUtil.getSalePersonNo(getActivity());
+		String wrPassword;
+		
+		Cursor cursor = getActivity().getContentResolver().query(MobileStoreContract.SalesPerson.CONTENT_URI, SalesPersonQuery.PROJECTION, MobileStoreContract.SalesPersonsColumns.SALE_PERSON_NO + "=?", new String[] { salesPersonNo }, null);
+		if (cursor.moveToFirst()) {
+			wrPassword = cursor.getString(SalesPersonQuery.WR_PASSWORD);
+			if (wrPassword != null) {
+				setupPassAndOpenWebReporting(salesPersonNo, wrPassword);
+			} else {
+				System.out.println(">>> null");
+				azurirajPodatkeProdavca(salesPersonNo);
+			}
+		}
+    }
+    
+    private void setupPassAndOpenWebReporting(String salesPersonNo, String wrPassword) {
+    	String salt = ApplicationConstants.SALT;
+		String hashedPassword = AssetUtil.computeMD5Hash(salt + wrPassword + salt).toUpperCase(Locale.getDefault());
+		String url = String.format(Locale.getDefault(), ApplicationConstants.WEB_REPORTING_BASE_URL + "goproreporting/Login.aspx?mpu=%s&mpp=%s&mpr=%d&mprd=%s", 
+				salesPersonNo, 
+				hashedPassword, 
+				11, 
+				mCustomer_no.getText().toString());
+		//Log.d("WR1", salesPersonNo);
+		//Log.d("WR2", hashedPassword);
+		//Log.d("WR3", mCustomer_no.getText().toString());
+		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+    
+    private void openWebReportingLoginPage() {
+    	startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(ApplicationConstants.WEB_REPORTING_BASE_URL)));
     }
 	
     public void buildUiFromCursor(Cursor cursor) {
@@ -554,7 +586,26 @@ public class CustomersViewDetailFragment extends Fragment implements
 		int APR_CUSTOMER_TURNOVER = 36;
 	}
 
+	private interface SalesPersonQuery {
 
+		String[] PROJECTION = { BaseColumns._ID,
+				MobileStoreContract.SalesPerson.SALE_PERSON_NO,
+				MobileStoreContract.SalesPerson.WR_USERNAME,
+				MobileStoreContract.SalesPerson.WR_PASSWORD
+				};
+
+//		int _ID = 0;
+//		int SALE_PERSON_NO = 1;
+//		int WR_USERNAME = 2;
+		int WR_PASSWORD = 3;
+	}
+	
+	private void azurirajPodatkeProdavca(String salesPersonNo) {
+		SalespersonUpdateSyncObject salespersonSetupSyncObject = new SalespersonUpdateSyncObject(salesPersonNo);
+		Intent syncSalesPerson = new Intent(getActivity(), NavisionSyncService.class);
+		syncSalesPerson.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, salespersonSetupSyncObject);
+		getActivity().startService(syncSalesPerson);
+	}
 
 
 }

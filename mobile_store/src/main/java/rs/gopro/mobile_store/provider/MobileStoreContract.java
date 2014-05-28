@@ -34,8 +34,10 @@ public class MobileStoreContract {
 	private static final String PATH_SALE_ORDER_SEARCH_CUSTOM = "custom_search";
 
 	private static final String PATH_CONTACTS = "contacts";
+	private static final String PATH_CONTACTS_EXPORT = "contacts_export";
 	private static final String PATH_CUSTOMER_ADDRESSES = "customer_addresses";
 	private static final String PATH_CUSTOMER_NO = "customer_no";
+	private static final String PATH_CONTACT_COMPANY_NO = "customers_by_contact_company_no";
 	private static final String PATH_POTENTIAL_CUSTOMERS_EXPORT = "potential_customers_export";
 	private static final String PATH_UPDATE_CUSTOMERS_EXPORT = "update_customers_export";
 	//private static final String PATH_CONTACTS_SEARCH_CUSTOM = "custom_search";
@@ -92,6 +94,10 @@ public class MobileStoreContract {
 		String ARRIVAL_TIME = "arrival_time";
 		String VISIT_RESULT = "visit_result";
 		String NOTE = "note";
+		String ADDRESS_NO = "address_no";
+		String LATITUDE = "latitude";
+		String LONGITUDE = "longitude";
+		String ACCURACY = "accuracy";
 		String SYNC_OBJECT_BATCH = "sync_object_batch";
 		String VISIT_TYPE = "visit_type";
 		String IS_SENT = "is_sent";
@@ -365,6 +371,8 @@ public class MobileStoreContract {
 		String INVOICE_QUERY_NUMBER_OF_DAYS = "invoice_query_number_of_days";
 		String PASSWORD = "password";
 		String SALES_PERSON_EMAIL = "email";
+		String WR_USERNAME = "wr_username";
+		String WR_PASSWORD = "wr_password";
 	}
 	
 	public interface ElectronicCardCustomerColumns {
@@ -389,6 +397,8 @@ public class MobileStoreContract {
 		String SALES_LINE_COUNTS_CURRENT_YEAR = "sales_line_counts_current_year";
 		String SALES_LINE_COUNTS_PRIOR_YEAR = "sales_line_counts_prior_year";
 		String LAST_LINE_DISCOUNT = "last_line_discount";
+		String COLOR = "color";
+		String SORTING_INDEX = "sorting_index";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
@@ -520,11 +530,10 @@ public class MobileStoreContract {
 			return uri.getPathSegments().get(1);
 		}
 		
-		public static final String DEFAULT_SORT = Tables.ELECTRONIC_CARD_CUSTOMER + "." + ElectronicCardCustomerColumns.CREATED_DATE + " ASC";
+		public static final String DEFAULT_SORT = Tables.ELECTRONIC_CARD_CUSTOMER + "." + ElectronicCardCustomerColumns.SORTING_INDEX + " ASC, "
+				+ Tables.ELECTRONIC_CARD_CUSTOMER + "." + BaseColumns._ID + " ASC";
+		
 	}
-
-	
-	
 	
 	public static class SalesPerson implements SalesPersonsColumns, BaseColumns{
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SALES_PERSON).build();
@@ -658,8 +667,16 @@ public class MobileStoreContract {
 		public static Uri getCustomersBySalesPerson(String salesPersonId) {
 			return BASE_CONTENT_URI.buildUpon().appendPath(PATH_CUSTOMERS_BY_SALES_PERSON).appendPath(salesPersonId).build();
 		}
+		
+		public static Uri getCustomersByContactCompanyNo(String contactCompanyNo) {
+			return BASE_CONTENT_URI.buildUpon().appendPath(PATH_CONTACT_COMPANY_NO).appendPath(contactCompanyNo).build();
+		}
 
 		public static String getCustomersSalesPersonId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+		
+		public static String getContactCompanyNo(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}
 
@@ -913,7 +930,7 @@ public class MobileStoreContract {
 		}
 	}
 
-	public static class Contacts implements ContactsColumns, BaseColumns {
+	public static class Contacts implements ContactsColumns, BaseColumns, SalesPersonsColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CONTACTS).build();
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.contacts";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.contacts";
@@ -926,12 +943,16 @@ public class MobileStoreContract {
 			return uri.getPathSegments().get(1);
 		}
 		
+		public static Uri buildContactsExport() {
+			return CONTENT_URI.buildUpon().appendPath(PATH_CONTACTS_EXPORT).build();
+		}
+		
 		public static Uri buildCustomSearchUri(String text) {
-			return CONTENT_URI.buildUpon().appendPath(text).build();
+			return CONTENT_URI.buildUpon().appendPath("search").appendPath(text).build();
 		}
 		
 		public static String getContactsCustomSearch(Uri uri){
-			return uri.getPathSegments().get(1);
+			return uri.getPathSegments().get(2);
 		}
 		
 		public static final String DEFAULT_SORT = Contacts.CONTACT_NO + " ASC";

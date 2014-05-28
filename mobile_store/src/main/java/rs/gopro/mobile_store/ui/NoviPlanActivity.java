@@ -20,6 +20,7 @@ import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.SetPlannedVisitsToCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.app.TimePickerDialog.OnTimeSetListener;
@@ -27,6 +28,7 @@ import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
@@ -407,8 +409,9 @@ public class NoviPlanActivity extends BaseActivity implements LoaderCallbacks<Cu
 			final int customerId = cursor.getInt(PlanQuery.CUSTOMER_ID);
 			final String date = DateUtils.formatDbDateForPresentation(cursor.getString(PlanQuery.VISIT_DATE));
 			final String time = DateUtils.formatDbTimeForPresentation(cursor.getString(PlanQuery.ARRIVAL_TIME));
+			final String customerName = cursor.getString(PlanQuery.CUSTOMER_NAME);
 
-			tvPlanNaslov.setText(cursor.getString(PlanQuery.CUSTOMER_NO) + " - " + cursor.getString(PlanQuery.CUSTOMER_NAME));
+			tvPlanNaslov.setText(cursor.getString(PlanQuery.CUSTOMER_NO) + " - " + customerName);
 			tvPlanDatum.setText(date);
 			tvPlanVreme.setText(time);
 
@@ -432,10 +435,28 @@ public class NoviPlanActivity extends BaseActivity implements LoaderCallbacks<Cu
 
 				@Override
 				public void onClick(View v) {
-					izbrisiPlan(selectedVisitId);
+					ConfirmDialog(selectedVisitId, customerName);
 				}
 			});
 		}
+	}
+	
+	private void ConfirmDialog(final int id, final String name) {
+		AlertDialog.Builder adb = new AlertDialog.Builder(this);
+	    adb.setTitle(getString(R.string.potvrda_brisanja) + " [" + name + "]");
+
+	    adb.setPositiveButton("Potvrdi", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	        	izbrisiPlan(id);
+	        }
+	    });
+
+	    adb.setNegativeButton("Otkaži", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	        	dialog.dismiss();
+	        }
+	    });
+	    adb.show();
 	}
 
 	private interface PlanQuery {

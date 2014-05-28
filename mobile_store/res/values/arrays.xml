@@ -291,6 +291,302 @@
 		<item>Private</item>
 		<item>Other</item>
 	</string-array>
+	<string-array name="bransa_id_array">
+        <item>A01</item>
+        <item>A02</item>
+        <item>A03</item>
+        <item>A04</item>
+        <item>A10</item>
+        <item>A11</item>
+        <item>A12</item>
+        <item>A20</item>
+        <item>A21</item>
+        <item>A22</item>
+        <item>A23</item>
+        <item>A24</item>
+        <item>A25</item>
+        <item>A30</item>
+        <item>A31</item>
+        <item>A32</item>
+        <item>A33</item>
+        <item>A34</item>
+        <item>A40</item>
+        <item>A41</item>
+        <item>A50</item>
+        <item>A90</item>
+        <item>A99</item>
+        <item>C01</item>
+        <item>C02</item>
+        <item>C03</item>
+        <item>C10</item>
+        <item>C11</item>
+        <item>C12</item>
+        <item>C13</item>
+        <item>C20</item>
+        <item>C21</item>
+        <item>C22</item>
+        <item>C23</item>
+        <item>C30</item>
+        <item>C31</item>
+        <item>C40</item>
+        <item>C41</item>
+        <item>C50</item>
+        <item>C51</item>
+        <item>C52</item>
+        <item>C90</item>
+        <item>C99</item>
+        <item>D01</item>
+        <item>D02</item>
+        <item>D03</item>
+        <item>D04</item>
+        <item>D05</item>
+        <item>D10</item>
+        <item>D11</item>
+        <item>D20</item>
+        <item>D21</item>
+        <item>D90</item>
+        <item>D99</item>
+        <item>G01</item>
+        <item>G02</item>
+        <item>G03</item>
+        <item>G10</item>
+        <item>G11</item>
+        <item>G12</item>
+        <item>G13</item>
+        <item>G14</item>
+        <item>G15</item>
+        <item>G16</item>
+        <item>G17</item>
+        <item>G20</item>
+        <item>G30</item>
+        <item>G31</item>
+        <item>G90</item>
+        <item>G99</item>
+        <item>I01</item>
+        <item>I02</item>
+        <item>I10</item>
+        <item>I11</item>
+        <item>I20</item>
+        <item>I21</item>
+        <item>I22</item>
+        <item>I30</item>
+        <item>I31</item>
+        <item>I32</item>
+        <item>I33</item>
+        <item>I34</item>
+        <item>I35</item>
+        <item>I36</item>
+        <item>I50</item>
+        <item>I90</item>
+        <item>I99</item>
+        <item>M01</item>
+        <item>M02</item>
+        <item>M03</item>
+        <item>M04</item>
+        <item>M05</item>
+        <item>M06</item>
+        <item>M07</item>
+        <item>M08</item>
+        <item>M09</item>
+        <item>M10</item>
+        <item>M21</item>
+        <item>M22</item>
+        <item>M23</item>
+        <item>M24</item>
+        <item>M25</item>
+        <item>M26</item>
+        <item>M27</item>
+        <item>M40</item>
+        <item>M41</item>
+        <item>M90</item>
+        <item>M99</item>
+        <item>O01</item>
+        <item>O02</item>
+        <item>O03</item>
+        <item>O04</item>
+        <item>O05</item>
+        <item>O06</item>
+        <item>O07</item>
+        <item>O08</item>
+        <item>O20</item>
+        <item>O21</item>
+        <item>O22</item>
+        <item>O23</item>
+        <item>O24</item>
+        <item>O25</item>
+        <item>O30</item>
+        <item>O31</item>
+        <item>O32</item>
+        <item>O90</item>
+        <item>O95</item>
+        <item>O99</item>
+        <item>T10</item>
+        <item>T20</item>
+        <item>T21</item>
+        <item>T30</item>
+        <item>T40</item>
+        <item>T41</item>
+        <item>T42</item>
+        <item>T50</item>
+        <item>T51</item>
+        <item>T60</item>
+        <item>T61</item>
+        <item>T70</item>
+        <item>T71</item>
+        <item>T80</item>
+        <item>T90</item>
+        <item>T99</item>
+        <item>W01</item>
+        <item>Y01</item>
+    </string-array>
+    <string-array name="bransa_array">
+        <item>AUTO CENTRI (PROD+MEH+KAROS+EL)</item>
+        <item>AUTO CENTRI BEZ PRODAJE VOZILA</item>
+        <item>PRODAVCI novih i polovnih VOZILA- DILERI</item>
+        <item>AUTO OTPADI</item>
+        <item>AUTO MEHANIÈARI</item>
+        <item>AUTO ELEKTRIÈARI</item>
+        <item>KLIMA SERVISI</item>
+        <item>AUTO KAROSERIJA (LIMARI I FARBARI)</item>
+        <item>AUTO LIMARI</item>
+        <item>AUTO FARBARI</item>
+        <item>AUTO STAKLA</item>
+        <item>PERIONICE</item>
+        <item>AUTO TAPETARI</item>
+        <item>MAŠINSKE OBRADE</item>
+        <item>BOŠISTI i KARBURATORI</item>
+        <item>AUTO GAS</item>
+        <item>MALI MOTORI- ŠTIL</item>
+        <item>OPRAVKA MOTOCIKALA</item>
+        <item>SERVIS AUSPUHA I HLADNJAKA</item>
+        <item>VULKANIZERI, TRAPADŽIJE, AMORTIZERI</item>
+        <item>Auto škole i RENT-A-CAR </item>
+        <item>AUTO privremena branša</item>
+        <item>AUTO Tranzitni kupac</item>
+        <item>OVLAŠÆ. SERVISI VELIKIH VOZILA</item>
+        <item>CARGO CENTRI=MEH+KAR+EL</item>
+        <item>CARGO MEHANIÈARI</item>
+        <item>CARGO SOP. ODRŽ. - PREVOZNICI</item>
+        <item>TRANSPORTERI-ŠPEDICIJA</item>
+        <item>AUTOBUSKE KOMPANIJE</item>
+        <item>VILJUŠKARI</item>
+        <item>CARGO KAROSERIJA- AUTOBUSI</item>
+        <item>CARGO KAROSERIJA- KAMIONI</item>
+        <item>CIRADE</item>
+        <item>SPECIJALNA VOZILA</item>
+        <item>CARGO SOP. ODRŽ. - SISTEMI</item>
+        <item>JAVNA KOMUNALNA PREDUZEÆA</item>
+        <item>POLJOPRIVREDNE MAŠINE</item>
+        <item>RADOVI U POLJU I ŠUMI</item>
+        <item>NISKOGRADNJA</item>
+        <item>GRAÐEVINSKA MEHANIZACIJA</item>
+        <item>CARGO PROIZV. TRANSP:  BETONA</item>
+        <item>CARGO PRIVREMENO</item>
+        <item>SPEC. BRANŠA CARGO</item>
+        <item>FABRIKA NAMEŠTAJA</item>
+        <item>PROIZVODNJA NAMEŠTAJA OD MASIVA</item>
+        <item>PROIZVODNJA NAMEŠTAJA OD PLOÈASTOG MATERIJALA</item>
+        <item>PROIZVODNJA KUPATILSKOG NAMEŠTAJA</item>
+        <item>PROIZVODNJA STOLICA I TAPACIRANOG NAMEŠTAJA</item>
+        <item>DRVNI CENTAR</item>
+        <item>PRODAVNICA OKOVA</item>
+        <item>ENTERIJERI</item>
+        <item>PROIZVODNJA POGREBNE OPREME</item>
+        <item>DRVO PRIVREMENO</item>
+        <item>SPEC. BRANŠA DRVO</item>
+        <item>Proizvodnja drvene graðevinske stolarije </item>
+        <item>Proizvodnja Alu - PVC stolarije</item>
+        <item>Ugradnja graðevinske stolarije stolarije</item>
+        <item>IZRADA I SKLAPANJE MONT. KUÆA</item>
+        <item>MOLERI, MALTER., UNUTR. OBRADA</item>
+        <item>GIPS- SUVA GRADNJA</item>
+        <item>KROVAŠI (TESARI)</item>
+        <item>GRAÐEVINSKI LIMARI</item>
+        <item>PARKETARI</item>
+        <item>STAKLARI</item>
+        <item>Proizvodnja roletni, komarnika, venecijanera</item>
+        <item>STRUGARE-PILANE</item>
+        <item>KAMENORESCI</item>
+        <item>PREFABRIKOVANI ELEMENTI</item>
+        <item>GRADNJA PRIVREMENO</item>
+        <item>SPEC. BRANŠA GRADNJA</item>
+        <item>VISOKOGRADNJA</item>
+        <item>PROJEKTNI BIROI, GRADNJA</item>
+        <item>VODA I GREJANJE-PROIZV.-MONTAŽA</item>
+        <item>PROIZV. BAZENA- MONTAŽA</item>
+        <item>PROIZV. VENTILACIONIH KANALA..</item>
+        <item>KLIMA MONTAŽA SPLIT SISTEM</item>
+        <item>SERVIS BELE TEHNIKE-KLIMA</item>
+        <item>PROIZV. I PRENOS EL. ENERGIJE</item>
+        <item>ELEKTROINSTALATERI</item>
+        <item>PROIZV.EL. UREÐAJA /EL. ORMARA</item>
+        <item>ELEKTRONIKA/SERVIS/RAČUNARI&#8230;</item>
+        <item>KOMUNIKAC. TEHNOLOGIJE&#8230;</item>
+        <item>NADZOR I ALARMNI SISTEM</item>
+        <item>PROIZV. REKLAMA I NEON.REKLAMA</item>
+        <item>SISTEMI  ZA  ZAŠTITU  OD  POŽARA</item>
+        <item>INSTALACIJE  PRIVREMENO</item>
+        <item>INSTALACIJE tranzitni kupac</item>
+        <item>PROIZVODNJA MAŠINA</item>
+        <item>PROIZVODNJA LIFTOVA I DIZALICA</item>
+        <item>PROIZV. BRODOVA (METAL I PL.)</item>
+        <item>PROIZV. DELOVA ZA AUTO IND.</item>
+        <item>PROIZV. METAL. I KLIZNIH VRATA</item>
+        <item>PROIZV.PLAST. I PET AMBALAŽE</item>
+        <item>PROIZV. METALNOG NAMEŠTAJA</item>
+        <item>PROIZVODNJA  GREJNIH TELA</item>
+        <item>PROIZVODNJA KOTLOVA , BOJLERA I SUDOVA POD PRITISK</item>
+        <item>PROIZV.METALNIH KONSTRUKCIJA</item>
+        <item>ALATNICE</item>
+        <item>MEHANIÈARI,REMONT SKLOPOVA</item>
+        <item>MAŠINSKA  OBRADA</item>
+        <item>GRAÐEVINSKA  LIMARIJA - izrada i montaža</item>
+        <item>KOVAÈI</item>
+        <item>BRAVARI-KAPIJA,OGRADA I TENDE</item>
+        <item>LIVNICE I METAL MODELARI</item>
+        <item>INOX PROIZVODNJA - procesna industrija</item>
+        <item>INOX PROIZVODNJA - bravarski radovi</item>
+        <item>METAL PRIVREMENO</item>
+        <item>METAL tranzitni kupac</item>
+        <item>ODEÆA/TEKSTILNA IND.-OBUÆA</item>
+        <item>HEMIJSKA IND.(NAFTA,BOJE,LAKOVI)</item>
+        <item>PROIZVODNJA HRANE </item>
+        <item>PROIZVODNJA PIÆA</item>
+        <item>INDUSTRIJA  STAKLA</item>
+        <item>ODRŽAVANJE  U  DRVNOJ  INDUSTRIJI</item>
+        <item>PROIZV. GRAÐEVINSKOG  MATERIJALA</item>
+        <item>PROIZV. I PRERADA KARTONA</item>
+        <item>KLINIKE/BOLNICE/HOTELI&#8230;</item>
+        <item>ŠKOLE/UNIVERZITETI/INSTITUTI..</item>
+        <item>JKP VODOVODI , KOMUNALNA PRED.</item>
+        <item>JAVNI SERVISI, RTV, AERODROM&#8230;</item>
+        <item>ODRŽ. U POLJOPR.-VETERINA-ŠUMA</item>
+        <item>CENTAR ZA RECIKLAŽU - sekundarne sirovine</item>
+        <item>ŠTAMPARIJE</item>
+        <item>GUMARI</item>
+        <item>PEKARI</item>
+        <item>METAL ODRŽAVANJE privremeno</item>
+        <item>Sopstveno održavanje</item>
+        <item>METAL ODRŽAVANJE tranzitni kupac</item>
+        <item>Trgovina_Gvožðara</item>
+        <item>Trgovina_Voda,grejanje</item>
+        <item>Trgovina Salon keramike</item>
+        <item>Trgovina_Elektro materijal</item>
+        <item>Trgovina_Auto prodavnica</item>
+        <item>Trgovina_Auto farbara</item>
+        <item>Trgovina_Benzinska stanica</item>
+        <item>Trgovina_Cargo dalja prodaja</item>
+        <item>Trgovina Poljoapoteka</item>
+        <item>Trgovina_Farbara</item>
+        <item>Trgovina_Ploè. mat., okovi</item>
+        <item>Trgovina_Stovarište</item>
+        <item>Trgovina Alu PVC</item>
+        <item>Trgovina Tenderi</item>
+        <item>TRADE PRIVREMENO</item>
+        <item>Veleprodaja_OSTALO</item>
+        <item>Wow</item>
+        <item>Industrija</item>
+    </string-array>
 	<string-array name="record_visit_result_type_array_v2">
         <item>+ with closure</item>
         <item>- no closure</item>

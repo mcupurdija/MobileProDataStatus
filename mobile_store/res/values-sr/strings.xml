@@ -108,8 +108,8 @@
 	<string name="contact_mobile_phone_hint">Mobilni telefon</string>
 	<string name="contact_email_title">Email</string>
 	<string name="contact_email_hint">Email</string>
-	<string name="contact_company_no_title">Broj kompanije</string>
-	<string name="contact_company_no_hint">Broj kompanije</string>
+	<string name="contact_company_no_title">Kompanija</string>
+	<string name="contact_company_no_hint">Kompanija</string>
 	<string name="contact_company_id_title">Matični broj</string>
 	<string name="contact_company_id_hint">Matični broj</string>
 	<string name="contact_vat_registration_title">Pib</string>
@@ -122,6 +122,8 @@
 	<string name="contact_number_of_grey_coat_hint">Broj sivih kaputa</string>
 	<string name="contact_job_title">Naziv posla</string>
 	<string name="contact_job_title_hint">Naziv posla</string>
+	<string name="contact_odeljenje">Odeljenje</string>
+	<string name="contact_pozicija">Pozicija</string>
 	
 	<string name="contextual_deactivate">Briši</string>
 	<string name="contextual_edit">Izmeni</string>
@@ -138,6 +140,7 @@
 	<string name="contextual_clone_sale_order">Kloniraj porudžbinu/ponudu</string>
 	<string name="contextual_contact_edit">Izmeni kontakt</string>
     <string name="contextual_contact_add">Novi kontakt</string>
+    <string name="get_new_sale_order_menu_option">Preuzmi dokumente sa sistema</string>
     <string name="contextual_get_history_sale_order">Preuzmi istoriju porudžbina</string>
     
 	<string name="dialog_title_item_price_qty_load">Cena, popust i količina</string>
@@ -317,7 +320,7 @@
 	
 	<!-- ecc header label -->
 	<string name = "el_card_customer_no_label">Broj kupca</string>
-	<string name = "el_card_item_no_label">Broj atrikla</string>
+	<string name = "el_card_item_no_label">Broj artikla</string>
 	<string name = "el_card_jan_qty_label">Januar (Kol)</string>
 	<string name = "el_card_feb_qty_label">Februar (Kol)</string>
 	<string name = "el_card_mart_qty_label">Mart (Kol)</string>
@@ -330,13 +333,13 @@
 	<string name = "el_card_oct_qty_label">Oktobar (Kol)</string>
 	<string name = "el_card_nov_qty_label">Novembar (Kol)</string>
 	<string name = "el_card_dec_qty_label">Decembar (Kol)</string>
-	<string name = "el_card_total_sale_curr_qty_label">Ukupna prodaja (Kol) u ovoj godina</string>
-	<string name = "el_card_total_sale_prior_qty_label">Ukupna prodaja (Kol) u prosloj godina</string>
+	<string name = "el_card_total_sale_curr_qty_label">Ukupna prodaja (Kol) u ovoj godini</string>
+	<string name = "el_card_total_sale_prior_qty_label">Ukupna prodaja (Kol) u prošloj godini</string>
 	<string name = "el_card_turnover_curr_qty_label">Ukupan promet u ovoj godini</string>
-	<string name = "el_card_turnover_prior_qty_label">Ukupan promet u prosloj godini</string>
+	<string name = "el_card_turnover_prior_qty_label">Ukupan promet u prošloj godini</string>
 	<string name = "el_card_sales_line_counts_curr_qty_label">Broj realizacija u ovoj godini</string>
-	<string name = "el_card_sales_line_counts_prior_qty_label">Broj realizacija u prosloj godini</string>
-	<string name="el_card_sales_line_last_line_discount_label">Popust</string>
+	<string name = "el_card_sales_line_counts_prior_qty_label">Broj realizacija u prošloj godini</string>
+	<string name = "el_card_sales_line_last_line_discount_label">Popust</string>
 	
 	<!-- customer trade agreemnt -->
 	<string name = "cus_trade_agreement_customer_no_label">Broj kupca</string>
@@ -443,4 +446,22 @@
 	<string name="plan_azuriran">Plan je uspešno ažuriran</string>
 	<string name="plan_obrisan">Plan je uspešno izbrisan</string>
 	<string name="sync_success">Sinhronizacija uspešno izvršena</string>
+	<string name="gps_iskljucen">GPS je isključen</string>
+	
+	<string name="menu_update_items">Ažuriraj sa tableta</string>
+	<string name="menu_precice">Prečice</string>
+	<string name="menu_nova_specifikacija">Nova porudzbina</string>
+	<string name="menu_sinhronizacija">Sinhronizacija</string>
+	<string name="menu_podesavanja">Podešavanja</string>
+	<string name="bAzurirajSaTableta">Automatski ažuriraj artikle sa tableta</string>
+	<string name="bOdaberiDokument">Odaberi dokument za ažuriranje artikala</string>
+	<string name="azurirajSaTabletaSuccess">Artikli uspešno ažurirani</string>
+	<string name="azurirajSaTabletaError">Nije pronađen dokument za ažuriranje</string>
+	<string name="azurirajSaTabletaError2">Došlo je do greške pri učitavanju artikala</string>
+	
+	<string name="kontakt_validacija_ime">Potrebno je da unesete Ime</string>
+	<string name="kontakt_validacija_odeljenje">Potrebno je da odaberete Odeljenje</string>
+	<string name="kontakt_validacija_pozicija">Potrebno je da odaberete Poziciju</string>
+	<string name="potvrda_brisanja">Molimo potvrdite brisanje</string>
+	<string name="dijalog_preuzmi_porudzbine">Tip dokumenta</string>
 </resources>

@@ -427,4 +427,16 @@
 	<string name="plan_kreiran">Plan je uspešno kreiran</string>
 	<string name="plan_azuriran">Plan je uspešno ažuriran</string>
 	<string name="plan_obrisan">Plan je uspešno izbrisan</string>
+	<string name="sync_success">Sinhronizacija uspešno izvršena</string>
+	
+	<string name="menu_update_items">Ažuriraj sa tableta</string>
+	<string name="menu_precice">Prečice</string>
+	<string name="menu_nova_specifikacija">Nova porudzbina</string>
+	<string name="menu_sinhronizacija">Sinhronizacija</string>
+	<string name="menu_podesavanja">Podešavanja</string>
+	<string name="bAzurirajSaTableta">Automatski ažuriraj artikle sa tableta</string>
+	<string name="bOdaberiDokument">Odaberi dokument za ažuriranje artikala</string>
+	<string name="azurirajSaTabletaSuccess">Artikli uspešno ažurirani</string>
+	<string name="azurirajSaTabletaError">Nije pronađen dokument za ažuriranje</string>
+	<string name="azurirajSaTabletaError2">Došlo je do greške pri učitavanju artikala</string>
 </resources>

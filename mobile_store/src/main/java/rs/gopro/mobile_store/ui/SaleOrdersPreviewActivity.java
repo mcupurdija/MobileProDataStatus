@@ -9,6 +9,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.widget.SaleOrderContextualMenu;
 import rs.gopro.mobile_store.util.ApplicationConstants;
@@ -21,6 +22,7 @@ import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.model.HistorySalesDocumentsSyncObject;
 import rs.gopro.mobile_store.ws.model.MobileDeviceSalesDocumentSyncObject;
+import rs.gopro.mobile_store.ws.model.NewSalesDocumentsSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -47,8 +49,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class SaleOrdersPreviewActivity extends BaseActivity implements
@@ -75,6 +82,9 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
     private String[] financialControlStatusOptions;
     private String[] orderShipmentStatusOptions;
     private String[] orderValueStatusOptions;
+    
+    private CustomerAutocompleteCursorAdapter customerCursorAdapter;
+    private String selectedCustomerNo = "";
 	
     private OnDateSetListener getHistoryDateSet = new OnDateSetListener() {
     	public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -104,6 +114,14 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		Intent serviceIntent = new Intent(this, NavisionSyncService.class);
 		serviceIntent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, historySalesDocumentsSyncObject);
 		startService(serviceIntent);
+	}
+	
+	private void preuzmiDokumenteSaServera(Integer tipDokumenta, String kupac) {
+		
+		Intent intent = new Intent(SaleOrdersPreviewActivity.this, NavisionSyncService.class);
+		NewSalesDocumentsSyncObject newSalesDocumentsSyncObject = new NewSalesDocumentsSyncObject(tipDokumenta, kupac, DateUtils.getWsDummyDate(), DateUtils.getLastDayInMonth(11, 2014), salesPersonNo);
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, newSalesDocumentsSyncObject);
+		startService(intent);
 	}
 	
 	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
@@ -234,6 +252,10 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 					//TODO call web service for items
 					LogUtils.LOGI(TAG, document_no);
 				}
+			} else if (NewSalesDocumentsSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+
+				
+				
 			}
 		} else {
 			AlertDialog alertDialog = new AlertDialog.Builder(
@@ -451,12 +473,55 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			}
 			cloneDocument();
 			return true;
+		case R.id.get_new_sale_order_menu_option:
+			PreuzmiPorudzbineDijalog();
+			return true;
 		case R.id.get_history_sale_order_menu_option:
 			this.showDialog(GET_HISTORY_DIALOG);
 			return true;
 		}
 		
 		return super.onOptionsItemSelected(item);
+	}
+	
+	protected void PreuzmiPorudzbineDijalog() {
+		final Dialog dialog = new Dialog(this);
+		
+		dialog.setContentView(R.layout.dialog_preuzmi_porudzbine);
+		dialog.setTitle(R.string.get_new_sale_order_menu_option);
+		
+		AutoCompleteTextView acKupac = (AutoCompleteTextView) dialog.findViewById(R.id.dijalog_preuzmi_porudzbine_kupac_input);
+		customerCursorAdapter = new CustomerAutocompleteCursorAdapter(this, null);
+		acKupac.setAdapter(customerCursorAdapter);
+		
+		final Spinner tipDokumenta = (Spinner) dialog.findViewById(R.id.sTipDokumenta);
+		ArrayAdapter<CharSequence> arrayTipDokumenta = ArrayAdapter.createFromResource(this, R.array.dijalog_preuzmi_porudzbine, android.R.layout.simple_spinner_item);
+		tipDokumenta.setAdapter(arrayTipDokumenta);
+		tipDokumenta.setSelection(1);
+		tipDokumenta.setEnabled(false);
+		
+		Button preuzmi = (Button) dialog.findViewById(R.id.dialogButtonPreuzmi);
+		
+		acKupac.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View arg1, int position, long id) {
+				Cursor cursor = (Cursor) customerCursorAdapter.getItem(position);
+				selectedCustomerNo = cursor.getString(1);
+			}
+		});
+		
+		preuzmi.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				sendSaleOrderProgressDialog = ProgressDialog.show(SaleOrdersPreviewActivity.this, getString(R.string.get_new_sale_order_menu_option), "Dokumenti se preuzimaju sa servera", true, true);
+				preuzmiDokumenteSaServera(tipDokumenta.getSelectedItemPosition(), selectedCustomerNo);
+
+				dialog.dismiss();
+			}
+		});
+		
+		dialog.show();
 	}
 
 	@Override
@@ -576,6 +641,8 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, mobileDeviceSalesDocumentSync);
 		IntentFilter historyDocumentSync = new IntentFilter(HistorySalesDocumentsSyncObject.BROADCAST_SYNC_ACTION);
 		LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, historyDocumentSync);
+		IntentFilter newSalesDocumentSync = new IntentFilter(NewSalesDocumentsSyncObject.BROADCAST_SYNC_ACTION);
+		LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, newSalesDocumentSync);
 	}
 	
 	@Override

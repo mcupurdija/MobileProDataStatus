@@ -32,6 +32,7 @@ public class ApplicationConstants {
 	public static final String PRICE_AND_DISCOUNT_ARE_NOT_OK = "1";
 	
 	public static final String SALT = "668459116";
+	public static final String WEB_REPORTING_BASE_URL = "http://10.94.1.11/";
 	
 	public static enum USER_ROLE {
 		ADMIN, USER

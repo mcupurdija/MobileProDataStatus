@@ -8,6 +8,7 @@ public interface Tables {
 	String SALES_PERSONS = "sales_persons";
 	String CUSTOMERS = "customers";
 	String CONTACTS = "contacts";
+	String CONTACTS_EXPORT = "contacts left outer join sales_persons on contacts.sales_person_id = sales_persons._id";
 	String ITEMS = "items";
 	String VISITS = "visits";
 	String USERS_ROLE = "users_role";

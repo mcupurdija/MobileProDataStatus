@@ -27,6 +27,7 @@ import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
+import rs.gopro.mobile_store.util.VersionUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.CustomerSyncObject;
 import rs.gopro.mobile_store.ws.model.MobileDeviceSetup;
@@ -86,6 +87,8 @@ public abstract class BaseActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         // setup home action bar behavior
         getActionBar().setDisplayHomeAsUpEnabled(true); // from sherlock -> .setHomeButtonEnabled(true);
+        getActionBar().setTitle(getString(R.string.app_name) + " v" + VersionUtils.getVersionName(getApplicationContext()));
+        
         salesPersonId = SharedPreferencesUtil.getSalePersonId(this);
         salesPersonNo = SharedPreferencesUtil.getSalePersonNo(this);
         

@@ -8,7 +8,7 @@
         android:id="@+id/layoutPlanInfo"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:layout_toLeftOf="@+id/layoutPlanRealizacija"
+        android:layout_toLeftOf="@+id/layoutPlanRealizacijaKarticaKupca"
         android:background="@drawable/background"
         android:clickable="true"
         android:padding="10dp" >
@@ -55,6 +55,42 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_status_realizuj" />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/layoutPlanRealizacijaPorudzbina"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="1dp"
+        android:layout_toLeftOf="@+id/layoutPlanRealizacija"
+        android:background="@drawable/background"
+        android:clickable="true"
+        android:gravity="center" >
+
+        <ImageView
+            android:id="@+id/ivPlanRealizacijaPorudzbina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_status_porudzbina" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutPlanRealizacijaKarticaKupca"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="1dp"
+        android:layout_toLeftOf="@+id/layoutPlanRealizacijaPorudzbina"
+        android:background="@drawable/background"
+        android:clickable="true"
+        android:gravity="center" >
+
+        <ImageView
+            android:id="@+id/ivPlanRealizacijaKarticaKupca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_status_kartica_kupca" />
     </RelativeLayout>
 
 </RelativeLayout>

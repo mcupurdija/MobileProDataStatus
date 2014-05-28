@@ -8,7 +8,7 @@
         android:id="@+id/layoutRealizacijaInfo"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:layout_toLeftOf="@+id/layoutRealizacijaZavrsi"
+        android:layout_toLeftOf="@+id/layoutRealizacijaKarticaKupca"
         android:background="@drawable/background"
         android:clickable="true"
         android:padding="10dp" >
@@ -65,7 +65,8 @@
         android:layout_toLeftOf="@+id/layoutRealizacijaStatus"
         android:background="@drawable/background"
         android:clickable="true"
-        android:gravity="center" >
+        android:gravity="center"
+        android:visibility="gone" >
 
         <ImageView
             android:id="@+id/ivRealizacijaZavrsi"
@@ -73,6 +74,44 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_status_poseta" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutRealizacijaPorudzbina"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="1dp"
+        android:layout_toLeftOf="@+id/layoutRealizacijaZavrsi"
+        android:background="@drawable/background"
+        android:clickable="true"
+        android:gravity="center"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/ivRealizacijaPorudzbina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_status_porudzbina" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutRealizacijaKarticaKupca"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="1dp"
+        android:layout_toLeftOf="@+id/layoutRealizacijaPorudzbina"
+        android:background="@drawable/background"
+        android:clickable="true"
+        android:gravity="center"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/ivRealizacijaKarticaKupca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_status_kartica_kupca" />
     </RelativeLayout>
 
 </RelativeLayout>

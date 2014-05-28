@@ -50,7 +50,9 @@ CREATE TABLE `sales_persons` (
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
-	`updated_by` TEXT
+	`updated_by` TEXT,
+	`wr_username` TEXT,
+	`wr_password` TEXT
 );
 CREATE TRIGGER IF NOT EXISTS "log_new_person" AFTER INSERT ON "sales_persons" 
 BEGIN 
@@ -12227,6 +12229,10 @@ CREATE TABLE `visits` (
 	`visit_status` INTEGER DEFAULT 0,
 	`is_sent` INTEGER DEFAULT 1,
 	`is_deleted` INTEGER DEFAULT 0,
+	`address_no` TEXT,
+	`latitude` TEXT,
+	`longitude` TEXT,
+	`accuracy` TEXT,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
@@ -12525,6 +12531,8 @@ CREATE TABLE `electronic_card_customer` (
 	`sales_line_counts_current_year` REAL,
 	`sales_line_counts_prior_year` REAL,
 	`last_line_discount` REAL,
+	`color` INTEGER,
+	`sorting_index` INTEGER,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
@@ -12654,4 +12662,4 @@ CREATE TABLE `app_settings` (
 	`items_sync_warnning_date` TEXT
 );
 
-insert into `app_settings` (_id, app_version, app_sync_warnning_date, customers_sync_warnning_date, items_sync_warnning_date) values (1, '1.0.9', datetime('now'), datetime('now'), datetime('now'));
+insert into `app_settings` (_id, app_version, app_sync_warnning_date, customers_sync_warnning_date, items_sync_warnning_date) values (1, '1.5.0', datetime('now'), datetime('now'), datetime('now'));

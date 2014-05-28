@@ -258,6 +258,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			LogUtils.LOGE(TAG, "Activity called without URI!");
 			return;
 		}
+		System.out.println(">>> " + mUri);
 		// check uri mime type
 		mViewType = getContentResolver().getType(mUri);
 		// wrong uri, only working with single item
@@ -306,7 +307,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		customerAutoComplete.setAdapter(customerAutoCompleteAdapter);
 		customerAutoComplete.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				Cursor cursor = (Cursor) customerAutoCompleteAdapter.getItem(arg2);
 				customerId = cursor.getInt(0);
 				fillOtherCustomerData(customerId);
@@ -767,9 +768,22 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		
-//		outState.putParcelable(LOADED_CONTENT_VALUES, initialLoadedContentValues);
+		outState.putInt(EXTRA_CUSTOMER_ID, customerId);
+		outState.putString("SELECTED_CUSTOMER_NO", selectedCustomerNo);
+		outState.putString("POTENTIAL_CUSTOMER_NO", potentialCustomerNo);
+		outState.putString("DOCUMENT_NO", documentNo.getText().toString());
 	}
 	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		customerId = savedInstanceState.getInt(EXTRA_CUSTOMER_ID);
+		documentNo.setText(savedInstanceState.getString("DOCUMENT_NO"));
+		selectedCustomerNo = savedInstanceState.getString("SELECTED_CUSTOMER_NO");
+		potentialCustomerNo = savedInstanceState.getString("POTENTIAL_CUSTOMER_NO");
+	}
+
 	private ContentValues getInputData() throws SaleOrderValidationException {
 		ContentValues localValues = new ContentValues();
 		

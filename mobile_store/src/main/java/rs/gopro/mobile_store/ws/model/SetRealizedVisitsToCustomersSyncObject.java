@@ -91,6 +91,7 @@ public class SetRealizedVisitsToCustomersSyncObject extends SyncObject {
 		cSVString.setValue(pCSVString);
 		cSVString.setType(String.class);
 		properies.add(cSVString);
+		System.out.println(">> " + cSVString);
 		
 		PropertyInfo statusOK = new PropertyInfo();
 		statusOK.setName("statusOK");
@@ -173,8 +174,11 @@ public class SetRealizedVisitsToCustomersSyncObject extends SyncObject {
         		MobileStoreContract.Visits.POTENTIAL_CUSTOMER,
         		MobileStoreContract.Customers.CUSTOMER_NO,
         		MobileStoreContract.Visits.ODOMETER,
-        		MobileStoreContract.Visits.NOTE
-        		
+        		MobileStoreContract.Visits.NOTE,
+        		MobileStoreContract.Visits.ADDRESS_NO,
+        		MobileStoreContract.Visits.LATITUDE,
+        		MobileStoreContract.Visits.LONGITUDE,
+        		MobileStoreContract.Visits.ACCURACY
         };
         
         Type[] PROJECTION_TYPE = {
@@ -187,6 +191,10 @@ public class SetRealizedVisitsToCustomersSyncObject extends SyncObject {
         		Integer.class,
         		String.class,
         		Integer.class,
+        		String.class,
+        		String.class,
+        		String.class,
+        		String.class,
         		String.class
         };
 	}

@@ -423,10 +423,16 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			@Override
 			public void onClick(View v) {
 				try {
-					double quantity = UIUtils.getDoubleFromUI(mQuantity.getText().toString());
+					int quantity;
+					if (mQuantity.getText().toString().equals("")) {
+						quantity = 0;
+					} else {
+						quantity = Integer.parseInt(mQuantity.getText().toString());
+					}
 					quantity += 1;
-					mQuantity.setText(UIUtils.formatDoubleForUI(quantity));
+					mQuantity.setText(String.valueOf(quantity));
 				} catch (NumberFormatException nfe) {
+					
 					LogUtils.LOGE(TAG, nfe.toString());
 				} catch (Exception e) {
 					LogUtils.LOGE(TAG, e.toString());
@@ -438,10 +444,10 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			@Override
 			public void onClick(View v) {
 				try {
-					double quantity = UIUtils.getDoubleFromUI(mQuantity.getText().toString());
+					int quantity = Integer.parseInt(mQuantity.getText().toString());
 					quantity -= 1;
 					if (quantity > 0) {
-						mQuantity.setText(UIUtils.formatDoubleForUI(quantity));
+						mQuantity.setText(String.valueOf(quantity));
 					}
 				} catch (NumberFormatException nfe) {
 					LogUtils.LOGE(TAG, nfe.toString());
@@ -455,12 +461,12 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			@Override
 			public void onClick(View v) {
 				try {
-					double quantity = UIUtils.getDoubleFromUI(mQuantity.getText().toString());
+					int quantity = Integer.parseInt(mQuantity.getText().toString());
 					if (quantity < minQty) {
-						mQuantity.setText(UIUtils.formatDoubleForUI(minQty));
+						mQuantity.setText(String.valueOf(minQty));
 					} else {
 						quantity += minQty;
-						mQuantity.setText(UIUtils.formatDoubleForUI(quantity));
+						mQuantity.setText(String.valueOf(quantity));
 					}
 				} catch (NumberFormatException nfe) {
 					LogUtils.LOGE(TAG, nfe.toString());
@@ -879,10 +885,10 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         	}
         }
         
-        double quantity = -1;
+        int quantity = -1;
         if (!cursor.isNull(SaleOrderLinesQuery.QUANTITY)) {
-        	quantity = cursor.getDouble(SaleOrderLinesQuery.QUANTITY);
-        	mQuantity.setText(String.valueOf(quantity).replace('.', ','));
+        	quantity = cursor.getInt(SaleOrderLinesQuery.QUANTITY);
+        	mQuantity.setText(String.valueOf(quantity));
         }
         
         double quantity_available = -1;

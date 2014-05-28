@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical" >
+
+    <RelativeLayout
+        android:id="@+id/layoutKontaktInfo"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_toLeftOf="@+id/layoutKontaktEdit"
+        android:background="@drawable/background"
+        android:clickable="true"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/tvKontaktIme"
+            style="@style/ListItemTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:id="@+id/tvKontaktTelefon"
+            style="@style/ListItemSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tvKontaktIme" />
+
+        <TextView
+            android:id="@+id/tvKontaktEmail"
+            style="@style/ListItemSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tvKontaktTelefon" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutKontaktDelete"
+        android:layout_width="65dp"
+        android:layout_height="80dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="1dp"
+        android:background="@drawable/background"
+        android:clickable="true"
+        android:gravity="center" >
+
+        <ImageView
+            android:id="@+id/ivKontaktDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_status_delete" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutKontaktEdit"
+        android:layout_width="65dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="1dp"
+        android:layout_toLeftOf="@+id/layoutKontaktDelete"
+        android:background="@drawable/background"
+        android:clickable="true"
+        android:gravity="center" >
+
+        <ImageView
+            android:id="@+id/ivKontaktEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_status_edit" />
+    </RelativeLayout>
+
+</RelativeLayout>

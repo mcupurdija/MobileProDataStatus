@@ -29,6 +29,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class ElectronicCardCustomerFragment extends ListFragment implements LoaderCallbacks<Cursor> {
@@ -37,6 +38,7 @@ public class ElectronicCardCustomerFragment extends ListFragment implements Load
 
 	private CursorAdapter cursorAdapter;
 	private Uri eccUri;
+	private ListView listView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,12 +53,14 @@ public class ElectronicCardCustomerFragment extends ListFragment implements Load
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return super.onCreateView(inflater, container, savedInstanceState);
+		return inflater.inflate(R.layout.list_header_el_card_customer, container, false);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		
+		listView = getListView();
 		
 //		int[] to = new int[] { android.R.id.empty, R.id.el_card_item_no, R.id.el_card_jan_qty, R.id.el_card_feb_qty, R.id.el_card_mart_qty, R.id.el_card_apr_qty, R.id.el_card_may_qty, R.id.el_card_june_qty, R.id.el_card_july_qty,
 //				R.id.el_card_aug_qty, R.id.el_card_sep_qty, R.id.el_card_oct_qty, R.id.el_card_nov_qty, R.id.el_card_dec_qty, R.id.el_card_total_sale_curr_qty, R.id.el_card_total_sale_prior_qty, R.id.el_card_turnover_curr_qty,
@@ -65,66 +69,62 @@ public class ElectronicCardCustomerFragment extends ListFragment implements Load
 
 		cursorAdapter = new EkkCursorAdapter(getActivity(), null, false);
 		
-		View headerView = getActivity().getLayoutInflater().inflate(R.layout.list_header_el_card_customer, null, false);
-		
 		List<Date> months = DateUtils.getMonthsBackwards();
 		Iterator<Date> monthsBackwards = months.iterator();
 		Calendar monthIteration = Calendar.getInstance();
 		
 		String[] monthsTitles = getResources().getStringArray(R.array.ekk_months);
 		
-		TextView january = (TextView) headerView.findViewById(R.id.el_card_jan_qty);
+		TextView january = (TextView) view.findViewById(R.id.el_card_jan_qty);
 		monthIteration.setTime(monthsBackwards.next());
 		january.setText(monthsTitles[monthIteration.get(Calendar.MONTH)]);
 		
-		TextView february_qty = (TextView) headerView.findViewById(R.id.el_card_feb_qty);
+		TextView february_qty = (TextView) view.findViewById(R.id.el_card_feb_qty);
 		monthIteration.setTime(monthsBackwards.next());
 		february_qty.setText(monthsTitles[monthIteration.get(Calendar.MONTH)]);
 		
-		TextView march_qty = (TextView) headerView.findViewById(R.id.el_card_mart_qty);
+		TextView march_qty = (TextView) view.findViewById(R.id.el_card_mart_qty);
 		monthIteration.setTime(monthsBackwards.next());
 		march_qty.setText(monthsTitles[monthIteration.get(Calendar.MONTH)]);
 		
-		TextView april_qty = (TextView) headerView.findViewById(R.id.el_card_apr_qty);
+		TextView april_qty = (TextView) view.findViewById(R.id.el_card_apr_qty);
 		monthIteration.setTime(monthsBackwards.next());
 		april_qty.setText(monthsTitles[monthIteration.get(Calendar.MONTH)]);
 		
-		TextView may_qty = (TextView) headerView.findViewById(R.id.el_card_may_qty);
+		TextView may_qty = (TextView) view.findViewById(R.id.el_card_may_qty);
 		monthIteration.setTime(monthsBackwards.next());
 		may_qty.setText(monthsTitles[monthIteration.get(Calendar.MONTH)]);
 		
-		TextView june_qty = (TextView) headerView.findViewById(R.id.el_card_june_qty);
+		TextView june_qty = (TextView) view.findViewById(R.id.el_card_june_qty);
 		monthIteration.setTime(monthsBackwards.next());
 		june_qty.setText(monthsTitles[monthIteration.get(Calendar.MONTH)]);
 		
-		TextView july_qty = (TextView) headerView.findViewById(R.id.el_card_july_qty);
+		TextView july_qty = (TextView) view.findViewById(R.id.el_card_july_qty);
 		monthIteration.setTime(monthsBackwards.next());
 		july_qty.setText(monthsTitles[monthIteration.get(Calendar.MONTH)]);
 		
-		TextView august_qty = (TextView) headerView.findViewById(R.id.el_card_aug_qty);
+		TextView august_qty = (TextView) view.findViewById(R.id.el_card_aug_qty);
 		monthIteration.setTime(monthsBackwards.next());
 		august_qty.setText(monthsTitles[monthIteration.get(Calendar.MONTH)]);
 		
-		TextView september_qty = (TextView) headerView.findViewById(R.id.el_card_sep_qty);
+		TextView september_qty = (TextView) view.findViewById(R.id.el_card_sep_qty);
 		monthIteration.setTime(monthsBackwards.next());
 		september_qty.setText(monthsTitles[monthIteration.get(Calendar.MONTH)]);
 		
-		TextView october_qty = (TextView) headerView.findViewById(R.id.el_card_oct_qty);
+		TextView october_qty = (TextView) view.findViewById(R.id.el_card_oct_qty);
 		monthIteration.setTime(monthsBackwards.next());
 		october_qty.setText(monthsTitles[monthIteration.get(Calendar.MONTH)]);
 		
-		TextView november_qty = (TextView) headerView.findViewById(R.id.el_card_nov_qty);
+		TextView november_qty = (TextView) view.findViewById(R.id.el_card_nov_qty);
 		monthIteration.setTime(monthsBackwards.next());
 		november_qty.setText(monthsTitles[monthIteration.get(Calendar.MONTH)]);
 		
-		TextView december_qty = (TextView) headerView.findViewById(R.id.el_card_dec_qty);
+		TextView december_qty = (TextView) view.findViewById(R.id.el_card_dec_qty);
 		monthIteration.setTime(monthsBackwards.next());
 		december_qty.setText(monthsTitles[monthIteration.get(Calendar.MONTH)]);
 		
-		getListView().addHeaderView(headerView);
-		getListView().setDivider(null);
 		view.setBackgroundColor(Color.WHITE);
-		setListAdapter(cursorAdapter);
+		listView.setAdapter(cursorAdapter);
 		getLoaderManager().initLoader(0, null, this);
 	}
 
@@ -183,6 +183,30 @@ public class ElectronicCardCustomerFragment extends ListFragment implements Load
 			List<Date> months = DateUtils.getMonthsBackwards();
 			Iterator<Date> monthsBackwards = months.iterator();
 			Calendar monthIteration = Calendar.getInstance();
+			
+			int color = cursor.getInt(ElectronicCardCustomerQuery.COLOR);
+			switch (color) {
+			case 0:
+				view.setBackgroundColor(Color.RED);
+				break;
+			case 1:
+				view.setBackgroundColor(Color.parseColor("#FF9900"));
+				break;
+			case 2:
+				view.setBackgroundColor(Color.YELLOW);
+				break;
+			case 3:
+				view.setBackgroundColor(Color.GREEN);
+				break;
+			case 4:
+				view.setBackgroundColor(Color.GRAY);
+				break;
+			case 5:
+				view.setBackgroundColor(Color.CYAN);
+				break;
+			default:
+				break;
+			}
 			
 			TextView january = (TextView) view.findViewById(R.id.el_card_jan_qty);
 			monthIteration.setTime(monthsBackwards.next());
@@ -287,7 +311,8 @@ public class ElectronicCardCustomerFragment extends ListFragment implements Load
 				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.TOTAL_TURNOVER_PRIOR_YEAR,
 				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.SALES_LINE_COUNTS_CURRENT_YEAR,
 				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR,
-				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.LAST_LINE_DISCOUNT
+				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.LAST_LINE_DISCOUNT,
+				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.COLOR
 		};
 
 
@@ -315,6 +340,7 @@ public class ElectronicCardCustomerFragment extends ListFragment implements Load
 		int SALES_LINE_COUNTS_CURRENT_YEAR = 19;
 		int SALES_LINE_COUNTS_PRIOR_YEAR = 20;
 		int LAST_LINE_DISCOUNT = 21;
+		int COLOR = 22;
 	}
 
 }

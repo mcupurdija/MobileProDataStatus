@@ -32,25 +32,28 @@
         android:title="@string/contextual_contact_add"
         android:visible="false"/>
     <item
+        android:id="@+id/main_options_update_items"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_update_items"
+        android:visible="false"/>
+    <item
         android:id="@+id/shortcuts"
         android:icon="@drawable/ic_action_settings"
         android:showAsAction="ifRoom|withText"
-        android:title="Prečice">
+        android:title="@string/menu_precice">
         <menu>
             <item
                 android:id="@+id/main_shortcuts_new_sale_order"
                 android:showAsAction="ifRoom|withText"
-                android:title="Nova porudzbina"/>
+                android:title="@string/menu_nova_specifikacija"/>
             <item
                 android:id="@+id/main_shortcuts_sync_all"
                 android:showAsAction="ifRoom|withText"
-                android:title="Sinhronizacija"/>
+                android:title="@string/menu_sinhronizacija"/>
             <item
                 android:id="@+id/create_settings_activity"
-                android:icon="@drawable/ic_action_settings"
                 android:showAsAction="ifRoom|withText"
-                android:title="Podešavanja"/>
-            >
+                android:title="@string/menu_podesavanja"/>
         </menu>
     </item>
 

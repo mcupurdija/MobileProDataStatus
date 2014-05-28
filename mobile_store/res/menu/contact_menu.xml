@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item android:id="@+id/upaction">
-    </item>
     <item
         android:id="@+id/submit_contact_form"
         android:icon="@drawable/navigation_accept"
-        android:showAsAction="ifRoom|withText"
-       />
-    
+        android:title="@string/save_button_title"
+        android:showAsAction="ifRoom|withText" />
     <item
         android:id="@+id/cancel_contact_form"
         android:icon="@drawable/navigation_cancel"
-        android:showAsAction="ifRoom|withText"
-        />
+        android:title="@string/cancel_button_title"
+        android:showAsAction="ifRoom|withText" />
 
 </menu>

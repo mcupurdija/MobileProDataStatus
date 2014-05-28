@@ -13,6 +13,7 @@ import rs.gopro.mobile_store.ws.model.GetPotentialCustomerSyncObject;
 import rs.gopro.mobile_store.ws.model.HistorySalesDocumentsSyncObject;
 import rs.gopro.mobile_store.ws.model.ItemsNewSyncObject;
 import rs.gopro.mobile_store.ws.model.ItemsSyncObject;
+import rs.gopro.mobile_store.ws.model.NewSalesDocumentsSyncObject;
 import rs.gopro.mobile_store.ws.model.SalesDocumentsSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.content.BroadcastReceiver;
@@ -30,7 +31,7 @@ import android.widget.Toast;
 
 public class SinhonizacijaActivity extends BaseActivity {
 
-	protected CheckBox cbKupci, cbArtikli, cbSpecifikacije, cbOtvoreneStavkeKupaca, cbPoslednjeStavkeKupaca;
+	protected CheckBox cbKupci, cbArtikli, cbDokumenti, cbSpecifikacije, cbOtvoreneStavkeKupaca, cbPoslednjeStavkeKupaca;
 	protected Button bAzuriraj;
 	protected TextView tvStatus;
 	protected ProgressBar pbSinhronizacija;
@@ -55,6 +56,11 @@ public class SinhonizacijaActivity extends BaseActivity {
 				checkCount--;
 			} else if (ItemsNewSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 				sb.append("Artikli uspešno sinhronizovani");
+				sb.append("\n");
+				tvStatus.setText(sb.toString());
+				checkCount--;
+			} else if (NewSalesDocumentsSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				sb.append("Dokumenti uspešno sihnronizovani");
 				sb.append("\n");
 				tvStatus.setText(sb.toString());
 				checkCount--;
@@ -86,6 +92,7 @@ public class SinhonizacijaActivity extends BaseActivity {
 		
 		cbKupci = (CheckBox) findViewById(R.id.cbKupci);
 		cbArtikli = (CheckBox) findViewById(R.id.cbArtikli);
+		cbDokumenti = (CheckBox) findViewById(R.id.cbDokumenti);
 		cbSpecifikacije = (CheckBox) findViewById(R.id.cbSpecifikacije);
 		cbOtvoreneStavkeKupaca = (CheckBox) findViewById(R.id.cbOtvoreneStavkeKupaca);
 		cbPoslednjeStavkeKupaca = (CheckBox) findViewById(R.id.cbPoslednjeStavkeKupaca);
@@ -104,12 +111,13 @@ public class SinhonizacijaActivity extends BaseActivity {
 				
 				boolean kupciChecked = cbKupci.isChecked();
 				boolean artikliChecked = cbArtikli.isChecked();
+				boolean dokumentiChecked = cbDokumenti.isChecked();
 				boolean specifikacijeChecked = cbSpecifikacije.isChecked();
 				boolean otvoreneStavkeKupacaChecked = cbOtvoreneStavkeKupaca.isChecked();
 				boolean poslednjStavkeKupacaChecked = cbPoslednjeStavkeKupaca.isChecked();
 				checkCount = 0;
 				
-				if (kupciChecked || artikliChecked || specifikacijeChecked || otvoreneStavkeKupacaChecked || poslednjStavkeKupacaChecked) {
+				if (kupciChecked || artikliChecked || dokumentiChecked || specifikacijeChecked || otvoreneStavkeKupacaChecked || poslednjStavkeKupacaChecked) {
 					pbSinhronizacija.setVisibility(View.VISIBLE);
 					sb = new StringBuilder();
 					if (kupciChecked) {
@@ -119,6 +127,10 @@ public class SinhonizacijaActivity extends BaseActivity {
 					if (artikliChecked) {
 						checkCount++;
 						sinhronizujArtikle();
+					}
+					if (dokumentiChecked) {
+						checkCount++;
+						sinhronizujDokumente();
 					}
 					if (specifikacijeChecked) {
 						checkCount++;
@@ -157,6 +169,8 @@ public class SinhonizacijaActivity extends BaseActivity {
     	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, historySalesDocumentsSyncObject);
     	IntentFilter salesDocumentsSyncObject = new IntentFilter(SalesDocumentsSyncObject.BROADCAST_SYNC_ACTION);
     	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, salesDocumentsSyncObject);
+    	IntentFilter newSalesDocumentsSyncObject = new IntentFilter(NewSalesDocumentsSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, newSalesDocumentsSyncObject);
 	}
 	
 	@Override
@@ -204,6 +218,13 @@ public class SinhonizacijaActivity extends BaseActivity {
 		Intent intent = new Intent(this, NavisionSyncService.class);
 		SalesDocumentsSyncObject salesDocumentsSyncObject = new SalesDocumentsSyncObject("", Integer.valueOf(-1), "", "", DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), DateUtils.getWsDummyDate(), salesPersonNo, Integer.valueOf(1));
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, salesDocumentsSyncObject);
+		startService(intent);
+	}
+	
+	protected void sinhronizujDokumente() {
+		Intent intent = new Intent(this, NavisionSyncService.class);
+		NewSalesDocumentsSyncObject newSalesDocumentsSyncObject = new NewSalesDocumentsSyncObject(2, "", DateUtils.getWsDummyDate(), DateUtils.getLastDayInMonth(11, 2014), salesPersonNo);
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, newSalesDocumentsSyncObject);
 		startService(intent);
 	}
 	

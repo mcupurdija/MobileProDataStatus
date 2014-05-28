@@ -31,4 +31,5 @@
     <!-- wurth category main menu -->
     <color name="main_menu_category_background">#605d5c</color>
     <color name="main_menu_category_text">#ffffffff</color>
+    
 </resources>

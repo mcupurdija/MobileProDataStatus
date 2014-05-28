@@ -69,6 +69,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int CUSTOMERS_BY_SALES_PERSON = 126;
 	private static final int POTENTIAL_CUSTOMERS_EXPORT = 127;
 	private static final int UPDATE_CUSTOMERS_EXPORT = 128;
+	private static final int CUSTOMERS_BY_CONTACT_COMPANY_NO = 129;
 
 	private static final int ITEMS = 130;
 	//private static final int ITEMS_NO = 131;
@@ -104,6 +105,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 	
 	private static final int CONTACTS = 400;
 	private static final int CONTACTS_ID = 401;
+	private static final int CONTACTS_EXPORT = 402;
+	private static final int CONTACTS_SEARCH = 403;
 	
 	private static final int CUSTOMER_ADDRESSES = 500;
 	private static final int CUSTOMER_ADDRESSES_ID = 501;
@@ -161,8 +164,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "customers", CUSTOMERS);
 		mobileStoreURIMatcher.addURI(authority, "customers/potential_customers_export", POTENTIAL_CUSTOMERS_EXPORT);
 		mobileStoreURIMatcher.addURI(authority, "customers/update_customers_export", UPDATE_CUSTOMERS_EXPORT);
-		mobileStoreURIMatcher.addURI(authority, "customers_by_sales_person/*",
-				CUSTOMERS_BY_SALES_PERSON);
+		mobileStoreURIMatcher.addURI(authority, "customers_by_sales_person/*", CUSTOMERS_BY_SALES_PERSON);
+		mobileStoreURIMatcher.addURI(authority, "customers_by_contact_company_no/*", CUSTOMERS_BY_CONTACT_COMPANY_NO);
 		mobileStoreURIMatcher.addURI(authority, "customers/#", CUSTOMERS_ID);
 		mobileStoreURIMatcher.addURI(authority, "customers/customer_no",
 				CUSTOMERS_NO);
@@ -243,7 +246,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 				"sale_order_lines_from_order/#", SALE_ORDER_LINES_FROM_ORDER);
 
 		mobileStoreURIMatcher.addURI(authority, "contacts", CONTACTS);
-		mobileStoreURIMatcher.addURI(authority, "contacts/*", CONTACTS_ID);
+		mobileStoreURIMatcher.addURI(authority, "contacts/#", CONTACTS_ID);
+		mobileStoreURIMatcher.addURI(authority, "contacts/contacts_export", CONTACTS_EXPORT);
+		mobileStoreURIMatcher.addURI(authority, "contacts/search/*", CONTACTS_SEARCH);
 		
 		mobileStoreURIMatcher.addURI(authority, "customer_addresses", CUSTOMER_ADDRESSES);
 		mobileStoreURIMatcher.addURI(authority, "customer_addresses/customer_no/*", CUSTOMER_ADDRESSES_CUSTOMER_NO);
@@ -308,6 +313,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case CUSTOMERS_ID:
 			return Customers.CONTENT_ITEM_TYPE;
 		case CUSTOMERS_BY_SALES_PERSON:
+			return Customers.CONTENT_TYPE;
+		case CUSTOMERS_BY_CONTACT_COMPANY_NO:
 			return Customers.CONTENT_TYPE;
 		case VISITS:
 			return Visits.CONTENT_TYPE;
@@ -570,10 +577,13 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case UPDATE_CUSTOMERS_EXPORT:
 			return builder.addTable(Tables.CUSTOMERS_UPDATE_EXPORT);
 		case CUSTOMERS_BY_SALES_PERSON:
-			final String salesPersonIdOnCustomer = Customers
-					.getCustomersSalesPersonId(uri);
+			final String salesPersonIdOnCustomer = Customers.getCustomersSalesPersonId(uri);
 			return builder.addTable(Tables.CUSTOMERS).where(
 					Customers.SALES_PERSON_ID + "=?", salesPersonIdOnCustomer);
+		case CUSTOMERS_BY_CONTACT_COMPANY_NO:
+			final String contactCompanyNo = Customers.getContactCompanyNo(uri);
+			return builder.addTable(Tables.CUSTOMERS).where(
+					Customers.CONTACT_COMPANY_NO + "=?", contactCompanyNo);
 		case CUSTOMERS_ID:
 			String customerId = Customers.getCustomersId(uri);
 			return builder.addTable(Tables.CUSTOMERS).where(
@@ -864,18 +874,32 @@ public class MobileStoreContentProvider extends ContentProvider {
 							Tables.SALE_ORDER_LINES)
 					.where(SaleOrderLines.SALE_ORDER_ID + "=?", salesOrderId);
 		case CONTACTS_ID:
+			final String contactId = Contacts.getContactsId(uri);
+			return builder.addTable(Tables.CONTACTS).where(
+					Tables.CONTACTS + "." + Contacts._ID + "=?", contactId);
+		case CONTACTS_SEARCH:
 			String contactsCustomSearch = Contacts.getContactsCustomSearch(uri);
 			builder.addTable(Tables.CONTACTS);
-			if (contactsCustomSearch != null && contactsCustomSearch.length() > 0 && !contactsCustomSearch.equals("noNoOrName")) {	
+			if (contactsCustomSearch != null && contactsCustomSearch.trim().length() > 0 && !contactsCustomSearch.equals("noNoOrName")) {	
 				builder.where(
-						Contacts.CONTACT_NO + " like ?  or " + Contacts.NAME
-								+ " like ?",
-						new String[] { "%" + contactsCustomSearch + "%",
-								"%" + contactsCustomSearch + "%" });
+						Contacts.NAME + " LIKE ?",
+						new String[] { "%" + contactsCustomSearch + "%" });
 			}
 			return builder;
 		case CONTACTS:
 			return builder.addTable(Tables.CONTACTS);
+		case CONTACTS_EXPORT:
+			return builder.addTable(Tables.CONTACTS_EXPORT)
+					.mapToTable(MobileStoreContract.Contacts.CONTACT_NO, Tables.CONTACTS)
+					.mapToTable(MobileStoreContract.Contacts.NAME, Tables.CONTACTS)
+					.mapToTable(MobileStoreContract.Contacts.NAME2, Tables.CONTACTS)
+					.mapToTable(MobileStoreContract.Contacts.PHONE, Tables.CONTACTS)
+					.mapToTable(MobileStoreContract.Contacts.MOBILE_PHONE, Tables.CONTACTS)
+					.mapToTable(MobileStoreContract.SalesPerson.SALE_PERSON_NO, Tables.SALES_PERSONS)
+					.mapToTable(MobileStoreContract.Contacts.EMAIL, Tables.CONTACTS)
+					.mapToTable(MobileStoreContract.Contacts.COMPANY_NO, Tables.CONTACTS)
+					.mapToTable(MobileStoreContract.Contacts.DEPARTMENT, Tables.CONTACTS)
+					.mapToTable(MobileStoreContract.Contacts.POSITION, Tables.CONTACTS);
 		case CUSTOMER_ADDRESSES:
 			return builder.addTable(Tables.CUSTOMER_ADDRESSES);
 		case CUSTOMER_ADDRESSES_CUSTOMER_NO:
@@ -991,7 +1015,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(MobileStoreContract.Visits.POTENTIAL_CUSTOMER, Tables.VISITS)
 					.mapToTable(MobileStoreContract.Customers.CUSTOMER_NO, Tables.CUSTOMERS)
 					.mapToTable(MobileStoreContract.Visits.ODOMETER, Tables.VISITS)
-					.mapToTable(MobileStoreContract.Visits.NOTE, Tables.VISITS);
+					.mapToTable(MobileStoreContract.Visits.NOTE, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.ADDRESS_NO, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.LATITUDE, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.LONGITUDE, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.ACCURACY, Tables.VISITS);
 		case SALE_ORDERS_SALDO:
 			return  builder.addTable(Tables.SALE_ORDERS_SALDO);
 		case INVOICES_SEARCH:
@@ -1004,8 +1032,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 			builder
 				.addTable(Tables.INVOICES_JOIN_CUSTOMER);
 			if (!customer_no.equals("noCustomer")) {
-				builder.where(Tables.CUSTOMERS+"."+MobileStoreContract.Customers.CUSTOMER_NO + " like ? ",
-							new String[] { "%" + customer_no + "%" });
+				builder.where(Tables.CUSTOMERS+"." + MobileStoreContract.Customers.CUSTOMER_NO + " like ? OR " + 
+						MobileStoreContract.Customers.NAME + " like ?",
+							new String[] { "%" + customer_no + "%", "%" + customer_no + "%" });
 			}
 			if (!invoiceDocType.equals("-1")) {
 				builder.where(Tables.INVOICES+"."+MobileStoreContract.Invoices.DOCUMENT_TYPE + " = ? ",new String[] { invoiceDocType });

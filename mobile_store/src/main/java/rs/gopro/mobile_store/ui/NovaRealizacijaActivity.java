@@ -8,15 +8,18 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import rs.gopro.mobile_store.R;
-import rs.gopro.mobile_store.gps.GpsModel;
-import rs.gopro.mobile_store.gps.HttpPostRequest;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
+import rs.gopro.mobile_store.ui.dialog.AddressSelectDialog;
+import rs.gopro.mobile_store.ui.dialog.AddressSelectDialog.AddressSelectDialogListener;
 import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DatePickerFragment;
 import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.TimePickerFragment;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
@@ -42,7 +45,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,9 +64,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
-public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallbacks<Cursor>, LocationListener {
+public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallbacks<Cursor>, LocationListener, AddressSelectDialogListener {
 
 	private static final String VISITS_DATE_FILTER = "DATE(" + Tables.VISITS + "." + MobileStoreContract.Visits.VISIT_DATE + ")=DATE(?)";
 	private static final String VISITS_FILTER_REALIZACIJA = Tables.VISITS + "." + MobileStoreContract.Visits.VISIT_TYPE + "=" + ApplicationConstants.VISIT_RECORDED;
@@ -73,6 +73,8 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	private static final String VISITS_FILTER_KRAJ_DANA = Tables.VISITS + "." + MobileStoreContract.Visits.VISIT_RESULT + "=" + ApplicationConstants.VISIT_TYPE_END_DAY;
 	private static final String VISITS_FILTER_POVRATAK_KUCI = Tables.VISITS + "." + MobileStoreContract.Visits.VISIT_RESULT + "=" + ApplicationConstants.VISIT_TYPE_BACK_HOME;
 	private static final String VISITS_FILTER_IS_VISIT_OPEN = Tables.VISITS + "." + MobileStoreContract.Visits.VISIT_STATUS + "=" + ApplicationConstants.VISIT_STATUS_STARTED;
+	
+	private static final int NEW_SALE_ORDER_REQUEST_CODE = 2;
 	
 	private CursorAdapter cursorAdapter, cursorAdapterPlan;
 	private CustomerAutocompleteCursorAdapter customerCursorAdapter;
@@ -84,18 +86,20 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	private SimpleDateFormat shortTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 	
 	private Button bZapocniDan, bNovaRealizacija, bPauza, bZavrsiDan, bPovratakKuci;
-	private Button datumInput, vremeInput;
+	private Button datumInput, vremeInput, customerAddress;
+	private TextView tvGpsIskljucen;
 	private ListView lvRealizacija, lvPlan;
 	private int selectedCustomerId;
+	private String selectedCustomerNo, selectedAddressNo;
 	
 	private Calendar calender = Calendar.getInstance();
 	
-	private static final Integer TIME_INTERVAL = 60 * 1000;
+	private static final Integer TIME_INTERVAL = 5 * 1000;
 	private static final Integer DISTANCE = 0;
 	private LocationManager locationManager;
 	
-	private Gson gson;
-	private GpsModel gpsModel;
+	//private Gson gson;
+	//private GpsModel gpsModel;
 	
 	private BroadcastReceiver onNotice = new BroadcastReceiver() {
 		@Override
@@ -107,7 +111,8 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 
 	protected void onSOAPResult(SyncResult syncResult, String broadcastAction) {
 		if (syncResult.getStatus().equals(SyncStatus.FAILURE)) {
-			Toast.makeText(getApplicationContext(), R.string.error_internet_status, Toast.LENGTH_LONG).show();
+			DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_error_in_sync), syncResult.getResult());
+			//Toast.makeText(getApplicationContext(), R.string.error_internet_status, Toast.LENGTH_LONG).show();
 		}
 	}
 	
@@ -117,14 +122,15 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		setContentView(R.layout.activity_nova_realizacija);
 		getActionBar().setTitle(getString(R.string.dialog_title_record_visit) + " " + screenDateFormat.format(new Date()));
 		
+		//gson = new Gson();
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		gson = new Gson();
 		
 		bZapocniDan = (Button) findViewById(R.id.bZapocniDan);
 		bNovaRealizacija = (Button) findViewById(R.id.bNovaRealizacija);
 		bPauza = (Button) findViewById(R.id.bPauza);
 		bZavrsiDan = (Button) findViewById(R.id.bZavrsiDan);
 		bPovratakKuci = (Button) findViewById(R.id.bPovratakKuci);
+		tvGpsIskljucen = (TextView) findViewById(R.id.tvGpsIskljucen);
 		lvRealizacija = (ListView) findViewById(R.id.lvRealizacija);
 		lvPlan = (ListView) findViewById(R.id.lvPlan);
 		
@@ -133,6 +139,10 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		
 		cursorAdapterPlan = new PlanAdapter(this);
 		lvPlan.setAdapter(cursorAdapterPlan);
+		
+		if (!checkGpsEnabled()) {
+			tvGpsIskljucen.setVisibility(View.VISIBLE);
+		}
 		
 		bZapocniDan.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -209,20 +219,46 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 			}
 		});
 		
+		tvGpsIskljucen.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);  
+				startActivity(gpsOptionsIntent);
+			}
+		});
+		
 		getLoaderManager().initLoader(0, null, this);
 		getLoaderManager().initLoader(1, null, this);
 	}
 	
-	private HashMap<String, String> requestLocationUpdate() {
-		Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		HashMap<String, String> map = new HashMap<>();
-		map.put("lat", String.valueOf(location.getLatitude()));
-		map.put("lon", String.valueOf(location.getLatitude()));
-		map.put("acc", String.valueOf(location.getAccuracy()));
-		return map;
+	private boolean checkGpsEnabled() {
+		LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);;
+	    return mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 	}
 	
-	private void postGpsData(String kupac, String tip, Date vreme) {
+	private HashMap<String, String> requestLocationUpdate() {
+		String notAvailable = "n/a";
+		HashMap<String, String> map = new HashMap<>();
+		map.put("lat", notAvailable);
+		map.put("lon", notAvailable);
+		map.put("acc", notAvailable);
+		try {
+			if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+				Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+				map.put("lat", String.valueOf(location.getLatitude()));
+				map.put("lon", String.valueOf(location.getLongitude()));
+				map.put("acc", String.valueOf(location.getAccuracy()));
+				return map;
+			} else {
+				return map;
+			}
+		} catch (Exception e) {
+			return map;
+		}
+	}
+	
+	/*private void postGpsData(String kupac, String tip, Date vreme) {
 		gpsModel = new GpsModel();
 		HashMap<String, String> mapa = requestLocationUpdate();
 		gpsModel.setSalesPersonNo(salesPersonNo);
@@ -247,14 +283,14 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		    }
 		});
 		thread.start(); 
-	}
+	}*/
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(onNotice);
 		
-		//locationManager.removeUpdates(this);
+		locationManager.removeUpdates(this);
 	}
 
 	@Override
@@ -263,10 +299,25 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		IntentFilter stRealizedVisitsToCustomersSyncObject = new IntentFilter(SetRealizedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION);
     	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, stRealizedVisitsToCustomersSyncObject);
     	
-    	//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME_INTERVAL, DISTANCE, this);
+    	locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME_INTERVAL, DISTANCE, this);
 	}
 	
-	
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		
+		if (hasFocus) {
+			
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME_INTERVAL, DISTANCE, this);
+			
+			if (checkGpsEnabled()) {
+				tvGpsIskljucen.setVisibility(View.INVISIBLE);
+			} else {
+				tvGpsIskljucen.setVisibility(View.VISIBLE);
+			}
+		}
+	}
+
 	private void showDatePicker() {
 		DatePickerFragment date = new DatePickerFragment();
 
@@ -354,6 +405,7 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	
 	private ContentValues commonContentValues() {
 		Date newDate = new Date();
+		HashMap<String, String> mapa = requestLocationUpdate();
 		ContentValues cv = new ContentValues();
 		cv.put(MobileStoreContract.Visits.SALES_PERSON_ID, salesPersonId);
 		cv.put(MobileStoreContract.Visits.VISIT_DATE, DateUtils.toDbDate(newDate));
@@ -362,6 +414,9 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		cv.putNull(MobileStoreContract.Visits.NOTE);
 		cv.put(MobileStoreContract.Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_FINISHED);
 		cv.put(MobileStoreContract.Visits.IS_SENT, 0);
+		cv.put(MobileStoreContract.Visits.LATITUDE, mapa.get("lat"));
+		cv.put(MobileStoreContract.Visits.LONGITUDE, mapa.get("lon"));
+		cv.put(MobileStoreContract.Visits.ACCURACY, mapa.get("acc"));
 		return cv;
 	}
 	
@@ -380,11 +435,22 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	
 	private void novaRealizacija(String kilometraza, int customerId, Date arrivalDate) {
 		ContentValues cv = commonContentValues();
-		cv.put(MobileStoreContract.Visits.CUSTOMER_ID, customerId);
+		if (customerId == 0) {
+			cv.putNull(Visits.CUSTOMER_ID);
+		} else {
+			Cursor isPotentialCustomer = getContentResolver().query(MobileStoreContract.Customers.CONTENT_URI, new String[] {Customers.CONTACT_COMPANY_NO}, 
+					"("+Customers.CONTACT_COMPANY_NO + " IS NULL OR " + Customers.CONTACT_COMPANY_NO + "='')" + " AND " + Customers._ID + "=?" , new String[] { String.valueOf(customerId) }, null);
+			if (isPotentialCustomer.moveToFirst()) {
+				cv.put(Visits.POTENTIAL_CUSTOMER, 1);
+			}
+			isPotentialCustomer.close();
+			cv.put(Visits.CUSTOMER_ID, customerId);		
+		}
 		cv.put(MobileStoreContract.Visits.ODOMETER, kilometraza);
 		cv.put(MobileStoreContract.Visits.ARRIVAL_TIME, DateUtils.toDbDate(arrivalDate));
 		cv.put(MobileStoreContract.Visits.VISIT_RESULT, ApplicationConstants.VISIT_TYPE_NO_CLOSURE);
 		cv.put(MobileStoreContract.Visits.VISIT_STATUS, ApplicationConstants.VISIT_STATUS_STARTED);
+		cv.put(MobileStoreContract.Visits.ADDRESS_NO, selectedAddressNo);
 
 		Uri result = getContentResolver().insert(MobileStoreContract.Visits.CONTENT_URI, cv);
 		sendRecordedVisit(ContentUris.parseId(result));
@@ -454,7 +520,6 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		cv.put(MobileStoreContract.Visits.ARRIVAL_TIME, DateUtils.toDbDate(newDate));
 		cv.put(MobileStoreContract.Visits.DEPARTURE_TIME, DateUtils.toDbDate(newDate));
 		cv.put(MobileStoreContract.Visits.VISIT_RESULT, ApplicationConstants.VISIT_TYPE_BACK_HOME);
-		
 
 		Uri result = getContentResolver().insert(MobileStoreContract.Visits.CONTENT_URI, cv);
 		sendRecordedVisit(ContentUris.parseId(result));
@@ -479,6 +544,7 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 				case 0:
 					if (cursorAdapter != null) {
 						cursorAdapter.swapCursor(cursor);
+						lvRealizacija.setSelection(lvRealizacija.getAdapter().getCount());
 					}
 					break;
 				case 1:
@@ -578,13 +644,27 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		AutoCompleteTextView acKupac = (AutoCompleteTextView) dialog.findViewById(R.id.dialog_nova_realizacija_kupac_input);
 		customerCursorAdapter = new CustomerAutocompleteCursorAdapter(this, null);
 		acKupac.setAdapter(customerCursorAdapter);
+		
+		customerAddress = (Button) dialog.findViewById(R.id.dialog_nova_realizacija_adresa_input);
+		
 		acKupac.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View arg1, int position, long id) {
 				Cursor cursor = (Cursor) customerCursorAdapter.getItem(position);
 				selectedCustomerId = cursor.getInt(0);
+				selectedCustomerNo = cursor.getString(1);
+				
+				prikazAdreseKupca(-1);
 			}
 		});
+		
+		customerAddress.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				dialogAdresaKupca();
+			}
+		});
+		
 		datumInput = (Button) dialog.findViewById(R.id.dialog_nova_realizacija_datum_input);
 		vremeInput = (Button) dialog.findViewById(R.id.dialog_nova_realizacija_vreme_input);
 		final EditText kilometrazaInput = (EditText) dialog.findViewById(R.id.dialog_nova_realizacija_kilometraza_input);
@@ -597,8 +677,10 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	    		final int nameIndex = c.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
 	    		final String result = c.getString(codeIndex) + " - " + c.getString(nameIndex);
 	    		acKupac.setText(result);
+	    		selectedCustomerNo = c.getString(codeIndex);
         	}
         	selectedCustomerId = customerId;
+        	prikazAdreseKupca(-1);
 		}
 		datumInput.setText(dateFormat.format(new Date()));
 		if (time != null) {
@@ -634,25 +716,83 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 				if (selectedCustomerId > 0) {
 					if (km.trim().length() > 0) {
 						try {
-							Date selectedDate = dateTimeFormat.parse(datumInput.getText().toString() + " " + vremeInput.getText().toString());
-							novaRealizacija(km, selectedCustomerId, selectedDate);
+							// POLJA DATIM I VREME
+							//Date selectedDate = dateTimeFormat.parse(datumInput.getText().toString() + " " + vremeInput.getText().toString());
+							//novaRealizacija(km, selectedCustomerId, selectedDate);
+							novaRealizacija(km, selectedCustomerId, new Date());
 							if (visitId != -1) {
-								//getContentResolver().delete(MobileStoreContract.Visits.CONTENT_URI, MobileStoreContract.Visits._ID + "=?", new String[] { String.valueOf(visitId) });
+								// BRISANJE PLANA
+								getContentResolver().delete(MobileStoreContract.Visits.CONTENT_URI, MobileStoreContract.Visits._ID + "=?", new String[] { String.valueOf(visitId) });
 							}
 						} catch (Exception e) {
 						}
 						selectedCustomerId = 0;
+						selectedCustomerNo = null;
 						dialog.dismiss();
 					} else {
 						kilometrazaInput.requestFocus();
 						Toast.makeText(getApplicationContext(), R.string.title_unesite_vrednost, Toast.LENGTH_LONG).show();
 					}
 				} else {
-					Toast.makeText(getApplicationContext(), R.string.kupac_nije_izabran, Toast.LENGTH_LONG).show();
+					if (km.trim().length() > 0) {
+						try {
+							// POLJA DATIM I VREME
+							//Date selectedDate = dateTimeFormat.parse(datumInput.getText().toString() + " " + vremeInput.getText().toString());
+							//novaRealizacija(km, selectedCustomerId, selectedDate);
+							novaRealizacija(km, 0, new Date());
+							if (visitId != -1) {
+								// BRISANJE PLANA
+								//getContentResolver().delete(MobileStoreContract.Visits.CONTENT_URI, MobileStoreContract.Visits._ID + "=?", new String[] { String.valueOf(visitId) });
+							}
+						} catch (Exception e) {
+						}
+						selectedCustomerId = 0;
+						selectedCustomerNo = null;
+						dialog.dismiss();
+					} else {
+						kilometrazaInput.requestFocus();
+						Toast.makeText(getApplicationContext(), R.string.title_unesite_vrednost, Toast.LENGTH_LONG).show();
+					}
 				}
 			}
 		});
 		dialog.show();
+	}
+	
+	private void prikazAdreseKupca(int customerAddressId) {
+		if (customerAddressId != -1) {
+			Cursor addressCursor = getContentResolver().query(MobileStoreContract.CustomerAddresses.CONTENT_URI, CustomerAddressQuery.PROJECTION, Tables.CUSTOMER_ADDRESSES+"._id=?", new String[] { String.valueOf(customerAddressId)  }, null);
+			if (addressCursor != null && addressCursor.moveToFirst()) {
+				selectedAddressNo = addressCursor.getString(CustomerAddressQuery.ADDRESS_NO);
+				String address = addressCursor.getString(CustomerAddressQuery.ADDRESS);
+				String city = addressCursor.getString(CustomerAddressQuery.CITY);
+				String post_code = addressCursor.getString(CustomerAddressQuery.POST_CODE);
+				customerAddress.setText(String.format("%s, %s %s", address, post_code, city));
+			} else {
+				customerAddress.setText("");
+				selectedAddressNo = null;
+			}
+			if (addressCursor != null && !addressCursor.isClosed()) {
+				addressCursor.close();
+			}
+		} else {
+			// this check is here when this method is called not after dialog but from this activity
+			if (selectedCustomerNo != null) {
+				Cursor addressDefaultCursor = getContentResolver().query(MobileStoreContract.Customers.CONTENT_URI, DefaultCustomerAddressQuery.PROJECTION, Tables.CUSTOMERS+"." + Customers.CUSTOMER_NO + "=?", new String[] { selectedCustomerNo }, null);
+				if (addressDefaultCursor != null && addressDefaultCursor.moveToFirst()) {
+					String address = addressDefaultCursor.getString(DefaultCustomerAddressQuery.ADDRESS);
+					String city = addressDefaultCursor.getString(DefaultCustomerAddressQuery.CITY);
+					String post_code = addressDefaultCursor.getString(DefaultCustomerAddressQuery.POST_CODE);
+					customerAddress.setText(String.format("%s, %s %s", address, post_code, city));
+				}
+				if (addressDefaultCursor != null && !addressDefaultCursor.isClosed()) {
+					addressDefaultCursor.close();
+				}
+			} else {
+				customerAddress.setText("");
+			}
+			selectedAddressNo = null;
+		}
 	}
 	
 	public void krajRealizacijeDijalog(final String visitId, final int tip) {
@@ -773,10 +913,52 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	}
 	
 	public void sendRecordedVisit(long visitId) {
-		SetRealizedVisitsToCustomersSyncObject visitsToCustomersSyncObject = new SetRealizedVisitsToCustomersSyncObject((int) visitId);
-    	Intent intent = new Intent(this, NavisionSyncService.class);
-		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, visitsToCustomersSyncObject);
-		startService(intent);
+
+		Cursor cursor = getContentResolver().query(MobileStoreContract.Visits.CONTENT_URI, VisitsQuery.PROJECTION, VISITS_DATE_FILTER + " AND " + VISITS_FILTER_REALIZACIJA + " AND " + "visits.is_sent=0", new String[] { DateUtils.toDbDate(new Date()) }, null);
+		if (cursor.moveToFirst()) {
+			do {
+				SetRealizedVisitsToCustomersSyncObject visitsToCustomersSyncObject = new SetRealizedVisitsToCustomersSyncObject(cursor.getInt(VisitsQuery._ID));
+		    	Intent intent = new Intent(this, NavisionSyncService.class);
+				intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, visitsToCustomersSyncObject);
+				startService(intent);
+		    } while (cursor.moveToNext());
+		} else {
+			/* NEPOTREBNO
+			SetRealizedVisitsToCustomersSyncObject visitsToCustomersSyncObject = new SetRealizedVisitsToCustomersSyncObject((int) visitId);
+	    	Intent intent = new Intent(this, NavisionSyncService.class);
+			intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, visitsToCustomersSyncObject);
+			startService(intent);*/
+		}
+	}
+	
+	private void dialogAdresaKupca() {
+		if (selectedCustomerNo == null) {
+			DialogUtil.showInfoDialog(this, "Upozorenje", "Kupac nije izabran!");
+			return;
+		}
+		AddressSelectDialog addressSelectDialog = new AddressSelectDialog();
+		Intent tempIntent = new Intent(Intent.ACTION_VIEW, null);
+		tempIntent.putExtra(AddressSelectDialog.EXTRA_CUSTOMER_NO, selectedCustomerNo);
+		//tempIntent.putExtra(AddressSelectDialog.EXTRA_DIALOG_ID, SHIPPING_ADDRESS_SELECTOR);
+		
+		Cursor addressDefaultCursor = getContentResolver().query(MobileStoreContract.Customers.CONTENT_URI, DefaultCustomerAddressQuery.PROJECTION, Tables.CUSTOMERS+"." + Customers.CUSTOMER_NO + "=?", new String[] { String.valueOf( selectedCustomerNo )  }, null);
+		if (addressDefaultCursor != null && addressDefaultCursor.moveToFirst()) {
+			String address = addressDefaultCursor.getString(DefaultCustomerAddressQuery.ADDRESS);
+			String city = addressDefaultCursor.getString(DefaultCustomerAddressQuery.CITY);
+			String post_code = addressDefaultCursor.getString(DefaultCustomerAddressQuery.POST_CODE);
+			
+			addressSelectDialog.setDefault_address(address);
+			addressSelectDialog.setDefault_city(city);
+			addressSelectDialog.setDefault_post_code(post_code);
+			
+			customerAddress.setText(String.format("%s, %s %s", address, post_code, city));
+		}
+		if (addressDefaultCursor != null && !addressDefaultCursor.isClosed()) {
+			addressDefaultCursor.close();
+		}
+		
+		addressSelectDialog.setArguments(BaseActivity.intentToFragmentArguments(tempIntent));
+		addressSelectDialog.show(getSupportFragmentManager(), "ADDRESS_DIALOG_SHIPPING");
 	}
 	
 	private class VisitsAdapter extends CursorAdapter {
@@ -799,13 +981,16 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
         	TextView tvRealizacijaNaslov = (TextView) view.findViewById(R.id.tvRealizacijaNaslov);
         	TextView tvRealizacijaKilometraza = (TextView) view.findViewById(R.id.tvRealizacijaKilometraza);
         	TextView tvRealizacijaVreme = (TextView) view.findViewById(R.id.tvRealizacijaVreme);
-        	ImageView ivRealizacijaZavrsi = (ImageView) view.findViewById(R.id.ivRealizacijaZavrsi);
         	ImageView ivRealizacijaStatus = (ImageView) view.findViewById(R.id.ivRealizacijaStatus);
         	String arrivalTime = null, departureTime = null, odometer = null;
+        	RelativeLayout layoutRealizacijaKarticaKupca = (RelativeLayout) view.findViewById(R.id.layoutRealizacijaKarticaKupca);
+        	RelativeLayout layoutRealizacijaPorudzbina = (RelativeLayout) view.findViewById(R.id.layoutRealizacijaPorudzbina);
         	RelativeLayout layoutRealizacijaZavrsi = (RelativeLayout) view.findViewById(R.id.layoutRealizacijaZavrsi);
+        	RelativeLayout layoutRealizacijaStatus = (RelativeLayout) view.findViewById(R.id.layoutRealizacijaStatus);
         	
         	final int selectedVisitId = cursor.getInt(VisitsQuery._ID);
         	final int selectedType = cursor.getInt(VisitsQuery.VISIT_RESULT);
+        	final int customerId = cursor.getInt(VisitsQuery.CUSTOMER_ID);
         	
         	try {
         		odometer = cursor.getString(VisitsQuery.ODOMETER) + " km";
@@ -821,31 +1006,44 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 			case 1:
 				tvRealizacijaNaslov.setText("POČETAK DANA");
 				tvRealizacijaVreme.setText(arrivalTime);
+				layoutRealizacijaKarticaKupca.setVisibility(View.GONE);
+        		layoutRealizacijaPorudzbina.setVisibility(View.GONE);
 				break;
 			case 2:
 				tvRealizacijaNaslov.setText(cursor.getString(VisitsQuery.CUSTOMER_NO) + " - " + cursor.getString(VisitsQuery.CUSTOMER_NAME));
 				tvRealizacijaVreme.setText(arrivalTime + " - " + departureTime);
+				layoutRealizacijaKarticaKupca.setVisibility(View.VISIBLE);
+        		layoutRealizacijaPorudzbina.setVisibility(View.VISIBLE);
 				break;
 			case 3:
 				tvRealizacijaNaslov.setText(cursor.getString(VisitsQuery.CUSTOMER_NO) + " - " + cursor.getString(VisitsQuery.CUSTOMER_NAME));
 				tvRealizacijaVreme.setText(arrivalTime + " - " + departureTime);
+				layoutRealizacijaKarticaKupca.setVisibility(View.VISIBLE);
+        		layoutRealizacijaPorudzbina.setVisibility(View.VISIBLE);
 				break;
 			case 4:
 				tvRealizacijaNaslov.setText("PAUZA");
 				tvRealizacijaVreme.setText(arrivalTime + " - " + departureTime);
+				layoutRealizacijaKarticaKupca.setVisibility(View.GONE);
+        		layoutRealizacijaPorudzbina.setVisibility(View.GONE);
 				break;
 			case 5:
 				tvRealizacijaNaslov.setText("KRAJ DANA");
 				tvRealizacijaVreme.setText(arrivalTime);
+				layoutRealizacijaKarticaKupca.setVisibility(View.GONE);
+        		layoutRealizacijaPorudzbina.setVisibility(View.GONE);
 				break;
 			case 6:
 				tvRealizacijaNaslov.setText("POVRATAK KUĆI");
 				tvRealizacijaVreme.setText(arrivalTime);
+				layoutRealizacijaKarticaKupca.setVisibility(View.GONE);
+        		layoutRealizacijaPorudzbina.setVisibility(View.GONE);
 				break;
 			default:
 				break;
 			}
         	
+        	tvRealizacijaKilometraza.setText(odometer);
         	layoutRealizacijaInfo.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
@@ -853,24 +1051,42 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 					infoDijalog(selectedVisitId);
 				}
 			});
+        	layoutRealizacijaKarticaKupca.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					final Uri customerListUri = MobileStoreContract.Customers.CONTENT_URI;
+			        final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.Customers.buildCustomersUri(String.valueOf(customerId)));
+			        intent.putExtra(CustomersViewActivity.EXTRA_MASTER_URI, customerListUri);
+			        startActivity(intent);
+				}
+			});
+        	layoutRealizacijaPorudzbina.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT, MobileStoreContract.SaleOrders.CONTENT_URI);
+					newSaleOrderIntent.putExtra("rs.gopro.mobile_store.extra.CUSTOMER_ID", customerId);
+					startActivityForResult(newSaleOrderIntent, NEW_SALE_ORDER_REQUEST_CODE);
+				}
+			});
+        	layoutRealizacijaZavrsi.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					krajRealizacijeDijalog(String.valueOf(selectedVisitId), selectedType);
+				}
+			});
         	
-        	tvRealizacijaKilometraza.setText(odometer);
         	if (status != ApplicationConstants.VISIT_STATUS_STARTED) {
         		layoutRealizacijaZavrsi.setVisibility(View.GONE);
 			} else {
 				layoutRealizacijaZavrsi.setVisibility(View.VISIBLE);
-				ivRealizacijaZavrsi.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						krajRealizacijeDijalog(String.valueOf(selectedVisitId), selectedType);
-					}
-				});
 			}
         	if (poslato == 1) {
         		ivRealizacijaStatus.setImageResource(R.drawable.ic_status_ok);
 			} else {
 				ivRealizacijaStatus.setImageResource(R.drawable.ic_status_bad);
-				ivRealizacijaStatus.setOnClickListener(new View.OnClickListener() {
+				layoutRealizacijaStatus.setOnClickListener(new View.OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
@@ -901,7 +1117,9 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
         	TextView tvPlanNaslov = (TextView) view.findViewById(R.id.tvPlanNaslov);
         	TextView tvPlanDatum = (TextView) view.findViewById(R.id.tvPlanDatum);
         	TextView tvPlanVreme = (TextView) view.findViewById(R.id.tvPlanVreme);
-        	ImageView ivPlanRealizuj = (ImageView) view.findViewById(R.id.ivPlanRealizuj);
+        	RelativeLayout layoutPlanRealizacijaKarticaKupca = (RelativeLayout) view.findViewById(R.id.layoutPlanRealizacijaKarticaKupca);
+        	RelativeLayout layoutPlanRealizacijaPorudzbina = (RelativeLayout) view.findViewById(R.id.layoutPlanRealizacijaPorudzbina);
+        	RelativeLayout layoutPlanRealizacija = (RelativeLayout) view.findViewById(R.id.layoutPlanRealizacija);
         	
         	final String date = DateUtils.formatDbDateForPresentation(cursor.getString(VisitsQuery.VISIT_DATE));
 			final String time = DateUtils.formatDbTimeForPresentation(cursor.getString(VisitsQuery.ARRIVAL_TIME));
@@ -912,8 +1130,27 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
         	tvPlanNaslov.setText(cursor.getString(VisitsQuery.CUSTOMER_NO) + " - " + cursor.getString(VisitsQuery.CUSTOMER_NAME));
         	tvPlanDatum.setText("PLAN " + date);
 			tvPlanVreme.setText(time);
-        	
-        	ivPlanRealizuj.setOnClickListener(new View.OnClickListener() {
+			
+			layoutPlanRealizacijaKarticaKupca.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					final Uri customerListUri = MobileStoreContract.Customers.CONTENT_URI;
+			        final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.Customers.buildCustomersUri(String.valueOf(customerId)));
+			        intent.putExtra(CustomersViewActivity.EXTRA_MASTER_URI, customerListUri);
+			        startActivity(intent);
+				}
+			});
+			layoutPlanRealizacijaPorudzbina.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT, MobileStoreContract.SaleOrders.CONTENT_URI);
+					newSaleOrderIntent.putExtra("rs.gopro.mobile_store.extra.CUSTOMER_ID", customerId);
+					startActivityForResult(newSaleOrderIntent, NEW_SALE_ORDER_REQUEST_CODE);
+				}
+			});
+			layoutPlanRealizacija.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
@@ -972,6 +1209,37 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		int IS_SENT = 11;
 		int VISIT_DATE = 12;
 	}
+	
+	private interface DefaultCustomerAddressQuery {
+
+		String[] PROJECTION = {
+				BaseColumns._ID,
+				MobileStoreContract.Customers.ADDRESS,
+				MobileStoreContract.Customers.CITY,
+				MobileStoreContract.Customers.POST_CODE
+				};
+
+//		int _ID = 0;
+		int ADDRESS = 1;
+		int CITY = 2;
+		int POST_CODE = 3;
+	}
+	
+	private interface CustomerAddressQuery {
+
+		String[] PROJECTION = { BaseColumns._ID,
+				MobileStoreContract.CustomerAddresses.ADDRESS_NO,
+				MobileStoreContract.CustomerAddresses.ADDRESS,
+				MobileStoreContract.CustomerAddresses.CITY,
+				MobileStoreContract.CustomerAddresses.POST_CODE
+				};
+
+//		int _ID = 0;
+		int ADDRESS_NO = 1;
+		int ADDRESS = 2;
+		int CITY = 3;
+		int POST_CODE = 4;
+	}
 
 	@Override
 	public void onLocationChanged(Location location) {
@@ -996,5 +1264,28 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void onAddressSelected(int dialogId, int address_id, String address,
+			String address_no, String city, String post_code, String phone_no,
+			String contact) {
+		customerAddress.setText(String.format("%s, %s %s", address, post_code, city));
+		selectedAddressNo = address_no;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == NEW_SALE_ORDER_REQUEST_CODE) {
+			if (resultCode == RESULT_OK) {
+				String saleOrderId = data.getStringExtra("saleOrderId");
+				Uri saleOrdersUri = MobileStoreContract.SaleOrders.CONTENT_URI;
+                Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(String.valueOf(saleOrderId)));
+                intent.putExtra(SaleOrdersPreviewActivity.EXTRA_MASTER_URI, saleOrdersUri);
+                startActivity(intent);
+			}
+		}
+	}
+	
+	
 
 }

@@ -591,8 +591,41 @@
         <item>Y01</item>
     </string-array>
     <string-array name="record_visit_result_type_array_v2">
-        <item>+ posjeta sa zaključenjem</item>
-        <item>- posjeta bez zaključenja</item>
+        <item>+ poseta sa zaključenjem</item>
+        <item>- poseta bez zaključenja</item>
+    </string-array>
+    <string-array name="contact_department_array">
+        <item></item>
+        <item>Vlasnik/Direktor</item>
+        <item>Finansije</item>
+        <item>Nabavka</item>
+        <item>Proizvodnja</item>
+        <item>Ostalo</item>
+        <item>Održavanje</item>
+        <item>Magacin</item>
+        <item>Marketing</item>
+        <item>Projektovanje</item>
+    </string-array>
+    <string-array name="contact_position_array">
+        <item></item>
+        <item>Direktor</item>
+        <item>Direktor finansija</item>
+        <item>Direktor nabavke</item>
+        <item>Direktor proizvodnje</item>
+        <item>Ostalo</item>
+        <item>Vlasnik</item>
+        <item>Šef održavanja</item>
+        <item>Šef magacina</item>
+        <item>Lice zaduženo za plaćanje</item>
+        <item>Komercijalista</item>
+        <item>Tehničko lice</item>
+        <item>Projektant</item>
+        <item>Direktor marketinga</item>
+    </string-array>
+    <string-array name="dijalog_preuzmi_porudzbine">
+        <item>Porudžbine</item>
+        <item>Ponude</item>
+        <item>Porudžbine i Ponude</item>
     </string-array>
 
 </resources>

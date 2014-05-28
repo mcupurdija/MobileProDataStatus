@@ -60,10 +60,10 @@ public class ItemsDomain extends Domain {
 		contentValues.put(Items.GROUP_CODE, getGroup_code());
 		contentValues.put(Items.CAMPAIGN_STATUS, getCampaign_status());
 		contentValues.put(Items.OVERSTOCK_STATUS, getOverstock_status());
-		contentValues.put(Items.INVENTORY_ITEM_CATEGORY, inventory_item_category);
+		contentValues.put(Items.INVENTORY_ITEM_CATEGORY, getInventory_item_category());
 		contentValues.put(Items.CONNECTED_SPEC_SHIP_ITEM, getConnected_spec_ship_item());
 		// TODO data conversion
-		contentValues.put(Items.UNIT_SALES_PRICE_DIN, WsDataFormatEnUsLatin.toDoubleFromWs(getUnit_sales_price_din().length() < 1 ? "0.0" : getUnit_sales_price_din()));
+		contentValues.put(Items.UNIT_SALES_PRICE_DIN, WsDataFormatEnUsLatin.toDoubleFromWs(getUnit_sales_price_din().length() < 1 ? "0" : getUnit_sales_price_din()));
 		contentValues.put(Items.CAMPAIGN_CODE, getCampaign_code());
 		// TODO data conversion
 		contentValues.put(Items.CMPAIGN_START_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getCmpaign_start_date().length() < 1 ? DateUtils.getDbDummyDate() : getCmpaign_start_date()));
@@ -187,6 +187,14 @@ public class ItemsDomain extends Domain {
 
 	public void setOverstock_status(String overstock_status) {
 		this.overstock_status = overstock_status;
+	}
+
+	public String getInventory_item_category() {
+		return inventory_item_category;
+	}
+
+	public void setInventory_item_category(String inventory_item_category) {
+		this.inventory_item_category = inventory_item_category;
 	}
 
 }

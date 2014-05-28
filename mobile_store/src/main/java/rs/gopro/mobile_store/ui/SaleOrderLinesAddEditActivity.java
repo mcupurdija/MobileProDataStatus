@@ -208,12 +208,18 @@ public class SaleOrderLinesAddEditActivity extends BaseActivity implements
 				maxLineNo = maxLineNo +1;
 			}
 			cv.put(MobileStoreContract.SaleOrderLines.LINE_NO, Integer.valueOf(maxLineNo));
-			Uri lineUri = getContentResolver().insert(mUri, cv);
+			
+			try {
+				Uri lineUri = getContentResolver().insert(mUri, cv);
 
-			SaleOrderLinesAddEditPreviewListFragment listFrag = (SaleOrderLinesAddEditPreviewListFragment)
-	                getSupportFragmentManager().findFragmentById(R.id.fragment_sale_order_lines_lines_list);
-			listFrag.setSelectedSalesOrderLineId(MobileStoreContract.SaleOrderLines.getSaleOrderLineId(lineUri));
-			loadSaleOrderLineAddEdit(lineUri);
+				SaleOrderLinesAddEditPreviewListFragment listFrag = (SaleOrderLinesAddEditPreviewListFragment)
+		                getSupportFragmentManager().findFragmentById(R.id.fragment_sale_order_lines_lines_list);
+				listFrag.setSelectedSalesOrderLineId(MobileStoreContract.SaleOrderLines.getSaleOrderLineId(lineUri));
+				loadSaleOrderLineAddEdit(lineUri);
+			} catch (Exception e) {
+				//LogUtils.LOGE(TAG, e.getMessage());
+			}
+			
 			return true;
 		default:
 			break;
