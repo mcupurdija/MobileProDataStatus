@@ -26,6 +26,9 @@ public class WebServiceSettingsFragment extends PreferenceFragment implements On
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.ws_settings);
+		
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		endPointPref = (EditTextPreference) getPreferenceScreen().findPreference(getString(R.string.key_ws_entry_point));
 		wsSchemaPref = (EditTextPreference) getPreferenceScreen().findPreference(getString(R.string.key_ws_schema));
 		wsNavisionCodeunitPref = (EditTextPreference) getPreferenceScreen().findPreference(getString(R.string.key_ws_navisition_codeunit));

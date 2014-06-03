@@ -5,8 +5,9 @@
     android:padding="25dp" >
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/layoutAzurirajLeft"
+        android:layout_width="360dp"
+        android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical" >
 
@@ -23,21 +24,27 @@
             android:layout_height="wrap_content"
             android:background="@drawable/white_button"
             android:text="@string/bOdaberiDokument" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutAzurirajRight"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/layoutAzurirajLeft" >
 
         <TextView
             android:id="@+id/tvAzurirajSaTableta"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
             android:gravity="center_horizontal"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/pbAzurirajSaTableta"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        <ProgressBar
+            android:id="@+id/pbAzurirajSaTableta"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
 
 </RelativeLayout>

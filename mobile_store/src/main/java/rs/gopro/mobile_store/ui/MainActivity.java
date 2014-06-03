@@ -266,6 +266,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 			serviceOrderDialog.setArguments(sendInitValues);
 			
 			serviceOrderDialog.show(getSupportFragmentManager(), "SERVICE_ORDER_DIALOG");
+		} else if (MobileStoreSettingsActivity.SETTINGS_URI.equals(uri)) {
+			Intent settingsIntent = new Intent(getApplicationContext(), MobileStoreSettingsActivity.class);
+        	startActivity(settingsIntent);
 		}
 		
 		if (view != null) {
@@ -309,7 +312,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 			if (SaleOrdersLayout.SALE_ORDER_URI.equals(uri)) {
 				menu.getItem(1).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
 			} else if (PlanOfVisitsLayout.PLAN_OF_VISITS_URI.equals(uri)) {
-				menu.getItem(0).setVisible(true);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
+				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(true);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
 			} else if (CustomersLayout.CUSTOMERS_URI.equals(uri)) {
 				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(true);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
 			} else if (ItemsLayout.ITEMS_URI.equals(uri)) {
@@ -323,7 +326,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 			} else if (SentOrdersLayout.SENT_ORDERS_URI.equals(uri)) {
 				menu.getItem(2).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
 			} else if (RecordVisitsLayout.RECORD_VISITS_URI.equals(uri)) {
-				menu.getItem(0).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(true);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
+				menu.getItem(0).setVisible(true);menu.getItem(1).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(true);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
 			} else if (PlanAndTurnoverLayout.PLAN_AND_TURNOVER_URI.equals(uri)) {
 				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
 			}
@@ -349,13 +352,13 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 			/*final Uri recordVisitsUri = MobileStoreContract.Visits.CONTENT_URI;
 			final Intent recordIntent = new Intent(RecordVisitsMultipaneActivity.RECORD_VISITS_INTENT, recordVisitsUri);
 			startActivity(recordIntent);*/
-			startActivity(new Intent(getApplicationContext(), NovaRealizacijaActivity.class));
+			startActivity(new Intent(getApplicationContext(), NoviPlanActivity.class));
 			return true;
 		case R.id.main_options_visits_details:
 			/*final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
 			final Intent intent = new Intent(Intent.ACTION_VIEW, visitsUri);
 			startActivity(intent);*/
-			startActivity(new Intent(getApplicationContext(), NoviPlanActivity.class));
+			startActivity(new Intent(getApplicationContext(), NovaRealizacijaActivity.class));
 			return true;
 		case R.id.main_options_sale_order_details:
 			final Uri saleOrdersUri = MobileStoreContract.SaleOrders.CONTENT_URI;

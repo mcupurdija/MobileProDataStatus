@@ -4,13 +4,13 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerTradeAgreemnt;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
-import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
 import rs.gopro.mobile_store.ui.widget.CustomerContextualMenu;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.CreateCustomerFromPotential;
 import rs.gopro.mobile_store.ws.model.CustomerAddressesSyncObject;
 import rs.gopro.mobile_store.ws.model.CustomerSyncObject;
 import rs.gopro.mobile_store.ws.model.GetContactsSyncObject;
@@ -22,6 +22,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -70,6 +71,8 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Potencijalni kupac uspesno poslat!");
 			} else if (GetPotentialCustomerSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Kupci i potencijalni kupci uspešno preuzeti!");
+			} else if (CreateCustomerFromPotential.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Zahtev uspešno poslat!");
 			}
 		} else {
 			DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_error_in_sync), syncResult.getResult());
@@ -197,6 +200,21 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 			}
 			loadCustomersViewDetail(MobileStoreContract.Customers.buildCustomersUri(customerId), true);
 			return true;
+		case R.id.menu_customer_from_potential:
+			if (customerId == null || customerId.length() < 1) {
+				return true;
+			}
+			
+			Cursor cursor = getContentResolver().query(Customers.buildCustomersUri(customerId), new String[] { Customers.CUSTOMER_NO }, null, null, null);
+			if (cursor.moveToFirst()) {
+				String customerNo = cursor.getString(0);
+				
+				Intent intent2 = new Intent(this, NavisionSyncService.class);
+				CreateCustomerFromPotential custFromPotential = new CreateCustomerFromPotential(customerNo);
+				intent2.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, custFromPotential);
+				startService(intent2);
+			}
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -268,6 +286,8 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
     	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, potentialCustomerSyncObject);
     	IntentFilter getPotentialCustomersSyncObject = new IntentFilter(GetPotentialCustomerSyncObject.BROADCAST_SYNC_ACTION);
     	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, getPotentialCustomersSyncObject);
+    	IntentFilter createPotential = new IntentFilter(CreateCustomerFromPotential.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, createPotential);
     }
     
     @Override

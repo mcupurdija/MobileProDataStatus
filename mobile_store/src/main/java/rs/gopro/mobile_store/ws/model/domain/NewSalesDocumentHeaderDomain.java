@@ -56,6 +56,14 @@ public class NewSalesDocumentHeaderDomain extends Domain {
 	@Override
 	public ContentValues getContentValues() {
 		ContentValues contentValues = new ContentValues();
+		
+		// TIPOVI U NAV-U SU OBRNUTI ZA OVE DOKUMENTE
+		if (document_type.equals("0")) {
+			document_type = "1";
+		} else if (document_type.equals("1")) {
+			document_type = "0";
+		}
+		
 		contentValues.put(SaleOrders.DOCUMENT_TYPE, document_type);
 		contentValues.put(SaleOrders.CUSTOMER_NO, customer_no);
 		contentValues.put(SaleOrders.SALES_ORDER_DEVICE_NO, document_no);

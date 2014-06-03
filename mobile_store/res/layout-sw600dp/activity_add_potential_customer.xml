@@ -301,6 +301,18 @@
                 android:layout_weight="5"
                 android:inputType="numberDecimal" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <CheckBox
+                android:id="@+id/add_customer_create_from_potential"
+                style="@style/AddEdit_Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_customer_create_from_potential" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

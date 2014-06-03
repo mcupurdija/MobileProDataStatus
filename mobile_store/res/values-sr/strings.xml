@@ -367,7 +367,7 @@
 	<string name="menu_receive_visits">Preuzmi plan poseta</string>
 	<string name="menu_sale_order_sent_option">Detalji porudžbina</string>
 	<string name="menu_sale_order_option">Detalji porudžbina</string>
-	<string name="menu_visits_option">Detalji poseta</string>
+	<string name="menu_visits_option">Plan</string>
 	<string name="menu_customers_option">Detalji kupaca</string>
 	<string name="menu_record_visits_option">Realizacija</string>
 	<string name="day_start_record_visit_menu_title">Započni dan</string>
@@ -464,4 +464,8 @@
 	<string name="kontakt_validacija_pozicija">Potrebno je da odaberete Poziciju</string>
 	<string name="potvrda_brisanja">Molimo potvrdite brisanje</string>
 	<string name="dijalog_preuzmi_porudzbine">Tip dokumenta</string>
+	<string name="add_customer_create_from_potential">Kreiraj kao kupca</string>
+	
+	<string name="datum_od">Datum od</string>
+	<string name="datum_do">Datum do</string>
 </resources>

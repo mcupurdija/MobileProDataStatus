@@ -498,7 +498,6 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		ArrayAdapter<CharSequence> arrayTipDokumenta = ArrayAdapter.createFromResource(this, R.array.dijalog_preuzmi_porudzbine, android.R.layout.simple_spinner_item);
 		tipDokumenta.setAdapter(arrayTipDokumenta);
 		tipDokumenta.setSelection(1);
-		tipDokumenta.setEnabled(false);
 		
 		Button preuzmi = (Button) dialog.findViewById(R.id.dialogButtonPreuzmi);
 		

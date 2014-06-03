@@ -22,8 +22,7 @@
 
     <string-array name="actions_names">
         <item>Glavni meni</item>
-        <item>Realizacije poseta</item>
-        <item>Plan poseta</item>
+        <item>Realizacija/plan poseta</item>
         <item>Porudžbine/Ponude</item>
         <item>Poslate porudžbine/ponude</item>
         <item>Kupci</item>
@@ -40,7 +39,6 @@
     <string-array name="actions_links">
         <item>category://main_menu</item>
         <item>settings://record_visits</item>
-        <item>settings://plan_visits</item>
         <item>settings://sale_orders</item>
         <item>settings://sent_orders</item>
         <item>settings://customers</item>

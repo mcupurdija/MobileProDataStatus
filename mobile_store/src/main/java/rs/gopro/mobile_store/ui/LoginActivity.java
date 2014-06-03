@@ -47,6 +47,7 @@ public class LoginActivity extends Activity {
 	private String activeSalesPerson = null;
 	private boolean isRegistrationStarted = false;
 	private ProgressDialog syncProgressDialog;
+	private String user_no;
 	
 	private BroadcastReceiver onNotice = new BroadcastReceiver() {
 		@Override
@@ -62,6 +63,8 @@ public class LoginActivity extends Activity {
 	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
 		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
 			if (SalespersonSetupSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				editTextUser.setText(user_no);
+				editTextPass.requestFocus();
 				DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_sync_info), "Korisnik registrovan!");
 			}
 		} else {
@@ -138,7 +141,7 @@ public class LoginActivity extends Activity {
 						@Override
 						public void onClick(View v) {
 							
-							String user_no = text1.getText().toString();
+							user_no = text1.getText().toString();
 							SalespersonSetupSyncObject salespersonSetupSyncObject = new SalespersonSetupSyncObject(user_no);
 							Intent syncSalesPerson = new Intent(LoginActivity.this, NavisionSyncService.class);
 							syncSalesPerson.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, salespersonSetupSyncObject);

@@ -25,12 +25,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 public class AddPotentialCustomerActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
 
-	private static final int CREATE_CUSTOMER_FROM_POTENTIAL = 0;
+//	private static final int CREATE_CUSTOMER_FROM_POTENTIAL = 0;
 	private static final String TAG = "AddPotentialCustomerActivity";
 	
 	private EditText primaryName;
@@ -48,6 +49,7 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 	private EditText channelOran;
 	private EditText numOfBlueCoat;
 	private EditText numOfGrayCoat;
+	private CheckBox cbCreateCustomerFromPotential;
 	
 	private String mAction;
     private Uri mUri;
@@ -105,6 +107,8 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 		channelOran = (EditText) findViewById(R.id.add_customer_oran);
 		numOfBlueCoat = (EditText) findViewById(R.id.add_customer_blue_coats);
 		numOfGrayCoat = (EditText) findViewById(R.id.add_customer_grey_coats);
+		
+		cbCreateCustomerFromPotential = (CheckBox) findViewById(R.id.add_customer_create_from_potential);
 	}
 
 	private void routeIntent(Intent intent, Bundle savedInstanceState) {
@@ -228,11 +232,15 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 	
 	private void sendPotentialCustomer(int customerId) {    	
     	SetPotentialCustomersSyncObject potentialCustomersSyncObject = new SetPotentialCustomersSyncObject(customerId);
-    	// it will not send signal to create customer
-    	potentialCustomersSyncObject.setpPendingCustomerCreation(Integer.valueOf(CREATE_CUSTOMER_FROM_POTENTIAL));
+
+    	int create_customer_from_potential = 0;
+    	if (cbCreateCustomerFromPotential.isChecked()) {
+    		create_customer_from_potential = 1;
+		}
+    	potentialCustomersSyncObject.setpPendingCustomerCreation(Integer.valueOf(create_customer_from_potential));
     	Intent intent = new Intent(this, NavisionSyncService.class);
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, potentialCustomersSyncObject);
-		startService(intent);	
+		startService(intent);
 	}
 
 	private void loadUi(Cursor data) {

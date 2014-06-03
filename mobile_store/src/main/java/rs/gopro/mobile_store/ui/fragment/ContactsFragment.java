@@ -102,9 +102,9 @@ public class ContactsFragment extends Fragment implements LoaderCallbacks<Cursor
 		public void bindView(View view, final Context context, Cursor cursor) {
 			final String id = cursor.getString(ContactsQuery._ID);
 			final String ime = cursor.getString(ContactsQuery.NAME);
-			final String phone = cursor.getString(ContactsQuery.PHONE);
-			final String phone2 = cursor.getString(ContactsQuery.MOBILE_PHONE);
-			final String email = cursor.getString(ContactsQuery.EMAIL);
+			String phone = cursor.getString(ContactsQuery.PHONE);
+			String phone2 = cursor.getString(ContactsQuery.MOBILE_PHONE);
+			String email = cursor.getString(ContactsQuery.EMAIL);
 			TextView tvKontaktIme = (TextView) view.findViewById(R.id.tvKontaktIme);
 			TextView tvKontaktTelefon = (TextView) view.findViewById(R.id.tvKontaktTelefon);
 			TextView tvKontaktEmail = (TextView) view.findViewById(R.id.tvKontaktEmail);
@@ -119,6 +119,8 @@ public class ContactsFragment extends Fragment implements LoaderCallbacks<Cursor
 				tvKontaktTelefon.setText(phone);
 			} else if (!phone2.isEmpty()) {
 				tvKontaktTelefon.setText(phone2);
+			} else {
+				tvKontaktTelefon.setText("");
 			}
 			tvKontaktEmail.setText(email);
 			

@@ -4,7 +4,7 @@
     <item
         android:id="@+id/main_options_visits_details"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/menu_visits_option"
+        android:title="@string/menu_record_visits_option"
         android:visible="false"/>
     <item
         android:id="@+id/main_options_sale_order_details"
@@ -24,7 +24,7 @@
     <item
         android:id="@+id/main_options_record_visits_details"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/menu_record_visits_option"
+        android:title="@string/menu_visits_option"
         android:visible="false"/>
     <item
         android:id="@+id/main_options_add_contact"
@@ -38,20 +38,23 @@
         android:visible="false"/>
     <item
         android:id="@+id/shortcuts"
-        android:icon="@drawable/ic_action_settings"
+        android:icon="@drawable/ic_action_shortcut"
         android:showAsAction="ifRoom|withText"
         android:title="@string/menu_precice">
         <menu>
             <item
                 android:id="@+id/main_shortcuts_new_sale_order"
+                android:icon="@drawable/ic_action_new_order"
                 android:showAsAction="ifRoom|withText"
                 android:title="@string/menu_nova_specifikacija"/>
             <item
                 android:id="@+id/main_shortcuts_sync_all"
+                android:icon="@drawable/ic_action_sync"
                 android:showAsAction="ifRoom|withText"
                 android:title="@string/menu_sinhronizacija"/>
             <item
                 android:id="@+id/create_settings_activity"
+                android:icon="@drawable/ic_action_settings"
                 android:showAsAction="ifRoom|withText"
                 android:title="@string/menu_podesavanja"/>
         </menu>

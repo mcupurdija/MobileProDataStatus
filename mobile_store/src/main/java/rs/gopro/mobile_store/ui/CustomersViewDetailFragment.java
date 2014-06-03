@@ -263,7 +263,7 @@ public class CustomersViewDetailFragment extends Fragment implements
     
     private void setupPassAndOpenWebReporting(String salesPersonNo, String wrPassword) {
     	String salt = ApplicationConstants.SALT;
-		String hashedPassword = AssetUtil.computeMD5Hash(salt + wrPassword + salt).toUpperCase(Locale.getDefault());
+		String hashedPassword = AssetUtil.computeMD5Hash(salt + wrPassword.toUpperCase() + salt);
 		String url = String.format(Locale.getDefault(), ApplicationConstants.WEB_REPORTING_BASE_URL + "goproreporting/Login.aspx?mpu=%s&mpp=%s&mpr=%d&mprd=%s", 
 				salesPersonNo, 
 				hashedPassword, 

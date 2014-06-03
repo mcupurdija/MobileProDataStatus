@@ -14,13 +14,16 @@ import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DatePickerFragment;
 import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.TimePickerFragment;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObject;
+import rs.gopro.mobile_store.ws.model.PlannedVisitsToCustomersSyncObjectOut;
 import rs.gopro.mobile_store.ws.model.SetPlannedVisitsToCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.app.TimePickerDialog.OnTimeSetListener;
@@ -68,7 +71,7 @@ public class NoviPlanActivity extends BaseActivity implements LoaderCallbacks<Cu
 	private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
 	private Button bPreuzmi, bNovaPoseta, bPosalji;
-	private Button datumInput, vremeInput;
+	private Button datumInput, vremeInput, datumOd, datumDo;
 	private ListView lvPlan;
 	private ProgressBar pbPlan;
 	private int selectedCustomerId;
@@ -90,9 +93,12 @@ public class NoviPlanActivity extends BaseActivity implements LoaderCallbacks<Cu
 		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
 			if (SetPlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 				Toast.makeText(getApplicationContext(), R.string.sync_success, Toast.LENGTH_LONG).show();
+			} else if (PlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				Toast.makeText(getApplicationContext(), R.string.sync_success, Toast.LENGTH_LONG).show();
 			}
 		} else {
-			Toast.makeText(getApplicationContext(), R.string.dialog_title_error_in_sync, Toast.LENGTH_LONG).show();
+			DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_error_in_sync), syncResult.getResult());
+			//Toast.makeText(getApplicationContext(), R.string.dialog_title_error_in_sync, Toast.LENGTH_LONG).show();
 		}
 		pbPlan.setVisibility(View.GONE);
 	}
@@ -115,7 +121,7 @@ public class NoviPlanActivity extends BaseActivity implements LoaderCallbacks<Cu
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				preuzmiPlanDijalog();
 			}
 		});
 
@@ -175,8 +181,10 @@ public class NoviPlanActivity extends BaseActivity implements LoaderCallbacks<Cu
 	@Override
 	protected void onResume() {
 		super.onResume();
-		IntentFilter plannedVisitsToCustomersSync = new IntentFilter(SetPlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION);
-    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, plannedVisitsToCustomersSync);
+		IntentFilter setPlannedVisitsToCustomersSync = new IntentFilter(SetPlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, setPlannedVisitsToCustomersSync);
+    	IntentFilter getPlannedVisitsToCustomersSync = new IntentFilter(PlannedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, getPlannedVisitsToCustomersSync);
 	}
 
 	private void showDatePicker(int who) {
@@ -194,6 +202,12 @@ public class NoviPlanActivity extends BaseActivity implements LoaderCallbacks<Cu
 				break;
 			case 2:
 				date.setCallBack(ondate2);
+				break;
+			case 3:
+				date.setCallBack(ondate3);
+				break;
+			case 4:
+				date.setCallBack(ondate4);
 				break;
 			default:
 				break;
@@ -226,6 +240,26 @@ public class NoviPlanActivity extends BaseActivity implements LoaderCallbacks<Cu
 		}
 	};
 	
+	private OnDateSetListener ondate3 = new OnDateSetListener() {
+		@Override
+		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+		    calender.set(Calendar.YEAR, year);
+		    calender.set(Calendar.MONTH, monthOfYear);
+		    calender.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+		    datumOd.setText(screenDateFormat.format(calender.getTime()));
+		}
+	};
+	
+	private OnDateSetListener ondate4 = new OnDateSetListener() {
+		@Override
+		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+		    calender.set(Calendar.YEAR, year);
+		    calender.set(Calendar.MONTH, monthOfYear);
+		    calender.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+		    datumDo.setText(screenDateFormat.format(calender.getTime()));
+		}
+	};
+	
 	private void showTimePicker() {
 		TimePickerFragment time = new TimePickerFragment();
 		
@@ -247,6 +281,65 @@ public class NoviPlanActivity extends BaseActivity implements LoaderCallbacks<Cu
 		    vremeInput.setText(timeFormat.format(calender.getTime()));
 		}
 	};
+	
+	private void preuzmiPlanDijalog() {
+		final Dialog dialog = new Dialog(this);
+		
+		dialog.setContentView(R.layout.dialog_preuzmi_plan);
+		dialog.setTitle("Preuzmi plan poseta");
+		
+		datumOd = (Button) dialog.findViewById(R.id.dialog_preuzmi_plan_datum_od);
+		datumDo = (Button) dialog.findViewById(R.id.dialog_preuzmi_plan_datum_do);
+		Button bDialogOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
+		
+		datumOd.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				showDatePicker(3);
+			}
+		});
+		
+		datumDo.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				showDatePicker(4);
+			}
+		});
+		
+		bDialogOk.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String datumOdInputText = datumOd.getText().toString();
+				String datumDoInputText = datumDo.getText().toString();
+				
+				try {
+					Date odabraniDatumOd = screenDateFormat.parse(datumOdInputText);
+					Date odabraniDatumDo = screenDateFormat.parse(datumDoInputText);
+					Date kratakDanasnjiDatum = screenDateFormat.parse(screenDateFormat.format(new Date()));
+					
+					if (odabraniDatumOd.before(kratakDanasnjiDatum) || odabraniDatumDo.before(kratakDanasnjiDatum)) {
+						Toast.makeText(NoviPlanActivity.this, "Odabrani datumi od ne smeju biti pre današnjeg", Toast.LENGTH_SHORT).show();
+					} else if (odabraniDatumOd.after(odabraniDatumDo)) {
+						Toast.makeText(NoviPlanActivity.this, "'Datum od' ne sme biti posle 'Datuma do'", Toast.LENGTH_SHORT).show();
+					} else {
+					    PlannedVisitsToCustomersSyncObject receiveVisitsToCustomersSyncObject = new PlannedVisitsToCustomersSyncObjectOut("", salesPersonNo, odabraniDatumOd, odabraniDatumDo, "", Integer.valueOf(0), Integer.valueOf(-1));
+						Intent intent = new Intent(NoviPlanActivity.this, NavisionSyncService.class);
+						intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, receiveVisitsToCustomersSyncObject);
+						startService(intent);
+						
+						dialog.dismiss();
+					}
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		dialog.show();
+	}
 	
 	private void addEditPlanDialog(int customerId, Date date, Date time, final boolean update, final int visitId) {
 		final Dialog dialog = new Dialog(this);
@@ -410,9 +503,10 @@ public class NoviPlanActivity extends BaseActivity implements LoaderCallbacks<Cu
 			final String date = DateUtils.formatDbDateForPresentation(cursor.getString(PlanQuery.VISIT_DATE));
 			final String time = DateUtils.formatDbTimeForPresentation(cursor.getString(PlanQuery.ARRIVAL_TIME));
 			final String customerName = cursor.getString(PlanQuery.CUSTOMER_NAME);
+			final String note = cursor.getString(PlanQuery.NOTE);
 
 			tvPlanNaslov.setText(cursor.getString(PlanQuery.CUSTOMER_NO) + " - " + customerName);
-			tvPlanDatum.setText(date);
+			tvPlanDatum.setText(note);
 			tvPlanVreme.setText(time);
 
 			ivPlanEdit.setOnClickListener(new View.OnClickListener() {
@@ -484,7 +578,7 @@ public class NoviPlanActivity extends BaseActivity implements LoaderCallbacks<Cu
 		int ARRIVAL_TIME = 6;
 //		int DEPARTURE_TIME = 7;
 //		int ODOMETER = 8;
-//		int NOTE = 9;
+		int NOTE = 9;
 //		int VISIT_RESULT = 10;
 //		int IS_SENT = 11;
 		int VISIT_DATE = 12;

@@ -85,6 +85,8 @@ public class SinhonizacijaActivity extends BaseActivity {
 		}
 	}
 	
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -177,6 +179,20 @@ public class SinhonizacijaActivity extends BaseActivity {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString("WEB_SERVICE_REQUEST_ID", webServiceRequestId);
+		outState.putInt("COUNT", checkCount);
+		outState.putBoolean("PROGRESS", pbSinhronizacija.isShown());
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		sb = new StringBuilder();
+		checkCount = savedInstanceState.getInt("COUNT");
+		
+		if (savedInstanceState.getBoolean("PROGRESS", false)) {
+			pbSinhronizacija.setVisibility(View.VISIBLE);
+		}
 	}
 
 	protected void sinhronizujKupce() {
@@ -192,7 +208,7 @@ public class SinhonizacijaActivity extends BaseActivity {
 	
 	protected void sinhronizujArtikle() {
 		Intent intent = new Intent(this, NavisionSyncService.class);
-		ItemsNewSyncObject itemsSyncObject = new ItemsNewSyncObject(null, null, Integer.valueOf(0), salesPersonNo, null);
+		ItemsNewSyncObject itemsSyncObject = new ItemsNewSyncObject(null, null, Integer.valueOf(-1), salesPersonNo, null);
 		itemsSyncObject.setResetTypeSignal(1);
 		itemsSyncObject.setSessionId(webServiceRequestId = UUID.randomUUID().toString());
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);

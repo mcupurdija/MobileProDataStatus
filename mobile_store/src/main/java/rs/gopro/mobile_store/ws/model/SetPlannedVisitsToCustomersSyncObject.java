@@ -109,7 +109,8 @@ public class SetPlannedVisitsToCustomersSyncObject extends SyncObject {
 				"DATE(" + Tables.VISITS + "."
 						+ MobileStoreContract.Visits.VISIT_DATE
 						+ ")=DATE(?) AND " 
-						+ Tables.VISITS + "." + MobileStoreContract.Visits.IS_DELETED + "=0",
+						+ Tables.VISITS + "." + MobileStoreContract.Visits.IS_DELETED + "=0 AND " 
+						+ Tables.VISITS + "." + MobileStoreContract.Visits.VISIT_TYPE + "=0",
 				new String[] { WsDataFormatEnUsLatin.toDbDateString(getRequestSyncDate()) }, null);
 		List<String[]> header = CSVDomainWriter.parseCursor(cursorHeader,
 				VisitsQuery.PROJECTION_TYPE);

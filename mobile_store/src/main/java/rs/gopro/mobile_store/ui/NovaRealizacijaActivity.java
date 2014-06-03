@@ -25,6 +25,7 @@ import rs.gopro.mobile_store.util.TimePickerFragment;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.SetRealizedVisitsToCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -34,6 +35,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
@@ -94,9 +96,11 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	
 	private Calendar calender = Calendar.getInstance();
 	
-	private static final Integer TIME_INTERVAL = 5 * 1000;
+	private static final Integer TIME_INTERVAL = 3 * 1000;
 	private static final Integer DISTANCE = 0;
 	private LocationManager locationManager;
+	
+	private AlertDialog alertDialog;
 	
 	//private Gson gson;
 	//private GpsModel gpsModel;
@@ -111,9 +115,25 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 
 	protected void onSOAPResult(SyncResult syncResult, String broadcastAction) {
 		if (syncResult.getStatus().equals(SyncStatus.FAILURE)) {
-			DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_error_in_sync), syncResult.getResult());
-			//Toast.makeText(getApplicationContext(), R.string.error_internet_status, Toast.LENGTH_LONG).show();
+			if (!alertDialog.isShowing()) {
+				prikaziDijalog(syncResult.getResult());
+			}
+			//DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_error_in_sync), syncResult.getResult());
 		}
+	}
+	
+	private void prikaziDijalog(String greska) {
+		alertDialog.setTitle(R.string.dialog_title_error_in_sync);
+	    alertDialog.setMessage(greska);
+	    alertDialog.setIcon(R.drawable.ic_launcher);
+	    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				alertDialog.dismiss();
+			}
+		});
+	    alertDialog.show();
 	}
 	
 	@Override
@@ -124,6 +144,8 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		
 		//gson = new Gson();
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		
+		alertDialog = new AlertDialog.Builder(this).create();
 		
 		bZapocniDan = (Button) findViewById(R.id.bZapocniDan);
 		bNovaRealizacija = (Button) findViewById(R.id.bNovaRealizacija);
@@ -1243,8 +1265,8 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 
 	@Override
 	public void onLocationChanged(Location location) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("LA: " + location.getLatitude() + " LO:" + location.getLongitude() + " AC:" + location.getAccuracy());
+		System.out.println("ELAPSED:" + location.getTime());
 	}
 
 	@Override

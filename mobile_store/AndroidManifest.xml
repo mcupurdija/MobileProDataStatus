@@ -63,9 +63,7 @@
         </activity>
         <activity
             android:name="rs.gopro.mobile_store.ui.SinhonizacijaActivity"
-            android:configChanges="orientation"
-            android:exported="false"
-            android:screenOrientation="portrait" >
+            android:exported="false" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
@@ -296,8 +294,7 @@
         </activity>
         <activity
             android:name="rs.gopro.mobile_store.ui.AzurirajSaTableta"
-            android:exported="false"
-            android:screenOrientation="portrait" >
+            android:exported="false" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />

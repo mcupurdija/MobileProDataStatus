@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp" >
+
+    <LinearLayout
+        android:id="@+id/rlSinhronizacijaLeft"
+        android:layout_width="360dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <CheckBox
+            android:id="@+id/cbKupci"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Kupci" />
+
+        <CheckBox
+            android:id="@+id/cbArtikli"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Artikli" />
+
+        <CheckBox
+            android:id="@+id/cbDokumenti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Svi dokumenti sa servera" />
+
+        <CheckBox
+            android:id="@+id/cbSpecifikacije"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Poslate porudžbenice (tekuća godina)" />
+
+        <CheckBox
+            android:id="@+id/cbOtvoreneStavkeKupaca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Otvorene stavke kupaca" />
+
+        <CheckBox
+            android:id="@+id/cbPoslednjeStavkeKupaca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Sve stavke kupaca u poslednja dva dana" />
+
+        <Button
+            android:id="@+id/bAzuriraj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/white_button"
+            android:text="Ažuriraj" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlSinhronizacijaRight"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/rlSinhronizacijaLeft" >
+
+        <ProgressBar
+            android:id="@+id/pbSinhronizacija"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" />
+    </RelativeLayout>
+
+</RelativeLayout>

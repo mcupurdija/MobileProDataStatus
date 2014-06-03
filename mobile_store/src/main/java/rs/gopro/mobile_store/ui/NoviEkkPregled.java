@@ -245,6 +245,7 @@ public class NoviEkkPregled extends Activity {
 			this.tableA.setId(1);
 			this.horizontalScrollViewB.setId(2);
 			this.scrollViewC.setId(3);
+			this.scrollViewC.setScrollbarFadingEnabled(false);
 			this.scrollViewD.setId(4);
 		}
 

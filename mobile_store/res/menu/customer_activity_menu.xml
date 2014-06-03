@@ -20,5 +20,10 @@
         android:id="@+id/edit_customers"
         android:showAsAction="ifRoom|withText"
         android:title="@string/customer_edit_title"/>
+    
+    <item
+        android:id="@+id/menu_customer_from_potential"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/add_customer_create_from_potential"/>
 
 </menu>
