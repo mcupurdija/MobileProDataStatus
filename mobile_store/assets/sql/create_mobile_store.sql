@@ -158,6 +158,7 @@ CREATE TABLE `customers` (
 	`next_15_days_invoice_due_amount` REAL,
 	`next_15_days_due_invoice_count` INTEGER,
 	`financial_control_status` TEXT,
+	`last_ecc_sync_date` TEXT DEFAULT NULL,
 	`is_active` INTEGER DEFAULT 1,
 	`is_deleted` INTEGER DEFAULT 0,
 	`is_sent` INTEGER DEFAULT 0
@@ -10930,12 +10931,16 @@ CREATE TABLE `visits` (
 	`note` TEXT,
 	`sync_object_batch` INTEGER,
 	`visit_status` INTEGER DEFAULT 0,
-	`is_sent` INTEGER DEFAULT 1,
+	`is_sent` INTEGER DEFAULT 0,
 	`is_deleted` INTEGER DEFAULT 0,
 	`address_no` TEXT,
 	`latitude` TEXT,
 	`longitude` TEXT,
 	`accuracy` TEXT,
+	`latitude_end` TEXT,
+	`longitude_end` TEXT,
+	`accuracy_end` TEXT,
+	`valid_location` INTEGER DEFAULT 0,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
@@ -11234,8 +11239,8 @@ CREATE TABLE `electronic_card_customer` (
 	`sales_line_counts_current_year` REAL,
 	`sales_line_counts_prior_year` REAL,
 	`last_line_discount` REAL,
-	`color` INTEGER,
-	`sorting_index` INTEGER,
+	`color` INTEGER DEFAULT 0,
+	`sorting_index` INTEGER DEFAULT 5000,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
@@ -11365,4 +11370,4 @@ CREATE TABLE `app_settings` (
 	`items_sync_warnning_date` TEXT
 );
 
-insert into `app_settings` (_id, app_version, app_sync_warnning_date, customers_sync_warnning_date, items_sync_warnning_date) values (1, '1.5.0', datetime('now'), datetime('now'), datetime('now'));
+insert into `app_settings` (_id, app_version, app_sync_warnning_date, customers_sync_warnning_date, items_sync_warnning_date) values (1, '1.6.0', datetime('now'), datetime('now'), datetime('now'));

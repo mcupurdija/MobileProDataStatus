@@ -169,7 +169,7 @@ public class AddressSelectDialog extends DialogFragment implements
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 				CustomerAddressSelectionEntry selectedEntry = mAdapterForList.getItem(position);
 				AddressSelectDialogListener activity = (AddressSelectDialogListener) getActivity();
-				activity.onAddressSelected(dialogId, selectedEntry.getId(), selectedEntry.getAddress(), selectedEntry.getCity(), selectedEntry.getPost_code(), selectedEntry.getPhone_no(), selectedEntry.getAddress_no(), selectedEntry.getContanct());
+				activity.onAddressSelected(dialogId, selectedEntry.getId(), selectedEntry.getAddress(), selectedEntry.getAddress_no(), selectedEntry.getCity(), selectedEntry.getPost_code(), selectedEntry.getPhone_no(), selectedEntry.getContanct());
 				AddressSelectDialog.this.dismiss();
 			}
 		});

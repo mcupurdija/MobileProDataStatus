@@ -259,18 +259,18 @@
         <item>Otvorene</item>
     </string-array>
     <string-array name="ekk_months">
-        <item>Januar (Kol)</item>
-		<item>Februar (Kol)</item>
-		<item>Mart (Kol)</item>
-		<item>April (Kol)</item>
-		<item>Maj (Kol)</item>
-		<item>Jun (Kol)</item>
-		<item>Jul (Kol)</item>
-		<item>Avgust (Kol)</item>
-		<item>Septembar (Kol)</item>
-		<item>Oktobar (Kol)</item>
-		<item>Novembar (Kol)</item>
-		<item>Decembar (Kol)</item>
+        <item>Januar</item>
+		<item>Februar</item>
+		<item>Mart</item>
+		<item>April</item>
+		<item>Maj</item>
+		<item>Jun</item>
+		<item>Jul</item>
+		<item>Avgust</item>
+		<item>Septembar</item>
+		<item>Oktobar</item>
+		<item>Novembar</item>
+		<item>Decembar</item>
     </string-array>
     <string-array name="inventory_category_options">
         <item>-</item>

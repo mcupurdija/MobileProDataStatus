@@ -1,35 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="fill_parent" 
-    android:minWidth="350dp"  
-    android:minHeight="500dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
-    android:orientation="vertical" >
+    android:minWidth="640dp"
+    android:minHeight="480dp"
+    android:orientation="vertical"
+    android:padding="20dp" >
 
-    <LinearLayout
+    <Button
+        android:id="@+id/dialog_customer_address_sync_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:layout_marginTop="15dp" >
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/white_button"
+        android:text="@string/dialog_customer_address_sync" />
 
-        <Button
-            android:id="@+id/dialog_customer_address_sync_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:gravity="center"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="@string/dialog_customer_address_sync" />
-    </LinearLayout>
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="vertical" >
 
         <ProgressBar
@@ -37,16 +26,13 @@
             style="?android:progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
+            android:layout_centerInParent="true"
             android:visibility="gone" />
-    </LinearLayout>
 
-    <ListView
-        android:id="@+id/customer_address_dialog_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <ListView
+            android:id="@+id/customer_address_dialog_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 
 </LinearLayout>

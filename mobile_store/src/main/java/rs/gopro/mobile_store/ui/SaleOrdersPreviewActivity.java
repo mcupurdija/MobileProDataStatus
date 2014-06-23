@@ -118,8 +118,9 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 	
 	private void preuzmiDokumenteSaServera(Integer tipDokumenta, String kupac) {
 		
+		int tekucaGodina = Calendar.getInstance().get(Calendar.YEAR);
 		Intent intent = new Intent(SaleOrdersPreviewActivity.this, NavisionSyncService.class);
-		NewSalesDocumentsSyncObject newSalesDocumentsSyncObject = new NewSalesDocumentsSyncObject(tipDokumenta, kupac, DateUtils.getWsDummyDate(), DateUtils.getLastDayInMonth(11, 2014), salesPersonNo);
+		NewSalesDocumentsSyncObject newSalesDocumentsSyncObject = new NewSalesDocumentsSyncObject(tipDokumenta, kupac, DateUtils.getWsDummyDate(), DateUtils.getLastDayInMonth(11, tekucaGodina), salesPersonNo);
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, newSalesDocumentsSyncObject);
 		startService(intent);
 	}

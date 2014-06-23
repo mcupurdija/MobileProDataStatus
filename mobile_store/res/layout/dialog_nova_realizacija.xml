@@ -118,10 +118,19 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dip"
             android:layout_marginRight="16dip"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:gravity="center_vertical"
             android:inputType="number"
             android:paddingBottom="15dp" />
+
+        <CheckBox
+            android:id="@+id/dialog_nova_realizacija_valid_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:checked="true"
+            android:text="@string/na_lokaciji_kupca" />
 
         <Button
             android:id="@+id/dialogButtonOK"

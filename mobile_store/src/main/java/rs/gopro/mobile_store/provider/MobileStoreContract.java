@@ -98,6 +98,10 @@ public class MobileStoreContract {
 		String LATITUDE = "latitude";
 		String LONGITUDE = "longitude";
 		String ACCURACY = "accuracy";
+		String LATITUDE_END = "latitude_end";
+		String LONGITUDE_END = "longitude_end";
+		String ACCURACY_END = "accuracy_end";
+		String VALID_LOCATION = "valid_location";
 		String SYNC_OBJECT_BATCH = "sync_object_batch";
 		String VISIT_TYPE = "visit_type";
 		String IS_SENT = "is_sent";
@@ -185,6 +189,8 @@ public class MobileStoreContract {
 		String IS_ACTIVE = "is_active";
 		String IS_DELETED = "is_deleted";
 		String IS_SENT = "is_sent";
+		
+		String LAST_ECC_SYNC_DATE = "last_ecc_sync_date";
 	}
 
 	public interface ItemsColumns {

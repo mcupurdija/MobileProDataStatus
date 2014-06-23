@@ -183,6 +183,13 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 		return super.onOptionsItemSelected(item);
 	}
 	
+	public void onBackPressed(){
+		if (Intent.ACTION_INSERT.equals(mAction)) {
+			getContentResolver().delete(MobileStoreContract.Customers.CONTENT_URI, Tables.CUSTOMERS+"._ID=?", new String[] { String.valueOf(customerId) });
+		}
+		finish();
+	}
+	
 	private void submitForm() throws PotentialCustomerValidationException {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(Customers.NAME, primaryName.getText().toString());

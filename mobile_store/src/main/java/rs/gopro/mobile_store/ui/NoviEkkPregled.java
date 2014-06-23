@@ -9,26 +9,32 @@ import java.util.List;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
+import rs.gopro.mobile_store.provider.MobileStoreContract.ItemsColumns;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.ElectronicCardCustomerSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import rs.gopro.mobile_store.ws.model.domain.ElectronicCardCustomerDomain;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.HorizontalScrollView;
@@ -40,8 +46,12 @@ import android.widget.TextView;
 
 public class NoviEkkPregled extends Activity {
 	
-	View contentView;
-	String customerId, customerNo;
+	private String customerId, customerNo;
+	private String last_ecc_sync_date;
+	
+	private static int sirinaAC, visinaAB, sirinaB, sirinaBopis, minusMargina;
+	
+	DisplayMetrics metrics;
 
 	protected BroadcastReceiver onNotice = new BroadcastReceiver() {
 		@Override
@@ -54,8 +64,14 @@ public class NoviEkkPregled extends Activity {
 	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
 		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
 			if (ElectronicCardCustomerSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
-				contentView = new DoubleScrollingLayout(this, null);
-				setContentView(contentView);
+				
+				ContentValues cv = new ContentValues();
+				cv.put(Customers.LAST_ECC_SYNC_DATE, DateUtils.toDbDate(new Date()));
+				getContentResolver().update(Customers.buildCustomersUri(customerId), cv, null, null);
+				
+				new GenerateLayout().execute();
+				//contentView = new DoubleScrollingLayout(this, null);
+				//setContentView(contentView);
 			}
 		}
 	}
@@ -67,17 +83,59 @@ public class NoviEkkPregled extends Activity {
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
+		metrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		
+		switch (metrics.densityDpi) {
+			case 160:
+				sirinaAC = 140;
+				visinaAB = 80;
+				sirinaB = 100;
+				sirinaBopis = 400;
+				minusMargina = -10;
+				break;
+			case 213:
+				sirinaAC = 180;
+				visinaAB = 100;
+				sirinaB = 120;
+				sirinaBopis = 500;
+				minusMargina = -12;
+				break;
+			default:
+				sirinaAC = 280;
+				visinaAB = 160;
+				sirinaB = 200;
+				sirinaBopis = 800;
+				minusMargina = -19;
+				break;
+		}
+		
 		customerId = getIntent().getStringExtra("customerId");
-		Cursor cursor = getContentResolver().query(Customers.buildCustomersUri(customerId), new String[]{Customers.CUSTOMER_NO}, Customers._ID + "=?" ,new String[]{customerId}, null);
+		Cursor cursor = getContentResolver().query(Customers.buildCustomersUri(customerId), new String[]{ Customers.CUSTOMER_NO }, Customers._ID + "=?" ,new String[]{ customerId }, null);
 		if(cursor.moveToFirst()){
 			customerNo = cursor.getString(0);
 		}
-		doSync();
+		new GenerateLayout().execute();
 	}
 	
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		
+		MenuItem item = menu.add(Menu.NONE, 0, Menu.NONE, "Preuzmi sa servera za prethodni mesec");
+		item.setIcon(R.drawable.ic_action_download);
+		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		
+		return true;
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case 0 :
+			setContentView(R.layout.loading);
+			doSync();
+			return true;
         case android.R.id.home : // home back, not do it on main
             finish();
             return true;
@@ -105,9 +163,78 @@ public class NoviEkkPregled extends Activity {
 		startService(intent);
 	}
 	
+	private Date firstDayOfCurrentMonth() {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH));
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		return cal.getTime();
+	}
+	
+	private Date sixthDayOfCurrentMonth() {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH) + 5);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		return cal.getTime();
+	}
+	
+	private boolean NeedSync() {
+		
+		Cursor cursor = getContentResolver().query(Customers.buildCustomersUri(customerId), new String[]{ Customers.LAST_ECC_SYNC_DATE }, Customers._ID + "=?" ,new String[]{ customerId }, null);
+		if(cursor.moveToFirst()){
+			last_ecc_sync_date = cursor.getString(0);
+			
+			try {
+				Date lastSyncDate = DateUtils.getLocalDbDate(last_ecc_sync_date);
+				Date currentDate = new Date();
+				
+				System.out.println("DATUM POSLEDNJEG AZURIRANJA: " + lastSyncDate.toString());
+				System.out.println("TRENUTNI DATUM: " + currentDate.toString());
+				System.out.println("PRVI DAN U MESECU: " + firstDayOfCurrentMonth().toString());
+				System.out.println("SESTI DAN U MESECU: " + sixthDayOfCurrentMonth().toString());
+				
+				if (lastSyncDate.before(firstDayOfCurrentMonth()) || 
+						(firstDayOfCurrentMonth().before(lastSyncDate) && 
+								lastSyncDate.before(sixthDayOfCurrentMonth()) && 
+									currentDate.after(sixthDayOfCurrentMonth()))) {
+					return true;
+				} else {
+					return false;
+				}
+			} catch (Exception e) {
+				return false;
+			}
+		}
+		return false;
+	}
+	
+	private class GenerateLayout extends AsyncTask<Void, Void, Void> {
+
+		View contentView;
+		 
+		@Override
+		protected Void doInBackground(Void... params) {
+			contentView = new DoubleScrollingLayout(NoviEkkPregled.this, null);
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			setContentView(contentView);
+			
+			if (NeedSync()) {
+				DialogUtil.showInfoDialog(NoviEkkPregled.this, "Obaveštenje", "Ukoliko niste u ovom mesecu preuzeli podatke sa servera potrebno je da ih preuzmete.");
+			}
+		}
+	     
+	}
+	
 	private class DoubleScrollingLayout extends RelativeLayout {
 
-		String[] headers = new String[20];
+		String[] headers = new String[21];
 		int headerCellsWidth[] = new int[headers.length];
 		
 		TableLayout tableA;
@@ -148,6 +275,7 @@ public class NoviEkkPregled extends Activity {
 			headers[17] = getString(R.string.el_card_sales_line_counts_curr_qty_label);
 			headers[18] = getString(R.string.el_card_sales_line_counts_prior_qty_label);
 			headers[19] = getString(R.string.el_card_sales_line_last_line_discount_label);
+			headers[20] = getString(R.string.item_desc_label);
 			
 			cursor = context.getContentResolver().query(ElectronicCardCustomer.CONTENT_URI, ElectronicCardCustomerQuery.PROJECTION, ElectronicCardCustomer.CUSTOMER_ID + "=?", new String[] { customerId }, ElectronicCardCustomer.DEFAULT_SORT);
 			
@@ -190,35 +318,48 @@ public class NoviEkkPregled extends Activity {
 					eccd.setSales_line_counts_prior_year(cursor.getString(ElectronicCardCustomerQuery.SALES_LINE_COUNTS_PRIOR_YEAR));
 					eccd.setLast_line_discount(cursor.getString(ElectronicCardCustomerQuery.LAST_LINE_DISCOUNT));
 					eccd.setColor(cursor.getString(ElectronicCardCustomerQuery.COLOR));
+					eccd.setItem_description(cursor.getString(ElectronicCardCustomerQuery.DESCRIPTION));
 					ekkObjects.add(eccd);
 				}
+				
+				// initialize the main components (TableLayouts, HorizontalScrollView,
+				// ScrollView)
+				this.initComponents();
+				this.setComponentsId();
+				this.setScrollViewAndHorizontalScrollViewTag();
+
+				// no need to assemble component A, since it is just a table
+				this.horizontalScrollViewB.addView(this.tableB);
+
+				this.scrollViewC.addView(this.tableC);
+
+				this.scrollViewD.addView(this.horizontalScrollViewD);
+				this.horizontalScrollViewD.addView(this.tableD);
+
+				// add the components to be part of the main layout
+				this.addComponentToMainLayout();
+				this.setBackgroundColor(Color.WHITE);
+
+				// add some table rows
+				this.addTableRowToTableA();
+				this.addTableRowToTableB();
+				this.resizeHeaderHeight();
+				this.getTableRowHeaderCellWidth();
+				this.generateTableC_AndTable_D();
+				this.resizeBodyTableRowHeight();
+				
+			} else {
+				
+				RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				params.addRule(RelativeLayout.CENTER_IN_PARENT);
+				TextView textView = new TextView(context);
+				textView.setLayoutParams(params);
+				textView.setTextSize(24);
+				textView.setText("Nema podataka za odabranog kupca");
+				this.addView(textView);
+				
 			}
-
-			// initialize the main components (TableLayouts, HorizontalScrollView,
-			// ScrollView)
-			this.initComponents();
-			this.setComponentsId();
-			this.setScrollViewAndHorizontalScrollViewTag();
-
-			// no need to assemble component A, since it is just a table
-			this.horizontalScrollViewB.addView(this.tableB);
-
-			this.scrollViewC.addView(this.tableC);
-
-			this.scrollViewD.addView(this.horizontalScrollViewD);
-			this.horizontalScrollViewD.addView(this.tableD);
-
-			// add the components to be part of the main layout
-			this.addComponentToMainLayout();
-			this.setBackgroundColor(Color.WHITE);
-
-			// add some table rows
-			this.addTableRowToTableA();
-			this.addTableRowToTableB();
-			this.resizeHeaderHeight();
-			this.getTableRowHeaderCellWidth();
-			this.generateTableC_AndTable_B();
-			this.resizeBodyTableRowHeight();
+			
 		}
 
 		// initalized components
@@ -296,10 +437,11 @@ public class NoviEkkPregled extends Activity {
 		TableRow componentATableRow() {
 
 			TableRow componentATableRow = new TableRow(this.context);
-			TableRow.LayoutParams params = new TableRow.LayoutParams(250, 100);
+			TableRow.LayoutParams params = new TableRow.LayoutParams(sirinaAC, visinaAB);
 			
 			TextView textView = this.headerTextView(this.headers[0]);
 			textView.setLayoutParams(params);
+			textView.setTextSize(16);
 			componentATableRow.addView(textView);
 
 			return componentATableRow;
@@ -311,23 +453,64 @@ public class NoviEkkPregled extends Activity {
 			TableRow componentBTableRow = new TableRow(this.context);
 			int headerFieldCount = this.headers.length;
 
-			TableRow.LayoutParams params = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, 100);
+			TableRow.LayoutParams params = new TableRow.LayoutParams(sirinaB, visinaAB);
 			params.setMargins(2, 0, 0, 0);
-
-			for (int x = 0; x < (headerFieldCount - 1); x++) {
+			
+			TableRow.LayoutParams params2 = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, visinaAB);
+			params2.setMargins(2, minusMargina, 0, 0);
+			
+			TableRow.LayoutParams params3 = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, visinaAB);
+			params3.setMargins(2, 0, 0, 0);
+			
+			TableRow.LayoutParams params4 = new TableRow.LayoutParams(sirinaBopis, visinaAB);
+			params4.setMargins(2, 0, 0, 0);
+			
+			for (int x = 0; x < 12; x++) {
 				TextView textView = this.headerTextView(this.headers[x + 1]);
 				textView.setLayoutParams(params);
+				textView.setTextSize(16);
 				componentBTableRow.addView(textView);
 			}
+
+			for (int x = 12; x < (headerFieldCount - 3); x++) {
+				TextView textView2 = this.headerTextView(this.headers[x + 1]);
+				textView2.setLayoutParams(params2);
+				textView2.setTextSize(16);
+				componentBTableRow.addView(textView2);
+			}
+			
+			TextView textView = this.headerTextView(this.headers[headerFieldCount - 2]);
+			textView.setLayoutParams(params3);
+			textView.setTextSize(16);
+			componentBTableRow.addView(textView);
+			
+			TextView textView2 = this.headerTextView(this.headers[headerFieldCount - 1]);
+			textView2.setLayoutParams(params4);
+			textView2.setTextSize(16);
+			componentBTableRow.addView(textView2);
 
 			return componentBTableRow;
 		}
 
 		// generate table row of table C and table D
-		private void generateTableC_AndTable_B() {
+		private void generateTableC_AndTable_D() {
 
 			// just seeing some header cell width
-			headerCellsWidth[0] = 250;
+			headerCellsWidth[0] = sirinaAC;
+			headerCellsWidth[1] = sirinaB;
+			headerCellsWidth[2] = sirinaB;
+			headerCellsWidth[3] = sirinaB;
+			headerCellsWidth[4] = sirinaB;
+			headerCellsWidth[5] = sirinaB;
+			headerCellsWidth[6] = sirinaB;
+			headerCellsWidth[7] = sirinaB;
+			headerCellsWidth[8] = sirinaB;
+			headerCellsWidth[9] = sirinaB;
+			headerCellsWidth[10] = sirinaB;
+			headerCellsWidth[11] = sirinaB;
+			headerCellsWidth[12] = sirinaB;
+			headerCellsWidth[20] = sirinaBopis;
+
 			for (int x = 0; x < this.headerCellsWidth.length; x++) {
 				Log.v("TableMainLayout.java", this.headerCellsWidth[x] + "");
 			}
@@ -355,28 +538,35 @@ public class NoviEkkPregled extends Activity {
 			TableRow tableRowForTableC = new TableRow(this.context);
 			TextView textView = this.bodyTextView(sampleObject.item_no);
 			
-			switch (Integer.valueOf(sampleObject.color)) {
-			case 0:
+			try {
+				switch (Integer.valueOf(sampleObject.color)) {
+				case 0:
+					textView.setBackgroundColor(Color.parseColor("#FFCCCB"));
+					break;
+				case 1:
+					textView.setBackgroundColor(Color.parseColor("#FFA500"));
+					break;
+				case 2:
+					textView.setBackgroundColor(Color.YELLOW);
+					break;
+				case 3:
+					textView.setBackgroundColor(Color.parseColor("#7FE817"));
+					break;
+				case 4:
+					textView.setBackgroundColor(Color.GRAY);
+					break;
+				case 5:
+					textView.setBackgroundColor(Color.CYAN);
+					break;
+				default:
+					textView.setBackgroundColor(Color.WHITE);
+					break;
+				}
+			} catch (Exception e) {
 				textView.setBackgroundColor(Color.parseColor("#FFCCCB"));
-				break;
-			case 1:
-				textView.setBackgroundColor(Color.parseColor("#FF9900"));
-				break;
-			case 2:
-				textView.setBackgroundColor(Color.YELLOW);
-				break;
-			case 3:
-				textView.setBackgroundColor(Color.GREEN);
-				break;
-			case 4:
-				textView.setBackgroundColor(Color.GRAY);
-				break;
-			case 5:
-				textView.setBackgroundColor(Color.CYAN);
-				break;
-			default:
-				break;
 			}
+			
+			
 			tableRowForTableC.addView(textView, params);
 
 			return tableRowForTableC;
@@ -396,7 +586,7 @@ public class NoviEkkPregled extends Activity {
 					sampleObject.total_sale_qty_current_year, sampleObject.total_sale_qty_prior_year,
 					sampleObject.total_turnover_current_year, sampleObject.total_turnover_prior_year,
 					sampleObject.sales_line_counts_current_year, sampleObject.sales_line_counts_prior_year,
-					sampleObject.last_line_discount };
+					sampleObject.last_line_discount, sampleObject.item_description };
 
 			for (int x = 0; x < loopCount; x++) {
 				TableRow.LayoutParams params = new TableRow.LayoutParams(headerCellsWidth[x + 1], LayoutParams.MATCH_PARENT);
@@ -404,27 +594,32 @@ public class NoviEkkPregled extends Activity {
 
 				TextView textViewB = this.bodyTextView(info[x]);
 				
-				switch (Integer.valueOf(sampleObject.color)) {
-				case 0:
+				try {
+					switch (Integer.valueOf(sampleObject.color)) {
+					case 0:
+						textViewB.setBackgroundColor(Color.parseColor("#FFCCCB"));
+						break;
+					case 1:
+						textViewB.setBackgroundColor(Color.parseColor("#FFA500"));
+						break;
+					case 2:
+						textViewB.setBackgroundColor(Color.YELLOW);
+						break;
+					case 3:
+						textViewB.setBackgroundColor(Color.parseColor("#7FE817"));
+						break;
+					case 4:
+						textViewB.setBackgroundColor(Color.GRAY);
+						break;
+					case 5:
+						textViewB.setBackgroundColor(Color.CYAN);
+						break;
+					default:
+						textViewB.setBackgroundColor(Color.WHITE);
+						break;
+					}
+				} catch (Exception e) {
 					textViewB.setBackgroundColor(Color.parseColor("#FFCCCB"));
-					break;
-				case 1:
-					textViewB.setBackgroundColor(Color.parseColor("#FF9900"));
-					break;
-				case 2:
-					textViewB.setBackgroundColor(Color.YELLOW);
-					break;
-				case 3:
-					textViewB.setBackgroundColor(Color.GREEN);
-					break;
-				case 4:
-					textViewB.setBackgroundColor(Color.GRAY);
-					break;
-				case 5:
-					textViewB.setBackgroundColor(Color.CYAN);
-					break;
-				default:
-					break;
 				}
 				
 				taleRowForTableD.addView(textViewB, params);
@@ -650,7 +845,8 @@ public class NoviEkkPregled extends Activity {
 				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.SALES_LINE_COUNTS_CURRENT_YEAR,
 				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR,
 				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.LAST_LINE_DISCOUNT,
-				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.COLOR
+				Tables.ELECTRONIC_CARD_CUSTOMER+"."+ElectronicCardCustomer.COLOR,
+				Tables.ITEMS+"."+ItemsColumns.DESCRIPTION
 		};
 
 
@@ -679,6 +875,6 @@ public class NoviEkkPregled extends Activity {
 		int SALES_LINE_COUNTS_PRIOR_YEAR = 20;
 		int LAST_LINE_DISCOUNT = 21;
 		int COLOR = 22;
+		int DESCRIPTION = 23;
 	}
-
 }

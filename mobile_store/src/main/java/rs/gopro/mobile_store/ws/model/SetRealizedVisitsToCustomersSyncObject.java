@@ -176,9 +176,13 @@ public class SetRealizedVisitsToCustomersSyncObject extends SyncObject {
         		MobileStoreContract.Visits.ODOMETER,
         		MobileStoreContract.Visits.NOTE,
         		MobileStoreContract.Visits.ADDRESS_NO,
+        		MobileStoreContract.Visits.VALID_LOCATION,
         		MobileStoreContract.Visits.LATITUDE,
         		MobileStoreContract.Visits.LONGITUDE,
-        		MobileStoreContract.Visits.ACCURACY
+        		MobileStoreContract.Visits.ACCURACY,
+        		MobileStoreContract.Visits.LATITUDE_END,
+        		MobileStoreContract.Visits.LONGITUDE_END,
+        		MobileStoreContract.Visits.ACCURACY_END
         };
         
         Type[] PROJECTION_TYPE = {
@@ -191,6 +195,11 @@ public class SetRealizedVisitsToCustomersSyncObject extends SyncObject {
         		Integer.class,
         		String.class,
         		Integer.class,
+        		String.class,
+        		String.class,
+        		Integer.class,
+        		Integer.class,
+        		String.class,
         		String.class,
         		String.class,
         		String.class,

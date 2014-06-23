@@ -809,7 +809,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 			builder.addTable(Tables.SALE_ORDERS_JOIN_CUSTOMERS);
 			if (saleCustomParam != null && saleCustomParam.length() > 0 && !saleCustomParam.equals("noCustomer")) {
 				builder.where(Tables.CUSTOMERS + "." + Customers.CUSTOMER_NO
-						+ " like ? ", new String[] { "%" + saleCustomParam + "%" });
+						+ " like ? OR " + Tables.CUSTOMERS + "." + Customers.NAME + " like ?", new String[] { "%" + saleCustomParam + "%", "%" + saleCustomParam + "%" });
 			}
 			if (saleDocType != null && saleDocType.length() > 0 && !saleDocType.equals("-1")) {
 				builder.where(Tables.SALE_ORDERS + "." + SaleOrders.DOCUMENT_TYPE
@@ -1019,7 +1019,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(MobileStoreContract.Visits.ADDRESS_NO, Tables.VISITS)
 					.mapToTable(MobileStoreContract.Visits.LATITUDE, Tables.VISITS)
 					.mapToTable(MobileStoreContract.Visits.LONGITUDE, Tables.VISITS)
-					.mapToTable(MobileStoreContract.Visits.ACCURACY, Tables.VISITS);
+					.mapToTable(MobileStoreContract.Visits.ACCURACY, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.LATITUDE_END, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.LONGITUDE_END, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.ACCURACY_END, Tables.VISITS)
+					.mapToTable(MobileStoreContract.Visits.VALID_LOCATION, Tables.VISITS);
 		case SALE_ORDERS_SALDO:
 			return  builder.addTable(Tables.SALE_ORDERS_SALDO);
 		case INVOICES_SEARCH:

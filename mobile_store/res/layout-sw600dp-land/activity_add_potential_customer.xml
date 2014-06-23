@@ -301,6 +301,22 @@
                 android:layout_weight="5"
                 android:inputType="numberDecimal" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dip"
+            android:orientation="horizontal" >
+
+            <CheckBox
+                android:id="@+id/add_customer_create_from_potential"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="@string/add_customer_create_from_potential"
+                android:textColor="#FFAAAAAA"
+                android:textSize="18sp" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

@@ -77,7 +77,7 @@ public abstract class BaseActivity extends FragmentActivity {
 			}
 			
 			if (!versionName.equals(appversion)) {
-	    		DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_warn), "Verzija aplikacije" + versionName + " je zastarela! Potrebna verzija je " + appversion);			
+	    		DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_warn), "Verzija aplikacije " + versionName + " je zastarela! Potrebna verzija je " + appversion);			
 	    	}
 		}
 	}

@@ -34,6 +34,7 @@ public class ElectronicCardCustomerDomain extends Domain {
 	public String last_line_discount;
 	public String color;
 	public String sorting_index;
+	public String item_description;
 
 	private static final String[] COLUMNS = new String[] { "customer_no", "item_no", "january_qty", "february_qty", "march_qty", "april_qty", "may_qty", "june_qty", "july_qty", "august_qty", "september_qty", "october_qty", "november_qty",
 			"december_qty", "total_sale_qty_current_year", "total_sale_qty_prior_year", "total_turnover_current_year", "total_turnover_prior_year", "sales_line_counts_current_year", "sales_line_counts_prior_year", "last_line_discount", "color", "sorting_index" };
@@ -263,6 +264,14 @@ public class ElectronicCardCustomerDomain extends Domain {
 
 	public void setSorting_index(String sorting_index) {
 		this.sorting_index = sorting_index;
+	}
+
+	public String getItem_description() {
+		return item_description;
+	}
+
+	public void setItem_description(String item_description) {
+		this.item_description = item_description;
 	}
 	
 }

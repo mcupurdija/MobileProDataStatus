@@ -22,17 +22,17 @@ public class ItemsDomain extends Domain {
 	public String description;
 	public String description2;
 	public String unit_of_measure;
-	public String category_code;
-	public String group_code;
+	//public String category_code;
+	//public String group_code;
 	public String campaign_status;
 	public String overstock_status;
 	public String inventory_item_category;
 	public String connected_spec_ship_item;
 	public String unit_sales_price_eur;
-	public String unit_sales_price_din;
-	public String campaign_code;
-	public String cmpaign_start_date;
-	public String campaign_end_date;
+	//public String unit_sales_price_din;
+	//public String campaign_code;
+	//public String cmpaign_start_date;
+	//public String campaign_end_date;
 
 	// private String created_date;
 	// private String created_by;
@@ -42,8 +42,7 @@ public class ItemsDomain extends Domain {
 	public ItemsDomain() {
 	}
 
-	private static final String[] COLUMNS = new String[] { "item_no", "description", "unit_of_measure", "category_code", "group_code", "campaign_status", "overstock_status", "inventory_item_category", "connected_spec_ship_item", "unit_sales_price_din",
-			"campaign_code", "cmpaign_start_date", "campaign_end_date" };
+	private static final String[] COLUMNS = new String[] { "item_no", "description", "unit_of_measure", "campaign_status", "overstock_status", "inventory_item_category", "connected_spec_ship_item" };
 
 	@Override
 	public String[] getCSVMappingStrategy() {
@@ -56,18 +55,18 @@ public class ItemsDomain extends Domain {
 		contentValues.put(Items.ITEM_NO, getItem_no());
 		contentValues.put(Items.DESCRIPTION, getDescription());
 		contentValues.put(Items.UNIT_OF_MEASURE, getUnit_of_measure());
-		contentValues.put(Items.CATEGORY_CODE, getCategory_code());
-		contentValues.put(Items.GROUP_CODE, getGroup_code());
+		//contentValues.put(Items.CATEGORY_CODE, getCategory_code());
+		//contentValues.put(Items.GROUP_CODE, getGroup_code());
 		contentValues.put(Items.CAMPAIGN_STATUS, getCampaign_status());
 		contentValues.put(Items.OVERSTOCK_STATUS, getOverstock_status());
 		contentValues.put(Items.INVENTORY_ITEM_CATEGORY, getInventory_item_category());
 		contentValues.put(Items.CONNECTED_SPEC_SHIP_ITEM, getConnected_spec_ship_item());
 		// TODO data conversion
-		contentValues.put(Items.UNIT_SALES_PRICE_DIN, WsDataFormatEnUsLatin.toDoubleFromWs(getUnit_sales_price_din().length() < 1 ? "0" : getUnit_sales_price_din()));
-		contentValues.put(Items.CAMPAIGN_CODE, getCampaign_code());
+		//contentValues.put(Items.UNIT_SALES_PRICE_DIN, WsDataFormatEnUsLatin.toDoubleFromWs(getUnit_sales_price_din().length() < 1 ? "0" : getUnit_sales_price_din()));
+		//contentValues.put(Items.CAMPAIGN_CODE, getCampaign_code());
 		// TODO data conversion
-		contentValues.put(Items.CMPAIGN_START_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getCmpaign_start_date().length() < 1 ? DateUtils.getDbDummyDate() : getCmpaign_start_date()));
-		contentValues.put(Items.CAMPAIGN_END_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getCampaign_end_date().length() < 1 ? DateUtils.getDbDummyDate() : getCampaign_end_date()));
+		//contentValues.put(Items.CMPAIGN_START_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getCmpaign_start_date().length() < 1 ? DateUtils.getDbDummyDate() : getCmpaign_start_date()));
+		//contentValues.put(Items.CAMPAIGN_END_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getCampaign_end_date().length() < 1 ? DateUtils.getDbDummyDate() : getCampaign_end_date()));
 		return contentValues;
 	}
 
@@ -109,22 +108,6 @@ public class ItemsDomain extends Domain {
 		this.unit_of_measure = unit_of_measure;
 	}
 
-	public String getCategory_code() {
-		return category_code;
-	}
-
-	public void setCategory_code(String category_code) {
-		this.category_code = category_code;
-	}
-
-	public String getGroup_code() {
-		return group_code;
-	}
-
-	public void setGroup_code(String group_code) {
-		this.group_code = group_code;
-	}
-
 	public String getCampaign_status() {
 		return campaign_status;
 	}
@@ -147,38 +130,6 @@ public class ItemsDomain extends Domain {
 
 	public void setUnit_sales_price_eur(String unit_sales_price_eur) {
 		this.unit_sales_price_eur = unit_sales_price_eur;
-	}
-
-	public String getUnit_sales_price_din() {
-		return unit_sales_price_din;
-	}
-
-	public void setUnit_sales_price_din(String unit_sales_price_din) {
-		this.unit_sales_price_din = unit_sales_price_din;
-	}
-
-	public String getCampaign_code() {
-		return campaign_code;
-	}
-
-	public void setCampaign_code(String campaign_code) {
-		this.campaign_code = campaign_code;
-	}
-
-	public String getCmpaign_start_date() {
-		return cmpaign_start_date;
-	}
-
-	public void setCmpaign_start_date(String cmpaign_start_date) {
-		this.cmpaign_start_date = cmpaign_start_date;
-	}
-
-	public String getCampaign_end_date() {
-		return campaign_end_date;
-	}
-
-	public void setCampaign_end_date(String campaign_end_date) {
-		this.campaign_end_date = campaign_end_date;
 	}
 
 	public String getOverstock_status() {

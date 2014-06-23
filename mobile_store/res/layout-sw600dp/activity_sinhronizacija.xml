@@ -51,6 +51,13 @@
             android:layout_height="wrap_content"
             android:checked="false"
             android:text="Sve stavke kupaca u poslednja dva dana" />
+        
+        <CheckBox
+            android:id="@+id/cbStatusPoslatihPorudzbina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Statusi poslatih porudzbina" />
     </LinearLayout>
 
     <Button
