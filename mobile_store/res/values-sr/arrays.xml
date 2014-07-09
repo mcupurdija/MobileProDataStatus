@@ -260,38 +260,38 @@
     </string-array>
     <string-array name="ekk_months">
         <item>Januar</item>
-		<item>Februar</item>
-		<item>Mart</item>
-		<item>April</item>
-		<item>Maj</item>
-		<item>Jun</item>
-		<item>Jul</item>
-		<item>Avgust</item>
-		<item>Septembar</item>
-		<item>Oktobar</item>
-		<item>Novembar</item>
-		<item>Decembar</item>
+        <item>Februar</item>
+        <item>Mart</item>
+        <item>April</item>
+        <item>Maj</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Avgust</item>
+        <item>Septembar</item>
+        <item>Oktobar</item>
+        <item>Novembar</item>
+        <item>Decembar</item>
     </string-array>
     <string-array name="inventory_category_options">
         <item>-</item>
-		<item>NOV</item>
-		<item>STA NOV</item>
-		<item>STA MARK.</item>
-		<item>STA</item>
-		<item>EX STA</item>
-		<item>NSTD</item>
-		<item>SPEC</item>
-		<item>TO BE DISC</item>
-		<item>DISC</item>
+        <item>NOV</item>
+        <item>STA NOV</item>
+        <item>STA MARK.</item>
+        <item>STA</item>
+        <item>EX STA</item>
+        <item>NSTD</item>
+        <item>SPEC</item>
+        <item>TO BE DISC</item>
+        <item>DISC</item>
     </string-array>
     <string-array name="visit_subtype">
         <item>-</item>
-		<item>Dan u kancelariji</item>
-		<item>Sastanak</item>
-		<item>Pick&amp;Go</item>
-		<item>Privatno</item>
-		<item>Ostalo</item>
-	</string-array>
+        <item>Dan u kancelariji</item>
+        <item>Sastanak</item>
+        <item>Pick&amp;Go</item>
+        <item>Privatno</item>
+        <item>Ostalo</item>
+    </string-array>
     <string-array name="bransa_array">
         <item>AUTO CENTRI (PROD+MEH+KAROS+EL)</item>
         <item>AUTO CENTRI BEZ PRODAJE VOZILA</item>
@@ -624,6 +624,20 @@
         <item>Porudžbine</item>
         <item>Ponude</item>
         <item>Porudžbine i Ponude</item>
+    </string-array>
+    <string-array name="shipment_method_code_array_titles">
+        <item>Transport City</item>
+        <item>Dan za Dan</item>
+        <item>Preuzima komercijalista lično</item>
+        <item>Preuzima kupac lično</item>
+        <item>Preuzimanje na lokaciji</item>
+    </string-array>
+    <string-array name="shipment_method_code_array_values">
+        <item>CITY</item>
+        <item>DZD</item>
+        <item>LIČNO KOM</item>
+        <item>LIČNO KUP</item>
+        <item>PREUZIM</item>
     </string-array>
 
 </resources>

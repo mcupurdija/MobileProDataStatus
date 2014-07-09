@@ -33,7 +33,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 
 	public static String TAG = "MobileDeviceSalesDocumentSyncObject";
 	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.MOBILE_DEVICE_SALES_DOCUMENT_SYNC_ACTION";
-	
+
 	private int documentId;
 	private int potentialCustomer = 0;
 	private String pCSVStringHeader;
@@ -41,18 +41,21 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	private String pNoteForCentralOffice;
 	private String pDocumentNote;
 	private Integer pVerifyOnly;
-	
+	private String pAppVersion;
+	private Integer pCallDuration;
+
 	// not on request/response just for status return
-	private String order_condition_status;	
+	private String order_condition_status;
 	private String financial_control_status;
 	private String order_status_for_shipment;
 	private String order_value_status;
 	private String min_max_discount_total_amount_difference;
-	
+
 	public static final Creator<MobileDeviceSalesDocumentSyncObject> CREATOR = new Creator<MobileDeviceSalesDocumentSyncObject>() {
 
 		@Override
-		public MobileDeviceSalesDocumentSyncObject createFromParcel(Parcel source) {
+		public MobileDeviceSalesDocumentSyncObject createFromParcel(
+				Parcel source) {
 			return new MobileDeviceSalesDocumentSyncObject(source);
 		}
 
@@ -62,7 +65,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		}
 
 	};
-	
+
 	public MobileDeviceSalesDocumentSyncObject() {
 		super();
 	}
@@ -76,28 +79,34 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		setpNoteForCentralOffice(source.readString());
 		setpDocumentNote(source.readString());
 		setpVerifyOnly(source.readInt());
-		
+		setpAppVersion(source.readString());
+		setpCallDuration(source.readInt());
+
 		setOrder_condition_status(source.readString());
 		setFinancial_control_status(source.readString());
 		setOrder_status_for_shipment(source.readString());
 		setOrder_value_status(source.readString());
 		setMin_max_discount_total_amount_difference(source.readString());
 	}
-	
-	public MobileDeviceSalesDocumentSyncObject(int document_id, Integer pVerifyOnly) {
+
+	public MobileDeviceSalesDocumentSyncObject(int document_id, Integer pVerifyOnly, String pAppVersion, Integer pCallDuration) {
 		this.documentId = document_id;
 		this.pVerifyOnly = pVerifyOnly;
+		this.pAppVersion = pAppVersion;
+		this.pCallDuration = pCallDuration;
 	}
-	
+
 	public MobileDeviceSalesDocumentSyncObject(String pCSVStringHeader,
 			String pCSVStringLines, String pNoteForCentralOffice,
-			String pDocumentNote, Integer pVerifyOnly) {
+			String pDocumentNote, Integer pVerifyOnly, String pAppVersion, Integer pCallDuration) {
 		super();
 		this.pCSVStringHeader = pCSVStringHeader;
 		this.pCSVStringLines = pCSVStringLines;
 		this.pNoteForCentralOffice = pNoteForCentralOffice;
 		this.pDocumentNote = pDocumentNote;
 		this.pVerifyOnly = pVerifyOnly;
+		this.pAppVersion = pAppVersion;
+		this.pCallDuration = pCallDuration;
 	}
 
 	@Override
@@ -115,7 +124,9 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		dest.writeString(getpNoteForCentralOffice());
 		dest.writeString(getpDocumentNote());
 		dest.writeInt(getpVerifyOnly());
-		
+		dest.writeString(getpAppVersion());
+		dest.writeInt(getpCallDuration());
+
 		dest.writeString(getOrder_condition_status());
 		dest.writeString(getFinancial_control_status());
 		dest.writeString(getOrder_status_for_shipment());
@@ -137,49 +148,68 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		cSVStringHeader.setName("pCSVStringHeader");
 		cSVStringHeader.setValue(pCSVStringHeader);
 		cSVStringHeader.setType(String.class);
+		System.out.println(">>> " + pCSVStringHeader);
 		properies.add(cSVStringHeader);
-		
+
 		setpCSVStringLines(createLines());
 		PropertyInfo cSVStringLines = new PropertyInfo();
 		cSVStringLines.setName("pCSVStringLines");
 		cSVStringLines.setValue(pCSVStringLines);
 		cSVStringLines.setType(String.class);
 		properies.add(cSVStringLines);
-		
+
 		createDocumentNotes();
-		
+
 		PropertyInfo noteForCentralOffice = new PropertyInfo();
 		noteForCentralOffice.setName("pNoteForCentralOffice");
 		noteForCentralOffice.setValue(pNoteForCentralOffice);
 		noteForCentralOffice.setType(String.class);
 		properies.add(noteForCentralOffice);
-		
+
 		PropertyInfo documentNote = new PropertyInfo();
 		documentNote.setName("pDocumentNote");
 		documentNote.setValue(pDocumentNote);
 		documentNote.setType(String.class);
 		properies.add(documentNote);
-		
+
 		PropertyInfo verifyOnly = new PropertyInfo();
 		verifyOnly.setName("pVerifyOnly");
 		verifyOnly.setValue(pVerifyOnly);
 		verifyOnly.setType(Integer.class);
 		properies.add(verifyOnly);
 		
+		PropertyInfo appVersion = new PropertyInfo();
+		appVersion.setName("pAppVersion");
+		appVersion.setValue(pAppVersion);
+		appVersion.setType(String.class);
+		properies.add(appVersion);
+		
+		PropertyInfo callDuration = new PropertyInfo();
+		callDuration.setName("pCallDuration");
+		callDuration.setValue(pCallDuration);
+		callDuration.setType(Integer.class);
+		properies.add(callDuration);
+
 		return properies;
 	}
 
 	private String createHeader() {
 		// get header data
-		Cursor cursorHeader = context.getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderExport(), SalesOrderHeaderQuery.PROJECTION, Tables.SALE_ORDERS+"._ID=?", new String[] { String.valueOf(documentId) }, null);
-		List<String[]> header = CSVDomainWriter.parseCursor(cursorHeader, SalesOrderHeaderQuery.PROJECTION_TYPE);
+		Cursor cursorHeader = context.getContentResolver().query(
+				MobileStoreContract.SaleOrders.buildSaleOrderExport(),
+				SalesOrderHeaderQuery.PROJECTION,
+				Tables.SALE_ORDERS + "._ID=?",
+				new String[] { String.valueOf(documentId) }, null);
+		List<String[]> header = CSVDomainWriter.parseCursor(cursorHeader,
+				SalesOrderHeaderQuery.PROJECTION_TYPE);
 		if (header.size() > 0) {
 			String[] headerLine = header.get(0);
 			int document_type_pos = 0;
 			int customer_no_pos = 2;
 			int contact_no_pos = 11;
 			// it is document type ponuda and customer is potential customer
-			if (headerLine[document_type_pos].equals("1") && isPotentialCustomer(headerLine[customer_no_pos])) {
+			if (headerLine[document_type_pos].equals("1")
+					&& isPotentialCustomer(headerLine[customer_no_pos])) {
 				headerLine[contact_no_pos] = headerLine[customer_no_pos];
 				headerLine[customer_no_pos] = "";
 			}
@@ -197,21 +227,39 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		cursorHeader.close();
 		return stringWriter.toString();
 	}
-	
+
 	private boolean isPotentialCustomer(String customerNo) {
-		Cursor potentialCustomerCursor = context.getContentResolver().query(MobileStoreContract.Customers.CONTENT_URI, new String[] {Customers.CONTACT_COMPANY_NO}, 
-				"("+Customers.CONTACT_COMPANY_NO + " is null or " + Customers.CONTACT_COMPANY_NO + "='')" + " and " + Customers.CUSTOMER_NO + "=?" , new String[] { customerNo }, null);
+		Cursor potentialCustomerCursor = context.getContentResolver().query(
+				MobileStoreContract.Customers.CONTENT_URI,
+				new String[] { Customers.CONTACT_COMPANY_NO },
+				"(" + Customers.CONTACT_COMPANY_NO + " is null or "
+						+ Customers.CONTACT_COMPANY_NO + "='')" + " and "
+						+ Customers.CUSTOMER_NO + "=?",
+				new String[] { customerNo }, null);
 		if (potentialCustomerCursor.moveToFirst()) {
 			return true;
 		}
 		potentialCustomerCursor.close();
 		return false;
 	}
-	
+
 	private String createLines() {
 		// get lines data
-		Cursor cursorLines = context.getContentResolver().query(MobileStoreContract.SaleOrderLines.buildSaleOrderLineExportUri(), SalesOrderLineQuery.PROJECTION, Tables.SALE_ORDER_LINES+"."+MobileStoreContract.SaleOrderLines.SALE_ORDER_ID+"=?", new String[] { String.valueOf(documentId) }, Tables.SALE_ORDER_LINES + "." + MobileStoreContract.SaleOrderLines.LINE_NO + " ASC");
-		List<String[]> lines = CSVDomainWriter.parseCursor(cursorLines, SalesOrderLineQuery.PROJECTION_TYPE);
+		Cursor cursorLines = context
+				.getContentResolver()
+				.query(MobileStoreContract.SaleOrderLines
+						.buildSaleOrderLineExportUri(),
+						SalesOrderLineQuery.PROJECTION,
+						Tables.SALE_ORDER_LINES
+								+ "."
+								+ MobileStoreContract.SaleOrderLines.SALE_ORDER_ID
+								+ "=?",
+						new String[] { String.valueOf(documentId) },
+						Tables.SALE_ORDER_LINES + "."
+								+ MobileStoreContract.SaleOrderLines.LINE_NO
+								+ " ASC");
+		List<String[]> lines = CSVDomainWriter.parseCursor(cursorLines,
+				SalesOrderLineQuery.PROJECTION_TYPE);
 		StringWriter stringWriter = new StringWriter();
 		CSVWriter writer = new CSVWriter(stringWriter, ';', '"');
 		writer.writeAll(lines);
@@ -225,8 +273,13 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	}
 
 	private void createDocumentNotes() {
-		Cursor cursorNotes = context.getContentResolver().query(MobileStoreContract.SaleOrders.CONTENT_URI, new String[] { SaleOrders.NOTE1, SaleOrders.NOTE2 }, Tables.SALE_ORDERS+"._ID=?", new String[] { String.valueOf(documentId) }, null);
-		pDocumentNote = ""; pNoteForCentralOffice = "";
+		Cursor cursorNotes = context.getContentResolver().query(
+				MobileStoreContract.SaleOrders.CONTENT_URI,
+				new String[] { SaleOrders.NOTE1, SaleOrders.NOTE2 },
+				Tables.SALE_ORDERS + "._ID=?",
+				new String[] { String.valueOf(documentId) }, null);
+		pDocumentNote = "";
+		pNoteForCentralOffice = "";
 		if (cursorNotes != null && cursorNotes.moveToFirst()) {
 			if (!cursorNotes.isNull(0)) {
 				pDocumentNote = cursorNotes.getString(0);
@@ -237,7 +290,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		}
 		cursorNotes.close();
 	}
-	
+
 	@Override
 	public String getTag() {
 		return TAG;
@@ -257,38 +310,62 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver,
 			SoapObject soapResponse) throws CSVParseException {
-//		String headerResp = soapResponse.getPropertyAsString("pCSVStringHeader");
-//		String linesResp = soapResponse.getPropertyAsString("pCSVStringLines");
-		
-		if (soapResponse == null || soapResponse.toString().equals("") || soapResponse.getPropertyAsString("pCSVStringHeader") == null || soapResponse.getPropertyAsString("pCSVStringHeader").equals("") || soapResponse.getPropertyAsString("pCSVStringHeader").equals("anyType{}")) {
-			// when status is ponuda or spec ponuda an response is empty everything is OK
-			
+		// String headerResp =
+		// soapResponse.getPropertyAsString("pCSVStringHeader");
+		// String linesResp =
+		// soapResponse.getPropertyAsString("pCSVStringLines");
+
+		if (soapResponse == null
+				|| soapResponse.toString().equals("")
+				|| soapResponse.getPropertyAsString("pCSVStringHeader") == null
+				|| soapResponse.getPropertyAsString("pCSVStringHeader").equals(
+						"")
+				|| soapResponse.getPropertyAsString("pCSVStringHeader").equals(
+						"anyType{}")) {
+			// when status is ponuda or spec ponuda an response is empty
+			// everything is OK
+
 			// now we have response
 			return 1;
 		}
-		
-		List<MobileDeviceSalesDocumentHeaderDomain> parsedSalesHeader = CSVDomainReader.parse(new StringReader(soapResponse.getPropertyAsString("pCSVStringHeader")), MobileDeviceSalesDocumentHeaderDomain.class);
-		ContentValues[] valuesForInsertHeader = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedSalesHeader);
-		
+
+		List<MobileDeviceSalesDocumentHeaderDomain> parsedSalesHeader = CSVDomainReader
+				.parse(new StringReader(soapResponse
+						.getPropertyAsString("pCSVStringHeader")),
+						MobileDeviceSalesDocumentHeaderDomain.class);
+		ContentValues[] valuesForInsertHeader = TransformDomainObject
+				.newInstance().transformDomainToContentValues(contentResolver,
+						parsedSalesHeader);
+
 		// verification, there is no returned sale order no
 		if (pVerifyOnly == 1) {
 			valuesForInsertHeader[0].putNull("sales_order_no");
 		}
-		
-		List<MobileDeviceSalesDocumentLinesDomain> parsedSalesLines = CSVDomainReader.parse(new StringReader(soapResponse.getPropertyAsString("pCSVStringLines")), MobileDeviceSalesDocumentLinesDomain.class);
-		ContentValues[] valuesForInsertLines = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedSalesLines);
-		
-		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.SaleOrders.CONTENT_URI, valuesForInsertHeader);
-		numOfInserted = contentResolver.bulkInsert(MobileStoreContract.SaleOrderLines.CONTENT_URI, valuesForInsertLines);
-		
+
+		List<MobileDeviceSalesDocumentLinesDomain> parsedSalesLines = CSVDomainReader
+				.parse(new StringReader(soapResponse
+						.getPropertyAsString("pCSVStringLines")),
+						MobileDeviceSalesDocumentLinesDomain.class);
+		ContentValues[] valuesForInsertLines = TransformDomainObject
+				.newInstance().transformDomainToContentValues(contentResolver,
+						parsedSalesLines);
+
+		int numOfInserted = contentResolver.bulkInsert(
+				MobileStoreContract.SaleOrders.CONTENT_URI,
+				valuesForInsertHeader);
+		numOfInserted = contentResolver.bulkInsert(
+				MobileStoreContract.SaleOrderLines.CONTENT_URI,
+				valuesForInsertLines);
+
 		// return statuses
-		MobileDeviceSalesDocumentHeaderDomain deviceSalesDocumentHeaderDomain = parsedSalesHeader.get(0);
+		MobileDeviceSalesDocumentHeaderDomain deviceSalesDocumentHeaderDomain = parsedSalesHeader
+				.get(0);
 		setOrder_condition_status(deviceSalesDocumentHeaderDomain.order_condition_status);
 		setFinancial_control_status(deviceSalesDocumentHeaderDomain.financial_control_status);
 		setOrder_status_for_shipment(deviceSalesDocumentHeaderDomain.order_status_for_shipment);
 		setOrder_value_status(deviceSalesDocumentHeaderDomain.order_value_status);
 		setMin_max_discount_total_amount_difference(deviceSalesDocumentHeaderDomain.curr_max_discount_total_amount_difference);
-		
+
 		return numOfInserted;
 	}
 
@@ -324,135 +401,106 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 		this.pDocumentNote = pDocumentNote;
 	}
 
-	
 	private interface SalesOrderHeaderQuery {
 		String[] PROJECTION = {
-                //BaseColumns._ID,
-                MobileStoreContract.SaleOrders.DOCUMENT_TYPE,
-                MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO,
-                MobileStoreContract.Customers.CUSTOMER_NO,
-                MobileStoreContract.SaleOrders.LOCATION_CODE,
-                MobileStoreContract.SaleOrders.SHORTCUT_DIMENSION_1_CODE,
-                MobileStoreContract.SaleOrders.EXTERNAL_DOCUMENT_NO,
-                MobileStoreContract.SaleOrders.QUOTE_NO,
-                MobileStoreContract.SalesPerson.SALE_PERSON_NO,
-                
-                // this is here like this because of join
-                "sell_to_address_no",
-                "shipp_to_address_no",
-                MobileStoreContract.SaleOrders.REQUESTED_DELIVERY_DATE,
-                
-                MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST,
-                MobileStoreContract.Contacts.CONTACT_NO,
-                MobileStoreContract.SaleOrders.CONTACT_NAME,
-                MobileStoreContract.SaleOrders.CONTACT_PHONE,
-                MobileStoreContract.SaleOrders.CONTACT_EMAIL,
-                
-                MobileStoreContract.SaleOrders.HIDE_REBATE,
-                MobileStoreContract.SaleOrders.FURTHER_SALE,
-                
-                MobileStoreContract.SaleOrders.PAYMENT_OPTION,
-                MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS,
-                MobileStoreContract.SaleOrders.QUOTE_REALIZED_STATUS,
-                MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS
-        };
-		
-		Type[] PROJECTION_TYPE = {
-				Integer.class,
-				String.class,
-				String.class,
-				String.class,
-				String.class,
-				String.class,
-				String.class,
-				String.class,
-				
-				String.class,
-				String.class,
-				Date.class,
-				
-				String.class,
-				String.class,
-				String.class,
-				String.class,
-				String.class,
-				
-				Integer.class,
-				Integer.class,
-				
-				String.class,
-				Integer.class,
-				Integer.class,
-				Integer.class
-		};
+				// BaseColumns._ID,
+				MobileStoreContract.SaleOrders.DOCUMENT_TYPE,
+				MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO,
+				MobileStoreContract.Customers.CUSTOMER_NO,
+				MobileStoreContract.SaleOrders.LOCATION_CODE,
+				MobileStoreContract.SaleOrders.SHORTCUT_DIMENSION_1_CODE,
+				MobileStoreContract.SaleOrders.EXTERNAL_DOCUMENT_NO,
+				MobileStoreContract.SaleOrders.QUOTE_NO,
+				MobileStoreContract.SalesPerson.SALE_PERSON_NO,
 
-//		int _ID = 0;
-//		int DOCUMENT_TYPE = 1;
-//		int SALES_ORDER_NO = 2;
-//		int CUSTOMER_N = 3;
-//		int LOCATION_CODE = 4;
-//		int SHORTCUT_DIMENSION_1_CODE = 5;
-//		int EXTERNAL_DOCUMENT_NO = 6;
-//		int QUOTE_NO = 7;
-//		int SALES_PERSON_ID = 8;
-//		int CUSTOMER_BUSINESS_UNIT_CODE = 9;
-//		int SELL_TO_ADDRESS_ID = 10;
-//		int SHIPP_TO_ADDRESS_ID = 11;
-//		int CUST_USES_TRANSIT_CUST = 12;
-//		int CONTACT_NAME = 13;
-//		int CONTACT_PHONE = 14;
-//		int HIDE_REBATE = 15;
-//		int FURTHER_SALE = 16;
-//		int PAYMENT_OPTION = 17;
-//		int BACKORDER_SHIPMENT_STATUS = 18;
-//		int QUOTE_REALIZED_STATUS = 19;
-//		int ORDER_CONDITION_STATUS = 20; 
+				// this is here like this because of join
+				"sell_to_address_no", "shipp_to_address_no",
+				MobileStoreContract.SaleOrders.REQUESTED_DELIVERY_DATE,
+
+				MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST,
+				MobileStoreContract.Contacts.CONTACT_NO,
+				MobileStoreContract.SaleOrders.CONTACT_NAME,
+				MobileStoreContract.SaleOrders.CONTACT_PHONE,
+				MobileStoreContract.SaleOrders.CONTACT_EMAIL,
+
+				MobileStoreContract.SaleOrders.HIDE_REBATE,
+				MobileStoreContract.SaleOrders.FURTHER_SALE,
+
+				MobileStoreContract.SaleOrders.PAYMENT_OPTION,
+				MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS,
+				MobileStoreContract.SaleOrders.QUOTE_REALIZED_STATUS,
+				MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS,
+				MobileStoreContract.SaleOrders.SHIPMENT_METHOD_CODE };
+
+		Type[] PROJECTION_TYPE = { Integer.class, String.class, String.class,
+				String.class, String.class, String.class, String.class,
+				String.class,
+
+				String.class, String.class, Date.class,
+
+				String.class, String.class, String.class, String.class,
+				String.class,
+
+				Integer.class, Integer.class,
+
+				String.class, Integer.class, Integer.class, Integer.class, String.class };
+
+		// int _ID = 0;
+		// int DOCUMENT_TYPE = 1;
+		// int SALES_ORDER_NO = 2;
+		// int CUSTOMER_N = 3;
+		// int LOCATION_CODE = 4;
+		// int SHORTCUT_DIMENSION_1_CODE = 5;
+		// int EXTERNAL_DOCUMENT_NO = 6;
+		// int QUOTE_NO = 7;
+		// int SALES_PERSON_ID = 8;
+		// int CUSTOMER_BUSINESS_UNIT_CODE = 9;
+		// int SELL_TO_ADDRESS_ID = 10;
+		// int SHIPP_TO_ADDRESS_ID = 11;
+		// int CUST_USES_TRANSIT_CUST = 12;
+		// int CONTACT_NAME = 13;
+		// int CONTACT_PHONE = 14;
+		// int HIDE_REBATE = 15;
+		// int FURTHER_SALE = 16;
+		// int PAYMENT_OPTION = 17;
+		// int BACKORDER_SHIPMENT_STATUS = 18;
+		// int QUOTE_REALIZED_STATUS = 19;
+		// int ORDER_CONDITION_STATUS = 20;
 	}
-	
+
 	private interface SalesOrderLineQuery {
 		String[] PROJECTION = {
-                //BaseColumns._ID,
-                MobileStoreContract.SaleOrders.DOCUMENT_TYPE,
-                MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO,
-                MobileStoreContract.SaleOrderLines.LINE_NO,
-                MobileStoreContract.Items.ITEM_NO,
-                MobileStoreContract.SaleOrderLines.LOCATION_CODE,
-                MobileStoreContract.SaleOrderLines.QUANTITY,
-                MobileStoreContract.SaleOrderLines.PRICE,
-                MobileStoreContract.SaleOrderLines.REAL_DISCOUNT,
-                MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS,
-                MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS,
-                MobileStoreContract.SaleOrderLines.BACKORDER_STATUS,
-                MobileStoreContract.SaleOrderLines.AVAILABLE_TO_WHOLE_SHIPMENT
-        };
+				// BaseColumns._ID,
+				MobileStoreContract.SaleOrders.DOCUMENT_TYPE,
+				MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO,
+				MobileStoreContract.SaleOrderLines.LINE_NO,
+				MobileStoreContract.Items.ITEM_NO,
+				MobileStoreContract.SaleOrderLines.LOCATION_CODE,
+				MobileStoreContract.SaleOrderLines.QUANTITY,
+				MobileStoreContract.SaleOrderLines.PRICE,
+				MobileStoreContract.SaleOrderLines.REAL_DISCOUNT,
+				MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS,
+				MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS,
+				MobileStoreContract.SaleOrderLines.BACKORDER_STATUS,
+				MobileStoreContract.SaleOrderLines.AVAILABLE_TO_WHOLE_SHIPMENT };
 
-		Type[] PROJECTION_TYPE = {
-				Integer.class,
-				String.class,
-				Integer.class,
-				String.class,
-				String.class,
-				Double.class,	
-				Double.class,
-				Double.class,
-				Integer.class,
-				Integer.class,
-				Integer.class,
-				Integer.class
-		};
-		
-		//int _ID = 0;
-		//int DOCUMENT_TYPE = 1;
-//		int SALES_ORDER_NO = 0;
-//		int LINE_NO = 1;
-//		int ITEM_NO = 2;
-//		int QUANTITY = 3;
-//		int UNIT_SALES_PRICE_DIN = 4;
-//		int REAL_DISCOUNT = 5;
-//		int CAMPAIGN_STATUS = 6;
-//		int QUOTE_REFUSED_STATUS = 7;
-//		int BACKORDER_STATUS = 8;
-//		int AVAILABLE_TO_WHOLE_SHIPMENT = 9; 
+		Type[] PROJECTION_TYPE = { Integer.class, String.class, Integer.class,
+				String.class, String.class, Double.class, Double.class,
+				Double.class, Integer.class, Integer.class, Integer.class,
+				Integer.class };
+
+		// int _ID = 0;
+		// int DOCUMENT_TYPE = 1;
+		// int SALES_ORDER_NO = 0;
+		// int LINE_NO = 1;
+		// int ITEM_NO = 2;
+		// int QUANTITY = 3;
+		// int UNIT_SALES_PRICE_DIN = 4;
+		// int REAL_DISCOUNT = 5;
+		// int CAMPAIGN_STATUS = 6;
+		// int QUOTE_REFUSED_STATUS = 7;
+		// int BACKORDER_STATUS = 8;
+		// int AVAILABLE_TO_WHOLE_SHIPMENT = 9;
 	}
 
 	public int getDocumentId() {
@@ -464,7 +512,8 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	}
 
 	public String getOrder_condition_status() {
-		if (order_condition_status == null || order_condition_status.length() < 1) {
+		if (order_condition_status == null
+				|| order_condition_status.length() < 1) {
 			return "0";
 		}
 		return order_condition_status;
@@ -475,7 +524,8 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	}
 
 	public String getFinancial_control_status() {
-		if (financial_control_status == null || financial_control_status.length() < 1) {
+		if (financial_control_status == null
+				|| financial_control_status.length() < 1) {
 			return "0";
 		}
 		return financial_control_status;
@@ -486,7 +536,8 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	}
 
 	public String getOrder_status_for_shipment() {
-		if (order_status_for_shipment == null || order_status_for_shipment.length() < 1) {
+		if (order_status_for_shipment == null
+				|| order_status_for_shipment.length() < 1) {
 			return "0";
 		}
 		return order_status_for_shipment;
@@ -524,7 +575,8 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	}
 
 	public String getMin_max_discount_total_amount_difference() {
-		if (min_max_discount_total_amount_difference == null || min_max_discount_total_amount_difference.length() < 1) {
+		if (min_max_discount_total_amount_difference == null
+				|| min_max_discount_total_amount_difference.length() < 1) {
 			return "0";
 		}
 		return min_max_discount_total_amount_difference;
@@ -534,4 +586,26 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 			String min_max_discount_total_amount_difference) {
 		this.min_max_discount_total_amount_difference = min_max_discount_total_amount_difference;
 	}
+
+	public int getPotentialCustomer() {
+		return potentialCustomer;
+	}
+
+	public String getpAppVersion() {
+		return pAppVersion;
+	}
+
+	public void setpAppVersion(String pAppVersion) {
+		this.pAppVersion = pAppVersion;
+	}
+
+	public Integer getpCallDuration() {
+		return pCallDuration;
+	}
+
+	public void setpCallDuration(Integer pCallDuration) {
+		this.pCallDuration = pCallDuration;
+	}
+
+	
 }

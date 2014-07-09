@@ -3,22 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal|top"
-    android:background="#FFE9E9E9"
-    android:orientation="vertical"
     android:animateLayoutChanges="false"
-    android:fillViewport="true" >
-    
+    android:background="#FFE9E9E9"
+    android:fillViewport="true"
+    android:orientation="vertical" >
+
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|top"
         android:background="#FFFFFFFF"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:paddingTop="28dip"
         android:shrinkColumns="1"
         android:stretchColumns="1" >
-        
+
         <TableRow
             android:id="@+id/edit_sale_order_customer_group"
             android:layout_marginBottom="8dip"
@@ -85,7 +85,7 @@
         </TableRow>
 
         <!-- Contact part -->
-        
+
         <TableRow
             android:id="@+id/edit_sale_order_contact_group"
             android:layout_marginBottom="8dip"
@@ -108,7 +108,7 @@
                 android:layout_marginRight="16dip"
                 android:gravity="center_vertical" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/edit_sale_order_contact_edit_group"
             android:layout_marginBottom="8dip"
@@ -135,6 +135,7 @@
                     android:layout_weight="3"
                     android:gravity="center_vertical"
                     android:hint="@string/contact_name_title" />
+
                 <EditText
                     android:id="@+id/edit_sale_order_contact_phone_text"
                     style="@style/AddEdit_Text_Value"
@@ -145,6 +146,7 @@
                     android:layout_weight="3"
                     android:gravity="center_vertical"
                     android:hint="@string/contact_phone_title" />
+
                 <EditText
                     android:id="@+id/edit_sale_order_contact_email_text"
                     style="@style/AddEdit_Text_Value"
@@ -157,7 +159,7 @@
                     android:hint="Email 1,Email 2..." />
             </LinearLayout>
         </TableRow>
-        
+
         <!-- First line of settings -->
 
         <TableRow
@@ -290,7 +292,7 @@
 
         <TableRow
             android:id="@+id/edit_sale_order_settings_line2_group"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="8dp"
             android:focusable="true"
             android:gravity="center_vertical" >
 
@@ -348,7 +350,7 @@
                         android:id="@+id/edit_sale_order_quote_no_edit_text"
                         style="AddEdit_Value"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="16dip"
                         android:layout_marginRight="16dip"
@@ -363,28 +365,25 @@
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/edit_sale_order_transit_customer_label"
                         style="@style/AddEdit_Label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dip"
                         android:layout_marginRight="16dip"
                         android:gravity="center_vertical"
-                        android:text="@string/transit_customer" />
+                        android:text="@string/shipment_method_code" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/edit_sale_order_transit_customer_value"
+                    <Spinner
+                        android:id="@+id/edit_sale_order_shipment_method_code"
+                        style="EditEvent_Spinner"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="16dip"
                         android:layout_marginRight="16dip"
-                        android:completionThreshold="1"
-                        android:hint="@string/customer_hint"
-                        android:paddingLeft="12dip"
-                        android:paddingRight="12dip"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:gravity="center_vertical" />
                 </LinearLayout>
-                
+
                 <LinearLayout
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
@@ -406,12 +405,39 @@
                         android:id="@+id/edit_sale_order_desired_delivery_date_text"
                         style="@style/EditEvent_SpinnerButton"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="16dip"
-                        android:layout_marginRight="16dip" />
+                        android:layout_marginRight="16dip"
+                        android:gravity="center_vertical" />
                 </LinearLayout>
-                
             </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/edit_sale_order_transit_customer_label"
+                style="@style/AddEdit_Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:gravity="center_vertical"
+                android:text="@string/transit_customer" />
+
+            <AutoCompleteTextView
+                android:id="@+id/edit_sale_order_transit_customer_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="5"
+                android:completionThreshold="1"
+                android:hint="@string/customer_hint"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <!-- Shipping address group -->
@@ -637,7 +663,7 @@
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/edit_sale_order_headquarters_note_group"
             android:layout_marginBottom="8dip"
@@ -656,16 +682,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:paddingLeft="12dip"
-                android:paddingRight="12dip"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:lines="8"
                 android:maxLines="10"
                 android:minLines="6"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:scrollbars="vertical"
                 android:singleLine="false"
-    			android:lines="8"
-    			android:scrollbars="vertical" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/edit_sale_order_document_note_group"
             android:layout_marginBottom="8dip"
@@ -684,16 +710,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:paddingLeft="12dip"
-                android:paddingRight="12dip"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:lines="8"
                 android:maxLines="10"
                 android:minLines="6"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:scrollbars="vertical"
                 android:singleLine="false"
-    			android:lines="8"
-    			android:scrollbars="vertical" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-        
+
         <!-- Status line of -->
 
         <TableRow

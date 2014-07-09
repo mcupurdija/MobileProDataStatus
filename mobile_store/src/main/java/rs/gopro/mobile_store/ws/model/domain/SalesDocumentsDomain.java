@@ -11,6 +11,7 @@ import android.content.ContentValues;
 
 public class SalesDocumentsDomain extends Domain {
 
+	public String entry_no;
 	public String customer_no;
 	public String posting_date;
 	public String document_type;
@@ -22,7 +23,7 @@ public class SalesDocumentsDomain extends Domain {
 	public String original_amount;
 	public String prices_include_vat;
 
-	private static final String[] COLUMNS = new String[] { "customer_no", "posting_date", "document_type", "invoice_no", "sales_person_no", "open", "due_date", "remaining_amount", "original_amount", "prices_include_vat" };
+	private static final String[] COLUMNS = new String[] { "entry_no", "customer_no", "posting_date", "document_type", "invoice_no", "sales_person_no", "open", "due_date", "remaining_amount", "original_amount", "prices_include_vat" };
 
 	@Override
 	public String[] getCSVMappingStrategy() {
@@ -32,6 +33,7 @@ public class SalesDocumentsDomain extends Domain {
 	@Override
 	public ContentValues getContentValues() {
 		ContentValues contentValues = new ContentValues();
+		contentValues.put(Invoices.ENTRY_NO, getEntry_no());
 		contentValues.put(Invoices.CUSTOMER_NO, getCustomer_no());
 		contentValues.put(Invoices.POSTING_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getPosting_date()));
 		contentValues.put(Invoices.DOCUMENT_TYPE, getDocument_type());
@@ -52,6 +54,14 @@ public class SalesDocumentsDomain extends Domain {
 		dataHolders.add(new RowItemDataHolder(Tables.CUSTOMERS, Invoices.CUSTOMER_NO, getCustomer_no(), Invoices.CUSTOMER_ID));
 		dataHolders.add(new RowItemDataHolder(Tables.SALES_PERSONS, Invoices.SALE_PERSON_NO, getSales_person_no(), Invoices.SALES_PERSON_ID));
 		return dataHolders;
+	}
+
+	public String getEntry_no() {
+		return entry_no;
+	}
+
+	public void setEntry_no(String entry_no) {
+		this.entry_no = entry_no;
 	}
 
 	public String getCustomer_no() {

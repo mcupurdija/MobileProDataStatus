@@ -80,10 +80,9 @@
     <string name="reclamation_title">Reclamation</string>
     <string name="note_hint">Note</string>
     <string name="action_button_refresh">Refresh</string>
-
     <string name="start_visit_button_title">Start visit</string>
     <string name="end_visit_button_title">End visit</string>
-    
+
     <!-- add contact -->
     <string name="contact_type_title">Type</string>
     <string name="contact_type_hint">Type</string>
@@ -186,18 +185,15 @@
     <string name="customer_email_label">Email</string>
     <string name="customer_blue_coat_label">Num. of blue coat</string>
     <string name="customer_gray_coat_label">Num. of gray coat</string>
-    
     <string name="customer_turnover_in_last_3m_label">Turnover in last 3m</string>
     <string name="customer_turnover_in_last_6m_label">Turnover in last 6m</string>
     <string name="customer_turnover_in_last_12m_label">Turnover in last 12m</string>
     <string name="customer_turnover_generated_1_label">Turnover generated 1</string>
     <string name="customer_turnover_generated_2_label">Turnover generated 2</string>
     <string name="customer_turnover_generated_3_label">Turnover generated 3</string>
-    
     <string name="customer_turnover_ytm_label">Turnover ytm</string>
     <string name="customer_gross_profit_pfep_label">Gross profit pfep</string>
     <string name="customer_apr_customer_turnover_label">APR customer turnover</string>
-    
     <string name="customer_note_label">Note</string>
     <string name="customer_name_label">Name</string>
     <string name="customer_name2_label">Name 2</string>
@@ -343,7 +339,6 @@
     <string name="available_to_whole_ship">Available To Whole Shippment</string>
     <string name="verify_status">Verify Status</string>
     <string name="price_and_discount_are_correct">Price And Discountc Are Correct</string>
-    
     <string name="menu_new_visit">New visit plan</string>
     <string name="menu_send_visits">Send visits</string>
     <string name="menu_receive_visits">Receive visits</string>
@@ -352,13 +347,11 @@
     <string name="menu_visits_option">Visits details</string>
     <string name="menu_customers_option">Customers details</string>
     <string name="menu_record_visits_option">Realization</string>
-    
     <string name="day_start_record_visit_menu_title">Day start</string>
     <string name="day_end_record_visit_menu_title">Day end</string>
     <string name="day_end_back_home_visit_menu_title">Back home</string>
     <string name="day_break_visit_menu_title">Break</string>
     <string name="new_record_visit_menu_title">New realization</string>
-    
     <string name="items_sync_group_title">Items sync options</string>
     <string name="items_sync_new_button_title">Sync new items</string>
     <string name="items_sync_overstock_button_title">Sync overstock items</string>
@@ -368,11 +361,9 @@
     <string name="invoice_open">Open</string>
     <string name="invoice_closed">Closed</string>
     <string name="date_filter_button_text">Filter by date</string>
-    
     <string name="add_customer_names_title">Customer name1 - name2</string>
     <string name="add_customer_address_title">Address</string>
     <string name="add_customer_city_post_code_title">City - postal code</string>
-    
     <string name="add_customer_phones_title">MAin phone - mobile phone</string>
     <string name="add_customer_email_title">E-mail</string>
     <string name="add_customer_company_data_title">VAT number - copmany id</string>
@@ -380,13 +371,11 @@
     <string name="add_customer_oran_title">Channel (ORAN)</string>
     <string name="add_customer_blue_coats_title">Num of blue coats</string>
     <string name="add_customer_grey_coats_title">Num of grey coats</string>
-
     <string name="visit_customer_no_name_label_title">Customer no and name:</string>
     <string name="visit_date_label_title">Realisation date:</string>
     <string name="visit_time_label_title">Realisation time:</string>
     <string name="visit_odometer_label_title">Odometer value:</string>
     <string name="visit_note_label_title">Note:</string>
-    
     <string name="this_month_label">This month plan and turnover</string>
     <string name="this_month_plan_label">This month plan</string>
     <string name="this_month_turnover_label">This month turnover</string>
@@ -394,49 +383,46 @@
     <string name="last_month_plan_label">Last month plan</string>
     <string name="last_month_turnover_label">Last month turnover</string>
     <string name="sync_sales_person_plan_and_turnover_button_title">Sync plan and turnover</string>
-    
     <string name="service_order_address_post_code_label">Address and Post code</string>
     <string name="service_order_item_quantity_label">Quantity</string>
-    
     <string name="button_add_label">+1</string>
-	<string name="button_subtract_label">-1</string>
-	<string name="button_multiply_label">X</string>
-	
-	<string name="error_internet_status">Trenutno nije moguće poslati realizaciju. Proverite internet konekciju.</string>
-	
-	<string name="pocetak_posete_zabelezen">Početak posete je već zabeležen!</string>
-	<string name="kraj_posete_zabelezen">Kraj posete je već zabeležen!</string>
-	<string name="postoji_otvorena_poseta">Postoji otvorena realizacija!</string>
-	<string name="pocetak_dana_zabelezen">Početak dana je zabeležen!</string>
-	<string name="dan_nije_zapocet">Dan nije započet!</string>
-	<string name="kraj_dana_zabelezen">Kraj dana je zabeležen!</string>
-	<string name="dan_nije_zavrsen">Dan nije završen!</string>
-	<string name="dan_nije_otvoren">Dan nije otvoren!</string>
-	<string name="dolazak_kuci_zabelezen">Dolazak kući je zabeležen!</string>
-	
-	<string name="title_unesite_kilometrazu">Unesite kilometražu</string>
-	<string name="title_unesite_vrednost">Niste uneli vrednost</string>
-	<string name="pocetak_dana_nije_zabelezen">Početak dana nije zabeležen!</string>
-	<string name="kraj_dana_nije_zabelezen">Kraj dana nije zabeležen!</string>
-	<string name="kraj_realizacije_zabelezen">Kraj realizacije uspešno zabeležen!</string>
-	<string name="kraj_pauze_zabelezen">Kraj pauze uspešno zabeležen!</string>
-	<string name="kupac_nije_izabran">Kupac nije izabran!</string>
-	<string name="datum_format">Molimo proverite format unesenih podataka!</string>
-	<string name="postavi_datum">Postavi datum</string>
-	<string name="postavi_vreme">Postavi vreme</string>
-	<string name="plan_kreiran">Plan je uspešno kreiran</string>
-	<string name="plan_azuriran">Plan je uspešno ažuriran</string>
-	<string name="plan_obrisan">Plan je uspešno izbrisan</string>
-	<string name="sync_success">Sinhronizacija uspešno izvršena</string>
-	
-	<string name="menu_update_items">Ažuriraj sa tableta</string>
-	<string name="menu_precice">Prečice</string>
-	<string name="menu_nova_specifikacija">Nova porudzbina</string>
-	<string name="menu_sinhronizacija">Sinhronizacija</string>
-	<string name="menu_podesavanja">Podešavanja</string>
-	<string name="bAzurirajSaTableta">Automatski ažuriraj artikle sa tableta</string>
-	<string name="bOdaberiDokument">Odaberi dokument za ažuriranje artikala</string>
-	<string name="azurirajSaTabletaSuccess">Artikli uspešno ažurirani</string>
-	<string name="azurirajSaTabletaError">Nije pronađen dokument za ažuriranje</string>
-	<string name="azurirajSaTabletaError2">Došlo je do greške pri učitavanju artikala</string>
+    <string name="button_subtract_label">-1</string>
+    <string name="button_multiply_label">X</string>
+    <string name="error_internet_status">Trenutno nije moguće poslati realizaciju. Proverite internet konekciju.</string>
+    <string name="pocetak_posete_zabelezen">Početak posete je već zabeležen!</string>
+    <string name="kraj_posete_zabelezen">Kraj posete je već zabeležen!</string>
+    <string name="postoji_otvorena_poseta">Postoji otvorena realizacija!</string>
+    <string name="pocetak_dana_zabelezen">Početak dana je zabeležen!</string>
+    <string name="dan_nije_zapocet">Dan nije započet!</string>
+    <string name="kraj_dana_zabelezen">Kraj dana je zabeležen!</string>
+    <string name="dan_nije_zavrsen">Dan nije završen!</string>
+    <string name="dan_nije_otvoren">Dan nije otvoren!</string>
+    <string name="dolazak_kuci_zabelezen">Dolazak kući je zabeležen!</string>
+    <string name="title_unesite_kilometrazu">Unesite kilometražu</string>
+    <string name="title_unesite_vrednost">Niste uneli vrednost</string>
+    <string name="pocetak_dana_nije_zabelezen">Početak dana nije zabeležen!</string>
+    <string name="kraj_dana_nije_zabelezen">Kraj dana nije zabeležen!</string>
+    <string name="kraj_realizacije_zabelezen">Kraj realizacije uspešno zabeležen!</string>
+    <string name="kraj_pauze_zabelezen">Kraj pauze uspešno zabeležen!</string>
+    <string name="kupac_nije_izabran">Kupac nije izabran!</string>
+    <string name="datum_format">Molimo proverite format unesenih podataka!</string>
+    <string name="postavi_datum">Postavi datum</string>
+    <string name="postavi_vreme">Postavi vreme</string>
+    <string name="plan_kreiran">Plan je uspešno kreiran</string>
+    <string name="plan_azuriran">Plan je uspešno ažuriran</string>
+    <string name="plan_obrisan">Plan je uspešno izbrisan</string>
+    <string name="sync_success">Sinhronizacija uspešno izvršena</string>
+    <string name="menu_update_items">Ažuriraj sa tableta</string>
+    <string name="menu_precice">Prečice</string>
+    <string name="menu_nova_specifikacija">Nova porudzbina</string>
+    <string name="menu_sinhronizacija">Sinhronizacija</string>
+    <string name="menu_podesavanja">Podešavanja</string>
+    <string name="bAzurirajSaTableta">Automatski ažuriraj artikle sa tableta</string>
+    <string name="bOdaberiDokument">Odaberi dokument za ažuriranje artikala</string>
+    <string name="azurirajSaTabletaSuccess">Artikli uspešno ažurirani</string>
+    <string name="azurirajSaTabletaError">Nije pronađen dokument za ažuriranje</string>
+    <string name="azurirajSaTabletaError2">Došlo je do greške pri učitavanju artikala</string>
+    <string name="title_activity_nova_kartica_kupca">NovaKarticaKupcaActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

@@ -23,8 +23,8 @@ import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.exceptions.SaleOrderValidationException;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.Dialog;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Context;
@@ -46,6 +46,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -108,7 +109,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		MobileStoreContract.SaleOrders.FURTHER_SALE,
 		MobileStoreContract.SaleOrders.NOTE1,
 		MobileStoreContract.SaleOrders.NOTE2,
-		MobileStoreContract.SaleOrders.NOTE3
+		MobileStoreContract.SaleOrders.NOTE3,
+		MobileStoreContract.SaleOrders.SHIPMENT_METHOD_CODE
 	};
 	
 	private static String[]  CUSTOMER_PROJECTION = new String[] { 
@@ -179,6 +181,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private Button requestedDeliveryDate;
     private OnDateSetListener requestedDeliveryDateSetListener;
     
+    private ArrayAdapter<CharSequence> shipmentMethodCodeAdapter;
+    private Spinner shipmentMethodCode;
     private ArrayAdapter<CharSequence> orderConditionStatusAdapter;
     private Spinner orderConditionStatus;
     private String[] financialControlStatusOptions;
@@ -212,6 +216,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_add_sale_order);
+		//setContentView(R.layout.nova_porudzbina);
 
 		statementHandler = new StatementHandler(this);
 		
@@ -426,6 +431,11 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			}
 		});
 	    
+	    shipmentMethodCodeAdapter = ArrayAdapter.createFromResource(this, R.array.shipment_method_code_array_titles, android.R.layout.simple_spinner_item);
+	    shipmentMethodCodeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    shipmentMethodCode = (Spinner) findViewById(R.id.edit_sale_order_shipment_method_code);
+	    shipmentMethodCode.setAdapter(shipmentMethodCodeAdapter);
+	    
 	    orderConditionStatusAdapter = ArrayAdapter.createFromResource(this, R.array.order_condition_status_array, android.R.layout.simple_spinner_item);
 	    orderConditionStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    orderConditionStatus = (Spinner) findViewById(R.id.edit_sale_order_order_condition_status_spinner);
@@ -529,6 +539,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		String payment_option = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.PAYMENT_OPTION));
 		
+		String shipment_method_code = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SHIPMENT_METHOD_CODE));
+		
 		int sell_to_address_id = -1;
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID))) {
 			sell_to_address_id = data.getInt(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SELL_TO_ADDRESS_ID));
@@ -575,6 +587,16 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			requestedDeliveryDate.setText(delivery_date);
 		} else {
 			requestedDeliveryDate.setText("");
+		}
+		
+		if (shipment_method_code != null) {
+			ArrayList<String> shipmentMethodCodeArray = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.shipment_method_code_array_values)));
+			int shipmentMethodCodePosition = shipmentMethodCodeArray.indexOf(shipment_method_code);
+			if (shipmentMethodCodePosition != -1) {
+				shipmentMethodCode.setSelection(shipmentMethodCodePosition);
+			} else {
+				LogUtils.LOGE(TAG, "No shipment method code for value:" + shipmentMethodCodePosition);
+			}
 		}
 		
 		int order_condition_status = -1;
@@ -913,6 +935,9 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		} else {
 			localValues.putNull(MobileStoreContract.SaleOrders.NOTE2);
 		}
+		
+		int shipment_method_code = shipmentMethodCode.getSelectedItemPosition();
+		localValues.put(MobileStoreContract.SaleOrders.SHIPMENT_METHOD_CODE, getResources().getStringArray(R.array.shipment_method_code_array_values)[shipment_method_code]);
 		
 		String delivery_date = requestedDeliveryDate.getText().toString().trim();
 		if (!delivery_date.equals("")) {

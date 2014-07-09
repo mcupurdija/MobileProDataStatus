@@ -7,8 +7,6 @@
         android:id="@+id/rlPretragaKontakti"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_up"
-        android:gravity="center_vertical"
         android:padding="10dp" >
 
         <TextView
@@ -22,6 +20,7 @@
             android:id="@+id/etInputKontakti"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/tvInputNaslovKontakti"
             android:ems="10"
             android:inputType="text" >

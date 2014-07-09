@@ -23,7 +23,7 @@ public class MobileStoreDatabase extends SQLiteOpenHelper {
 	private static final String TAG = LogUtils.makeLogTag(MobileStoreDatabase.class);
 
 	private static final String SQL_DIR = "sql";
-	private static final String[] CREATE_FILES = {"create_mobile_store.sql", "create_mobile_store2.sql", "create_mobile_store3.sql"};
+	private static final String[] CREATE_FILES = {"create_mobile_store.sql", "create_mobile_store2.sql", "create_mobile_store3.sql", "create_mobile_store4.sql"};
 	private static final String UPGRADEFILE_PREFIX = "upgrade-";
 	private static final String UPGRADEFILE_SUFFIX = ".sql";
 	private static final String DATABSE_NAME = "mobile_store.db";

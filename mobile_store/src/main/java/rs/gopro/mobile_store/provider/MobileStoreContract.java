@@ -60,6 +60,7 @@ public class MobileStoreContract {
 	private static final String PATH_SERVICE_ORDERS = "service_orders";
 	private static final String PATH_APP_SETTINGS = "app_settings";
 	private static final String PATH_SERVICE_ORDERS_EXPORT = "service_orders_export";
+	private static final String PATH_CITIES = "cities";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -112,6 +113,7 @@ public class MobileStoreContract {
 	}
 
 	public interface InvoicesColumns {
+		String ENTRY_NO = "entry_no";
 		String INVOICE_NO = "invoice_no";
 		String CUSTOMER_ID = "customer_id";
 		String POSTING_DATE = "posting_date";
@@ -258,6 +260,7 @@ public class MobileStoreContract {
 		String NOTE1 = "note1";
 		String NOTE2 = "note2";
 		String NOTE3 = "note3";
+		String SHIPMENT_METHOD_CODE = "shipment_method_code";
 	}
 
 	public interface SaleOrderLinesColumns {
@@ -405,6 +408,7 @@ public class MobileStoreContract {
 		String LAST_LINE_DISCOUNT = "last_line_discount";
 		String COLOR = "color";
 		String SORTING_INDEX = "sorting_index";
+		String ENTRY_TYPE = "entry_type";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
@@ -490,6 +494,11 @@ public class MobileStoreContract {
 		String APP_SYNC_WARNNING_DATE = "app_sync_warnning_date";
 		String CUSTOMERS_SYNC_WARNNING_DATE = "customers_sync_warnning_date";
 		String ITEMS_SYNC_WARNNING_DATE = "items_sync_warnning_date";
+	}
+	
+	public interface CitiesColumns {
+		String ZIP = "zip";
+		String CITY = "city";
 	}
 	
 	public static class Generic implements BaseColumns {
@@ -1099,6 +1108,25 @@ public class MobileStoreContract {
 		}
 
 		public static String getAppSettingsId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+	}
+	
+	public static class Cities implements CitiesColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CITIES).build();
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.cities";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.cities";
+		
+		public static Uri buildCitiesUri(int citiesId) {
+			return CONTENT_URI.buildUpon().appendPath(String.valueOf(citiesId)).build();
+		}
+		
+		public static Uri buildAutocompleteSearchUri(String text) {
+			return CONTENT_URI.buildUpon().appendPath(text).build();
+		}
+
+		public static String getCustomSearchFirstParamQuery(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}
 	}

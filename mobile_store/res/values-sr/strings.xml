@@ -25,7 +25,7 @@
 	<string name="empty_waiting_for_sync"></string>
 	<string name="sale_order_amount_total_template">Iznos je: </string>
 	<string name="customer_search_title">Pronađi kupca: </string>
-	<string name="customer_search_filter">Filtriraj po broju kupca:</string>
+	<string name="customer_search_filter">Filtriraj po broju/imenu kupca:</string>
 	<string name="customer_block_status_spinner_title">Filtriraj po statusu:</string>
 	<string name="contact_search_title">Pronađi kontakt: </string>
 	<string name="invoice_document_type_label_text">Filtriraj po tipu dokumenta:</string>
@@ -39,7 +39,7 @@
 	<string name="invoice_amount_total">Ukupan iznos: </string>
 	<string name="invoice_amount_remaining">Preostali iznos: </string>
 	<string name="invoice_sync_open_docs_per_customer_button_title">Preuzmi otvorene stavke kupca</string>
-	<string name="invoice_sync_per_days_button_title">Preuzmi sve stavke od 2 dana unazad do danas</string>
+	<string name="invoice_sync_per_days_button_title">Preuzmi sve stavke od 2 dana unazad</string>
 	<string name="invoice_due_date">Datum dospeća:</string>
 	
 	<string name="invoice_lines_sync_button_title">Preuzmi sve stavke izabranog dokumenta</string>
@@ -170,6 +170,8 @@
     
 	<string name="document_no">Broj dokumenta</string>
 	<string name="dokument_type_no_title">Broj i tip dokumenta</string>
+	<string name="dokument_no_title">Broj dokumenta</string>
+	<string name="dokument_type_title">Tip dokumenta</string>
 	<string name="contact_title">Kontakt</string>
 	<string name="contact_hint">Kontakt</string>
 	<string name="contact_address_ship_section_title">Adresa isporuke</string>
@@ -184,7 +186,7 @@
 	<string name="quote_no">Br. porudžbine</string>
 	<string name="quote_date">Rok vazenja porudžbine</string>
 	<string name="quote_status">Status porudžbine</string>
-	<string name="transit_customer">Krajnji kupac (preko tranzitnog isporuka)</string>
+	<string name="transit_customer">Krajnji kupac (tranz.)</string>
 	<string name="desired_delivery_date">Datum isporuke</string>
 	
 	<string name="customer_no_label">Br. kupca</string>
@@ -297,6 +299,7 @@
 	<string name = "key_sync_sales_doc_check_box">key_sync_sales_doc</string>
 	
 	<string name="contact_name_phone_title">Ime i telefon kontakta</string>
+	<string name="contact_emails_title">Email adrese kontakta</string>
 	<string name="contact_no_label">Kontakt br.</string>
 	<string name="toast_update_success">Podaci sačuvani</string>
 	<string name="header_label">Podaci o dokumentu</string>
@@ -439,7 +442,7 @@
 	<string name="kraj_realizacije_zabelezen">Kraj realizacije uspešno zabeležen!</string>
 	<string name="kraj_pauze_zabelezen">Kraj pauze uspešno zabeležen!</string>
 	<string name="kupac_nije_izabran">Kupac nije izabran!</string>
-	<string name="datum_format">Molimo proverite format unesenih podataka!</string>
+	<string name="datum_format">Molimo proverite format unetih podataka!</string>
 	<string name="postavi_datum">Postavi datum</string>
 	<string name="postavi_vreme">Postavi vreme</string>
 	<string name="plan_kreiran">Plan je uspešno kreiran</string>
@@ -469,4 +472,20 @@
 	<string name="datum_od">Datum od</string>
 	<string name="datum_do">Datum do</string>
 	<string name="na_lokaciji_kupca">Na lokaciji kupca</string>
+	<string name="add_customer_city_post_code_hint">unesite poštanski broj ili grad</string>
+	<string name="shipment_method_code">Način isporuke</string>
+	<string name="dialog_telefonski_poziv_title">Odaberite ili unesite dužinu trajanja telefonskog poziva</string>
+	
+	<string name="dugmeKK">KK</string>
+	<string name="dugmeAKK">AKK</string>
+	<string name="dugmeMS">MS</string>
+	<string name="dugmeAP">AP</string>
+	<string name="dugmeOVS">OVS</string>
+	<string name="dugmeAKC">AKC</string>
+	<string name="dugmeVeza">Veza</string>
+	<string name="dugmeListaOdabranihArtikala">Lista odabranih artikala</string>
+	<string name="dugmePreuzmiCenu">Preuzmi cenu</string>
+	<string name="dugmeDodajArtikal">Dodaj artikal</string>
+	<string name="filterArtikla">Filter artikla</string>
+
 </resources>

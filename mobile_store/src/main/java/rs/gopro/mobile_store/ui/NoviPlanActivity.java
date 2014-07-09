@@ -77,7 +77,10 @@ public class NoviPlanActivity extends BaseActivity implements LoaderCallbacks<Cu
 	private int selectedCustomerId;
 	
 	private Calendar calender = Calendar.getInstance();
+	private Calendar calender2 = Calendar.getInstance();
 	private Date odabraniDatum = new Date();
+	private Date datumDoDate = new Date();
+	private int danaUnapred = 40;
 	
 	private Menu menu;
 	
@@ -113,6 +116,10 @@ public class NoviPlanActivity extends BaseActivity implements LoaderCallbacks<Cu
 		bPosalji = (Button) findViewById(R.id.bPosalji);
 		lvPlan = (ListView) findViewById(R.id.lvPlan);
 		pbPlan = (ProgressBar) findViewById(R.id.planProgressBar);
+		
+		calender2.setTime(new Date());
+		calender2.add(Calendar.DATE, danaUnapred);
+		datumDoDate = calender2.getTime();
 
 		cursorAdapter = new PlanAdapter(this);
 		lvPlan.setAdapter(cursorAdapter);
@@ -256,6 +263,7 @@ public class NoviPlanActivity extends BaseActivity implements LoaderCallbacks<Cu
 		    calender.set(Calendar.YEAR, year);
 		    calender.set(Calendar.MONTH, monthOfYear);
 		    calender.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+		    datumDoDate = calender.getTime();
 		    datumDo.setText(screenDateFormat.format(calender.getTime()));
 		}
 	};
@@ -291,6 +299,9 @@ public class NoviPlanActivity extends BaseActivity implements LoaderCallbacks<Cu
 		datumOd = (Button) dialog.findViewById(R.id.dialog_preuzmi_plan_datum_od);
 		datumDo = (Button) dialog.findViewById(R.id.dialog_preuzmi_plan_datum_do);
 		Button bDialogOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
+		
+		datumOd.setText(screenDateFormat.format(new Date()));
+		datumDo.setText(screenDateFormat.format(datumDoDate));
 		
 		datumOd.setOnClickListener(new View.OnClickListener() {
 			

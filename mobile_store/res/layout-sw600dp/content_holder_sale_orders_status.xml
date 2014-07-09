@@ -8,7 +8,6 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/border_invoices_filter"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -18,23 +17,16 @@
 
             <TextView
                 android:id="@+id/customer_filter_label"
-                style="@style/AddEdit_Label"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/customer_search_filter" />
+                android:text="@string/customer_search_filter"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/customer_filter_value"
-                style="@style/AddEdit_Text_Value"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="5dp"
                 android:inputType="text" />
         </LinearLayout>
 
@@ -45,26 +37,23 @@
 
             <TextView
                 android:id="@+id/sent_orders_status_shipment_status_label"
-                style="@style/AddEdit_Label"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="30dp"
-                android:text="@string/order_status_for_shipment" />
+                android:text="@string/order_status_for_shipment"
+                android:textSize="18sp" />
 
             <Spinner
                 android:id="@+id/sent_orders_status_shipment_status_spinner"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="30dp" />
+                android:layout_marginLeft="5dp" />
         </LinearLayout>
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
             android:background="@android:color/black" />
 
         <LinearLayout
@@ -74,12 +63,9 @@
 
             <Button
                 android:id="@+id/sent_orders_status_sync_open_headers_button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="10dp"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
+                android:background="@drawable/white_button"
                 android:text="@string/sent_orders_status_sync_open_headers_button_title" />
         </LinearLayout>
     </LinearLayout>
@@ -88,7 +74,7 @@
         android:id="@+id/sent_orders_status_content"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_weight="1" />
 
 </LinearLayout>

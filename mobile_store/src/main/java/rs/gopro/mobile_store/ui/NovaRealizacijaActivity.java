@@ -20,6 +20,7 @@ import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DatePickerFragment;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.util.TimePickerFragment;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.SetRealizedVisitsToCustomersSyncObject;
@@ -39,16 +40,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.os.Vibrator;
 import android.provider.BaseColumns;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -68,7 +71,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallbacks<Cursor>, LocationListener, AddressSelectDialogListener {
+public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallbacks<Cursor>, AddressSelectDialogListener {
 
 	private static final String VISITS_DATE_FILTER = "DATE(" + Tables.VISITS + "." + MobileStoreContract.Visits.VISIT_DATE + ")=DATE(?)";
 	private static final String VISITS_FILTER_REALIZACIJA = Tables.VISITS + "." + MobileStoreContract.Visits.VISIT_TYPE + "=" + ApplicationConstants.VISIT_RECORDED;
@@ -77,6 +80,8 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	private static final String VISITS_FILTER_KRAJ_DANA = Tables.VISITS + "." + MobileStoreContract.Visits.VISIT_RESULT + "=" + ApplicationConstants.VISIT_TYPE_END_DAY;
 	private static final String VISITS_FILTER_POVRATAK_KUCI = Tables.VISITS + "." + MobileStoreContract.Visits.VISIT_RESULT + "=" + ApplicationConstants.VISIT_TYPE_BACK_HOME;
 	private static final String VISITS_FILTER_IS_VISIT_OPEN = Tables.VISITS + "." + MobileStoreContract.Visits.VISIT_STATUS + "=" + ApplicationConstants.VISIT_STATUS_STARTED;
+	
+	private static final int GPS_ALLOWED_TIME_INTERVAL = 3 * 60 * 1000;
 	
 	private static final int NEW_SALE_ORDER_REQUEST_CODE = 2;
 	
@@ -100,12 +105,10 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	
 	private Calendar calender = Calendar.getInstance();
 	
-	private static final Integer TIME_INTERVAL = 1 * 1000;
-	private static final Integer DISTANCE = 0;
-	private LocationManager locationManager;
-	
 	private AlertDialog alertDialog;
-	private Menu menu;
+
+	private Vibrator vibe;
+	private long lastClickTime = 0;
 	
 	//private Gson gson;
 	//private GpsModel gpsModel;
@@ -147,9 +150,8 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		setContentView(R.layout.activity_nova_realizacija);
 		getActionBar().setTitle(getString(R.string.dialog_title_record_visit) + " " + screenDateFormat.format(new Date()));
 		
-		//gson = new Gson();
-		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		
+		//gson = new Gson();	
+		vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		alertDialog = new AlertDialog.Builder(this).create();
 		
 		bZapocniDan = (Button) findViewById(R.id.bZapocniDan);
@@ -175,6 +177,8 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 			@Override
 			public void onClick(View v) {
 				
+				localyticsSession.tagEvent("REALIZACIJA > ZAPOCNI DAN");
+				
 				if (pocetakDanaZabelezen()) {
 					Toast.makeText(getApplicationContext(), R.string.pocetak_dana_zabelezen, Toast.LENGTH_LONG).show();
 				} else {
@@ -186,6 +190,9 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		bNovaRealizacija.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				
+				localyticsSession.tagEvent("REALIZACIJA > NOVA REALIZACIJA");
+				
 				if (!pocetakDanaZabelezen()) {
 					Toast.makeText(getApplicationContext(), R.string.pocetak_dana_nije_zabelezen, Toast.LENGTH_LONG).show();
 				} else if (postojiOtvorenaPoseta()) {
@@ -201,6 +208,8 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		bPauza.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				
+				localyticsSession.tagEvent("REALIZACIJA > PAUZA");
 				
 				if (!pocetakDanaZabelezen()) {
 					Toast.makeText(getApplicationContext(), R.string.pocetak_dana_nije_zabelezen, Toast.LENGTH_LONG).show();
@@ -218,6 +227,8 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 			@Override
 			public void onClick(View v) {
 				
+				localyticsSession.tagEvent("REALIZACIJA > ZAVRSI DAN");
+				
 				if (!pocetakDanaZabelezen()) {
 					Toast.makeText(getApplicationContext(), R.string.pocetak_dana_nije_zabelezen, Toast.LENGTH_LONG).show();
 				} else if (postojiOtvorenaPoseta()) {
@@ -233,6 +244,8 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		bPovratakKuci.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				
+				localyticsSession.tagEvent("REALIZACIJA > POVRATAK KUCI");
 				
 				if (!pocetakDanaZabelezen()) {
 					Toast.makeText(getApplicationContext(), R.string.pocetak_dana_nije_zabelezen, Toast.LENGTH_LONG).show();
@@ -271,11 +284,13 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		map.put("lon", notAvailable);
 		map.put("acc", notAvailable);
 		try {
-			if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-				Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-				map.put("lat", String.valueOf(location.getLatitude()));
-				map.put("lon", String.valueOf(location.getLongitude()));
-				map.put("acc", String.valueOf(location.getAccuracy()));
+			long currentBestLocationTime = Long.valueOf(SharedPreferencesUtil.readPreferences(getApplicationContext(), "gps_time", String.valueOf(0)));
+			long timeDelta = System.currentTimeMillis() - currentBestLocationTime;
+			
+			if (Math.abs(timeDelta) < GPS_ALLOWED_TIME_INTERVAL) {
+				map.put("lat", SharedPreferencesUtil.readPreferences(getApplicationContext(), "gps_latitude", notAvailable));
+				map.put("lon", SharedPreferencesUtil.readPreferences(getApplicationContext(), "gps_longitude", notAvailable));
+				map.put("acc", SharedPreferencesUtil.readPreferences(getApplicationContext(), "gps_accuracy", notAvailable));
 				return map;
 			} else {
 				return map;
@@ -314,11 +329,6 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		
-		this.menu = menu;
-		MenuItem gpsStatus = menu.add("GPS LOCK");
-		gpsStatus.setIcon(R.drawable.ic_gps_status_bad);
-		gpsStatus.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -326,8 +336,6 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	protected void onPause() {
 		super.onPause();
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(onNotice);
-		
-		locationManager.removeUpdates(this);
 	}
 
 	@Override
@@ -336,10 +344,7 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		IntentFilter stRealizedVisitsToCustomersSyncObject = new IntentFilter(SetRealizedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION);
     	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, stRealizedVisitsToCustomersSyncObject);
     	
-    	locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME_INTERVAL, DISTANCE, this);
-    	
     	try {
-    		menu.getItem(0).setIcon(R.drawable.ic_gps_status_bad);
     		
     		Date trenutniDatum = new Date();
     		if (dateFormat.parse(dateFormat.format(trenutniDatum)).compareTo(dateFormat.parse(dateFormat.format(danasnjiDatum))) != 0) {
@@ -357,8 +362,6 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		super.onWindowFocusChanged(hasFocus);
 		
 		if (hasFocus) {
-			
-			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME_INTERVAL, DISTANCE, this);
 			
 			if (checkGpsEnabled()) {
 				tvGpsIskljucen.setVisibility(View.INVISIBLE);
@@ -647,23 +650,13 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	public void onLoaderReset(Loader<Cursor> loader) {
 		switch (loader.getId()) {
 			case 0:
-				/*
-				if (cursorAdapter != null) {
-					cursorAdapter.swapCursor(null);
-				}
-				*/
+				cursorAdapter.swapCursor(null);
 				break;
 			case 1:
-				/*
-				if (cursorAdapterPlan != null) {
-					cursorAdapterPlan.swapCursor(null);
-				}
-				*/
+				cursorAdapterPlan.swapCursor(null);
 				break;
 			default:
-				if (cursorAdapter != null) {
-					cursorAdapter.swapCursor(null);
-				}
+				break;
 		}
 	}
 	
@@ -877,6 +870,28 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		Button bDialogOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
 		ArrayAdapter<CharSequence> adapter = null;
 		
+		beleskaInput.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {	
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				if (s.length() > 250) {
+					beleskaInput.setText(beleskaInput.getText().toString().substring(0, 250));
+					beleskaInput.setSelection(beleskaInput.getText().length());
+					Toast toast = Toast.makeText(NovaRealizacijaActivity.this, "Moguće je uneti maksimalno 250 karaktera", Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+					toast.show();
+				}
+			}
+		});
+		
 		switch (tip) {
 			case 3:
 				dialog.setTitle("Kraj realizacije");
@@ -899,9 +914,6 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 			public void onClick(View v) {
 				
 				String beleska = beleskaInput.getText().toString();
-				if (beleska.length() > 250) {
-					beleska = beleska.substring(0, 250);
-				}
 				switch (tip) {
 					case 3:
 						krajRealizacije(visitId, rezultat.getSelectedItemPosition(), beleska);
@@ -1147,6 +1159,9 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 				
 				@Override
 				public void onClick(View v) {
+					
+					localyticsSession.tagEvent("REALIZACIJA > KARTICA KUPCA");
+					
 					final Uri customerListUri = MobileStoreContract.Customers.CONTENT_URI;
 			        final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.Customers.buildCustomersUri(String.valueOf(customerId)));
 			        intent.putExtra(CustomersViewActivity.EXTRA_MASTER_URI, customerListUri);
@@ -1157,6 +1172,9 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 				
 				@Override
 				public void onClick(View v) {
+					
+					localyticsSession.tagEvent("REALIZACIJA > NOVA PORUDZBINA");
+					
 					Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT, MobileStoreContract.SaleOrders.CONTENT_URI);
 					newSaleOrderIntent.putExtra("rs.gopro.mobile_store.extra.CUSTOMER_ID", customerId);
 					startActivityForResult(newSaleOrderIntent, NEW_SALE_ORDER_REQUEST_CODE);
@@ -1165,6 +1183,9 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
         	layoutRealizacijaZavrsi.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					
+					localyticsSession.tagEvent("REALIZACIJA > KRAJ REALIZACIJE");
+					
 					krajRealizacijeDijalog(String.valueOf(selectedVisitId), selectedType);
 				}
 			});
@@ -1176,13 +1197,28 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 			}
         	if (poslato == 1) {
         		ivRealizacijaStatus.setImageResource(R.drawable.ic_status_ok);
+        		layoutRealizacijaStatus.setOnClickListener(null);
 			} else {
 				ivRealizacijaStatus.setImageResource(R.drawable.ic_status_bad);
 				layoutRealizacijaStatus.setOnClickListener(new View.OnClickListener() {
 					
+					boolean prviKlik = true;
 					@Override
 					public void onClick(View v) {
-						sendRecordedVisit(selectedVisitId);
+						
+						localyticsSession.tagEvent("REALIZACIJA > SINHRONIZUJ");
+						
+						if (prviKlik) {
+							lastClickTime = SystemClock.elapsedRealtime();
+							prviKlik = false;
+							return;
+						}
+						if (SystemClock.elapsedRealtime() - lastClickTime < 5000) {
+							vibe.vibrate(100);
+					        return;
+					    }
+					    lastClickTime = SystemClock.elapsedRealtime();
+						sendRecordedVisit(0);
 					}
 				});
 			}
@@ -1224,9 +1260,12 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 			tvPlanVreme.setText(time);
 			
 			layoutPlanRealizacijaKarticaKupca.setOnClickListener(new View.OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
+					
+					localyticsSession.tagEvent("REALIZACIJA > PLAN > KARTICA KUPCA");
+					
 					final Uri customerListUri = MobileStoreContract.Customers.CONTENT_URI;
 			        final Intent intent = new Intent(Intent.ACTION_VIEW, MobileStoreContract.Customers.buildCustomersUri(String.valueOf(customerId)));
 			        intent.putExtra(CustomersViewActivity.EXTRA_MASTER_URI, customerListUri);
@@ -1237,6 +1276,9 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 				
 				@Override
 				public void onClick(View v) {
+					
+					localyticsSession.tagEvent("REALIZACIJA > PLAN > NOVA PORUDZBINA");
+					
 					Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT, MobileStoreContract.SaleOrders.CONTENT_URI);
 					newSaleOrderIntent.putExtra("rs.gopro.mobile_store.extra.CUSTOMER_ID", customerId);
 					startActivityForResult(newSaleOrderIntent, NEW_SALE_ORDER_REQUEST_CODE);
@@ -1246,6 +1288,9 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 				
 				@Override
 				public void onClick(View v) {
+					
+					localyticsSession.tagEvent("REALIZACIJA > PLAN > PRETVORI U REALIZACIJU");
+					
 					Date vreme = null;
 					try {
 						vreme = shortTimeFormat.parse(time);
@@ -1315,29 +1360,6 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		int ADDRESS = 1;
 		int CITY = 2;
 		int POST_CODE = 3;
-	}
-
-	@Override
-	public void onLocationChanged(Location location) {
-		menu.getItem(0).setIcon(R.drawable.ic_gps_status_good);
-	}
-
-	@Override
-	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

@@ -166,11 +166,12 @@
                 android:gravity="center_vertical"
                 android:text="@string/customer_postal_code_label" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/customer_postal_code_value"
-                style="AddEdit_Value"
+                style="@style/AddEdit_Value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:completionThreshold="1"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
                 android:inputType="text"

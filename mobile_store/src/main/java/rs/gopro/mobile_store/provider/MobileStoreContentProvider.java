@@ -3,6 +3,7 @@ package rs.gopro.mobile_store.provider;
 import java.util.ArrayList;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.AppSettings;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Cities;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerAddresses;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerTradeAgreemnt;
@@ -142,7 +143,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int SERVICE_ORDERS_EXPORT = 1402;
 	
 	private static final int APP_SETTINGS = 1500;
-	private static final int APP_SETTINGS_ID = 1501;
+//	private static final int APP_SETTINGS_ID = 1501;
+	
+	private static final int CITIES = 1600;
+	private static final int CITIES_BY_CITY_NAME = 1601;
 	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -289,6 +293,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 		
 		mobileStoreURIMatcher.addURI(authority, "app_settings", APP_SETTINGS);
 		mobileStoreURIMatcher.addURI(authority, "app_settings/*", APP_SETTINGS);
+		
+		mobileStoreURIMatcher.addURI(authority, "cities", CITIES);
+		mobileStoreURIMatcher.addURI(authority, "cities/*", CITIES_BY_CITY_NAME);
 	}
 
 	@Override
@@ -415,6 +422,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.APP_SETTINGS,null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return AppSettings.buildAppSettingsUri((int)id);
+		case CITIES:
+			id = database.insertOrThrow(Tables.CITIES,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return Cities.buildCitiesUri((int)id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -529,6 +540,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.SENT_ORDERS_STATUS);
 		case SENT_ORDERS_STATUS_LINES:
 			return builder.addTable(Tables.SENT_ORDERS_STATUS_LINES);
+		case CITIES:
+			return builder.addTable(Tables.CITIES);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -969,7 +982,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(MobileStoreContract.SaleOrders.PAYMENT_OPTION, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.SaleOrders.QUOTE_REALIZED_STATUS, Tables.SALE_ORDERS)
-					.mapToTable(MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS, Tables.SALE_ORDERS);
+					.mapToTable(MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.SHIPMENT_METHOD_CODE, Tables.SALE_ORDERS);
 		case SALE_ORDER_LINES_EXPORT:
 			return builder.addTable(Tables.SALE_ORDER_LINES_EXPORT)
 					.mapToTable(MobileStoreContract.SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDERS)
@@ -1058,8 +1072,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			builder
 				.addTable(Tables.SENT_ORDERS_STATUS_JOIN_CUSTOMERS);
 			if (!customer_no.equals("noCustomer")) {
-				builder.where(Tables.CUSTOMERS+"."+MobileStoreContract.Customers.CUSTOMER_NO + " like ? ",
-							new String[] { "%" + customer_no + "%" });
+				builder.where(Tables.CUSTOMERS+"."+MobileStoreContract.Customers.CUSTOMER_NO + " like ?  OR " + Tables.CUSTOMERS + "." + MobileStoreContract.Customers.NAME + " like ?",
+							new String[] { "%" + customer_no + "%", "%" + customer_no + "%" });
 			}
 			if (!shipmentStatus.equals("-1")) {
 				if (shipmentStatus.equals("0")) {
@@ -1095,6 +1109,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.where(Tables.SERVICE_ORDERS+".id=?", new String[] { ServiceOrders.getServiceOrderId(uri) });
 		case SERVICE_ORDERS_EXPORT:
 			return builder.addTable(Tables.SERVICE_ORDERS_EXPORT);
+		case CITIES:
+			return builder.addTable(Tables.CITIES);
+		case CITIES_BY_CITY_NAME:
+			String citySearchParam = Cities.getCustomSearchFirstParamQuery(uri);
+			return builder.addTable(Tables.CITIES).where(Cities.CITY + " like ? OR " + Cities.ZIP + " like ?", new String[] {citySearchParam + "%", citySearchParam + "%"});
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -1164,8 +1183,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			break;
 		case VISITS:
 			tableName = Tables.VISITS;
-			selectionParam =  new String[] {Visits.CUSTOMER_ID, Visits.SALES_PERSON_ID, Visits.VISIT_DATE};
-			selectionPhrase =  Visits.CUSTOMER_ID + "=? and "+ Visits.SALES_PERSON_ID + "=? and "+ Visits.VISIT_DATE + "=?";
+			selectionParam =  new String[] {Visits.CUSTOMER_ID, Visits.SALES_PERSON_ID, Visits.VISIT_DATE, Visits.ARRIVAL_TIME};
+			selectionPhrase =  Visits.CUSTOMER_ID + "=? and "+ Visits.SALES_PERSON_ID + "=? and "+ Visits.VISIT_DATE + "=? and "+ Visits.ARRIVAL_TIME + "=?";
 			break;
 		case ELECTRONIC_CARD_CUSTOMER:
 			tableName = Tables.ELECTRONIC_CARD_CUSTOMER;
@@ -1179,8 +1198,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			break;
 		case INVOICES:
 			tableName = Tables.INVOICES;
-			selectionParam = new String[]{Invoices.INVOICE_NO};
-			selectionPhrase = Invoices.INVOICE_NO+ "=?";
+			selectionParam = new String[]{Invoices.ENTRY_NO};
+			selectionPhrase = Invoices.ENTRY_NO+ "=?";
 			break;
 		case INVOICE_LINES:
 			tableName = Tables.INVOICE_LINES;
@@ -1234,8 +1253,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 				}
 				int affected = 0;
 				try {
-					affected = db.update(tableName, cv, selectionPhrase,
-							selectionArgs);
+					affected = db.update(tableName, cv, selectionPhrase, selectionArgs);
 				} catch (SQLiteConstraintException e) {
 					LogUtils.LOGE(TAG, "Error during bulk update", e);
 				}

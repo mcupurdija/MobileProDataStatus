@@ -19,6 +19,8 @@ package rs.gopro.mobile_store.ui;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import com.localytics.android.LocalyticsSession;
+
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract.AppSettings;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
@@ -52,6 +54,8 @@ public abstract class BaseActivity extends FragmentActivity {
     protected static final Integer ADD_VISIT_REQUEST_CODE = Integer.valueOf(1);
 	protected String salesPersonNo;
 	protected String salesPersonId;
+	
+	public LocalyticsSession localyticsSession;
 	
 	private BroadcastReceiver onNoticeMain = new BroadcastReceiver() {
 		@Override
@@ -93,6 +97,10 @@ public abstract class BaseActivity extends FragmentActivity {
         salesPersonNo = SharedPreferencesUtil.getSalePersonNo(this);
         
         checkVersionAndSyncDates();
+        
+        this.localyticsSession = new LocalyticsSession(this.getApplicationContext());
+        this.localyticsSession.open();
+        this.localyticsSession.upload();
     }
 
     /**
@@ -243,15 +251,23 @@ public abstract class BaseActivity extends FragmentActivity {
     
     @Override
     protected void onPause() {
-    	super.onPause();
     	LocalBroadcastManager.getInstance(this).unregisterReceiver(onNoticeMain);
+    	
+    	this.localyticsSession.close();
+        this.localyticsSession.upload();
+    	
+    	super.onPause();
     }
     
     @Override
     protected void onResume() {
     	super.onResume();
+    	
     	IntentFilter mobDeviceSetup = new IntentFilter(MobileDeviceSetup.BROADCAST_SYNC_ACTION);
     	LocalBroadcastManager.getInstance(this).registerReceiver(onNoticeMain, mobDeviceSetup);
+    	
+    	this.localyticsSession.open();
+        this.localyticsSession.upload();
     }
     
     /**

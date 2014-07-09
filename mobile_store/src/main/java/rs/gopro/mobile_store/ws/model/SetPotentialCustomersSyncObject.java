@@ -96,6 +96,7 @@ public class SetPotentialCustomersSyncObject extends SyncObject {
 		cSVStringInfo.setName("pCSVString");
 		cSVStringInfo.setValue(pCSVString);
 		cSVStringInfo.setType(String.class);
+		System.out.println(">>> " + pCSVString);
 		properties.add(cSVStringInfo);
 		
 		PropertyInfo pendingCustomerCreation = new PropertyInfo();
@@ -170,7 +171,6 @@ public class SetPotentialCustomersSyncObject extends SyncObject {
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.NAME, 
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.NAME_2,
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.ADDRESS,
-				//MobileStoreContract.Customers.CITY,
 
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.PHONE, 
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.MOBILE, 
@@ -183,7 +183,8 @@ public class SetPotentialCustomersSyncObject extends SyncObject {
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.GLOBAL_DIMENSION,
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.CHANNEL_ORAN,
 				MobileStoreContract.Customers.NUMBER_OF_BLUE_COAT, 
-				MobileStoreContract.Customers.NUMBER_OF_GREY_COAT
+				MobileStoreContract.Customers.NUMBER_OF_GREY_COAT,
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.CITY
         };
 		
 		Type[] PROJECTION_TYPE = {
@@ -191,7 +192,7 @@ public class SetPotentialCustomersSyncObject extends SyncObject {
 				String.class,
 				String.class,
 				String.class,
-				//String.class,
+				String.class,
 				
 				String.class,
 				String.class,

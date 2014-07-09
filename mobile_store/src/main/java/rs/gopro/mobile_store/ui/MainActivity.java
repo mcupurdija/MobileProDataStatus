@@ -1,8 +1,14 @@
 package rs.gopro.mobile_store.ui;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -42,8 +48,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.ActionMode;
@@ -65,9 +75,15 @@ import android.widget.TextView;
  * 
  */
 
-public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener, MainContextualActionBarCallback, ServiceOrderDialog.ServiceOrderDialogListener {
+public class MainActivity extends BaseActivity implements LocationListener, AdapterView.OnItemClickListener, MainContextualActionBarCallback, ServiceOrderDialog.ServiceOrderDialogListener {
 	private static String TAG = "MainActivity";
 	public static final String CURRENT_POSITION_KEY = "current_position";
+	
+	private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+	private static final int TIME_INTERVAL = 1 * 40 * 1000;
+	private static final int DISTANCE = 0;
+	private LocationManager locationManager;
+	private Location currentBestLocation;
 	
 	private ActionsAdapter actionsAdapter;
 	private Integer currentItemPosition = Integer.valueOf(1);
@@ -84,6 +100,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		
 		PreferenceManager.getDefaultSharedPreferences(this).edit().remove("ws_entry_point").remove("ws_schema").remove("ws_navisition_codeunit").remove("ws_server_address").remove("company_address").commit();
 		PreferenceManager.setDefaultValues(this, R.xml.ws_settings, true);
@@ -184,6 +202,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 		Uri uri = actionsAdapter.getItem(position);
 		CustomLinearLayout view = null;
 		if (SaleOrdersLayout.SALE_ORDER_URI.equals(uri)) {
+			
+			localyticsSession.tagEvent("GLAVNI MENI > PORUDZBINE/PONUDE");
+			
 			if (savedLayoutInstances.containsKey(SaleOrdersLayout.SALE_ORDER_URI.toString())) {
 				view = savedLayoutInstances.get(SaleOrdersLayout.SALE_ORDER_URI.toString());
 			} else {
@@ -191,6 +212,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				savedLayoutInstances.put(SaleOrdersLayout.SALE_ORDER_URI.toString(), view);
 			}
 		} else if (RecordVisitsLayout.RECORD_VISITS_URI.equals(uri)) {
+			
+			localyticsSession.tagEvent("GLAVNI MENI > REALIZACIJA/PLAN POSETA");
+			
 			if (savedLayoutInstances.containsKey(RecordVisitsLayout.RECORD_VISITS_URI.toString())) {
 				view = savedLayoutInstances.get(RecordVisitsLayout.RECORD_VISITS_URI.toString());
 			} else {
@@ -205,6 +229,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				savedLayoutInstances.put(PlanOfVisitsLayout.PLAN_OF_VISITS_URI.toString(), view);
 			}
 		} else if (CustomersLayout.CUSTOMERS_URI.equals(uri)) {
+			
+			localyticsSession.tagEvent("GLAVNI MENI > KUPCI");
+			
 			if (savedLayoutInstances.containsKey(CustomersLayout.CUSTOMERS_URI.toString())) {
 				view = savedLayoutInstances.get(CustomersLayout.CUSTOMERS_URI.toString());
 			} else {
@@ -212,6 +239,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				savedLayoutInstances.put(CustomersLayout.CUSTOMERS_URI.toString(), view);
 			}
 		} else if (ItemsLayout.ITEMS_URI.equals(uri)) {
+			
+			localyticsSession.tagEvent("GLAVNI MENI > ARTIKLI");
+			
 			if (savedLayoutInstances.containsKey(ItemsLayout.ITEMS_URI.toString())) {
 				view = savedLayoutInstances.get(ItemsLayout.ITEMS_URI.toString());
 			} else {
@@ -219,6 +249,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				savedLayoutInstances.put(ItemsLayout.ITEMS_URI.toString(), view);
 			}
 		} else if (CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.equals(uri)) {
+			
+			localyticsSession.tagEvent("GLAVNI MENI > STAVKE KUPACA");
+			
 			if (savedLayoutInstances.containsKey(CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.toString())) {
 				view = savedLayoutInstances.get(CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.toString());
 			} else {
@@ -226,6 +259,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				savedLayoutInstances.put(CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.toString(), view);
 			}
 		} else if (SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.equals(uri)) {
+			
+			localyticsSession.tagEvent("GLAVNI MENI > STATUS POSLATIH PORUDZBINA");
+			
 			if (savedLayoutInstances.containsKey(SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.toString())) {
 				view = savedLayoutInstances.get(SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.toString());
 			} else {
@@ -233,6 +269,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				savedLayoutInstances.put(SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.toString(), view);
 			}
 		} else if (ContactsLayout.CONTACTS_URI.equals(uri)) {
+			
+			localyticsSession.tagEvent("GLAVNI MENI > KONTAKTI");
+			
 			if (savedLayoutInstances.containsKey(ContactsLayout.CONTACTS_URI.toString())) {
 				view = savedLayoutInstances.get(ContactsLayout.CONTACTS_URI.toString());
 			} else {
@@ -240,6 +279,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				savedLayoutInstances.put(ContactsLayout.CONTACTS_URI.toString(), view);
 			}
 		} else if (SentOrdersLayout.SENT_ORDERS_URI.equals(uri)) {
+			
+			localyticsSession.tagEvent("GLAVNI MENI > POSLATE PORUDZBINE/PONUDE");
+			
 			if (savedLayoutInstances.containsKey(SentOrdersLayout.SENT_ORDERS_URI.toString())) {
 				view = savedLayoutInstances.get(SentOrdersLayout.SENT_ORDERS_URI.toString());
 			} else {
@@ -247,6 +289,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 				savedLayoutInstances.put(SentOrdersLayout.SENT_ORDERS_URI.toString(), view);
 			}
 		} else if (PlanAndTurnoverLayout.PLAN_AND_TURNOVER_URI.equals(uri)) {
+			
+			localyticsSession.tagEvent("GLAVNI MENI > REALIZACIJA PLANA I PROMET");
+			
 			if (savedLayoutInstances.containsKey(PlanAndTurnoverLayout.PLAN_AND_TURNOVER_URI.toString())) {
 				view = savedLayoutInstances.get(PlanAndTurnoverLayout.PLAN_AND_TURNOVER_URI.toString());
 			} else {
@@ -349,39 +394,60 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 //			currentCustomLinearLayout.doSynchronization();
 //			return true;
 		case R.id.main_options_record_visits_details:
+			
+			localyticsSession.tagEvent("GLAVNI MENI > REALIZACIJA/PLAN POSETA > PLAN");
+			
 			/*final Uri recordVisitsUri = MobileStoreContract.Visits.CONTENT_URI;
 			final Intent recordIntent = new Intent(RecordVisitsMultipaneActivity.RECORD_VISITS_INTENT, recordVisitsUri);
 			startActivity(recordIntent);*/
 			startActivity(new Intent(getApplicationContext(), NoviPlanActivity.class));
 			return true;
 		case R.id.main_options_visits_details:
+			
+			localyticsSession.tagEvent("GLAVNI MENI > REALIZACIJA/PLAN POSETA > REALIZACIJA");
+			
 			/*final Uri visitsUri = MobileStoreContract.Visits.CONTENT_URI;
 			final Intent intent = new Intent(Intent.ACTION_VIEW, visitsUri);
 			startActivity(intent);*/
 			startActivity(new Intent(getApplicationContext(), NovaRealizacijaActivity.class));
 			return true;
 		case R.id.main_options_sale_order_details:
+			
+			localyticsSession.tagEvent("GLAVNI MENI > PORUDZBINE/PONUDE > DETALJI PORUDZBINA");
+			
 			final Uri saleOrdersUri = MobileStoreContract.SaleOrders.CONTENT_URI;
             final Intent saleOrderIntent = new Intent(Intent.ACTION_VIEW, saleOrdersUri);
             startActivity(saleOrderIntent);
 			return true;
 		case R.id.main_options_sale_order_sent_details:
+			
+			localyticsSession.tagEvent("GLAVNI MENI > POSLATE PORUDZBINE/PONUDE > DETALJI PORUDZBINA");
+			
 			final Uri sentOrdersUri = MobileStoreContract.SaleOrders.CONTENT_URI;
             final Intent sentOrderIntent = new Intent(Intent.ACTION_VIEW, sentOrdersUri);
             startActivity(sentOrderIntent);
 			return true;
 		case R.id.main_options_customers_details:
+			
+			localyticsSession.tagEvent("GLAVNI MENI > KUPCI > DETALJI KUPACA");
+			
 			final Uri customersuri = MobileStoreContract.Customers.CONTENT_URI;
             final Intent customersIntent = new Intent(Intent.ACTION_VIEW, customersuri);
             startActivity(customersIntent);
 			return true;
 		case R.id.main_shortcuts_new_sale_order:
+			
+			localyticsSession.tagEvent("PRECICE > NOVA PORUDZBINA");
+			
 			Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT,
 					MobileStoreContract.SaleOrders.CONTENT_URI);
 //			startActivityForResult(newSaleOrderIntent, CALL_INSERT);
 			startActivity(newSaleOrderIntent);
 			return true;
 		case R.id.main_shortcuts_sync_all:
+			
+			localyticsSession.tagEvent("PRECICE > SINHRONIZACIJA");
+			
 			startActivity(new Intent(this, SinhonizacijaActivity.class));
 			return true;
 		case R.id.main_options_add_contact:
@@ -390,6 +456,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 			return true;
 		case R.id.main_options_update_items:
 			Intent addSaTabletaIntent = new Intent(this, AzurirajSaTableta.class);
+			//Intent addSaTabletaIntent = new Intent(this, NovaKarticaKupcaActivity.class);
 			startActivity(addSaTabletaIntent);
 			return true;
 		default:
@@ -401,6 +468,10 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 	@Override
 	protected void onResume() {
 		super.onResume();
+		
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME_INTERVAL, DISTANCE, this);
+    	currentBestLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		
 		IntentFilter navSyncFilter = new IntentFilter(ServiceOrderSyncObject.BROADCAST_SYNC_ACTION);
 		// registering broadcast receiver to listen BROADCAST_SYNC_ACTION
 		// broadcast
@@ -443,6 +514,111 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     	Intent intent = new Intent(this, NavisionSyncService.class);
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, serviceOrderSyncObject);
 		startService(intent);
+		
+	}
+	
+	/** Determines whether one Location reading is better than the current Location fix
+	  * @param location  The new Location that you want to evaluate
+	  * @param currentBestLocation  The current Location fix, to which you want to compare the new one
+	  */
+	protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+	    if (currentBestLocation == null) {
+	        return true;
+	    }
+
+	    // Check whether the new location fix is newer or older
+	    long timeDelta = location.getTime() - currentBestLocation.getTime();
+	    boolean isSignificantlyNewer = timeDelta > TIME_INTERVAL;
+	    boolean isSignificantlyOlder = timeDelta < -TIME_INTERVAL;
+	    boolean isNewer = timeDelta > 0;
+
+	    // If it's been more than two minutes since the current location, use the new location
+	    // because the user has likely moved
+	    if (isSignificantlyNewer) {
+	        return true;
+	    // If the new location is more than two minutes older, it must be worse
+	    } else if (isSignificantlyOlder) {
+	        return false;
+	    }
+
+	    // Check whether the new location fix is more or less accurate
+	    int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+	    boolean isLessAccurate = accuracyDelta > 0;
+	    boolean isMoreAccurate = accuracyDelta < 0;
+	    boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+
+	    // Check if the old and new location are from the same provider
+	    boolean isFromSameProvider = isSameProvider(location.getProvider(),
+	            currentBestLocation.getProvider());
+
+	    // Determine location quality using a combination of timeliness and accuracy
+	    if (isMoreAccurate) {
+	        return true;
+	    } else if (isNewer && !isLessAccurate) {
+	        return true;
+	    } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+	        return true;
+	    }
+	    return false;
+	}
+
+	/** Checks whether two providers are the same */
+	private boolean isSameProvider(String provider1, String provider2) {
+	    if (provider1 == null) {
+	      return provider2 == null;
+	    }
+	    return provider1.equals(provider2);
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		
+		if (isBetterLocation(location, currentBestLocation)) {
+			currentBestLocation = location;
+		}
+		
+		SharedPreferencesUtil.savePreferences(getApplicationContext(), "gps_latitude", String.valueOf(currentBestLocation.getLatitude()));
+		SharedPreferencesUtil.savePreferences(getApplicationContext(), "gps_longitude", String.valueOf(currentBestLocation.getLongitude()));
+		SharedPreferencesUtil.savePreferences(getApplicationContext(), "gps_accuracy", String.valueOf(currentBestLocation.getAccuracy()));
+		SharedPreferencesUtil.savePreferences(getApplicationContext(), "gps_time", String.valueOf(currentBestLocation.getTime()));
+		
+		File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+		File file = new File(dir, "gps_log.txt");
+		FileOutputStream fos;
+		
+		try {
+		    fos = new FileOutputStream(file, true);
+		    String str = "Vreme: " + timeFormat.format(new Date(currentBestLocation.getTime())) + "; LAT: " + currentBestLocation.getLatitude() + "; LON: " + currentBestLocation.getLongitude() + "; ACC: " + currentBestLocation.getAccuracy() + "\n";
+		    byte[] data = str.getBytes();
+		    fos.write(data);
+		    fos.flush();
+		    fos.close();
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+		}
+		
+		System.out.println("VREME: " + timeFormat.format(new Date(currentBestLocation.getTime())));
+		System.out.println("LAT: " + currentBestLocation.getLatitude());
+		System.out.println("LON: " + currentBestLocation.getLongitude());
+		System.out.println("ACC: " + currentBestLocation.getAccuracy());
+		
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		// TODO Auto-generated method stub
 		
 	}
 

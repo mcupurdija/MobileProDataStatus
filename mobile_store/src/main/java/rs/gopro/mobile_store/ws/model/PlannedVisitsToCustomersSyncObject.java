@@ -1,15 +1,19 @@
 package rs.gopro.mobile_store.ws.model;
 
 import java.io.StringReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import rs.gopro.mobile_store.ws.model.domain.PlannedVisitsDomain;
@@ -22,6 +26,7 @@ public abstract class PlannedVisitsToCustomersSyncObject extends SyncObject {
 
 	
 	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.PLANNED_VISITS_TO_CUS_SYNC_ACTION";
+	private final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
 	private String cSVString;
 	private String salespersonCode;
@@ -132,6 +137,10 @@ public abstract class PlannedVisitsToCustomersSyncObject extends SyncObject {
 	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive result) throws CSVParseException {
 		List<PlannedVisitsDomain> parsedDomains = CSVDomainReader.parse(new StringReader(result.toString()), PlannedVisitsDomain.class);
 		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedDomains);
+		
+		// OBRISI SVE UNAPRED PRE INSERTA
+		contentResolver.delete(MobileStoreContract.Visits.CONTENT_URI, "DATE(" + Visits.VISIT_DATE + ") >= DATE(?) AND " + Visits.VISIT_TYPE + "=?", new String[] {dateTimeFormat.format(new Date()), String.valueOf(ApplicationConstants.VISIT_PLANNED)});
+		
 		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.Visits.CONTENT_URI, valuesForInsert);
 		return numOfInserted;
 	}

@@ -74,7 +74,8 @@ END;
 -- invoices
 CREATE TABLE `invoices` (
 	`_id` INTEGER PRIMARY KEY  NOT NULL ,
-	`invoice_no` TEXT NOT NULL  DEFAULT (0) ,
+	`entry_no` INTEGER NOT NULL DEFAULT 0,
+	`invoice_no` TEXT NOT NULL  DEFAULT 0,
 	`customer_id` INTEGER,
 	`posting_date` TEXT,
 	`sales_person_id` INTEGER,
@@ -211,7 +212,7 @@ END;
 -- items
 CREATE TABLE `items` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL ,
-	`item_no` TEXT,
+	`item_no` TEXT NOT NULL UNIQUE,
 	`description` TEXT,
 	`description2` TEXT,
 	`unit_of_measure` TEXT,
@@ -10982,6 +10983,7 @@ CREATE TABLE `sale_orders` (
 	`used_credit_limit_by_employee` TEXT,
 	`order_value_status` INTEGER,
 	`quote_realized_status` INTEGER,
+	`shipment_method_code` TEXT,
 	`special_quote` INTEGER,
 	`quote_valid_date_to` TEXT,
 	`cust_uses_transit_cust` INTEGER,
@@ -11241,6 +11243,7 @@ CREATE TABLE `electronic_card_customer` (
 	`last_line_discount` REAL,
 	`color` INTEGER DEFAULT 0,
 	`sorting_index` INTEGER DEFAULT 5000,
+	`entry_type` INTEGER DEFAULT 0,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
@@ -11370,4 +11373,4 @@ CREATE TABLE `app_settings` (
 	`items_sync_warnning_date` TEXT
 );
 
-insert into `app_settings` (_id, app_version, app_sync_warnning_date, customers_sync_warnning_date, items_sync_warnning_date) values (1, '1.6.0', datetime('now'), datetime('now'), datetime('now'));
+insert into `app_settings` (_id, app_version, app_sync_warnning_date, customers_sync_warnning_date, items_sync_warnning_date) values (1, '1.7.0', datetime('now'), datetime('now'), datetime('now'));

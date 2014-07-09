@@ -20,6 +20,7 @@ public interface Tables {
 	String SENT_ORDERS_STATUS = "sent_orders_status";
 	String SERVICE_ORDERS = "service_orders";
 	String APP_SETTINGS = "app_settings";
+	String CITIES = "cities";
 	
 	String INVOICES = "invoices";
 	String INVOICES_JOIN_CUSTOMER = "invoices left outer join customers on invoices.customer_id = customers._id";

@@ -591,4 +591,34 @@
         <item>+ with closure</item>
         <item>- no closure</item>
     </string-array>
+    <string-array name="shipment_method_code_array_titles">
+        <item>Transport City</item>
+        <item>Prevoz je plaćen</item>
+        <item>Dostavljeno na dok</item>
+        <item>Dostavljeno franko brod</item>
+        <item>Dostava</item>
+        <item>Ex Works</item>
+        <item>Slobodno u sklopu broda</item>
+        <item>Slobodni prevoznik</item>
+        <item>Franko brod</item>
+        <item>Franko magacin</item>
+        <item>Preuzima komercijalista lično</item>
+        <item>Preuzima kupac lično</item>
+        <item>Preuzimanje na lokaciji</item>
+    </string-array>
+    <string-array name="shipment_method_code_array_values">
+        <item>CITY</item>
+        <item>CPT</item>
+        <item>DEQ</item>
+        <item>DES</item>
+        <item>DOSTAVA</item>
+        <item>EXW</item>
+        <item>FAS</item>
+        <item>FCA</item>
+        <item>FOB</item>
+        <item>FRANKO</item>
+        <item>LIČNO KOM</item>
+        <item>LIČNO KUP</item>
+        <item>PREUZIM</item>
+    </string-array>
 </resources>

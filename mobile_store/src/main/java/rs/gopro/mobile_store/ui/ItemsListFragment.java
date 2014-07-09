@@ -154,7 +154,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-					ItemsNewSyncObject itemsSyncObject = new ItemsNewSyncObject(null, null, Integer.valueOf(0), salesPersonNo, null);
+					ItemsNewSyncObject itemsSyncObject = new ItemsNewSyncObject(null, null, Integer.valueOf(-1), salesPersonNo, null);
 					itemsSyncObject.setResetTypeSignal(1);
 					itemsSyncObject.setSessionId(webServiceRequestId = UUID.randomUUID().toString());
 					intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemsSyncObject);

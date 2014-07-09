@@ -46,13 +46,14 @@ public class HistoryMobileDeviceSalesDocumentHeaderDomain extends Domain {
 	public String order_value_status;
 	public String document_amount;
 	public String number_of_lines;
+	public String shipment_method_code;
 	
 	public HistoryMobileDeviceSalesDocumentHeaderDomain() {
 	}
 
 	private static final String[] COLUMNS = new String[] { "document_type", "document_no", "sales_header_no", "potential_customer", "customer_no", 
 		"customer_name", "document_date", "location_code", "currency_code", "shortcut_dimension_1_code", "external_document_no", "quote_no", 
-		"salesperson_code", "sales_manager_code", "invoice_to_address_code", "ship_to_address_code", "requested_delivery_date", 
+		"salesperson_code", "sales_manager_code", "invoice_to_address_code", "ship_to_address_code", "shipment_method_code", "requested_delivery_date", 
 		"cust_uses_transit_cust", "contact_no", "contact_name", "contact_phone", "email_recepients_addresses", "hide_discount_on_invoice", 
 		"mandatory_declaration_trade", "payment_method_code", "backorder_shipment_status", "quote_realized_status", "order_condition_status", 
 		"financial_control_status", "order_status_for_shipment", "order_value_status", "document_amount", "number_of_lines" };
@@ -78,6 +79,8 @@ public class HistoryMobileDeviceSalesDocumentHeaderDomain extends Domain {
 		
 		contentValues.put(SaleOrders.REQUESTED_DELIVERY_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(requested_delivery_date));
         
+		contentValues.put(SaleOrders.SHIPMENT_METHOD_CODE, shipment_method_code);
+		
 		//adrese bi trebalo da idu ovde ali komplikovano je
 		contentValues.putNull(SaleOrders.SHIPP_TO_ADDRESS_ID);
 		contentValues.putNull(SaleOrders.SELL_TO_ADDRESS_ID);

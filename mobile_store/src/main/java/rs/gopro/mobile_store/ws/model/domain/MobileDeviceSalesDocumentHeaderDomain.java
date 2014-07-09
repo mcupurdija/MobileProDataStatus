@@ -19,11 +19,12 @@ public class MobileDeviceSalesDocumentHeaderDomain extends Domain {
 	public String order_status_for_shipment;
 	public String order_value_status;
 	public String curr_max_discount_total_amount_difference;
+	public String shipment_method_code;
 	
 	public MobileDeviceSalesDocumentHeaderDomain() {
 	}
 
-	private static final String[] COLUMNS = new String[] { "document_type", "sales_order_device_no", "sales_order_no", 
+	private static final String[] COLUMNS = new String[] { "document_type", "sales_order_device_no", "sales_order_no", "shipment_method_code",
 		"order_condition_status", "financial_control_status", "order_status_for_shipment", "order_value_status", "curr_max_discount_total_amount_difference" };
 	
 	@Override
@@ -42,6 +43,7 @@ public class MobileDeviceSalesDocumentHeaderDomain extends Domain {
 		contentValues.put(SaleOrders.ORDER_STATUS_FOR_SHIPMENT, order_status_for_shipment == "" ? "0" : order_status_for_shipment);
 		contentValues.put(SaleOrders.ORDER_VALUE_STATUS, order_value_status == "" ? "0" : order_value_status);
 		contentValues.put(SaleOrders.CURR_MAX_DISCOUNT_TOTAL_AMOUNT_DIFFERENCE, curr_max_discount_total_amount_difference == "" ? Double.valueOf("0.0") : WsDataFormatEnUsLatin.toDoubleFromWs(curr_max_discount_total_amount_difference));
+		contentValues.put(SaleOrders.SHIPMENT_METHOD_CODE, shipment_method_code);
 		return contentValues;
 	}
 

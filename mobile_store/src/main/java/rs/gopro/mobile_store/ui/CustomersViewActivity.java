@@ -167,6 +167,9 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 			startActivity(potentialCustIntent);
 			return true;
 		case R.id.create_ecc_activity:
+			
+			localyticsSession.tagEvent("KUPCI > EKK PREGLED");
+			
 			if (customerId == null || customerId.length() < 1) {
 				return true;
 			}

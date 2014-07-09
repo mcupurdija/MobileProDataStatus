@@ -86,24 +86,15 @@
             android:layout_marginBottom="8dip"
             android:orientation="horizontal" >
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/add_customer_city"
                 style="@style/AddEdit_Text_Value"
-                android:layout_width="0px"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:completionThreshold="1"
+                android:hint="@string/add_customer_city_post_code_hint"
                 android:layout_marginLeft="16dip"
-                android:layout_marginRight="16dip"
-                android:layout_weight="7" />
-
-            <EditText
-                android:id="@+id/add_customer_postal_code"
-                style="@style/AddEdit_Text_Value"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dip"
-                android:layout_marginRight="16dip"
-                android:layout_weight="3"
-                android:inputType="numberDecimal" />
+                android:layout_marginRight="16dip" />
         </LinearLayout>
 
         <TextView

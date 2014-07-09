@@ -131,5 +131,15 @@
     <style name="table_cell_text_view_header" parent="table_cell_text_view">
         <item name="android:textStyle">bold</item>
     </style>
+    
+    <style name="noviKontaktTekst">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+    <style name="noviKontaktInput">
+    </style>
+    <style name="noviKontaktInputSpinnerStyle" parent="android:style/Widget.Holo.Light.Spinner">
+        <item name="android:paddingLeft">12dp</item>
+    </style>
 
 </resources>

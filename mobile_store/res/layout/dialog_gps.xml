@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="640dp"
+    android:orientation="vertical"
+    android:padding="20dp" >
+
+    <ProgressBar
+        android:id="@+id/pbGpsDialog"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:max="30"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:progress="0" />
+
+    <TextView
+        android:id="@+id/tvGpsDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Molimo sačekajte na GPS koordinate"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</LinearLayout>

@@ -111,6 +111,7 @@ public class GetPotentialCustomerSyncObject extends SyncObject {
 		dateModifiedInfo.setValue(dateModified);
 		dateModifiedInfo.setType(Date.class);
 		properties.add(dateModifiedInfo);
+
 		return properties;
 	}
 

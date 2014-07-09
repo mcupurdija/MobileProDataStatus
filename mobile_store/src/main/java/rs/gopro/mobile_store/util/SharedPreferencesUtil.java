@@ -10,6 +10,18 @@ public class SharedPreferencesUtil {
 	private static final String SALE_PERSON_NO = "sale_person_no";
 	private static final String USER_LOGIN_STATUS = "user_login_status";
 	private static final String USER_ROLE = "user_role";
+	
+	public static void savePreferences(Context context, String key, String value) {
+		SharedPreferences sp = context.getSharedPreferences(ApplicationConstants.SESSION_PREFS, Context.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		editor.putString(key, value);
+		editor.commit();
+	}
+
+	public static String readPreferences(Context context, String key, String defaultValue) {
+		SharedPreferences sp = context.getSharedPreferences(ApplicationConstants.SESSION_PREFS, Context.MODE_PRIVATE);
+		return sp.getString(key, defaultValue);
+	}
 
 	public static String getSalePersonId(Context context) {
 		SharedPreferences sharedPreferences = context.getSharedPreferences(ApplicationConstants.SESSION_PREFS, Context.MODE_PRIVATE);

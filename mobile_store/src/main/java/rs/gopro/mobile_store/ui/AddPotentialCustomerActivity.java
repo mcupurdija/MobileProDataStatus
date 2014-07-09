@@ -7,6 +7,7 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.Tables;
+import rs.gopro.mobile_store.ui.components.CitiesAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.exceptions.PotentialCustomerValidationException;
@@ -24,10 +25,14 @@ import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class AddPotentialCustomerActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
 
@@ -37,8 +42,7 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 	private EditText primaryName;
 	private EditText secondaryName;
 	private EditText address;
-	private EditText city;
-	private EditText postCode;
+	private AutoCompleteTextView city;
 	private EditText phone;
 	private EditText mobilePhone;
 	private EditText email;
@@ -59,6 +63,9 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
     
     private ArrayAdapter<CharSequence> globalDimensionAdapter;
     
+    private CitiesAutocompleteCursorAdapter citiesAutocompleteCursorAdapter;
+    private Cursor cityCursorItem;
+    
 	public AddPotentialCustomerActivity() {
 	}
 	
@@ -70,6 +77,16 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 //		System.out.println(" u ACT " +selectedContactId);
 		
 		initComponents();
+		
+		citiesAutocompleteCursorAdapter = new CitiesAutocompleteCursorAdapter(getApplication(), null);
+		city.setAdapter(citiesAutocompleteCursorAdapter);
+		city.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				cityCursorItem = (Cursor) citiesAutocompleteCursorAdapter.getItem(position);
+			}
+		});
 		
 		routeIntent(getIntent(), savedInstanceState);
 	}
@@ -83,10 +100,7 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 		secondaryName.setFilters( new InputFilter[] { new InputFilter.LengthFilter(50)} );
 		address = (EditText) findViewById(R.id.add_customer_address_value);
 		address.setFilters( new InputFilter[] { new InputFilter.LengthFilter(50)} );
-		city = (EditText) findViewById(R.id.add_customer_city);
-		city.setFilters( new InputFilter[] { new InputFilter.LengthFilter(30)} );
-		postCode = (EditText) findViewById(R.id.add_customer_postal_code);
-		postCode.setFilters( new InputFilter[] { new InputFilter.LengthFilter(10)} );
+		city = (AutoCompleteTextView) findViewById(R.id.add_customer_city);	
 		phone = (EditText) findViewById(R.id.add_customer_phone);
 		phone.setFilters( new InputFilter[] { new InputFilter.LengthFilter(30)} );
 		mobilePhone = (EditText) findViewById(R.id.add_customer_mobile);
@@ -195,8 +209,11 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 		contentValues.put(Customers.NAME, primaryName.getText().toString());
 		contentValues.put(Customers.NAME_2, secondaryName.getText().toString());
 		contentValues.put(Customers.ADDRESS, address.getText().toString());
-		contentValues.put(Customers.CITY, city.getText().toString());
-		contentValues.put(Customers.POST_CODE, postCode.getText().toString());
+		if (cityCursorItem == null) {
+			throw new PotentialCustomerValidationException("Niste odabrali grad!");
+		}
+		contentValues.put(Customers.CITY, cityCursorItem.getString(2));
+		contentValues.put(Customers.POST_CODE, cityCursorItem.getString(1));
 		contentValues.put(Customers.PHONE, phone.getText().toString());
 		contentValues.put(Customers.MOBILE, mobilePhone.getText().toString());
 		contentValues.put(Customers.EMAIL, email.getText().toString());
@@ -256,7 +273,7 @@ public class AddPotentialCustomerActivity extends BaseActivity implements Loader
 			secondaryName.setText(data.getString(PotentialCustomerQuery.NAME_2));
 			address.setText(data.getString(PotentialCustomerQuery.ADDRESS));
 			city.setText(data.getString(PotentialCustomerQuery.CITY));
-			postCode.setText(data.getString(PotentialCustomerQuery.POST_CODE));
+//			postCode.setText(data.getString(PotentialCustomerQuery.POST_CODE));
 			phone.setText(data.getString(PotentialCustomerQuery.PHONE));
 			mobilePhone.setText(data.getString(PotentialCustomerQuery.MOBILE));
 			email.setText(data.getString(PotentialCustomerQuery.EMAIL));

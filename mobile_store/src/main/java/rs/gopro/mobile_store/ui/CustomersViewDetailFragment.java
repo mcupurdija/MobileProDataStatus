@@ -5,6 +5,7 @@ import java.util.Locale;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
+import rs.gopro.mobile_store.ui.components.CitiesAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.AssetUtil;
@@ -38,6 +39,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -55,7 +59,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 	private EditText mName2;
 	private EditText mAddress;
 	private TextView mCity;
-	private EditText mPostCode;
+	private AutoCompleteTextView mPostCode;
 	private EditText mPhone;
 	private EditText mMobile;
 	private EditText mEmail;
@@ -93,6 +97,9 @@ public class CustomersViewDetailFragment extends Fragment implements
 	
 	private ActionMode actionMode;
 	private boolean isInUpdateMode = false;
+	
+	private CitiesAutocompleteCursorAdapter citiesAutocompleteCursorAdapter;
+	private Cursor cityCursorItem;
 	
 	private BroadcastReceiver onNotice = new BroadcastReceiver() {
 		@Override
@@ -191,7 +198,19 @@ public class CustomersViewDetailFragment extends Fragment implements
         mName2 = (EditText) rootView.findViewById(R.id.customer_name2_value);
         mAddress = (EditText) rootView.findViewById(R.id.customer_address_value);
         mCity = (TextView) rootView.findViewById(R.id.customer_city_value);
-        mPostCode = (EditText) rootView.findViewById(R.id.customer_postal_code_value);
+        
+        citiesAutocompleteCursorAdapter = new CitiesAutocompleteCursorAdapter(getActivity(), null);
+        
+        mPostCode = (AutoCompleteTextView) rootView.findViewById(R.id.customer_postal_code_value);
+        mPostCode.setAdapter(citiesAutocompleteCursorAdapter);
+        mPostCode.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				cityCursorItem = (Cursor) citiesAutocompleteCursorAdapter.getItem(position);
+			}
+		});
+        
         mPhone = (EditText) rootView.findViewById(R.id.customer_phone_value);
         mMobile = (EditText) rootView.findViewById(R.id.customer_phone_mobile_value);
         mEmail = (EditText) rootView.findViewById(R.id.customer_email_value);
@@ -409,7 +428,13 @@ public class CustomersViewDetailFragment extends Fragment implements
 		contentValues.put(Customers.NAME, mName.getText().toString());
 		contentValues.put(Customers.NAME_2, mName2.getText().toString());
 		contentValues.put(Customers.EMAIL, mEmail.getText().toString());
-		contentValues.put(Customers.POST_CODE, mPostCode.getText().toString());
+		if (cityCursorItem != null) {
+			contentValues.put(Customers.CITY, cityCursorItem.getString(2));
+			contentValues.put(Customers.POST_CODE, cityCursorItem.getString(1));
+		} else {
+			contentValues.put(Customers.CITY, mCity.getText().toString());
+			contentValues.put(Customers.POST_CODE, mPostCode.getText().toString());
+		}
 		contentValues.put(Customers.MOBILE, mMobile.getText().toString());
 		contentValues.put(Customers.COMPANY_ID, mCompanyId.getText().toString());
 		contentValues.put(Customers.PRIMARY_CONTACT_ID, mPrimaryContactId.getText().toString());

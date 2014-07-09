@@ -8,6 +8,7 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrdersColumns;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
@@ -18,6 +19,7 @@ import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DocumentUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
+import rs.gopro.mobile_store.util.VersionUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.model.HistorySalesDocumentsSyncObject;
@@ -55,8 +57,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SaleOrdersPreviewActivity extends BaseActivity implements
 		SaleOrdersPreviewListFragment.Callbacks, SaleOrderLinesPreviewListFragment.Callbacks {
@@ -85,6 +91,8 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
     
     private CustomerAutocompleteCursorAdapter customerCursorAdapter;
     private String selectedCustomerNo = "";
+    
+    private String appVersion;
 	
     private OnDateSetListener getHistoryDateSet = new OnDateSetListener() {
     	public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -433,12 +441,18 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			}
 			break;
 		case R.id.new_sale_order_action_menu_option:
+			
+			localyticsSession.tagEvent("PORUDZBINE/PONUDE > NOVA PORUDZBINA/PONUDA");
+			
 			Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT,
 					MobileStoreContract.SaleOrders.CONTENT_URI);
 //			startActivityForResult(newSaleOrderIntent, CALL_INSERT);
 			startActivityForResult(newSaleOrderIntent, NEW_SALE_ORDER_REQUEST_CODE);
 			return true;
 		case R.id.edit_lines_sale_order_action_menu_option:
+			
+			localyticsSession.tagEvent("PORUDZBINE/PONUDE > UREDI STAVKE PORUDZBINE");
+			
 			// TODO sale order lines goes here
 			if (saleOrderId == null) {
 				return true;
@@ -448,41 +462,147 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			startActivity(editSaleOrderIntent);
 			return true;
 		case R.id.verify_sale_order_action_menu_option:
+			
+			localyticsSession.tagEvent("PORUDZBINE/PONUDE > VERIFIKUJ PORUDZBINU/PONUDU");
+			
 			Intent verifyintent = new Intent(this, NavisionSyncService.class);
-			MobileDeviceSalesDocumentSyncObject verifymobileDeviceSalesDocumentSyncObject = new MobileDeviceSalesDocumentSyncObject(Integer.valueOf(saleOrderId), VERIFY_SALE_DOC);
+			MobileDeviceSalesDocumentSyncObject verifymobileDeviceSalesDocumentSyncObject = new MobileDeviceSalesDocumentSyncObject(Integer.valueOf(saleOrderId), VERIFY_SALE_DOC, appVersion, 0);
 			//mobileDeviceSalesDocumentSyncObject.setpDocumentNote()
 			verifyintent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, verifymobileDeviceSalesDocumentSyncObject);
 			startService(verifyintent);
 			sendSaleOrderProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.dialog_title_sale_order_verify), getResources().getString(R.string.dialog_body_sale_order_verify), true, true);
 			return true;
 		case R.id.send_sale_order_action_menu_option:
+			
+			localyticsSession.tagEvent("PORUDZBINE/PONUDE > POSALJI PORUDZBINU/PONUDU");
+			
 			// TODO sale order lines goes here
 			if (saleOrderId == null) {
 				return true;
 			}
-			Intent intent = new Intent(this, NavisionSyncService.class);
-			updateOrderDate(saleOrderId);
-			MobileDeviceSalesDocumentSyncObject mobileDeviceSalesDocumentSyncObject = new MobileDeviceSalesDocumentSyncObject(Integer.valueOf(saleOrderId), SAVE_SALE_DOC);
-			//mobileDeviceSalesDocumentSyncObject.setpDocumentNote()
-			intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, mobileDeviceSalesDocumentSyncObject);
-			startService(intent);
-			sendSaleOrderProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.dialog_title_sale_order_send), getResources().getString(R.string.dialog_body_sale_order_send), true, true);
+			
+			// DORADA DIJALOG ZA UNOS DUZINE TELEFONSKOG RAZGOVORA UKOLIKO JE KOD PORUDZBINE ODABRANA ODGOVARAJUCA VRSTA PRODAJE
+			Cursor cursor = getContentResolver().query(MobileStoreContract.SaleOrders.CONTENT_URI, new String[] { SaleOrdersColumns.DOCUMENT_TYPE, SaleOrdersColumns.SHORTCUT_DIMENSION_1_CODE }, Tables.SALE_ORDERS + "._id=?", new String[] { saleOrderId }, null);
+			if (cursor.moveToFirst()) {
+				if (cursor.getInt(0) == 0) {
+					final String[] values = getResources().getStringArray(R.array.slc1_array);
+					String salesType = cursor.getString(1);
+					if (salesType.equals(values[1])) {
+						telefonskiPozivDijalog(saleOrderId, 1);
+					} else if (salesType.equals(values[2])) {
+						telefonskiPozivDijalog(saleOrderId, 2);
+					} else {
+						posaljiPorudzbinu(0);
+					}
+				} else {
+					posaljiPorudzbinu(0);
+				}
+			}
 			return true;
 		case R.id.clone_sale_order_menu_option:
+			
+			localyticsSession.tagEvent("PORUDZBINE/PONUDE > KLONIRAJ PORUDZBINU/PONUDU");
+			
 			if (saleOrderId == null) {
 				return true;
 			}
 			cloneDocument();
 			return true;
 		case R.id.get_new_sale_order_menu_option:
+			
+			localyticsSession.tagEvent("PORUDZBINE/PONUDE > PREUZMI DOKUMENTE SA SISTEMA");
+			
 			PreuzmiPorudzbineDijalog();
 			return true;
 		case R.id.get_history_sale_order_menu_option:
+			
+			localyticsSession.tagEvent("PORUDZBINE/PONUDE > PREUZMI ISTORIJU PORUDZBINA");
+			
 			this.showDialog(GET_HISTORY_DIALOG);
 			return true;
 		}
 		
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void telefonskiPozivDijalog(final String saleOrderId, int tip) {
+		final Dialog dialog = new Dialog(this);
+		dialog.setContentView(R.layout.dialog_telefonski_poziv);
+		
+		final String[] types = getResources().getStringArray(R.array.slc1_type_array);
+		final RadioGroup rgTelefonskiPoziv = (RadioGroup) dialog.findViewById(R.id.rgTelefonskiPoziv);
+		final EditText dialog_trajanje_poziva_input = (EditText) dialog.findViewById(R.id.dialog_trajanje_poziva_input);
+		Button dialogButtonOK = (Button) dialog.findViewById(R.id.dialogButtonOK);
+		
+		dialogButtonOK.setOnClickListener(new OnClickListener() {
+			
+			int timeOnthePhone;
+			
+			@Override
+			public void onClick(View v) {
+				String input = dialog_trajanje_poziva_input.getText().toString();
+				if (input.trim().length() > 0) {
+					try {
+						timeOnthePhone = Integer.parseInt(input);
+					} catch (Exception e) {
+						Toast.makeText(SaleOrdersPreviewActivity.this, R.string.datum_format, Toast.LENGTH_SHORT).show();
+					}
+				} else {
+					switch (rgTelefonskiPoziv.getCheckedRadioButtonId()) {
+					case R.id.radio5:
+						timeOnthePhone = 5;
+						break;
+					case R.id.radio10:
+						timeOnthePhone = 10;
+						break;
+					case R.id.radio15:
+						timeOnthePhone = 15;				
+						break;
+					case R.id.radio30:
+						timeOnthePhone = 30;
+						break;
+					case R.id.radio45:
+						timeOnthePhone = 45;
+						break;
+					default:
+						break;
+					}
+				}
+				
+				if (timeOnthePhone > 0) {
+					dialog.dismiss();
+					posaljiPorudzbinu(timeOnthePhone);
+				} else {
+					Toast.makeText(SaleOrdersPreviewActivity.this, R.string.datum_format, Toast.LENGTH_SHORT).show();
+					dialog_trajanje_poziva_input.setText("");
+					dialog_trajanje_poziva_input.requestFocus();
+				}
+				
+			}
+		});
+		
+		switch (tip) {
+		case 1:
+			dialog.setTitle(types[1]);
+			break;
+		case 2:
+			dialog.setTitle(types[2]);
+			break;
+		default:
+			break;
+		}
+		
+		dialog.show();
+	}
+	
+	private void posaljiPorudzbinu(int vreme) {
+		Intent intent = new Intent(SaleOrdersPreviewActivity.this, NavisionSyncService.class);
+		updateOrderDate(saleOrderId);
+		MobileDeviceSalesDocumentSyncObject mobileDeviceSalesDocumentSyncObject = new MobileDeviceSalesDocumentSyncObject(Integer.valueOf(saleOrderId), SAVE_SALE_DOC, appVersion, vreme);
+		//mobileDeviceSalesDocumentSyncObject.setpDocumentNote()
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, mobileDeviceSalesDocumentSyncObject);
+		startService(intent);
+		sendSaleOrderProgressDialog = ProgressDialog.show(SaleOrdersPreviewActivity.this, getResources().getString(R.string.dialog_title_sale_order_send), getResources().getString(R.string.dialog_body_sale_order_send), true, true);
 	}
 	
 	protected void PreuzmiPorudzbineDijalog() {
@@ -637,6 +757,9 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+		
+		appVersion = VersionUtils.getVersionName(getApplicationContext());
+		
 		IntentFilter mobileDeviceSalesDocumentSync = new IntentFilter(MobileDeviceSalesDocumentSyncObject.BROADCAST_SYNC_ACTION);
 		LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, mobileDeviceSalesDocumentSync);
 		IntentFilter historyDocumentSync = new IntentFilter(HistorySalesDocumentsSyncObject.BROADCAST_SYNC_ACTION);

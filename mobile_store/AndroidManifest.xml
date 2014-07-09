@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="rs.gopro.mobile_store"
-    android:versionCode="16"
-    android:versionName="1.6.0" >
+    android:versionCode="17"
+    android:versionName="1.7.0" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- - allowBackup - Was warning but should explore is this correct. -->
     <application
@@ -184,7 +186,7 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data android:mimeType="vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.invoice_lines"/>
-            </intent-filter>
+            </intent-filter>
             -->
 
             <meta-data
@@ -319,6 +321,18 @@
             android:exported="false"
             android:screenOrientation="landscape" >
         </activity>
+        <activity
+            android:name="rs.gopro.mobile_store.ui.NovaKarticaKupcaActivity"
+            android:label="@string/title_activity_nova_kartica_kupca"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="landscape" >
+        </activity>
+
+        <!-- PROD -->
+        <!-- DEV 2acd137d30233d39e4af864-9ad6f5ba-fd41-11e3-9f8e-009c5fda0a25 -->
+        <meta-data
+            android:name="LOCALYTICS_APP_KEY"
+            android:value="2acd137d30233d39e4af864-9ad6f5ba-fd41-11e3-9f8e-009c5fda0a25" />
 
         <provider
             android:name="rs.gopro.mobile_store.provider.MobileStoreContentProvider"
