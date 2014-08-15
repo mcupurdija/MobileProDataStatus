@@ -11,7 +11,7 @@ public class ApplicationConstants {
 	public static final Integer SUCCESS = 1;
 	public static final Integer FAILURE = 2;
 	
-	public static final double VAT = 0.19;
+	public static final double VAT = 0.2;
 
 	public static final int VISIT_PLANNED = 0;
 	public static final int VISIT_RECORDED = 1;

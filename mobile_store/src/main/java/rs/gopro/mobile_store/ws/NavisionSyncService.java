@@ -39,9 +39,9 @@ public class NavisionSyncService extends IntentService {
 	
 	// W-RS		"gopro4" "pakg7otj" "wurth"
 	// LOCAL	"wurthtest"	"remote" "gopro"
-	public static final String USER_NAME = "gopro4";
-	public static final String PASS = "pakg7otj";
-	public static final String DOMAIN = "wurth";
+	public static final String USER_NAME = "wurthtest";
+	public static final String PASS = "remote";
+	public static final String DOMAIN = "gopro";
 	
 	public NavisionSyncService() {
 		super(TAG);
