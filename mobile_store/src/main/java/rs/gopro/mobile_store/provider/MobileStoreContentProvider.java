@@ -2,10 +2,12 @@ package rs.gopro.mobile_store.provider;
 
 import java.util.ArrayList;
 
+import rs.gopro.mobile_store.provider.MobileStoreContract.ActionPlan;
 import rs.gopro.mobile_store.provider.MobileStoreContract.AppSettings;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Cities;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerAddresses;
+import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerBusinessUnits;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerTradeAgreemnt;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
@@ -13,6 +15,8 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.Generic;
 import rs.gopro.mobile_store.provider.MobileStoreContract.InvoiceLine;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
+import rs.gopro.mobile_store.provider.MobileStoreContract.ItemsColumns;
+import rs.gopro.mobile_store.provider.MobileStoreContract.ItemsOnPromotion;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SalesPerson;
@@ -121,6 +125,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 	
 	private static final int ELECTRONIC_CARD_CUSTOMER = 800;
 	private static final int ELECTRONIC_CARD_CUSTOMER_ID = 801;
+	private static final int ELECTRONIC_CARD_CUSTOMER_ITEM_FILTER = 802;
 
 	private static final int SALES_PERSONS = 900;
 	private static final int SALES_PERSON_ID = 901;
@@ -147,6 +152,15 @@ public class MobileStoreContentProvider extends ContentProvider {
 	
 	private static final int CITIES = 1600;
 	private static final int CITIES_BY_CITY_NAME = 1601;
+	
+	private static final int CUSTOMER_BUSINESS_UNITS = 1700;
+	private static final int CUSTOMER_BUSINESS_UNITS_ID = 1701;
+	
+	private static final int ITEMS_ON_PROMOTION = 1800;
+	private static final int ITEMS_ON_PROMOTION_ITEM_NO = 1801;
+	
+	private static final int ACTION_PLAN = 1900;
+	private static final int ACTION_PLAN_ITEM_NO = 1901;
 	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -266,7 +280,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 		
 		mobileStoreURIMatcher.addURI(authority, "generic/*",GENERIC);
 		mobileStoreURIMatcher.addURI(authority, "electronic_card_customer", ELECTRONIC_CARD_CUSTOMER);
-		mobileStoreURIMatcher.addURI(authority, "electronic_card_customer/#", ELECTRONIC_CARD_CUSTOMER_ID);
+		mobileStoreURIMatcher.addURI(authority, "electronic_card_customer/#", ELECTRONIC_CARD_CUSTOMER_ITEM_FILTER);
+		mobileStoreURIMatcher.addURI(authority, "electronic_card_customer/*", ELECTRONIC_CARD_CUSTOMER_ITEM_FILTER);
 		
 		mobileStoreURIMatcher.addURI(authority, "sales_persons", SALES_PERSONS);
 		mobileStoreURIMatcher.addURI(authority, "sales_persons/*", SALES_PERSON_ID);
@@ -296,6 +311,15 @@ public class MobileStoreContentProvider extends ContentProvider {
 		
 		mobileStoreURIMatcher.addURI(authority, "cities", CITIES);
 		mobileStoreURIMatcher.addURI(authority, "cities/*", CITIES_BY_CITY_NAME);
+		
+		mobileStoreURIMatcher.addURI(authority, "customer_business_units", CUSTOMER_BUSINESS_UNITS);
+		mobileStoreURIMatcher.addURI(authority, "customer_business_units/*", CUSTOMER_BUSINESS_UNITS_ID);
+		
+		mobileStoreURIMatcher.addURI(authority, "items_on_promotion", ITEMS_ON_PROMOTION);
+		mobileStoreURIMatcher.addURI(authority, "items_on_promotion/*", ITEMS_ON_PROMOTION_ITEM_NO);
+		
+		mobileStoreURIMatcher.addURI(authority, "action_plan", ACTION_PLAN);
+		mobileStoreURIMatcher.addURI(authority, "action_plan/*", ACTION_PLAN_ITEM_NO);
 	}
 
 	@Override
@@ -351,8 +375,18 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return InvoiceLine.CONTENT_TYPE;
 		case ELECTRONIC_CARD_CUSTOMER_ID:
 			return ElectronicCardCustomer.CONTENT_TYPE;
+		case ELECTRONIC_CARD_CUSTOMER_ITEM_FILTER:
+			return ElectronicCardCustomer.CONTENT_TYPE;
 		case CUSTOMER_TRADE_AGREEMENT_ID:
 			return CustomerTradeAgreemnt.CONTENT_TYPE;
+		case CUSTOMER_BUSINESS_UNITS:
+			return CustomerBusinessUnits.CONTENT_TYPE;
+		case CUSTOMER_BUSINESS_UNITS_ID:
+			return CustomerBusinessUnits.CONTENT_TYPE;
+		case ITEMS_ON_PROMOTION:
+			return ItemsOnPromotion.CONTENT_TYPE;
+		case ACTION_PLAN:
+			return ActionPlan.CONTENT_TYPE;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -426,6 +460,18 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.CITIES,null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return Cities.buildCitiesUri((int)id);
+		case CUSTOMER_BUSINESS_UNITS:
+			id = database.insertOrThrow(Tables.CUSTOMER_BUSINESS_UNITS, null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return CustomerBusinessUnits.buildCustomerBusinessUnitsUri("" + id);
+		case ITEMS_ON_PROMOTION:
+			id = database.insertOrThrow(Tables.ITEMS_ON_PROMOTION,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return ItemsOnPromotion.buildItemsOnPromotionUri((int)id);
+		case ACTION_PLAN:
+			id = database.insertOrThrow(Tables.ACTION_PLAN,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return ActionPlan.buildActionPlanUri((int)id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -446,8 +492,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		switch (match) {
 		default:
 			SelectionBuilder builder = buildExpandedSelection(uri, match);
-			Cursor cursor = builder.where(selection, selectionArgs).query(database,
-					projection, sortOrder);
+			Cursor cursor = builder.where(selection, selectionArgs).query(database, projection, sortOrder);
 			cursor.setNotificationUri(getContext().getContentResolver(), uri);
 			return cursor;
 		}
@@ -506,6 +551,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			final String saleOrderId = SaleOrders.getSaleOrderId(uri);
 			return builder.addTable(Tables.SALE_ORDERS).where(
 					Tables.SALE_ORDERS + "." + SaleOrders._ID + "=?", saleOrderId);
+		case SALE_ORDER_LINES:
+			return builder.addTable(Tables.SALE_ORDER_LINES);
 		case CONTACTS_ID:
 			final String contactId = Contacts.getContactsId(uri);
 			return builder.addTable(Tables.CONTACTS).where(
@@ -542,6 +589,12 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.SENT_ORDERS_STATUS_LINES);
 		case CITIES:
 			return builder.addTable(Tables.CITIES);
+		case CUSTOMER_BUSINESS_UNITS:
+			return builder.addTable(Tables.CUSTOMER_BUSINESS_UNITS);
+		case ITEMS_ON_PROMOTION:
+			return builder.addTable(Tables.ITEMS_ON_PROMOTION);
+		case ACTION_PLAN:
+			return builder.addTable(Tables.ACTION_PLAN);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -873,18 +926,17 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder
 					.addTable(Tables.SALE_ORDER_LINES_JOIN_ITEMS)
 					.mapToTable(SaleOrderLines._ID, Tables.SALE_ORDER_LINES)
-					.mapToTable(SaleOrderLines.SALE_ORDER_ID,
-							Tables.SALE_ORDER_LINES)
+					.mapToTable(SaleOrderLines.SALE_ORDER_ID, Tables.SALE_ORDER_LINES)
 					.mapToTable(SaleOrderLines.ITEM_NO, Tables.ITEMS)
 					.mapToTable(SaleOrderLines.DESCRIPTION, Tables.ITEMS)
 					.mapToTable(SaleOrderLines.DESCRIPTION2, Tables.ITEMS)
 					.mapToTable(SaleOrderLines.LINE_NO, Tables.SALE_ORDER_LINES)
-					.mapToTable(SaleOrderLines.QUANTITY,
-							Tables.SALE_ORDER_LINES)
-					.mapToTable(SaleOrderLines.PRICE_EUR,
-							Tables.SALE_ORDER_LINES)
-					.mapToTable(SaleOrderLines.REAL_DISCOUNT,
-							Tables.SALE_ORDER_LINES)
+					.mapToTable(SaleOrderLines.QUANTITY, Tables.SALE_ORDER_LINES)
+					.mapToTable(SaleOrderLines.PRICE_EUR, Tables.SALE_ORDER_LINES)
+					.mapToTable(SaleOrderLines.REAL_DISCOUNT, Tables.SALE_ORDER_LINES)
+					.mapToTable(SaleOrderLines.MAX_DISCOUNT, Tables.SALE_ORDER_LINES)
+					.mapToTable(SaleOrderLines.MIN_QTY, Tables.ITEMS)
+					.mapToTable(SaleOrderLines.CAMPAIGN_STATUS, Tables.ITEMS)
 					.where(SaleOrderLines.SALE_ORDER_ID + "=?", salesOrderId);
 		case CONTACTS_ID:
 			final String contactId = Contacts.getContactsId(uri);
@@ -953,6 +1005,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 //					.mapToTable(ElectronicCardCustomer.TOTAL_TURNOVER_PRIOR_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
 //					.mapToTable(ElectronicCardCustomer.SALES_LINE_COUNTS_CURRENT_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER )
 //					.mapToTable(ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR , Tables.ELECTRONIC_CARD_CUSTOMER );
+		case ELECTRONIC_CARD_CUSTOMER_ITEM_FILTER :
+			String itemFilter = uri.getLastPathSegment();
+			builder.addTable(Tables.EL_CARD_CUSTOMER_JOIN_CUSTOMER_JOIN_ITEM);
+			builder.where(Tables.ITEMS + "." + Items.ITEM_NO + " LIKE ? OR " + Tables.ITEMS + "." + Items.DESCRIPTION + " LIKE ?", new String[] { "%" + itemFilter + "%", "%" + itemFilter + "%" });
+			return builder;
 		case SALES_PERSONS:
 			return builder.addTable(Tables.SALES_PERSONS);
 		case SALES_PERSON_ID:
@@ -983,7 +1040,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.SaleOrders.QUOTE_REALIZED_STATUS, Tables.SALE_ORDERS)
 					.mapToTable(MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS, Tables.SALE_ORDERS)
-					.mapToTable(MobileStoreContract.SaleOrders.SHIPMENT_METHOD_CODE, Tables.SALE_ORDERS);
+					.mapToTable(MobileStoreContract.SaleOrders.SHIPMENT_METHOD_CODE, Tables.SALE_ORDERS)
+					.mapToTable(MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE, Tables.SALE_ORDERS);
 		case SALE_ORDER_LINES_EXPORT:
 			return builder.addTable(Tables.SALE_ORDER_LINES_EXPORT)
 					.mapToTable(MobileStoreContract.SaleOrders.DOCUMENT_TYPE, Tables.SALE_ORDERS)
@@ -1114,6 +1172,22 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case CITIES_BY_CITY_NAME:
 			String citySearchParam = Cities.getCustomSearchFirstParamQuery(uri);
 			return builder.addTable(Tables.CITIES).where(Cities.CITY + " like ? OR " + Cities.ZIP + " like ?", new String[] {citySearchParam + "%", citySearchParam + "%"});
+		case CUSTOMER_BUSINESS_UNITS:
+			return builder.addTable(Tables.CUSTOMER_BUSINESS_UNITS);
+		case CUSTOMER_BUSINESS_UNITS_ID:
+			final String businessUnitId = uri.getLastPathSegment();
+			return builder.addTable(Tables.CUSTOMER_BUSINESS_UNITS)
+					.where(CustomerBusinessUnits._ID + "=?", new String[] { businessUnitId });
+		case ITEMS_ON_PROMOTION:
+			return builder.addTable(Tables.ITEMS_ON_PROMOTION_JOIN_ITEMS);
+		case ITEMS_ON_PROMOTION_ITEM_NO:
+			final String promoItem = ItemsOnPromotion.getCustomSearchFirstParamQuery(uri);
+			return builder.addTable(Tables.ITEMS_ON_PROMOTION_JOIN_ITEMS).where(Tables.ITEMS + "." + ItemsColumns.ITEM_NO + " LIKE ? OR " + Tables.ITEMS + "." + ItemsColumns.DESCRIPTION + " LIKE ?", new String[] { promoItem + "%", "%" + promoItem + "%" });
+		case ACTION_PLAN:
+			return builder.addTable(Tables.ACTION_PLAN_JOIN_ITEMS);
+		case ACTION_PLAN_ITEM_NO:
+			final String actionPlanItem = ActionPlan.getCustomSearchFirstParamQuery(uri);
+			return builder.addTable(Tables.ACTION_PLAN_JOIN_ITEMS).where(Tables.ITEMS + "." + ItemsColumns.ITEM_NO + " LIKE ? OR " + Tables.ITEMS + "." + ItemsColumns.DESCRIPTION + " LIKE ?", new String[] { actionPlanItem + "%", "%" + actionPlanItem + "%" });
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -1235,6 +1309,21 @@ public class MobileStoreContentProvider extends ContentProvider {
 			tableName = Tables.CONTACTS;
 			selectionParam = new String[] { Contacts.CONTACT_NO };
 			selectionPhrase = Contacts.CONTACT_NO + "=?";
+			break;
+		case CUSTOMER_BUSINESS_UNITS:
+			tableName = Tables.CUSTOMER_BUSINESS_UNITS;
+			selectionParam = new String[] {CustomerBusinessUnits.UNIT_NO, CustomerBusinessUnits.CUSTOMER_NO};
+			selectionPhrase = CustomerBusinessUnits.UNIT_NO + "=? AND " + CustomerBusinessUnits.CUSTOMER_NO + "=?";
+			break;
+		case ITEMS_ON_PROMOTION:
+			tableName = Tables.ITEMS_ON_PROMOTION;
+			selectionParam = new String[] {ItemsOnPromotion.ITEM_NO, ItemsOnPromotion.BRANCH_CODE};
+			selectionPhrase = ItemsOnPromotion.ITEM_NO + "=? AND " + ItemsOnPromotion.BRANCH_CODE + "=?";
+			break;
+		case ACTION_PLAN:
+			tableName = Tables.ACTION_PLAN;
+			selectionParam = new String[] {ActionPlan.CUSTOMER_NO, ActionPlan.BUSINESS_UNIT_NO, ActionPlan.ITEM_NO};
+			selectionPhrase = ActionPlan.CUSTOMER_NO + "=? AND " + ActionPlan.BUSINESS_UNIT_NO + "=? AND " + ActionPlan.ITEM_NO + "=?";
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);

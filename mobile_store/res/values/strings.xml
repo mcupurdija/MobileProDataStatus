@@ -424,5 +424,7 @@
     <string name="azurirajSaTabletaError2">Došlo je do greške pri učitavanju artikala</string>
     <string name="title_activity_nova_kartica_kupca">NovaKarticaKupcaActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_nova_kartica_kupca_master">Kartica kupca</string>
+    <string name="title_activity_misica">Mišica</string>
 
 </resources>

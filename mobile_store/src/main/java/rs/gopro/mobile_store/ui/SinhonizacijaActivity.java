@@ -5,11 +5,12 @@ import java.util.Date;
 import java.util.UUID;
 
 import rs.gopro.mobile_store.R;
-import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.ApplicationConstants;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
+import rs.gopro.mobile_store.ws.model.CustomerItemOnPromotionSyncObject;
 import rs.gopro.mobile_store.ws.model.CustomerSyncObject;
 import rs.gopro.mobile_store.ws.model.GetPotentialCustomerSyncObject;
 import rs.gopro.mobile_store.ws.model.HistorySalesDocumentsSyncObject;
@@ -55,6 +56,8 @@ public class SinhonizacijaActivity extends BaseActivity {
 		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
 			if (GetPotentialCustomerSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 				sb.append("Kupci i potencijalni kupci uspešno sinhronizovani");
+				sb.append("\n");
+				sb.append("Artikli na promociji uspešno sinhronizovani");
 				sb.append("\n");
 				tvStatus.setText(sb.toString());
 				checkCount--;
@@ -217,12 +220,16 @@ public class SinhonizacijaActivity extends BaseActivity {
 	protected void sinhronizujKupce() {
 		Intent intent = new Intent(this, NavisionSyncService.class);
 		CustomerSyncObject syncObject = new CustomerSyncObject("", "", salesPersonNo, DateUtils.getWsDummyDate());
-		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT,syncObject);
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, syncObject);
 		startService(intent);
 		Intent intentPotentialCust = new Intent(this, NavisionSyncService.class);
 		GetPotentialCustomerSyncObject potentialCustSyncObject = new GetPotentialCustomerSyncObject("", "", salesPersonNo, DateUtils.getWsDummyDate());
-		intentPotentialCust.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT,potentialCustSyncObject);
+		intentPotentialCust.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, potentialCustSyncObject);
 		startService(intentPotentialCust);
+		Intent intentItemsOnPromotion = new Intent(this, NavisionSyncService.class);
+		CustomerItemOnPromotionSyncObject itemOnPromotionSyncObject = new CustomerItemOnPromotionSyncObject("", "", salesPersonNo);
+		intentItemsOnPromotion.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemOnPromotionSyncObject);
+		startService(intentItemsOnPromotion);
 	}
 	
 	protected void sinhronizujArtikle() {

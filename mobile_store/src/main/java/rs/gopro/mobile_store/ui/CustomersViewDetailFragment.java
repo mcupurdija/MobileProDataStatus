@@ -274,7 +274,6 @@ public class CustomersViewDetailFragment extends Fragment implements
 			if (wrPassword != null) {
 				setupPassAndOpenWebReporting(salesPersonNo, wrPassword);
 			} else {
-				System.out.println(">>> null");
 				azurirajPodatkeProdavca(salesPersonNo);
 			}
 		}

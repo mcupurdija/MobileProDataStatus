@@ -9,11 +9,14 @@ import java.util.Date;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
+import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerBusinessUnits;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.ui.dialog.AddressSelectDialog;
 import rs.gopro.mobile_store.ui.dialog.AddressSelectDialog.AddressSelectDialogListener;
+import rs.gopro.mobile_store.ui.dialog.BusinessUnitSelectDialog;
+import rs.gopro.mobile_store.ui.dialog.BusinessUnitSelectDialog.BusinessUnitSelectDialogListener;
 import rs.gopro.mobile_store.ui.dialog.ContactSelectDialog;
 import rs.gopro.mobile_store.ui.dialog.ContactSelectDialog.ContactSelectDialogListener;
 import rs.gopro.mobile_store.util.DateUtils;
@@ -46,7 +49,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -57,7 +59,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCallbacks<Cursor>, AddressSelectDialogListener, ContactSelectDialogListener {
+public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCallbacks<Cursor>, AddressSelectDialogListener, ContactSelectDialogListener, BusinessUnitSelectDialogListener {
 
 	private static final String TAG = "SaleOrderAddEditActivity";
 	
@@ -110,7 +112,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		MobileStoreContract.SaleOrders.NOTE1,
 		MobileStoreContract.SaleOrders.NOTE2,
 		MobileStoreContract.SaleOrders.NOTE3,
-		MobileStoreContract.SaleOrders.SHIPMENT_METHOD_CODE
+		MobileStoreContract.SaleOrders.SHIPMENT_METHOD_CODE,
+		MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE
 	};
 	
 	private static String[]  CUSTOMER_PROJECTION = new String[] { 
@@ -123,7 +126,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		MobileStoreContract.Customers.ADDRESS,
 		MobileStoreContract.Customers.POST_CODE,
 		MobileStoreContract.Customers.CONTACT_COMPANY_NO,
-		MobileStoreContract.Customers.EMAIL
+		MobileStoreContract.Customers.EMAIL, 
+		MobileStoreContract.Customers.HAS_BUSINESS_UNITS
 	};
 	
 	private static String DEFAULT_VIEW_TYPE = MobileStoreContract.SaleOrders.CONTENT_ITEM_TYPE;
@@ -142,6 +146,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private AutoCompleteTextView transitCustomerAutoComplete;
     private CustomerAutocompleteCursorAdapter transitCustomerAutoCompleteAdapter;
     
+    private Button businessUnitSelector;
     private TextView documentNo;
     private Spinner documentType;
     private ArrayAdapter<CharSequence> docAdapter;
@@ -195,7 +200,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private String mAction;
     private Uri mUri;
     private String mViewType;
-    private String selectedCustomerNo = null;
+    private String selectedCustomerNo = null, selectedBusinessUnitNo = null;
     private String potentialCustomerNo = null;
     
     private int shippingAddressId = -1;
@@ -203,6 +208,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private int contactId = -1;
     private int customerId = -1;
     private int transitCustomerId = -1;
+    private int hasBusinessUnits;
     
     private String orderDate = null;
     
@@ -315,6 +321,16 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				Cursor cursor = (Cursor) customerAutoCompleteAdapter.getItem(arg2);
 				customerId = cursor.getInt(0);
+				
+				hasBusinessUnits = cursor.getInt(9);
+				if (hasBusinessUnits == 0) {
+					businessUnitSelector.setText(R.string.nemaPoslovnuJedinicu);
+					businessUnitSelector.setClickable(false);
+				} else {
+					businessUnitSelector.setText(R.string.izaberiPoslovnuJedinicu);
+					businessUnitSelector.setClickable(true);
+				}
+				
 				fillOtherCustomerData(customerId);
 				loadAndSetCustomerAddressData(BILLING_ADDRESS_SELECTOR, -1);
 				loadAndSetCustomerAddressData(SHIPPING_ADDRESS_SELECTOR, -1);
@@ -394,6 +410,14 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			@Override
 			public void onClick(View v) {
 				dialogSetContact();
+			}
+		});
+	    
+	    businessUnitSelector = (Button) findViewById(R.id.edit_sale_order_business_unit_spinner);
+	    businessUnitSelector.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialogSetBusinessUnit();
 			}
 		});
 	    
@@ -485,6 +509,8 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 				final String result = customerCursor.getString(codeIndex) + " - "
 						+ customerCursor.getString(nameIndex);
 				customerAutoComplete.setText(result);
+				
+				hasBusinessUnits = customerCursor.getInt(10);
 			}
 			fillOtherCustomerData(customerId);
 		}
@@ -507,6 +533,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO))) {	
 			document_no = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO));
 		} else {
+			// TODO generateSaleOrderDeviceNo
 			document_no = DocumentUtils.generateSaleOrderDeviceNo(salesPersonNo);
 //			Cursor docNoCursor = getContentResolver().query(SaleOrders.CONTENT_URI, new String[] { SaleOrders.SALES_ORDER_NO }, SaleOrders.SALES_ORDER_NO+"=?", new String[] { document_no }, null);
 //			if (docNoCursor.moveToFirst()) {
@@ -555,6 +582,27 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			}
 			if (cursor != null && !cursor.isClosed()) {
 				cursor.close();
+			}
+		}
+		
+		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE))) {
+			selectedBusinessUnitNo = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE));
+			Cursor cursor = getContentResolver().query(CustomerBusinessUnits.CONTENT_URI, new String[] { CustomerBusinessUnits._ID, CustomerBusinessUnits.ADDRESS, CustomerBusinessUnits.CITY }, CustomerBusinessUnits.UNIT_NO + "=?", new String[] { selectedBusinessUnitNo }, null);
+			if (cursor.moveToFirst()) {
+				String address = cursor.getString(1);
+				String city = cursor.getString(2);
+				businessUnitSelector.setText(String.format("%s - %s, %s", selectedBusinessUnitNo, address, city));
+				businessUnitSelector.setClickable(true);
+			}
+		} else {
+			if (customerId != -1) {
+				if (hasBusinessUnits == 0) {
+					businessUnitSelector.setText(R.string.nemaPoslovnuJedinicu);
+					businessUnitSelector.setClickable(false);
+				} else {
+					businessUnitSelector.setText(R.string.izaberiPoslovnuJedinicu);
+					businessUnitSelector.setClickable(true);
+				}
 			}
 		}
 		
@@ -819,6 +867,10 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			//localValues.putNull(MobileStoreContract.SaleOrders.CUSTOMER_ID);
 		}
 		
+		if (hasBusinessUnits == 1 && selectedBusinessUnitNo == null) {
+			throw new SaleOrderValidationException(getString(R.string.obaveznaPoslovnaJedinica));
+		}
+		
 //		String transfer_customer_auto_complete = transitCustomerAutoComplete.getText().toString().trim();
 		if (transitCustomerId != -1) {
 			//Cursor customerItemCursor = (Cursor) transitCustomerAutoCompleteAdapter.getItem(transitCustomerAutoCompleteAdapter.getIdForTitle(transfer_customer_auto_complete));
@@ -948,6 +1000,12 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		int order_condition_status = orderConditionStatus.getSelectedItemPosition();
 		localValues.put(MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS, Integer.valueOf(order_condition_status));
+		
+		if (selectedBusinessUnitNo != null) {
+			localValues.put(MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE, selectedBusinessUnitNo);
+		} else {
+			localValues.putNull(MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE);
+		}
 		
 		return localValues;
 	}
@@ -1159,6 +1217,16 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		addressSelectDialog.show(getSupportFragmentManager(), "ADDRESS_DIALOG_BILLING");
 	}
 	
+	private void dialogSetBusinessUnit() {
+		if (selectedCustomerNo == null) {
+			DialogUtil.showInfoDialog(this, "Upozorenje", "Kupac nije izabran!");
+			return;
+		}
+		
+		BusinessUnitSelectDialog busd = BusinessUnitSelectDialog.newInstance(selectedCustomerNo);
+		busd.show(getSupportFragmentManager(), "BUSINESS_UNIT_DIALOG");
+	}
+	
 	private void dialogSetContact() {
 		if (potentialCustomerNo == null) {
 			DialogUtil.showInfoDialog(this, "Upozorenje", "Kupac nije izabran!");
@@ -1361,6 +1429,17 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		setContactUIData(dialogId, contact_id, contact_name, contact_phone, contact_email);
 	}
 	
+	@Override
+	public void onBusinessUnitSelected(int unit_id, String address,
+			String unit_no, String unit_name, String city, String post_code,
+			String phone_no, String contact) {
+		
+		selectedBusinessUnitNo = unit_no;
+		
+		String buttonText = String.format("%s - %s, %s", unit_no, address, city);
+		businessUnitSelector.setText(buttonText);
+	}
+	
 	private interface CustomerAddressQuery {
 
 		String[] PROJECTION = { BaseColumns._ID,
@@ -1417,4 +1496,5 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		int EMAIL = 6;
 		int PHONE = 7;
 	}
+	
 }

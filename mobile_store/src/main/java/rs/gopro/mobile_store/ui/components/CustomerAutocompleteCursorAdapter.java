@@ -23,7 +23,9 @@ public class CustomerAutocompleteCursorAdapter extends CursorAdapter implements
 		MobileStoreContract.Customers.PHONE,
 		MobileStoreContract.Customers.CONTACT_COMPANY_NO,
 		MobileStoreContract.Customers.ADDRESS,
-		MobileStoreContract.Customers.POST_CODE
+		MobileStoreContract.Customers.POST_CODE, 
+		MobileStoreContract.Customers.GLOBAL_DIMENSION, 
+		MobileStoreContract.Customers.HAS_BUSINESS_UNITS 
 	};
 	
 	private Context mContext;
@@ -79,12 +81,9 @@ public class CustomerAutocompleteCursorAdapter extends CursorAdapter implements
 	}
 
 	private String getResult(Cursor cursor) {
-		final int codeIndex = cursor
-				.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
-		final int nameIndex = cursor
-				.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
-		final String result = cursor.getString(codeIndex) + " - "
-				+ cursor.getString(nameIndex);
+		final int codeIndex = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
+		final int nameIndex = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
+		final String result = cursor.getString(codeIndex) + " - " + cursor.getString(nameIndex);
 		return result;
 	}
 }

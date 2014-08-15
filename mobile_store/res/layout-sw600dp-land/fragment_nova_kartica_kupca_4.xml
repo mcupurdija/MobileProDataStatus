@@ -1,0 +1,855 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    tools:ignore="TooManyViews" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/background_tabs"
+        android:orientation="horizontal" >
+
+        <View
+            android:id="@+id/spacerTop"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/llSacuvaj"
+            android:background="#D2D1D1" />
+
+        <LinearLayout
+            android:id="@+id/llSacuvaj"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/spacerTop1"
+            android:background="@drawable/background_tab" >
+
+            <TextView
+                android:id="@+id/tvSacuvaj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/dugmeSacuvaj"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/spacerTop1"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/llVerifikuj"
+            android:background="#D2D1D1" />
+
+        <LinearLayout
+            android:id="@+id/llVerifikuj"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/spacerTop2"
+            android:background="@drawable/background_tab" >
+
+            <TextView
+                android:id="@+id/tvVerifikuj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/dugmeVerifikuj"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/spacerTop2"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/llPosalji"
+            android:background="#D2D1D1" />
+
+        <LinearLayout
+            android:id="@+id/llPosalji"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/background_tab" >
+
+            <TextView
+                android:id="@+id/tvPosalji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/dugmePosalji"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#D2D1D1" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadeScrollbars="false" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_tabs_diagonal"
+            android:padding="20dp" >
+
+            <LinearLayout
+                android:id="@+id/layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:padding="8dp" >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/customer_title" />
+
+                    <EditText
+                        android:id="@+id/edit_sale_order_customer"
+                        style="@style/noviKontaktInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:singleLine="true" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/dokument_no_title" />
+
+                    <EditText
+                        android:id="@+id/edit_sale_order_document_no"
+                        style="@style/noviKontaktInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:singleLine="true" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout1"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp" >
+
+                <LinearLayout
+                    android:id="@+id/layout2_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:text="@string/poslovnaJedinica" />
+
+                    <EditText
+                        android:id="@+id/edit_sale_order_business_unit_value"
+                        style="@style/noviKontaktInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:focusable="false"
+                        android:inputType="text"
+                        android:singleLine="true" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout2"
+                android:layout_marginBottom="8dip"
+                android:background="@drawable/bg_card_important"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/layout3_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            style="@style/noviKontaktTekst"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/dokument_type_title" />
+
+                        <Spinner
+                            android:id="@+id/edit_sale_order_dokument_type_spinner"
+                            style="@style/noviKontaktInput"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            style="@style/noviKontaktTekst"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/shortcut_dimension1_code" />
+
+                        <Spinner
+                            android:id="@+id/edit_sale_order_slc1_spinner"
+                            style="@style/noviKontaktInput"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout3_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dip"
+                    android:orientation="horizontal"
+                    android:paddingTop="16dp" >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            style="@style/noviKontaktTekst"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/backorder" />
+
+                        <Spinner
+                            android:id="@+id/edit_sale_order_backorder_spinner"
+                            style="@style/noviKontaktInput"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            style="@style/noviKontaktTekst"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/shipment_method_code" />
+
+                        <Spinner
+                            android:id="@+id/edit_sale_order_shipment_method_code"
+                            style="@style/noviKontaktInput"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout3"
+                android:layout_marginBottom="8dip"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/layout4_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:text="@string/contact_no_label" />
+
+                    <Button
+                        android:id="@+id/edit_sale_order_contact_spinner"
+                        style="@style/noviKontaktInputSpinnerStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout4_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:text="@string/contact_name_phone_title" />
+
+                    <EditText
+                        android:id="@+id/edit_sale_order_contact_name_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:inputType="textPersonName" />
+
+                    <EditText
+                        android:id="@+id/edit_sale_order_contact_phone_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:inputType="phone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout4_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dip"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:text="@string/contact_emails_title" />
+
+                    <EditText
+                        android:id="@+id/edit_sale_order_contact_email_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:inputType="textEmailAddress" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout4"
+                android:layout_marginBottom="8dip"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/layout7_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            style="@style/noviKontaktTekst"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/location_no" />
+
+                        <Spinner
+                            android:id="@+id/edit_sale_order_location_spinner"
+                            style="@style/noviKontaktInput"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            style="@style/noviKontaktTekst"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/payment_type" />
+
+                        <Spinner
+                            android:id="@+id/edit_sale_order_payment_type_spinner"
+                            style="@style/noviKontaktInput"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout7_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dip"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal" >
+
+                    <CheckBox
+                        android:id="@+id/edit_sale_order_hide_discount_check_box"
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:text="@string/hide_discount" />
+
+                    <CheckBox
+                        android:id="@+id/edit_sale_order_show_declaration_check_box"
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:text="@string/show_declaration" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:text="@string/quote_no" />
+
+                    <EditText
+                        android:id="@+id/edit_sale_order_quote_no_edit_text"
+                        style="@style/noviKontaktInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:inputType="number" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout7"
+                android:layout_marginBottom="8dip"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/layout9_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:text="@string/contact_address_ship_section_title" />
+
+                    <Button
+                        android:id="@+id/edit_sale_order_shipping_address_spinner"
+                        style="@style/noviKontaktInputSpinnerStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="10"
+                        android:focusable="false"
+                        android:inputType="none" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout9_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:visibility="invisible" />
+
+                    <EditText
+                        android:id="@+id/edit_sale_order_address_value"
+                        style="@style/noviKontaktInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:focusable="false"
+                        android:inputType="none" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout9_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:visibility="invisible" />
+
+                    <EditText
+                        android:id="@+id/edit_sale_order_city"
+                        style="@style/noviKontaktInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:focusable="false"
+                        android:inputType="none" />
+
+                    <EditText
+                        android:id="@+id/edit_sale_order_zip"
+                        style="@style/noviKontaktInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:focusable="false"
+                        android:inputType="none" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout9_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dip"
+                    android:orientation="horizontal" >
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:visibility="invisible" />
+
+                    <EditText
+                        android:id="@+id/edit_sale_order_address_contact_value"
+                        style="@style/noviKontaktInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:focusable="false"
+                        android:inputType="none" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout9"
+                android:layout_marginBottom="8dip"
+                android:background="@drawable/bg_card"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp" >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dip"
+                    android:layout_weight="8"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:text="@string/transit_customer" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/edit_sale_order_transit_customer_value"
+                        style="@style/noviKontaktInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="12"
+                        android:completionThreshold="1"
+                        android:inputType="text" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dip"
+                    android:layout_weight="8"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="12"
+                        android:gravity="center_horizontal"
+                        android:text="@string/order_condition_status" />
+
+                    <Spinner
+                        android:id="@+id/edit_sale_order_order_condition_status_spinner"
+                        style="@style/noviKontaktInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="12" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout10"
+                android:layout_marginBottom="8dip"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/layout11_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:text="@string/headquarters_note" />
+
+                    <EditText
+                        android:id="@+id/edit_sale_order_headquarters_note_value"
+                        style="@style/noviKontaktInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:gravity="top|left"
+                        android:inputType="textMultiLine"
+                        android:lines="2"
+                        android:maxLines="6"
+                        android:minLines="2"
+                        android:scrollbars="vertical"
+                        android:singleLine="false" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout11_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dip"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:text="@string/document_note" />
+
+                    <EditText
+                        android:id="@+id/edit_sale_order_document_note_value"
+                        style="@style/noviKontaktInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:gravity="top|left"
+                        android:inputType="textMultiLine"
+                        android:lines="2"
+                        android:maxLines="6"
+                        android:minLines="2"
+                        android:scrollbars="vertical"
+                        android:singleLine="false" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout11"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+                android:padding="8dp" >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/financial_control_status" />
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_financial_control_status_text"
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="#C74B46" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/order_status_for_shipment" />
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_order_status_for_shipment_text"
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="#C74B46" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/order_value_status" />
+
+                    <TextView
+                        android:id="@+id/edit_sale_order_order_value_status_text"
+                        style="@style/noviKontaktTekst"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="#C74B46" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</LinearLayout>

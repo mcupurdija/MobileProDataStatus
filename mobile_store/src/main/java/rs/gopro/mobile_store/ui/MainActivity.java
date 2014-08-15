@@ -27,6 +27,7 @@ import rs.gopro.mobile_store.ui.customlayout.RecordVisitsLayout;
 import rs.gopro.mobile_store.ui.customlayout.SaleOrdersLayout;
 import rs.gopro.mobile_store.ui.customlayout.SentOrdersLayout;
 import rs.gopro.mobile_store.ui.customlayout.SentOrdersStatusLayout;
+import rs.gopro.mobile_store.ui.dialog.NovaPorudzbinaDialog;
 import rs.gopro.mobile_store.ui.dialog.ServiceOrderDialog;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.util.ApplicationConstants;
@@ -75,8 +76,8 @@ import android.widget.TextView;
  * 
  */
 
-public class MainActivity extends BaseActivity implements LocationListener, AdapterView.OnItemClickListener, MainContextualActionBarCallback, ServiceOrderDialog.ServiceOrderDialogListener {
-	private static String TAG = "MainActivity";
+public class MainActivity extends BaseActivity implements LocationListener, AdapterView.OnItemClickListener, MainContextualActionBarCallback, ServiceOrderDialog.ServiceOrderDialogListener, NovaPorudzbinaDialog.NovaPorudzbinaDialogListener {
+	private static final String TAG = "MainActivity";
 	public static final String CURRENT_POSITION_KEY = "current_position";
 	
 	private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
@@ -439,10 +440,16 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
 			
 			localyticsSession.tagEvent("PRECICE > NOVA PORUDZBINA");
 			
-			Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT,
-					MobileStoreContract.SaleOrders.CONTENT_URI);
-//			startActivityForResult(newSaleOrderIntent, CALL_INSERT);
-			startActivity(newSaleOrderIntent);
+			if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.key_nkk_switch), false)) {
+				NovaPorudzbinaDialog npd = new NovaPorudzbinaDialog();
+				Bundle args = new Bundle();
+		        args.putInt("saleOrderId", -1);
+		        npd.setArguments(args);
+		        npd.show(getSupportFragmentManager(), "NEW_SALE_ORDER");
+			} else {
+				Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT, MobileStoreContract.SaleOrders.CONTENT_URI);
+				startActivity(newSaleOrderIntent);
+			}
 			return true;
 		case R.id.main_shortcuts_sync_all:
 			
@@ -451,12 +458,17 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
 			startActivity(new Intent(this, SinhonizacijaActivity.class));
 			return true;
 		case R.id.main_options_add_contact:
+			
+			localyticsSession.tagEvent("GLAVNI MENI > KONTAKTI > NOVI KONTAKT");
+			
 			Intent addContactIntent = new Intent(this, AddContactActivity.class);
 			startActivity(addContactIntent);
 			return true;
 		case R.id.main_options_update_items:
+			
+			localyticsSession.tagEvent("GLAVNI MENI > ARTIKLI > AZURIRAJ SA TABLETA");
+			
 			Intent addSaTabletaIntent = new Intent(this, AzurirajSaTableta.class);
-			//Intent addSaTabletaIntent = new Intent(this, NovaKarticaKupcaActivity.class);
 			startActivity(addSaTabletaIntent);
 			return true;
 		default:
@@ -620,6 +632,24 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
 	public void onProviderDisabled(String provider) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void onNovaPorudzbinaDialogFinished(int customerId, String customerNo, 
+			String potentialCustomerNo, String branchCode, int businessUnitId, String businessUnitNo, int salesType, boolean newSaleOrder) {
+		
+		Intent novaKarticaKupca = new Intent(this, NovaKarticaKupcaMasterActivity.class);
+		novaKarticaKupca.setAction(Intent.ACTION_INSERT);
+		novaKarticaKupca.putExtra("customerId", customerId);
+		novaKarticaKupca.putExtra("customerNo", customerNo);
+		novaKarticaKupca.putExtra("potentialCustomerNo", potentialCustomerNo);
+		novaKarticaKupca.putExtra("branchCode", branchCode);
+		novaKarticaKupca.putExtra("businessUnitId", businessUnitId);
+		novaKarticaKupca.putExtra("businessUnitNo", businessUnitNo);
+		novaKarticaKupca.putExtra("salesType", salesType);
+		novaKarticaKupca.putExtra("salesPersonId", SharedPreferencesUtil.getSalePersonId(this));
+		novaKarticaKupca.putExtra("salesPersonNo", SharedPreferencesUtil.getSalePersonNo(this));
+		startActivity(novaKarticaKupca);
 	}
 
 }

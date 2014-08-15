@@ -45,6 +45,29 @@
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
+        
+        <TableRow
+            android:id="@+id/edit_sale_order_business_unit_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/edit_sale_order_business_unit_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/poslovnaJedinica" />
+
+            <Button
+                android:id="@+id/edit_sale_order_business_unit_spinner"
+                style="@style/EditEvent_SpinnerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:gravity="center_vertical" />
+        </TableRow>
 
         <TableRow
             android:id="@+id/edit_sale_order_dokument_type_no_group"
@@ -361,7 +384,7 @@
                 <LinearLayout
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
+                    android:layout_weight="8"
                     android:animateLayoutChanges="false"
                     android:orientation="vertical" >
 
@@ -390,7 +413,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:animateLayoutChanges="false"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/edit_sale_order_desired_delivery_date_label"

@@ -60,12 +60,17 @@ public class CustomerDomain extends Domain {
 	public String next_15_days_invoice_due_amount;
 	public String next_15_days_due_invoice_count;
 	public String financial_control_status;
+	public String has_business_units;
+	public String primary_alternative_address_no;
+	public String primary_alternative_address_address;
+	public String primary_alternative_address_post_code;
+	public String primary_alternative_address_city;
 
 	private static final String[] COLUMNS = new String[] { "customer_no", "name", "name2", "address", "city", "phone", "mobile", "global_dimension", "credit_limit_lcy", "payment_terms_code", "sales_person_no", "priority", "vat_reg_no",
 			"post_code", "email", "primary_contact_id", "company_id", "channel_oran", "sml", "adopted_potential", "focus_customer", "division", "gross_profit_pfep", "apr_customer_turnover", "number_of_blue_coat", "number_of_grey_coat", "contact_company_no", "balance_lcy",
 			"balance_due_lcy", "internal_balance_due_lcy", "turnover_in_last_3m", "turnover_in_last_6m", "turnover_in_last_12m", "turnover_generated_3", "turnover_generated_2", "turnover_generated_1", "number_of_diff_items_3",
 			"number_of_diff_items_2", "number_of_diff_items_1", "orsy_shelf_count_at_cust", "customer_12_months_plan", "avarage_payment_days", "turnover_ytm", "number_of_salespersons_working_with_customer", "days_since_oldest_open_invoice",
-			"next_15_days_invoice_due_amount", "next_15_days_due_invoice_count", "financial_control_status"
+			"next_15_days_invoice_due_amount", "next_15_days_due_invoice_count", "financial_control_status", "has_business_units", "primary_alternative_address_no", "primary_alternative_address_address", "primary_alternative_address_post_code", "primary_alternative_address_city"
 
 	};
 
@@ -136,6 +141,12 @@ public class CustomerDomain extends Domain {
 		contentValues.put(MobileStoreContract.Customers.NEXT_15_DAYS_INVOICE_DUE_AMOUNT , WsDataFormatEnUsLatin.toDoubleFromWs(getNext_15_days_invoice_due_amount()));
 		contentValues.put(MobileStoreContract.Customers.NEXT_15_DAYS_DUE_INVOICE_COUNT , getNext_15_days_due_invoice_count());
 		contentValues.put(MobileStoreContract.Customers.FINANCIAL_CONTROL_STATUS, getFinancial_control_status());
+		
+		contentValues.put(MobileStoreContract.Customers.HAS_BUSINESS_UNITS, getHas_business_units());
+		contentValues.put(MobileStoreContract.Customers.PRIMARY_ALTERNATIVE_ADDRESS_NO, getPrimary_alternative_address_no());
+		contentValues.put(MobileStoreContract.Customers.PRIMARY_ALTERNATIVE_ADDRESS_ADDRESS, getPrimary_alternative_address_address());
+		contentValues.put(MobileStoreContract.Customers.PRIMARY_ALTERNATIVE_ADDRESS_POST_CODE, getPrimary_alternative_address_post_code());
+		contentValues.put(MobileStoreContract.Customers.PRIMARY_ALTERNATIVE_ADDRESS_CITY, getPrimary_alternative_address_city());
 
 		return contentValues;
 	}
@@ -513,6 +524,66 @@ public class CustomerDomain extends Domain {
 
 	public void setTurnover_ytm(String turnover_ytm) {
 		this.turnover_ytm = turnover_ytm;
+	}
+
+	public String getApr_customer_turnover() {
+		return apr_customer_turnover;
+	}
+
+	public void setApr_customer_turnover(String apr_customer_turnover) {
+		this.apr_customer_turnover = apr_customer_turnover;
+	}
+
+	public String getContact_company_no() {
+		return contact_company_no;
+	}
+
+	public void setContact_company_no(String contact_company_no) {
+		this.contact_company_no = contact_company_no;
+	}
+
+	public String getHas_business_units() {
+		return has_business_units;
+	}
+
+	public void setHas_business_units(String has_business_units) {
+		this.has_business_units = has_business_units;
+	}
+
+	public String getPrimary_alternative_address_no() {
+		return primary_alternative_address_no;
+	}
+
+	public void setPrimary_alternative_address_no(
+			String primary_alternative_address_no) {
+		this.primary_alternative_address_no = primary_alternative_address_no;
+	}
+
+	public String getPrimary_alternative_address_address() {
+		return primary_alternative_address_address;
+	}
+
+	public void setPrimary_alternative_address_address(
+			String primary_alternative_address_address) {
+		this.primary_alternative_address_address = primary_alternative_address_address;
+	}
+
+	public String getPrimary_alternative_address_post_code() {
+		return primary_alternative_address_post_code;
+	}
+
+	public void setPrimary_alternative_address_post_code(
+			String primary_alternative_address_post_code) {
+		this.primary_alternative_address_post_code = primary_alternative_address_post_code;
+	}
+
+	public String getPrimary_alternative_address_city() {
+		return primary_alternative_address_city;
+	}
+
+	public void setPrimary_alternative_address_city(
+			String primary_alternative_address_city) {
+		this.primary_alternative_address_city = primary_alternative_address_city;
 	}
 
 }

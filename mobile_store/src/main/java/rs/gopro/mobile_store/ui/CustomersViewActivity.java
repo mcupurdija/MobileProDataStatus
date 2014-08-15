@@ -12,6 +12,7 @@ import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.CreateCustomerFromPotential;
 import rs.gopro.mobile_store.ws.model.CustomerAddressesSyncObject;
+import rs.gopro.mobile_store.ws.model.CustomerItemOnPromotionSyncObject;
 import rs.gopro.mobile_store.ws.model.CustomerSyncObject;
 import rs.gopro.mobile_store.ws.model.GetContactsSyncObject;
 import rs.gopro.mobile_store.ws.model.GetPotentialCustomerSyncObject;
@@ -195,6 +196,10 @@ public class CustomersViewActivity extends BaseActivity implements CustomersView
 			GetPotentialCustomerSyncObject potentialCustSyncObject = new GetPotentialCustomerSyncObject("", "", salesPersonNo, DateUtils.getWsDummyDate());
 			intentPotentialCust.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT,potentialCustSyncObject);
 			startService(intentPotentialCust);
+			Intent intentItemsOnPromotion = new Intent(this, NavisionSyncService.class);
+			CustomerItemOnPromotionSyncObject itemOnPromotionSyncObject = new CustomerItemOnPromotionSyncObject("", "", salesPersonNo);
+			intentItemsOnPromotion.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemOnPromotionSyncObject);
+			startService(intentItemsOnPromotion);
 			syncProgressDialog = ProgressDialog.show(this, getResources().getString(R.string.dialog_title_customers_receive), getResources().getString(R.string.dialog_body_customers_receive), true, true);
 			return true;
 		case R.id.edit_customers:

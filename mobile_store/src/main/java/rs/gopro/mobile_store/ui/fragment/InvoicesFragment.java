@@ -87,7 +87,9 @@ public class InvoicesFragment extends ListFragment implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
-			invoicesLoadProgressDialog.dismiss();
+			if (invoicesLoadProgressDialog != null && invoicesLoadProgressDialog.isShowing()) {
+				invoicesLoadProgressDialog.dismiss();
+			}
 			onSOAPResult(syncResult, intent.getAction());
 		}
 	};

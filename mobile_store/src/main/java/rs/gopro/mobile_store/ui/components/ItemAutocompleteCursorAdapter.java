@@ -17,9 +17,10 @@ public class ItemAutocompleteCursorAdapter extends CursorAdapter implements
 		Filterable {
 
 	private static final String[] ITEM_PROJECTION = new String[] {
-		MobileStoreContract.Items._ID,
-		MobileStoreContract.Items.ITEM_NO,
-		MobileStoreContract.Items.DESCRIPTION
+		MobileStoreContract.Items._ID, 
+		MobileStoreContract.Items.ITEM_NO, 
+		MobileStoreContract.Items.DESCRIPTION, 
+		MobileStoreContract.Items.MIN_QTY 
 	};
 
 	private Context mContext;
@@ -67,8 +68,7 @@ public class ItemAutocompleteCursorAdapter extends CursorAdapter implements
 		Cursor cursor = null;
 		if (mContext.getContentResolver() != null && constraint != null) {
 			cursor = mContext.getContentResolver().query(
-					Items.buildAutocompleteSearchUri(constraint == null ? ""
-							: constraint.toString()), ITEM_PROJECTION,
+					Items.buildAutocompleteSearchUri(constraint == null ? "" : constraint.toString()), ITEM_PROJECTION,
 					null, null, Tables.ITEMS+"." + Items.ITEM_NO + " ASC");
 		}
 		return cursor;

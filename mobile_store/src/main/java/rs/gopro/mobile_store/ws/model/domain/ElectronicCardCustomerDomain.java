@@ -12,6 +12,7 @@ import android.content.ContentValues;
 public class ElectronicCardCustomerDomain extends Domain {
 
 	public String customer_no;
+	public String business_unit_no;
 	public String item_no;
 	public String january_qty;
 	public String february_qty;
@@ -33,11 +34,14 @@ public class ElectronicCardCustomerDomain extends Domain {
 	public String sales_line_counts_prior_year;
 	public String last_line_discount;
 	public String color;
+	public String entry_type;
 	public String sorting_index;
+	public String sale_per_branch_index;
 	public String item_description;
-
-	private static final String[] COLUMNS = new String[] { "customer_no", "item_no", "january_qty", "february_qty", "march_qty", "april_qty", "may_qty", "june_qty", "july_qty", "august_qty", "september_qty", "october_qty", "november_qty",
-			"december_qty", "total_sale_qty_current_year", "total_sale_qty_prior_year", "total_turnover_current_year", "total_turnover_prior_year", "sales_line_counts_current_year", "sales_line_counts_prior_year", "last_line_discount", "color", "sorting_index" };
+	
+	private static final String[] COLUMNS = new String[] { "customer_no", "business_unit_code", "item_no", "january_qty", "february_qty", "march_qty", "april_qty", "may_qty", "june_qty", "july_qty", "august_qty", "september_qty", "october_qty", "november_qty",
+			"december_qty", "total_sale_qty_current_year", "total_sale_qty_prior_year", "total_turnover_current_year", "total_turnover_prior_year", "sales_line_counts_current_year", "sales_line_counts_prior_year", "last_line_discount", "color", "entry_type", 
+			"sorting_index", "sale_per_branch_index" };
 
 	@Override
 	public String[] getCSVMappingStrategy() {
@@ -48,6 +52,7 @@ public class ElectronicCardCustomerDomain extends Domain {
 	public ContentValues getContentValues() {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(ElectronicCardCustomer.CUSTOMER_NO, getCustomer_no());
+		contentValues.put(ElectronicCardCustomer.BUSINESS_UNIT_NO, getBusiness_unit_no());
 		contentValues.put(ElectronicCardCustomer.ITEM_NO, getItem_no());
 		contentValues.put(ElectronicCardCustomer.JANUARY_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getJanuary_qty()));
 		contentValues.put(ElectronicCardCustomer.FEBRUARY_QTY, WsDataFormatEnUsLatin.toDoubleFromWs(getFebruary_qty()));
@@ -69,7 +74,9 @@ public class ElectronicCardCustomerDomain extends Domain {
 		contentValues.put(ElectronicCardCustomer.SALES_LINE_COUNTS_PRIOR_YEAR, WsDataFormatEnUsLatin.toDoubleFromWs(getSales_line_counts_prior_year()));
 		contentValues.put(ElectronicCardCustomer.LAST_LINE_DISCOUNT, WsDataFormatEnUsLatin.toDoubleFromWs(getLast_line_discount()));
 		contentValues.put(ElectronicCardCustomer.COLOR, getColor());
+		contentValues.put(ElectronicCardCustomer.ENTRY_TYPE, getEntry_type());
 		contentValues.put(ElectronicCardCustomer.SORTING_INDEX, getSorting_index());
+		contentValues.put(ElectronicCardCustomer.SALE_PER_BRANCH_INDEX, getSale_per_branch_index());
 		return contentValues;
 	}
 
@@ -88,6 +95,14 @@ public class ElectronicCardCustomerDomain extends Domain {
 
 	public void setCustomer_no(String customer_no) {
 		this.customer_no = customer_no;
+	}
+
+	public String getBusiness_unit_no() {
+		return business_unit_no;
+	}
+
+	public void setBusiness_unit_no(String business_unit_no) {
+		this.business_unit_no = business_unit_no;
 	}
 
 	public String getItem_no() {
@@ -258,6 +273,14 @@ public class ElectronicCardCustomerDomain extends Domain {
 		this.color = color;
 	}
 
+	public String getEntry_type() {
+		return entry_type;
+	}
+
+	public void setEntry_type(String entry_type) {
+		this.entry_type = entry_type;
+	}
+
 	public String getSorting_index() {
 		return sorting_index;
 	}
@@ -272,6 +295,14 @@ public class ElectronicCardCustomerDomain extends Domain {
 
 	public void setItem_description(String item_description) {
 		this.item_description = item_description;
+	}
+
+	public String getSale_per_branch_index() {
+		return sale_per_branch_index;
+	}
+
+	public void setSale_per_branch_index(String sale_per_branch_index) {
+		this.sale_per_branch_index = sale_per_branch_index;
 	}
 	
 }

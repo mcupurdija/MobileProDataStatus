@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/background_tabs"
+        android:orientation="horizontal" >
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#D2D1D1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <ListView
+            android:id="@+id/lvKorpa"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="@android:color/white"
+            android:descendantFocusability="beforeDescendants"
+            android:fadeScrollbars="false" >
+        </ListView>
+
+        <View
+            android:id="@+id/spacer"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:background="#D2D1D1" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2" >
+
+            <RelativeLayout
+                android:id="@+id/rlKorpaDetalji"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/spacer2" >
+
+                <RelativeLayout
+                    android:id="@+id/rlKorpaDetaljiContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_tabs_diagonal"
+                    android:padding="10dp"
+                    android:visibility="invisible" >
+
+                    <RelativeLayout
+                        android:id="@+id/rlKorpa1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginBottom="6dp" >
+
+                        <TextView
+                            android:id="@+id/tvKolicinaLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/bMin"
+                            android:layout_alignBottom="@+id/bMin"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginRight="5dp"
+                            android:text="@string/invoice_line_quantity"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <Button
+                            android:id="@+id/bSub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/bMin"
+                            android:layout_alignBottom="@+id/bMin"
+                            android:layout_toRightOf="@+id/tvKolicinaLabel"
+                            android:background="@drawable/white_button"
+                            android:text="@string/button_subtract_label" />
+
+                        <EditText
+                            android:id="@+id/etKolicina"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/bMin"
+                            android:layout_alignBottom="@+id/bMin"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_toLeftOf="@+id/bAdd"
+                            android:layout_toRightOf="@+id/bSub"
+                            android:hint=""
+                            android:inputType="numberDecimal"
+                            android:singleLine="true"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <Button
+                            android:id="@+id/bAdd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/bMin"
+                            android:layout_toLeftOf="@+id/bMin"
+                            android:background="@drawable/white_button"
+                            android:text="@string/button_add_label" />
+
+                        <Button
+                            android:id="@+id/bMin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+                            android:background="@drawable/white_button"
+                            android:text="@string/button_multiply_label" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlKorpa2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlKorpa1"
+                        android:layout_marginBottom="6dp" >
+
+                        <TextView
+                            android:id="@+id/tvDostupnaKolicinaLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
+                            android:text="Dostupna količina"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <EditText
+                            android:id="@+id/etKolicinaNaStanju"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/tvDostupnaKolicinaLabel"
+                            android:focusable="false"
+                            android:inputType="numberDecimal" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlKorpa3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlKorpa2"
+                        android:layout_marginBottom="6dp" >
+
+                        <TextView
+                            android:id="@+id/tvCenaBezPopustaLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
+                            android:text="Cena bez popusta"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <EditText
+                            android:id="@+id/etCenaBezPopusta"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/tvCenaBezPopustaLabel"
+                            android:focusable="false"
+                            android:inputType="numberDecimal" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlKorpa4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlKorpa3"
+                        android:layout_marginBottom="6dp" >
+
+                        <TextView
+                            android:id="@+id/tvRabatLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
+                            android:text="Rabat izabrani i max"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <LinearLayout
+                            android:id="@+id/llKorpaRabat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/tvRabatLabel"
+                            android:orientation="horizontal" >
+
+                            <EditText
+                                android:id="@+id/etRabat"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:inputType="numberDecimal" />
+
+                            <EditText
+                                android:id="@+id/etRabatMax"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:focusable="false"
+                                android:inputType="numberDecimal" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlKorpa5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlKorpa4"
+                        android:layout_marginBottom="12dp" >
+
+                        <TextView
+                            android:id="@+id/tvCenaSaPopustomLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
+                            android:text="Cena sa popustom"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <EditText
+                            android:id="@+id/etCenaSaPopustom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/tvCenaSaPopustomLabel"
+                            android:focusable="false"
+                            android:inputType="numberDecimal" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlKorpa6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlKorpa5"
+                        android:layout_marginBottom="12dp" >
+
+                        <TextView
+                            android:id="@+id/tvSkladisteLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
+                            android:text="Skladište"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <Spinner
+                            android:id="@+id/spSkladiste"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/tvSkladisteLabel" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlKorpa7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlKorpa6" >
+
+                        <TextView
+                            android:id="@+id/tvNacinObradeLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
+                            android:text="Način obrade"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <Spinner
+                            android:id="@+id/spNacinObrade"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/tvNacinObradeLabel" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlKorpa8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true" >
+
+                        <Button
+                            android:id="@+id/bPreuzmiCenu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:background="@drawable/white_button"
+                            android:text="@string/dugmePreuzmiCenu" />
+
+                        <Button
+                            android:id="@+id/bObrisi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/bPreuzmiCenu"
+                            android:background="@drawable/white_button"
+                            android:text="Obriši" />
+
+                        <Button
+                            android:id="@+id/bSacuvaj"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/bObrisi"
+                            android:background="@drawable/white_button"
+                            android:text="Sačuvaj" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tvNisteOdabraliArtikal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/korpaJePrazna"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <ProgressBar
+                    android:id="@+id/pbBottom"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/spacer2"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_above="@+id/rlKorpaSuma"
+                android:background="#D2D1D1" />
+
+            <RelativeLayout
+                android:id="@+id/rlKorpaSuma"
+                android:layout_width="match_parent"
+                android:layout_height="89dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:background="@android:color/white" >
+
+                <LinearLayout
+                    android:id="@+id/llSumaKorpe"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_above="@+id/spacer3"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Iznos korpe:"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/tvKorpaSuma"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="right"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/spacer3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_above="@+id/llSumaKorpePDV"
+                    android:background="#D2D1D1" />
+
+                <LinearLayout
+                    android:id="@+id/llSumaKorpePDV"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Iznos korpe sa PDV:"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/tvKorpaSumaPDV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="right"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

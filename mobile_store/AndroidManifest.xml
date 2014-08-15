@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="rs.gopro.mobile_store"
-    android:versionCode="17"
-    android:versionName="1.7.0" >
+    android:versionCode="20"
+    android:versionName="2.0.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="13"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -21,25 +22,25 @@
         android:label="@string/app_name"
         android:theme="@style/MobileStoreTheme" >
         <activity
-            android:name="rs.gopro.mobile_store.ui.HomeScreenActivity"
+            android:name=".ui.HomeScreenActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop" >
         </activity>
 
-        <service android:name="rs.gopro.mobile_store.ws.NavisionSyncService" />
+        <service android:name=".ws.NavisionSyncService" />
 
         <activity
-            android:name="rs.gopro.mobile_store.ui.LoginActivity"
+            android:name=".ui.LoginActivity"
             android:exported="false"
             android:label="@string/login_title" >
         </activity>
-        <activity android:name="rs.gopro.mobile_store.ui.ActionMenuActivity" />
+        <activity android:name=".ui.ActionMenuActivity" />
         <activity
-            android:name="rs.gopro.mobile_store.ui.NovaRealizacijaActivity"
+            android:name=".ui.NovaRealizacijaActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name="rs.gopro.mobile_store.ui.NoviPlanActivity" />
+        <activity android:name=".ui.NoviPlanActivity" />
         <activity
-            android:name="rs.gopro.mobile_store.ui.MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:launchMode="standard" >
             <intent-filter>
@@ -49,28 +50,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.AddVisitActivity"
+            android:name=".ui.AddVisitActivity"
             android:exported="false" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.AddContactActivity"
+            android:name=".ui.AddContactActivity"
             android:exported="false" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.SinhonizacijaActivity"
+            android:name=".ui.SinhonizacijaActivity"
             android:exported="false" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.ElectronicCardCustomerActivity"
+            android:name=".ui.ElectronicCardCustomerActivity"
             android:exported="false"
             android:label="@string/ecc_activity_title" >
             <intent-filter>
@@ -93,7 +94,7 @@
                 android:value=".ui.MainActivity" />
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.CustomerTradeAgreementActivity"
+            android:name=".ui.CustomerTradeAgreementActivity"
             android:exported="false"
             android:label="@string/cus_trade_agree_activity_title" >
             <intent-filter>
@@ -116,7 +117,7 @@
                 android:value=".ui.MainActivity" />
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.RecordVisitsMultipaneActivity"
+            android:name=".ui.RecordVisitsMultipaneActivity"
             android:exported="false"
             android:label="@string/app_name"
             android:launchMode="singleTop" >
@@ -140,7 +141,7 @@
                 android:value=".ui.MainActivity" />
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.VisitsMultipaneActivity"
+            android:name=".ui.VisitsMultipaneActivity"
             android:exported="false"
             android:label="@string/app_name"
             android:launchMode="singleTop" >
@@ -164,7 +165,7 @@
                 android:value=".ui.MainActivity" />
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.SaleOrdersPreviewActivity"
+            android:name=".ui.SaleOrdersPreviewActivity"
             android:exported="false"
             android:label="@string/app_name" >
             <intent-filter>
@@ -186,7 +187,7 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data android:mimeType="vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.invoice_lines"/>
-            </intent-filter>
+            </intent-filter>
             -->
 
             <meta-data
@@ -194,7 +195,7 @@
                 android:value=".ui.MainActivity" />
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.CustomersViewActivity"
+            android:name=".ui.CustomersViewActivity"
             android:exported="false"
             android:label="@string/app_name" >
             <intent-filter>
@@ -217,14 +218,14 @@
                 android:value=".ui.MainActivity" />
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.NewVisitActivity"
+            android:name=".ui.NewVisitActivity"
             android:exported="false" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.VisitsMultipaneActivity" />
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.SaleOrderAddEditActivity"
+            android:name=".ui.SaleOrderAddEditActivity"
             android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
@@ -247,7 +248,7 @@
                 android:value=".ui.SaleOrdersPreviewActivity" />
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.MobileStoreSettingsActivity"
+            android:name=".ui.MobileStoreSettingsActivity"
             android:exported="false"
             android:label="Settings" >
             <intent-filter>
@@ -257,7 +258,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.SaleOrderLinesAddEditActivity"
+            android:name=".ui.SaleOrderLinesAddEditActivity"
             android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
@@ -272,7 +273,7 @@
                 android:value=".ui.SaleOrdersPreviewActivity" />
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.AddPotentialCustomerActivity"
+            android:name=".ui.AddPotentialCustomerActivity"
             android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.INSERT" />
@@ -294,7 +295,7 @@
                 android:value=".ui.CustomersViewActivity" />
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.AzurirajSaTableta"
+            android:name=".ui.AzurirajSaTableta"
             android:exported="false"
             android:screenOrientation="landscape" >
             <meta-data
@@ -317,27 +318,37 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.NoviEkkPregled"
+            android:name=".ui.NoviEkkPregled"
             android:exported="false"
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name="rs.gopro.mobile_store.ui.NovaKarticaKupcaActivity"
-            android:label="@string/title_activity_nova_kartica_kupca"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="landscape" >
+            android:name=".ui.NovaKarticaKupcaMasterActivity"
+            android:label="@string/title_activity_nova_kartica_kupca_master"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
 
-        <!-- PROD -->
+        <!-- PROD 76adf3e6d06b8eef8f23a20-c477ee24-130c-11e4-9e96-005cf8cbabd8 -->
         <!-- DEV 2acd137d30233d39e4af864-9ad6f5ba-fd41-11e3-9f8e-009c5fda0a25 -->
         <meta-data
             android:name="LOCALYTICS_APP_KEY"
             android:value="2acd137d30233d39e4af864-9ad6f5ba-fd41-11e3-9f8e-009c5fda0a25" />
 
         <provider
-            android:name="rs.gopro.mobile_store.provider.MobileStoreContentProvider"
+            android:name=".provider.MobileStoreContentProvider"
             android:authorities="rs.gopro.mobile_store.provider.mobile_store_provider"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.MisicaActivity"
+            android:label="@string/title_activity_misica" >
+        </activity>
+        <activity
+            android:name=".ui.MisicaActivity2"
+            android:label="@string/title_activity_misica" >
+        </activity>
     </application>
 
 </manifest>

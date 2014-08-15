@@ -24,7 +24,7 @@
 
     <!--
          SimpleListItems are items whose containers provides the appropriate padding, and
-         usually the container and content are a single view.
+         usually the container and content are a single view.
     -->
     <style name="SimpleListItem" parent="ListItemContainerBase">
         <item name="android:paddingLeft">8dp</item>
@@ -123,21 +123,22 @@
     <style name="table_cell_text_view">
         <item name="android:background">@drawable/cell_shape</item>
         <item name="android:gravity">center_horizontal|center_vertical</item>
-         <item name="android:paddingBottom">5dp</item>
-        <item name="android:paddingTop">5dp</item> 
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingTop">5dp</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
 
     <style name="table_cell_text_view_header" parent="table_cell_text_view">
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="noviKontaktTekst">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
-    <style name="noviKontaktInput">
-    </style>
+
+    <style name="noviKontaktInput"></style>
+
     <style name="noviKontaktInputSpinnerStyle" parent="android:style/Widget.Holo.Light.Spinner">
         <item name="android:paddingLeft">12dp</item>
     </style>

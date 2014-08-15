@@ -85,6 +85,6 @@
         android:layout_margin="16dip"
         android:background="@drawable/white_button"
         android:gravity="center"
-        android:text="OK" />
+        android:text="@string/buttonOK" />
 
 </LinearLayout>

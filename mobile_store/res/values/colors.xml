@@ -32,4 +32,6 @@
     <color name="main_menu_category_background">#605d5c</color>
     <color name="main_menu_category_text">#ffffffff</color>
     
+    <color name="background_tab_pressed">#6633B5E5</color>
+    
 </resources>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlNovaKKL"
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:background="@drawable/list_item_background" >
+
+    <TextView
+        android:id="@+id/tvNovaKKsifraArtikla"
+        android:layout_width="105dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:focusable="false"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvNovaKKopisArtikla"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/vNovaKKboja"
+        android:layout_toRightOf="@+id/tvNovaKKsifraArtikla"
+        android:focusable="false"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/vNovaKKboja"
+        android:layout_width="10dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@+id/tvNovaKKrb"
+        android:padding="5dp" />
+
+    <TextView
+        android:id="@+id/tvNovaKKrb"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:focusable="false"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:textSize="16sp" />
+
+</RelativeLayout>

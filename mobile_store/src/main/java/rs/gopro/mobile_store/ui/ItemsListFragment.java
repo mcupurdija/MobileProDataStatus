@@ -70,7 +70,9 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			SyncResult syncResult = intent.getParcelableExtra(NavisionSyncService.SYNC_RESULT);
-			invoicesLoadProgressDialog.dismiss();
+			if (invoicesLoadProgressDialog != null && invoicesLoadProgressDialog.isShowing()) {
+				invoicesLoadProgressDialog.dismiss();
+			}
 			// reset request id because it is finished
 			webServiceRequestId = null;
 			onSOAPResult(syncResult, intent.getAction());

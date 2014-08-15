@@ -208,8 +208,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 			int customer_no_pos = 2;
 			int contact_no_pos = 11;
 			// it is document type ponuda and customer is potential customer
-			if (headerLine[document_type_pos].equals("1")
-					&& isPotentialCustomer(headerLine[customer_no_pos])) {
+			if (headerLine[document_type_pos].equals("1") && isPotentialCustomer(headerLine[customer_no_pos])) {
 				headerLine[contact_no_pos] = headerLine[customer_no_pos];
 				headerLine[customer_no_pos] = "";
 			}
@@ -430,7 +429,8 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 				MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS,
 				MobileStoreContract.SaleOrders.QUOTE_REALIZED_STATUS,
 				MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS,
-				MobileStoreContract.SaleOrders.SHIPMENT_METHOD_CODE };
+				MobileStoreContract.SaleOrders.SHIPMENT_METHOD_CODE,
+				MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE };
 
 		Type[] PROJECTION_TYPE = { Integer.class, String.class, String.class,
 				String.class, String.class, String.class, String.class,
@@ -443,7 +443,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 
 				Integer.class, Integer.class,
 
-				String.class, Integer.class, Integer.class, Integer.class, String.class };
+				String.class, Integer.class, Integer.class, Integer.class, String.class, String.class };
 
 		// int _ID = 0;
 		// int DOCUMENT_TYPE = 1;

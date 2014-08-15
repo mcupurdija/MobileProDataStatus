@@ -11,7 +11,7 @@ public class ApplicationConstants {
 	public static final Integer SUCCESS = 1;
 	public static final Integer FAILURE = 2;
 	
-	public static final double VAT = 0.2;
+	public static final double VAT = 0.19;
 
 	public static final int VISIT_PLANNED = 0;
 	public static final int VISIT_RECORDED = 1;
@@ -33,6 +33,10 @@ public class ApplicationConstants {
 	
 	public static final String SALT = "668459116";
 	public static final String WEB_REPORTING_BASE_URL = "http://10.94.1.11/";
+	public static final String IMAGES_BASE_URL = "http://10.94.1.11/SlikeArtikala/";
+	
+	public static final String AP_ENTRY_TYPE = "8";
+	public static final String MS_ENTRY_TYPE = "9";
 	
 	public static enum USER_ROLE {
 		ADMIN, USER

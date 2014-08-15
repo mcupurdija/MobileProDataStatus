@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
-import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 import android.content.ContentValues;
@@ -29,7 +28,11 @@ public class ItemsDomain extends Domain {
 	public String inventory_item_category;
 	public String connected_spec_ship_item;
 	public String unit_sales_price_eur;
-	//public String unit_sales_price_din;
+	public String unit_sales_price_din;
+	public String min_qty;
+	public String bom_items;
+	public String linked_items;
+	
 	//public String campaign_code;
 	//public String cmpaign_start_date;
 	//public String campaign_end_date;
@@ -42,7 +45,7 @@ public class ItemsDomain extends Domain {
 	public ItemsDomain() {
 	}
 
-	private static final String[] COLUMNS = new String[] { "item_no", "description", "unit_of_measure", "campaign_status", "overstock_status", "inventory_item_category", "connected_spec_ship_item" };
+	private static final String[] COLUMNS = new String[] { "item_no", "description", "unit_of_measure", "campaign_status", "overstock_status", "inventory_item_category", "connected_spec_ship_item", "min_qty", "unit_sales_price_din", "bom_items", "linked_items" };
 
 	@Override
 	public String[] getCSVMappingStrategy() {
@@ -62,7 +65,12 @@ public class ItemsDomain extends Domain {
 		contentValues.put(Items.INVENTORY_ITEM_CATEGORY, getInventory_item_category());
 		contentValues.put(Items.CONNECTED_SPEC_SHIP_ITEM, getConnected_spec_ship_item());
 		// TODO data conversion
-		//contentValues.put(Items.UNIT_SALES_PRICE_DIN, WsDataFormatEnUsLatin.toDoubleFromWs(getUnit_sales_price_din().length() < 1 ? "0" : getUnit_sales_price_din()));
+		contentValues.put(Items.UNIT_SALES_PRICE_DIN, WsDataFormatEnUsLatin.toDoubleFromWs(getUnit_sales_price_din().length() < 1 ? "0" : getUnit_sales_price_din()));
+		if (!getMin_qty().equals("0")) {
+			contentValues.put(Items.MIN_QTY, getMin_qty());
+		}
+		contentValues.put(Items.BOM_ITEMS, getBom_items());
+		
 		//contentValues.put(Items.CAMPAIGN_CODE, getCampaign_code());
 		// TODO data conversion
 		//contentValues.put(Items.CMPAIGN_START_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getCmpaign_start_date().length() < 1 ? DateUtils.getDbDummyDate() : getCmpaign_start_date()));
@@ -146,6 +154,38 @@ public class ItemsDomain extends Domain {
 
 	public void setInventory_item_category(String inventory_item_category) {
 		this.inventory_item_category = inventory_item_category;
+	}
+
+	public String getUnit_sales_price_din() {
+		return unit_sales_price_din;
+	}
+
+	public void setUnit_sales_price_din(String unit_sales_price_din) {
+		this.unit_sales_price_din = unit_sales_price_din;
+	}
+
+	public String getMin_qty() {
+		return min_qty;
+	}
+
+	public void setMin_qty(String min_qty) {
+		this.min_qty = min_qty;
+	}
+
+	public String getBom_items() {
+		return bom_items;
+	}
+
+	public void setBom_items(String bom_items) {
+		this.bom_items = bom_items;
+	}
+
+	public String getLinked_items() {
+		return linked_items;
+	}
+
+	public void setLinked_items(String linked_items) {
+		this.linked_items = linked_items;
 	}
 
 }

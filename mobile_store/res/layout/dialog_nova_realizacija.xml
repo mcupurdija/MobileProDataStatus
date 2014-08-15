@@ -28,7 +28,7 @@
         android:layout_marginLeft="16dip"
         android:layout_marginRight="16dip"
         android:gravity="center_vertical"
-        android:text="@string/customer_address_label" />
+        android:text="@string/poslovnaJedinica" />
 
     <Button
         android:id="@+id/dialog_nova_realizacija_adresa_input"
@@ -141,7 +141,7 @@
             android:layout_weight="1"
             android:background="@drawable/white_button"
             android:gravity="center"
-            android:text="OK" />
+            android:text="@string/buttonOK" />
     </LinearLayout>
 
 </LinearLayout>

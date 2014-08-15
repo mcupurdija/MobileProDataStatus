@@ -87,7 +87,7 @@
             android:layout_weight="1"
             android:background="@drawable/white_button"
             android:gravity="center"
-            android:text="Ok" />
+            android:text="@string/buttonOK" />
     </LinearLayout>
 
 </LinearLayout>

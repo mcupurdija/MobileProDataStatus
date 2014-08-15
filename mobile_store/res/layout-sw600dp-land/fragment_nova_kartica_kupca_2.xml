@@ -1,0 +1,715 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
+
+    <RelativeLayout
+        android:id="@+id/rlKKTop"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/background_tabs"
+        android:orientation="horizontal" >
+
+        <View
+            android:id="@+id/spacerTopL"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/llSviArtikli"
+            android:background="#D2D1D1" />
+
+        <LinearLayout
+            android:id="@+id/llSviArtikli"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/spacerTop"
+            android:background="@drawable/background_tab" >
+
+            <TextView
+                android:id="@+id/tvSviArtikli"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/dugmeSviArtikli"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/spacerTop"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/llSlika"
+            android:background="#D2D1D1" />
+
+        <LinearLayout
+            android:id="@+id/llSlika"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/spacerTop1"
+            android:background="@drawable/background_tab" >
+
+            <TextView
+                android:id="@+id/tvSlika"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/dugmeSlika"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/spacerTop1"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/llPromocije"
+            android:background="#D2D1D1" />
+
+        <LinearLayout
+            android:id="@+id/llPromocije"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/spacerTop2"
+            android:background="@drawable/background_tab" >
+
+            <TextView
+                android:id="@+id/tvPromocije"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/dugmePromocije"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <com.readystatesoftware.viewbadger.BadgeView
+                android:id="@+id/badgePromocije"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/spacerTop2"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/llTaskovi"
+            android:background="#D2D1D1" />
+
+        <LinearLayout
+            android:id="@+id/llTaskovi"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/background_tab" >
+
+            <TextView
+                android:id="@+id/tvTaskovi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/dugmeTask"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <com.readystatesoftware.viewbadger.BadgeView
+                android:id="@+id/badgeTaskovi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/spacerMiddle"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/rlKKTop"
+        android:background="#D2D1D1" />
+
+    <LinearLayout
+        android:id="@+id/llKKliste"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/spacerBottom"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/spacerMiddle"
+        android:background="@android:color/white"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:id="@+id/rlKKLeft"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/rlKKLeftStavke"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/etKKFilterLeft"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/tbLeftKK"
+                    android:layout_toLeftOf="@+id/tbLeftKK"
+                    android:ems="10"
+                    android:hint="@string/filterArtikla"
+                    android:inputType="text" >
+                </EditText>
+
+                <ToggleButton
+                    android:id="@+id/tbLeftKK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="-3dp"
+                    android:layout_marginRight="-3dp"
+                    android:layout_toLeftOf="@+id/tbLeftAKK"
+                    android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textOff="@string/dugmeKK"
+                    android:textOn="@string/dugmeKK"
+                    android:textStyle="bold" />
+
+                <ToggleButton
+                    android:id="@+id/tbLeftAKK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="-3dp"
+                    android:layout_marginRight="-3dp"
+                    android:layout_toLeftOf="@+id/tbLeftMS"
+                    android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textOff="@string/dugmeAKK"
+                    android:textOn="@string/dugmeAKK"
+                    android:textStyle="bold" />
+
+                <ToggleButton
+                    android:id="@+id/tbLeftMS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="-3dp"
+                    android:layout_marginRight="-3dp"
+                    android:layout_toLeftOf="@+id/tbLeftAP"
+                    android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textOff="@string/dugmeMS"
+                    android:textOn="@string/dugmeMS"
+                    android:textStyle="bold" />
+
+                <ToggleButton
+                    android:id="@+id/tbLeftAP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="-3dp"
+                    android:layout_marginRight="-3dp"
+                    android:layout_toLeftOf="@+id/tbLeftOVS"
+                    android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textOff="@string/dugmeAP"
+                    android:textOn="@string/dugmeAP"
+                    android:textStyle="bold" />
+
+                <ToggleButton
+                    android:id="@+id/tbLeftOVS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="-3dp"
+                    android:layout_marginRight="-3dp"
+                    android:layout_toLeftOf="@+id/tbLeftAKC"
+                    android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textOff="@string/dugmeOVS"
+                    android:textOn="@string/dugmeOVS"
+                    android:textStyle="bold" />
+
+                <ToggleButton
+                    android:id="@+id/tbLeftAKC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="-3dp"
+                    android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textOff="@string/dugmeAKC"
+                    android:textOn="@string/dugmeAKC"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <ProgressBar
+                android:id="@+id/pbLeft"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+            <ListView
+                android:id="@+id/lvKKLeft"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rlKKLeftStavke"
+                android:descendantFocusability="beforeDescendants"
+                android:fadeScrollbars="false" >
+            </ListView>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/spacer"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:background="#D2D1D1" />
+
+        <RelativeLayout
+            android:id="@+id/rlKKRight"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/rlKKRightStavke"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/transparent_rectangle"
+                    android:text="@string/dugmePromocijeShort"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/etKKFilterRight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/tbRightAKCA"
+                    android:layout_toLeftOf="@+id/tbRightBack"
+                    android:layout_toRightOf="@+id/tvStatus"
+                    android:ems="10"
+                    android:hint="@string/filterArtikla"
+                    android:inputType="text" >
+                </EditText>
+
+                <ToggleButton
+                    android:id="@+id/tbRightBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="-3dp"
+                    android:layout_marginRight="-3dp"
+                    android:layout_toLeftOf="@+id/tbRightAKCA"
+                    android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <ToggleButton
+                    android:id="@+id/tbRightAKCA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="-3dp"
+                    android:layout_marginRight="-3dp"
+                    android:layout_toLeftOf="@+id/tbRightVeza"
+                    android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textOff="@string/dugmeAKCA"
+                    android:textOn="@string/dugmeAKCA"
+                    android:textStyle="bold" />
+
+                <ToggleButton
+                    android:id="@+id/tbRightVeza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="-3dp"
+                    android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textOff="@string/dugmeVeza"
+                    android:textOn="@string/dugmeVeza"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <ProgressBar
+                android:id="@+id/pbRight"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+            <ImageView
+                android:id="@+id/ivPromo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/dugmePromocije"
+                android:paddingTop="50dp"
+                android:src="@drawable/promo"
+                android:visibility="gone" />
+
+            <ListView
+                android:id="@+id/lvKKRight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rlKKRightStavke"
+                android:descendantFocusability="beforeDescendants"
+                android:fadeScrollbars="false" >
+            </ListView>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/spacerBottom"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_above="@+id/rlKKbottom"
+        android:background="#D2D1D1" />
+
+    <RelativeLayout
+        android:id="@+id/rlKKbottom"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" >
+
+        <RelativeLayout
+            android:id="@+id/rlKKbottomContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_tabs_diagonal"
+            android:padding="10dp"
+            android:visibility="invisible" >
+
+            <LinearLayout
+                android:id="@+id/llCene"
+                android:layout_width="600dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:baselineAligned="false"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/tvVrednostLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/jedinicnaCena"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/tvCena"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="right"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/tvVrednostPDVLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/jedinicnaCenaRabat"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/tvCenaRabat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="right"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="5"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/tvCenaLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ukupnaVrednost"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/tvVrednost"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="right"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/tvCenaRabatLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ukupnaVrednostPdv"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/tvSumaKorpe"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="right"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlSifraOpis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="5dp"
+                android:layout_toLeftOf="@+id/bDodajArtikal" >
+
+                <TextView
+                    android:id="@+id/tvSifraArtikla"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/tvSpacer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_toRightOf="@+id/tvSifraArtikla"
+                    android:text="@string/spacerText"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/tvOpisArtikla"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tvSpacer"
+                    android:singleLine="true"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlKolicina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/rlSifraOpis" >
+
+                <TextView
+                    android:id="@+id/tvKolicinaLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/bMin"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="5dp"
+                    android:text="@string/invoice_line_quantity"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Button
+                    android:id="@+id/bSub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tvKolicinaLabel"
+                    android:background="@drawable/white_button"
+                    android:text="@string/button_subtract_label" />
+
+                <EditText
+                    android:id="@+id/etKolicina"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/bMin"
+                    android:layout_toRightOf="@+id/bSub"
+                    android:ems="5"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textAppearance="?android:attr/textAppearanceMedium" >
+                </EditText>
+
+                <TextView
+                    android:id="@+id/tvOd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/bMin"
+                    android:layout_toRightOf="@+id/etKolicina"
+                    android:text=" / "
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/etKolicinaNaStanju"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/bMin"
+                    android:layout_toRightOf="@+id/tvOd"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textAppearance="?android:attr/textAppearanceMedium" >
+                </EditText>
+
+                <Button
+                    android:id="@+id/bAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/etKolicinaNaStanju"
+                    android:background="@drawable/white_button"
+                    android:text="@string/button_add_label" />
+
+                <Button
+                    android:id="@+id/bMin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/bAdd"
+                    android:background="@drawable/white_button"
+                    android:text="@string/button_multiply_label" />
+
+                <Button
+                    android:id="@+id/bPreuzmiCenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@+id/bMin"
+                    android:background="@drawable/white_button"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="@string/dugmePreuzmiCenu" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlRabat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignTop="@+id/llCene"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@+id/llCene" >
+
+                <TextView
+                    android:id="@+id/tvRabatLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:text="@string/rabatIzabraniMax"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <LinearLayout
+                    android:id="@+id/llKorpaRabat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/tvRabatLabel"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/etRabat"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="5"
+                        android:inputType="numberDecimal" />
+
+                    <EditText
+                        android:id="@+id/etRabatMax"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="5"
+                        android:focusable="false"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/bDodajArtikal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/rlKolicina"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/rlKolicina"
+                android:background="@drawable/white_button"
+                android:text="@string/dugmeDodajArtikal" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvNisteOdabraliArtikal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/nisteOdabraliArtikal"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <ProgressBar
+            android:id="@+id/pbBottom"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</RelativeLayout>

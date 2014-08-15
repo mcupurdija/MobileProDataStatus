@@ -61,6 +61,10 @@ public class MobileStoreContract {
 	private static final String PATH_APP_SETTINGS = "app_settings";
 	private static final String PATH_SERVICE_ORDERS_EXPORT = "service_orders_export";
 	private static final String PATH_CITIES = "cities";
+	private static final String PATH_BUSINESS_UNITS = "customer_business_units";
+	private static final String PATH_UNIT_NO = "unit_no";
+	private static final String PATH_ITEMS_ON_PROMOTION = "items_on_promotion";
+	private static final String PATH_ACTION_PLAN = "action_plan";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -141,6 +145,11 @@ public class MobileStoreContract {
 		String ADDRESS = "address";
 		String CITY = "city";
 		String POST_CODE = "post_code";
+		String HAS_BUSINESS_UNITS = "has_business_units";
+		String PRIMARY_ALTERNATIVE_ADDRESS_NO = "primary_alternative_address_no";
+		String PRIMARY_ALTERNATIVE_ADDRESS_ADDRESS = "primary_alternative_address_address";
+		String PRIMARY_ALTERNATIVE_ADDRESS_CITY = "primary_alternative_address_city";
+		String PRIMARY_ALTERNATIVE_ADDRESS_POST_CODE = "primary_alternative_address_post_code";
 		String PHONE = "phone";
 		String MOBILE = "mobile";
 		String EMAIL = "email";
@@ -193,6 +202,7 @@ public class MobileStoreContract {
 		String IS_SENT = "is_sent";
 		
 		String LAST_ECC_SYNC_DATE = "last_ecc_sync_date";
+		String LAST_ACTION_PLAN_SYNC_DATE = "last_action_plan_sync_date";
 	}
 
 	public interface ItemsColumns {
@@ -212,6 +222,9 @@ public class MobileStoreContract {
 		String CAMPAIGN_END_DATE = "campaign_end_date";
 		String INVENTORY_ITEM_CATEGORY = "inventory_item_category";
 		String SYNC_OBJECT_BATCH = "sync_object_batch";
+		String MIN_QTY = "min_qty";
+		String BOM_ITEMS = "bom_items";
+		String LINKED_ITEMS = "linked_items";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
@@ -386,6 +399,7 @@ public class MobileStoreContract {
 	
 	public interface ElectronicCardCustomerColumns {
 		String CUSTOMER_ID = "customer_id";
+		String BUSINESS_UNIT_NO = "business_unit_no";
 		String ITEM_ID = "item_id";
 		String JANUARY_QTY = "january_qty";
 		String FEBRUARY_QTY = "february_qty";
@@ -407,8 +421,9 @@ public class MobileStoreContract {
 		String SALES_LINE_COUNTS_PRIOR_YEAR = "sales_line_counts_prior_year";
 		String LAST_LINE_DISCOUNT = "last_line_discount";
 		String COLOR = "color";
-		String SORTING_INDEX = "sorting_index";
 		String ENTRY_TYPE = "entry_type";
+		String SORTING_INDEX = "sorting_index";
+		String SALE_PER_BRANCH_INDEX = "sale_per_branch_index";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
@@ -499,6 +514,39 @@ public class MobileStoreContract {
 	public interface CitiesColumns {
 		String ZIP = "zip";
 		String CITY = "city";
+	}
+	
+	public interface BusinessUnitsColumns {
+		String UNIT_NO = "unit_no";
+		String UNIT_NAME = "unit_name";
+		String CUSTOMER_NO = "customer_no";
+		String ADDRESS = "address";
+		String CITY = "city";
+		String CONTACT = "contact";
+		String PHONE_NO = "phone_no";
+		String POST_CODE = "post_code";
+		String PRIMARY_ALTERNATIVE_ADDRESS_NO = "primary_alternative_address_no";
+		String PRIMARY_ALTERNATIVE_ADDRESS_ADDRESS = "primary_alternative_address_address";
+		String PRIMARY_ALTERNATIVE_ADDRESS_CITY = "primary_alternative_address_city";
+		String PRIMARY_ALTERNATIVE_ADDRESS_POST_CODE = "primary_alternative_address_post_code";
+		String LAST_ACTION_PLAN_SYNC_DATE = "last_action_plan_sync_date";
+	}
+	
+	public interface ItemsOnPromotionColumns {
+		String ITEM_NO = "item_no";
+		String BRANCH_CODE = "branch_code";
+		String VALID_FROM_DATE = "valid_from_date";
+		String VALID_TO_DATE = "valid_to_date";
+		String PRICE = "price";
+		String COMMENT = "comment";
+	}
+	
+	public interface ActionPlanColumns {
+		String CUSTOMER_NO = "customer_no";
+		String BUSINESS_UNIT_NO = "business_unit_no";
+		String ITEM_NO = "item_no";
+		String ITEM_TYPE = "item_type";
+		String LINE_TURNOVER = "line_turnover";
 	}
 	
 	public static class Generic implements BaseColumns {
@@ -1124,6 +1172,60 @@ public class MobileStoreContract {
 		
 		public static Uri buildAutocompleteSearchUri(String text) {
 			return CONTENT_URI.buildUpon().appendPath(text).build();
+		}
+
+		public static String getCustomSearchFirstParamQuery(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+	}
+	
+	public static class CustomerBusinessUnits implements BusinessUnitsColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_BUSINESS_UNITS).build();
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.customer_business_units";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.customer_business_units";
+
+		public static Uri buildCustomerBusinessUnitsUri(String unitId) {
+			return CONTENT_URI.buildUpon().appendPath(unitId).build();
+		}
+
+		public static String getCustomerBusinessUnitsId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+		
+		public static final String DEFAULT_SORT = BusinessUnitsColumns.UNIT_NO + " ASC";
+	}
+	
+	public static class ItemsOnPromotion implements ItemsOnPromotionColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_ITEMS_ON_PROMOTION).build();
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.items_on_promotion";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.items_on_promotion";
+		
+		public static Uri buildItemsOnPromotionUri(int itemId) {
+			return CONTENT_URI.buildUpon().appendPath(String.valueOf(itemId)).build();
+		}
+		
+		public static Uri buildSearchUri(String itemNo) {
+			return CONTENT_URI.buildUpon().appendPath(itemNo).build();
+		}
+
+		public static String getCustomSearchFirstParamQuery(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+	}
+	
+	public static class ActionPlan implements ActionPlanColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_ACTION_PLAN).build();
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.action_plan";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.action_plan";
+		
+		public static Uri buildActionPlanUri(int itemId) {
+			return CONTENT_URI.buildUpon().appendPath(String.valueOf(itemId)).build();
+		}
+		
+		public static Uri buildSearchUri(String itemNo) {
+			return CONTENT_URI.buildUpon().appendPath(itemNo).build();
 		}
 
 		public static String getCustomSearchFirstParamQuery(Uri uri) {

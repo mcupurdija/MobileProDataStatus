@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="Nova kartica kupca" >
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="@string/key_nkk_switch"
+        android:title="@string/title_nkk_switch" />
+
+    <PreferenceCategory 
+        android:title="@string/title_slike_artikala_settings" >
+        
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/key_ksa_switch"
+            android:title="@string/title_ksa_switch" />
+
+        <Preference
+            android:key="@string/key_sa_button"
+            android:title="@string/title_slike_artikala_button" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
