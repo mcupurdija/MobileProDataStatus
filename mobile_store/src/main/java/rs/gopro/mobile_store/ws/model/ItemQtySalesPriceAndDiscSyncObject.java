@@ -31,6 +31,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 	private String pQuantityAsTxt;
 	private String pSalesPriceRSDAsTxt;
 	private String pSalesPriceEURAsTxt;
+	private String pRegularPriceRSDAsTxt;
 	private String pMinimumDiscountPctAsTxt;
 	private String pMaximumDiscountPctAsTxt;
 	private String pDiscountPctAsTxt;
@@ -72,6 +73,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		setpQuantityAsTxt(parcel.readString());
 		setpSalesPriceRSDAsTxt(parcel.readString());
 		setpSalesPriceEURAsTxt(parcel.readString());
+		setpRegularPriceRSDAsTxt(parcel.readString());
 		setpMinimumDiscountPctAsTxt(parcel.readString());
 		setpMaximumDiscountPctAsTxt(parcel.readString());
 		setpDiscountPctAsTxt(parcel.readString());
@@ -81,7 +83,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 	}
 
 	public ItemQtySalesPriceAndDiscSyncObject(String pItemNoa46, String pLocationCode, Integer pCampaignStatus, Integer pPotentialCustomer, String pCustomerNoa46, String pQuantityOnSalesLineAsTxt, String pSalespersonCode,
-			Integer pDocumentType, String pDocumentNoa46, Integer pAvailableToWholeShip, String pQuantityAsTxt, String pSalesPriceRSDAsTxt, String pSalesPriceEURAsTxt, String pMinimumDiscountPctAsTxt, String pMaximumDiscountPctAsTxt, String pDiscountPctAsTxt, String pSubstituteItemNoa46, 
+			Integer pDocumentType, String pDocumentNoa46, Integer pAvailableToWholeShip, String pQuantityAsTxt, String pSalesPriceRSDAsTxt, String pSalesPriceEURAsTxt, String pRegularPriceRSDAsTxt, String pMinimumDiscountPctAsTxt, String pMaximumDiscountPctAsTxt, String pDiscountPctAsTxt, String pSubstituteItemNoa46, 
 			String pOutstandingPurchaseLinesTxt) {
 		super();
 		this.pItemNoa46 = pItemNoa46;
@@ -97,6 +99,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		this.pQuantityAsTxt = pQuantityAsTxt;
 		this.pSalesPriceRSDAsTxt = pSalesPriceRSDAsTxt;
 		this.pSalesPriceEURAsTxt = pSalesPriceEURAsTxt;
+		this.pRegularPriceRSDAsTxt = pRegularPriceRSDAsTxt;
 		this.pMinimumDiscountPctAsTxt = pMinimumDiscountPctAsTxt;
 		this.pMaximumDiscountPctAsTxt = pMaximumDiscountPctAsTxt;
 		this.pDiscountPctAsTxt = pDiscountPctAsTxt;
@@ -127,6 +130,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		dest.writeString(getpQuantityAsTxt());
 		dest.writeString(getpSalesPriceRSDAsTxt());
 		dest.writeString(getpSalesPriceEURAsTxt());
+		dest.writeString(getpRegularPriceRSDAsTxt());
 		dest.writeString(getpMinimumDiscountPctAsTxt());
 		dest.writeString(getpMaximumDiscountPctAsTxt());
 		dest.writeString(getpDiscountPctAsTxt());
@@ -220,6 +224,12 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		salesPriceEURAsTxtInfo.setValue(pSalesPriceEURAsTxt);
 		salesPriceEURAsTxtInfo.setType(String.class);
 		properies.add(salesPriceEURAsTxtInfo);
+		
+		PropertyInfo salesPriceOVSCMPAsTxtInfo = new PropertyInfo();
+		salesPriceOVSCMPAsTxtInfo.setName("pRegularPriceRSDAsTxt");
+		salesPriceOVSCMPAsTxtInfo.setValue(pRegularPriceRSDAsTxt);
+		salesPriceOVSCMPAsTxtInfo.setType(String.class);
+		properies.add(salesPriceOVSCMPAsTxtInfo);
 
 		PropertyInfo minimumDiscountPctAsTxtInfo = new PropertyInfo();
 		minimumDiscountPctAsTxtInfo.setName("pMinimumDiscountPctAsTxt");
@@ -287,6 +297,7 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		this.pQuantityAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pQuantityAsTxt"));
 		this.pSalesPriceRSDAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pSalesPriceRSDAsTxt"));
 		this.pSalesPriceEURAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pSalesPriceEURAsTxt"));
+		this.pRegularPriceRSDAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pRegularPriceRSDAsTxt"));
 		this.pDiscountPctAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pDiscountPctAsTxt"));
 		this.pSubstituteItemNoa46 = soapResponse.getPropertyAsString("pSubstituteItemNoa46");
 		this.pOutstandingPurchaseLinesTxt = soapResponse.getPropertyAsString("pOutstandingPurchaseLinesTxt");
@@ -397,6 +408,14 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 
 	public void setpSalesPriceEURAsTxt(String pSalesPriceEURAsTxt) {
 		this.pSalesPriceEURAsTxt = pSalesPriceEURAsTxt;
+	}
+
+	public String getpRegularPriceRSDAsTxt() {
+		return pRegularPriceRSDAsTxt;
+	}
+
+	public void setpRegularPriceRSDAsTxt(String pRegularPriceRSDAsTxt) {
+		this.pRegularPriceRSDAsTxt = pRegularPriceRSDAsTxt;
 	}
 
 	public String getpMinimumDiscountPctAsTxt() {

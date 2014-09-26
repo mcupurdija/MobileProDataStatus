@@ -68,8 +68,11 @@ public class ItemsDomain extends Domain {
 		contentValues.put(Items.UNIT_SALES_PRICE_DIN, WsDataFormatEnUsLatin.toDoubleFromWs(getUnit_sales_price_din().length() < 1 ? "0" : getUnit_sales_price_din()));
 		if (!getMin_qty().equals("0")) {
 			contentValues.put(Items.MIN_QTY, getMin_qty());
+		} else {
+			contentValues.put(Items.MIN_QTY, 1);
 		}
 		contentValues.put(Items.BOM_ITEMS, getBom_items());
+		contentValues.put(Items.LINKED_ITEMS, getLinked_items());
 		
 		//contentValues.put(Items.CAMPAIGN_CODE, getCampaign_code());
 		// TODO data conversion

@@ -53,7 +53,11 @@ public class ContactsFragment extends Fragment implements LoaderCallbacks<Cursor
 			public Cursor runQuery(CharSequence constraint) {
 				Cursor cursor = null;
 				if (getActivity() != null) {
-					cursor = getActivity().getContentResolver().query(Contacts.buildCustomSearchUri(constraint.toString()), ContactsQuery.PROJECTION, null, null, MobileStoreContract.Contacts.DEFAULT_SORT);
+					if (constraint.toString().trim().length() > 0) {
+						cursor = getActivity().getContentResolver().query(Contacts.buildCustomSearchUri(constraint.toString()), ContactsQuery.PROJECTION, null, null, MobileStoreContract.Contacts.DEFAULT_SORT);
+					} else {
+						cursor = getActivity().getContentResolver().query(Contacts.CONTENT_URI, ContactsQuery.PROJECTION, null, null, MobileStoreContract.Contacts.DEFAULT_SORT);
+					}
 				}
 				return cursor;
 			}

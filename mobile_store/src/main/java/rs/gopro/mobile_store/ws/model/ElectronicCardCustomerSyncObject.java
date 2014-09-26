@@ -21,14 +21,13 @@ public class ElectronicCardCustomerSyncObject extends SyncObject {
 
 	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.ECECTRONIC_CARD_CUS_SYNC_ACTION";
 	public static String TAG = "ElectronicCardCustomerSyncObject";
-	
-	
+
 	private String cSVString;
 	private String customerNoa46;
 	private String mItemNoa46;
 	private String salespersonCode;
-	
-	
+	private String businessUnitNo;
+
 	public static final Creator<ElectronicCardCustomerSyncObject> CREATOR = new Creator<ElectronicCardCustomerSyncObject>() {
 
 		@Override
@@ -42,27 +41,26 @@ public class ElectronicCardCustomerSyncObject extends SyncObject {
 		}
 
 	};
-	
-	
-	public ElectronicCardCustomerSyncObject(){
-	super();	
+
+	public ElectronicCardCustomerSyncObject() {
+		super();
 	}
-	
-	public ElectronicCardCustomerSyncObject(Parcel parcel){
+
+	public ElectronicCardCustomerSyncObject(Parcel parcel) {
 		super(parcel);
 		setcSVString(parcel.readString());
 		setCustomerNoa46(parcel.readString());
+		setBusinessUnitNo(parcel.readString());
 		setmItemNoa46(parcel.readString());
 		setSalespersonCode(parcel.readString());
 	}
-	
-	
-	
-	
-	public ElectronicCardCustomerSyncObject(String cSVString, String customerNoa46, String mItemNoa46, String salespersonCode) {
+
+	public ElectronicCardCustomerSyncObject(String cSVString,
+			String customerNoa46, String businessUnitNo, String mItemNoa46, String salespersonCode) {
 		super();
 		this.cSVString = cSVString;
 		this.customerNoa46 = customerNoa46;
+		this.businessUnitNo = businessUnitNo;
 		this.mItemNoa46 = mItemNoa46;
 		this.salespersonCode = salespersonCode;
 	}
@@ -77,9 +75,9 @@ public class ElectronicCardCustomerSyncObject extends SyncObject {
 		dest.writeString(getStatusMessage());
 		dest.writeString(getcSVString());
 		dest.writeString(getCustomerNoa46());
+		dest.writeString(getBusinessUnitNo());
 		dest.writeString(getmItemNoa46());
 		dest.writeString(getSalespersonCode());
-
 	}
 
 	@Override
@@ -96,7 +94,7 @@ public class ElectronicCardCustomerSyncObject extends SyncObject {
 		cSVStringInfo.setValue(cSVString);
 		cSVStringInfo.setType(String.class);
 		properties.add(cSVStringInfo);
-		
+
 		PropertyInfo customerNoa46Info = new PropertyInfo();
 		customerNoa46Info.setName("pCustomerNoa46");
 		customerNoa46Info.setValue(customerNoa46);
@@ -108,13 +106,19 @@ public class ElectronicCardCustomerSyncObject extends SyncObject {
 		pItemNoa46.setValue(mItemNoa46);
 		pItemNoa46.setType(String.class);
 		properties.add(pItemNoa46);
-		
+
 		PropertyInfo salespersonCodeInfo = new PropertyInfo();
 		salespersonCodeInfo.setName("pSalespersonCode");
 		salespersonCodeInfo.setValue(salespersonCode);
 		salespersonCodeInfo.setType(String.class);
 		properties.add(salespersonCodeInfo);
 		
+		PropertyInfo businessUnitNoInfo = new PropertyInfo();
+		businessUnitNoInfo.setName("pBusinessUnitCode");
+		businessUnitNoInfo.setValue(businessUnitNo);
+		businessUnitNoInfo.setType(String.class);
+		properties.add(businessUnitNoInfo);
+
 		return properties;
 	}
 
@@ -168,6 +172,14 @@ public class ElectronicCardCustomerSyncObject extends SyncObject {
 		this.salespersonCode = salespersonCode;
 	}
 
+	public String getBusinessUnitNo() {
+		return businessUnitNo;
+	}
+
+	public void setBusinessUnitNo(String businessUnitNo) {
+		this.businessUnitNo = businessUnitNo;
+	}
+
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver,
 			SoapObject soapResponse) throws CSVParseException {
@@ -175,5 +187,4 @@ public class ElectronicCardCustomerSyncObject extends SyncObject {
 		return 0;
 	}
 
-	
 }

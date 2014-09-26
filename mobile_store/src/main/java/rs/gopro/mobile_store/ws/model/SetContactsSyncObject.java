@@ -142,15 +142,15 @@ public class SetContactsSyncObject extends SyncObject {
 	private interface ContactsQuery {
 		String[] PROJECTION = {
 				MobileStoreContract.Contacts.CONTACT_NO,
-				MobileStoreContract.Contacts.NAME, 
-				MobileStoreContract.Contacts.NAME2, 
-				MobileStoreContract.Contacts.PHONE, 
-				MobileStoreContract.Contacts.MOBILE_PHONE, 
-				MobileStoreContract.SalesPerson.SALE_PERSON_NO, 
-				MobileStoreContract.Contacts.EMAIL,
+				MobileStoreContract.Contacts.NAME,
+				MobileStoreContract.Contacts.NAME2,
 				MobileStoreContract.Contacts.COMPANY_NO,
-				MobileStoreContract.Contacts.DEPARTMENT, 
-				MobileStoreContract.Contacts.POSITION
+				MobileStoreContract.Contacts.DEPARTMENT,
+				MobileStoreContract.Contacts.POSITION,
+				MobileStoreContract.Contacts.PHONE,
+				MobileStoreContract.Contacts.MOBILE_PHONE,
+				MobileStoreContract.SalesPerson.SALE_PERSON_NO,
+				MobileStoreContract.Contacts.EMAIL
         };
 		
 		Type[] PROJECTION_TYPE = {

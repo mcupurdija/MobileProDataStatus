@@ -9,6 +9,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrdersColumns;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
@@ -17,6 +18,7 @@ import rs.gopro.mobile_store.ui.widget.SaleOrderContextualMenu;
 import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.DocumentUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.SharedPreferencesUtil;
@@ -467,7 +469,27 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			if (saleOrderId == null) {
 				return true;
 			}
-			if (novaKarticaKupca) {
+			if (isSent()) {
+				Intent novaKarticaKupca = new Intent(this, NovaKarticaKupcaMasterActivity.class);
+				novaKarticaKupca.setAction(Intent.ACTION_EDIT);
+				novaKarticaKupca.putExtra("saleOrderId", Integer.valueOf(saleOrderId));
+				
+				Cursor cursor = getContentResolver().query(SaleOrders.CONTENT_URI, SaleOrderQuery.PROJECTION, Tables.SALE_ORDERS + "." + SaleOrders._ID + "=?", new String[] { saleOrderId }, null);
+				if (cursor.moveToFirst()) {
+					novaKarticaKupca.putExtra("customerId", cursor.getInt(SaleOrderQuery.CUSTOMER_ID));
+					novaKarticaKupca.putExtra("customerNo", cursor.getString(SaleOrderQuery.CUSTOMER_NO));
+					novaKarticaKupca.putExtra("potentialCustomerNo", cursor.getString(SaleOrderQuery.CONTACT_COMPANY_NO));
+					novaKarticaKupca.putExtra("branchCode", cursor.getString(SaleOrderQuery.GLOBAL_DIMENSION));
+					novaKarticaKupca.putExtra("businessUnitNo", cursor.getString(SaleOrderQuery.CUSTOMER_BUSINESS_UNIT_CODE));
+					novaKarticaKupca.putExtra("salesType", cursor.getInt(SaleOrderQuery.SHORTCUT_DIMENSION_1_CODE));
+					novaKarticaKupca.putExtra("salesPersonId", SharedPreferencesUtil.getSalePersonId(this));
+					novaKarticaKupca.putExtra("salesPersonNo", SharedPreferencesUtil.getSalePersonNo(this));
+					novaKarticaKupca.putExtra("sviArtikliUseCount", cursor.getInt(SaleOrderQuery.SVI_ARTIKLI_COUNTER));
+				}
+				cursor.close();
+				
+				startActivity(novaKarticaKupca);
+			} else if (novaKarticaKupca) {
 				NovaPorudzbinaDialog npd = new NovaPorudzbinaDialog();
 				Bundle args = new Bundle();
 		        args.putInt("saleOrderId", Integer.valueOf(saleOrderId));
@@ -481,6 +503,10 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		case R.id.verify_sale_order_action_menu_option:
 			
 			localyticsSession.tagEvent("PORUDZBINE/PONUDE > VERIFIKUJ PORUDZBINU/PONUDU");
+			
+			if (saleOrderId == null) {
+				return true;
+			}
 			
 			Intent verifyintent = new Intent(this, NavisionSyncService.class);
 			MobileDeviceSalesDocumentSyncObject verifymobileDeviceSalesDocumentSyncObject = new MobileDeviceSalesDocumentSyncObject(Integer.valueOf(saleOrderId), VERIFY_SALE_DOC, appVersion, 0);
@@ -499,15 +525,30 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			}
 			
 			// DORADA DIJALOG ZA UNOS DUZINE TELEFONSKOG RAZGOVORA UKOLIKO JE KOD PORUDZBINE ODABRANA ODGOVARAJUCA VRSTA PRODAJE
-			Cursor cursor = getContentResolver().query(MobileStoreContract.SaleOrders.CONTENT_URI, new String[] { SaleOrdersColumns.DOCUMENT_TYPE, SaleOrdersColumns.SHORTCUT_DIMENSION_1_CODE }, Tables.SALE_ORDERS + "._id=?", new String[] { saleOrderId }, null);
+			// DODATA PROVERA VRSTE PRODAJE UKOLIKO NIJE OTVORENA REALIZACIJA ZA ODABRANOG KUPCA
+			
+			String salesType = null;
+			int customerId = -1;
+			String[] values = getResources().getStringArray(R.array.slc1_array);
+			
+			Cursor cursor = getContentResolver().query(MobileStoreContract.SaleOrders.CONTENT_URI, new String[] { SaleOrdersColumns.DOCUMENT_TYPE, SaleOrdersColumns.SHORTCUT_DIMENSION_1_CODE, SaleOrdersColumns.CUSTOMER_ID }, Tables.SALE_ORDERS + "._id=?", new String[] { saleOrderId }, null);
 			if (cursor.moveToFirst()) {
+				
+				salesType = cursor.getString(1);
+				customerId = cursor.getInt(2);
+				
+				if (!postojiOtvorenaPosetaKupcu(customerId) && salesType.equals(values[0]) ) {
+					DialogUtil.showInfoDialog(this, "Greška", getString(R.string.vrstaProdajeRealizacijaError));
+					return true;
+				}
+				
 				if (cursor.getInt(0) == 0) {
-					final String[] values = getResources().getStringArray(R.array.slc1_array);
-					String salesType = cursor.getString(1);
 					if (salesType.equals(values[1])) {
 						telefonskiPozivDijalog(saleOrderId, 1);
 					} else if (salesType.equals(values[2])) {
 						telefonskiPozivDijalog(saleOrderId, 2);
+					} else if (salesType.equals(values[3])) {
+						telefonskiPozivDijalog(saleOrderId, 3);
 					} else {
 						posaljiPorudzbinu(0);
 					}
@@ -515,6 +556,8 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 					posaljiPorudzbinu(0);
 				}
 			}
+			cursor.close();
+			
 			return true;
 		case R.id.clone_sale_order_menu_option:
 			
@@ -546,6 +589,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		final Dialog dialog = new Dialog(this);
 		dialog.setContentView(R.layout.dialog_telefonski_poziv);
 		
+		final TextView tvDijalogNaslov = (TextView) dialog.findViewById(R.id.tvDijalogNaslov);
 		final String[] types = getResources().getStringArray(R.array.slc1_type_array);
 		final RadioGroup rgTelefonskiPoziv = (RadioGroup) dialog.findViewById(R.id.rgTelefonskiPoziv);
 		final EditText dialog_trajanje_poziva_input = (EditText) dialog.findViewById(R.id.dialog_trajanje_poziva_input);
@@ -599,14 +643,20 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		});
 		
 		switch (tip) {
-		case 1:
-			dialog.setTitle(types[1]);
-			break;
-		case 2:
-			dialog.setTitle(types[2]);
-			break;
-		default:
-			break;
+			case 1:
+				dialog.setTitle(types[tip]);
+				tvDijalogNaslov.setText(R.string.dialog_telefonski_poziv_title);
+				break;
+			case 2:
+				dialog.setTitle(types[tip]);
+				tvDijalogNaslov.setText(R.string.dialog_telefonski_poziv_title);
+				break;
+			case 3:
+				dialog.setTitle(types[tip]);
+				tvDijalogNaslov.setText(R.string.dialog_telefonski_poziv_ponuda_title);
+				break;
+			default:
+				break;
 		}
 		
 		dialog.show();
@@ -749,6 +799,18 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		documentHeaderCursor.close();
 	}
 	
+	private boolean postojiOtvorenaPosetaKupcu(int customerId) {
+		boolean status;
+		Cursor cursor = getContentResolver().query(Visits.CONTENT_URI, null, Tables.VISITS + "." + Visits.CUSTOMER_ID + "=? AND " + Tables.VISITS + "." + Visits.VISIT_STATUS + "=? AND DATE(" + Tables.VISITS + "." + Visits.VISIT_DATE + ")=DATE(?)", new String[] { String.valueOf(customerId), String.valueOf(ApplicationConstants.VISIT_STATUS_STARTED), DateUtils.toDbDate(new Date()) }, null);
+		if (cursor.moveToFirst()) {
+			status = true;
+		} else {
+			status = false;
+		}
+		cursor.close();
+		return status;
+	}
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -763,6 +825,17 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			if (resultCode == RESULT_CANCELED) {
 			}
 		}
+	}
+	
+	public boolean isSent() {
+		Cursor cursor = getContentResolver().query(MobileStoreContract.SaleOrders.CONTENT_URI, new String[] { SaleOrders.SALES_ORDER_NO }, Tables.SALE_ORDERS + "." + MobileStoreContract.SaleOrders._ID + "=?", new String[] { String.valueOf(saleOrderId) }, null);
+		if (cursor.moveToFirst()) {
+			if (!cursor.isNull(0)) {
+				return true;
+			}
+		}
+		cursor.close();
+		return false;
 	}
 	
 	@Override
@@ -795,7 +868,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 	public void onNovaPorudzbinaDialogFinished(int customerId,
 			String customerNo, String potentialCustomerNo, String branchCode,
 			int businessUnitId, String businessUnitNo, int salesType,
-			boolean newSaleOrder) {
+			boolean newSaleOrder, int sviArtikliUseCount) {
 		
 		Intent novaKarticaKupca = new Intent(this, NovaKarticaKupcaMasterActivity.class);
 		if (newSaleOrder) {
@@ -812,6 +885,7 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		novaKarticaKupca.putExtra("salesType", salesType);
 		novaKarticaKupca.putExtra("salesPersonId", SharedPreferencesUtil.getSalePersonId(this));
 		novaKarticaKupca.putExtra("salesPersonNo", SharedPreferencesUtil.getSalePersonNo(this));
+		novaKarticaKupca.putExtra("sviArtikliUseCount", sviArtikliUseCount);
 		startActivity(novaKarticaKupca);
 	}
 	
@@ -823,4 +897,26 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 //			}
 //		}
 //	}
+	
+	private interface SaleOrderQuery {
+
+        String[] PROJECTION = {
+                Tables.SALE_ORDERS + "." + SaleOrders.CUSTOMER_ID,
+                Tables.CUSTOMERS + "." + SaleOrders.CUSTOMER_NO,
+                Tables.CUSTOMERS + "." + SaleOrders.CONTACT_COMPANY_NO,
+                Tables.CUSTOMERS + "." + SaleOrders.GLOBAL_DIMENSION,
+                Tables.SALE_ORDERS + "." + SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE,
+                Tables.SALE_ORDERS + "." + SaleOrders.SHORTCUT_DIMENSION_1_CODE,
+                Tables.SALE_ORDERS + "." + SaleOrders.SVI_ARTIKLI_COUNTER
+        };
+
+        int CUSTOMER_ID = 0;
+        int CUSTOMER_NO = 1;
+        int CONTACT_COMPANY_NO = 2;
+        int GLOBAL_DIMENSION = 3;
+        int CUSTOMER_BUSINESS_UNIT_CODE = 4;
+        int SHORTCUT_DIMENSION_1_CODE = 5;
+        int SVI_ARTIKLI_COUNTER = 6;
+	}
+	
 }

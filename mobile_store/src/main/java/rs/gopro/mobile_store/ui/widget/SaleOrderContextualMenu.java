@@ -51,7 +51,7 @@ public class SaleOrderContextualMenu implements ActionMode.Callback {
 				if (cursorStatus.isNull(1)) {
 					activity.startActivity(editIntent);
 				} else {
-					DialogUtil.showInfoDialog(activity, "Poruka", "Dokument je poslat i nije ga moguće menjati.");
+					DialogUtil.showInfoDialog(activity, "Poruka", activity.getString(R.string.dokumentPoslatError));
 				}
 			}
 			if (cursorStatus != null && !cursorStatus.isClosed()) {

@@ -2,12 +2,17 @@ package rs.gopro.mobile_store.ui.dialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import rs.gopro.mobile_store.R;
+import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerBusinessUnits;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
+import rs.gopro.mobile_store.util.ApplicationConstants;
+import rs.gopro.mobile_store.util.DateUtils;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -33,7 +38,7 @@ public class NovaPorudzbinaDialog extends DialogFragment implements BusinessUnit
 	private Spinner dialog_nova_porudzbina_vp;
 	private Button dialogButtonOK;
 	
-	private int selectedCustomerId, selectedBusinessUnitId, hasBusinessUnits;
+	private int selectedCustomerId, selectedBusinessUnitId, hasBusinessUnits, sviArtikliUseCount;
 	private String selectedCustomerNo, selectedPotentialCustomerNo, selectedBusinessUnitNo, branchCode, buttonText, salesTypeValue;
 	private boolean newSaleOrder = true;
 	
@@ -44,7 +49,7 @@ public class NovaPorudzbinaDialog extends DialogFragment implements BusinessUnit
 	}
 	
 	public interface NovaPorudzbinaDialogListener {
-		void onNovaPorudzbinaDialogFinished(int customerId, String customerNo, String potentialCustomerNo, String branchCode, int businessUnitId, String businessUnitNo, int salesType, boolean newSaleOrder);
+		void onNovaPorudzbinaDialogFinished(int customerId, String customerNo, String potentialCustomerNo, String branchCode, int businessUnitId, String businessUnitNo, int salesType, boolean newSaleOrder, int sviArtikliUseCount);
 	}
 
 	@Override
@@ -78,11 +83,12 @@ public class NovaPorudzbinaDialog extends DialogFragment implements BusinessUnit
 		if (saleOrderId != -1) {
 			newSaleOrder = false;
 			String customerName = null;
-			Cursor cursor = getActivity().getContentResolver().query(SaleOrders.buildSaleOrderUri(String.valueOf(saleOrderId)), new String[] { SaleOrders.CUSTOMER_ID, SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE, SaleOrders.SHORTCUT_DIMENSION_1_CODE }, null, null, null);
+			Cursor cursor = getActivity().getContentResolver().query(SaleOrders.buildSaleOrderUri(String.valueOf(saleOrderId)), new String[] { SaleOrders.CUSTOMER_ID, SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE, SaleOrders.SHORTCUT_DIMENSION_1_CODE, SaleOrders.SVI_ARTIKLI_COUNTER }, null, null, null);
 			if (cursor.moveToFirst()) {
 				selectedCustomerId = cursor.getInt(0);
 				selectedBusinessUnitNo = cursor.getString(1);
 				salesTypeValue = cursor.getString(2);
+				sviArtikliUseCount = cursor.getInt(3);
 				
 				cursor = getActivity().getContentResolver().query(Customers.buildCustomersUri(String.valueOf(selectedCustomerId)), new String[] { Customers.CUSTOMER_NO, Customers.CONTACT_COMPANY_NO, Customers.NAME, Customers.GLOBAL_DIMENSION, Customers.HAS_BUSINESS_UNITS }, null, null, null);
 				if (cursor.moveToFirst()) {
@@ -144,6 +150,13 @@ public class NovaPorudzbinaDialog extends DialogFragment implements BusinessUnit
 					dialog_nova_porudzbina_bu.setText(buttonText);
 					dialog_nova_porudzbina_bu.setClickable(true);
 				}
+				
+				if (!postojiOtvorenaPosetaKupcu()) {
+					dialog_nova_porudzbina_vp.setSelection(1);
+				} else {
+					dialog_nova_porudzbina_vp.setSelection(0);
+				}
+				
 				InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		        imm.hideSoftInputFromWindow(dialog_nova_porudzbina_kupac.getWindowToken(), 0);
 			}
@@ -162,12 +175,17 @@ public class NovaPorudzbinaDialog extends DialogFragment implements BusinessUnit
 			@Override
 			public void onClick(View v) {
 				
+				int vpPosition = dialog_nova_porudzbina_vp.getSelectedItemPosition();
+				
 				if (selectedCustomerId != 0) {
 					if (hasBusinessUnits == 1 && selectedBusinessUnitId == 0) {
 						toastError(R.string.obaveznaPoslovnaJedinica);
+					} else if (!postojiOtvorenaPosetaKupcu() && vpPosition == 0) {
+						dialog_nova_porudzbina_vp.setSelection(1);
+						toastError(R.string.vrstaProdajeRealizacijaError);
 					} else {
 						NovaPorudzbinaDialogListener activity = (NovaPorudzbinaDialogListener) getActivity();
-						activity.onNovaPorudzbinaDialogFinished(selectedCustomerId, selectedCustomerNo, selectedPotentialCustomerNo, branchCode, selectedBusinessUnitId, selectedBusinessUnitNo, dialog_nova_porudzbina_vp.getSelectedItemPosition(), newSaleOrder);
+						activity.onNovaPorudzbinaDialogFinished(selectedCustomerId, selectedCustomerNo, selectedPotentialCustomerNo, branchCode, selectedBusinessUnitId, selectedBusinessUnitNo, vpPosition, newSaleOrder, sviArtikliUseCount);
 						dismiss();
 					}
 				} else {
@@ -177,9 +195,9 @@ public class NovaPorudzbinaDialog extends DialogFragment implements BusinessUnit
 		});
 		
 		if (newSaleOrder) {
-			getDialog().setTitle(getString(R.string.menu_nova_specifikacija));
+			getDialog().setTitle(R.string.menu_nova_specifikacija);
 		} else {
-			getDialog().setTitle(getString(R.string.contextual_edit_lines));
+			getDialog().setTitle(R.string.contextual_edit_lines);
 		}
 		
 		return view;
@@ -210,8 +228,20 @@ public class NovaPorudzbinaDialog extends DialogFragment implements BusinessUnit
 		busd.show(getActivity().getSupportFragmentManager(), "BUSINESS_UNIT_DIALOG");
 	}
 	
+	private boolean postojiOtvorenaPosetaKupcu() {
+		boolean status;
+		Cursor cursor = getActivity().getContentResolver().query(Visits.CONTENT_URI, null, Tables.VISITS + "." + Visits.CUSTOMER_ID + "=? AND " + Tables.VISITS + "." + Visits.VISIT_STATUS + "=? AND DATE(" + Tables.VISITS + "." + Visits.VISIT_DATE + ")=DATE(?)", new String[] { String.valueOf(selectedCustomerId), String.valueOf(ApplicationConstants.VISIT_STATUS_STARTED), DateUtils.toDbDate(new Date()) }, null);
+		if (cursor.moveToFirst()) {
+			status = true;
+		} else {
+			status = false;
+		}
+		cursor.close();
+		return status;
+	}
+	
 	private void toastError(int resId) {
-		Toast toast = Toast.makeText(getActivity(), resId, Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(getActivity(), resId, Toast.LENGTH_LONG);
 		toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 100);
 		toast.show();
 	}

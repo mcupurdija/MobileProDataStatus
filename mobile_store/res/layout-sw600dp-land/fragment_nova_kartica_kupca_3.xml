@@ -134,7 +134,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="5dp"
-                            android:text="Dostupna količina"
+                            android:text="@string/dostupnaKolicina"
                             android:textAppearance="?android:attr/textAppearanceMedium" />
 
                         <EditText
@@ -160,7 +160,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="5dp"
-                            android:text="Cena bez popusta"
+                            android:text="@string/jedinicnaCena2"
                             android:textAppearance="?android:attr/textAppearanceMedium" />
 
                         <EditText
@@ -186,7 +186,8 @@
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="5dp"
-                            android:text="Rabat izabrani i max"
+                            android:singleLine="true"
+                            android:text="@string/rabatIzabraniMax2"
                             android:textAppearance="?android:attr/textAppearanceMedium" />
 
                         <LinearLayout
@@ -227,7 +228,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="5dp"
-                            android:text="Cena sa popustom"
+                            android:text="@string/jedinicnaCenaRabat2"
                             android:textAppearance="?android:attr/textAppearanceMedium" />
 
                         <EditText
@@ -246,21 +247,48 @@
                         android:layout_below="@+id/rlKorpa5"
                         android:layout_marginBottom="12dp" >
 
-                        <TextView
-                            android:id="@+id/tvSkladisteLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="5dp"
-                            android:text="Skladište"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <Spinner
-                            android:id="@+id/spSkladiste"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/tvSkladisteLabel" />
+                            android:baselineAligned="false"
+                            android:orientation="horizontal" >
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical" >
+
+                                <TextView
+                                    android:id="@+id/tvSkladisteLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="5dp"
+                                    android:text="@string/skladiste"
+                                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                                <Spinner
+                                    android:id="@+id/spSkladiste"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/llCbOsnCena"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:visibility="gone" >
+
+                                <CheckBox
+                                    android:id="@+id/cbOsnCena"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/cbRegCena"
+                                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                            </LinearLayout>
+                        </LinearLayout>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -276,7 +304,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="5dp"
-                            android:text="Način obrade"
+                            android:text="@string/backorder"
                             android:textAppearance="?android:attr/textAppearanceMedium" />
 
                         <Spinner
@@ -307,7 +335,7 @@
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@+id/bPreuzmiCenu"
                             android:background="@drawable/white_button"
-                            android:text="Obriši" />
+                            android:text="@string/obrisi" />
 
                         <Button
                             android:id="@+id/bSacuvaj"
@@ -315,7 +343,7 @@
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@+id/bObrisi"
                             android:background="@drawable/white_button"
-                            android:text="Sačuvaj" />
+                            android:text="@string/save_button_title" />
                     </RelativeLayout>
                 </RelativeLayout>
 
@@ -364,7 +392,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Iznos korpe:"
+                        android:text="@string/iznosKorpe"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <TextView
@@ -398,7 +426,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Iznos korpe sa PDV:"
+                        android:text="@string/iznosKorpePdv"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <TextView

@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:focusable="false"
+        android:gravity="right"
         android:padding="5dp"
         android:singleLine="true"
         android:textSize="16sp" />

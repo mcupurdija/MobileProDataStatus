@@ -7,6 +7,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.NovaKarticaKupcaMasterActivity;
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
@@ -41,8 +42,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -55,11 +60,14 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 	public static final String TAG = "NovaKKFragment3";
 	
 	private int saleOrderId, customerId, selectedLineId, minQty, campaignStatus, listPosition = -1;
-	private String customerNo, selectedItemNo;
+	private String customerNo, selectedItemNo, reg_cena, oth_cena;
 	
+	private NovaKarticaKupcaMasterActivity masterActivity;
 	private NovaKKFragment3Listener mCallback;
 	
 	private RelativeLayout rlKorpaDetaljiContainer;
+	private LinearLayout llCbOsnCena;
+	private CheckBox cbOsnCena;
 	private ListView lvKorpa;
 	private EditText etKolicina, etKolicinaNaStanju, etCenaBezPopusta, etRabat, etRabatMax, etCenaSaPopustom;
 	private Spinner spSkladiste, spNacinObrade;
@@ -97,7 +105,33 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 				ItemQtySalesPriceAndDiscSyncObject syncObject = (ItemQtySalesPriceAndDiscSyncObject) syncResult.getComplexResult();
 				etKolicinaNaStanju.setText(syncObject.getpQuantityAsTxt());
 				etRabatMax.setText(syncObject.getpMaximumDiscountPctAsTxt());
-				etCenaBezPopusta.setText(syncObject.getpSalesPriceRSDAsTxt());
+				
+				reg_cena = syncObject.getpSalesPriceRSDAsTxt();
+				oth_cena = syncObject.getpRegularPriceRSDAsTxt();
+				
+				// za OVS i AKC artikle
+				switch (campaignStatus) {
+					case 0:
+						llCbOsnCena.setVisibility(View.GONE);
+						break;
+					case 1:
+						llCbOsnCena.setVisibility(View.VISIBLE);
+						break;
+					case 2:
+						llCbOsnCena.setVisibility(View.VISIBLE);
+						break;
+					default:
+						break;
+				}
+				if (llCbOsnCena.isShown()) {
+					if (cbOsnCena.isChecked()) {
+						etCenaBezPopusta.setText(oth_cena);
+					} else {
+						etCenaBezPopusta.setText(reg_cena);
+					}
+				} else {
+					etCenaBezPopusta.setText(reg_cena);
+				}
 			}
 		}
 	}
@@ -105,6 +139,18 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 	public interface NovaKKFragment3Listener {
 		void onBasketUpdated();
 	}
+	
+	private OnCheckedChangeListener occl = new OnCheckedChangeListener() {
+		
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			if (isChecked) {
+				etCenaBezPopusta.setText(oth_cena);
+			} else {
+				etCenaBezPopusta.setText(reg_cena);
+			}
+		}
+	};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -115,11 +161,15 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
+		masterActivity = ((NovaKarticaKupcaMasterActivity) getActivity());
+		
 		saleOrderId = getArguments().getInt("saleOrderId", -1);
 		customerId = getArguments().getInt("customerId", -1);
 		customerNo = getArguments().getString("customerNo", null);
 		
 		rlKorpaDetaljiContainer = (RelativeLayout) view.findViewById(R.id.rlKorpaDetaljiContainer);
+		llCbOsnCena = (LinearLayout) view.findViewById(R.id.llCbOsnCena);
+		cbOsnCena = (CheckBox) view.findViewById(R.id.cbOsnCena);
 		etKolicina = (EditText) view.findViewById(R.id.etKolicina);
 		etKolicinaNaStanju = (EditText) view.findViewById(R.id.etKolicinaNaStanju);
 		etCenaBezPopusta = (EditText) view.findViewById(R.id.etCenaBezPopusta);
@@ -173,14 +223,38 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 				} else {
 					etKolicina.setText("1");
 				}
+				
+				reg_cena = UIUtils.formatDoubleForUI(extraData.getPrice());
+				oth_cena = UIUtils.formatDoubleForUI(extraData.getPriceOther());
+				
 				etKolicinaNaStanju.setText(UIUtils.formatDoubleForUI(extraData.getQtyAvailable()));
-				etCenaBezPopusta.setText(UIUtils.formatDoubleForUI(extraData.getPrice()));
+				etCenaBezPopusta.setText(reg_cena);
 				etRabat.setText(UIUtils.formatDoubleForUI(extraData.getDiscount()));
 				etRabatMax.setText(UIUtils.formatDoubleForUI(extraData.getMaxDiscount()));
 				etCenaSaPopustom.setText(UIUtils.formatDoubleForUI(extraData.getPriceWithDiscount()));
 				spSkladiste.setSelection(locationAdapter.getPosition(extraData.getLocation()));
 				spNacinObrade.setSelection(extraData.getBackorderType());
 				
+				if (extraData.getPriceOther() != 0d) {
+					if (extraData.getPriceType() == ApplicationConstants.PRICE_TYPE_OSN) {
+						
+						String reg_cena2 = reg_cena;
+						reg_cena = oth_cena;
+						oth_cena = reg_cena2;
+						
+						cbOsnCena.setOnCheckedChangeListener(null);
+						cbOsnCena.setChecked(true);
+						cbOsnCena.setOnCheckedChangeListener(occl);
+					} else {
+						cbOsnCena.setOnCheckedChangeListener(null);
+						cbOsnCena.setChecked(false);
+						cbOsnCena.setOnCheckedChangeListener(occl);
+					}
+					llCbOsnCena.setVisibility(View.VISIBLE);
+				} else {
+					llCbOsnCena.setVisibility(View.GONE);
+				}
+
 				hideInfoMessage();
 			}
 		});
@@ -285,7 +359,11 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 			
 			@Override
 			public void onClick(View v) {
-				confirmDialog(selectedLineId, selectedItemNo);
+				if (masterActivity.isSent()) {
+					masterActivity.showToast(getString(R.string.dokumentPoslatError));
+				} else {
+					confirmDialog(selectedLineId, selectedItemNo);
+				}
 			}
 		});
 		
@@ -293,63 +371,66 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 			
 			@Override
 			public void onClick(View v) {
-				
-				ContentValues cv = new ContentValues();
-				
-				cv.put(SaleOrderLines.SALE_ORDER_ID, saleOrderId);
-				cv.put(SaleOrderLines.LOCATION_CODE, getResources().getStringArray(R.array.location_line_type_array)[spSkladiste.getSelectedItemPosition()]);
-				
-				try {
-					String kolicina = etKolicina.getText().toString().trim();
-					if (kolicina != null && !kolicina.equals("")) {
-						cv.put(MobileStoreContract.SaleOrderLines.QUANTITY, UIUtils.getDoubleFromUI(kolicina));
-					} else {
-						DialogUtil.showInfoErrorDialog(getActivity(), getString(R.string.kolicinaNijeUneta));
-					}
+				if (masterActivity.isSent()) {
+					masterActivity.showToast(getString(R.string.dokumentPoslatError));
+				} else {
+					ContentValues cv = new ContentValues();
 					
-					String kolicinaNaStanju = etKolicinaNaStanju.getText().toString().trim();
-					if (kolicinaNaStanju != null && !kolicinaNaStanju.equals("")) {
-						cv.put(MobileStoreContract.SaleOrderLines.QUANTITY_AVAILABLE, UIUtils.getDoubleFromUI(kolicinaNaStanju));
-					} else {
-						cv.putNull(MobileStoreContract.SaleOrderLines.QUANTITY_AVAILABLE);
-					}
+					cv.put(SaleOrderLines.SALE_ORDER_ID, saleOrderId);
+					cv.put(SaleOrderLines.LOCATION_CODE, getResources().getStringArray(R.array.location_line_type_array)[spSkladiste.getSelectedItemPosition()]);
 					
-					String cena = etCenaBezPopusta.getText().toString().trim();
-					if (cena != null && !cena.equals("")) {
-						cv.put(MobileStoreContract.SaleOrderLines.PRICE, UIUtils.getDoubleFromUI(cena));
-					} else {
-						cv.putNull(MobileStoreContract.SaleOrderLines.PRICE);
+					try {
+						String kolicina = etKolicina.getText().toString().trim();
+						if (kolicina != null && !kolicina.equals("")) {
+							cv.put(MobileStoreContract.SaleOrderLines.QUANTITY, UIUtils.getDoubleFromUI(kolicina));
+						} else {
+							DialogUtil.showInfoErrorDialog(getActivity(), getString(R.string.kolicinaNijeUneta));
+						}
+						
+						String kolicinaNaStanju = etKolicinaNaStanju.getText().toString().trim();
+						if (kolicinaNaStanju != null && !kolicinaNaStanju.equals("")) {
+							cv.put(MobileStoreContract.SaleOrderLines.QUANTITY_AVAILABLE, UIUtils.getDoubleFromUI(kolicinaNaStanju));
+						} else {
+							cv.putNull(MobileStoreContract.SaleOrderLines.QUANTITY_AVAILABLE);
+						}
+						
+						String cena = etCenaBezPopusta.getText().toString().trim();
+						if (cena != null && !cena.equals("")) {
+							cv.put(MobileStoreContract.SaleOrderLines.PRICE, UIUtils.getDoubleFromUI(cena));
+						} else {
+							cv.putNull(MobileStoreContract.SaleOrderLines.PRICE);
+						}
+						
+						String rabat = etRabat.getText().toString().trim();
+						if (rabat != null && !rabat.equals("")) {
+							cv.put(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT, UIUtils.getDoubleFromUI(rabat.replace('.', ',')));
+						} else {
+							cv.putNull(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT);
+						}
+						
+						cv.putNull(MobileStoreContract.SaleOrderLines.MIN_DISCOUNT);
+						
+						String rabatMax = etRabatMax.getText().toString().trim();
+						if (rabatMax != null && !rabatMax.equals("")) {
+							cv.put(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT, UIUtils.getDoubleFromUI(rabatMax));
+						} else {
+							cv.putNull(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT);
+						}
+					} catch (Exception e) {
+						LogUtils.LOGE(TAG, e.getMessage());
+						return;
 					}
-					
-					String rabat = etRabat.getText().toString().trim();
-					if (rabat != null && !rabat.equals("")) {
-						cv.put(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT, UIUtils.getDoubleFromUI(rabat.replace('.', ',')));
-					} else {
-						cv.putNull(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT);
-					}
-					
-					cv.putNull(MobileStoreContract.SaleOrderLines.MIN_DISCOUNT);
-					
-					String rabatMax = etRabatMax.getText().toString().trim();
-					if (rabatMax != null && !rabatMax.equals("")) {
-						cv.put(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT, UIUtils.getDoubleFromUI(rabatMax));
-					} else {
-						cv.putNull(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT);
-					}
-				} catch (Exception e) {
-					LogUtils.LOGE(TAG, e.getMessage());
-					return;
-				}
 
-				cv.put(SaleOrderLines.BACKORDER_STATUS, spNacinObrade.getSelectedItemPosition());
-				
-				getActivity().getContentResolver().update(SaleOrderLines.CONTENT_URI, cv, Tables.SALE_ORDER_LINES + "." + SaleOrderLines._ID + "=?", new String[] { String.valueOf(selectedLineId) });
-				korpaCursorAdapter.notifyDataSetChanged();
-				restartLoader();
-				updateBasketSum();
-				mCallback.onBasketUpdated();
-				
-				((NovaKarticaKupcaMasterActivity) getActivity()).showToast("Stavka uspešno sačuvana");
+					cv.put(SaleOrderLines.BACKORDER_STATUS, spNacinObrade.getSelectedItemPosition());
+					
+					getActivity().getContentResolver().update(SaleOrderLines.CONTENT_URI, cv, Tables.SALE_ORDER_LINES + "." + SaleOrderLines._ID + "=?", new String[] { String.valueOf(selectedLineId) });
+					korpaCursorAdapter.notifyDataSetChanged();
+					restartLoader();
+					updateBasketSum();
+					mCallback.onBasketUpdated();
+					
+					masterActivity.showToast("Stavka uspešno sačuvana");
+				}
 			}
 		});
 		
@@ -386,6 +467,9 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 	@Override
     public void onResume() {
     	super.onResume();
+    	
+    	updateBasketSum();
+    	
     	IntentFilter itemQtySalesPriceAndDiscSync = new IntentFilter(ItemQtySalesPriceAndDiscSyncObject.BROADCAST_SYNC_ACTION);
     	LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, itemQtySalesPriceAndDiscSync);
     }
@@ -410,21 +494,25 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 	}
 	
 	private void confirmDialog(final int lineId, final String sifra) {
-		AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
-	    adb.setTitle(getString(R.string.potvrda_brisanja) + " [" + sifra + "]");
-
-	    adb.setPositiveButton("Potvrdi", new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int which) {
-	        	deleteLine(lineId);
-	        }
-	    });
-
-	    adb.setNegativeButton("Otkaži", new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int which) {
-	        	dialog.dismiss();
-	        }
-	    });
-	    adb.show();
+		final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+		alertDialog.setTitle(R.string.potvrdaIzlaska);
+		alertDialog.setMessage(getString(R.string.potvrda_brisanja) + " [" + sifra + "] iz korpe");
+	    alertDialog.setIcon(R.drawable.ic_launcher);
+	    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "DA", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				deleteLine(lineId);
+			}
+		});
+	    alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "NE", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				alertDialog.dismiss();
+			}
+		});
+	    alertDialog.show();
 	}
 
 	private class ListKorpaAdapter extends CursorAdapter {
@@ -495,6 +583,14 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 	            if (!cursor.isNull(SaleOrderLinesQuery.QUOTE_REFUSED_STATUS)) {
 	            	quote_refused_status = cursor.getInt(SaleOrderLinesQuery.QUOTE_REFUSED_STATUS);
 	            }
+	            double price_other = 0d;
+	            if (!cursor.isNull(SaleOrderLinesQuery.PRICE_OTHER)) {
+	            	price_other = cursor.getDouble(SaleOrderLinesQuery.PRICE_OTHER);
+	            }
+	            int price_type = 0;
+	            if (!cursor.isNull(SaleOrderLinesQuery.PRICE_TYPE)) {
+	            	price_type = cursor.getInt(SaleOrderLinesQuery.PRICE_TYPE);
+	            }
 	            
 	            String status = "-";
 	            if ((price_discount_status == -1) && (verify_status == -1) && (quote_refused_status == -1)) {
@@ -507,7 +603,7 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 	            	status = "Problem";
 	            }
 	            
-	            ExtraData extraData = new ExtraData(lineId, itemMinQty, campaignStatus, sifraArtikla, qty, qtyAvailable, price, discount, maxDiscount, discountPrice, location, backorderType);
+	            ExtraData extraData = new ExtraData(lineId, itemMinQty, campaignStatus, sifraArtikla, qty, qtyAvailable, price, discount, maxDiscount, discountPrice, location, backorderType, price_other, price_type);
 	            tvKorpaBrojLinije.setTag(extraData);
 				
 				tvKorpaBrojLinije.setText(brojLinije);
@@ -536,7 +632,7 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 		int documentType = getDocumentType();
 		
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(selectedItemNo, locationCode, campaignStatus, Integer.valueOf(potentialCustomerSignal), customerNo, kolicina, salesPersonNo, documentType, "", 0, "", "", "", "", "", "", "", "");
+		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(selectedItemNo, locationCode, campaignStatus, Integer.valueOf(potentialCustomerSignal), customerNo, kolicina, salesPersonNo, documentType, "", 0, "", "", "", "", "", "", "", "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQtySalesPriceAndDiscSyncObject);
 		getActivity().startService(intent);
 	}
@@ -605,11 +701,11 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 	
 	private class ExtraData {
 		
-		private int lineId, itemMinQty, campaignStatus, qty, backorderType;
+		private int lineId, itemMinQty, campaignStatus, qty, backorderType, priceType;
 		private String itemNo, location;
-		private double qtyAvailable, price, discount, maxDiscount, priceWithDiscount;
+		private double qtyAvailable, price, discount, maxDiscount, priceWithDiscount, priceOther;
 
-		public ExtraData(int lineId, int itemMinQty, int campaignStatus, String itemNo, int qty, double qtyAvailable, double price, double discount, double maxDiscount, double priceWithDiscount, String location, int backorderType) {
+		public ExtraData(int lineId, int itemMinQty, int campaignStatus, String itemNo, int qty, double qtyAvailable, double price, double discount, double maxDiscount, double priceWithDiscount, String location, int backorderType, double priceOther, int priceType) {
 			super();
 			this.lineId = lineId;
 			this.itemMinQty = itemMinQty;
@@ -623,6 +719,8 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 			this.priceWithDiscount = priceWithDiscount;
 			this.location = location;
 			this.backorderType = backorderType;
+			this.priceOther = priceOther;
+			this.priceType = priceType;
 		}
 
 		public int getLineId() {
@@ -630,7 +728,10 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 		}
 
 		public int getItemMinQty() {
-			return itemMinQty;
+			if (itemMinQty == 0)
+				return 1;
+			else
+				return itemMinQty;
 		}
 
 		public int getCampaignStatus() {
@@ -672,7 +773,14 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 		public String getLocation() {
 			return location;
 		}
-		
+
+		public int getPriceType() {
+			return priceType;
+		}
+
+		public double getPriceOther() {
+			return priceOther;
+		}
 	}
 
 	@Override
@@ -686,6 +794,8 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
 			korpaCursorAdapter.swapCursor(cursor);
 			if (listPosition != -1) {
 				lvKorpa.setItemChecked(listPosition, true);
+			} else {
+				lvKorpa.setSelection(lvKorpa.getAdapter().getCount()-1);
 			}
 			if (lvKorpa.getCount() == 0) {
 				tvNisteOdabraliArtikal.setText(getString(R.string.korpaJePrazna));
@@ -724,7 +834,9 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
                 SaleOrderLines.MIN_QTY, 
                 SaleOrderLines.CAMPAIGN_STATUS, 
                 SaleOrderLines.LOCATION_CODE, 
-                SaleOrderLines.BACKORDER_STATUS
+                SaleOrderLines.BACKORDER_STATUS,
+                SaleOrderLines.PRICE_OTHER,
+                SaleOrderLines.PRICE_TYPE
         };
 
         int _ID = 0;
@@ -745,6 +857,8 @@ public class NovaKKFragment3 extends Fragment implements LoaderCallbacks<Cursor>
         int CAMPAIGN_STATUS = 15;
         int LOCATION_CODE = 16;
         int BACKORDER_STATUS = 17;
+        int PRICE_OTHER = 18;
+        int PRICE_TYPE = 19;
 	}
 
 }

@@ -39,6 +39,7 @@ public class CustomerDomain extends Domain {
 	public String number_of_blue_coat;
 	public String number_of_grey_coat;
 	public String contact_company_no;
+	public String color;
 	public String balance_lcy;
 	public String balance_due_lcy;
 	public String internal_balance_due_lcy;
@@ -67,7 +68,7 @@ public class CustomerDomain extends Domain {
 	public String primary_alternative_address_city;
 
 	private static final String[] COLUMNS = new String[] { "customer_no", "name", "name2", "address", "city", "phone", "mobile", "global_dimension", "credit_limit_lcy", "payment_terms_code", "sales_person_no", "priority", "vat_reg_no",
-			"post_code", "email", "primary_contact_id", "company_id", "channel_oran", "sml", "adopted_potential", "focus_customer", "division", "gross_profit_pfep", "apr_customer_turnover", "number_of_blue_coat", "number_of_grey_coat", "contact_company_no", "balance_lcy",
+			"post_code", "email", "primary_contact_id", "company_id", "channel_oran", "sml", "adopted_potential", "focus_customer", "division", "gross_profit_pfep", "apr_customer_turnover", "number_of_blue_coat", "number_of_grey_coat", "contact_company_no", "color", "balance_lcy",
 			"balance_due_lcy", "internal_balance_due_lcy", "turnover_in_last_3m", "turnover_in_last_6m", "turnover_in_last_12m", "turnover_generated_3", "turnover_generated_2", "turnover_generated_1", "number_of_diff_items_3",
 			"number_of_diff_items_2", "number_of_diff_items_1", "orsy_shelf_count_at_cust", "customer_12_months_plan", "avarage_payment_days", "turnover_ytm", "number_of_salespersons_working_with_customer", "days_since_oldest_open_invoice",
 			"next_15_days_invoice_due_amount", "next_15_days_due_invoice_count", "financial_control_status", "has_business_units", "primary_alternative_address_no", "primary_alternative_address_address", "primary_alternative_address_post_code", "primary_alternative_address_city"
@@ -147,6 +148,8 @@ public class CustomerDomain extends Domain {
 		contentValues.put(MobileStoreContract.Customers.PRIMARY_ALTERNATIVE_ADDRESS_ADDRESS, getPrimary_alternative_address_address());
 		contentValues.put(MobileStoreContract.Customers.PRIMARY_ALTERNATIVE_ADDRESS_POST_CODE, getPrimary_alternative_address_post_code());
 		contentValues.put(MobileStoreContract.Customers.PRIMARY_ALTERNATIVE_ADDRESS_CITY, getPrimary_alternative_address_city());
+		
+		contentValues.put(MobileStoreContract.Customers.CUSTOMER_COLOR, getColor());
 
 		return contentValues;
 	}
@@ -348,6 +351,14 @@ public class CustomerDomain extends Domain {
 
 	public void setNumber_of_grey_coat(String number_of_grey_coat) {
 		this.number_of_grey_coat = number_of_grey_coat;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	public String getBalance_lcy() {

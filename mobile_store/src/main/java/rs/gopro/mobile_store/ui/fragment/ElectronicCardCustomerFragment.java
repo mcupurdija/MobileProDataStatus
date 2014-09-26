@@ -161,7 +161,7 @@ public class ElectronicCardCustomerFragment extends ListFragment implements Load
 			customerNO = cursor.getString(0);
 		}
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		ElectronicCardCustomerSyncObject electronicCardCustomerSyncObject = new ElectronicCardCustomerSyncObject("", customerNO, "", "");
+		ElectronicCardCustomerSyncObject electronicCardCustomerSyncObject = new ElectronicCardCustomerSyncObject("", customerNO, "", "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, electronicCardCustomerSyncObject);
 		getActivity().startService(intent);
 

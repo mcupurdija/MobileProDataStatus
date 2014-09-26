@@ -15,8 +15,9 @@ public class CustomerItemOnPromotionDomain extends Domain {
 	public String valid_to_date;
 	public String price;
 	public String comment;
+	public String discount;
 	
-	private static final String[] COLUMNS = new String[] { "item_no", "branch_code", "valid_from_date", "valid_to_date", "price", "comment" };
+	private static final String[] COLUMNS = new String[] { "item_no", "branch_code", "valid_from_date", "valid_to_date", "price", "comment", "discount" };
 	
 	@Override
 	public String[] getCSVMappingStrategy() {
@@ -32,6 +33,7 @@ public class CustomerItemOnPromotionDomain extends Domain {
 		contentValues.put(ItemsOnPromotion.VALID_TO_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getValid_to_date()));
 		contentValues.put(ItemsOnPromotion.PRICE, WsDataFormatEnUsLatin.toDoubleFromWs(getPrice()));
 		contentValues.put(ItemsOnPromotion.COMMENT, getComment());
+		contentValues.put(ItemsOnPromotion.DISCOUNT, WsDataFormatEnUsLatin.toDoubleFromWs(getDiscount()));
 		return contentValues;
 	}
 
@@ -86,6 +88,14 @@ public class CustomerItemOnPromotionDomain extends Domain {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public String getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(String discount) {
+		this.discount = discount;
 	}
 
 }

@@ -10,6 +10,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerBusinessUnits;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.NovaKarticaKupcaMasterActivity;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
@@ -65,9 +66,10 @@ public class NovaKKFragment4 extends Fragment implements LoaderCallbacks<Cursor>
 	private static final int SAVE_SALE_DOC = 0;
 	private static final int VERIFY_SALE_DOC = 1;
 	
-	private int saleOrderId, customerId, selectedContactId = -1, selectedShippingAddress = -1, transitCustomerId = -1, hasBusinessUnits;
+	private int saleOrderId, customerId, selectedContactId = -1, selectedShippingAddress = -1, transitCustomerId = -1, hasBusinessUnits, backorderStatus;
 	private String customerNo, customerName, defaultShippingAddress, defaultShippingCity, defaultShippingPostCode, defaultShippingPhone, appVersion;
 	
+	private NovaKarticaKupcaMasterActivity masterActivity;
 	private NovaKKFragment4ContactListener mCallback;
 	private NovaKKFragment4ShippingAddressListener mCallback2;
 	private NovaKKFragment4SaleOrderUpdated mCallback3;
@@ -264,6 +266,8 @@ public class NovaKKFragment4 extends Fragment implements LoaderCallbacks<Cursor>
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
+		masterActivity = ((NovaKarticaKupcaMasterActivity) getActivity());
+		
 		saleOrderId = getArguments().getInt("saleOrderId", -1);
 		customerId = getArguments().getInt("customerId", -1);
 		appVersion = getArguments().getString("appVersion", null);
@@ -280,12 +284,16 @@ public class NovaKKFragment4 extends Fragment implements LoaderCallbacks<Cursor>
 		llSacuvaj.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				try {
-					updateSaleOrder();
-					((NovaKarticaKupcaMasterActivity) getActivity()).showToast("Dokument uspešno sačuvan");
-					//getActivity().finish();
-				} catch (SaleOrderValidationException e) {
-					DialogUtil.showInfoDialog(getActivity(), "Greška", e.getMessage());
+				if (masterActivity.isSent()) {
+					masterActivity.showToast(getString(R.string.dokumentPoslatError));
+				} else {
+					try {
+						updateSaleOrderLines();
+						masterActivity.showToast("Dokument uspešno sačuvan");
+						//getActivity().finish();
+					} catch (SaleOrderValidationException e) {
+						DialogUtil.showInfoDialog(getActivity(), "Greška", e.getMessage());
+					}
 				}
 			}
 		});
@@ -294,11 +302,15 @@ public class NovaKKFragment4 extends Fragment implements LoaderCallbacks<Cursor>
 		llVerifikuj.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				try {
-					updateSaleOrder();
-					verifySaleOrder();
-				} catch (SaleOrderValidationException e) {
-					DialogUtil.showInfoDialog(getActivity(), "Greška", e.getMessage());
+				if (masterActivity.isSent()) {
+					masterActivity.showToast(getString(R.string.dokumentPoslatError));
+				} else {
+					try {
+						updateSaleOrderLines();
+						verifySaleOrder();
+					} catch (SaleOrderValidationException e) {
+						DialogUtil.showInfoDialog(getActivity(), "Greška", e.getMessage());
+					}
 				}
 			}
 		});
@@ -307,21 +319,33 @@ public class NovaKKFragment4 extends Fragment implements LoaderCallbacks<Cursor>
 		llPosalji.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				try {
-					updateSaleOrder();
-					if (mTipDokumenta.getSelectedItemPosition() == 0) {
-						if (mVrstaProdaje.getSelectedItemPosition() == 1) {
-							telefonskiPozivDijalog(1);
-						} else if (mVrstaProdaje.getSelectedItemPosition() == 2) {
-							telefonskiPozivDijalog(2);
+				if (masterActivity.isSent()) {
+					masterActivity.showToast(getString(R.string.dokumentPoslatError));
+				} else {
+					try {
+						updateSaleOrderLines();
+						if (mTipDokumenta.getSelectedItemPosition() == 0) {
+							int vrstaProdaje = mVrstaProdaje.getSelectedItemPosition();
+							switch (vrstaProdaje) {
+								case 1:
+									telefonskiPozivDijalog(1);
+									break;
+								case 2:
+									telefonskiPozivDijalog(2);
+									break;
+								case 3:
+									telefonskiPozivDijalog(3);
+									break;
+								default:
+									sendSaleOrder(0);
+									break;
+							}
 						} else {
 							sendSaleOrder(0);
 						}
-					} else {
-						sendSaleOrder(0);
+					} catch (SaleOrderValidationException e) {
+						DialogUtil.showInfoDialog(getActivity(), "Greška", e.getMessage());
 					}
-				} catch (SaleOrderValidationException e) {
-					DialogUtil.showInfoDialog(getActivity(), "Greška", e.getMessage());
 				}
 			}
 		});
@@ -546,7 +570,7 @@ public class NovaKKFragment4 extends Fragment implements LoaderCallbacks<Cursor>
 		
 		if (!cursor.isNull(SaleOrderQuery.CUSTOMER_BUSINESS_UNIT_CODE)) {
 			String businessUnitNo = cursor.getString(SaleOrderQuery.CUSTOMER_BUSINESS_UNIT_CODE);
-			if (!businessUnitNo.equals("")) {
+			if (businessUnitNo != null && !businessUnitNo.equals("")) {
 				Cursor businessUnitCursor = getActivity().getContentResolver().query(CustomerBusinessUnits.CONTENT_URI, new String[] { CustomerBusinessUnits.ADDRESS, CustomerBusinessUnits.CITY }, CustomerBusinessUnits.UNIT_NO + "=?", new String[] { businessUnitNo }, null);
 				if (businessUnitCursor.moveToFirst()) {
 					mPoslovnaJedinica.setText(String.format("%s - %s, %s", businessUnitNo, businessUnitCursor.getString(0), businessUnitCursor.getString(1)));
@@ -568,7 +592,8 @@ public class NovaKKFragment4 extends Fragment implements LoaderCallbacks<Cursor>
 		}
 		
 		if (!cursor.isNull(SaleOrderQuery.BACKORDER_SHIPMENT_STATUS)) {
-			mNacinObrade.setSelection(cursor.getInt(SaleOrderQuery.BACKORDER_SHIPMENT_STATUS));
+			backorderStatus = cursor.getInt(SaleOrderQuery.BACKORDER_SHIPMENT_STATUS);
+			mNacinObrade.setSelection(backorderStatus);
 		}
 		
 		if (!cursor.isNull(SaleOrderQuery.SHIPMENT_METHOD_CODE)) {
@@ -664,7 +689,11 @@ public class NovaKKFragment4 extends Fragment implements LoaderCallbacks<Cursor>
 			}
 		}
 		
-		localValues.put(MobileStoreContract.SaleOrders.SHORTCUT_DIMENSION_1_CODE, salesOptions[mVrstaProdaje.getSelectedItemPosition()]);
+		int vrstaProdajePos = mVrstaProdaje.getSelectedItemPosition();
+		if (!postojiOtvorenaPosetaKupcu() && vrstaProdajePos == 0) {
+			throw new SaleOrderValidationException(getString(R.string.vrstaProdajeRealizacijaError));
+		}
+		localValues.put(MobileStoreContract.SaleOrders.SHORTCUT_DIMENSION_1_CODE, salesOptions[vrstaProdajePos]);
 		
 		int backorder_type = mNacinObrade.getSelectedItemPosition();
 		if (backorder_type == 0) {
@@ -746,12 +775,14 @@ public class NovaKKFragment4 extends Fragment implements LoaderCallbacks<Cursor>
 		}
 		
 		localValues.putNull(MobileStoreContract.SaleOrders.REQUESTED_DELIVERY_DATE);
-		
+
 		return localValues;
 	}
 	
-	private void updateSaleOrder() throws SaleOrderValidationException {
+	private void updateSaleOrderLines() throws SaleOrderValidationException {
 		getActivity().getContentResolver().update(SaleOrders.buildSaleOrderUri(String.valueOf(saleOrderId)), getInputData(), null, null);
+
+		int selectedBackorderStatus = mNacinObrade.getSelectedItemPosition();
 		
 		// OBAVEZNO JE AZURIRATI SVE LINIJE GDE JE BACKORDER STATUS "0" ODABRANIM STATUSOM SA ZAGLAVLJA
 		Cursor cursor = getActivity().getContentResolver().query(SaleOrderLines.buildSaleOrderLinesUri(String.valueOf(saleOrderId)), new String[] { Tables.SALE_ORDER_LINES + "." + SaleOrderLines._ID }, Tables.SALE_ORDER_LINES + "." + SaleOrderLines.BACKORDER_STATUS + "=?", new String[] { String.valueOf(0) }, null);
@@ -759,8 +790,19 @@ public class NovaKKFragment4 extends Fragment implements LoaderCallbacks<Cursor>
 		while (cursor.moveToNext()) {
 			ContentValues cv = new ContentValues();
 			lineId = cursor.getInt(0);
-			cv.put(SaleOrderLines.BACKORDER_STATUS, mNacinObrade.getSelectedItemPosition());
+			cv.put(SaleOrderLines.BACKORDER_STATUS, selectedBackorderStatus);
 			getActivity().getContentResolver().update(SaleOrderLines.CONTENT_URI, cv, Tables.SALE_ORDER_LINES + "." + SaleOrderLines._ID + "=?", new String[] { String.valueOf(lineId) });
+		}
+		
+		// AZURIRATI SVE LINIJE SA STARIM STATUSOM UKOLIKO JE ON PROMENJEN
+		if (backorderStatus != selectedBackorderStatus) {
+			cursor = getActivity().getContentResolver().query(SaleOrderLines.buildSaleOrderLinesUri(String.valueOf(saleOrderId)), new String[] { Tables.SALE_ORDER_LINES + "." + SaleOrderLines._ID }, Tables.SALE_ORDER_LINES + "." + SaleOrderLines.BACKORDER_STATUS + "=?", new String[] { String.valueOf(backorderStatus) }, null);
+			while (cursor.moveToNext()) {
+				ContentValues cv = new ContentValues();
+				lineId = cursor.getInt(0);
+				cv.put(SaleOrderLines.BACKORDER_STATUS, selectedBackorderStatus);
+				getActivity().getContentResolver().update(SaleOrderLines.CONTENT_URI, cv, Tables.SALE_ORDER_LINES + "." + SaleOrderLines._ID + "=?", new String[] { String.valueOf(lineId) });
+			}
 		}
 		cursor.close();
 		mCallback3.onSaleOrderUpdated();
@@ -818,6 +860,7 @@ public class NovaKKFragment4 extends Fragment implements LoaderCallbacks<Cursor>
 		final Dialog dialog = new Dialog(getActivity());
 		dialog.setContentView(R.layout.dialog_telefonski_poziv);
 		
+		final TextView tvDijalogNaslov = (TextView) dialog.findViewById(R.id.tvDijalogNaslov);
 		final String[] types = getResources().getStringArray(R.array.slc1_type_array);
 		final RadioGroup rgTelefonskiPoziv = (RadioGroup) dialog.findViewById(R.id.rgTelefonskiPoziv);
 		final EditText dialog_trajanje_poziva_input = (EditText) dialog.findViewById(R.id.dialog_trajanje_poziva_input);
@@ -871,17 +914,35 @@ public class NovaKKFragment4 extends Fragment implements LoaderCallbacks<Cursor>
 		});
 		
 		switch (tip) {
-		case 1:
-			dialog.setTitle(types[1]);
-			break;
-		case 2:
-			dialog.setTitle(types[2]);
-			break;
-		default:
-			break;
+			case 1:
+				dialog.setTitle(types[tip]);
+				tvDijalogNaslov.setText(R.string.dialog_telefonski_poziv_title);
+				break;
+			case 2:
+				dialog.setTitle(types[tip]);
+				tvDijalogNaslov.setText(R.string.dialog_telefonski_poziv_title);
+				break;
+			case 3:
+				dialog.setTitle(types[tip]);
+				tvDijalogNaslov.setText(R.string.dialog_telefonski_poziv_ponuda_title);
+				break;
+			default:
+				break;
 		}
 		
 		dialog.show();
+	}
+	
+	private boolean postojiOtvorenaPosetaKupcu() {
+		boolean status;
+		Cursor cursor = getActivity().getContentResolver().query(Visits.CONTENT_URI, null, Tables.VISITS + "." + Visits.CUSTOMER_ID + "=? AND " + Tables.VISITS + "." + Visits.VISIT_STATUS + "=? AND DATE(" + Tables.VISITS + "." + Visits.VISIT_DATE + ")=DATE(?)", new String[] { String.valueOf(customerId), String.valueOf(ApplicationConstants.VISIT_STATUS_STARTED), DateUtils.toDbDate(new Date()) }, null);
+		if (cursor.moveToFirst()) {
+			status = true;
+		} else {
+			status = false;
+		}
+		cursor.close();
+		return status;
 	}
 	
 	public void onContactSelected(int contact_id) {

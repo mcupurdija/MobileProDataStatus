@@ -11,6 +11,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
 import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerBusinessUnits;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.ui.dialog.AddressSelectDialog;
@@ -19,6 +20,7 @@ import rs.gopro.mobile_store.ui.dialog.BusinessUnitSelectDialog;
 import rs.gopro.mobile_store.ui.dialog.BusinessUnitSelectDialog.BusinessUnitSelectDialogListener;
 import rs.gopro.mobile_store.ui.dialog.ContactSelectDialog;
 import rs.gopro.mobile_store.ui.dialog.ContactSelectDialog.ContactSelectDialogListener;
+import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.DocumentUtils;
@@ -871,6 +873,10 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			throw new SaleOrderValidationException(getString(R.string.obaveznaPoslovnaJedinica));
 		}
 		
+		if (!postojiOtvorenaPosetaKupcu() && salesType.getSelectedItemPosition() == 0) {
+			throw new SaleOrderValidationException(getString(R.string.vrstaProdajeRealizacijaError));
+		}
+		
 //		String transfer_customer_auto_complete = transitCustomerAutoComplete.getText().toString().trim();
 		if (transitCustomerId != -1) {
 			//Cursor customerItemCursor = (Cursor) transitCustomerAutoCompleteAdapter.getItem(transitCustomerAutoCompleteAdapter.getIdForTitle(transfer_customer_auto_complete));
@@ -1421,6 +1427,18 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 				setCustomerAdressUIData(addressType, -1, "-", "", "", "", "", "");
 			}
 		}
+	}
+	
+	private boolean postojiOtvorenaPosetaKupcu() {
+		boolean status;
+		Cursor cursor = getContentResolver().query(Visits.CONTENT_URI, null, Tables.VISITS + "." + Visits.CUSTOMER_ID + "=? AND " + Tables.VISITS + "." + Visits.VISIT_STATUS + "=? AND DATE(" + Tables.VISITS + "." + Visits.VISIT_DATE + ")=DATE(?)", new String[] { String.valueOf(customerId), String.valueOf(ApplicationConstants.VISIT_STATUS_STARTED), DateUtils.toDbDate(new Date()) }, null);
+		if (cursor.moveToFirst()) {
+			status = true;
+		} else {
+			status = false;
+		}
+		cursor.close();
+		return status;
 	}
 	
 	@Override

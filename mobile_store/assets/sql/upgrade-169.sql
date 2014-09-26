@@ -44,7 +44,8 @@ CREATE TABLE `electronic_card_customer` (
 	`color` INTEGER DEFAULT 0,
 	`entry_type` INTEGER DEFAULT 0,
 	`sorting_index` INTEGER DEFAULT 5000,
-	`sale_per_branch_index` INTEGER DEFAULT 5000,
+	`new_sorting_index` INTEGER DEFAULT 5000,
+	`sale_per_branch_index` INTEGER DEFAULT 0,
 	`created_date` TEXT,
 	`created_by` TEXT,
 	`updated_date` TEXT,
@@ -63,7 +64,8 @@ CREATE TABLE `items_on_promotion` (
 	`valid_from_date` TEXT,
 	`valid_to_date` TEXT,
 	`price` REAL,
-	`comment` TEXT
+	`comment` TEXT,
+	`discount` REAL
 );
 
 CREATE TABLE `action_plan` (
@@ -78,6 +80,7 @@ CREATE TABLE `action_plan` (
 ALTER TABLE `items` ADD `min_qty` INTEGER DEFAULT 1;
 ALTER TABLE `items` ADD `bom_items` TEXT;
 ALTER TABLE `items` ADD `linked_items` TEXT;
+ALTER TABLE `items` ADD `has_actions` INTEGER DEFAULT 0;
 
 ALTER TABLE `customers` ADD `has_business_units` INTEGER DEFAULT 0;
 ALTER TABLE `customers` ADD `primary_alternative_address_no` TEXT;
@@ -85,5 +88,12 @@ ALTER TABLE `customers` ADD `primary_alternative_address_address` TEXT;
 ALTER TABLE `customers` ADD `primary_alternative_address_city` TEXT;
 ALTER TABLE `customers` ADD `primary_alternative_address_post_code` TEXT;
 ALTER TABLE `customers` ADD `last_action_plan_sync_date` TEXT DEFAULT NULL;
+ALTER TABLE `customers` ADD `task_count` INTEGER DEFAULT 0;
+ALTER TABLE `customers` ADD `customer_color` INTEGER DEFAULT 0;
+
+ALTER TABLE `sale_orders` ADD `svi_artikli_counter` INTEGER DEFAULT 0;
+
+ALTER TABLE `sale_order_lines` ADD `price_other` REAL;
+ALTER TABLE `sale_order_lines` ADD `price_type` INTEGER DEFAULT 0;
 
 UPDATE `app_settings` SET app_version='2.0.0', app_sync_warnning_date=datetime('now') WHERE _id=1;

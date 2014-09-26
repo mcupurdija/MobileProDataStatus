@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerBusinessUnits;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.ui.NovaKarticaKupcaMasterActivity;
 import rs.gopro.mobile_store.util.ApplicationConstants;
@@ -35,28 +36,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class NovaKKFragment1 extends Fragment implements LoaderCallbacks<Cursor> {
 
 	private int customerId;
-	private String customerNo, salesPersonNo;
+	private String customerNo, salesPersonNo, businessUnitNo;
+	
+	private NovaKarticaKupcaMasterActivity masterActivity;
 	
 	private LinearLayout llSync;
+	private ProgressBar pbLoading;
 	
-	private TextView tvImeKupca, tvSifraKupca, tvImeKupca2, tvAdresaKupca, tvGradKupca, tvPostanskiBrojKupca, 
+	private TextView tvImeKupca, tvSifraKupca, tvImeKupca2, tvPoslovnaJedinica, tvAdresaKupca, tvGradKupca, tvPostanskiBrojKupca, 
 		tvTelefonKupca, tvMobilniKupca, tvEmailKupca, tvMaticniBrojKupca, tvBrojPrimarnogKontaktaKupca, tvPoreskiBrojKupca, 
 		tvKreditniLimitKupca, tvSaldoKupca, tvWRKupcaLabel, tvDospeliSaldoKupca, tvDospeliSaldoIVKupca, tvSifraUslovaPlacanjaKupca, 
 		tvPrioritetKupca, tvBransaKupca, tvKanalKupca, tvStatusKupca, tvSMLKupca, tvUsvojeniPotencijalKupca, tvFokusKupca, 
 		tvDivizijaKupca, tvBrojPlavihMantilaKupcaKupca, tvBrojSivihMantilaKupcaKupca, tvPromet3Kupca, tvPromet6Kupca, tvPromet12Kupca, 
 		tvPrometProslaKupca, tvPrometPre2Kupca, tvPrometPre3Kupca, tvPrometPreYTMKupca, tvUkupanProfitKupca, tvSopstveniPrometKupca;
+	private View vBojaKupca1, vBojaKupca2;
 	
-	public static NovaKKFragment1 newInstance(int customerId, String customerNo, String salesPersonNo) {
+	public static NovaKKFragment1 newInstance(int customerId, String customerNo, String salesPersonNo, String businessUnitNo) {
 		NovaKKFragment1 frag = new NovaKKFragment1();
         Bundle args = new Bundle();
         args.putInt("customerId", customerId);
         args.putString("customerNo", customerNo);
         args.putString("salesPersonNo", salesPersonNo);
+        args.putString("businessUnitNo", businessUnitNo);
         frag.setArguments(args);
         return frag;
     }
@@ -79,7 +86,8 @@ public class NovaKKFragment1 extends Fragment implements LoaderCallbacks<Cursor>
 				cv.put(Customers.LAST_ECC_SYNC_DATE, DateUtils.toDbDate(new Date()));
 				getActivity().getContentResolver().update(Customers.buildCustomersUri(String.valueOf(customerId)), cv, null, null);
 			
-				((NovaKarticaKupcaMasterActivity) getActivity()).showToast("EKK uspešno sinhronizovan");
+				pbLoading.setVisibility(View.GONE);
+				masterActivity.showToast("EKK uspešno sinhronizovan");
 			}
 		} else {
 			openWebReportingLoginPage();
@@ -95,16 +103,21 @@ public class NovaKKFragment1 extends Fragment implements LoaderCallbacks<Cursor>
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
+		masterActivity = ((NovaKarticaKupcaMasterActivity) getActivity());
+		
 		customerId = getArguments().getInt("customerId", -1);
 		customerNo = getArguments().getString("customerNo", null);
 		salesPersonNo = getArguments().getString("salesPersonNo", null);
+		businessUnitNo = getArguments().getString("businessUnitNo", null);
 		
 		llSync = (LinearLayout) view.findViewById(R.id.llSync);
+		pbLoading = (ProgressBar) view.findViewById(R.id.pbLoading);
 		
 		tvImeKupca = (TextView) view.findViewById(R.id.tvImeKupca);
 		tvImeKupca.setPaintFlags(tvImeKupca.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 		tvSifraKupca = (TextView) view.findViewById(R.id.tvSifraKupca);
 		tvImeKupca2 = (TextView) view.findViewById(R.id.tvImeKupca2);
+		tvPoslovnaJedinica = (TextView) view.findViewById(R.id.tvPoslovnaJedinica);
 		tvAdresaKupca = (TextView) view.findViewById(R.id.tvAdresaKupca);
 		tvGradKupca = (TextView) view.findViewById(R.id.tvGradKupca);
 		tvPostanskiBrojKupca = (TextView) view.findViewById(R.id.tvPostanskiBrojKupca);
@@ -139,11 +152,14 @@ public class NovaKKFragment1 extends Fragment implements LoaderCallbacks<Cursor>
 		tvPrometPreYTMKupca = (TextView) view.findViewById(R.id.tvPrometPreYTMKupca);
 		tvUkupanProfitKupca = (TextView) view.findViewById(R.id.tvUkupanProfitKupca);
 		tvSopstveniPrometKupca = (TextView) view.findViewById(R.id.tvSopstveniPrometKupca);
+		vBojaKupca1 = (View) view.findViewById(R.id.vBojaKupca1);
+		vBojaKupca2 = (View) view.findViewById(R.id.vBojaKupca2);
 		
 		llSync.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
+				pbLoading.setVisibility(View.VISIBLE);
 				ekkSync();
 			}
 		});
@@ -200,8 +216,9 @@ public class NovaKKFragment1 extends Fragment implements LoaderCallbacks<Cursor>
     }
 	
 	private void ekkSync() {
+		String businessUnit = (businessUnitNo != null) ? businessUnitNo : "";
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
-		ElectronicCardCustomerSyncObject electronicCardCustomerSyncObject = new ElectronicCardCustomerSyncObject("", customerNo, "", "");
+		ElectronicCardCustomerSyncObject electronicCardCustomerSyncObject = new ElectronicCardCustomerSyncObject("", customerNo, businessUnit, "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, electronicCardCustomerSyncObject);
 		getActivity().startService(intent);
 	}
@@ -217,6 +234,7 @@ public class NovaKKFragment1 extends Fragment implements LoaderCallbacks<Cursor>
     	startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(ApplicationConstants.WEB_REPORTING_BASE_URL)));
     }
 	
+	@SuppressWarnings("deprecation")
 	private void setValues(Cursor cursor) {
 		
 		if (!cursor.isNull(CustomerQuery.NAME)) {
@@ -229,6 +247,21 @@ public class NovaKKFragment1 extends Fragment implements LoaderCallbacks<Cursor>
 		
 		if (!cursor.isNull(CustomerQuery.NAME_2)) {
 			tvImeKupca2.setText(cursor.getString(CustomerQuery.NAME_2));
+		}
+		
+		if (!cursor.isNull(CustomerQuery.HAS_BUSINESS_UNITS)) {
+			if (cursor.getInt(CustomerQuery.HAS_BUSINESS_UNITS) == 0) {
+				tvPoslovnaJedinica.setText(getString(R.string.nemaPoslovnuJedinicu));
+			} else {
+				if (businessUnitNo != null && !businessUnitNo.equals("")) {
+					Cursor businessUnitCursor = getActivity().getContentResolver().query(CustomerBusinessUnits.CONTENT_URI, new String[] { CustomerBusinessUnits.ADDRESS, CustomerBusinessUnits.CITY }, CustomerBusinessUnits.UNIT_NO + "=?", new String[] { businessUnitNo }, null);
+					if (businessUnitCursor.moveToFirst()) {
+						tvPoslovnaJedinica.setText(String.format("%s - %s, %s", businessUnitNo, businessUnitCursor.getString(0), businessUnitCursor.getString(1)));
+					}
+				} else {
+					tvPoslovnaJedinica.setText(getString(R.string.nemaPoslovnuJedinicu));
+				}
+			}
 		}
 		
 		if (!cursor.isNull(CustomerQuery.ADDRESS)) {
@@ -265,6 +298,51 @@ public class NovaKKFragment1 extends Fragment implements LoaderCallbacks<Cursor>
 		
 		if (!cursor.isNull(CustomerQuery.VAR_REG_NO)) {
 			tvPoreskiBrojKupca.setText(cursor.getString(CustomerQuery.VAR_REG_NO));
+		}
+		
+		if (!cursor.isNull(CustomerQuery.CUSTOMER_COLOR)) {
+			switch (Integer.valueOf(cursor.getString(CustomerQuery.CUSTOMER_COLOR))) {
+				case 0:
+					vBojaKupca1.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_white_rect));
+					vBojaKupca2.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_white_rect));
+					break;
+				case 1:
+					vBojaKupca1.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_black_rect));
+					vBojaKupca2.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_black_rect));
+					break;
+				case 2:
+					vBojaKupca1.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_dark_red_rect));
+					vBojaKupca2.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_dark_red_rect));
+					break;
+				case 3:
+					vBojaKupca1.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_gray_rect));
+					vBojaKupca2.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_green_rect));
+					break;
+				case 4:
+					vBojaKupca1.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_green_rect));
+					vBojaKupca2.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_green_rect));
+					break;
+				case 5:
+					vBojaKupca1.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_red_rect));
+					vBojaKupca2.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_red_rect));
+					break;
+				case 6:
+					vBojaKupca1.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_yellow_rect));
+					vBojaKupca2.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_yellow_rect));
+					break;
+				case 7:
+					vBojaKupca1.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_gray_rect));
+					vBojaKupca2.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_yellow_rect));
+					break;
+				case 8:
+					vBojaKupca1.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_gray_rect));
+					vBojaKupca2.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_red_rect));
+					break;
+				default:
+					vBojaKupca1.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_white_rect));
+					vBojaKupca2.setBackgroundDrawable(getResources().getDrawable(R.drawable.customer_white_rect));
+					break;
+			}
 		}
 		
 		if (!cursor.isNull(CustomerQuery.CREDIT_LIMIT_LCY)) {
@@ -432,7 +510,9 @@ public class NovaKKFragment1 extends Fragment implements LoaderCallbacks<Cursor>
                 MobileStoreContract.Customers.TURNOVER_IN_LAST_12M,
                 MobileStoreContract.Customers.TURNOVER_YTM,
                 MobileStoreContract.Customers.GROSS_PROFIT_PFEP,
-                MobileStoreContract.Customers.APR_CUSTOMER_TURNOVER
+                MobileStoreContract.Customers.APR_CUSTOMER_TURNOVER,
+                MobileStoreContract.Customers.CUSTOMER_COLOR, 
+                MobileStoreContract.Customers.HAS_BUSINESS_UNITS
         };
 
 //      int _ID = 0;
@@ -472,6 +552,8 @@ public class NovaKKFragment1 extends Fragment implements LoaderCallbacks<Cursor>
 		int TURNOVER_YTM = 34;
 		int GROSS_PROFIT_PFEP = 35;
 		int APR_CUSTOMER_TURNOVER = 36;
+		int CUSTOMER_COLOR = 37;
+		int HAS_BUSINESS_UNITS = 38;
 	}
 
 }

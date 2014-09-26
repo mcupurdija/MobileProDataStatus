@@ -205,6 +205,7 @@
     <string name="customer_company_id_label">Matični broj</string>
     <string name="customer_primary_contact_id_label">Br. primarnog kontakta</string>
     <string name="customer_vat_reg_no_label">Poreski broj</string>
+    <string name="customer_color_label">Boja</string>
     <string name="customer_credit_limit_lcy_label">Kreditni limit (LVT)</string>
     <string name="customer_balance_lcy_label">Saldo (LVT)</string>
     <string name="customer_balance_due_lcy_label">Dospeli saldo (LVT)</string>
@@ -431,7 +432,7 @@
     <string name="kontakt_validacija_ime">Potrebno je da unesete Ime</string>
     <string name="kontakt_validacija_odeljenje">Potrebno je da odaberete Odeljenje</string>
     <string name="kontakt_validacija_pozicija">Potrebno je da odaberete Poziciju</string>
-    <string name="potvrda_brisanja">Molimo potvrdite brisanje</string>
+    <string name="potvrda_brisanja">Molimo potvrdite brisanje artikla</string>
     <string name="dijalog_preuzmi_porudzbine">Tip dokumenta</string>
     <string name="add_customer_create_from_potential">Kreiraj kao kupca</string>
     <string name="datum_od">Datum od</string>
@@ -440,8 +441,9 @@
     <string name="add_customer_city_post_code_hint">unesite poštanski broj ili grad</string>
     <string name="shipment_method_code">Način isporuke</string>
     <string name="dialog_telefonski_poziv_title">Odaberite ili unesite dužinu trajanja telefonskog poziva</string>
+    <string name="dialog_telefonski_poziv_ponuda_title">Odaberite ili unesite dužinu pravljenja ponude</string>
     
-    <string name="title_nova_kartica_kupca_settings">Nova kartica kupca</string>
+    <string name="title_nova_kartica_kupca_settings"> </string>
     <string name="title_nkk_switch">Prikaz nove kartice kupca</string>
     <string name="key_nkk_switch">nkk_switch</string>
     <string name="title_slike_artikala_settings">Slike artikala</string>
@@ -450,7 +452,7 @@
     <string name="title_ksa_switch">Keširaj slike artikala</string>
     <string name="key_ksa_switch">ksa_switch</string>
     <string name="poslovnaJedinica">Poslovna jedinica</string>
-    <string name="nemaPoslovnuJedinicu">Odabrani kupac nema poslovnu jedinicu</string>
+    <string name="nemaPoslovnuJedinicu">Kupac nema poslovnu jedinicu</string>
     <string name="preuzmiPoslovneJedinice">Preuzmi poslovne jedinice odabranog kupca</string>
     <string name="izaberiPoslovnuJedinicu">Izaberi poslovnu jedinicu</string>
     <string name="obaveznaPoslovnaJedinica">Potrebno je da odaberete poslovnu jedinicu</string>
@@ -460,6 +462,7 @@
     <string name="dugmePromocijeShort">PROMO</string>
     <string name="dugmeTask">ZADACI</string>
     <string name="dugmeSlika">SLIKA</string>
+    <string name="dugmeSlikaU"><u>SLIKA</u></string>
     <string name="dugmeSacuvaj">SAČUVAJ</string>
     <string name="dugmeVerifikuj">VERIFIKUJ</string>
     <string name="dugmePosalji">POŠALJI</string>
@@ -476,11 +479,14 @@
     <string name="celobrojnaVrednostError">Potrebno je uneti celobrojnu vrednost</string>
     <string name="dugmePreuzmiCenu">Preuzmi cenu</string>
     <string name="dugmeDodajArtikal">Dodaj artikal u korpu</string>
-    <string name="rabatIzabraniMax">Rabat izabrani i max</string>
+    <string name="rabatIzabraniMax">Rabat izabrani\ni preporučeni</string>
+    <string name="rabatIzabraniMax2">Rabat izabrani i prepor.</string>
     <string name="ukupnaVrednost">Ukupan iznos bez PDV:</string>
     <string name="ukupnaVrednostPdv">Iznos korpe bez PDV:</string>
     <string name="jedinicnaCena">Jedinična cena:</string>
     <string name="jedinicnaCenaRabat">Cena sa popustom:</string>
+    <string name="jedinicnaCena2">Jedinična cena</string>
+    <string name="jedinicnaCenaRabat2">Cena sa popustom</string>
     <string name="filterArtiklaLong">Unesite šifru ili opis artikla</string>
     <string name="nisteOdabraliArtikal">Molimo odaberite artikal</string>
     <string name="korpaJePrazna">Korpa je prazna</string>
@@ -490,5 +496,15 @@
     <string name="promoCenaLabel"><u>Cena:</u></string>
     <string name="promoKomentarLabel"><u>Komentar:</u></string>
     <string name="spacerText">-</string>
-
+    <string name="kupacNijeUnet">Kupac nije izabran</string>
+    <string name="cbRegCena">Osn. cena</string>
+    <string name="dostupnaKolicina">Dostupna količina</string>
+    <string name="skladiste">Skladište</string>
+    <string name="obrisi">Obriši</string>
+    <string name="iznosKorpe">Iznos korpe:</string>
+    <string name="iznosKorpePdv">Iznos korpe sa PDV:</string>
+    <string name="potvrdaIzlaska">Potvrda</string>
+    <string name="vrstaProdajeRealizacijaError">Opciju \'Vrsta prodaje >> Poseta kupcu\' je moguće odabrati samo ukoliko je otvorena realizacija za odabranog kupca!</string>
+	<string name="dokumentPoslatError">Dokument je poslat i nije ga moguće menjati</string>
+    
 </resources>

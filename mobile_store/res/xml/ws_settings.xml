@@ -22,10 +22,10 @@
         android:defaultValue="http://sqlserver.gopro.rs:7047/Wurth/ws"
         android:key="@string/key_ws_server_address"
         android:title="@string/title_ws_server_address" />
-    <!-- W-RS PROD:   Wurth                                                       -->
-    <!-- W-RS TEST:   W%20U%20R%20T%20H%20-%20T%20E%20S%20T%20%20B%20A%20Z%20A    -->
-    <!-- W-RS LOCAL:  Wurth                                                       -->
-    <!-- W-CG TEST:   Wurth%20Crna%20Gora                                         -->
+    <!-- W-RS PROD:   Wurth                                                                       -->
+    <!-- W-RS TEST:   W%20U%20R%20T%20H%20-%20T%20E%20S%20T%20%20B%20A%20Z%20A  Wurth%20Testing   -->
+    <!-- W-RS LOCAL:  Wurth                                                                       -->
+    <!-- W-CG TEST:   Wurth%20Crna%20Gora                                                         -->
     <EditTextPreference
         android:defaultValue="Wurth"
         android:key="@string/key_company"

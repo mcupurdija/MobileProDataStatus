@@ -636,7 +636,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
 
 	@Override
 	public void onNovaPorudzbinaDialogFinished(int customerId, String customerNo, 
-			String potentialCustomerNo, String branchCode, int businessUnitId, String businessUnitNo, int salesType, boolean newSaleOrder) {
+			String potentialCustomerNo, String branchCode, int businessUnitId, String businessUnitNo, int salesType, boolean newSaleOrder, int sviArtikliUseCount) {
 		
 		Intent novaKarticaKupca = new Intent(this, NovaKarticaKupcaMasterActivity.class);
 		novaKarticaKupca.setAction(Intent.ACTION_INSERT);
@@ -649,6 +649,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
 		novaKarticaKupca.putExtra("salesType", salesType);
 		novaKarticaKupca.putExtra("salesPersonId", SharedPreferencesUtil.getSalePersonId(this));
 		novaKarticaKupca.putExtra("salesPersonNo", SharedPreferencesUtil.getSalePersonNo(this));
+		novaKarticaKupca.putExtra("sviArtikliUseCount", sviArtikliUseCount);
 		startActivity(novaKarticaKupca);
 	}
 

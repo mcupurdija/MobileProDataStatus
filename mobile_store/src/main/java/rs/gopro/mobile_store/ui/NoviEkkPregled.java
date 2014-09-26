@@ -158,7 +158,7 @@ public class NoviEkkPregled extends Activity {
 	
 	private void doSync() {
 		Intent intent = new Intent(getApplicationContext(), NavisionSyncService.class);
-		ElectronicCardCustomerSyncObject electronicCardCustomerSyncObject = new ElectronicCardCustomerSyncObject("", customerNo, "", "");
+		ElectronicCardCustomerSyncObject electronicCardCustomerSyncObject = new ElectronicCardCustomerSyncObject("", customerNo, "", "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, electronicCardCustomerSyncObject);
 		startService(intent);
 	}

@@ -38,6 +38,9 @@ public class ApplicationConstants {
 	public static final String AP_ENTRY_TYPE = "8";
 	public static final String MS_ENTRY_TYPE = "9";
 	
+	public static final int PRICE_TYPE_OSN = 0;
+	public static final int PRICE_TYPE_AKC = 1;
+	
 	public static enum USER_ROLE {
 		ADMIN, USER
 	}

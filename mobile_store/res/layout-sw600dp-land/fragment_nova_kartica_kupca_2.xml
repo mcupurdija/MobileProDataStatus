@@ -38,6 +38,13 @@
                 android:layout_marginRight="10dp"
                 android:text="@string/dugmeSviArtikli"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
+            
+            <com.readystatesoftware.viewbadger.BadgeView
+                android:id="@+id/badgeSviArtikli"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp" />
         </LinearLayout>
 
         <View
@@ -183,8 +190,10 @@
                     android:layout_marginRight="-3dp"
                     android:layout_toLeftOf="@+id/tbLeftAKK"
                     android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textColor="@drawable/toggle_color_selector"
                     android:textOff="@string/dugmeKK"
                     android:textOn="@string/dugmeKK"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <ToggleButton
@@ -196,8 +205,10 @@
                     android:layout_marginRight="-3dp"
                     android:layout_toLeftOf="@+id/tbLeftMS"
                     android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textColor="@drawable/toggle_color_selector"
                     android:textOff="@string/dugmeAKK"
                     android:textOn="@string/dugmeAKK"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <ToggleButton
@@ -209,8 +220,10 @@
                     android:layout_marginRight="-3dp"
                     android:layout_toLeftOf="@+id/tbLeftAP"
                     android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textColor="@drawable/toggle_color_selector"
                     android:textOff="@string/dugmeMS"
                     android:textOn="@string/dugmeMS"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <ToggleButton
@@ -222,8 +235,10 @@
                     android:layout_marginRight="-3dp"
                     android:layout_toLeftOf="@+id/tbLeftOVS"
                     android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textColor="@drawable/toggle_color_selector"
                     android:textOff="@string/dugmeAP"
                     android:textOn="@string/dugmeAP"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <ToggleButton
@@ -235,21 +250,47 @@
                     android:layout_marginRight="-3dp"
                     android:layout_toLeftOf="@+id/tbLeftAKC"
                     android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textColor="@drawable/toggle_color_selector"
                     android:textOff="@string/dugmeOVS"
                     android:textOn="@string/dugmeOVS"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <ToggleButton
                     android:id="@+id/tbLeftAKC"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_toLeftOf="@+id/sKKfilter"
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="-3dp"
                     android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textColor="@drawable/toggle_color_selector"
                     android:textOff="@string/dugmeAKC"
                     android:textOn="@string/dugmeAKC"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
+                
+                <Spinner 
+                    android:id="@+id/sKKfilter"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:layout_alignParentTop="true" />
+
+                <FrameLayout
+                    android:id="@+id/flKKsaProm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:background="@android:color/white" >
+
+                    <Button
+                        android:id="@+id/bKKsaProm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ZATVORI" />
+                </FrameLayout>
             </RelativeLayout>
 
             <ProgressBar
@@ -323,6 +364,8 @@
                     android:layout_marginRight="-3dp"
                     android:layout_toLeftOf="@+id/tbRightAKCA"
                     android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textColor="@drawable/toggle_color_selector"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     android:visibility="gone" />
 
@@ -335,8 +378,10 @@
                     android:layout_marginRight="-3dp"
                     android:layout_toLeftOf="@+id/tbRightVeza"
                     android:background="@drawable/apptheme_btn_toggle_holo_light"
-                    android:textOff="@string/dugmeAKCA"
-                    android:textOn="@string/dugmeAKCA"
+                    android:textColor="@drawable/toggle_color_selector"
+                    android:textOff="@string/dugmeAKC"
+                    android:textOn="@string/dugmeAKC"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <ToggleButton
@@ -347,8 +392,10 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="-3dp"
                     android:background="@drawable/apptheme_btn_toggle_holo_light"
+                    android:textColor="@drawable/toggle_color_selector"
                     android:textOff="@string/dugmeVeza"
                     android:textOn="@string/dugmeVeza"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
             </RelativeLayout>
 
@@ -365,7 +412,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:contentDescription="@string/dugmePromocije"
-                android:paddingTop="50dp"
                 android:src="@drawable/promo"
                 android:visibility="gone" />
 
@@ -404,7 +450,7 @@
 
             <LinearLayout
                 android:id="@+id/llCene"
-                android:layout_width="600dp"
+                android:layout_width="620dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
@@ -518,8 +564,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
                 android:layout_marginBottom="5dp"
-                android:layout_toLeftOf="@+id/bDodajArtikal" >
+                android:layout_toLeftOf="@+id/cbOsnCena" >
 
                 <TextView
                     android:id="@+id/tvSifraArtikla"
@@ -527,17 +574,19 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvSpacer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
                     android:layout_toRightOf="@+id/tvSifraArtikla"
                     android:text="@string/spacerText"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvOpisArtikla"
@@ -545,8 +594,22 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tvSpacer"
                     android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
             </RelativeLayout>
+
+            <CheckBox
+                android:id="@+id/cbOsnCena"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="-5dp"
+                android:layout_toLeftOf="@+id/bDodajArtikal"
+                android:text="@string/cbRegCena"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:id="@+id/rlKolicina"
@@ -649,6 +712,7 @@
                     android:id="@+id/tvRabatLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/llKorpaRabat"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="5dp"

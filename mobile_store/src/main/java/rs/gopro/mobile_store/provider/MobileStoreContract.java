@@ -62,7 +62,6 @@ public class MobileStoreContract {
 	private static final String PATH_SERVICE_ORDERS_EXPORT = "service_orders_export";
 	private static final String PATH_CITIES = "cities";
 	private static final String PATH_BUSINESS_UNITS = "customer_business_units";
-	private static final String PATH_UNIT_NO = "unit_no";
 	private static final String PATH_ITEMS_ON_PROMOTION = "items_on_promotion";
 	private static final String PATH_ACTION_PLAN = "action_plan";
 
@@ -203,6 +202,8 @@ public class MobileStoreContract {
 		
 		String LAST_ECC_SYNC_DATE = "last_ecc_sync_date";
 		String LAST_ACTION_PLAN_SYNC_DATE = "last_action_plan_sync_date";
+		String TASK_COUNT = "task_count";
+		String CUSTOMER_COLOR = "customer_color";
 	}
 
 	public interface ItemsColumns {
@@ -225,6 +226,7 @@ public class MobileStoreContract {
 		String MIN_QTY = "min_qty";
 		String BOM_ITEMS = "bom_items";
 		String LINKED_ITEMS = "linked_items";
+		String HAS_ACTIONS = "has_actions";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
@@ -274,6 +276,7 @@ public class MobileStoreContract {
 		String NOTE2 = "note2";
 		String NOTE3 = "note3";
 		String SHIPMENT_METHOD_CODE = "shipment_method_code";
+		String SVI_ARTIKLI_COUNTER = "svi_artikli_counter";
 	}
 
 	public interface SaleOrderLinesColumns {
@@ -298,6 +301,8 @@ public class MobileStoreContract {
 		String QUANTITY_AVAILABLE_STATUS = "quantity_available_status";
 		String BACKORDER_STATUS = "backorder_status";
 		String AVAILABLE_TO_WHOLE_SHIPMENT = "available_to_whole_shipment";
+		String PRICE_OTHER = "price_other";
+		String PRICE_TYPE = "price_type";
 	}
 
 	/**
@@ -423,6 +428,7 @@ public class MobileStoreContract {
 		String COLOR = "color";
 		String ENTRY_TYPE = "entry_type";
 		String SORTING_INDEX = "sorting_index";
+		String NEW_SORTING_INDEX = "new_sorting_index";
 		String SALE_PER_BRANCH_INDEX = "sale_per_branch_index";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
@@ -539,6 +545,7 @@ public class MobileStoreContract {
 		String VALID_TO_DATE = "valid_to_date";
 		String PRICE = "price";
 		String COMMENT = "comment";
+		String DISCOUNT = "discount";
 	}
 	
 	public interface ActionPlanColumns {

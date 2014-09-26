@@ -830,7 +830,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		String quantity = mQuantity.getText().toString().replace('.', ','); // UIUtils.getDoubleFromUI(mQuantity.getText().toString().replace('.', ','));
 		int campaign_status = mCampaignStatus.getSelectedItemPosition();
 		int potentialCustomerSignal = isPotentialCustomer(customerId) == false ? 0 : 1;
-		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, mLocation.getSelectedItem().toString(), campaign_status, Integer.valueOf(potentialCustomerSignal),customerNo, quantity, salesPersonNo, documentType, deviceDocumentNo, 0, "", "", "", "", "", "", "", "");
+		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, mLocation.getSelectedItem().toString(), campaign_status, Integer.valueOf(potentialCustomerSignal),customerNo, quantity, salesPersonNo, documentType, deviceDocumentNo, 0, "", "", "", "", "", "", "", "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQtySalesPriceAndDiscSyncObject);
 		getActivity().startService(intent);
 		

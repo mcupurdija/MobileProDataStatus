@@ -58,6 +58,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -86,7 +87,6 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	private static final String VISITS_FILTER_IS_VISIT_OPEN = Tables.VISITS + "." + MobileStoreContract.Visits.VISIT_STATUS + "=" + ApplicationConstants.VISIT_STATUS_STARTED;
 	
 	private static final int GPS_ALLOWED_TIME_INTERVAL = 3 * 60 * 1000;
-	
 	private static final int NEW_SALE_ORDER_REQUEST_CODE = 2;
 	
 	private CursorAdapter cursorAdapter, cursorAdapterPlan;
@@ -109,6 +109,7 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	
 	private Calendar calender = Calendar.getInstance();
 	
+	private Dialog dialog;
 	private AlertDialog alertDialog;
 
 	private Vibrator vibe;
@@ -126,15 +127,59 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	};
 
 	protected void onSOAPResult(SyncResult syncResult, String broadcastAction) {
-		if (syncResult.getStatus().equals(SyncStatus.FAILURE)) {
+		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
+			if (SetRealizedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				SetRealizedVisitsToCustomersSyncObject syncObject = (SetRealizedVisitsToCustomersSyncObject) syncResult.getComplexResult();
+				
+				int cusomerId = syncObject.getCustomerId();
+				int taskCount = syncObject.getTaskCount();
+				if (taskCount > 0) {
+					prikaziDijalogZaTaskove(cusomerId, taskCount);
+				}
+			}
+		} else if (syncResult.getStatus().equals(SyncStatus.FAILURE)) {
 			if (!alertDialog.isShowing()) {
-				prikaziDijalog(syncResult.getResult());
+				prikaziErrorDijalog(syncResult.getResult());
 			}
 			//DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_error_in_sync), syncResult.getResult());
 		}
 	}
 	
-	private void prikaziDijalog(String greska) {
+	private void prikaziDijalogZaTaskove(int cusomerId, int taskCount) {
+		
+		String customerName = "", customerNo;
+		Cursor cursor = getContentResolver().query(Customers.buildCustomersUri(String.valueOf(cusomerId)), new String[] { Customers.NAME, Customers.CUSTOMER_NO }, null, null, null);
+		if (cursor.moveToFirst()) {
+			customerName = cursor.getString(0);
+			customerNo = cursor.getString(1);
+		}
+		
+		alertDialog.setTitle(R.string.second_section_title);
+	    alertDialog.setMessage("Za kupca '" + customerName + "' postoji [" + taskCount + "] novih zadataka. Da li želite da ih prikažete?");
+	    alertDialog.setIcon(R.drawable.ic_launcher);
+	    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "DA", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+				// TODO Auto-generated method stub
+				// startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); // customerNo
+				
+				Toast.makeText(getApplicationContext(), "Opcija 'ZADACI' je trenutno u izradi!", Toast.LENGTH_SHORT).show();
+				alertDialog.dismiss();
+			}
+		});
+	    alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "NE", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				alertDialog.dismiss();
+			}
+		});
+	    alertDialog.show();
+	}
+	
+	private void prikaziErrorDijalog(String greska) {
 		alertDialog.setTitle(R.string.dialog_title_error_in_sync);
 	    alertDialog.setMessage(greska);
 	    alertDialog.setIcon(R.drawable.ic_launcher);
@@ -359,8 +404,8 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	@Override
 	protected void onResume() {
 		super.onResume();
-		IntentFilter stRealizedVisitsToCustomersSyncObject = new IntentFilter(SetRealizedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION);
-    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, stRealizedVisitsToCustomersSyncObject);
+		IntentFilter setRealizedVisitsToCustomersSyncObject = new IntentFilter(SetRealizedVisitsToCustomersSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, setRealizedVisitsToCustomersSyncObject);
     	
     	try {
     		
@@ -679,7 +724,7 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	}
 	
 	public void kilometrazaDijalog(int tip) {
-		final Dialog dialog = new Dialog(this);
+		dialog = new Dialog(this);
 		final int tipRealizacije = tip;
 		dialog.setContentView(R.layout.dialog_kilometraza);
 		
@@ -736,12 +781,12 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	}
 	
 	public void novaRealizacijaDijalog(int customerId, Date time, final int visitId) {
-		final Dialog dialog = new Dialog(this);
+		dialog = new Dialog(this);
 		
 		dialog.setContentView(R.layout.dialog_nova_realizacija);
 		dialog.setTitle("Nova realizacija");
 		
-		AutoCompleteTextView acKupac = (AutoCompleteTextView) dialog.findViewById(R.id.dialog_nova_realizacija_kupac_input);
+		final AutoCompleteTextView acKupac = (AutoCompleteTextView) dialog.findViewById(R.id.dialog_nova_realizacija_kupac_input);
 		customerCursorAdapter = new CustomerAutocompleteCursorAdapter(this, null);
 		acKupac.setAdapter(customerCursorAdapter);
 		
@@ -762,6 +807,9 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 					customerAddress.setText(R.string.izaberiPoslovnuJedinicu);
 					customerAddress.setClickable(true);
 				}
+				
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(acKupac.getWindowToken(), 0);
 				
 				prikazAdreseKupca();
 			}
@@ -859,6 +907,11 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 						Toast.makeText(getApplicationContext(), R.string.title_unesite_vrednost, Toast.LENGTH_LONG).show();
 					}
 				} else {
+					acKupac.requestFocus();
+					Toast.makeText(getApplicationContext(), R.string.kupacNijeUnet, Toast.LENGTH_LONG).show();
+					
+					/* Obavezan odabir kupca
+					 * 
 					if (km.trim().length() > 0) {
 						try {
 							// POLJA DATUM I VREME
@@ -878,6 +931,7 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 						kilometrazaInput.requestFocus();
 						Toast.makeText(getApplicationContext(), R.string.title_unesite_vrednost, Toast.LENGTH_LONG).show();
 					}
+					*/
 				}
 			}
 		});
@@ -909,7 +963,7 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 	}
 	
 	public void krajRealizacijeDijalog(final String visitId, final int tip) {
-		final Dialog dialog = new Dialog(this);
+		dialog = new Dialog(this);
 		dialog.setContentView(R.layout.dialog_kraj_realizacije);
 		
 		final Spinner rezultat = (Spinner) dialog.findViewById(R.id.dialog_kraj_realizacije_rezultat_spinner);

@@ -33,5 +33,6 @@
     <color name="main_menu_category_text">#ffffffff</color>
     
     <color name="background_tab_pressed">#6633B5E5</color>
+    <color name="orange_light">#FFEDCC</color>
     
 </resources>
