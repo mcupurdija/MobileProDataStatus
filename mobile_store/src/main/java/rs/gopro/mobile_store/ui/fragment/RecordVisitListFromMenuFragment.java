@@ -314,7 +314,11 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 		dialog.setTitle(naslov);
 		tvRealizacijaInfoDatum.setText(getString(R.string.visit_date_label_title) + " " + DateUtils.toDbDate(datum));
 		tvRealizacijaInfoVreme.setText(getString(R.string.visit_time_label_title) + " " + vreme);
-		tvRealizacijaInfoKilometraza.setText(getString(R.string.visit_odometer_label_title) + " " + kilometraza);
+		if (kilometraza != null) {
+			tvRealizacijaInfoKilometraza.setText(getString(R.string.visit_odometer_label_title) + " " + kilometraza);
+		} else {
+			tvRealizacijaInfoKilometraza.setText(getString(R.string.visit_odometer_label_title) + " - ");
+		}
 		if (poruka != null) {
 			tvRealizacijaInfoPoruka.setVisibility(View.VISIBLE);
 			tvRealizacijaInfoPoruka.setText(getString(R.string.visit_note_label_title) + " " + poruka);
@@ -335,7 +339,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 		/** {@inheritDoc} */
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			return getActivity().getLayoutInflater().inflate(R.layout.list_item_visit, parent, false);
+			return getActivity().getLayoutInflater().inflate(R.layout.list_item_visit2, parent, false);
 		}
 
 		/** {@inheritDoc} */

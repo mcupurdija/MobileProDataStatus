@@ -10,7 +10,6 @@ import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.SalespersonSetupSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -21,11 +20,14 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -104,19 +106,20 @@ public class LoginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		Log.i(TAG, "Log activity created.");
 		setContentView(R.layout.activity_login);
+		
+		//new LoadViewTask().execute();
 
-		// hide before login no need to see options
-		ActionBar actionBar = getActionBar();
-		actionBar.hide();
-
-		// attach listener to login button
 		Button btnLogin = (Button) findViewById(R.id.btnLogin);
 		btnLogin.setOnClickListener(btnLoginListener);
 
 		editTextUser = (EditText) findViewById(R.id.editTextUsername);
 		editTextPass = (EditText) findViewById(R.id.editTextPassword);
+		
+		editTextPass.setTypeface(Typeface.DEFAULT);
+		editTextPass.setTransformationMethod(new PasswordTransformationMethod());
 		
 		btnRegister = (Button) findViewById(R.id.btnRegister);
 		Cursor cusrsor = getContentResolver().query(MobileStoreContract.SalesPerson.CONTENT_URI, new String[] { MobileStoreContract.SalesPerson.SALE_PERSON_NO } , null, null, null);
@@ -227,12 +230,7 @@ public class LoginActivity extends Activity {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(onNotice);
     }
-	
-	/**
-	 * 
-	 * @author aleksandar
-	 *
-	 */
+        
 	public interface UsersQuery {
 		String[] PROJECTION = { Users._ID, Users.USERNAME, Users.PASSWORD, Users.LAST_LOGIN, Users.SALES_PERSON_ID, Users.NAME };
 

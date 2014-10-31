@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="false"
+    android:fillViewport="true"
+    android:padding="10dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_up"
+        android:orientation="vertical"
+        android:padding="20dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:gravity="bottom"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/add_customer_names_label"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/add_customer_names_title"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/add_customer_name1"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/add_customer_names_label2"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/add_customer_names_title2"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/add_customer_name2"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/add_customer_address_label"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/add_customer_address_title"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/add_customer_address_value"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/add_customer_address_label2"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/add_customer_address_title2"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/add_customer_address_value2"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/add_customer_city_post_code_label"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/customer_city_label"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <AutoCompleteTextView
+                android:id="@+id/add_customer_city"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:completionThreshold="1"
+                android:hint="@string/add_customer_city_post_code_hint"
+                android:inputType="textEmailAddress" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/add_customer_phones_label"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/add_customer_phones_title2"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/add_customer_phone"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:inputType="phone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/add_customer_email_label"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/add_customer_email_title"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/add_customer_email_value"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:inputType="textEmailAddress" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/add_customer_company_data_label"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/add_customer_company_data_title2"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/add_customer_company_vat_no"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:inputType="number" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/add_customer_company_data_label2"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/add_customer_company_data_title3"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/add_customer_company_id"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/contact_department_title"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/customer_type_label"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <Spinner
+                android:id="@+id/contact_department_input"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="10" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/contact_position_title"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/customer_position_label"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <Spinner
+                android:id="@+id/contact_position_input"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="10" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

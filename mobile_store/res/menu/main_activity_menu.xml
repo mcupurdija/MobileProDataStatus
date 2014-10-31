@@ -37,6 +37,11 @@
         android:title="@string/menu_update_items"
         android:visible="false"/>
     <item
+        android:id="@+id/main_options_new_method"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_new_method"
+        android:visible="false"/>
+    <item
         android:id="@+id/shortcuts"
         android:icon="@drawable/ic_action_shortcut"
         android:showAsAction="ifRoom|withText"
@@ -46,7 +51,8 @@
                 android:id="@+id/main_shortcuts_new_sale_order"
                 android:icon="@drawable/ic_action_new_order"
                 android:showAsAction="ifRoom|withText"
-                android:title="@string/menu_nova_specifikacija"/>
+                android:title="@string/menu_nova_specifikacija"
+                android:visible="false"/>
             <item
                 android:id="@+id/main_shortcuts_sync_all"
                 android:icon="@drawable/ic_action_sync"

@@ -269,7 +269,6 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
                 MobileStoreContract.SaleOrderLines.SALE_ORDER_ID,
                 MobileStoreContract.SaleOrderLines.ITEM_NO,
                 MobileStoreContract.SaleOrderLines.DESCRIPTION,
-                MobileStoreContract.SaleOrderLines.DESCRIPTION2,
                 MobileStoreContract.SaleOrderLines.LINE_NO,
                 MobileStoreContract.SaleOrderLines.QUANTITY,
                 MobileStoreContract.SaleOrderLines.PRICE,
@@ -284,15 +283,14 @@ public class SaleOrderLinesPreviewListFragment extends ListFragment implements
         int SALE_ORDER_ID = 1;
         int ITEM_NO = 2;
         int DESCRIPTION = 3;
-        //int DESCRIPTION2 = 4;
-        int LINE_NO = 5;
-        int QUANTITY = 6;
-        int PRICE = 7;
-        int REAL_DISCOUNT = 8;
-        int PRICE_DISCOUNT_STATUS = 9;
-        int QUOTE_REFUSED_STATUS = 10;
-        int VERIFY_STATUS = 11;
-        int QUANTITY_AVAILABLE = 12;
+        int LINE_NO = 4;
+        int QUANTITY = 5;
+        int PRICE = 6;
+        int REAL_DISCOUNT = 7;
+        int PRICE_DISCOUNT_STATUS = 8;
+        int QUOTE_REFUSED_STATUS = 9;
+        int VERIFY_STATUS = 10;
+        int QUANTITY_AVAILABLE = 11;
 	}
 
 }

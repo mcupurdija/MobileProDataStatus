@@ -91,6 +91,50 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/customer_type_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_type_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_type_label" />
+
+            <Spinner
+                android:id="@+id/customer_type_value"
+                style="@style/AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+        
+       <TableRow
+            android:id="@+id/customer_position_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_position_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_position_label" />
+
+            <Spinner
+                android:id="@+id/customer_position_value"
+                style="@style/AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -130,7 +174,32 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
-       <TableRow
+        <TableRow
+            android:id="@+id/customer_address2_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_address2_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_address2_label" />
+
+            <EditText
+                android:id="@+id/customer_address2_value"
+                style="AddEdit_Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:inputType="text"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
             android:id="@+id/customer_city_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
@@ -171,9 +240,9 @@
                 style="@style/AddEdit_Value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:completionThreshold="1"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
+                android:completionThreshold="1"
                 android:inputType="text"
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
@@ -194,12 +263,12 @@
 
             <EditText
                 android:id="@+id/customer_phone_value"
-                 style="AddEdit_Value"
+                style="AddEdit_Value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:inputType="text"
+                android:inputType="phone"
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -209,7 +278,8 @@
             android:id="@+id/customer_phone_mobile_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_phone_mobile_label"
@@ -219,16 +289,17 @@
 
             <EditText
                 android:id="@+id/customer_phone_mobile_value"
-                 style="AddEdit_Value"
+                style="AddEdit_Value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:inputType="text"
+                android:inputType="phone"
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
+
         <TableRow
             android:id="@+id/customer_email_group"
             android:layout_marginBottom="1dip"
@@ -243,12 +314,12 @@
 
             <EditText
                 android:id="@+id/customer_email_value"
-                android:inputType="textEmailAddress"
                 style="AddEdit_Value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
+                android:inputType="textEmailAddress"
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -297,7 +368,8 @@
             android:id="@+id/customer_primary_contact_id_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_primary_contact_id_label"
@@ -361,7 +433,8 @@
             android:id="@+id/customer_credit_limit_lcy_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_credit_limit_lcy_label"
@@ -404,20 +477,20 @@
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/customer_wr_debt_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_wr_debt_label"
                 style="@style/AddEdit_Label"
                 android:gravity="center_vertical"
-                android:textColor="#800000"
-                android:text="@string/customer_wr_debt_label" />
-
+                android:text="@string/customer_wr_debt_label"
+                android:textColor="#800000" />
         </TableRow>
 
         <TableRow
@@ -445,10 +518,35 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/customer_internal_balance_due_lcy_group"
+            android:id="@+id/customer_balance_commission_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
             android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/customer_balance_commission_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/customer_balance_commission_label" />
+
+            <TextView
+                android:id="@+id/customer_balance_commission_value"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/customer_internal_balance_due_lcy_group"
+            android:layout_marginBottom="1dip"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_internal_balance_due_lcy_label"
@@ -472,7 +570,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp" >
+            android:layout_marginTop="10dp"
+            android:visibility="gone" >
 
             <View
                 android:layout_width="match_parent"
@@ -510,7 +609,8 @@
             android:id="@+id/customer_priority_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_priority_label"
@@ -534,7 +634,8 @@
             android:id="@+id/customer_global_dimension_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_global_dimension_label"
@@ -558,7 +659,8 @@
             android:id="@+id/customer_channel_oran_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_channel_oran_label"
@@ -582,7 +684,8 @@
             android:id="@+id/customer_blocked_status_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_blocked_status_label"
@@ -606,7 +709,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp" >
+            android:layout_marginTop="10dp"
+            android:visibility="gone" >
 
             <View
                 android:layout_width="match_parent"
@@ -620,7 +724,8 @@
             android:id="@+id/customer_sml_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_sml_label"
@@ -644,7 +749,8 @@
             android:id="@+id/customer_adopted_potential_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_adopted_potential_label"
@@ -668,7 +774,8 @@
             android:id="@+id/customer_focus_customer_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_focus_customer_label"
@@ -692,7 +799,8 @@
             android:id="@+id/customer_division_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_division_label"
@@ -716,7 +824,8 @@
             android:id="@+id/customer_blue_coat_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_blue_coat_label"
@@ -740,7 +849,8 @@
             android:id="@+id/customer_gray_coat_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_gray_coat_label"
@@ -760,12 +870,13 @@
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-        
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp" >
+            android:layout_marginTop="10dp"
+            android:visibility="gone" >
 
             <View
                 android:layout_width="match_parent"
@@ -774,12 +885,13 @@
                 android:background="#FF909090"
                 android:padding="2dip" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/customer_turnover_in_last_3m_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_turnover_in_last_3m_label"
@@ -794,17 +906,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:inputType="text"
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/customer_turnover_in_last_6m_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_turnover_in_last_6m_label"
@@ -819,17 +931,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:inputType="text"
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/customer_turnover_in_last_12m_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_turnover_in_last_12m_label"
@@ -844,17 +956,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:inputType="text"
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/customer_turnover_generated_1_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_turnover_generated_1_label"
@@ -869,17 +981,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:inputType="text"
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/customer_turnover_generated_2_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_turnover_generated_2_label"
@@ -894,17 +1006,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:inputType="text"
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/customer_turnover_generated_3_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_turnover_generated_3_label"
@@ -919,17 +1031,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:inputType="text"
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/customer_turnover_ytm_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_turnover_ytm_label"
@@ -948,12 +1060,13 @@
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/customer_gross_profit_pfep_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_gross_profit_pfep_label"
@@ -972,12 +1085,13 @@
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/customer_apr_customer_turnover_group"
             android:layout_marginBottom="1dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/customer_apr_customer_turnover_label"

@@ -12,7 +12,6 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.csv.CSVDomainWriter;
@@ -30,7 +29,7 @@ public class SetRealizedVisitsToCustomersSyncObject extends SyncObject {
 	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.SET_REALIZED_VISITS_TO_CUSTOMERS_SYNC_ACTION";
 	
 	
-	private int visitId, customerId, statusOK, taskCount;
+	private int visitId, customerId, statusOK;
 	private Date requestSyncDate;
 	private String pCSVString;
 	
@@ -62,7 +61,6 @@ public class SetRealizedVisitsToCustomersSyncObject extends SyncObject {
 		setVisitId(source.readInt());
 		setCustomerId(source.readInt());
 		setpCSVString(source.readString());
-		setTaskCount(source.readInt());
 		long syncdate = source.readLong();
 		setRequestSyncDate(syncdate == -1 ? null : new Date(syncdate));
 	}
@@ -78,7 +76,6 @@ public class SetRealizedVisitsToCustomersSyncObject extends SyncObject {
 		dest.writeInt(getVisitId());
 		dest.writeInt(getCustomerId());
 		dest.writeString(getpCSVString());
-		dest.writeInt(getTaskCount());
 		dest.writeLong(getRequestSyncDate() == null ? -1 : getRequestSyncDate().getTime());
 	}
 
@@ -104,11 +101,7 @@ public class SetRealizedVisitsToCustomersSyncObject extends SyncObject {
 		pStatusOK.setType(Boolean.class);
 		properies.add(pStatusOK);
 		
-		PropertyInfo pTaskCount = new PropertyInfo();
-		pTaskCount.setName("taskCount");
-		pTaskCount.setValue(taskCount);
-		pTaskCount.setType(Integer.class);
-		properies.add(pTaskCount);
+		System.out.println(">>> " + pCSVString);
 		
 		return properies;
 	}
@@ -140,33 +133,16 @@ public class SetRealizedVisitsToCustomersSyncObject extends SyncObject {
 
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException {
+		if (soapResponse.toString().equals("true")) {
+			ContentValues cv = new ContentValues();
+			cv.put(MobileStoreContract.Visits.IS_SENT, 1);
+			return contentResolver.update(Visits.CONTENT_URI, cv, Tables.VISITS + "._id=?", new String[] { String.valueOf(visitId) });
+		}
 		return 0;
 	}
 
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver, SoapObject soapResponse) throws CSVParseException {
-		if (soapResponse.getPropertyAsString("statusOK").equals("true")) {
-			
-			customerId = -1;
-			Cursor cursor = contentResolver.query(Visits.CONTENT_URI, new String[] { Visits.CUSTOMER_ID }, Tables.VISITS + "._id=?", new String[] { String.valueOf(visitId) }, null);
-			if (cursor.moveToFirst()) {
-				customerId = cursor.getInt(0);
-			}
-			
-			ContentValues cv = new ContentValues();
-			if (customerId != -1) {
-				taskCount = Integer.valueOf(soapResponse.getPropertyAsString("taskCount"));
-				
-				if (taskCount != -1) {
-					cv.put(MobileStoreContract.Customers.TASK_COUNT, taskCount);
-					contentResolver.update(Customers.CONTENT_URI, cv, Tables.CUSTOMERS + "._id=?", new String[] { String.valueOf(customerId) });
-				}
-			}
-			
-			cv = new ContentValues();
-			cv.put(MobileStoreContract.Visits.IS_SENT, 1);
-			return contentResolver.update(Visits.CONTENT_URI, cv, Tables.VISITS + "._id=?", new String[] { String.valueOf(visitId) });
-		}
 		return 0;
 	}
 
@@ -200,14 +176,6 @@ public class SetRealizedVisitsToCustomersSyncObject extends SyncObject {
 
 	public void setStatusOK(int statusOK) {
 		this.statusOK = statusOK;
-	}
-
-	public int getTaskCount() {
-		return taskCount;
-	}
-
-	public void setTaskCount(int taskCount) {
-		this.taskCount = taskCount;
 	}
 
 	private interface VisitsQuery {
@@ -253,7 +221,7 @@ public class SetRealizedVisitsToCustomersSyncObject extends SyncObject {
         		String.class,
         		String.class,
         		String.class,
-        		String.class
+        		String.class,
         };
 	}
 

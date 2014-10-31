@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/inner_view_about"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -19,16 +19,14 @@
                 android:id="@+id/first_input_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="10dp"
                 android:text="@string/item_search_title"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
                 android:id="@+id/input_search_items"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:hint="@string/hint_search"
                 android:imeOptions="actionNext" >
             </EditText>
@@ -37,14 +35,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/items_camp_status_spinner_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="10dp"
                 android:text="@string/item_block_status_spinner_title"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -52,13 +49,14 @@
                 android:id="@+id/items_camp_status_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp" />
+                android:layout_marginLeft="10dp" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:orientation="vertical" >
 
         <Button
@@ -66,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:paddingBottom="5dp"
+            android:background="@drawable/white_button"
             android:text="@string/items_sync_new_button_title" />
 
         <Button
@@ -75,8 +73,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:paddingBottom="5dp"
-            android:visibility="gone"
-            android:text="@string/items_sync_overstock_button_title" />
+            android:text="@string/items_sync_overstock_button_title"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/items_sync_on_action_button"
@@ -84,15 +82,26 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:paddingBottom="5dp"
-            android:visibility="gone"
-            android:text="@string/items_sync_on_action_button_title" />
+            android:text="@string/items_sync_on_action_button_title"
+            android:visibility="gone" />
     </LinearLayout>
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/items_content"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent" >
+
+        <ListView
+            android:id="@+id/listViewItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ProgressBar
+            android:id="@+id/pbLoading"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
 
 </LinearLayout>

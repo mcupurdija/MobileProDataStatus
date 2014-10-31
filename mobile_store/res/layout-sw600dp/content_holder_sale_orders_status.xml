@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/customer_search_filter"
-                android:textSize="18sp" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
                 android:id="@+id/customer_filter_value"
@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/order_status_for_shipment"
-                android:textSize="18sp" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <Spinner
                 android:id="@+id/sent_orders_status_shipment_status_spinner"

@@ -1,7 +1,7 @@
 package rs.gopro.mobile_store.ui.customlayout;
 
 import rs.gopro.mobile_store.R;
-import rs.gopro.mobile_store.ui.ItemsListFragment;
+import rs.gopro.mobile_store.ui.ItemsListFragment2;
 import rs.gopro.mobile_store.util.LogUtils;
 import android.app.Activity;
 import android.net.Uri;
@@ -30,7 +30,7 @@ public class ItemsLayout extends CustomLinearLayout {
 			View view = layoutInflater.inflate(R.layout.content_holder_items, null);
 			this.addView(view);
 			FragmentTransaction tr = fragmentManager.beginTransaction();
-			fragment = new ItemsListFragment();
+			fragment = new ItemsListFragment2();
 			tr.replace(R.id.items_content, fragment);
 			tr.commit();
 			LogUtils.LOGI(TAG, "inflateLayout"+fragment.getId());

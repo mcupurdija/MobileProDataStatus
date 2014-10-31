@@ -14,50 +14,55 @@
             android:id="@+id/cbKupci"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="false"
+            android:checked="true"
             android:text="Kupci" />
 
         <CheckBox
             android:id="@+id/cbArtikli"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="false"
+            android:checked="true"
             android:text="Artikli" />
-        
+
         <CheckBox
             android:id="@+id/cbDokumenti"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
-            android:text="Svi dokumenti sa servera" />
+            android:text="Svi dokumenti sa servera"
+            android:visibility="gone" />
 
         <CheckBox
             android:id="@+id/cbSpecifikacije"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
-            android:text="Poslate porudžbenice (tekuća godina)" />
+            android:text="Poslate porudžbenice (tekuća godina)"
+            android:visibility="gone" />
 
         <CheckBox
             android:id="@+id/cbOtvoreneStavkeKupaca"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
-            android:text="Otvorene stavke kupaca" />
+            android:text="Otvorene stavke kupaca"
+            android:visibility="gone" />
 
         <CheckBox
             android:id="@+id/cbPoslednjeStavkeKupaca"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
-            android:text="Sve stavke kupaca u poslednja dva dana" />
-        
+            android:text="Sve stavke kupaca u poslednja dva dana"
+            android:visibility="gone" />
+
         <CheckBox
             android:id="@+id/cbStatusPoslatihPorudzbina"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
-            android:text="Statusi poslatih porudzbina" />
+            android:text="Statusi poslatih porudzbina"
+            android:visibility="gone" />
     </LinearLayout>
 
     <Button
@@ -86,6 +91,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bAzuriraj"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

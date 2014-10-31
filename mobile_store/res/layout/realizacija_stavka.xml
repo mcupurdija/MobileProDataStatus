@@ -75,13 +75,32 @@
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_status_poseta" />
     </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/layoutRealizacijaPoklon"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="1dp"
+        android:layout_toLeftOf="@+id/layoutRealizacijaZavrsi"
+        android:background="@drawable/background"
+        android:clickable="true"
+        android:gravity="center"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/ivRealizacijaPoklon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_action_gift" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layoutRealizacijaPorudzbina"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_marginLeft="1dp"
-        android:layout_toLeftOf="@+id/layoutRealizacijaZavrsi"
+        android:layout_toLeftOf="@+id/layoutRealizacijaPoklon"
         android:background="@drawable/background"
         android:clickable="true"
         android:gravity="center"

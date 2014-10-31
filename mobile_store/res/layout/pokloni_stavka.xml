@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical" >
+
+    <RelativeLayout
+        android:id="@+id/layoutPokloniInfo"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_toLeftOf="@+id/layoutPokloniDelete"
+        android:background="@drawable/background"
+        android:clickable="true"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/tvPokloniNaslov"
+            style="@style/ListItemTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/tvPokloniKomentar"
+            style="@style/ListItemSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tvPokloniNaslov"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/tvPokloniKolicina"
+            style="@style/ListItemSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tvPokloniNaslov"
+            android:singleLine="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutPokloniDelete"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="1dp"
+        android:background="@drawable/background"
+        android:clickable="true"
+        android:gravity="center" >
+
+        <ImageView
+            android:id="@+id/ivPokloniDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_status_delete" />
+    </RelativeLayout>
+
+</RelativeLayout>

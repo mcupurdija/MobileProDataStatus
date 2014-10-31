@@ -115,18 +115,18 @@ public class CustomerSyncObject extends SyncObject {
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException {
 		
-		
 		List<CustomerDomain> parsedItems = CSVDomainReader.parse(new StringReader(soapResponse.toString()), CustomerDomain.class);
 		// every received should be active
-		ContentValues defaultCV= new ContentValues();
+		ContentValues defaultCV = new ContentValues();
 		defaultCV.put(Customers.IS_ACTIVE, 1);
 		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedItems, defaultCV);
 		// there is customers, now to reset who is active first, all are inactive
 		if (parsedItems != null && parsedItems.size() > 0) {
-			ContentValues cv= new ContentValues();
+			ContentValues cv = new ContentValues();
 			cv.put(Customers.IS_ACTIVE, 0);
-			context.getContentResolver().update(Customers.CONTENT_URI, cv, Customers.CONTACT_COMPANY_NO+" is not null or " + Customers.CONTACT_COMPANY_NO + " not like ''", null);
+			contentResolver.update(Customers.CONTENT_URI, cv, Customers.CUSTOMER_NO + " is not null or " + Customers.CUSTOMER_NO + " not like ''", null);
 		}
+		
 		int numOfInserted = contentResolver.bulkInsert(Customers.CONTENT_URI, valuesForInsert);
 		return numOfInserted;
 	}

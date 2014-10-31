@@ -21,13 +21,13 @@ import rs.gopro.mobile_store.ui.customlayout.CustomLinearLayout;
 import rs.gopro.mobile_store.ui.customlayout.CustomerLedgerEntriesLayout;
 import rs.gopro.mobile_store.ui.customlayout.CustomersLayout;
 import rs.gopro.mobile_store.ui.customlayout.ItemsLayout;
+import rs.gopro.mobile_store.ui.customlayout.MethodsLayout;
 import rs.gopro.mobile_store.ui.customlayout.PlanAndTurnoverLayout;
 import rs.gopro.mobile_store.ui.customlayout.PlanOfVisitsLayout;
 import rs.gopro.mobile_store.ui.customlayout.RecordVisitsLayout;
 import rs.gopro.mobile_store.ui.customlayout.SaleOrdersLayout;
 import rs.gopro.mobile_store.ui.customlayout.SentOrdersLayout;
 import rs.gopro.mobile_store.ui.customlayout.SentOrdersStatusLayout;
-import rs.gopro.mobile_store.ui.dialog.NovaPorudzbinaDialog;
 import rs.gopro.mobile_store.ui.dialog.ServiceOrderDialog;
 import rs.gopro.mobile_store.ui.widget.MainContextualActionBarCallback;
 import rs.gopro.mobile_store.util.ApplicationConstants;
@@ -76,11 +76,11 @@ import android.widget.TextView;
  * 
  */
 
-public class MainActivity extends BaseActivity implements LocationListener, AdapterView.OnItemClickListener, MainContextualActionBarCallback, ServiceOrderDialog.ServiceOrderDialogListener, NovaPorudzbinaDialog.NovaPorudzbinaDialogListener {
+public class MainActivity extends BaseActivity implements LocationListener, AdapterView.OnItemClickListener, MainContextualActionBarCallback, ServiceOrderDialog.ServiceOrderDialogListener {
 	private static final String TAG = "MainActivity";
 	public static final String CURRENT_POSITION_KEY = "current_position";
 	
-	private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+	private SimpleDateFormat timeFormat = new SimpleDateFormat("dd.MM.yy HH:mm:ss", Locale.getDefault());
 	private static final int TIME_INTERVAL = 1 * 40 * 1000;
 	private static final int DISTANCE = 0;
 	private LocationManager locationManager;
@@ -279,6 +279,16 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
 				view = new ContactsLayout(getSupportFragmentManager(), this);
 				savedLayoutInstances.put(ContactsLayout.CONTACTS_URI.toString(), view);
 			}
+		} else if (MethodsLayout.METHODS_URI.equals(uri)) {
+			
+			localyticsSession.tagEvent("GLAVNI MENI > METODE");
+			
+			if (savedLayoutInstances.containsKey(MethodsLayout.METHODS_URI.toString())) {
+				view = savedLayoutInstances.get(MethodsLayout.METHODS_URI.toString());
+			} else {
+				view = new MethodsLayout(getSupportFragmentManager(), this);
+				savedLayoutInstances.put(MethodsLayout.METHODS_URI.toString(), view);
+			}
 		} else if (SentOrdersLayout.SENT_ORDERS_URI.equals(uri)) {
 			
 			localyticsSession.tagEvent("GLAVNI MENI > POSLATE PORUDZBINE/PONUDE");
@@ -356,25 +366,27 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
 			Uri uri = actionsAdapter.getItem(currentItemPosition);
 			
 			if (SaleOrdersLayout.SALE_ORDER_URI.equals(uri)) {
-				menu.getItem(1).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
+				menu.getItem(1).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);menu.getItem(7).setVisible(false);
 			} else if (PlanOfVisitsLayout.PLAN_OF_VISITS_URI.equals(uri)) {
-				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(true);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
+				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(true);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);menu.getItem(7).setVisible(false);
 			} else if (CustomersLayout.CUSTOMERS_URI.equals(uri)) {
-				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(true);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
+				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(true);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);menu.getItem(7).setVisible(false);
 			} else if (ItemsLayout.ITEMS_URI.equals(uri)) {
-				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(true);
+				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);menu.getItem(7).setVisible(false);
 			} else if (CustomerLedgerEntriesLayout.CUSTOMER_LEDGER_ENTRIES_URI.equals(uri)) {
-				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
+				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);menu.getItem(7).setVisible(false);
 			} else if (SentOrdersStatusLayout.SENT_ORDERS_STATUS_URI.equals(uri)) {
-				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
+				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);menu.getItem(7).setVisible(false);
 			} else if (ContactsLayout.CONTACTS_URI.equals(uri)) {
-				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(true);menu.getItem(6).setVisible(false);
-			} else if (SentOrdersLayout.SENT_ORDERS_URI.equals(uri)) {
-				menu.getItem(2).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
+				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(true);menu.getItem(6).setVisible(false);menu.getItem(7).setVisible(false);
+			} else if (MethodsLayout.METHODS_URI.equals(uri)) {
+				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);menu.getItem(7).setVisible(true);
+			}  else if (SentOrdersLayout.SENT_ORDERS_URI.equals(uri)) {
+				menu.getItem(2).setVisible(true);menu.getItem(0).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);menu.getItem(7).setVisible(false);
 			} else if (RecordVisitsLayout.RECORD_VISITS_URI.equals(uri)) {
-				menu.getItem(0).setVisible(true);menu.getItem(1).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(true);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
+				menu.getItem(0).setVisible(true);menu.getItem(1).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(true);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);menu.getItem(7).setVisible(false);
 			} else if (PlanAndTurnoverLayout.PLAN_AND_TURNOVER_URI.equals(uri)) {
-				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);
+				menu.getItem(0).setVisible(false);menu.getItem(2).setVisible(false);menu.getItem(1).setVisible(false);menu.getItem(3).setVisible(false);menu.getItem(4).setVisible(false);menu.getItem(5).setVisible(false);menu.getItem(6).setVisible(false);menu.getItem(7).setVisible(false);
 			}
 		}
 		return super.onPrepareOptionsMenu(menu);
@@ -436,20 +448,18 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
             final Intent customersIntent = new Intent(Intent.ACTION_VIEW, customersuri);
             startActivity(customersIntent);
 			return true;
+		case R.id.main_options_new_method:
+			
+			localyticsSession.tagEvent("GLAVNI MENI > METODE > NOVA METODA");
+			
+            startActivity(new Intent(this, AddMethodActivity.class));
+			return true;
 		case R.id.main_shortcuts_new_sale_order:
 			
 			localyticsSession.tagEvent("PRECICE > NOVA PORUDZBINA");
 			
-			if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.key_nkk_switch), false)) {
-				NovaPorudzbinaDialog npd = new NovaPorudzbinaDialog();
-				Bundle args = new Bundle();
-		        args.putInt("saleOrderId", -1);
-		        npd.setArguments(args);
-		        npd.show(getSupportFragmentManager(), "NEW_SALE_ORDER");
-			} else {
-				Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT, MobileStoreContract.SaleOrders.CONTENT_URI);
-				startActivity(newSaleOrderIntent);
-			}
+			Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT, MobileStoreContract.SaleOrders.CONTENT_URI);
+			startActivity(newSaleOrderIntent);
 			return true;
 		case R.id.main_shortcuts_sync_all:
 			
@@ -468,8 +478,6 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
 			
 			localyticsSession.tagEvent("GLAVNI MENI > ARTIKLI > AZURIRAJ SA TABLETA");
 			
-			Intent addSaTabletaIntent = new Intent(this, AzurirajSaTableta.class);
-			startActivity(addSaTabletaIntent);
 			return true;
 		default:
 			break;
@@ -632,25 +640,6 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
 	public void onProviderDisabled(String provider) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public void onNovaPorudzbinaDialogFinished(int customerId, String customerNo, 
-			String potentialCustomerNo, String branchCode, int businessUnitId, String businessUnitNo, int salesType, boolean newSaleOrder, int sviArtikliUseCount) {
-		
-		Intent novaKarticaKupca = new Intent(this, NovaKarticaKupcaMasterActivity.class);
-		novaKarticaKupca.setAction(Intent.ACTION_INSERT);
-		novaKarticaKupca.putExtra("customerId", customerId);
-		novaKarticaKupca.putExtra("customerNo", customerNo);
-		novaKarticaKupca.putExtra("potentialCustomerNo", potentialCustomerNo);
-		novaKarticaKupca.putExtra("branchCode", branchCode);
-		novaKarticaKupca.putExtra("businessUnitId", businessUnitId);
-		novaKarticaKupca.putExtra("businessUnitNo", businessUnitNo);
-		novaKarticaKupca.putExtra("salesType", salesType);
-		novaKarticaKupca.putExtra("salesPersonId", SharedPreferencesUtil.getSalePersonId(this));
-		novaKarticaKupca.putExtra("salesPersonNo", SharedPreferencesUtil.getSalePersonNo(this));
-		novaKarticaKupca.putExtra("sviArtikliUseCount", sviArtikliUseCount);
-		startActivity(novaKarticaKupca);
 	}
 
 }

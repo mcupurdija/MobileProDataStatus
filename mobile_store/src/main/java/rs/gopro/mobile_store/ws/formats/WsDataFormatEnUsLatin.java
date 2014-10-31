@@ -18,9 +18,9 @@ public class WsDataFormatEnUsLatin {
 	private static DecimalFormat decimalWSFormat = (DecimalFormat)NumberFormat.getInstance(Locale.US);
 	private static DecimalFormat decimalFormat = (DecimalFormat)NumberFormat.getInstance();
 	@SuppressLint("SimpleDateFormat")
-	private static SimpleDateFormat dateWsFormat = new SimpleDateFormat("dd.MM.yy");
+	private static SimpleDateFormat dateWsFormat = new SimpleDateFormat("dd.MM.yyyy.");
 	@SuppressLint("SimpleDateFormat")
-	private static SimpleDateFormat dateTimeWsFormat = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
+	private static SimpleDateFormat dateTimeWsFormat = new SimpleDateFormat("dd.MM.yyyy. HH:mm:ss");
 	@SuppressLint("SimpleDateFormat")
 	private static SimpleDateFormat timeWsFormat = new SimpleDateFormat("HH:mm:ss");
 	@SuppressLint("SimpleDateFormat")

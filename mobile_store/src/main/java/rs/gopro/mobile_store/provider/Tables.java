@@ -61,4 +61,14 @@ public interface Tables {
 	String ACTION_PLAN = "action_plan";
 	String ACTION_PLAN_JOIN_ITEMS = "action_plan left outer join items on action_plan.item_no = items.item_no";
 	
+	String GIFT_ITEMS = "gift_items";
+	String GIFT_ITEMS_JOIN_ITEMS_CUSTOMERS_VISITS = "gift_items left outer join items on gift_items.item_id = items._id " + 
+			"left outer join customers on gift_items.customer_id = customers._id " +
+			"left outer join visits on gift_items.visit_id = visits._id";
+	
+	String METHODS = "methods";
+	String METHODS_JOIN_ITEMS_JOIN_CUSTOMERS = "methods left outer join items on methods.method_item_id = items._id " + 
+			"left outer join customers as SCH on methods.method_school_customer_id = SCH._id " + 
+			"left outer join customers as PR1 on methods.method_professor_customer_id = PR1._id " + 
+			"left outer join customers as PR2 on methods.method_professor2_customer_id = PR2._id";
 }

@@ -426,5 +426,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_nova_kartica_kupca_master">Kartica kupca</string>
     <string name="title_activity_misica">Mišica</string>
+    <string name="title_activity_start">StartActivity</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

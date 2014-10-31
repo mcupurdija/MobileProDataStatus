@@ -132,6 +132,7 @@
     <string name="contextual_complete_visit">Realizuj posetu</string>
     <string name="contextual_clone_sale_order">Kloniraj porudžbinu/ponudu</string>
     <string name="contextual_contact_edit">Izmeni kontakt</string>
+    <string name="contextual_contact_delete">Izbriši kontakt</string>
     <string name="contextual_contact_add">Novi kontakt</string>
     <string name="get_new_sale_order_menu_option">Preuzmi dokumente sa sistema</string>
     <string name="contextual_get_history_sale_order">Preuzmi istoriju porudžbina</string>
@@ -239,7 +240,8 @@
     <string name="item_campaign_end_date_label">Kraj akcije</string>
     <string name="item_dialog_title">Informacije o artiklu</string>
     <string name="item_inventory_category_label">Skladišna kategorija</string>
-    <string name="item_availability_label">Artikal raspoloživ:</string>
+    <string name="item_availability_label"><u>Artikal raspoloživ:</u></string>
+    <string name="item_availability_label2"><u>Sve lokacije:</u></string>
     <string name="item_outstanding_purchase_lines_label">Pristizanje:</string>
 
     <!-- invoice_line -->
@@ -368,11 +370,16 @@
     <string name="invoice_closed">Zatvoreno</string>
     <string name="date_filter_button_text">Filtriraj po datumu</string>
     <string name="add_customer_names_title">Ime kupca</string>
+    <string name="add_customer_names_title2">Ime kupca 2</string>
     <string name="add_customer_address_title">Adresa</string>
+    <string name="add_customer_address_title2">Adresa 2</string>
     <string name="add_customer_city_post_code_title">Grad - poštanski broj</string>
     <string name="add_customer_phones_title">Telefon - mobilni telefon</string>
+    <string name="add_customer_phones_title2">Telefon</string>
     <string name="add_customer_email_title">E-mail</string>
     <string name="add_customer_company_data_title">PIB - Matični broj</string>
+    <string name="add_customer_company_data_title2">PIB</string>
+    <string name="add_customer_company_data_title3">Matični broj</string>
     <string name="add_customer_global_dimension_title">Globalna dimenzija 2</string>
     <string name="add_customer_oran_title">Kanal (ORAN)</string>
     <string name="add_customer_blue_coats_title">Br. plavih mantila</string>
@@ -432,7 +439,7 @@
     <string name="kontakt_validacija_ime">Potrebno je da unesete Ime</string>
     <string name="kontakt_validacija_odeljenje">Potrebno je da odaberete Odeljenje</string>
     <string name="kontakt_validacija_pozicija">Potrebno je da odaberete Poziciju</string>
-    <string name="potvrda_brisanja">Molimo potvrdite brisanje artikla</string>
+    <string name="potvrda_brisanja">Molimo potvrdite brisanje</string>
     <string name="dijalog_preuzmi_porudzbine">Tip dokumenta</string>
     <string name="add_customer_create_from_potential">Kreiraj kao kupca</string>
     <string name="datum_od">Datum od</string>
@@ -506,5 +513,34 @@
     <string name="potvrdaIzlaska">Potvrda</string>
     <string name="vrstaProdajeRealizacijaError">Opciju \'Vrsta prodaje >> Poseta kupcu\' je moguće odabrati samo ukoliko je otvorena realizacija za odabranog kupca!</string>
 	<string name="dokumentPoslatError">Dokument je poslat i nije ga moguće menjati</string>
+	
+	<string name="customer_type_label">Tip kupca</string>
+	<string name="customer_position_label">Pozicija</string>
+	<string name="customer_address2_label">Adresa 2</string>
+	<string name="customer_balance_commission_label">Saldo kao komisionara</string>
+	<string name="poklonArtikliActivityTitle">Poklon artikli</string>
+	<string name="poklonArtikalItemTitle">Odaberi artikl:</string>
+	<string name="poklonArtikalItemHint">šifra ili opis artikla</string>
+	<string name="poklonArtikalKolicinaTitle">Količina:</string>
+	<string name="poklonArtikalKomentarTitle">Komentar:</string>
+	<string name="poklonArtikalDodajTitle">Dodaj</string>
+	<string name="poklonArtikalPosaljiTitle">Pošalji</string>
+	<string name="stavkaUspesnoObrisana">Stavka uspešno obrisana</string>
+	
+	<string name="method_label_artikal">Metoda</string>
+	<string name="method_label_skola">Škola</string>
+	<string name="method_label_predmet">Predmet</string>
+	<string name="method_label_razred">Razred</string>
+	<string name="method_label_profesor1">Profesor I</string>
+	<string name="method_label_profesor2">Profesor II</string>
+	<string name="method_label_velicina">Veličina škole</string>
+	<string name="method_label_skolska_godina">Školska godina</string>
+	<string name="method_label_komentar">Komentar</string>
+	<string name="menu_new_method">Nova metoda</string>
+	<string name="method_search_title">Pronađi metodu: </string>
+	<string name="method_contextual_pattern">Nova po šablonu</string>
+	<string name="method_contextual_edit">Izmeni metodu</string>
+	<string name="method_contextual_delete">Izbriši metodu</string>
+	<string name="method_contextual_sync">Sinhronizuj metodu</string>
     
 </resources>

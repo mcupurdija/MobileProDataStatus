@@ -1,1 +1,0 @@
-DELETE FROM `customer_addresses`;

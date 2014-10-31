@@ -10,6 +10,7 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Contacts;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import rs.gopro.mobile_store.ws.model.domain.ContactsDomain;
@@ -135,6 +136,9 @@ public class GetContactsSyncObject extends SyncObject {
 	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException {
 		List<ContactsDomain> parsedItems = CSVDomainReader.parse(new StringReader(soapResponse.toString()), ContactsDomain.class);
 		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedItems);
+		for (ContentValues contentValues : valuesForInsert) {
+			contentValues.put(Contacts.COMPANY_NO, getpPotentialCustomerNoa46());
+		}
 		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.Contacts.CONTENT_URI, valuesForInsert);
 		return numOfInserted;
 	}

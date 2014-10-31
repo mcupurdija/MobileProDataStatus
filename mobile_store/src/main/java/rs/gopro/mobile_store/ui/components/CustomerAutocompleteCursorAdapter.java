@@ -19,13 +19,10 @@ public class CustomerAutocompleteCursorAdapter extends CursorAdapter implements
 		MobileStoreContract.Customers._ID,
 		MobileStoreContract.Customers.CUSTOMER_NO,
 		MobileStoreContract.Customers.NAME,
-		MobileStoreContract.Customers.PRIMARY_CONTACT_ID,
 		MobileStoreContract.Customers.PHONE,
 		MobileStoreContract.Customers.CONTACT_COMPANY_NO,
 		MobileStoreContract.Customers.ADDRESS,
-		MobileStoreContract.Customers.POST_CODE, 
-		MobileStoreContract.Customers.GLOBAL_DIMENSION, 
-		MobileStoreContract.Customers.HAS_BUSINESS_UNITS 
+		MobileStoreContract.Customers.POST_CODE
 	};
 	
 	private Context mContext;

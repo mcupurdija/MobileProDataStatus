@@ -1,19 +1,18 @@
 package rs.gopro.mobile_store.ui;
 
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.ui.components.CitiesAutocompleteCursorAdapter;
-import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
-import rs.gopro.mobile_store.util.AssetUtil;
+import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
-import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
-import rs.gopro.mobile_store.ws.model.SalespersonUpdateSyncObject;
+import rs.gopro.mobile_store.ws.model.CustomerBalanceAsCommissionSyncObject;
 import rs.gopro.mobile_store.ws.model.SetPotentialCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import rs.gopro.mobile_store.ws.model.UpdateCustomerSyncObject;
@@ -26,7 +25,6 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -41,8 +39,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class CustomersViewDetailFragment extends Fragment implements
@@ -66,40 +66,21 @@ public class CustomersViewDetailFragment extends Fragment implements
 	private EditText mCompanyId;
 	private EditText mPrimaryContactId;
 	private EditText mVarRegNo;
-	private TextView mCreditLimitLcy;
 	private TextView mBalanceLcy;
-	private TextView mWrDebt;
 	private TextView mBalanceDueLcy;
+
+	private Spinner mCustomerType;
+	private Spinner mCustomerPosition;
+	private EditText mAddress2;
+	private TextView mBalanceCommission;
 	private TextView mPaymentTermsCode;
-	private TextView mPriority;
-	private TextView mGlobalDimension;
-	private TextView mChannelOran;
-	private TextView mBlockedStatus;
-	private TextView mSml;
-	private TextView mInternalBalanceDueLcy;
-	private TextView mAdoptedPotential;
-	private TextView mFocusCustomer;
-	private TextView mDivision;
-	private TextView mNumberOfBlueCoat;
-	private EditText mNumberOfGreyCoat;
-	
-	private TextView mTurnoverInLast3m;
-	private TextView mTurnoverInLast6m;
-	private TextView mTurnoverInLast12m;
-	private TextView mTurnoverGenerated1;
-	private TextView mTurnoverGenerated2;
-	private TextView mTurnoverGenerated3;
-
-	private TextView mTurnoverYtm;
-	private TextView mGrossProfitPfep;
-	private TextView aprCustomerTurnover;
-
 	
 	private ActionMode actionMode;
 	private boolean isInUpdateMode = false;
 	
 	private CitiesAutocompleteCursorAdapter citiesAutocompleteCursorAdapter;
 	private Cursor cityCursorItem;
+	private ArrayAdapter<CharSequence> customerTypeAdapter, customerPositionAdapter;
 	
 	private BroadcastReceiver onNotice = new BroadcastReceiver() {
 		@Override
@@ -110,12 +91,19 @@ public class CustomersViewDetailFragment extends Fragment implements
 	};
 	
 	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
-		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
-			if (SalespersonUpdateSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
-				checkForWrData();
+		if (CustomerBalanceAsCommissionSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+			if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
+				CustomerBalanceAsCommissionSyncObject syncObject = (CustomerBalanceAsCommissionSyncObject) syncResult.getComplexResult();
+				mBalanceCommission.setText(syncObject.getpBalanceValue());
+			} else {
+				mBalanceCommission.setText("-");
 			}
-		} else {
-			openWebReportingLoginPage();
+		} else if (UpdateCustomerSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+			if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
+				DialogUtil.showInfoDialog(getActivity(), getResources().getString(R.string.dialog_title_sync_info), "Zahtev uspešno poslat!");
+			} else {
+				DialogUtil.showInfoErrorDialog(getActivity(), syncResult.getResult());
+			}
 		}
 	}
     
@@ -180,8 +168,10 @@ public class CustomersViewDetailFragment extends Fragment implements
     @Override
 	public void onResume() {
 		super.onResume();
-		IntentFilter salesPersonSyncObject = new IntentFilter(SalespersonUpdateSyncObject.BROADCAST_SYNC_ACTION);
-    	LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, salesPersonSyncObject);
+		IntentFilter customerBalanceAsCommissionSyncObject = new IntentFilter(CustomerBalanceAsCommissionSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, customerBalanceAsCommissionSyncObject);
+    	IntentFilter updateCustomersSyncObject = new IntentFilter(UpdateCustomerSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, updateCustomersSyncObject);
 	}
 
 	@Override
@@ -190,8 +180,7 @@ public class CustomersViewDetailFragment extends Fragment implements
     }
     
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_customer_view_details, null);
         mCustomer_no = (TextView) rootView.findViewById(R.id.customer_no_group_value);
         mName = (EditText) rootView.findViewById(R.id.customer_name_value);
@@ -200,13 +189,11 @@ public class CustomersViewDetailFragment extends Fragment implements
         mCity = (TextView) rootView.findViewById(R.id.customer_city_value);
         
         citiesAutocompleteCursorAdapter = new CitiesAutocompleteCursorAdapter(getActivity(), null);
-        
         mPostCode = (AutoCompleteTextView) rootView.findViewById(R.id.customer_postal_code_value);
         mPostCode.setAdapter(citiesAutocompleteCursorAdapter);
         mPostCode.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-					long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 				cityCursorItem = (Cursor) citiesAutocompleteCursorAdapter.getItem(position);
 			}
 		});
@@ -217,41 +204,22 @@ public class CustomersViewDetailFragment extends Fragment implements
         mCompanyId = (EditText) rootView.findViewById(R.id.customer_company_id_value);
         mPrimaryContactId = (EditText) rootView.findViewById(R.id.customer_primary_contact_id_value);
         mVarRegNo = (EditText) rootView.findViewById(R.id.customer_vat_reg_no_value);
-        mCreditLimitLcy = (TextView) rootView.findViewById(R.id.customer_credit_limit_lcy_value);
         mBalanceLcy = (TextView) rootView.findViewById(R.id.customer_balance_lcy_value);
-        mWrDebt = (TextView) rootView.findViewById(R.id.customer_wr_debt_label);
         mBalanceDueLcy = (TextView) rootView.findViewById(R.id.customer_balance_due_lcy_value);
+        
+        mCustomerType = (Spinner) rootView.findViewById(R.id.customer_type_value);
+        customerTypeAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.customer_type_array, android.R.layout.simple_spinner_item);
+        customerTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mCustomerType.setAdapter(customerTypeAdapter);
+        
+        mCustomerPosition = (Spinner) rootView.findViewById(R.id.customer_position_value);
+        customerPositionAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.pozicija_title_array, android.R.layout.simple_spinner_item);
+		customerPositionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mCustomerPosition.setAdapter(customerPositionAdapter);
+		
+        mAddress2 = (EditText) rootView.findViewById(R.id.customer_address2_value);
+        mBalanceCommission = (TextView) rootView.findViewById(R.id.customer_balance_commission_value);
         mPaymentTermsCode = (TextView) rootView.findViewById(R.id.customer_payment_terms_code_value);
-        mPriority = (TextView) rootView.findViewById(R.id.customer_priority_value);
-        mGlobalDimension = (TextView) rootView.findViewById(R.id.customer_global_dimension_value);
-        mChannelOran = (TextView) rootView.findViewById(R.id.customer_channel_oran_value);
-        mBlockedStatus = (TextView) rootView.findViewById(R.id.customer_blocked_status_value);
-        mSml = (TextView) rootView.findViewById(R.id.customer_sml_value);
-        mInternalBalanceDueLcy = (TextView) rootView.findViewById(R.id.customer_internal_balance_due_lcy_value);
-        mAdoptedPotential = (TextView) rootView.findViewById(R.id.customer_adopted_potential_value);
-        mFocusCustomer = (TextView) rootView.findViewById(R.id.customer_focus_customer_value);
-        mDivision = (TextView) rootView.findViewById(R.id.customer_division_value);
-        mNumberOfBlueCoat = (TextView) rootView.findViewById(R.id.customer_blue_coat_value);
-        mNumberOfGreyCoat = (EditText) rootView.findViewById(R.id.customer_gray_coat_value);
-        
-        mTurnoverInLast3m = (TextView) rootView.findViewById(R.id.customer_turnover_in_last_3m_value);
-        mTurnoverInLast6m = (TextView) rootView.findViewById(R.id.customer_turnover_in_last_6m_value);
-        mTurnoverInLast12m = (TextView) rootView.findViewById(R.id.customer_turnover_in_last_12m_value);
-        mTurnoverGenerated1 = (TextView) rootView.findViewById(R.id.customer_turnover_generated_1_value);
-        mTurnoverGenerated2 = (TextView) rootView.findViewById(R.id.customer_turnover_generated_2_value);
-        mTurnoverGenerated3 = (TextView) rootView.findViewById(R.id.customer_turnover_generated_3_value);
-
-        mTurnoverYtm = (TextView) rootView.findViewById(R.id.customer_turnover_ytm_value);
-        mGrossProfitPfep = (TextView) rootView.findViewById(R.id.customer_turnover_gross_profit_pfep_value);
-        aprCustomerTurnover = (TextView) rootView.findViewById(R.id.customer_apr_customer_turnover_value);
-        
-        mWrDebt.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				checkForWrData();
-			}
-		});
         
         if (isInUpdateMode) {
         	setFocusable(true);
@@ -263,136 +231,67 @@ public class CustomersViewDetailFragment extends Fragment implements
         }
         return rootView;
     }
-    
-    private void checkForWrData() {
-    	String salesPersonNo = SharedPreferencesUtil.getSalePersonNo(getActivity());
-		String wrPassword;
-		
-		Cursor cursor = getActivity().getContentResolver().query(MobileStoreContract.SalesPerson.CONTENT_URI, SalesPersonQuery.PROJECTION, MobileStoreContract.SalesPersonsColumns.SALE_PERSON_NO + "=?", new String[] { salesPersonNo }, null);
-		if (cursor.moveToFirst()) {
-			wrPassword = cursor.getString(SalesPersonQuery.WR_PASSWORD);
-			if (wrPassword != null) {
-				setupPassAndOpenWebReporting(salesPersonNo, wrPassword);
-			} else {
-				azurirajPodatkeProdavca(salesPersonNo);
-			}
-		}
-    }
-    
-    private void setupPassAndOpenWebReporting(String salesPersonNo, String wrPassword) {
-    	String salt = ApplicationConstants.SALT;
-		String hashedPassword = AssetUtil.computeMD5Hash(salt + wrPassword.toUpperCase() + salt);
-		String url = String.format(Locale.getDefault(), ApplicationConstants.WEB_REPORTING_BASE_URL + "goproreporting/Login.aspx?mpu=%s&mpp=%s&mpr=%d&mprd=%s", 
-				salesPersonNo, 
-				hashedPassword, 
-				11, 
-				mCustomer_no.getText().toString());
-		//Log.d("WR1", salesPersonNo);
-		//Log.d("WR2", hashedPassword);
-		//Log.d("WR3", mCustomer_no.getText().toString());
-		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-    }
-    
-    private void openWebReportingLoginPage() {
-    	startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(ApplicationConstants.WEB_REPORTING_BASE_URL)));
-    }
 	
     public void buildUiFromCursor(Cursor cursor) {
         if (getActivity() == null) {
             return;
         }
 
-        if (!cursor.moveToFirst()) {
-            return;
+        if (cursor.moveToFirst()) {
+        	String customernoString = cursor.getString(CustomerDetailQuery.CUSTOMER_NO);
+    		String nameString = cursor.getString(CustomerDetailQuery.NAME);
+    		String name2String = cursor.getString(CustomerDetailQuery.NAME_2);
+    		String addressString = cursor.getString(CustomerDetailQuery.ADDRESS);
+    		String address2String = cursor.getString(CustomerDetailQuery.ADDRESS_2);
+    		String cityString = cursor.getString(CustomerDetailQuery.CITY);
+    		String postcodeString = cursor.getString(CustomerDetailQuery.POST_CODE);
+    		String phoneString = cursor.getString(CustomerDetailQuery.PHONE);
+    		String emailString = cursor.getString(CustomerDetailQuery.EMAIL);
+    		String companyidString = String.valueOf(cursor.getString(CustomerDetailQuery.COMPANY_ID));
+    		String varregnoString = cursor.getString(CustomerDetailQuery.VAT_REG_NO);
+    		String balancelcyString = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.BALANCE_LCY));
+    		String balanceduelcyString = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.BALANCE_DUE_LCY));
+    		String paymenttermscodeString = cursor.getString(CustomerDetailQuery.PAYMENT_TERMS_CODE);
+            
+            mCustomer_no.setText(customernoString);
+            mName.setText(nameString);
+            mName2.setText(name2String);
+            mAddress.setText(addressString);
+            mAddress2.setText(address2String);
+            mCity.setText(cityString);
+            mPostCode.setText(postcodeString);
+            mPhone.setText(phoneString);
+            mEmail.setText(emailString);
+            mCompanyId.setText(companyidString);
+            mVarRegNo.setText(varregnoString);
+            mBalanceLcy.setText(balancelcyString);
+            mBalanceDueLcy.setText(balanceduelcyString);
+            mPaymentTermsCode.setText(paymenttermscodeString);
+            
+            try {
+            	mCustomerType.setSelection(cursor.getInt(CustomerDetailQuery.CUSTOMER_TYPE));
+			} catch (Exception e) {
+				LogUtils.LOGE(TAG, "CustomerTypeArray index out of bounds");
+			}
+            
+            ArrayList<String> customerPositionList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.pozicija_value_array)));
+            try {
+            	mCustomerPosition.setSelection(customerPositionList.indexOf(cursor.getString(CustomerDetailQuery.CUSTOMER_POSITION)));
+			} catch (Exception e) {
+				LogUtils.LOGE(TAG, "CustomerPositionArray index out of bounds");
+			}
+            
+            azurirajCustomerBalanceAsCommission(customernoString);
+            
+            int customerId = cursor.getInt(CustomerDetailQuery._ID);
+            mCallbacks.onCustomerIdAvailable(String.valueOf(customerId));
+            LogUtils.LOGI(TAG, "Loaded customer id: " + String.valueOf(customerId));
         }
-        
-		String customernoString = cursor.getString(CustomerDetailQuery.CUSTOMER_NO);
-		String nameString = cursor.getString(CustomerDetailQuery.NAME);
-		String name2String = cursor.getString(CustomerDetailQuery.NAME_2);
-		String addressString = cursor.getString(CustomerDetailQuery.ADDRESS);
-		String cityString = cursor.getString(CustomerDetailQuery.CITY);
-		String postcodeString = cursor.getString(CustomerDetailQuery.POST_CODE);
-		String phoneString = cursor.getString(CustomerDetailQuery.PHONE);
-		String mobileString = cursor.getString(CustomerDetailQuery.MOBILE);
-		String emailString = cursor.getString(CustomerDetailQuery.EMAIL);
-		String companyidString =String.valueOf(cursor.getString(CustomerDetailQuery.COMPANY_ID)) ;
-		String primarycontactidString = String.valueOf(cursor.getInt(CustomerDetailQuery.PRIMARY_CONTACT_ID));
-		String varregnoString = cursor.getString(CustomerDetailQuery.VAR_REG_NO);
-		String creditlimitlcyString = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.CREDIT_LIMIT_LCY));
-		String balancelcyString = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.BALANCE_LCY));
-		String balanceduelcyString = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.BALANCE_DUE_LCY));
-		String internalbalanceduelcyString = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.INTERNAL_BALANCE_DUE_LCY));
-		String paymenttermscodeString = String.valueOf(cursor.getInt(CustomerDetailQuery.PAYMENT_TERMS_CODE));
-		String priorityString = String.valueOf(cursor.getInt(CustomerDetailQuery.PRIORITY));
-		String globaldimensionString = cursor.getString(CustomerDetailQuery.GLOBAL_DIMENSION);
-		String channeloranString = cursor.getString(CustomerDetailQuery.CHANNEL_ORAN);
-		String smlString = cursor.getString(CustomerDetailQuery.SML);
-		String adoptedpotentialString = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.ADOPTED_POTENTIAL));
-		String focuscustomerString = cursor.getString(CustomerDetailQuery.FOCUS_CUSTOMER);
-		String divisionString = cursor.getString(CustomerDetailQuery.DIVISION);
-		String numberofbluecoatString = String.valueOf(cursor.getInt(CustomerDetailQuery.NUMBER_OF_BLUE_COAT));
-		String numberofgreycoatString = String.valueOf(cursor.getInt(CustomerDetailQuery.NUMBER_OF_GREY_COAT));
-		String blockedstatusString = cursor.getString(CustomerDetailQuery.BLOCKED_STATUS);
-		
-		String turnover_in_last_3m = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_IN_LAST_3M));
-		String turnover_in_last_6m = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_IN_LAST_6M));
-		String turnover_in_last_12m = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_IN_LAST_12M));
-		String turnover_generated_1 = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_GENERATED_1));
-		String turnover_generated_2 = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_GENERATED_2));
-		String turnover_generated_3 = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_GENERATED_3));
-		String gross_profit_pfep = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.GROSS_PROFIT_PFEP));
-		String apr_customer_turnover = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.APR_CUSTOMER_TURNOVER));
-		String turnover_ytm = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.TURNOVER_YTM));
-        
-        mCustomer_no.setText(customernoString);
-        mName.setText(nameString);
-        mName2.setText(name2String);
-        mAddress.setText(addressString);
-        mCity.setText(cityString);
-        mPostCode.setText(postcodeString);
-        mPhone.setText(phoneString);
-        mMobile.setText(mobileString);
-        mEmail.setText(emailString);
-        mCompanyId.setText(companyidString);
-        mPrimaryContactId.setText(primarycontactidString);
-        mVarRegNo.setText(varregnoString);
-        mCreditLimitLcy.setText(creditlimitlcyString);
-        mBalanceLcy.setText(balancelcyString);
-        mBalanceDueLcy.setText(balanceduelcyString);
-        mPaymentTermsCode.setText(paymenttermscodeString);
-        mPriority.setText(priorityString);
-        mGlobalDimension.setText(globaldimensionString);
-        mChannelOran.setText(channeloranString);
-        mBlockedStatus.setText(blockedstatusString);
-        mSml.setText(smlString);
-        mInternalBalanceDueLcy.setText(internalbalanceduelcyString);
-        mAdoptedPotential.setText(adoptedpotentialString);
-        mFocusCustomer.setText(focuscustomerString);
-        mDivision.setText(divisionString);
-        mNumberOfBlueCoat.setText(numberofbluecoatString);
-        mNumberOfGreyCoat.setText(numberofgreycoatString);
-
-        mTurnoverInLast3m.setText(turnover_in_last_3m);
-        mTurnoverInLast6m.setText(turnover_in_last_6m);
-        mTurnoverInLast12m.setText(turnover_in_last_12m);
-        mTurnoverGenerated1.setText(turnover_generated_1);
-        mTurnoverGenerated2.setText(turnover_generated_2);
-        mTurnoverGenerated3.setText(turnover_generated_3);
-
-        mTurnoverYtm.setText(turnover_ytm);
-        mGrossProfitPfep.setText(gross_profit_pfep);
-        aprCustomerTurnover.setText(apr_customer_turnover);
-        
-        int customerId = cursor.getInt(CustomerDetailQuery._ID);
-        mCallbacks.onCustomerIdAvailable(String.valueOf(customerId));
-        
-        LogUtils.LOGI(TAG, "Loaded customer id: " + String.valueOf(customerId));
     }
     
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle data) {
-		return new CursorLoader(getActivity(), mCustomerdetailUri, CustomerDetailQuery.PROJECTION, null, null,
-                null);
+		return new CursorLoader(getActivity(), mCustomerdetailUri, CustomerDetailQuery.PROJECTION, null, null, null);
 	}
 
 	@Override
@@ -404,26 +303,27 @@ public class CustomersViewDetailFragment extends Fragment implements
 	public void onLoaderReset(Loader<Cursor> loader) {
 	}
 	
-	
-	
 	public void setFocusable(boolean disable){
 		mAddress.setFocusable(disable);
+		mAddress2.setFocusable(disable);
 		mName.setFocusable(disable);
 		mName2.setFocusable(disable);
 		mEmail.setFocusable(disable);
 		mPostCode.setFocusable(disable);
 		mMobile.setFocusable(disable);
 		mCompanyId.setFocusable(disable);
+		mVarRegNo.setFocusable(disable);
 		mPrimaryContactId.setFocusable(disable);
 		mVarRegNo.setFocusable(disable);
 		mPhone.setFocusable(disable);
-		mNumberOfGreyCoat.setFocusable(disable);
+		mCustomerType.setClickable(disable);
+		mCustomerPosition.setClickable(disable);
 	}
-	
 	
 	private void saveForm(){
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(Customers.ADDRESS, mAddress.getText().toString());
+		contentValues.put(Customers.ADDRESS_2, mAddress2.getText().toString());
 		contentValues.put(Customers.NAME, mName.getText().toString());
 		contentValues.put(Customers.NAME_2, mName2.getText().toString());
 		contentValues.put(Customers.EMAIL, mEmail.getText().toString());
@@ -434,12 +334,15 @@ public class CustomersViewDetailFragment extends Fragment implements
 			contentValues.put(Customers.CITY, mCity.getText().toString());
 			contentValues.put(Customers.POST_CODE, mPostCode.getText().toString());
 		}
-		contentValues.put(Customers.MOBILE, mMobile.getText().toString());
 		contentValues.put(Customers.COMPANY_ID, mCompanyId.getText().toString());
-		contentValues.put(Customers.PRIMARY_CONTACT_ID, mPrimaryContactId.getText().toString());
 		contentValues.put(Customers.VAT_REG_NO, mVarRegNo.getText().toString());
 		contentValues.put(Customers.PHONE, mPhone.getText().toString());
-		contentValues.put(Customers.NUMBER_OF_GREY_COAT, mNumberOfGreyCoat.getText().toString());
+		
+		contentValues.put(Customers.CUSTOMER_TYPE, mCustomerType.getSelectedItemPosition());
+		
+		String[] customerPositionValueArray = getResources().getStringArray(R.array.pozicija_value_array);
+		contentValues.put(Customers.CUSTOMER_POSITION, customerPositionValueArray[mCustomerPosition.getSelectedItemPosition()]);
+		
 		int result = getActivity().getContentResolver().update(mCustomerdetailUri, contentValues, null, null);
 		if (result > 0) {
 			try {
@@ -491,11 +394,9 @@ public class CustomersViewDetailFragment extends Fragment implements
 		
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
-		  setFocusable(false);
-		  mode = null;
-		//	getLoaderManager().restartLoader(0, null, this);
-		   getLoaderManager().restartLoader(CustomerDetailQuery._TOKEN, null, CustomersViewDetailFragment.this);
-	   
+			setFocusable(false);
+		  	mode = null;
+		  	getLoaderManager().restartLoader(CustomerDetailQuery._TOKEN, null, CustomersViewDetailFragment.this);
 		}
 		
 		@Override
@@ -532,43 +433,23 @@ public class CustomersViewDetailFragment extends Fragment implements
 		int _TOKEN = 0x8;
 
         String[] PROJECTION = {
-                BaseColumns._ID,
-                MobileStoreContract.Customers.CUSTOMER_NO,
-                MobileStoreContract.Customers.NAME,
-                MobileStoreContract.Customers.NAME_2,
-                MobileStoreContract.Customers.ADDRESS,
-                MobileStoreContract.Customers.POST_CODE,
-                MobileStoreContract.Customers.PHONE,
-                MobileStoreContract.Customers.MOBILE,
-                MobileStoreContract.Customers.EMAIL,
-                MobileStoreContract.Customers.COMPANY_ID,
-                MobileStoreContract.Customers.PRIMARY_CONTACT_ID,
-                MobileStoreContract.Customers.VAT_REG_NO,
-                MobileStoreContract.Customers.CREDIT_LIMIT_LCY,
-                MobileStoreContract.Customers.BALANCE_LCY,
-                MobileStoreContract.Customers.BALANCE_DUE_LCY,
-                MobileStoreContract.Customers.PAYMENT_TERMS_CODE,
-                MobileStoreContract.Customers.PRIORITY,
-                MobileStoreContract.Customers.GLOBAL_DIMENSION,
-                MobileStoreContract.Customers.CHANNEL_ORAN,
-                MobileStoreContract.Customers.BLOCKED_STATUS,
-                MobileStoreContract.Customers.SML,
-                MobileStoreContract.Customers.INTERNAL_BALANCE_DUE_LCY,
-                MobileStoreContract.Customers.ADOPTED_POTENTIAL,
-                MobileStoreContract.Customers.FOCUS_CUSTOMER,
-                MobileStoreContract.Customers.DIVISION,
-                MobileStoreContract.Customers.NUMBER_OF_BLUE_COAT,
-                MobileStoreContract.Customers.NUMBER_OF_GREY_COAT,
-                MobileStoreContract.Customers.CITY,
-                MobileStoreContract.Customers.TURNOVER_GENERATED_1,
-                MobileStoreContract.Customers.TURNOVER_GENERATED_2,
-                MobileStoreContract.Customers.TURNOVER_GENERATED_3,
-                MobileStoreContract.Customers.TURNOVER_IN_LAST_6M,
-                MobileStoreContract.Customers.TURNOVER_IN_LAST_3M,
-                MobileStoreContract.Customers.TURNOVER_IN_LAST_12M,
-                MobileStoreContract.Customers.TURNOVER_YTM,
-                MobileStoreContract.Customers.GROSS_PROFIT_PFEP,
-                MobileStoreContract.Customers.APR_CUSTOMER_TURNOVER
+        		Customers._ID,
+                Customers.CUSTOMER_NO,
+                Customers.NAME,
+                Customers.NAME_2,
+                Customers.ADDRESS,
+                Customers.ADDRESS_2,
+                Customers.CITY,
+                Customers.POST_CODE,
+                Customers.PHONE,
+                Customers.EMAIL,
+                Customers.COMPANY_ID,
+                Customers.VAT_REG_NO,
+                Customers.BALANCE_LCY,
+                Customers.BALANCE_DUE_LCY,
+                Customers.PAYMENT_TERMS_CODE,
+                Customers.CUSTOMER_TYPE,
+                Customers.CUSTOMER_POSITION
         };
 
         int _ID = 0;
@@ -576,60 +457,25 @@ public class CustomersViewDetailFragment extends Fragment implements
         int NAME = 2;
         int NAME_2 = 3;
         int ADDRESS = 4;
-        int POST_CODE = 5;
-        int PHONE = 6;
-        int MOBILE = 7;
-        int EMAIL = 8;
-        int COMPANY_ID = 9;
-        int PRIMARY_CONTACT_ID = 10;
-        int VAR_REG_NO = 11;
-        int CREDIT_LIMIT_LCY = 12;
-        int BALANCE_LCY = 13;
-        int BALANCE_DUE_LCY = 14;
-        int PAYMENT_TERMS_CODE = 15;
-        int PRIORITY = 16;
-        int GLOBAL_DIMENSION = 17;
-        int CHANNEL_ORAN = 18;
-        int BLOCKED_STATUS = 19;
-        int SML = 20;
-        int INTERNAL_BALANCE_DUE_LCY = 21;
-        int ADOPTED_POTENTIAL = 22;
-        int FOCUS_CUSTOMER = 23;
-        int DIVISION = 24;
-        int NUMBER_OF_BLUE_COAT = 25;
-        int NUMBER_OF_GREY_COAT = 26;
-        int CITY = 27;
-        int TURNOVER_GENERATED_1 = 28;
-		int TURNOVER_GENERATED_2 = 29;
-		int TURNOVER_GENERATED_3 = 30;
-		int TURNOVER_IN_LAST_6M = 31;
-		int TURNOVER_IN_LAST_3M = 32;
-		int TURNOVER_IN_LAST_12M = 33;
-		int TURNOVER_YTM = 34;
-		int GROSS_PROFIT_PFEP = 35;
-		int APR_CUSTOMER_TURNOVER = 36;
-	}
-
-	private interface SalesPersonQuery {
-
-		String[] PROJECTION = { BaseColumns._ID,
-				MobileStoreContract.SalesPerson.SALE_PERSON_NO,
-				MobileStoreContract.SalesPerson.WR_USERNAME,
-				MobileStoreContract.SalesPerson.WR_PASSWORD
-				};
-
-//		int _ID = 0;
-//		int SALE_PERSON_NO = 1;
-//		int WR_USERNAME = 2;
-		int WR_PASSWORD = 3;
+        int ADDRESS_2 = 5;
+        int CITY = 6;
+        int POST_CODE = 7;
+        int PHONE = 8;
+        int EMAIL = 9;
+        int COMPANY_ID = 10;
+        int VAT_REG_NO = 11;
+        int BALANCE_LCY = 12;
+        int BALANCE_DUE_LCY = 13;
+        int PAYMENT_TERMS_CODE = 14;
+        int CUSTOMER_TYPE = 15;
+        int CUSTOMER_POSITION = 16;
 	}
 	
-	private void azurirajPodatkeProdavca(String salesPersonNo) {
-		SalespersonUpdateSyncObject salespersonSetupSyncObject = new SalespersonUpdateSyncObject(salesPersonNo);
-		Intent syncSalesPerson = new Intent(getActivity(), NavisionSyncService.class);
-		syncSalesPerson.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, salespersonSetupSyncObject);
-		getActivity().startService(syncSalesPerson);
+	private void azurirajCustomerBalanceAsCommission(String salesPersonNo) {
+		CustomerBalanceAsCommissionSyncObject customerBalanceAsCommissionSyncObject = new CustomerBalanceAsCommissionSyncObject(salesPersonNo, "");
+		Intent syncCustomerBalanceAsCommission = new Intent(getActivity(), NavisionSyncService.class);
+		syncCustomerBalanceAsCommission.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, customerBalanceAsCommissionSyncObject);
+		getActivity().startService(syncCustomerBalanceAsCommission);
 	}
-
 
 }

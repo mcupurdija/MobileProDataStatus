@@ -5,9 +5,9 @@
         android:fragment="rs.gopro.mobile_store.ui.fragment.WebServiceSettingsFragment"
         android:title="@string/title_web_service_settings" />
     
-    <header
+    <!-- <header
         android:fragment="rs.gopro.mobile_store.ui.fragment.NovaKarticaKupcaSettingsFragment"
-        android:title="@string/title_nova_kartica_kupca_settings" />
+        android:title="@string/title_nova_kartica_kupca_settings" /> -->
     
     <!-- <header -->
     <!-- android:fragment="rs.gopro.mobile_store.ui.fragment.SyncSettingsFragment" -->

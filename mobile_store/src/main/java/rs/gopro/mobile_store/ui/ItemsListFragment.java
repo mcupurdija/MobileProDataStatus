@@ -133,6 +133,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 			}
 		});
 		setListAdapter(cursorAdapter);
+		cursorAdapter.notifyDataSetChanged();
 	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -278,7 +279,7 @@ public class ItemsListFragment extends ListFragment implements LoaderCallbacks<C
 	}
 
 	private interface ItemsQuery {
-		String[] PROJECTION = { BaseColumns._ID, Items.ITEM_NO, Items.DESCRIPTION, Items.CAMPAIGN_STATUS };
+		String[] PROJECTION = { BaseColumns._ID, Items.ITEM_NO, Items.DESCRIPTION };
 	}
 	
 	@Override

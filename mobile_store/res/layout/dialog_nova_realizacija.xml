@@ -28,7 +28,8 @@
         android:layout_marginLeft="16dip"
         android:layout_marginRight="16dip"
         android:gravity="center_vertical"
-        android:text="@string/poslovnaJedinica" />
+        android:text="@string/poslovnaJedinica"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/dialog_nova_realizacija_adresa_input"
@@ -36,7 +37,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dip"
-        android:layout_marginRight="16dip" />
+        android:layout_marginRight="16dip"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"

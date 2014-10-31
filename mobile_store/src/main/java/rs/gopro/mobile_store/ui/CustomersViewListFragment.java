@@ -12,7 +12,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -223,10 +222,8 @@ public class CustomersViewListFragment extends ListFragment implements
 			if (!cursor.isNull(CustomersQuery.CUSTOMER_NO)) {
 				customer_no = cursor.getString(CustomersQuery.CUSTOMER_NO);
 			}
-            ((TextView) view.findViewById(R.id.customer_title)).setText(
-            		customer_no + " - " + cursor.getString(CustomersQuery.CUSTOMER_NAME));
-            ((TextView) view.findViewById(R.id.customer_subtitle)).setText(
-                    "Grad: "+ cursor.getString(CustomersQuery.CUSTOMER_CITY) + " - Status: " + cursor.getString(CustomersQuery.CUSTOMER_BLOCKED_STATUS));
+            ((TextView) view.findViewById(R.id.customer_title)).setText(customer_no + " - " + cursor.getString(CustomersQuery.CUSTOMER_NAME));
+            ((TextView) view.findViewById(R.id.customer_subtitle)).setText(String.format("%s %s", cursor.getString(CustomersQuery.CUSTOMER_POST_CODE), cursor.getString(CustomersQuery.CUSTOMER_CITY)));
         }
     }
 	
@@ -234,18 +231,18 @@ public class CustomersViewListFragment extends ListFragment implements
 		int _TOKEN = 0x7;
 
         String[] PROJECTION = {
-                BaseColumns._ID,
-                MobileStoreContract.Customers.CUSTOMER_NO, 
-                MobileStoreContract.Customers.NAME, 
-                MobileStoreContract.Customers.POST_CODE,
-                MobileStoreContract.Customers.BLOCKED_STATUS, 
+        		Customers._ID,
+                Customers.CUSTOMER_NO, 
+                Customers.NAME, 
+                Customers.CITY,
+                Customers.POST_CODE
         };
 
         int _ID = 0;
         int CUSTOMER_NO = 1;
         int CUSTOMER_NAME = 2;
         int CUSTOMER_CITY = 3;
-        int CUSTOMER_BLOCKED_STATUS = 4;
+        int CUSTOMER_POST_CODE = 4;
 	}
 
 }

@@ -1,146 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/inner_view_about"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/last_sync_date"
-        style="@style/AddEdit_Label"
+    <RelativeLayout
+        android:id="@+id/rlOsvezavanje"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|center_vertical"
-        android:layout_marginRight="30dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center" >
 
         <Button
             android:id="@+id/sync_sales_person_plan_and_turnover_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:layout_marginLeft="10dp"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
+            android:background="@drawable/white_button"
             android:text="@string/sync_sales_person_plan_and_turnover_button_title" />
-    </LinearLayout>
+    </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/black" />
-
-    <TextView
-        style="@style/AddEdit_Label"
+    <FrameLayout
+        android:id="@+id/flRealizacijaPlanaHeaderTekuci"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|center_vertical"
-        android:layout_marginRight="30dp"
-        android:text="@string/this_month_label" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_below="@+id/rlOsvezavanje"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/background_tabs_diagonal" >
 
         <TextView
-            style="@style/AddEdit_Label"
-            android:layout_width="wrap_content"
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="right|center_vertical"
-            android:layout_marginRight="30dp"
-            android:text="@string/this_month_plan_label" />
+            android:text="@string/this_month_label" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutRealizacijaPlanaTekuciLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/flRealizacijaPlanaHeaderTekuci"
+        android:orientation="horizontal"
+        android:padding="8dp" >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <TextView
-            style="@style/AddEdit_Label"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="right|center_vertical"
-            android:layout_marginRight="30dp"
-            android:text="@string/this_month_turnover_label" />
+            android:layout_weight="2"
+            android:text="@string/this_month_plan_label"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/dark_gray" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/this_month_turnover_label"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/dark_gray" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layoutRealizacijaPlanaTekuci"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/layoutRealizacijaPlanaTekuciLabel"
+        android:orientation="horizontal"
+        android:padding="8dp" >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/this_month_plan_value"
-            style="@style/AddEdit_Text_Value"
-            android:layout_width="200dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="right|center_vertical"
-            android:layout_marginRight="30dp" />
+            android:layout_weight="2"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/body_text_1" />
 
         <TextView
             android:id="@+id/this_month_turnover_value"
-            style="@style/AddEdit_Text_Value"
-            android:layout_width="200dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="right|center_vertical"
-            android:layout_marginRight="30dp" />
+            android:layout_weight="2"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/body_text_1" />
     </LinearLayout>
 
-    <TextView
-        style="@style/AddEdit_Label"
+    <FrameLayout
+        android:id="@+id/flRealizacijaPlanaHeaderProsli"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|center_vertical"
-        android:layout_marginRight="30dp"
-        android:text="@string/last_month_label" />
+        android:layout_below="@+id/layoutRealizacijaPlanaTekuci"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/background_tabs_diagonal" >
+
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/last_month_label" />
+    </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/layoutRealizacijaPlanaProsliLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/flRealizacijaPlanaHeaderProsli"
+        android:orientation="horizontal"
+        android:padding="8dp" >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <TextView
-            style="@style/AddEdit_Label"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="30dp"
-            android:gravity="right|center_vertical"
-            android:text="@string/last_month_plan_label" />
+            android:layout_weight="2"
+            android:text="@string/last_month_plan_label"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/dark_gray" />
 
         <TextView
-            style="@style/AddEdit_Label"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="30dp"
-            android:gravity="right|center_vertical"
-            android:text="@string/last_month_turnover_label" />
-
+            android:layout_weight="2"
+            android:text="@string/last_month_turnover_label"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/dark_gray" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layoutRealizacijaPlanaProsli"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/layoutRealizacijaPlanaProsliLabel"
+        android:orientation="horizontal"
+        android:padding="8dp" >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/last_month_plan_value"
-            style="@style/AddEdit_Text_Value"
-            android:layout_width="200dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:gravity="right|center_vertical"
-            android:layout_marginRight="30dp" />
+            android:layout_weight="2"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/body_text_1" />
 
         <TextView
             android:id="@+id/last_month_turnover_value"
-            style="@style/AddEdit_Text_Value"
-            android:layout_width="200dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:gravity="right|center_vertical"
-            android:layout_marginRight="30dp" />
+            android:layout_weight="2"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/body_text_1" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

@@ -43,10 +43,21 @@
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:textColor">@color/body_text_1</item>
     </style>
+    
+    <style name="ListItemTitle2">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/body_text_1</item>
+    </style>
 
     <style name="ListItemSubtitle">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">@color/body_text_2</item>
+    </style>
+    
+    <style name="ListItemSubtitle2">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/body_text_1</item>
     </style>
 
     <style name="TextHeader">

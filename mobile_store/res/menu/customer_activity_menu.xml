@@ -12,7 +12,8 @@
     <item
         android:id="@+id/create_cus_trade_agree_activity"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/cus_trade_agree_menu_title"/>
+        android:title="@string/cus_trade_agree_menu_title"
+        android:visible="false"/>
     <item
         android:id="@+id/sync_all_customers"
         android:title="@string/sync_all_customers_menu_title"/>
@@ -24,6 +25,7 @@
     <item
         android:id="@+id/menu_customer_from_potential"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/add_customer_create_from_potential"/>
+        android:title="@string/add_customer_create_from_potential"
+        android:visible="false"/>
 
 </menu>

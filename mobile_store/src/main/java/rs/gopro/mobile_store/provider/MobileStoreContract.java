@@ -15,7 +15,7 @@ public class MobileStoreContract {
 	private static final String PATH_INVOICES_SEARCH = "invoices_search";
 	private static final String PATH_CUSTOMERS = "customers";
 	private static final String PATH_CUSTOMERS_BY_SALES_PERSON = "customers_by_sales_person";
-	//private static final String PATH_SEARCH = "search";
+	private static final String PATH_SEARCH = "search";
 	private static final String PATH_ITEMS = "items";
 	private static final String PATH_ITEM_SEARCH = "item_search";
 	private static final String PATH_ITEM_NO = "item_no";
@@ -64,6 +64,9 @@ public class MobileStoreContract {
 	private static final String PATH_BUSINESS_UNITS = "customer_business_units";
 	private static final String PATH_ITEMS_ON_PROMOTION = "items_on_promotion";
 	private static final String PATH_ACTION_PLAN = "action_plan";
+	private static final String PATH_METHODS = "methods";
+	
+	private static final String PATH_GIFT_ITEMS = "gift_items";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -106,6 +109,7 @@ public class MobileStoreContract {
 		String LONGITUDE_END = "longitude_end";
 		String ACCURACY_END = "accuracy_end";
 		String VALID_LOCATION = "valid_location";
+		String GIFT_STATUS = "gift_status";
 		String SYNC_OBJECT_BATCH = "sync_object_batch";
 		String VISIT_TYPE = "visit_type";
 		String IS_SENT = "is_sent";
@@ -137,100 +141,61 @@ public class MobileStoreContract {
 	}
 
 	public interface CustomersColumns {
-		// String SALES_PERSON_ID = "sales_person_id";
 		String CUSTOMER_NO = "customer_no";
 		String NAME = "name";
 		String NAME_2 = "name2";
 		String ADDRESS = "address";
+		String ADDRESS_2 = "address2";
 		String CITY = "city";
-		String POST_CODE = "post_code";
-		String HAS_BUSINESS_UNITS = "has_business_units";
-		String PRIMARY_ALTERNATIVE_ADDRESS_NO = "primary_alternative_address_no";
-		String PRIMARY_ALTERNATIVE_ADDRESS_ADDRESS = "primary_alternative_address_address";
-		String PRIMARY_ALTERNATIVE_ADDRESS_CITY = "primary_alternative_address_city";
-		String PRIMARY_ALTERNATIVE_ADDRESS_POST_CODE = "primary_alternative_address_post_code";
+		String CONTACT = "contact";
 		String PHONE = "phone";
-		String MOBILE = "mobile";
+		String CUSTOMER_CURRENCY_CODE = "customer_currency_code";
+		String PAYMENT_TERMS_CODE = "payment_terms_code";
+		String SALES_PERSON_ID = "sales_person_id";
+		String POST_CODE = "post_code";
 		String EMAIL = "email";
 		String COMPANY_ID = "company_id";
 		String PRIMARY_CONTACT_ID = "primary_contact_id";
 		String VAT_REG_NO = "vat_reg_no";
-		String CREDIT_LIMIT_LCY = "credit_limit_lcy";
+		String CUSTOMER_TYPE = "customer_type";
+		String CUSTOMER_POSITION = "customer_position";
 		String BALANCE_LCY = "balance_lcy";
 		String BALANCE_DUE_LCY = "balance_due_lcy";
-		String PAYMENT_TERMS_CODE = "payment_terms_code";
-		String PRIORITY = "priority";
-		String GLOBAL_DIMENSION = "global_dimension";
-		String CHANNEL_ORAN = "channel_oran";
-		String BLOCKED_STATUS = "blocked_status";
-
-		String SML = "sml";
-		String INTERNAL_BALANCE_DUE_LCY = "internal_balance_due_lcy";
-		String ADOPTED_POTENTIAL = "adopted_potential";
-		String FOCUS_CUSTOMER = "focus_customer";
-		String DIVISION = "division";
-		String APR_CUSTOMER_TURNOVER = "apr_customer_turnover";
-		String NUMBER_OF_BLUE_COAT = "number_of_blue_coat";
-		String NUMBER_OF_GREY_COAT = "number_of_grey_coat";
-		String CONTACT_COMPANY_NO = "contact_company_no";
-		String SYNC_OBJECT_BATCH = "sync_object_batch";
-		String SALES_PERSON_ID = "sales_person_id";
 		
-		String TURNOVER_YTM = "turnover_ytm";
-		String GROSS_PROFIT_PFEP = "gross_profit_pfep";
-		String TURNOVER_IN_LAST_3M = "turnover_in_last_3m";
-		String TURNOVER_IN_LAST_6M = "turnover_in_last_6m";
-		String TURNOVER_IN_LAST_12M = "turnover_in_last_12m";
-		String TURNOVER_GENERATED_3 = "turnover_generated_3";
-		String TURNOVER_GENERATED_2 = "turnover_generated_2";
-		String TURNOVER_GENERATED_1 = "turnover_generated_1";
-		String NUMBER_OF_DIFF_ITEMS_3 = "number_of_diff_items_3";
-		String NUMBER_OF_DIFF_ITEMS_2 = "number_of_diff_items_2";
-		String NUMBER_OF_DIFF_ITEMS_1 = "number_of_diff_items_1";
-		String ORSY_SHELF_COUNT_AT_CUST = "orsy_shelf_count_at_cust";
-		String CUSTOMER_12_MONTHS_PLAN = "customer_12_months_plan";
-		String AVARAGE_PAYMENT_DAYS = "avarage_payment_days";
-		String NUMBER_OF_SALESPERSONS_WORKING_WITH_CUSTOMER = "number_of_salespersons_working_with_customer";
-		String DAYS_SINCE_OLDEST_OPEN_INVOICE = "days_since_oldest_open_invoice";
-		String NEXT_15_DAYS_INVOICE_DUE_AMOUNT = "next_15_days_invoice_due_amount";
-		String NEXT_15_DAYS_DUE_INVOICE_COUNT = "next_15_days_due_invoice_count";
-		String FINANCIAL_CONTROL_STATUS = "financial_control_status";
+		String CONTACT_COMPANY_NO = "contact_company_no";
+
+		String SYNC_OBJECT_BATCH = "sync_object_batch";
+		String LAST_ECC_SYNC_DATE = "last_ecc_sync_date";
 		
 		String IS_ACTIVE = "is_active";
 		String IS_DELETED = "is_deleted";
 		String IS_SENT = "is_sent";
-		
-		String LAST_ECC_SYNC_DATE = "last_ecc_sync_date";
-		String LAST_ACTION_PLAN_SYNC_DATE = "last_action_plan_sync_date";
-		String TASK_COUNT = "task_count";
-		String CUSTOMER_COLOR = "customer_color";
 	}
 
 	public interface ItemsColumns {
 		String ITEM_NO = "item_no";
 		String DESCRIPTION = "description";
-		String DESCRIPTION2 = "description2";
 		String UNIT_OF_MEASURE = "unit_of_measure";
 		String CATEGORY_CODE = "category_code";
 		String GROUP_CODE = "group_code";
-		String CAMPAIGN_STATUS = "campaign_status";
-		String OVERSTOCK_STATUS = "overstock_status";
-		String CONNECTED_SPEC_SHIP_ITEM = "connected_spec_ship_item";
-		String UNIT_SALES_PRICE_EUR = "unit_sales_price_eur";
-		String UNIT_SALES_PRICE_DIN = "unit_sales_price_din";
-		String CAMPAIGN_CODE = "campaign_code";
-		String CMPAIGN_START_DATE = "cmpaign_start_date";
-		String CAMPAIGN_END_DATE = "campaign_end_date";
-		String INVENTORY_ITEM_CATEGORY = "inventory_item_category";
-		String SYNC_OBJECT_BATCH = "sync_object_batch";
-		String MIN_QTY = "min_qty";
-		String BOM_ITEMS = "bom_items";
-		String LINKED_ITEMS = "linked_items";
-		String HAS_ACTIONS = "has_actions";
 		String CREATED_DATE = "created_date";
 		String CREATED_BY = "created_by";
 		String UPDATED_DATE = "updated_date";
 		String UPDATED_BY = "updated_by";
+	}
+	
+	public interface GiftItemsColumns {
+		String ITEM_ID = "item_id";
+		String ITEM_NO = "item_no";
+		String ITEM_QUANTITY = "item_quantity";
+		String ITEM_NOTE = "item_note";
+		String SALES_PERSON_NO = "sales_person_no";
+		String CUSTOMER_ID = "customer_id";
+		String CUSTOMER_NO = "customer_no";
+		String POTENTIAL_CUSTOMER = "potential_customer";
+		String VISIT_ID = "visit_id";
+		String VISIT_DATE = "visit_date";
+		String VISIT_ARRIVAL_TIME = "visit_arrival_time";
 	}
 
 	public interface SaleOrdersColumns {
@@ -556,6 +521,19 @@ public class MobileStoreContract {
 		String LINE_TURNOVER = "line_turnover";
 	}
 	
+	public interface MethodsColumns {
+		String SCHOOL_CUSTOMER_ID = "method_school_customer_id";
+		String SUBJECT = "method_subject";
+		String CLASS = "method_class";
+		String PROFESSOR_CUSTOMER_ID = "method_professor_customer_id";
+		String PROFESSOR_2_CUSTOMER_ID = "method_professor2_customer_id";
+		String SCHOOL_SIZE = "method_school_size";
+		String SCHOOL_YEAR = "method_school_year";
+		String COMMENT = "method_comment";
+		String METHOD_ITEM_ID = "method_item_id";
+		String SALESPERSON_CODE = "method_salesperson_code";
+	}
+	
 	public static class Generic implements BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_GENRIC).build();
 		
@@ -568,7 +546,7 @@ public class MobileStoreContract {
 		}
 	}
 
-	public static class CustomerTradeAgreemnt implements CustomerTradeAgreemntColumns, BaseColumns, CustomersColumns{
+	public static class CustomerTradeAgreemnt implements CustomerTradeAgreemntColumns, BaseColumns, CustomersColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CUSTOMER_TRADE_AGREEMENT).build();
 		
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.customer_trade_agreement";
@@ -802,6 +780,22 @@ public class MobileStoreContract {
 		}
 		public static Uri buildAutocompleteSearchUri(String text) {
 			return CONTENT_URI.buildUpon().appendPath(text).appendPath(PATH_ITEM_SEARCH).build();
+		}
+	}
+	
+	public static class GiftItems implements GiftItemsColumns, ItemsColumns, CustomersColumns, VisitsColumns, BaseColumns {
+
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_GIFT_ITEMS).build();
+
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.gift_items";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.gift_items";
+		
+		public static Uri buildGiftItemsUri(int itemId) {
+			return CONTENT_URI.buildUpon().appendPath(String.valueOf(itemId)).build();
+		}
+		
+		public static Uri buildGiftItemsVisitUri(int itemId) {
+			return CONTENT_URI.buildUpon().appendPath(PATH_VISITS).appendPath(String.valueOf(itemId)).build();
 		}
 	}
 
@@ -1237,6 +1231,22 @@ public class MobileStoreContract {
 
 		public static String getCustomSearchFirstParamQuery(Uri uri) {
 			return uri.getPathSegments().get(1);
+		}
+	}
+	
+	public static class Methods implements MethodsColumns, ItemsColumns, BaseColumns {
+
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_METHODS).build();
+
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.methods";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.methods";
+		
+		public static Uri buildMethodsUri(int methodId) {
+			return CONTENT_URI.buildUpon().appendPath(String.valueOf(methodId)).build();
+		}
+		
+		public static Uri buildMethodsSearchUri(String query) {
+			return CONTENT_URI.buildUpon().appendPath(PATH_SEARCH).appendPath(query).build();
 		}
 	}
 	

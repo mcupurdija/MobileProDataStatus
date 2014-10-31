@@ -145,18 +145,12 @@ public class SetContactsSyncObject extends SyncObject {
 				MobileStoreContract.Contacts.NAME,
 				MobileStoreContract.Contacts.NAME2,
 				MobileStoreContract.Contacts.COMPANY_NO,
-				MobileStoreContract.Contacts.DEPARTMENT,
-				MobileStoreContract.Contacts.POSITION,
 				MobileStoreContract.Contacts.PHONE,
-				MobileStoreContract.Contacts.MOBILE_PHONE,
 				MobileStoreContract.SalesPerson.SALE_PERSON_NO,
 				MobileStoreContract.Contacts.EMAIL
         };
 		
 		Type[] PROJECTION_TYPE = {
-				String.class,
-				String.class,
-				String.class,
 				String.class,
 				String.class,
 				String.class,

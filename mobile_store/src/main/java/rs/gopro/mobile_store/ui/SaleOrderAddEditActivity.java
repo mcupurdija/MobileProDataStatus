@@ -122,14 +122,12 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		MobileStoreContract.Customers._ID,
 		MobileStoreContract.Customers.CUSTOMER_NO,
 		MobileStoreContract.Customers.NAME,
-		MobileStoreContract.Customers.PRIMARY_CONTACT_ID,
 		MobileStoreContract.Customers.PHONE,
 		MobileStoreContract.Customers.CITY,
 		MobileStoreContract.Customers.ADDRESS,
 		MobileStoreContract.Customers.POST_CODE,
 		MobileStoreContract.Customers.CONTACT_COMPANY_NO,
-		MobileStoreContract.Customers.EMAIL, 
-		MobileStoreContract.Customers.HAS_BUSINESS_UNITS
+		MobileStoreContract.Customers.EMAIL
 	};
 	
 	private static String DEFAULT_VIEW_TYPE = MobileStoreContract.SaleOrders.CONTENT_ITEM_TYPE;

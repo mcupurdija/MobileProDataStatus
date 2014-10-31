@@ -9,48 +9,28 @@
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
-        <item>@drawable/ic_action_settings</item>
-        <item>@drawable/ic_action_settings</item>
-        <item>@null</item>
-        <item>@drawable/ic_action_settings</item>
-        <item>@drawable/ic_action_settings</item>
-        <item>@drawable/ic_action_settings</item>
-        <item>@drawable/ic_action_settings</item>
         <item>@null</item>
         <item>@drawable/ic_action_settings</item>
     </array>
-
     <string-array name="actions_names">
         <item>Glavni meni</item>
         <item>Realizacija/plan poseta</item>
-        <item>Porudžbine/Ponude</item>
-        <item>Poslate porudžbine/ponude</item>
         <item>Kupci</item>
         <item>Kontakti</item>
+        <item>Metode</item>
         <item>Artikli</item>
         <item>Izveštaji</item>
         <item>Stavke kupaca</item>
-        <item>Status poslatih porudžbina</item>
-        <item>Realizacija plana i promet</item>
-        <item>Servisni nalog</item>
-        <item>Podešavanja</item>
-        <item>Podešavanja</item>
     </string-array>
     <string-array name="actions_links">
         <item>category://main_menu</item>
         <item>settings://record_visits</item>
-        <item>settings://sale_orders</item>
-        <item>settings://sent_orders</item>
         <item>settings://customers</item>
         <item>settings://contacts</item>
+        <item>settings://methods</item>
         <item>settings://items</item>
         <item>category://reports</item>
         <item>settings://customer_ledger_entries</item>
-        <item>settings://sent_orders_status</item>
-        <item>settings://plan_and_turnover</item>
-        <item>settings://service_order</item>
-        <item>category://settings</item>
-        <item>settings://settings</item>
     </string-array>
 
     <!-- Settings arrays -->
@@ -638,6 +618,108 @@
         <item>LIČNO KOM</item>
         <item>LIČNO KUP</item>
         <item>PREUZIM</item>
+    </string-array>
+    <string-array name="customer_type_array">
+        <item></item>
+        <item>Biblioteka</item>
+        <item>Fakultet</item>
+        <item>FL krajnji kupac</item>
+        <item>Komisionar</item>
+        <item>Škola OŠD</item>
+        <item>Škola OŠO</item>
+        <item>Škola SSD</item>
+        <item>Škola SSO</item>
+        <item>Škola UJ</item>
+        <item>Ustanova krajnji kupac</item>
+        <item>Veleprodaja</item>
+    </string-array>
+    <string-array name="pozicija_title_array">
+        <item></item>
+        <item>Direktor</item>
+        <item>Profesori ekonomskih predmeta</item>
+        <item>Profesori ekonomskih predmeta CG</item>
+        <item>Profesori engleskog jezika</item>
+        <item>Profesori engleskog jezika CG</item>
+        <item>Profesori fizike</item>
+        <item>Profesori francuskog jezika</item>
+        <item>Profesori italijanskog jezika</item>
+        <item>Profesori matematike</item>
+        <item>Profesori medicinskih predmeta</item>
+        <item>Profesori medicinskih predmeta CG</item>
+        <item>Profesori nemačkog jezika</item>
+        <item>Profesori nemačkog jezika CG</item>
+        <item>Profesori ruskog jezika</item>
+        <item>Profesori ruskog jezika CG</item>
+        <item>Sekretar</item>
+        <item>Profesori španskog jezika</item>
+        <item>Profesori srpskog jezika</item>
+        <item>Veleprodaja</item>
+    </string-array>
+    <string-array name="pozicija_value_array">
+        <item></item>
+        <item>DIR</item>
+        <item>EKO</item>
+        <item>EKO CG</item>
+        <item>ENG</item>
+        <item>ENG CG</item>
+        <item>FIZ</item>
+        <item>FRA</item>
+        <item>ITA</item>
+        <item>MAT</item>
+        <item>MED</item>
+        <item>MED CG</item>
+        <item>NEM</item>
+        <item>NEM CG</item>
+        <item>RUS</item>
+        <item>RUS CG</item>
+        <item>SEK</item>
+        <item>ŠPA</item>
+        <item>SRP</item>
+        <item>VEL</item>
+    </string-array>
+    
+    <string-array name="realizacija_subtype_title">
+        <item></item>
+        <item>Da</item>
+        <item>Ne</item>
+        <item>Možda</item>
+    </string-array>
+    <string-array name="realizacija_subtype_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="pauza_subtype_title">
+        <item></item>
+        <item>Dan u kancelariji</item>
+        <item>Sastanak</item>
+        <item>Privatno</item>
+        <item>Ostalo</item>
+    </string-array>
+    <string-array name="pauza_subtype_value">
+        <item>0</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+    <string-array name="skola_velicina_array">
+        <item></item>
+        <item>do 500 učenika</item>
+        <item>500&#8211;800 učenika</item>
+        <item>više od 800 učenika</item>
+    </string-array>
+    <string-array name="skola_razred_array">
+        <item></item>
+		<item>1. razred</item>
+		<item>2. razred</item>
+		<item>3. razred</item>
+		<item>4. razred</item>
+		<item>5. razred</item>
+		<item>6. razred</item>
+		<item>7. razred</item>
+		<item>8. razred</item>
     </string-array>
 
 </resources>

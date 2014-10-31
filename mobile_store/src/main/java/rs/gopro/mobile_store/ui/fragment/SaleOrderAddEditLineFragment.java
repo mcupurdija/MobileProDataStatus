@@ -41,7 +41,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -576,9 +575,6 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			String location = mLocation.getSelectedItem().toString();
 			localValues.put(MobileStoreContract.SaleOrderLines.LOCATION_CODE, location);
 			
-			int campaign_status = mCampaignStatus.getSelectedItemPosition();
-			localValues.put(MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS, Integer.valueOf(campaign_status));
-			
 			int quote_refused = mQuoteRefused.getSelectedItemPosition();
 			localValues.put(MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS, Integer.valueOf(quote_refused));
 		} catch (SaleOrderValidationException se) {
@@ -775,15 +771,6 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         
         if (!cursor.isNull(ItemQuery.ITEM_NO)) {
         	itemNo = cursor.getString(ItemQuery.ITEM_NO);
-        }
-        
-        mDisc.setText("");
-        if (!cursor.isNull(ItemQuery.INVENTORY_ITEM_CATEGORY)) {
-        	int item_category = cursor.getInt(ItemQuery.INVENTORY_ITEM_CATEGORY);
-        	if (item_category == 9 || item_category == 8) {
-        		mDisc.setText("DISC");
-        		mDisc.setTextColor(Color.RED);
-        	}
         }
         
         /**
@@ -1075,15 +1062,11 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 
         String[] PROJECTION = {
                 BaseColumns._ID,
-                MobileStoreContract.Items.ITEM_NO,
-                MobileStoreContract.Items.CAMPAIGN_STATUS,
-                MobileStoreContract.Items.INVENTORY_ITEM_CATEGORY
+                MobileStoreContract.Items.ITEM_NO
         };
 
         int _ID = 0;
         int ITEM_NO = 1;
-        int ITEM_CAMPAIGN_STATUS = 2;
-        int INVENTORY_ITEM_CATEGORY = 3;
 	}
 	
 	private interface SalesPersonQuery {

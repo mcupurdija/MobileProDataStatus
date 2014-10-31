@@ -103,7 +103,7 @@ public class AddContactActivity extends BaseActivity implements LoaderCallbacks<
 					long arg3) {
 				Cursor cursor = (Cursor) customerAutoCompleteAdapter.getItem(position);
 				selectedCompanyId = cursor.getString(0);
-				selectedCompanyNo = cursor.getString(5);
+				selectedCompanyNo = cursor.getString(4);
 			}
 		});
 		
@@ -163,7 +163,7 @@ public class AddContactActivity extends BaseActivity implements LoaderCallbacks<
 			secondaryName.setText(data.getString(ContactQuery.NAME2));
 
 			phone.setText(data.getString(ContactQuery.PHONE));
-			mobilePhone.setText(data.getString(ContactQuery.MOBILE_PHONE));
+			//mobilePhone.setText(data.getString(ContactQuery.MOBILE_PHONE));
 			email.setText(data.getString(ContactQuery.EMAIL));
 			
 			String customerCompanyNo = data.getString(ContactQuery.COMPANY_NO);
@@ -205,7 +205,7 @@ public class AddContactActivity extends BaseActivity implements LoaderCallbacks<
 			contentValues.put(Contacts.NAME2, secondaryName.getText().toString());
 
 			contentValues.put(Contacts.PHONE, phone.getText().toString());
-			contentValues.put(Contacts.MOBILE_PHONE, mobilePhone.getText().toString());
+			//contentValues.put(Contacts.MOBILE_PHONE, mobilePhone.getText().toString());
 			contentValues.put(Contacts.EMAIL, email.getText().toString());
 			if (companyNo.getText().toString().trim().length() > 0) {
 				contentValues.put(Contacts.COMPANY_NO, selectedCompanyNo);
@@ -266,7 +266,7 @@ public class AddContactActivity extends BaseActivity implements LoaderCallbacks<
 //		int CITY = 6;
 //		int POST_CODE = 7;
 		int PHONE = 8;
-		int MOBILE_PHONE = 9;
+//		int MOBILE_PHONE = 9;
 		int EMAIL = 10;
 		int COMPANY_NO = 11;
 //		int COMPANY_ID = 12;

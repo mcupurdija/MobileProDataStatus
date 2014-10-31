@@ -33,11 +33,14 @@ public class PlannedVisitsDomain extends Domain {
 	@Override
 	public ContentValues getContentValues() {
 		ContentValues contentValues = new ContentValues();
+		
+		System.out.println(">>> D " + getVisit_date());
+		System.out.println(">>> T " + getArrival_time());
+		
 		contentValues.put(Visits.SALE_PERSON_NO, getSales_person_no());
 		contentValues.put(Visits.VISIT_DATE, WsDataFormatEnUsLatin.toDbDateFromWsString(getVisit_date()));
-
-		contentValues.put(Customers.CUSTOMER_NO, getCustomer_no());
 		contentValues.put(Visits.ARRIVAL_TIME,  WsDataFormatEnUsLatin.toDbTimeeFromWsString(getVisit_date(), getArrival_time()));
+		contentValues.put(Customers.CUSTOMER_NO, getCustomer_no());
 		contentValues.put(Visits.DEPARTURE_TIME,  WsDataFormatEnUsLatin.toDbTimeeFromWsString(getVisit_date(), getDeparture_time()));
 		contentValues.put(Visits.NOTE, getNote());
 		contentValues.put(Visits.VISIT_TYPE, Integer.valueOf(0));

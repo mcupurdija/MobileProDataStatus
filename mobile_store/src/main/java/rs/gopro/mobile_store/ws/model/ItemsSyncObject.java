@@ -10,7 +10,6 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract;
-import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
@@ -19,9 +18,7 @@ import rs.gopro.mobile_store.ws.model.domain.ItemsDomain;
 import rs.gopro.mobile_store.ws.model.domain.TransformDomainObject;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.os.Parcel;
-import android.text.TextUtils;
 
 public class ItemsSyncObject extends SyncObject {
 	public static String TAG = "ItemsSyncObject";
@@ -156,68 +153,6 @@ public class ItemsSyncObject extends SyncObject {
 	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive result) throws CSVParseException {
 		List<ItemsDomain> parsedItems = CSVDomainReader.parse(new StringReader(result.toString()), ItemsDomain.class);
 		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedItems);
-		
-		// 1. OBRISATI POLJE has_actions KOD SVIH ARTIKALA GDE JE == 1
-		ContentValues cv = new ContentValues();
-		cv.put(Items.HAS_ACTIONS, 0);
-		contentResolver.update(Items.CONTENT_URI, cv, Items.HAS_ACTIONS + "=1", null);
-		
-		// 2. PROCI KROZ SVE ARTIKLE GDE POSTOJI bom I POPUNITI POLJE has_actions
-		Cursor cursor = contentResolver.query(Items.CONTENT_URI, new String[] { Items.BOM_ITEMS }, Items.BOM_ITEMS + " IS NOT NULL AND " + "LENGTH(" + Items.BOM_ITEMS + ")>0", null, null);
-		cv.put(Items.HAS_ACTIONS, 1);
-		while (cursor.moveToNext()) {
-			String bomItems = cursor.getString(0);
-			bomItems = bomItems.substring(1, bomItems.length() - 1);
-			String[] itemArray = bomItems.split("\\|");
-			for (String itemNo : itemArray) {
-				contentResolver.update(Items.CONTENT_URI, cv, Items.ITEM_NO + "=?", new String[] { itemNo });
-			}
-		}
-		cursor.close();
-		
-		// 3. POPUNITI POLJE has_actions NA OSNOVU PODATAKA SA WS
-		for (ContentValues contentValues : valuesForInsert) {
-			String bomItems = contentValues.getAsString(MobileStoreContract.Items.BOM_ITEMS);
-			if (!TextUtils.isEmpty(bomItems)) {
-				bomItems = bomItems.substring(1, bomItems.length() - 1);
-				String[] itemArray = bomItems.split("\\|");
-				for (String itemNo : itemArray) {
-					contentResolver.update(Items.CONTENT_URI, cv, Items.ITEM_NO + "=?", new String[] { itemNo });
-				}
-			}
-		}
-		
-		switch (getResetTypeSignal()) {
-		case 0:
-			// default
-			break;
-		case 1:
-			if (valuesForInsert.length > 0) {
-				ContentValues resetOverstock = new ContentValues();
-				resetOverstock.putNull(MobileStoreContract.Items.UNIT_SALES_PRICE_DIN);
-				resetOverstock.putNull(MobileStoreContract.Items.UNIT_SALES_PRICE_EUR);
-				resetOverstock.put(MobileStoreContract.Items.CAMPAIGN_STATUS, Integer.valueOf(0));
-				resetOverstock.put(MobileStoreContract.Items.OVERSTOCK_STATUS, Integer.valueOf(0));
-				resetOverstock.putNull(MobileStoreContract.Items.CAMPAIGN_END_DATE);
-				resetOverstock.putNull(MobileStoreContract.Items.CMPAIGN_START_DATE);
-				contentResolver.update(MobileStoreContract.Items.CONTENT_URI, resetOverstock, MobileStoreContract.Items.CAMPAIGN_STATUS+"=?", new String[] { "1" });
-			}
-			break;
-		case 2:
-			if (valuesForInsert.length > 0) {
-				ContentValues resetOverstock = new ContentValues();
-				resetOverstock.putNull(MobileStoreContract.Items.UNIT_SALES_PRICE_DIN);
-				resetOverstock.putNull(MobileStoreContract.Items.UNIT_SALES_PRICE_EUR);
-				resetOverstock.put(MobileStoreContract.Items.CAMPAIGN_STATUS, Integer.valueOf(0));
-				resetOverstock.put(MobileStoreContract.Items.OVERSTOCK_STATUS, Integer.valueOf(0));
-				resetOverstock.putNull(MobileStoreContract.Items.CAMPAIGN_END_DATE);
-				resetOverstock.putNull(MobileStoreContract.Items.CMPAIGN_START_DATE);
-				contentResolver.update(MobileStoreContract.Items.CONTENT_URI, resetOverstock, MobileStoreContract.Items.CAMPAIGN_STATUS+"=?", new String[] { "2" });
-			}
-			break;
-		default:
-			break;
-		}
 		int numOfInserted = contentResolver.bulkInsert(MobileStoreContract.Items.CONTENT_URI, valuesForInsert);
 		return numOfInserted;
 	}

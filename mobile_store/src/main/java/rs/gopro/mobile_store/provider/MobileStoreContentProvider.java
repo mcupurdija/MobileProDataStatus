@@ -12,11 +12,13 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.CustomerTradeAgreemnt;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Generic;
+import rs.gopro.mobile_store.provider.MobileStoreContract.GiftItems;
 import rs.gopro.mobile_store.provider.MobileStoreContract.InvoiceLine;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ItemsColumns;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ItemsOnPromotion;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Methods;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SalesPerson;
@@ -42,6 +44,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.provider.BaseColumns;
 import android.util.Log;
 
 /**
@@ -161,6 +164,14 @@ public class MobileStoreContentProvider extends ContentProvider {
 	
 	private static final int ACTION_PLAN = 1900;
 	private static final int ACTION_PLAN_ITEM_NO = 1901;
+	
+	private static final int GIFT_ITEMS = 2000;
+	private static final int GIFT_ITEMS_ID = 2001;
+	private static final int GIFT_ITEMS_VISIT_ID = 2002;
+	
+	private static final int METHODS = 2100;
+	private static final int METHODS_ID = 2101;
+	private static final int METHODS_SEARCH = 2102;
 	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -320,6 +331,15 @@ public class MobileStoreContentProvider extends ContentProvider {
 		
 		mobileStoreURIMatcher.addURI(authority, "action_plan", ACTION_PLAN);
 		mobileStoreURIMatcher.addURI(authority, "action_plan/*", ACTION_PLAN_ITEM_NO);
+		
+		mobileStoreURIMatcher.addURI(authority, "gift_items", GIFT_ITEMS);
+		mobileStoreURIMatcher.addURI(authority, "gift_items/#", GIFT_ITEMS_ID);
+		mobileStoreURIMatcher.addURI(authority, "gift_items/visits/#", GIFT_ITEMS_VISIT_ID);
+		
+		mobileStoreURIMatcher.addURI(authority, "methods", METHODS);
+		mobileStoreURIMatcher.addURI(authority, "methods/#", METHODS_ID);
+		mobileStoreURIMatcher.addURI(authority, "methods/search/#", METHODS_SEARCH);
+		mobileStoreURIMatcher.addURI(authority, "methods/search/*", METHODS_SEARCH);
 	}
 
 	@Override
@@ -328,8 +348,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 		// int match = mobileStoreURIMatcher.match(uri);
 		SQLiteDatabase database = databaseHelper.getWritableDatabase();
 		SelectionBuilder builder = buildSimpleSelection(uri);
-		int deletedRows = builder.where(selection, selectionArgs).delete(
-				database);
+		int deletedRows = builder.where(selection, selectionArgs).delete(database);
 		getContext().getContentResolver().notifyChange(uri, null);
 		return deletedRows;
 	}
@@ -387,6 +406,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return ItemsOnPromotion.CONTENT_TYPE;
 		case ACTION_PLAN:
 			return ActionPlan.CONTENT_TYPE;
+		case GIFT_ITEMS:
+			return ActionPlan.CONTENT_TYPE;
+		case METHODS:
+			return Methods.CONTENT_TYPE;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -472,6 +495,14 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.ACTION_PLAN,null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return ActionPlan.buildActionPlanUri((int)id);
+		case GIFT_ITEMS:
+			id = database.insertOrThrow(Tables.GIFT_ITEMS,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return GiftItems.buildGiftItemsUri((int)id);
+		case METHODS:
+			id = database.insertOrThrow(Tables.METHODS,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return Methods.buildMethodsUri((int)id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -543,8 +574,7 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.VISITS);
 		case VISIT_ID:
 			final String visitId = Visits.getVisitId(uri);
-			return builder.addTable(Tables.VISITS).where(
-					Tables.VISITS + "." + Visits._ID + "=?", visitId);
+			return builder.addTable(Tables.VISITS).where(Tables.VISITS + "." + Visits._ID + "=?", visitId);
 		case SALE_ORDERS:
 			return builder.addTable(Tables.SALE_ORDERS);
 		case SALE_ORDER:
@@ -595,6 +625,16 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return builder.addTable(Tables.ITEMS_ON_PROMOTION);
 		case ACTION_PLAN:
 			return builder.addTable(Tables.ACTION_PLAN);
+		case GIFT_ITEMS:
+			return builder.addTable(Tables.GIFT_ITEMS);
+		case GIFT_ITEMS_ID:
+			String giftItemId = uri.getLastPathSegment();
+			return builder.addTable(Tables.GIFT_ITEMS).where(Tables.GIFT_ITEMS + "." + GiftItems._ID + "=?", new String[] { giftItemId });
+		case METHODS:
+			return builder.addTable(Tables.METHODS);
+		case METHODS_ID:
+			String methodId = uri.getLastPathSegment();
+			return builder.addTable(Tables.METHODS).where(Tables.METHODS + "." + Methods._ID + "=?", new String[] { methodId });
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -675,36 +715,18 @@ public class MobileStoreContentProvider extends ContentProvider {
 							customerCustomParam + "%",
 									"%" + customerCustomParam + "%" });
 			}
-			if (customerStatus != null && customerStatus.length() > 0 && !customerStatus.equals("-1")) {
-				if (customerStatus.equals("4")) {
-					builder.where(Customers.CREDIT_LIMIT_LCY + "= ?",
-							new String[] { "2" });
-				} else if (customerStatus.equals("5")) {
-					builder.where(Customers.CREDIT_LIMIT_LCY + "= ?",
-							new String[] { "1" });
-				} else {
-					builder.where(Customers.FINANCIAL_CONTROL_STATUS + "= ?",
-							new String[] { customerStatus });
-				}
-			}
 			return builder;
 		case ITEMS:
 			return builder.addTable(Tables.ITEMS);
 		case ITEMS_BY_STATUS:
 			String itemStat = Items.getItemStatus(uri);
-			return builder.addTable(Tables.ITEMS).where(
-					Items.CAMPAIGN_STATUS + "= ?", new String[] { itemStat });
+			return builder.addTable(Tables.ITEMS);
 		case ITEMS_CUSTOM_SEARCH:
 			String itemCustom = Items.getCustomSearchFirstParamQuery(uri);
 			String itemStatus = Items.getCustomSearchSecondParamQuery(uri);
 			return builder
 					.addTable(Tables.ITEMS)
-					.where(Items.ITEM_NO + " like ? OR " + Items.DESCRIPTION
-							+ " like ? ",
-							new String[] { itemCustom + "%",
-									"%" + itemCustom + "%" })
-					.where(Items.CAMPAIGN_STATUS + "= ?",
-							new String[] { itemStatus });
+					.where(Items.ITEM_NO + " like ? OR " + Items.DESCRIPTION + " like ? ", new String[] { itemCustom + "%", "%" + itemCustom + "%" });
 		case ITEMS_AUTOCOMPLETE_SEARCH:
 			String itemCustomSearch = Items.getCustomSearchFirstParamQuery(uri);
 			return builder
@@ -929,14 +951,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(SaleOrderLines.SALE_ORDER_ID, Tables.SALE_ORDER_LINES)
 					.mapToTable(SaleOrderLines.ITEM_NO, Tables.ITEMS)
 					.mapToTable(SaleOrderLines.DESCRIPTION, Tables.ITEMS)
-					.mapToTable(SaleOrderLines.DESCRIPTION2, Tables.ITEMS)
 					.mapToTable(SaleOrderLines.LINE_NO, Tables.SALE_ORDER_LINES)
 					.mapToTable(SaleOrderLines.QUANTITY, Tables.SALE_ORDER_LINES)
 					.mapToTable(SaleOrderLines.PRICE_EUR, Tables.SALE_ORDER_LINES)
 					.mapToTable(SaleOrderLines.REAL_DISCOUNT, Tables.SALE_ORDER_LINES)
 					.mapToTable(SaleOrderLines.MAX_DISCOUNT, Tables.SALE_ORDER_LINES)
-					.mapToTable(SaleOrderLines.MIN_QTY, Tables.ITEMS)
-					.mapToTable(SaleOrderLines.CAMPAIGN_STATUS, Tables.ITEMS)
 					.where(SaleOrderLines.SALE_ORDER_ID + "=?", salesOrderId);
 		case CONTACTS_ID:
 			final String contactId = Contacts.getContactsId(uri);
@@ -1052,7 +1071,6 @@ public class MobileStoreContentProvider extends ContentProvider {
 					.mapToTable(MobileStoreContract.SaleOrderLines.QUANTITY, Tables.SALE_ORDER_LINES)
 					.mapToTable(MobileStoreContract.SaleOrderLines.PRICE, Tables.SALE_ORDER_LINES)
 					.mapToTable(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT, Tables.SALE_ORDER_LINES)
-					.mapToTable(MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS, Tables.SALE_ORDER_LINES)
 					.mapToTable(MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS, Tables.SALE_ORDER_LINES)
 					.mapToTable(MobileStoreContract.SaleOrderLines.BACKORDER_STATUS, Tables.SALE_ORDER_LINES)
 					.mapToTable(MobileStoreContract.SaleOrderLines.AVAILABLE_TO_WHOLE_SHIPMENT, Tables.SALE_ORDER_LINES);
@@ -1188,6 +1206,22 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case ACTION_PLAN_ITEM_NO:
 			final String actionPlanItem = ActionPlan.getCustomSearchFirstParamQuery(uri);
 			return builder.addTable(Tables.ACTION_PLAN_JOIN_ITEMS).where(Tables.ITEMS + "." + ItemsColumns.ITEM_NO + " LIKE ? OR " + Tables.ITEMS + "." + ItemsColumns.DESCRIPTION + " LIKE ?", new String[] { actionPlanItem + "%", "%" + actionPlanItem + "%" });
+		case GIFT_ITEMS:
+			return builder.addTable(Tables.GIFT_ITEMS_JOIN_ITEMS_CUSTOMERS_VISITS);
+		case GIFT_ITEMS_ID:
+			final String giftItemsId = uri.getLastPathSegment();
+			return builder.addTable(Tables.GIFT_ITEMS_JOIN_ITEMS_CUSTOMERS_VISITS).where(Tables.GIFT_ITEMS + "." + BaseColumns._ID + "=?", new String[] { giftItemsId });
+		case GIFT_ITEMS_VISIT_ID:
+			final String giftItemsVisitId = uri.getLastPathSegment();
+			return builder.addTable(Tables.GIFT_ITEMS_JOIN_ITEMS_CUSTOMERS_VISITS).where(Tables.GIFT_ITEMS + "." + GiftItems.VISIT_ID + "=?", new String[] { giftItemsVisitId });
+		case METHODS:
+			return builder.addTable(Tables.METHODS_JOIN_ITEMS_JOIN_CUSTOMERS);
+		case METHODS_ID:
+			final String methodId = uri.getLastPathSegment();
+			return builder.addTable(Tables.METHODS_JOIN_ITEMS_JOIN_CUSTOMERS).where(Tables.METHODS + "." + BaseColumns._ID + "=?", new String[] { methodId });
+		case METHODS_SEARCH:
+			String methodSearchParam = uri.getLastPathSegment();
+			return builder.addTable(Tables.METHODS_JOIN_ITEMS_JOIN_CUSTOMERS).where(Tables.ITEMS + "." + Items.ITEM_NO + " like ? OR " + Tables.ITEMS + "." + Items.DESCRIPTION + " like ?", new String[] { "%" + methodSearchParam + "%", "%" + methodSearchParam + "%"});
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

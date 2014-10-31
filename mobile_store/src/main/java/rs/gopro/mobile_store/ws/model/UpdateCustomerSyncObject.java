@@ -144,23 +144,17 @@ public class UpdateCustomerSyncObject extends SyncObject {
 	private interface PotentialCustomerQuery {
 		String[] PROJECTION = {
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.CUSTOMER_NO,
-				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.NAME, 
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.NAME,
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.NAME_2,
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.ADDRESS,
-				//MobileStoreContract.Customers.CITY,
-
-				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.PHONE, 
-				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.MOBILE, 
-
-				Tables.SALES_PERSONS+"."+MobileStoreContract.Customers.SALE_PERSON_NO, 
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.ADDRESS_2,
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.PHONE,
+				Tables.SALES_PERSONS+"."+MobileStoreContract.Customers.SALE_PERSON_NO,
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.VAT_REG_NO,
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.POST_CODE,
-				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.EMAIL, 
-				Tables.CONTACTS+"."+MobileStoreContract.Contacts.CONTACT_NO, 
-				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.COMPANY_ID,
-				
-				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.NUMBER_OF_BLUE_COAT, 
-				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.NUMBER_OF_GREY_COAT
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.EMAIL,
+				Tables.CONTACTS+"."+MobileStoreContract.Contacts.CONTACT_NO,
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.COMPANY_ID
         };
 		
 		Type[] PROJECTION_TYPE = {
@@ -168,19 +162,14 @@ public class UpdateCustomerSyncObject extends SyncObject {
 				String.class,
 				String.class,
 				String.class,
-				//String.class,
-				
-				String.class,
-				String.class,
-				
 				String.class,
 				String.class,
 				String.class,
 				String.class,
 				String.class,
-				String.class,			
 				String.class,
 				String.class,
+				String.class
 		};
 	}
 

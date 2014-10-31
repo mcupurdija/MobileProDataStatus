@@ -305,7 +305,8 @@
                 android:layout_marginLeft="16dp"
                 android:text="@string/add_customer_create_from_potential"
                 android:textColor="#FFAAAAAA"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 

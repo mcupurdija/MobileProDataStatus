@@ -1,73 +1,60 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/inner_view_about"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingBottom="20dp" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:orientation="vertical" >
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
             <TextView
                 android:id="@+id/first_input_title"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="10dp"
-                android:paddingBottom="5dp"
                 android:text="@string/sale_order_search_title"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
                 android:id="@+id/input_search_sale_order"
-                android:layout_width="140dp"
-                android:layout_height="50dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:hint="@string/hint_search"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:paddingBottom="5dp" >
+                android:inputType="text" >
             </EditText>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="35dp" >
+            android:orientation="horizontal" >
 
             <TextView
                 android:id="@+id/sale_order_status_spinner_text"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="10dp"
-                android:paddingBottom="5dp"
                 android:text="@string/sale_order_status_spinner_title"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <Spinner
                 android:id="@+id/sale_order_status_spinner"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:paddingBottom="5dp" 
-                android:layout_gravity="bottom" />
+                android:layout_marginLeft="10dp" />
         </LinearLayout>
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/sale_order_content"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

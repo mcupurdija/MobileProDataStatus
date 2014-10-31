@@ -16,10 +16,8 @@ public class SalespersonSetupDomain extends Domain {
 	public String invoice_query_number_of_days;
 	public String password;
 	public String email;
-	public String wr_username;
-	public String wr_password;
 	
-	private static final String[] COLUMNS = new String[] { "default_location","allow_location_change_on_mdsd","team_partner","access_to_all_customers","invoice_query_number_of_days","password","email","wr_username","wr_password" };
+	private static final String[] COLUMNS = new String[] { "default_location","allow_location_change_on_mdsd","team_partner","access_to_all_customers","invoice_query_number_of_days","password","email" };
 	
 	public SalespersonSetupDomain() {
 	}
@@ -39,8 +37,6 @@ public class SalespersonSetupDomain extends Domain {
 		contentValues.put(MobileStoreContract.SalesPersonsColumns.INVOICE_QUERY_NUMBER_OF_DAYS, invoice_query_number_of_days);
 		contentValues.put(MobileStoreContract.SalesPersonsColumns.PASSWORD, password);
 		contentValues.put(MobileStoreContract.SalesPersonsColumns.SALES_PERSON_EMAIL, email);
-		contentValues.put(MobileStoreContract.SalesPersonsColumns.WR_USERNAME, wr_username);
-		contentValues.put(MobileStoreContract.SalesPersonsColumns.WR_PASSWORD, wr_password);
 		return contentValues;
 	}
 

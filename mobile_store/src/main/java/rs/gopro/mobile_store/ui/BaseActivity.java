@@ -33,6 +33,7 @@ import rs.gopro.mobile_store.util.VersionUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.CustomerSyncObject;
 import rs.gopro.mobile_store.ws.model.MobileDeviceSetup;
+import rs.gopro.mobile_store.ws.model.SetTeachingMethodSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -46,6 +47,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 /**
  * A base activity that handles common functionality in the app.
@@ -67,22 +69,29 @@ public abstract class BaseActivity extends FragmentActivity {
 	
 	private void onSOAPRes(SyncResult syncResult, String broadcastAction) {
 		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
-			ContentValues cv = new ContentValues();
-	    	cv.put(AppSettings.APP_SYNC_WARNNING_DATE, DateUtils.toDbDate(new Date()));
-	    	getContentResolver().update(AppSettings.CONTENT_URI, cv, "_id=1", null);
-			
-			MobileDeviceSetup mds = (MobileDeviceSetup) syncResult.getComplexResult();
-			String appversion = mds.getAppVersion();
-			String versionName = "";
-			try {
-				versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-			} catch (NameNotFoundException e) {
-				LogUtils.LOGE("BaseActivity","",e);
+			if (MobileDeviceSetup.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				ContentValues cv = new ContentValues();
+		    	cv.put(AppSettings.APP_SYNC_WARNNING_DATE, DateUtils.toDbDate(new Date()));
+		    	getContentResolver().update(AppSettings.CONTENT_URI, cv, "_id=1", null);
+				
+				MobileDeviceSetup mds = (MobileDeviceSetup) syncResult.getComplexResult();
+				String appversion = mds.getAppVersion();
+				String versionName = "";
+				try {
+					versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+				} catch (NameNotFoundException e) {
+					LogUtils.LOGE("BaseActivity","",e);
+				}
+				
+				if (!versionName.equals(appversion)) {
+		    		DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_warn), "Verzija aplikacije " + versionName + " je zastarela! Potrebna verzija je " + appversion);			
+		    	}
+			} else if (SetTeachingMethodSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				Toast.makeText(getApplicationContext(), "Metoda je uspešno sinhronizovana", Toast.LENGTH_SHORT).show();
+			} else {
+				//DialogUtil.showInfoErrorDialog(this, syncResult.getResult());
 			}
 			
-			if (!versionName.equals(appversion)) {
-	    		DialogUtil.showInfoDialog(this, getResources().getString(R.string.dialog_title_warn), "Verzija aplikacije " + versionName + " je zastarela! Potrebna verzija je " + appversion);			
-	    	}
 		}
 	}
 	

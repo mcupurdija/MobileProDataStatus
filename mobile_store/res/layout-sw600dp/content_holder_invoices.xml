@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/customer_search_filter"
-                android:textSize="18sp" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
                 android:id="@+id/customer_filter_value"
@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/invoice_document_type_label_text"
-                android:textSize="18sp" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <Spinner
                 android:id="@+id/invoice_document_type_spinner"
@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/invoice_document_open_status_label_text"
-                android:textSize="18sp" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <Spinner
                 android:id="@+id/invoice_document_open_status_spinner"

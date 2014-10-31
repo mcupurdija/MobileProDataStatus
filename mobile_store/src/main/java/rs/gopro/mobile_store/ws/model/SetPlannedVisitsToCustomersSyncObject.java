@@ -112,8 +112,7 @@ public class SetPlannedVisitsToCustomersSyncObject extends SyncObject {
 						+ Tables.VISITS + "." + MobileStoreContract.Visits.IS_DELETED + "=0 AND " 
 						+ Tables.VISITS + "." + MobileStoreContract.Visits.VISIT_TYPE + "=0",
 				new String[] { WsDataFormatEnUsLatin.toDbDateString(getRequestSyncDate()) }, null);
-		List<String[]> header = CSVDomainWriter.parseCursor(cursorHeader,
-				VisitsQuery.PROJECTION_TYPE);
+		List<String[]> header = CSVDomainWriter.parseCursor(cursorHeader, VisitsQuery.PROJECTION_TYPE);
 		StringWriter stringWriter = new StringWriter();
 		CSVWriter writer = new CSVWriter(stringWriter, ';', '"');
 		writer.writeAll(header);

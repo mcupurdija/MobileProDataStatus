@@ -124,9 +124,9 @@ public class GetPotentialCustomerSyncObject extends SyncObject {
 		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedItems, defaultCV);
 		// there is customers, now to reset who is active first, all are inactive
 		if (parsedItems != null && parsedItems.size() > 0) {
-			ContentValues cv= new ContentValues();
+			ContentValues cv = new ContentValues();
 			cv.put(Customers.IS_ACTIVE, 0);
-			context.getContentResolver().update(Customers.CONTENT_URI, cv, Customers.CONTACT_COMPANY_NO+" is null or " + Customers.CONTACT_COMPANY_NO + " like ''", null);
+			context.getContentResolver().update(Customers.CONTENT_URI, cv, Customers.CONTACT_COMPANY_NO + " is null or " + Customers.CONTACT_COMPANY_NO + " like ''", null);
 		}
 		int numOfInserted = contentResolver.bulkInsert(Customers.CONTENT_URI, valuesForInsert);
 		return numOfInserted;

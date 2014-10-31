@@ -54,7 +54,7 @@ public class NewSalesDocumentLinesDomain extends Domain {
 		contentValues.put(MobileStoreContract.SaleOrderLines.PRICE, WsDataFormatEnUsLatin.toDoubleFromWs(unit_price));
 		contentValues.put(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT, WsDataFormatEnUsLatin.toDoubleFromWs(line_discount));
 		contentValues.put(MobileStoreContract.SaleOrderLines.BACKORDER_STATUS, backorder_shipment_status == "" ? "0" : backorder_shipment_status);
-		contentValues.put(MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS, item_campaign_status == "" ? "0" : item_campaign_status);
+		//contentValues.put(MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS, item_campaign_status == "" ? "0" : item_campaign_status);
 		contentValues.put(MobileStoreContract.SaleOrderLines.AVAILABLE_TO_WHOLE_SHIPMENT, available_to_whole_ship == "" ? "0" : available_to_whole_ship);
 		contentValues.put(MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS, quote_refused_reason == "" ? "0" : quote_refused_reason);
 		return contentValues;

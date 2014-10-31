@@ -230,8 +230,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 	private boolean isPotentialCustomer(String customerNo) {
 		Cursor potentialCustomerCursor = context.getContentResolver().query(
 				MobileStoreContract.Customers.CONTENT_URI,
-				new String[] { Customers.CONTACT_COMPANY_NO },
-				"(" + Customers.CONTACT_COMPANY_NO + " is null or "
+				new String[] { Customers.CONTACT_COMPANY_NO }, "(" + Customers.CONTACT_COMPANY_NO + " is null or "
 						+ Customers.CONTACT_COMPANY_NO + "='')" + " and "
 						+ Customers.CUSTOMER_NO + "=?",
 				new String[] { customerNo }, null);
@@ -479,7 +478,7 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 				MobileStoreContract.SaleOrderLines.QUANTITY,
 				MobileStoreContract.SaleOrderLines.PRICE,
 				MobileStoreContract.SaleOrderLines.REAL_DISCOUNT,
-				MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS,
+				// MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS,
 				MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS,
 				MobileStoreContract.SaleOrderLines.BACKORDER_STATUS,
 				MobileStoreContract.SaleOrderLines.AVAILABLE_TO_WHOLE_SHIPMENT };

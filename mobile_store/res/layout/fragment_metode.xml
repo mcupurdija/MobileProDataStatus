@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/rlPretragaMetode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp" >
+
+        <TextView
+            android:id="@+id/tvInputNaslovMetode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/etInputMetode"
+            android:text="@string/method_search_title" />
+
+        <EditText
+            android:id="@+id/etInputMetode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/tvInputNaslovMetode"
+            android:hint="@string/hint_search"
+            android:inputType="text" >
+        </EditText>
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lvMetode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlPretragaMetode" >
+    </ListView>
+
+</RelativeLayout>

@@ -14,20 +14,18 @@
         android:defaultValue="/Codeunit/MobileDeviceSync"
         android:key="@string/key_ws_navisition_codeunit"
         android:title="@string/title_ws_navisition_codeunit" />
-    <!-- W-RS PROD:   http://10.94.1.5:7047/Wurth/ws           -->
-    <!-- W-RS TEST:   http://10.94.1.12:7047/DynamicsNAV/WS    -->
-    <!-- W-RS LOCAL:  http://sqlserver.gopro.rs:7047/Wurth/ws  -->
-    <!-- W-CG TEST:   http://10.94.1.5:7147/WurthCG/WS         -->
+    <!-- DS PROD:   http://win-nav.ds.local:7047/Mobile/WS/Services   -->
+    <!-- DS TEST:                                                     -->
+    <!-- DS LOCAL:  http://sqlserver.gopro.rs:7047/Wurth/ws           -->
     <EditTextPreference
-        android:defaultValue="http://sqlserver.gopro.rs:7047/Wurth/ws"
+        android:defaultValue="http://sqlserver.gopro.rs:7047/DataStatus/ws"
         android:key="@string/key_ws_server_address"
         android:title="@string/title_ws_server_address" />
-    <!-- W-RS PROD:   Wurth                                                                       -->
-    <!-- W-RS TEST:   W%20U%20R%20T%20H%20-%20T%20E%20S%20T%20%20B%20A%20Z%20A  Wurth%20Testing   -->
-    <!-- W-RS LOCAL:  Wurth                                                                       -->
-    <!-- W-CG TEST:   Wurth%20Crna%20Gora                                                         -->
+    <!-- W-RS PROD:                -->
+    <!-- W-RS TEST:                -->
+    <!-- W-RS LOCAL:  DataStatus   -->
     <EditTextPreference
-        android:defaultValue="Wurth"
+        android:defaultValue="DataStatus"
         android:key="@string/key_company"
         android:title="@string/title_company" />
 

@@ -13,7 +13,6 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.ui.customlayout.ShowHideMasterLayout;
-import rs.gopro.mobile_store.ui.dialog.NovaPorudzbinaDialog;
 import rs.gopro.mobile_store.ui.widget.SaleOrderContextualMenu;
 import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
@@ -21,7 +20,6 @@ import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.DocumentUtils;
 import rs.gopro.mobile_store.util.LogUtils;
-import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.util.VersionUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
@@ -46,7 +44,6 @@ import android.database.DatabaseUtils;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -69,7 +66,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SaleOrdersPreviewActivity extends BaseActivity implements
-		SaleOrdersPreviewListFragment.Callbacks, SaleOrderLinesPreviewListFragment.Callbacks, NovaPorudzbinaDialog.NovaPorudzbinaDialogListener {
+		SaleOrdersPreviewListFragment.Callbacks, SaleOrderLinesPreviewListFragment.Callbacks {
 
 	private static final String TAG = "SaleOrdersPreviewActivity";
 	public static final String EXTRA_MASTER_URI = "rs.gopro.mobile_store.extra.MASTER_URI";
@@ -97,7 +94,6 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
     private String selectedCustomerNo = "";
     
     private String appVersion;
-    private boolean novaKarticaKupca;
 	
     private OnDateSetListener getHistoryDateSet = new OnDateSetListener() {
     	public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -308,8 +304,6 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		orderShipmentStatusOptions = getResources().getStringArray(R.array.order_status_for_shipment_array);
 		orderValueStatusOptions = getResources().getStringArray(R.array.order_value_status_array);
 		
-		novaKarticaKupca = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.key_nkk_switch), false);
-		
 		// something about swipe at portrait orientation
 		mShowHideMasterLayout = (ShowHideMasterLayout) findViewById(R.id.sales_persons_preview_master_layout);
 		if (mShowHideMasterLayout != null) {
@@ -451,17 +445,9 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			
 			localyticsSession.tagEvent("PORUDZBINE/PONUDE > NOVA PORUDZBINA/PONUDA");
 			
-			if (novaKarticaKupca) {
-				NovaPorudzbinaDialog npd = new NovaPorudzbinaDialog();
-				Bundle args = new Bundle();
-		        args.putInt("saleOrderId", -1);
-		        npd.setArguments(args);
-		        npd.show(getSupportFragmentManager(), "NEW_SALE_ORDER");
-			} else {
-				Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT, MobileStoreContract.SaleOrders.CONTENT_URI);
-//				startActivityForResult(newSaleOrderIntent, CALL_INSERT);
-				startActivityForResult(newSaleOrderIntent, NEW_SALE_ORDER_REQUEST_CODE);
-			}
+			Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT, MobileStoreContract.SaleOrders.CONTENT_URI);
+//			startActivityForResult(newSaleOrderIntent, CALL_INSERT);
+			startActivityForResult(newSaleOrderIntent, NEW_SALE_ORDER_REQUEST_CODE);
 			return true;
 		case R.id.edit_lines_sale_order_action_menu_option:
 			
@@ -469,36 +455,8 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			if (saleOrderId == null) {
 				return true;
 			}
-			if (isSent()) {
-				Intent novaKarticaKupca = new Intent(this, NovaKarticaKupcaMasterActivity.class);
-				novaKarticaKupca.setAction(Intent.ACTION_EDIT);
-				novaKarticaKupca.putExtra("saleOrderId", Integer.valueOf(saleOrderId));
-				
-				Cursor cursor = getContentResolver().query(SaleOrders.CONTENT_URI, SaleOrderQuery.PROJECTION, Tables.SALE_ORDERS + "." + SaleOrders._ID + "=?", new String[] { saleOrderId }, null);
-				if (cursor.moveToFirst()) {
-					novaKarticaKupca.putExtra("customerId", cursor.getInt(SaleOrderQuery.CUSTOMER_ID));
-					novaKarticaKupca.putExtra("customerNo", cursor.getString(SaleOrderQuery.CUSTOMER_NO));
-					novaKarticaKupca.putExtra("potentialCustomerNo", cursor.getString(SaleOrderQuery.CONTACT_COMPANY_NO));
-					novaKarticaKupca.putExtra("branchCode", cursor.getString(SaleOrderQuery.GLOBAL_DIMENSION));
-					novaKarticaKupca.putExtra("businessUnitNo", cursor.getString(SaleOrderQuery.CUSTOMER_BUSINESS_UNIT_CODE));
-					novaKarticaKupca.putExtra("salesType", cursor.getInt(SaleOrderQuery.SHORTCUT_DIMENSION_1_CODE));
-					novaKarticaKupca.putExtra("salesPersonId", SharedPreferencesUtil.getSalePersonId(this));
-					novaKarticaKupca.putExtra("salesPersonNo", SharedPreferencesUtil.getSalePersonNo(this));
-					novaKarticaKupca.putExtra("sviArtikliUseCount", cursor.getInt(SaleOrderQuery.SVI_ARTIKLI_COUNTER));
-				}
-				cursor.close();
-				
-				startActivity(novaKarticaKupca);
-			} else if (novaKarticaKupca) {
-				NovaPorudzbinaDialog npd = new NovaPorudzbinaDialog();
-				Bundle args = new Bundle();
-		        args.putInt("saleOrderId", Integer.valueOf(saleOrderId));
-		        npd.setArguments(args);
-		        npd.show(getSupportFragmentManager(), "NEW_SALE_ORDER");
-			} else {
-				Intent editSaleOrderIntent = new Intent(Intent.ACTION_EDIT, MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(saleOrderId));
-				startActivity(editSaleOrderIntent);
-			}
+			Intent editSaleOrderIntent = new Intent(Intent.ACTION_EDIT, MobileStoreContract.SaleOrderLines.buildSaleOrderLinesUri(saleOrderId));
+			startActivity(editSaleOrderIntent);
 			return true;
 		case R.id.verify_sale_order_action_menu_option:
 			
@@ -863,31 +821,6 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 		super.onPause();
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(onNotice);
 	}
-
-	@Override
-	public void onNovaPorudzbinaDialogFinished(int customerId,
-			String customerNo, String potentialCustomerNo, String branchCode,
-			int businessUnitId, String businessUnitNo, int salesType,
-			boolean newSaleOrder, int sviArtikliUseCount) {
-		
-		Intent novaKarticaKupca = new Intent(this, NovaKarticaKupcaMasterActivity.class);
-		if (newSaleOrder) {
-			novaKarticaKupca.setAction(Intent.ACTION_INSERT);
-		} else {
-			novaKarticaKupca.setAction(Intent.ACTION_EDIT);
-			novaKarticaKupca.putExtra("saleOrderId", Integer.valueOf(saleOrderId));
-		}
-		novaKarticaKupca.putExtra("customerId", customerId);
-		novaKarticaKupca.putExtra("customerNo", customerNo);
-		novaKarticaKupca.putExtra("potentialCustomerNo", potentialCustomerNo);
-		novaKarticaKupca.putExtra("branchCode", branchCode);
-		novaKarticaKupca.putExtra("businessUnitNo", businessUnitNo);
-		novaKarticaKupca.putExtra("salesType", salesType);
-		novaKarticaKupca.putExtra("salesPersonId", SharedPreferencesUtil.getSalePersonId(this));
-		novaKarticaKupca.putExtra("salesPersonNo", SharedPreferencesUtil.getSalePersonNo(this));
-		novaKarticaKupca.putExtra("sviArtikliUseCount", sviArtikliUseCount);
-		startActivity(novaKarticaKupca);
-	}
 	
 //	@Override
 //	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -897,26 +830,5 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 //			}
 //		}
 //	}
-	
-	private interface SaleOrderQuery {
-
-        String[] PROJECTION = {
-                Tables.SALE_ORDERS + "." + SaleOrders.CUSTOMER_ID,
-                Tables.CUSTOMERS + "." + SaleOrders.CUSTOMER_NO,
-                Tables.CUSTOMERS + "." + SaleOrders.CONTACT_COMPANY_NO,
-                Tables.CUSTOMERS + "." + SaleOrders.GLOBAL_DIMENSION,
-                Tables.SALE_ORDERS + "." + SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE,
-                Tables.SALE_ORDERS + "." + SaleOrders.SHORTCUT_DIMENSION_1_CODE,
-                Tables.SALE_ORDERS + "." + SaleOrders.SVI_ARTIKLI_COUNTER
-        };
-
-        int CUSTOMER_ID = 0;
-        int CUSTOMER_NO = 1;
-        int CONTACT_COMPANY_NO = 2;
-        int GLOBAL_DIMENSION = 3;
-        int CUSTOMER_BUSINESS_UNIT_CODE = 4;
-        int SHORTCUT_DIMENSION_1_CODE = 5;
-        int SVI_ARTIKLI_COUNTER = 6;
-	}
 	
 }

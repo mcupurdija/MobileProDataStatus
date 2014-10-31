@@ -52,15 +52,10 @@ public class SetPotentialCustomerDomain extends Domain {
 		contentValues.put(MobileStoreContract.Customers.NAME, name);
 		contentValues.put(MobileStoreContract.Customers.NAME_2 , name2 );
 		contentValues.put(MobileStoreContract.Customers.PHONE , phone);
-		contentValues.put(MobileStoreContract.Customers.MOBILE , mobile);
 		contentValues.put(MobileStoreContract.Customers.EMAIL , email);
 		contentValues.put(MobileStoreContract.Customers.CITY , city);
-		contentValues.put(MobileStoreContract.Customers.VAT_REG_NO, vat_reg_no);
 		contentValues.put(MobileStoreContract.Customers.POST_CODE, post_code);
 		contentValues.put(MobileStoreContract.Customers.COMPANY_ID, company_id);
-		contentValues.put(MobileStoreContract.Customers.GLOBAL_DIMENSION, global_dimension);
-		contentValues.put(MobileStoreContract.Customers.NUMBER_OF_BLUE_COAT, number_of_blue_coat);
-		contentValues.put(MobileStoreContract.Customers.NUMBER_OF_GREY_COAT, number_of_grey_coat);
 		contentValues.put(MobileStoreContract.SalesPerson.SALE_PERSON_NO, sales_person_no);
 		
 		return contentValues;

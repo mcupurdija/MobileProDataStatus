@@ -19,8 +19,7 @@ public class ItemAutocompleteCursorAdapter extends CursorAdapter implements
 	private static final String[] ITEM_PROJECTION = new String[] {
 		MobileStoreContract.Items._ID, 
 		MobileStoreContract.Items.ITEM_NO, 
-		MobileStoreContract.Items.DESCRIPTION, 
-		MobileStoreContract.Items.MIN_QTY 
+		MobileStoreContract.Items.DESCRIPTION
 	};
 
 	private Context mContext;
@@ -75,12 +74,9 @@ public class ItemAutocompleteCursorAdapter extends CursorAdapter implements
 	}
 	
 	private String getResult(Cursor cursor) {
-		final int codeIndex = cursor
-				.getColumnIndexOrThrow(MobileStoreContract.Items.ITEM_NO);
-		final int nameIndex = cursor
-				.getColumnIndexOrThrow(MobileStoreContract.Items.DESCRIPTION);
-		final String result = cursor.getString(codeIndex) + " - "
-				+ cursor.getString(nameIndex);
+		final int codeIndex = cursor.getColumnIndexOrThrow(MobileStoreContract.Items.ITEM_NO);
+		final int nameIndex = cursor.getColumnIndexOrThrow(MobileStoreContract.Items.DESCRIPTION);
+		final String result = cursor.getString(codeIndex) + " - " + cursor.getString(nameIndex);
 		return result;
 	}
 

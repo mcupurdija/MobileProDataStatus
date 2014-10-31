@@ -16,25 +16,18 @@ public class ContactsDomain extends Domain {
 	public String name;
 	public String name2;
 	public String address;
+	public String address2;
 	public String city;
 	public String phone;
-	public String mobile;
+	public String currency_code;
 	public String sales_person_no;
 	public String vat_reg_no;
 	public String post_code;
 	public String email;
-	public String company_no;
 	public String company_id;
-	public String global_dimension;
-	public String channel_oran;
-	public String number_of_blue_coat;
-	public String number_of_grey_coat;
-	public String department;
-	public String position;
 	
-	private static final String[] COLUMNS = new String[] { "contact_no", "name", "name2", "address", "city", "phone", "mobile", 
-		"sales_person_no", "vat_reg_no", "post_code", "email", "company_no",
-		"company_id", "global_dimension", "channel_oran", "number_of_blue_coat", "number_of_grey_coat", "department", "position"
+	private static final String[] COLUMNS = new String[] { "contact_no", "name", "name2", "address", "address2", 
+		"city", "phone", "currency_code", "sales_person_no", "vat_reg_no", "post_code", "email", "company_id"
 	};
 	
 	public ContactsDomain() {
@@ -51,14 +44,10 @@ public class ContactsDomain extends Domain {
 		
 		contentValues.put(MobileStoreContract.Contacts.CONTACT_NO, contact_no);
 		contentValues.put(MobileStoreContract.Contacts.NAME, name);
-		contentValues.put(MobileStoreContract.Contacts.NAME2 , name2 );
-		contentValues.put(MobileStoreContract.Contacts.PHONE , phone);
-		contentValues.put(MobileStoreContract.Contacts.MOBILE_PHONE , mobile);
-		contentValues.put(MobileStoreContract.Contacts.EMAIL , email);
+		contentValues.put(MobileStoreContract.Contacts.NAME2, name2 );
+		contentValues.put(MobileStoreContract.Contacts.PHONE, phone);
+		contentValues.put(MobileStoreContract.Contacts.EMAIL, email);
 		contentValues.put(MobileStoreContract.SalesPerson.SALE_PERSON_NO, sales_person_no);
-		contentValues.put(MobileStoreContract.Contacts.COMPANY_NO, company_no);
-		contentValues.put(MobileStoreContract.Contacts.DEPARTMENT, department);
-		contentValues.put(MobileStoreContract.Contacts.POSITION, position);
 		
 		return contentValues;
 	}
