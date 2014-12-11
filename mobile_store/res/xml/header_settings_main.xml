@@ -5,6 +5,10 @@
         android:fragment="rs.gopro.mobile_store.ui.fragment.WebServiceSettingsFragment"
         android:title="@string/title_web_service_settings" />
     
+    <header
+        android:fragment="rs.gopro.mobile_store.ui.fragment.LicensingFragment"
+        android:title="@string/licensing_settings_title" />
+    
     <!-- <header
         android:fragment="rs.gopro.mobile_store.ui.fragment.NovaKarticaKupcaSettingsFragment"
         android:title="@string/title_nova_kartica_kupca_settings" /> -->

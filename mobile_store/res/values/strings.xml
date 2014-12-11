@@ -27,7 +27,7 @@
     <string name="sale_order_amount_total_template">Amount is: </string>
     <string name="customer_search_title">Find customer: </string>
     <string name="customer_search_filter">Find by customer no:</string>
-    <string name="customer_block_status_spinner_title">Filter by status:</string>
+    <string name="customer_block_status_spinner_title">Filter by type:</string>
     <string name="contact_search_title">Find contact: </string>
     <string name="invoice_document_type_label_text">Find by document type:</string>
     <string name="invoice_document_open_status_label_text">Find by document open status:</string>

@@ -169,9 +169,8 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		int customer_status_new = position;
 		
-		customer_status = customer_status_new == 0 ? -1 : customer_status_new-1; // -1 because 0 means options
+		customer_status = position;
 		
 		getLoaderManager().restartLoader(0, null, this);
 	}

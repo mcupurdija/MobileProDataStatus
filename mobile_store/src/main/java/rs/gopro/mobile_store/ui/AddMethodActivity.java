@@ -39,7 +39,7 @@ public class AddMethodActivity extends BaseActivity implements LoaderCallbacks<C
 
 	public static final String TAG = "AddMethodActivity";
 	
-	private int methodId, selectedArtikalId, selectedSkolaCustomerId, selectedProfesorCustomerId, selectedProfesor2CustomerId;
+	private int methodId, selectedArtikalId = -1, selectedSkolaCustomerId = -1, selectedProfesorCustomerId = -1, selectedProfesor2CustomerId = -1;
 
 	private AutoCompleteTextView acMetodArtikal, acMethodSkola, acMethodProfesor, acMethodProfesor2;
 	private EditText etMethodPredmet, etMethodSkolskaGodina, etMethodKomentar;
@@ -274,6 +274,19 @@ public class AddMethodActivity extends BaseActivity implements LoaderCallbacks<C
 	}
 
 	private void submitForm() {
+		
+		if (acMetodArtikal.getText().length() == 0) {
+			selectedArtikalId = -1;
+		}
+		if (acMethodSkola.getText().length() == 0) {
+			selectedSkolaCustomerId = -1;
+		}
+		if (acMethodProfesor.getText().length() == 0) {
+			selectedProfesorCustomerId = -1;
+		}
+		if (acMethodProfesor2.getText().length() == 0) {
+			selectedProfesor2CustomerId = -1;
+		}
 		
 		ContentValues cv = new ContentValues();
 		

@@ -110,7 +110,7 @@ END;
 CREATE TABLE `customers` (
 	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
 	`sales_person_id` INTEGER,
-	`customer_no` TEXT NOT NULL UNIQUE,
+	`customer_no` TEXT,
 	`name` TEXT, 
 	`name2` TEXT, 
 	`address` TEXT,
@@ -20718,6 +20718,15 @@ CREATE TABLE `methods` (
 	`method_salesperson_code` TEXT
 );
 
+-- licensing
+CREATE TABLE `licensing` (
+	`_id` INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,
+	`license_no` TEXT,
+	`last_sync_date` TEXT
+);
+
+INSERT INTO `licensing` VALUES (1, '', '');
+
 CREATE TABLE `app_settings` (
 	`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`app_version` TEXT,
@@ -20726,4 +20735,4 @@ CREATE TABLE `app_settings` (
 	`items_sync_warnning_date` TEXT
 );
 
-insert into `app_settings` (_id, app_version, app_sync_warnning_date, customers_sync_warnning_date, items_sync_warnning_date) values (1, '1.0.0', datetime('now'), datetime('now'), datetime('now'));
+INSERT INTO `app_settings` (_id, app_version, app_sync_warnning_date, customers_sync_warnning_date, items_sync_warnning_date) VALUES (1, '1.0.0', datetime('now'), datetime('now'), datetime('now'));

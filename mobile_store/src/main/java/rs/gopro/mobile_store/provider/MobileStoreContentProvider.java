@@ -18,6 +18,7 @@ import rs.gopro.mobile_store.provider.MobileStoreContract.Invoices;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ItemsColumns;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ItemsOnPromotion;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Licensing;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Methods;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
@@ -172,6 +173,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 	private static final int METHODS = 2100;
 	private static final int METHODS_ID = 2101;
 	private static final int METHODS_SEARCH = 2102;
+	
+	private static final int LICENSING = 2200;
+	private static final int LICENSING_ID = 2201;
 	
 	private static final UriMatcher mobileStoreURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -340,6 +344,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 		mobileStoreURIMatcher.addURI(authority, "methods/#", METHODS_ID);
 		mobileStoreURIMatcher.addURI(authority, "methods/search/#", METHODS_SEARCH);
 		mobileStoreURIMatcher.addURI(authority, "methods/search/*", METHODS_SEARCH);
+		
+		mobileStoreURIMatcher.addURI(authority, "licensing", LICENSING);
+		mobileStoreURIMatcher.addURI(authority, "licensing/#", LICENSING_ID);
 	}
 
 	@Override
@@ -410,6 +417,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 			return ActionPlan.CONTENT_TYPE;
 		case METHODS:
 			return Methods.CONTENT_TYPE;
+		case LICENSING:
+			return Licensing.CONTENT_TYPE;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -503,6 +512,10 @@ public class MobileStoreContentProvider extends ContentProvider {
 			id = database.insertOrThrow(Tables.METHODS,null, values);
 			getContext().getContentResolver().notifyChange(uri, null);
 			return Methods.buildMethodsUri((int)id);
+		case LICENSING:
+			id = database.insertOrThrow(Tables.LICENSING,null, values);
+			getContext().getContentResolver().notifyChange(uri, null);
+			return Licensing.buildLicensingUri((int)id);
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -635,6 +648,11 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case METHODS_ID:
 			String methodId = uri.getLastPathSegment();
 			return builder.addTable(Tables.METHODS).where(Tables.METHODS + "." + Methods._ID + "=?", new String[] { methodId });
+		case LICENSING:
+			return builder.addTable(Tables.LICENSING);
+		case LICENSING_ID:
+			String licenseId = uri.getLastPathSegment();
+			return builder.addTable(Tables.LICENSING).where(Tables.LICENSING + "." + Licensing._ID + "=?", new String[] { licenseId });
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -714,6 +732,9 @@ public class MobileStoreContentProvider extends ContentProvider {
 							new String[] { /* "%" + */
 							customerCustomParam + "%",
 									"%" + customerCustomParam + "%" });
+			}
+			if (customerStatus != null && customerStatus.length() > 0 && !customerStatus.equals("-1") && !customerStatus.equals("0")) {
+				builder.where(Customers.CUSTOMER_TYPE + "= ?", new String[] { customerStatus });
 			}
 			return builder;
 		case ITEMS:
@@ -1222,6 +1243,8 @@ public class MobileStoreContentProvider extends ContentProvider {
 		case METHODS_SEARCH:
 			String methodSearchParam = uri.getLastPathSegment();
 			return builder.addTable(Tables.METHODS_JOIN_ITEMS_JOIN_CUSTOMERS).where(Tables.ITEMS + "." + Items.ITEM_NO + " like ? OR " + Tables.ITEMS + "." + Items.DESCRIPTION + " like ?", new String[] { "%" + methodSearchParam + "%", "%" + methodSearchParam + "%"});
+		case LICENSING:
+			return builder.addTable(Tables.LICENSING);
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

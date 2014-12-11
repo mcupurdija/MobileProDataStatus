@@ -27,7 +27,7 @@
     <string name="sale_order_amount_total_template">Iznos je: </string>
     <string name="customer_search_title">Pronađi kupca: </string>
     <string name="customer_search_filter">Filtriraj po broju/imenu kupca:</string>
-    <string name="customer_block_status_spinner_title">Filtriraj po statusu:</string>
+    <string name="customer_block_status_spinner_title">Filtriraj po tipu:</string>
     <string name="contact_search_title">Pronađi kontakt: </string>
     <string name="invoice_document_type_label_text">Filtriraj po tipu dokumenta:</string>
     <string name="invoice_document_open_status_label_text">Filtriraj po statusu dokumenta:</string>
@@ -542,5 +542,23 @@
 	<string name="method_contextual_edit">Izmeni metodu</string>
 	<string name="method_contextual_delete">Izbriši metodu</string>
 	<string name="method_contextual_sync">Sinhronizuj metodu</string>
+	
+	<string name="visit_result_title_2">Kupac zainteresovan</string>
+	<string name="visit_result_title_3">Tip pauze</string>
+	
+	<string name="licensing_settings_title">Licenca</string>
+	<string name="licensing_valid_title">LICENCA VALIDNA</string>
+	<string name="licensing_not_valid_title">LICENCA NIJE VALIDNA</string>
+	<string name="active_license_group_title">Serijski broj</string>
+	<string name="key_active_license">active_license</string>
+	<string name="last_sync_date_group_title">Datum poslednjeg ažuriranja</string>
+	<string name="key_last_sync_date">last_sync_date</string>
+	<string name="sync_license_group_title">Ažuriranje</string>
+	<string name="sync_license_title">&#8226; Ažuriraj licencu</string>
+	<string name="key_sync_license">sync_license</string>
+	<string name="license_sync_success">Licenca uspešno ažurirana</string>
+	<string name="not_available">n/a</string>
+	<string name="please_wait_title">Molimo sačekajte</string>
+	<string name="licence_syncing_title">Licenca se ažurira&#8230;</string>
     
 </resources>

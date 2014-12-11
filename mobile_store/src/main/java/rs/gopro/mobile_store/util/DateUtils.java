@@ -183,6 +183,15 @@ public class DateUtils {
 		}
 	}
 	
+	public static Date getShortDate() {
+		try {
+			return localDbShortDate.parse(localDbShortDate.format(new Date()));
+		} catch (ParseException e) {
+			LogUtils.LOGE(TAG, "Err", e);
+			return null;
+		}
+	}
+	
 	public static Date getNavisionDate(String dbDateString) {
 		try {
 			return navisionDbDate.parse(dbDateString);

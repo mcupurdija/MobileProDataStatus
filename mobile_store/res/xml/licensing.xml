@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/licensing_settings_title" >
+
+    <Preference android:selectable="false" />
+
+    <PreferenceCategory android:title="@string/active_license_group_title" >
+        <Preference
+            android:key="@string/key_active_license"
+            android:selectable="false" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/last_sync_date_group_title" >
+        <Preference
+            android:key="@string/key_last_sync_date"
+            android:selectable="false" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/sync_license_group_title" >
+        <Preference
+            android:key="@string/key_sync_license"
+            android:title="@string/sync_license_title" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -71,4 +71,7 @@ public interface Tables {
 			"left outer join customers as SCH on methods.method_school_customer_id = SCH._id " + 
 			"left outer join customers as PR1 on methods.method_professor_customer_id = PR1._id " + 
 			"left outer join customers as PR2 on methods.method_professor2_customer_id = PR2._id";
+	
+	
+	String LICENSING = "licensing";
 }

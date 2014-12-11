@@ -21,9 +21,9 @@
         android:defaultValue="http://sqlserver.gopro.rs:7047/DataStatus/ws"
         android:key="@string/key_ws_server_address"
         android:title="@string/title_ws_server_address" />
-    <!-- W-RS PROD:                -->
-    <!-- W-RS TEST:                -->
-    <!-- W-RS LOCAL:  DataStatus   -->
+    <!-- DS PROD:                -->
+    <!-- DS TEST:                -->
+    <!-- DS LOCAL:  DataStatus   -->
     <EditTextPreference
         android:defaultValue="DataStatus"
         android:key="@string/key_company"

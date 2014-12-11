@@ -70,12 +70,17 @@
 
     <string-array name="customer_block_status_array">
         <item>Svi</item>
-        <item>Aktivni</item>
-        <item>Prekoračen kreditni limit</item>
-        <item>Prekoračena valuta</item>
-        <item>Prekoračen kreditni limit i valuta</item>
-        <item>Zabranjeni</item>
-        <item>Avansni</item>
+        <item>Biblioteka</item>
+        <item>Fakultet</item>
+        <item>FL krajnji kupac</item>
+        <item>Komisionar</item>
+        <item>Škola OŠD</item>
+        <item>Škola OŠO</item>
+        <item>Škola SSD</item>
+        <item>Škola SSO</item>
+        <item>Škola UJ</item>
+        <item>Ustanova krajnji kupac</item>
+        <item>Veleprodaja</item>
     </string-array>
     <string-array name="item_camp_status_array">
         <item>Not on sale</item>

@@ -897,6 +897,7 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		dialog = new Dialog(this);
 		dialog.setContentView(R.layout.dialog_kraj_realizacije);
 		
+		final TextView rezultatLabela = (TextView) dialog.findViewById(R.id.dialog_kraj_realizacije_rezultat_label);
 		final Spinner rezultat = (Spinner) dialog.findViewById(R.id.dialog_kraj_realizacije_rezultat_spinner);
 		final EditText beleskaInput = (EditText) dialog.findViewById(R.id.dialog_kraj_realizacije_beleska_input);
 		
@@ -928,10 +929,12 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		switch (tip) {
 			case 3:
 				dialog.setTitle("Kraj realizacije");
+				rezultatLabela.setText(R.string.visit_result_title_2);
 				adapter = ArrayAdapter.createFromResource(this, R.array.realizacija_subtype_title, android.R.layout.simple_spinner_item);
 				break;
 			case 4:
 				dialog.setTitle("Kraj pauze");
+				rezultatLabela.setText(R.string.visit_result_title_3);
 				adapter = ArrayAdapter.createFromResource(this, R.array.pauza_subtype_title, android.R.layout.simple_spinner_item);
 				break;
 			default:

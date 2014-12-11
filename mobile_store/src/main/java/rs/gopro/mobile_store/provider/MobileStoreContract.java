@@ -64,9 +64,10 @@ public class MobileStoreContract {
 	private static final String PATH_BUSINESS_UNITS = "customer_business_units";
 	private static final String PATH_ITEMS_ON_PROMOTION = "items_on_promotion";
 	private static final String PATH_ACTION_PLAN = "action_plan";
-	private static final String PATH_METHODS = "methods";
 	
+	private static final String PATH_METHODS = "methods";
 	private static final String PATH_GIFT_ITEMS = "gift_items";
+	private static final String PATH_LICENSING = "licensing";
 
 	public interface AuditColumns {
 		String CREATED_DATE = "created_date";
@@ -532,6 +533,11 @@ public class MobileStoreContract {
 		String COMMENT = "method_comment";
 		String METHOD_ITEM_ID = "method_item_id";
 		String SALESPERSON_CODE = "method_salesperson_code";
+	}
+	
+	public interface LicensingColumns {
+		String LICENSE_NO = "license_no";
+		String LAST_SYNC_DATE = "last_sync_date";
 	}
 	
 	public static class Generic implements BaseColumns {
@@ -1247,6 +1253,18 @@ public class MobileStoreContract {
 		
 		public static Uri buildMethodsSearchUri(String query) {
 			return CONTENT_URI.buildUpon().appendPath(PATH_SEARCH).appendPath(query).build();
+		}
+	}
+	
+	public static class Licensing implements LicensingColumns, BaseColumns {
+
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_LICENSING).build();
+
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.rs.gopro.mobile_store.licensing";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.rs.gopro.mobile_store.licensing";
+		
+		public static Uri buildLicensingUri(int licenseId) {
+			return CONTENT_URI.buildUpon().appendPath(String.valueOf(licenseId)).build();
 		}
 	}
 	

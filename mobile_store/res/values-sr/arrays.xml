@@ -70,12 +70,17 @@
 
     <string-array name="customer_block_status_array">
         <item>Svi</item>
-        <item>Aktivni</item>
-        <item>Prekoračen kreditni limit</item>
-        <item>Prekoračena valuta</item>
-        <item>Prekoračen kreditni limit i valuta</item>
-        <item>Zabranjeni</item>
-        <item>Avansni</item>
+        <item>Biblioteka</item>
+        <item>Fakultet</item>
+        <item>FL krajnji kupac</item>
+        <item>Komisionar</item>
+        <item>Škola OŠD</item>
+        <item>Škola OŠO</item>
+        <item>Škola SSD</item>
+        <item>Škola SSO</item>
+        <item>Škola UJ</item>
+        <item>Ustanova krajnji kupac</item>
+        <item>Veleprodaja</item>
     </string-array>
     <string-array name="item_camp_status_array">
         <item>Redovna prodaja</item>
@@ -677,7 +682,6 @@
         <item>SRP</item>
         <item>VEL</item>
     </string-array>
-    
     <string-array name="realizacija_subtype_title">
         <item></item>
         <item>Da</item>
@@ -712,14 +716,14 @@
     </string-array>
     <string-array name="skola_razred_array">
         <item></item>
-		<item>1. razred</item>
-		<item>2. razred</item>
-		<item>3. razred</item>
-		<item>4. razred</item>
-		<item>5. razred</item>
-		<item>6. razred</item>
-		<item>7. razred</item>
-		<item>8. razred</item>
+        <item>1. razred</item>
+        <item>2. razred</item>
+        <item>3. razred</item>
+        <item>4. razred</item>
+        <item>5. razred</item>
+        <item>6. razred</item>
+        <item>7. razred</item>
+        <item>8. razred</item>
     </string-array>
 
 </resources>

@@ -19,11 +19,11 @@ package rs.gopro.mobile_store.ui;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import com.localytics.android.LocalyticsSession;
-
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract.AppSettings;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Licensing;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
+import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
 import rs.gopro.mobile_store.util.DialogUtil;
@@ -32,6 +32,7 @@ import rs.gopro.mobile_store.util.SharedPreferencesUtil;
 import rs.gopro.mobile_store.util.VersionUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.CustomerSyncObject;
+import rs.gopro.mobile_store.ws.model.LicensingSyncObject;
 import rs.gopro.mobile_store.ws.model.MobileDeviceSetup;
 import rs.gopro.mobile_store.ws.model.SetTeachingMethodSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
@@ -48,6 +49,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.localytics.android.LocalyticsSession;
 
 /**
  * A base activity that handles common functionality in the app.
@@ -69,7 +72,12 @@ public abstract class BaseActivity extends FragmentActivity {
 	
 	private void onSOAPRes(SyncResult syncResult, String broadcastAction) {
 		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
-			if (MobileDeviceSetup.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+			if (LicensingSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				
+				LogUtils.LOGI("BaseActivity", ">>> LICENCA SINHRONIZOVANA");				
+				
+			} else if (MobileDeviceSetup.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+				
 				ContentValues cv = new ContentValues();
 		    	cv.put(AppSettings.APP_SYNC_WARNNING_DATE, DateUtils.toDbDate(new Date()));
 		    	getContentResolver().update(AppSettings.CONTENT_URI, cv, "_id=1", null);
@@ -105,12 +113,37 @@ public abstract class BaseActivity extends FragmentActivity {
         salesPersonId = SharedPreferencesUtil.getSalePersonId(this);
         salesPersonNo = SharedPreferencesUtil.getSalePersonNo(this);
         
+        syncLicense();
         checkVersionAndSyncDates();
         
         this.localyticsSession = new LocalyticsSession(this.getApplicationContext());
         this.localyticsSession.open();
         this.localyticsSession.upload();
     }
+	
+	protected void syncLicense() {
+		String licenseSyncDate = null;
+		
+		Cursor cursor = getContentResolver().query(Licensing.CONTENT_URI, new String[] { Licensing.LAST_SYNC_DATE }, Tables.LICENSING + "." + Licensing._ID + "=?", new String[] { "1" }, null);
+		if (cursor.moveToFirst()) {
+			licenseSyncDate = cursor.getString(0);
+		}
+		cursor.close();
+		
+		if (licenseSyncDate != null && licenseSyncDate.length() > 0) {
+			Date date = DateUtils.getLocalDbShortDate(licenseSyncDate);
+			long days = DateUtils.getDateDiff(date, DateUtils.getShortDate(), TimeUnit.DAYS);
+			if (days == 0) {
+				return;
+			}
+		}
+		
+		Intent intent = new Intent(this, NavisionSyncService.class);
+		LicensingSyncObject licensingSyncObject = new LicensingSyncObject("");
+		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, licensingSyncObject);
+		intent.putExtra(NavisionSyncService.EXTRA_WS_ALLOW_SYNC_OBJECT, true);
+		startService(intent);
+	}
 
     /**
      * Checks to prevent data difference between server and client.
@@ -272,8 +305,12 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void onResume() {
     	super.onResume();
     	
+    	IntentFilter licensingSyncObject = new IntentFilter(LicensingSyncObject.BROADCAST_SYNC_ACTION);
+    	LocalBroadcastManager.getInstance(this).registerReceiver(onNoticeMain, licensingSyncObject);
     	IntentFilter mobDeviceSetup = new IntentFilter(MobileDeviceSetup.BROADCAST_SYNC_ACTION);
     	LocalBroadcastManager.getInstance(this).registerReceiver(onNoticeMain, mobDeviceSetup);
+    	
+    	syncLicense();
     	
     	this.localyticsSession.open();
         this.localyticsSession.upload();
