@@ -148,6 +148,7 @@ public class LoginActivity extends Activity {
 							SalespersonSetupSyncObject salespersonSetupSyncObject = new SalespersonSetupSyncObject(user_no);
 							Intent syncSalesPerson = new Intent(LoginActivity.this, NavisionSyncService.class);
 							syncSalesPerson.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, salespersonSetupSyncObject);
+							syncSalesPerson.putExtra(NavisionSyncService.EXTRA_WS_ALLOW_SYNC_OBJECT, true);
 							startService(syncSalesPerson);
 							isRegistrationStarted = true;
 							dialog.dismiss();

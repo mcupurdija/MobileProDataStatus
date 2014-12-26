@@ -9,13 +9,18 @@ import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
+import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
+import rs.gopro.mobile_store.provider.MobileStoreContract.SyncLogs;
+import rs.gopro.mobile_store.util.DateUtils;
+import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.csv.CSVDomainReader;
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import rs.gopro.mobile_store.ws.model.domain.CustomerDomain;
 import rs.gopro.mobile_store.ws.model.domain.TransformDomainObject;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 
 public class CustomerSyncObject extends SyncObject {
@@ -106,7 +111,7 @@ public class CustomerSyncObject extends SyncObject {
 
 		PropertyInfo dateModifiedInfo = new PropertyInfo();
 		dateModifiedInfo.setName("pDateModified");
-		dateModifiedInfo.setValue(dateModified);
+		dateModifiedInfo.setValue(calculateDateModified());
 		dateModifiedInfo.setType(Date.class);
 		properties.add(dateModifiedInfo);
 		return properties;
@@ -120,15 +125,28 @@ public class CustomerSyncObject extends SyncObject {
 		ContentValues defaultCV = new ContentValues();
 		defaultCV.put(Customers.IS_ACTIVE, 1);
 		ContentValues[] valuesForInsert = TransformDomainObject.newInstance().transformDomainToContentValues(contentResolver, parsedItems, defaultCV);
+		
+		/*
 		// there is customers, now to reset who is active first, all are inactive
 		if (parsedItems != null && parsedItems.size() > 0) {
 			ContentValues cv = new ContentValues();
 			cv.put(Customers.IS_ACTIVE, 0);
 			contentResolver.update(Customers.CONTENT_URI, cv, Customers.CUSTOMER_NO + " is not null or " + Customers.CUSTOMER_NO + " not like ''", null);
 		}
+		*/
 		
 		int numOfInserted = contentResolver.bulkInsert(Customers.CONTENT_URI, valuesForInsert);
 		return numOfInserted;
+	}
+	
+	private Date calculateDateModified() {
+		
+		Cursor cursor = context.getContentResolver().query(MobileStoreContract.SyncLogs.CONTENT_URI, new String[] { "MAX(DATE(" + SyncLogs.CREATED_DATE + "))" }, SyncLogs.SYNC_OBJECT_ID+"=? AND "+SyncLogs.SYNC_OBJECT_STATUS+"=?", new String[] { getTag(), SyncStatus.SUCCESS.toString() }, null);
+		if (cursor.moveToFirst()) {
+			return DateUtils.getLocalDbShortDate(cursor.getString(0));
+		} else {
+			return DateUtils.getWsDummyDate();
+		}
 	}
 
 	@Override

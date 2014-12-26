@@ -5,7 +5,6 @@ import java.util.List;
 
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.Tables;
-import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import rs.gopro.mobile_store.ws.util.RowItemDataHolder;
 import android.content.ContentValues;
 
@@ -33,7 +32,7 @@ public class CustomerDomain extends Domain {
 
 	private static final String[] COLUMNS = new String[] { "customer_no", "name", "name2", "address", "address2", 
 		"city", "contact", "phone", "customer_currency_code", "payment_terms_code", "sales_person_no", "vat_reg_no", "post_code", "email", 
-		"company_id", "customer_type", "contact_company_no", "balance_lcy", "balance_due_lcy" };
+		"company_id", "customer_type", "contact_company_no" };
 
 	@Override
 	public String[] getCSVMappingStrategy() {
@@ -60,8 +59,8 @@ public class CustomerDomain extends Domain {
 		contentValues.put(Customers.EMAIL, getEmail());
 		contentValues.put(Customers.COMPANY_ID, getCompany_id());
 		contentValues.put(Customers.CUSTOMER_TYPE, getCustomer_type());
-		contentValues.put(Customers.BALANCE_LCY, WsDataFormatEnUsLatin.toDoubleFromWs(getBalance_lcy()));
-		contentValues.put(Customers.BALANCE_DUE_LCY, WsDataFormatEnUsLatin.toDoubleFromWs(getBalance_due_lcy()));
+		//contentValues.put(Customers.BALANCE_LCY, WsDataFormatEnUsLatin.toDoubleFromWs(getBalance_lcy()));
+		//contentValues.put(Customers.BALANCE_DUE_LCY, WsDataFormatEnUsLatin.toDoubleFromWs(getBalance_due_lcy()));
 		
 		if (getContact_company_no() == null || getContact_company_no().length() < 1) {
 			contentValues.putNull(Customers.CONTACT_COMPANY_NO);

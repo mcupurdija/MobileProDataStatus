@@ -12,7 +12,7 @@ import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
-import rs.gopro.mobile_store.ws.model.CustomerBalanceAsCommissionSyncObject;
+import rs.gopro.mobile_store.ws.model.CustomerBalanceSyncObject;
 import rs.gopro.mobile_store.ws.model.SetPotentialCustomersSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
 import rs.gopro.mobile_store.ws.model.UpdateCustomerSyncObject;
@@ -91,12 +91,16 @@ public class CustomersViewDetailFragment extends Fragment implements
 	};
 	
 	public void onSOAPResult(SyncResult syncResult, String broadcastAction) {
-		if (CustomerBalanceAsCommissionSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
+		if (CustomerBalanceSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 			if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
-				CustomerBalanceAsCommissionSyncObject syncObject = (CustomerBalanceAsCommissionSyncObject) syncResult.getComplexResult();
-				mBalanceCommission.setText(syncObject.getpBalanceValue());
+				CustomerBalanceSyncObject syncObject = (CustomerBalanceSyncObject) syncResult.getComplexResult();
+				mBalanceCommission.setText(syncObject.getpBalanceCommission());
+				mBalanceLcy.setText(syncObject.getpBalance());
+				mBalanceDueLcy.setText(syncObject.getpBalanceDue());
 			} else {
 				mBalanceCommission.setText("-");
+				mBalanceLcy.setText("-");
+				mBalanceDueLcy.setText("-");
 			}
 		} else if (UpdateCustomerSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 			if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
@@ -168,7 +172,7 @@ public class CustomersViewDetailFragment extends Fragment implements
     @Override
 	public void onResume() {
 		super.onResume();
-		IntentFilter customerBalanceAsCommissionSyncObject = new IntentFilter(CustomerBalanceAsCommissionSyncObject.BROADCAST_SYNC_ACTION);
+		IntentFilter customerBalanceAsCommissionSyncObject = new IntentFilter(CustomerBalanceSyncObject.BROADCAST_SYNC_ACTION);
     	LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, customerBalanceAsCommissionSyncObject);
     	IntentFilter updateCustomersSyncObject = new IntentFilter(UpdateCustomerSyncObject.BROADCAST_SYNC_ACTION);
     	LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onNotice, updateCustomersSyncObject);
@@ -249,8 +253,6 @@ public class CustomersViewDetailFragment extends Fragment implements
     		String emailString = cursor.getString(CustomerDetailQuery.EMAIL);
     		String companyidString = String.valueOf(cursor.getString(CustomerDetailQuery.COMPANY_ID));
     		String varregnoString = cursor.getString(CustomerDetailQuery.VAT_REG_NO);
-    		String balancelcyString = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.BALANCE_LCY));
-    		String balanceduelcyString = UIUtils.formatDoubleForUI(cursor.getDouble(CustomerDetailQuery.BALANCE_DUE_LCY));
     		String paymenttermscodeString = cursor.getString(CustomerDetailQuery.PAYMENT_TERMS_CODE);
             
             mCustomer_no.setText(customernoString);
@@ -264,8 +266,6 @@ public class CustomersViewDetailFragment extends Fragment implements
             mEmail.setText(emailString);
             mCompanyId.setText(companyidString);
             mVarRegNo.setText(varregnoString);
-            mBalanceLcy.setText(balancelcyString);
-            mBalanceDueLcy.setText(balanceduelcyString);
             mPaymentTermsCode.setText(paymenttermscodeString);
             
             try {
@@ -445,8 +445,6 @@ public class CustomersViewDetailFragment extends Fragment implements
                 Customers.EMAIL,
                 Customers.COMPANY_ID,
                 Customers.VAT_REG_NO,
-                Customers.BALANCE_LCY,
-                Customers.BALANCE_DUE_LCY,
                 Customers.PAYMENT_TERMS_CODE,
                 Customers.CUSTOMER_TYPE,
                 Customers.CUSTOMER_POSITION
@@ -464,15 +462,13 @@ public class CustomersViewDetailFragment extends Fragment implements
         int EMAIL = 9;
         int COMPANY_ID = 10;
         int VAT_REG_NO = 11;
-        int BALANCE_LCY = 12;
-        int BALANCE_DUE_LCY = 13;
-        int PAYMENT_TERMS_CODE = 14;
-        int CUSTOMER_TYPE = 15;
-        int CUSTOMER_POSITION = 16;
+        int PAYMENT_TERMS_CODE = 12;
+        int CUSTOMER_TYPE = 13;
+        int CUSTOMER_POSITION = 14;
 	}
 	
 	private void azurirajCustomerBalanceAsCommission(String salesPersonNo) {
-		CustomerBalanceAsCommissionSyncObject customerBalanceAsCommissionSyncObject = new CustomerBalanceAsCommissionSyncObject(salesPersonNo, "");
+		CustomerBalanceSyncObject customerBalanceAsCommissionSyncObject = new CustomerBalanceSyncObject(salesPersonNo, "", "", "");
 		Intent syncCustomerBalanceAsCommission = new Intent(getActivity(), NavisionSyncService.class);
 		syncCustomerBalanceAsCommission.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, customerBalanceAsCommissionSyncObject);
 		getActivity().startService(syncCustomerBalanceAsCommission);

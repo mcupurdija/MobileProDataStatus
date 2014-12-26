@@ -160,8 +160,6 @@ public class MobileStoreContract {
 		String VAT_REG_NO = "vat_reg_no";
 		String CUSTOMER_TYPE = "customer_type";
 		String CUSTOMER_POSITION = "customer_position";
-		String BALANCE_LCY = "balance_lcy";
-		String BALANCE_DUE_LCY = "balance_due_lcy";
 		
 		String CONTACT_COMPANY_NO = "contact_company_no";
 

@@ -14,14 +14,14 @@
         android:defaultValue="/Codeunit/MobileDeviceSync"
         android:key="@string/key_ws_navisition_codeunit"
         android:title="@string/title_ws_navisition_codeunit" />
-    <!-- DS PROD:   http://win-nav.ds.local:7047/Mobile/WS/Services   -->
+    <!-- DS PROD:   http://46.4.135.142:7047/Mobile/WS                -->
     <!-- DS TEST:                                                     -->
-    <!-- DS LOCAL:  http://sqlserver.gopro.rs:7047/Wurth/ws           -->
+    <!-- DS LOCAL:  http://sqlserver.gopro.rs:7047/DataStatus/ws      -->
     <EditTextPreference
         android:defaultValue="http://sqlserver.gopro.rs:7047/DataStatus/ws"
         android:key="@string/key_ws_server_address"
         android:title="@string/title_ws_server_address" />
-    <!-- DS PROD:                -->
+    <!-- DS PROD:   DataStatus   -->
     <!-- DS TEST:                -->
     <!-- DS LOCAL:  DataStatus   -->
     <EditTextPreference

@@ -312,11 +312,10 @@
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
 
-        <!-- PROD 76adf3e6d06b8eef8f23a20-c477ee24-130c-11e4-9e96-005cf8cbabd8 -->
-        <!-- DEV 2acd137d30233d39e4af864-9ad6f5ba-fd41-11e3-9f8e-009c5fda0a25 -->
+        <!-- PROD fe9d1f8f6a861b7aea9f81c-4aafede4-8692-11e4-a909-009c5fda0a25 -->
         <meta-data
             android:name="LOCALYTICS_APP_KEY"
-            android:value="2acd137d30233d39e4af864-9ad6f5ba-fd41-11e3-9f8e-009c5fda0a25" />
+            android:value="fe9d1f8f6a861b7aea9f81c-4aafede4-8692-11e4-a909-009c5fda0a25" />
 
         <provider
             android:name=".provider.MobileStoreContentProvider"
