@@ -51,8 +51,7 @@
                 android:id="@+id/main_shortcuts_new_sale_order"
                 android:icon="@drawable/ic_action_new_order"
                 android:showAsAction="ifRoom|withText"
-                android:title="@string/menu_nova_specifikacija"
-                android:visible="false"/>
+                android:title="@string/menu_nova_specifikacija"/>
             <item
                 android:id="@+id/main_shortcuts_sync_all"
                 android:icon="@drawable/ic_action_sync"

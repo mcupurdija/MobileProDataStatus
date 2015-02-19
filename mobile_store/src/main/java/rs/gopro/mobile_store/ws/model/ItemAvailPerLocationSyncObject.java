@@ -8,6 +8,7 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import rs.gopro.mobile_store.util.exceptions.CSVParseException;
+import rs.gopro.mobile_store.ws.formats.WsDataFormatEnUsLatin;
 import android.content.ContentResolver;
 import android.os.Parcel;
 
@@ -19,7 +20,9 @@ public class ItemAvailPerLocationSyncObject extends SyncObject {
 	private String pItemNo;
 	private String pLocationCode;
 	private Integer pAllLocations;
-	private String pAvailQtyTxt;
+	private String cSVString;
+	private String totalQtyTxt;
+	private String itemPriceTxt;
 	
 	public static final Creator<ItemAvailPerLocationSyncObject> CREATOR = new Creator<ItemAvailPerLocationSyncObject>() {
 
@@ -40,12 +43,14 @@ public class ItemAvailPerLocationSyncObject extends SyncObject {
 	}
 
 	public ItemAvailPerLocationSyncObject(String pItemNo, String pLocationCode,
-			Integer pAllLocations, String pAvailQtyTxt) {
+			Integer pAllLocations, String cSVString, String totalQtyTxt, String itemPriceTxt) {
 		super();
 		this.pItemNo = pItemNo;
 		this.pLocationCode = pLocationCode;
 		this.pAllLocations = pAllLocations;
-		this.pAvailQtyTxt = pAvailQtyTxt;
+		this.cSVString = cSVString;
+		this.totalQtyTxt = totalQtyTxt;
+		this.itemPriceTxt = itemPriceTxt;
 	}
 	
 	public ItemAvailPerLocationSyncObject(Parcel parcel) {
@@ -53,7 +58,9 @@ public class ItemAvailPerLocationSyncObject extends SyncObject {
 		setpItemNo(parcel.readString());
 		setpLocationCode(parcel.readString());
 		setpAllLocations(parcel.readInt());
-		setpAvailQtyTxt(parcel.readString());
+		setcSVString(parcel.readString());
+		setTotalQtyTxt(parcel.readString());
+		setItemPriceTxt(parcel.readString());
 	}
 
 	@Override
@@ -67,7 +74,9 @@ public class ItemAvailPerLocationSyncObject extends SyncObject {
 		dest.writeString(getpItemNo());
 		dest.writeString(getpLocationCode());
 		dest.writeInt(getpAllLocations());
-		dest.writeString(getpLocationCode());
+		dest.writeString(getcSVString());
+		dest.writeString(getTotalQtyTxt());
+		dest.writeString(getItemPriceTxt());
 	}
 
 	@Override
@@ -97,11 +106,23 @@ public class ItemAvailPerLocationSyncObject extends SyncObject {
 		pAllLocationsInfo.setType(Integer.class);
 		properties.add(pAllLocationsInfo);
 		
-		PropertyInfo pAvailQtyTxtInfo = new PropertyInfo();
-		pAvailQtyTxtInfo.setName("pAvailQtyTxt");
-		pAvailQtyTxtInfo.setValue(pAvailQtyTxt);
-		pAvailQtyTxtInfo.setType(String.class);
-		properties.add(pAvailQtyTxtInfo);
+		PropertyInfo cSVStringInfo = new PropertyInfo();
+		cSVStringInfo.setName("cSVString");
+		cSVStringInfo.setValue(cSVString);
+		cSVStringInfo.setType(String.class);
+		properties.add(cSVStringInfo);
+		
+		PropertyInfo totalQtyTxtInfo = new PropertyInfo();
+		totalQtyTxtInfo.setName("totalQtyTxt");
+		totalQtyTxtInfo.setValue(totalQtyTxt);
+		totalQtyTxtInfo.setType(String.class);
+		properties.add(totalQtyTxtInfo);
+		
+		PropertyInfo itemPriceTxtInfo = new PropertyInfo();
+		itemPriceTxtInfo.setName("itemPriceTxt");
+		itemPriceTxtInfo.setValue(itemPriceTxt);
+		itemPriceTxtInfo.setType(String.class);
+		properties.add(itemPriceTxtInfo);
 		
 		return properties;
 	}
@@ -118,14 +139,16 @@ public class ItemAvailPerLocationSyncObject extends SyncObject {
 
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver, SoapPrimitive soapResponse) throws CSVParseException {
-		
-		this.pAvailQtyTxt = soapResponse.toString();
-		
 		return 0;
 	}
 
 	@Override
 	protected int parseAndSave(ContentResolver contentResolver, SoapObject soapResponse) throws CSVParseException {
+		
+		this.cSVString = soapResponse.getPropertyAsString("cSVString");
+		this.totalQtyTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("totalQtyTxt"));
+		this.itemPriceTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("itemPriceTxt"));
+		
 		return 0;
 	}
 
@@ -153,12 +176,28 @@ public class ItemAvailPerLocationSyncObject extends SyncObject {
 		this.pAllLocations = pAllLocations;
 	}
 
-	public String getpAvailQtyTxt() {
-		return pAvailQtyTxt;
+	public String getcSVString() {
+		return cSVString;
 	}
 
-	public void setpAvailQtyTxt(String pAvailQtyTxt) {
-		this.pAvailQtyTxt = pAvailQtyTxt;
+	public void setcSVString(String cSVString) {
+		this.cSVString = cSVString;
+	}
+
+	public String getTotalQtyTxt() {
+		return totalQtyTxt;
+	}
+
+	public void setTotalQtyTxt(String totalQtyTxt) {
+		this.totalQtyTxt = totalQtyTxt;
+	}
+
+	public String getItemPriceTxt() {
+		return itemPriceTxt;
+	}
+
+	public void setItemPriceTxt(String itemPriceTxt) {
+		this.itemPriceTxt = itemPriceTxt;
 	}
 
 }

@@ -18,7 +18,7 @@
     <!-- DS TEST:                                                     -->
     <!-- DS LOCAL:  http://sqlserver.gopro.rs:7047/DataStatus/ws      -->
     <EditTextPreference
-        android:defaultValue="http://sqlserver.gopro.rs:7047/DataStatus/ws"
+        android:defaultValue="http://46.4.135.142:7047/Mobile/WS"
         android:key="@string/key_ws_server_address"
         android:title="@string/title_ws_server_address" />
     <!-- DS PROD:   DataStatus   -->

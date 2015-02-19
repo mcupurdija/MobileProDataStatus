@@ -20,6 +20,46 @@
         android:stretchColumns="1" >
 
         <TableRow
+            android:id="@+id/edit_sale_order_dokument_type_no_group"
+            android:layout_marginBottom="8dip"
+            android:focusable="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/edit_sale_order_dokument_type_no_label"
+                style="@style/AddEdit_Label"
+                android:gravity="center_vertical"
+                android:text="@string/dokument_type_no_title" />
+
+            <LinearLayout
+                android:animateLayoutChanges="false"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/edit_sale_order_dokument_no_text"
+                    style="@style/AddEdit_Text_Value"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dip"
+                    android:layout_marginRight="8dip"
+                    android:layout_weight="5"
+                    android:gravity="center_vertical"
+                    android:text="@string/document_no" />
+
+                <Spinner
+                    android:id="@+id/edit_sale_order_dokument_type_spinner"
+                    style="EditEvent_Spinner"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dip"
+                    android:layout_marginRight="16dip"
+                    android:layout_weight="5"
+                    android:gravity="center_vertical" />
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
             android:id="@+id/edit_sale_order_customer_group"
             android:layout_marginBottom="8dip"
             android:focusable="true"
@@ -48,7 +88,8 @@
             android:id="@+id/edit_sale_order_business_unit_group"
             android:layout_marginBottom="8dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/edit_sale_order_business_unit_label"
@@ -67,53 +108,14 @@
                 android:gravity="center_vertical" />
         </TableRow>
 
-        <TableRow
-            android:id="@+id/edit_sale_order_dokument_type_no_group"
-            android:layout_marginBottom="8dip"
-            android:focusable="true"
-            android:gravity="center_vertical" >
-
-            <TextView
-                android:id="@+id/edit_sale_order_dokument_type_no_label"
-                style="@style/AddEdit_Label"
-                android:gravity="center_vertical"
-                android:text="@string/dokument_type_no_title" />
-
-            <LinearLayout
-                android:animateLayoutChanges="false"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:id="@+id/edit_sale_order_dokument_no_text"
-                    style="@style/AddEdit_Text_Value"
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dip"
-                    android:layout_marginRight="16dip"
-                    android:layout_weight="5"
-                    android:gravity="center_vertical"
-                    android:text="@string/document_no" />
-
-                <Spinner
-                    android:id="@+id/edit_sale_order_dokument_type_spinner"
-                    style="EditEvent_Spinner"
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="16dip"
-                    android:layout_marginRight="16dip"
-                    android:layout_weight="5"
-                    android:gravity="center_vertical" />
-            </LinearLayout>
-        </TableRow>
-
         <!-- Contact part -->
 
         <TableRow
             android:id="@+id/edit_sale_order_contact_group"
             android:layout_marginBottom="8dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/edit_sale_order_contact_no_label"
@@ -136,7 +138,8 @@
             android:id="@+id/edit_sale_order_contact_edit_group"
             android:layout_marginBottom="8dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/edit_sale_order_contact_name_phone_label"
@@ -154,7 +157,7 @@
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dip"
-                    android:layout_marginRight="16dip"
+                    android:layout_marginRight="8dip"
                     android:layout_weight="3"
                     android:gravity="center_vertical"
                     android:hint="@string/contact_name_title" />
@@ -164,8 +167,8 @@
                     style="@style/AddEdit_Text_Value"
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dip"
-                    android:layout_marginRight="16dip"
+                    android:layout_marginLeft="8dip"
+                    android:layout_marginRight="8dip"
                     android:layout_weight="3"
                     android:gravity="center_vertical"
                     android:hint="@string/contact_phone_title" />
@@ -175,11 +178,11 @@
                     style="@style/AddEdit_Text_Value"
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dip"
+                    android:layout_marginLeft="8dip"
                     android:layout_marginRight="16dip"
                     android:layout_weight="3"
                     android:gravity="center_vertical"
-                    android:hint="Email 1,Email 2..." />
+                    android:hint="Email 1,2..." />
             </LinearLayout>
         </TableRow>
 
@@ -189,7 +192,8 @@
             android:id="@+id/edit_sale_order_settings_line1_group"
             android:layout_marginBottom="15dp"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <LinearLayout
                 android:layout_span="2"
@@ -202,7 +206,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:animateLayoutChanges="false"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/edit_sale_order_location_label"
@@ -258,7 +263,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:animateLayoutChanges="false"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/edit_sale_order_backorder_layout"
@@ -317,7 +323,8 @@
             android:id="@+id/edit_sale_order_settings_line2_group"
             android:layout_marginBottom="8dp"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <LinearLayout
                 android:layout_span="2"
@@ -331,7 +338,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="4"
                     android:animateLayoutChanges="false"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:visibility="gone" >
 
                     <CheckBox
                         android:id="@+id/edit_sale_order_hide_discount_check_box"
@@ -357,12 +365,12 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:animateLayoutChanges="false"
-                    android:orientation="vertical" >
+                    android:orientation="horizontal" >
 
                     <TextView
                         android:id="@+id/edit_sale_order_quote_no_label"
                         style="@style/AddEdit_Label"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dip"
                         android:layout_marginRight="16dip"
@@ -373,7 +381,7 @@
                         android:id="@+id/edit_sale_order_quote_no_edit_text"
                         style="AddEdit_Value"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="16dip"
                         android:layout_marginRight="16dip"
@@ -385,7 +393,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="8"
                     android:animateLayoutChanges="false"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:visibility="gone" >
 
                     <TextView
                         style="@style/AddEdit_Label"
@@ -441,7 +450,8 @@
         <TableRow
             android:layout_marginBottom="8dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/edit_sale_order_transit_customer_label"
@@ -469,7 +479,8 @@
         <TableRow
             android:layout_marginBottom="8dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 style="@style/AddEdit_Label"
@@ -581,7 +592,8 @@
         <TableRow
             android:layout_marginBottom="8dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 style="@style/AddEdit_Label"
@@ -604,7 +616,8 @@
             android:id="@+id/edit_sale_order_address_invoice_group"
             android:layout_marginBottom="8dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/edit_sale_order_address_invoice_label"
@@ -628,7 +641,8 @@
             android:id="@+id/edit_sale_order_address_invoice_city_zip_group"
             android:layout_marginBottom="8dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/edit_sale_order_address_invoice_city_zip_label"
@@ -668,7 +682,8 @@
             android:id="@+id/edit_sale_order_address_invoice_contact_group"
             android:layout_marginBottom="8dip"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/edit_sale_order_address_invoice_contact_label"
@@ -706,9 +721,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:lines="8"
-                android:maxLines="10"
-                android:minLines="6"
+                android:lines="2"
+                android:maxLines="8"
+                android:minLines="2"
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
                 android:scrollbars="vertical"
@@ -734,9 +749,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:lines="8"
-                android:maxLines="10"
-                android:minLines="6"
+                android:lines="2"
+                android:maxLines="8"
+                android:minLines="2"
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
                 android:scrollbars="vertical"
@@ -750,7 +765,8 @@
             android:id="@+id/edit_sale_order_status_line_group"
             android:layout_marginBottom="15dp"
             android:focusable="true"
-            android:gravity="center_vertical" >
+            android:gravity="center_vertical"
+            android:visibility="gone" >
 
             <LinearLayout
                 android:layout_span="2"

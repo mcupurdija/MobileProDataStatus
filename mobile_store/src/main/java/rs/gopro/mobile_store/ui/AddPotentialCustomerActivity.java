@@ -4,6 +4,7 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.ui.components.CitiesAutocompleteCursorAdapter;
+import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.exceptions.PotentialCustomerValidationException;
@@ -30,11 +31,14 @@ public class AddPotentialCustomerActivity extends BaseActivity {
 
 	private static final String TAG = "AddPotentialCustomerActivity";
 	
+	private String selectedLinkCustomerNo = null;
+	
 	private EditText name, name2, address, address2, phone, email, pib, mb;
-	private AutoCompleteTextView cityPostcode;
+	private AutoCompleteTextView cityPostcode, acCustomerLink;
 	private Spinner customerType, customerPosition;
     
 	private String city, postcode;
+	private CustomerAutocompleteCursorAdapter customerAutocompleteCursorAdapter;
     private CitiesAutocompleteCursorAdapter citiesAutocompleteCursorAdapter;
     private Cursor cityCursorItem;
     private ArrayAdapter<CharSequence> customerTypeAdapter, customerPositionAdapter;
@@ -91,6 +95,18 @@ public class AddPotentialCustomerActivity extends BaseActivity {
 		customerPositionAdapter = ArrayAdapter.createFromResource(this, R.array.pozicija_title_array, android.R.layout.simple_spinner_item);
 		customerPositionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		customerPosition.setAdapter(customerPositionAdapter);
+		
+		acCustomerLink = (AutoCompleteTextView) findViewById(R.id.acCustomerLink);
+		customerAutocompleteCursorAdapter = new CustomerAutocompleteCursorAdapter(this, null);
+		acCustomerLink.setAdapter(customerAutocompleteCursorAdapter);
+		acCustomerLink.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Cursor cursor = (Cursor) customerAutocompleteCursorAdapter.getItem(position);
+				selectedLinkCustomerNo = cursor.getString(1);
+			}
+		});
 	}
 
 	@Override
@@ -98,6 +114,7 @@ public class AddPotentialCustomerActivity extends BaseActivity {
 		
 		outState.putString("city", city);
 		outState.putString("postcode", postcode);
+		outState.putString("selectedLinkCustomerNo", selectedLinkCustomerNo);
 		
 		super.onSaveInstanceState(outState);
 	}
@@ -107,6 +124,7 @@ public class AddPotentialCustomerActivity extends BaseActivity {
 		
 		city = savedInstanceState.getString("city", null);
 		postcode = savedInstanceState.getString("postcode", null);
+		selectedLinkCustomerNo = savedInstanceState.getString("selectedLinkCustomerNo", null);
 		
 		super.onRestoreInstanceState(savedInstanceState);
 	}
@@ -153,10 +171,10 @@ public class AddPotentialCustomerActivity extends BaseActivity {
 		contentValues.put(Customers.NAME_2, name2.getText().toString());
 		
 		contentValues.put(Customers.ADDRESS, address.getText().toString());
-		if (address.getText().toString().trim().length() < 1) {
-			address.requestFocus();
-			throw new PotentialCustomerValidationException("Niste uneli adresu kupca!");
-		}
+//		if (address.getText().toString().trim().length() < 1) {
+//			address.requestFocus();
+//			throw new PotentialCustomerValidationException("Niste uneli adresu kupca!");
+//		}
 		
 		contentValues.put(Customers.ADDRESS_2, address2.getText().toString());
 		
@@ -190,6 +208,12 @@ public class AddPotentialCustomerActivity extends BaseActivity {
 		
 		String[] customerPositionValueArray = getResources().getStringArray(R.array.pozicija_value_array);
 		contentValues.put(Customers.CUSTOMER_POSITION, customerPositionValueArray[customerPosition.getSelectedItemPosition()]);
+		
+		if (selectedLinkCustomerNo != null) {
+			contentValues.put(Customers.CUSTOMER_LINK, selectedLinkCustomerNo);
+		} else {
+			contentValues.putNull(Customers.CUSTOMER_LINK);
+		}
 		
 		contentValues.put(Customers.SALES_PERSON_ID, salesPersonId);
 		

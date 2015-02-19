@@ -178,10 +178,12 @@ public class SetPotentialCustomersSyncObject extends SyncObject {
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.EMAIL, 
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.COMPANY_ID, 
 				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.CITY,
-				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.CUSTOMER_POSITION
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.CUSTOMER_POSITION,
+				Tables.CUSTOMERS+"."+MobileStoreContract.Customers.CUSTOMER_LINK
         };
 		
 		Type[] PROJECTION_TYPE = {
+				String.class,
 				String.class,
 				String.class,
 				String.class,

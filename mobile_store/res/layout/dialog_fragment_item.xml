@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="wrap_content" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -88,7 +88,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dip"
                         android:layout_marginRight="16dip"
-                        android:maxLines="14"
                         android:paddingLeft="12dip"
                         android:paddingRight="12dip"
                         android:singleLine="false"
@@ -135,6 +134,52 @@
 
                     <TextView
                         android:id="@+id/item_inventory_category_value"
+                        style="@style/AddEdit_Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:paddingLeft="12dip"
+                        android:paddingRight="12dip"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                </TableRow>
+                
+                <TableRow
+                    android:id="@+id/item_total_availability_group"
+                    android:layout_marginBottom="1dip"
+                    android:focusable="true"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        style="@style/AddEdit_Label"
+                        android:gravity="center_vertical"
+                        android:text="@string/item_total_availability_label" />
+
+                    <TextView
+                        android:id="@+id/item_total_availability_value"
+                        style="@style/AddEdit_Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginRight="16dip"
+                        android:paddingLeft="12dip"
+                        android:paddingRight="12dip"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                </TableRow>
+                
+                <TableRow
+                    android:id="@+id/item_mpc_group"
+                    android:layout_marginBottom="1dip"
+                    android:focusable="true"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        style="@style/AddEdit_Label"
+                        android:gravity="center_vertical"
+                        android:text="@string/item_mpc_label" />
+
+                    <TextView
+                        android:id="@+id/item_mpc_value"
                         style="@style/AddEdit_Value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

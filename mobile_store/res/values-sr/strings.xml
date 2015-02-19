@@ -50,7 +50,7 @@
     <string name="empty_visits">Nema planiranih poseta.</string>
     <string name="empty_sale_orders">Porudžbine/ponude nisu pronađene.</string>
     <string name="empty_customers">Nema detalja za izabranog kupca.</string>
-    <string name="empty_sale_order_lines">Nema stavki za izabranu porudžbinu/Ponudu</string>
+    <string name="empty_sale_order_lines">Nema stavki za izabranu Porudžbinu/Ponudu</string>
     <string name="empty_recorded_visits">Nema planova i realizacija na odabrani dan.</string>
     <string name="hint_search">Pretraži&#8230;</string>
     <string name="save_button_title">Sačuvaj</string>
@@ -224,7 +224,7 @@
 
     <!-- item -->
     <string name="item_no_label">Br. artikla</string>
-    <string name="item_no_hint">Pronađi artikal&#8230;</string>
+    <string name="item_no_hint">pronađi artikal&#8230;</string>
     <string name="item_desc_label">Opis</string>
     <string name="item_stock_status_label">Količina na stanju</string>
     <string name="item_category_code_label">Kod kategorije</string>
@@ -289,16 +289,16 @@
     <string name="contact_no_label">Kontakt br.</string>
     <string name="toast_update_success">Podaci sačuvani</string>
     <string name="header_label">Podaci o dokumentu</string>
-    <string name="load_item_data_button">Preuzmi podatke o artiklu</string>
+    <string name="load_item_data_button">Preuzmi podatke</string>
     <string name="so_line_item_quantities_text">Količina - izabrana i na stanju</string>
-    <string name="so_line_item_prices_text">Jedinicna cena - bez popusta i sa popustom</string>
+    <string name="so_line_item_prices_text">Jedinična cena - Popust % - Cena sa popustom</string>
     <string name="so_line_item_discounts_text">Rabat izabrani i Rabat C</string>
     <string name="so_line_quote_refused_text">Status odbijanja ponude</string>
     <string name="so_line_avail_to_whole_ship_check_box_text">Dostupno za isporuku u celosti</string>
     <string name="so_line_save_button_text">Sačuvaj promene</string>
     <string name="add_potential_customer_menu_title">Novi kupac</string>
-    <string name="ecc_menu_title">EKK pregled</string>
-    <string name="ecc_activity_title">Pregled EKK</string>
+    <string name="ecc_menu_title">Prodaja 12m</string>
+    <string name="ecc_activity_title">Prodaja 12m</string>
     <string name="cus_trade_agree_menu_title">Pregled TA</string>
     <string name="cus_trade_agree_activity_title">Korisnicki sporazum</string>
     <string name="sync_sub_menu_title">Preuzimanje podataka</string>
@@ -560,5 +560,9 @@
 	<string name="not_available">n/a</string>
 	<string name="please_wait_title">Molimo sačekajte</string>
 	<string name="licence_syncing_title">Licenca se ažurira&#8230;</string>
+	
+	<string name="item_total_availability_label">Ukupna raspoloživost</string>
+	<string name="item_mpc_label">Maloprodajna cena</string>
+	<string name="customer_link_label">Veza sa preduzećem</string>
     
 </resources>

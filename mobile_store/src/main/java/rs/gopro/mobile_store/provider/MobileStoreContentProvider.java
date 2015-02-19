@@ -719,19 +719,13 @@ public class MobileStoreContentProvider extends ContentProvider {
 //			return builder.addTable(Tables.CUSTOMERS).where(
 //					Customers.BLOCKED_STATUS + "= ?", new String[] { query });
 		case CUSTOMERS_CUSTOM_SEARCH:
-			String customerCustomParam = Customers
-					.getCustomSearchFirstParamQuery(uri);
-			String customerStatus = Customers
-					.getCustomSearchSecondParamQuery(uri);
-			builder
-				.addTable(Tables.CUSTOMERS);
+			String customerCustomParam = Customers.getCustomSearchFirstParamQuery(uri);
+			String customerStatus = Customers.getCustomSearchSecondParamQuery(uri);
+			builder.addTable(Tables.CUSTOMERS);
 			if (customerCustomParam != null && customerCustomParam.length() > 0 && !customerCustomParam.equals("noNoOrName")) {
 				builder
-					.where(Customers.CUSTOMER_NO + " like ? OR "
-							+ Customers.NAME + " like ?",
-							new String[] { /* "%" + */
-							customerCustomParam + "%",
-									"%" + customerCustomParam + "%" });
+					.where(Customers.CUSTOMER_NO + " like ? OR " + Customers.NAME + " like ? OR " + Customers.NAME_2 + " like ?",
+							new String[] { /* "%" + */customerCustomParam + "%", "%" + customerCustomParam + "%", "%" + customerCustomParam + "%" });
 			}
 			if (customerStatus != null && customerStatus.length() > 0 && !customerStatus.equals("-1") && !customerStatus.equals("0")) {
 				builder.where(Customers.CUSTOMER_TYPE + "= ?", new String[] { customerStatus });

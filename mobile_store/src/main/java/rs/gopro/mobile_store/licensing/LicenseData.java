@@ -1,7 +1,7 @@
 package rs.gopro.mobile_store.licensing;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeComparator;
 
 
 public class LicenseData {
@@ -13,39 +13,14 @@ public class LicenseData {
 	 */
 	public static String getCurrentSerial() {
 		
-		Calendar calendar1 = GregorianCalendar.getInstance();
-		Calendar calendar2 = GregorianCalendar.getInstance();
+		DateTime d1 = new DateTime(), d2;
 		
-		calendar1.set(calendar1.get(Calendar.YEAR), calendar1.get(Calendar.MONTH), 0, 0, 0, 0);
-		
-		for (LicenseModel lm : LicenseModel.values()) {
+        for (LicenseModel lm : LicenseModel.values()) {
+
+        	d2 = new DateTime(lm.getYear(), lm.getMonth(), 1, 0, 0);
 			
-			calendar2.set(lm.getYear(), lm.getMonth() - 1, 0, 0, 0, 0);
-			if (calendar1.equals(calendar2) || calendar1.before(calendar2)) {
-				return lm.getSerial();
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Metoda koja vraća serijski broj za postavljeni mesec/godinu iz ugrađene liste
-	 * 
-	 * @param month primer: '12'
-	 * @param year  primer: '2015'
-	 * @return Serijski broj kao String, null ako nije pronađen
-	 */
-	public static String getSerialForMonthDate(int month, int year) {
-		
-		Calendar calendar1 = GregorianCalendar.getInstance();
-		Calendar calendar2 = GregorianCalendar.getInstance();
-		
-		calendar1.set(year, month - 1, 0, 0, 0, 0);
-		
-		for (LicenseModel lm : LicenseModel.values()) {
-			calendar2.set(lm.getYear(), lm.getMonth() - 1, 0, 0, 0, 0);
-			if (calendar1.equals(calendar2)) {
-				return lm.getSerial();
+        	if (DateTimeComparator.getDateOnlyInstance().compare(d1, d2) == -1) {
+        		return lm.getSerial();
 			}
 		}
 		return null;

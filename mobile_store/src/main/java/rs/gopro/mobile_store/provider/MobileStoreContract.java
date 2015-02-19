@@ -166,6 +166,8 @@ public class MobileStoreContract {
 		String SYNC_OBJECT_BATCH = "sync_object_batch";
 		String LAST_ECC_SYNC_DATE = "last_ecc_sync_date";
 		
+		String CUSTOMER_LINK = "customer_link";
+		
 		String IS_ACTIVE = "is_active";
 		String IS_DELETED = "is_deleted";
 		String IS_SENT = "is_sent";
@@ -267,6 +269,7 @@ public class MobileStoreContract {
 		String AVAILABLE_TO_WHOLE_SHIPMENT = "available_to_whole_shipment";
 		String PRICE_OTHER = "price_other";
 		String PRICE_TYPE = "price_type";
+		String VAT_RATE = "vat_rate";
 	}
 
 	/**

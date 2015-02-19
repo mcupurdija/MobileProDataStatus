@@ -192,7 +192,7 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 		/** {@inheritDoc} */
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			return getActivity().getLayoutInflater().inflate(R.layout.list_item_sale_order_block, parent, false);
+			return getActivity().getLayoutInflater().inflate(R.layout.list_item_sale_order_block2, parent, false);
 		}
 
 		/** {@inheritDoc} */
@@ -204,19 +204,27 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 				customer_no = cursor.getString(CustomersQuery.CUSTOMER_NO);
 			}
 			final String customer_name = cursor.getString(CustomersQuery.NAME);
+			final String customer_name_2 = cursor.getString(CustomersQuery.NAME_2);
 			final String customer_phone = cursor.getString(CustomersQuery.PHONE);
+			final String customer_city = cursor.getString(CustomersQuery.CITY);
 			
 			final TextView timeView = (TextView) view.findViewById(R.id.block_time);
 			final TextView titleView = (TextView) view.findViewById(R.id.block_title);
-			final TextView subtitleView = (TextView) view.findViewById(R.id.block_subtitle);
+			final TextView subtitleL = (TextView) view.findViewById(R.id.block_subtitleL);
+			final TextView subtitleR = (TextView) view.findViewById(R.id.block_subtitleR);
 			final View primaryTouchTargetView = view.findViewById(R.id.list_item_middle_container);
 			
 			primaryTouchTargetView.setOnLongClickListener(null);
 			UIUtils.setActivatedCompat(primaryTouchTargetView, false);
 			
-			titleView.setText(customer_name);
+			if (customer_name_2 != null && customer_name_2.length() > 0) {
+				titleView.setText(String.format("%s (%s)", customer_name, customer_name_2));
+			} else {
+				titleView.setText(customer_name);
+			}
 			timeView.setText(customer_no);
-			subtitleView.setText(customer_phone);
+			subtitleL.setText(customer_city);
+			subtitleR.setText(customer_phone);
 			
 			primaryTouchTargetView.setOnClickListener(new OnClickListener() {
 				@Override
@@ -234,12 +242,14 @@ public class CustomerFragment extends ListFragment implements LoaderCallbacks<Cu
 	}
 	
 	private interface CustomersQuery {
-		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Customers.CUSTOMER_NO, MobileStoreContract.Customers.NAME, MobileStoreContract.Customers.PHONE };
+		String[] PROJECTION = { BaseColumns._ID, MobileStoreContract.Customers.CUSTOMER_NO, MobileStoreContract.Customers.NAME, MobileStoreContract.Customers.NAME_2, MobileStoreContract.Customers.PHONE, MobileStoreContract.Customers.CITY };
 
 		int ID = 0;
 		int CUSTOMER_NO = 1;
 		int NAME = 2;
-		int PHONE = 3;
+		int NAME_2 = 3;
+		int PHONE = 4;
+		int CITY = 5;
 	}
 	
 }

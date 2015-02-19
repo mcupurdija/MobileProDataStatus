@@ -1,14 +1,22 @@
 package rs.gopro.mobile_store.ui.fragment;
 
+import java.io.StringReader;
+import java.util.List;
+
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.ui.BaseActivity;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
+import rs.gopro.mobile_store.util.csv.CSVDomainReader;
+import rs.gopro.mobile_store.util.exceptions.CSVParseException;
 import rs.gopro.mobile_store.util.LogUtils;
+import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.ItemAvailPerLocationSyncObject;
 import rs.gopro.mobile_store.ws.model.SyncResult;
+import rs.gopro.mobile_store.ws.model.domain.ItemLocations;
+import rs.gopro.mobile_store.ws.model.domain.ItemsDomain;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -53,6 +61,9 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 	private TextView itemAvailabilityLabel;
 	private TextView outstandingPurchaseLines;
 	
+	private TextView item_total_availability_value;
+	private TextView item_mpc_value;
+	
 	private ProgressBar pbLoading;
 
 	private ItemAvailPerLocationSyncObject itemAvailabilitySyncObject;
@@ -67,18 +78,25 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 				if (ItemAvailPerLocationSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(intent.getAction())) {
 					ItemAvailPerLocationSyncObject returnValue = (ItemAvailPerLocationSyncObject) syncResult.getComplexResult();
 					
-					if (returnValue.getpAvailQtyTxt() != null && !returnValue.getpAvailQtyTxt().equals("anyType{}")) {
-						String availibilityMessage = returnValue.getpAvailQtyTxt().replace("\\n", "\n");
-						String[] splitmessage = availibilityMessage.split("\n");
-						if (splitmessage.length > 1) {
-							availibilityMessage = "";
-							for (int i = 0; i < splitmessage.length; i++) {
-								availibilityMessage += "\n" + splitmessage[i];
+					if (returnValue.getcSVString() != null && !returnValue.getcSVString().equals("anyType{}")) {
+						try {
+							List<ItemLocations> parsedItems = CSVDomainReader.parse(new StringReader(returnValue.getcSVString()), ItemLocations.class);
+							StringBuilder sb = new StringBuilder();
+							for (ItemLocations item : parsedItems) {
+								sb.append(item.location + ":  " + item.quantity + "\n");
 							}
+							
+							itemAvailability.setText(sb.toString().trim());
+						} catch (CSVParseException e) {
+							itemAvailability.setText("-");
 						}
-						itemAvailability.setText(availibilityMessage.trim());
+						
+						item_total_availability_value.setText(returnValue.getTotalQtyTxt());
+						item_mpc_value.setText(returnValue.getItemPriceTxt());
 					} else {
 						itemAvailability.setText("-");
+						item_total_availability_value.setText(UIUtils.formatDoubleForUI(0d));
+						item_mpc_value.setText(UIUtils.formatDoubleForUI(0d));
 					}
 					
 					/*
@@ -114,6 +132,8 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 			} else {
 				itemAvailability.setText("-");
 				outstandingPurchaseLines.setText("-");
+				item_total_availability_value.setText(UIUtils.formatDoubleForUI(0d));
+				item_mpc_value.setText(UIUtils.formatDoubleForUI(0d));
 			}
 		}
 	};
@@ -156,6 +176,10 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		itemAvailability = (TextView) view.findViewById(R.id.item_availability_value);
 		itemAvailabilityLabel = (TextView) view.findViewById(R.id.item_availability_label);
 		outstandingPurchaseLines = (TextView) view.findViewById(R.id.item_outstanding_purchase_lines_value);
+		
+		item_total_availability_value = (TextView) view.findViewById(R.id.item_total_availability_value);
+		item_mpc_value = (TextView) view.findViewById(R.id.item_mpc_value);
+		
 		pbLoading = (ProgressBar) view.findViewById(R.id.pbLoading);
 		
 		itemAvailability.setOnClickListener(new View.OnClickListener() {
@@ -269,7 +293,7 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		isStockSyncStarted = true;
 
 		pbLoading.setVisibility(View.VISIBLE);
-		itemAvailabilitySyncObject = new ItemAvailPerLocationSyncObject(itemNo, "", 0, "");
+		itemAvailabilitySyncObject = new ItemAvailPerLocationSyncObject(itemNo, "", 0, "", "", "");
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemAvailabilitySyncObject);
 		getActivity().startService(intent);
@@ -279,7 +303,7 @@ public class ItemPreviewDialogFragment extends DialogFragment implements LoaderM
 		isStockSyncStarted = true;
 
 		pbLoading.setVisibility(View.VISIBLE);
-		itemAvailabilitySyncObject = new ItemAvailPerLocationSyncObject(itemNo, "", 1, "");
+		itemAvailabilitySyncObject = new ItemAvailPerLocationSyncObject(itemNo, "", 1, "", "", "");
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemAvailabilitySyncObject);
 		getActivity().startService(intent);

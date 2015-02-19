@@ -71,21 +71,30 @@ public class SaleOrderContextualMenu implements ActionMode.Callback {
 			String quantity = MobileStoreContract.SaleOrderLines.QUANTITY;
 			String price = MobileStoreContract.SaleOrderLines.PRICE;
 			String discount = MobileStoreContract.SaleOrderLines.REAL_DISCOUNT;
+			String vat_rate = MobileStoreContract.SaleOrderLines.VAT_RATE;
 			
-			String[] projection = new String[] { "sum(" + quantity + "*(" + price + "-("+ price + "*(" + discount + "/100)))" + ")" };
+			double saldo = 0d;
+			double total = 0d;
+			double pdv = 0d;
+			
+			String[] projection = new String[] { "sum(" + quantity + "*(" + price + "-(" + price + "*(" + discount + "/100))))" };
+			String[] projection_with_pdv = new String[] { "round(sum((" + quantity + "*(" + price + "-(" + price + "*(" + discount + "/100))))*(1+" + vat_rate + "/100)), 2)" };
 			Cursor cursor = activity.getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderSaldo(), projection, Tables.SALE_ORDERS + "." + MobileStoreContract.SaleOrders._ID + "=?", new String[] { saleOrderId }, null);
-			
-			double saldo = 0;
-			
-			double pdv = 0;
-			
-			double total = 0;
-			
 			if (cursor.moveToFirst()) {
 				saldo = cursor.getDouble(0);
-				pdv = 0.2*saldo;
-				total = saldo+pdv;
 			}
+			cursor = activity.getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderSaldo(), projection_with_pdv, Tables.SALE_ORDERS + "." + MobileStoreContract.SaleOrders._ID + "=?", new String[] { saleOrderId }, null);
+			if (cursor.moveToFirst()) {
+				total = cursor.getDouble(0);
+				pdv = total - saldo;
+			}
+			cursor.close();
+			
+//			if (cursor.moveToFirst()) {
+//				saldo = cursor.getDouble(0);
+//				pdv = 0.2*saldo;
+//				total = saldo+pdv;
+//			}
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 			builder.setMessage("Iznos bez pdv: " + UIUtils.formatDoubleForUI(saldo) + "\n"

@@ -8,7 +8,6 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrderLines;
 import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrders;
-import rs.gopro.mobile_store.provider.MobileStoreContract.SaleOrdersColumns;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
@@ -17,7 +16,6 @@ import rs.gopro.mobile_store.ui.widget.SaleOrderContextualMenu;
 import rs.gopro.mobile_store.util.ApplicationConstants;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DateUtils;
-import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.DocumentUtils;
 import rs.gopro.mobile_store.util.LogUtils;
 import rs.gopro.mobile_store.util.UIUtils;
@@ -146,25 +144,24 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 				String quantity = MobileStoreContract.SaleOrderLines.QUANTITY;
 				String price = MobileStoreContract.SaleOrderLines.PRICE;
 				String discount = MobileStoreContract.SaleOrderLines.REAL_DISCOUNT;
+				String vat_rate = MobileStoreContract.SaleOrderLines.VAT_RATE;
 				
-				String[] projection = new String[] { "sum(" + quantity + "*(" + price + "-("+ price + "*(" + discount + "/100)))" + ")" };
-				Cursor cursorSum = getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderSaldo(), projection, Tables.SALE_ORDERS + "." + MobileStoreContract.SaleOrders._ID + "=?", new String[] { saleOrderId }, null);
+				double saldo = 0d;
+				double total = 0d;
+				double pdv = 0d;
 				
-				double saldo = 0;
-				
-				double pdv = 0;
-				
-				double total = 0;
-				
-				if (cursorSum.moveToFirst()) {
-					saldo = cursorSum.getDouble(0);
-					pdv = ApplicationConstants.VAT*saldo;
-					total = saldo+pdv;
+				String[] projection = new String[] { "sum(" + quantity + "*(" + price + "-(" + price + "*(" + discount + "/100))))" };
+				String[] projection_with_pdv = new String[] { "round(sum((" + quantity + "*(" + price + "-(" + price + "*(" + discount + "/100))))*(1+" + vat_rate + "/100)), 2)" };
+				Cursor cursor = getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderSaldo(), projection, Tables.SALE_ORDERS + "." + MobileStoreContract.SaleOrders._ID + "=?", new String[] { saleOrderId }, null);
+				if (cursor.moveToFirst()) {
+					saldo = cursor.getDouble(0);
 				}
-				
-				if (cursorSum != null && !cursorSum.isClosed()) {
-					cursorSum.close();
+				cursor = getContentResolver().query(MobileStoreContract.SaleOrders.buildSaleOrderSaldo(), projection_with_pdv, Tables.SALE_ORDERS + "." + MobileStoreContract.SaleOrders._ID + "=?", new String[] { saleOrderId }, null);
+				if (cursor.moveToFirst()) {
+					total = cursor.getDouble(0);
+					pdv = total - saldo;
 				}
+				cursor.close(); 
 				
 				final Dialog dialog = new Dialog(this);
 				dialog.setContentView(R.layout.dialog_sale_order_send_info);
@@ -485,36 +482,38 @@ public class SaleOrdersPreviewActivity extends BaseActivity implements
 			// DORADA DIJALOG ZA UNOS DUZINE TELEFONSKOG RAZGOVORA UKOLIKO JE KOD PORUDZBINE ODABRANA ODGOVARAJUCA VRSTA PRODAJE
 			// DODATA PROVERA VRSTE PRODAJE UKOLIKO NIJE OTVORENA REALIZACIJA ZA ODABRANOG KUPCA
 			
-			String salesType = null;
-			int customerId = -1;
-			String[] values = getResources().getStringArray(R.array.slc1_array);
+//			String salesType = null;
+//			int customerId = -1;
+//			String[] values = getResources().getStringArray(R.array.slc1_array);
+//			
+//			Cursor cursor = getContentResolver().query(MobileStoreContract.SaleOrders.CONTENT_URI, new String[] { SaleOrdersColumns.DOCUMENT_TYPE, SaleOrdersColumns.SHORTCUT_DIMENSION_1_CODE, SaleOrdersColumns.CUSTOMER_ID }, Tables.SALE_ORDERS + "._id=?", new String[] { saleOrderId }, null);
+//			if (cursor.moveToFirst()) {
+//				
+//				salesType = cursor.getString(1);
+//				customerId = cursor.getInt(2);
+//				
+//				if (!postojiOtvorenaPosetaKupcu(customerId) && salesType.equals(values[0]) ) {
+//					DialogUtil.showInfoDialog(this, "Greška", getString(R.string.vrstaProdajeRealizacijaError));
+//					return true;
+//				}
+//				
+//				if (cursor.getInt(0) == 0) {
+//					if (salesType.equals(values[1])) {
+//						telefonskiPozivDijalog(saleOrderId, 1);
+//					} else if (salesType.equals(values[2])) {
+//						telefonskiPozivDijalog(saleOrderId, 2);
+//					} else if (salesType.equals(values[3])) {
+//						telefonskiPozivDijalog(saleOrderId, 3);
+//					} else {
+//						posaljiPorudzbinu(0);
+//					}
+//				} else {
+//					posaljiPorudzbinu(0);
+//				}
+//			}
+//			cursor.close();
 			
-			Cursor cursor = getContentResolver().query(MobileStoreContract.SaleOrders.CONTENT_URI, new String[] { SaleOrdersColumns.DOCUMENT_TYPE, SaleOrdersColumns.SHORTCUT_DIMENSION_1_CODE, SaleOrdersColumns.CUSTOMER_ID }, Tables.SALE_ORDERS + "._id=?", new String[] { saleOrderId }, null);
-			if (cursor.moveToFirst()) {
-				
-				salesType = cursor.getString(1);
-				customerId = cursor.getInt(2);
-				
-				if (!postojiOtvorenaPosetaKupcu(customerId) && salesType.equals(values[0]) ) {
-					DialogUtil.showInfoDialog(this, "Greška", getString(R.string.vrstaProdajeRealizacijaError));
-					return true;
-				}
-				
-				if (cursor.getInt(0) == 0) {
-					if (salesType.equals(values[1])) {
-						telefonskiPozivDijalog(saleOrderId, 1);
-					} else if (salesType.equals(values[2])) {
-						telefonskiPozivDijalog(saleOrderId, 2);
-					} else if (salesType.equals(values[3])) {
-						telefonskiPozivDijalog(saleOrderId, 3);
-					} else {
-						posaljiPorudzbinu(0);
-					}
-				} else {
-					posaljiPorudzbinu(0);
-				}
-			}
-			cursor.close();
+			posaljiPorudzbinu(0);
 			
 			return true;
 		case R.id.clone_sale_order_menu_option:

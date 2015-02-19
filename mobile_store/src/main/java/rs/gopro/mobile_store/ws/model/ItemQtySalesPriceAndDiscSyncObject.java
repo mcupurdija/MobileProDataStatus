@@ -19,8 +19,6 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 	public static String BROADCAST_SYNC_ACTION = "rs.gopro.mobile_store.ITEM_QTY_SALE_PRICE_DISC_SYNC_ACTION";
 
 	private String pItemNoa46;
-	private String pLocationCode;
-	private Integer pCampaignStatus;
 	private Integer pPotentialCustomer;
 	private String pCustomerNoa46;
 	private String pQuantityOnSalesLineAsTxt;
@@ -30,14 +28,11 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 	private Integer pAvailableToWholeShip;
 	private String pQuantityAsTxt;
 	private String pSalesPriceRSDAsTxt;
-	private String pSalesPriceEURAsTxt;
-	private String pRegularPriceRSDAsTxt;
-	private String pMinimumDiscountPctAsTxt;
-	private String pMaximumDiscountPctAsTxt;
 	private String pDiscountPctAsTxt;
 	private String pSubstituteItemNoa46;
 	private String pOutstandingPurchaseLinesTxt;
 	private String pMinimumSalesQuantityTxt;
+	private String pVATRate;
 	
 	public static final Creator<ItemQtySalesPriceAndDiscSyncObject> CREATOR = new Creator<ItemQtySalesPriceAndDiscSyncObject>() {
 
@@ -60,11 +55,8 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 	public ItemQtySalesPriceAndDiscSyncObject(Parcel parcel) {
 		super(parcel);
 		setpItemNoa46(parcel.readString());
-		setpLocationCode(parcel.readString());
-		setpCampaignStatus(parcel.readInt());
 		setpPotentialCustomerNoa46(parcel.readInt());
 		setpCustomerNoa46(parcel.readString());
-		
 		setpQuantityOnSalesLineAsTxt(parcel.readString());
 		setpSalespersonCode(parcel.readString());
 		setpDocumentType(parcel.readInt());
@@ -72,23 +64,18 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		setpAvailableToWholeShip(parcel.readInt());
 		setpQuantityAsTxt(parcel.readString());
 		setpSalesPriceRSDAsTxt(parcel.readString());
-		setpSalesPriceEURAsTxt(parcel.readString());
-		setpRegularPriceRSDAsTxt(parcel.readString());
-		setpMinimumDiscountPctAsTxt(parcel.readString());
-		setpMaximumDiscountPctAsTxt(parcel.readString());
 		setpDiscountPctAsTxt(parcel.readString());
 		setpSubstituteItemNoa46(parcel.readString());
 		setpOutstandingPurchaseLinesTxt(parcel.readString());
 		setpMinimumSalesUnitQuantityTxt(parcel.readString());
+		setpVATRate(parcel.readString());
 	}
 
-	public ItemQtySalesPriceAndDiscSyncObject(String pItemNoa46, String pLocationCode, Integer pCampaignStatus, Integer pPotentialCustomer, String pCustomerNoa46, String pQuantityOnSalesLineAsTxt, String pSalespersonCode,
-			Integer pDocumentType, String pDocumentNoa46, Integer pAvailableToWholeShip, String pQuantityAsTxt, String pSalesPriceRSDAsTxt, String pSalesPriceEURAsTxt, String pRegularPriceRSDAsTxt, String pMinimumDiscountPctAsTxt, String pMaximumDiscountPctAsTxt, String pDiscountPctAsTxt, String pSubstituteItemNoa46, 
-			String pOutstandingPurchaseLinesTxt) {
+	public ItemQtySalesPriceAndDiscSyncObject(String pItemNoa46, Integer pPotentialCustomer, String pCustomerNoa46, String pQuantityOnSalesLineAsTxt, String pSalespersonCode,
+			Integer pDocumentType, String pDocumentNoa46, Integer pAvailableToWholeShip, String pQuantityAsTxt, String pSalesPriceRSDAsTxt, String pDiscountPctAsTxt, String pSubstituteItemNoa46, 
+			String pOutstandingPurchaseLinesTxt, String pVATRate) {
 		super();
 		this.pItemNoa46 = pItemNoa46;
-		this.pLocationCode = pLocationCode;
-		this.pCampaignStatus = pCampaignStatus;
 		this.pPotentialCustomer = pPotentialCustomer;
 		this.pCustomerNoa46 = pCustomerNoa46;
 		this.pQuantityOnSalesLineAsTxt = pQuantityOnSalesLineAsTxt;
@@ -98,14 +85,11 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		this.pAvailableToWholeShip = pAvailableToWholeShip;
 		this.pQuantityAsTxt = pQuantityAsTxt;
 		this.pSalesPriceRSDAsTxt = pSalesPriceRSDAsTxt;
-		this.pSalesPriceEURAsTxt = pSalesPriceEURAsTxt;
-		this.pRegularPriceRSDAsTxt = pRegularPriceRSDAsTxt;
-		this.pMinimumDiscountPctAsTxt = pMinimumDiscountPctAsTxt;
-		this.pMaximumDiscountPctAsTxt = pMaximumDiscountPctAsTxt;
 		this.pDiscountPctAsTxt = pDiscountPctAsTxt;
 		this.pSubstituteItemNoa46 = pSubstituteItemNoa46;
 		this.pOutstandingPurchaseLinesTxt = pOutstandingPurchaseLinesTxt;
 		this.pMinimumSalesQuantityTxt = ""; // can set like this because it is return parameter
+		this.pVATRate = pVATRate;
 	}
 
 	@Override
@@ -117,11 +101,8 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(getStatusMessage());
 		dest.writeString(getpItemNoa46());
-		dest.writeString(getpLocationCode());
-		dest.writeInt(getpCampaignStatus());
 		dest.writeInt(getpPotentialCustomer());
 		dest.writeString(getpCustomerNoa46());
-		
 		dest.writeString(getpQuantityOnSalesLineAsTxt());
 		dest.writeString(getpSalespersonCode());
 		dest.writeInt(getpDocumentType());
@@ -129,14 +110,11 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		dest.writeInt(getpAvailableToWholeShip());
 		dest.writeString(getpQuantityAsTxt());
 		dest.writeString(getpSalesPriceRSDAsTxt());
-		dest.writeString(getpSalesPriceEURAsTxt());
-		dest.writeString(getpRegularPriceRSDAsTxt());
-		dest.writeString(getpMinimumDiscountPctAsTxt());
-		dest.writeString(getpMaximumDiscountPctAsTxt());
 		dest.writeString(getpDiscountPctAsTxt());
 		dest.writeString(getpSubstituteItemNoa46());
 		dest.writeString(getpOutstandingPurchaseLinesTxt());
 		dest.writeString(getpMinimumSalesUnitQuantityTxt());
+		dest.writeString(getpVATRate());
 	}
 
 	@Override
@@ -152,18 +130,6 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		itemNoa46Info.setValue(pItemNoa46);
 		itemNoa46Info.setType(String.class);
 		properies.add(itemNoa46Info);
-
-		PropertyInfo locationCodeInfo = new PropertyInfo();
-		locationCodeInfo.setName("pLocationCode");
-		locationCodeInfo.setValue(pLocationCode);
-		locationCodeInfo.setType(String.class);
-		properies.add(locationCodeInfo);
-
-		PropertyInfo campaignStatusInfo = new PropertyInfo();
-		campaignStatusInfo.setName("pCampaignStatus");
-		campaignStatusInfo.setValue(pCampaignStatus);
-		campaignStatusInfo.setType(Integer.class);
-		properies.add(campaignStatusInfo);
 
 		PropertyInfo potentialCustomerNoa46Info = new PropertyInfo();
 		potentialCustomerNoa46Info.setName("pPotentialCustomer");
@@ -219,30 +185,6 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		salesPriceRSDAsTxtInfo.setType(String.class);
 		properies.add(salesPriceRSDAsTxtInfo);
 
-		PropertyInfo salesPriceEURAsTxtInfo = new PropertyInfo();
-		salesPriceEURAsTxtInfo.setName("pSalesPriceEURAsTxt");
-		salesPriceEURAsTxtInfo.setValue(pSalesPriceEURAsTxt);
-		salesPriceEURAsTxtInfo.setType(String.class);
-		properies.add(salesPriceEURAsTxtInfo);
-		
-		PropertyInfo salesPriceOVSCMPAsTxtInfo = new PropertyInfo();
-		salesPriceOVSCMPAsTxtInfo.setName("pRegularPriceRSDAsTxt");
-		salesPriceOVSCMPAsTxtInfo.setValue(pRegularPriceRSDAsTxt);
-		salesPriceOVSCMPAsTxtInfo.setType(String.class);
-		properies.add(salesPriceOVSCMPAsTxtInfo);
-
-		PropertyInfo minimumDiscountPctAsTxtInfo = new PropertyInfo();
-		minimumDiscountPctAsTxtInfo.setName("pMinimumDiscountPctAsTxt");
-		minimumDiscountPctAsTxtInfo.setValue(pMinimumDiscountPctAsTxt);
-		minimumDiscountPctAsTxtInfo.setType(String.class);
-		properies.add(minimumDiscountPctAsTxtInfo);
-
-		PropertyInfo maximumDiscountPctAsTxtInfo = new PropertyInfo();
-		maximumDiscountPctAsTxtInfo.setName("pMaximumDiscountPctAsTxt");
-		maximumDiscountPctAsTxtInfo.setValue(pMaximumDiscountPctAsTxt);
-		maximumDiscountPctAsTxtInfo.setType(String.class);
-		properies.add(maximumDiscountPctAsTxtInfo);
-
 		PropertyInfo discountPctAsTxtInfo = new PropertyInfo();
 		discountPctAsTxtInfo.setName("pDiscountPctAsTxt");
 		discountPctAsTxtInfo.setValue(pDiscountPctAsTxt);
@@ -266,6 +208,12 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		minimumSalesUnitQuantityTxt.setValue(pMinimumSalesQuantityTxt);
 		minimumSalesUnitQuantityTxt.setType(String.class);
 		properies.add(minimumSalesUnitQuantityTxt);
+		
+		PropertyInfo pVATRateInfo = new PropertyInfo();
+		pVATRateInfo.setName("pVATRate");
+		pVATRateInfo.setValue(pVATRate);
+		pVATRateInfo.setType(String.class);
+		properies.add(pVATRateInfo);
 		
 		return properies;
 	}
@@ -292,16 +240,13 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 			LogUtils.LOGE(TAG, "Bat int format!", ne);
 			this.pAvailableToWholeShip = -1;
 		}
-		this.pMinimumDiscountPctAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pMinimumDiscountPctAsTxt"));
-		this.pMaximumDiscountPctAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pMaximumDiscountPctAsTxt"));
 		this.pQuantityAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pQuantityAsTxt"));
 		this.pSalesPriceRSDAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pSalesPriceRSDAsTxt"));
-		this.pSalesPriceEURAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pSalesPriceEURAsTxt"));
-		this.pRegularPriceRSDAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pRegularPriceRSDAsTxt"));
 		this.pDiscountPctAsTxt = WsDataFormatEnUsLatin.normalizeDouble(soapResponse.getPropertyAsString("pDiscountPctAsTxt"));
 		this.pSubstituteItemNoa46 = soapResponse.getPropertyAsString("pSubstituteItemNoa46");
 		this.pOutstandingPurchaseLinesTxt = soapResponse.getPropertyAsString("pOutstandingPurchaseLinesTxt");
 		this.pMinimumSalesQuantityTxt = soapResponse.getPropertyAsString("pMinimumSalesQuantityTxt");
+		this.pVATRate = soapResponse.getPrimitivePropertyAsString("pVATRate");
 	}
 
 	@Override
@@ -320,22 +265,6 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 
 	public void setpItemNoa46(String pItemNoa46) {
 		this.pItemNoa46 = pItemNoa46;
-	}
-
-	public String getpLocationCode() {
-		return pLocationCode;
-	}
-
-	public void setpLocationCode(String pLocationCode) {
-		this.pLocationCode = pLocationCode;
-	}
-
-	public Integer getpCampaignStatus() {
-		return pCampaignStatus;
-	}
-
-	public void setpCampaignStatus(Integer pCampaignStatus) {
-		this.pCampaignStatus = pCampaignStatus;
 	}
 
 	public String getpCustomerNoa46() {
@@ -402,38 +331,6 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 		this.pSalesPriceRSDAsTxt = pSalesPriceRSDAsTxt;
 	}
 
-	public String getpSalesPriceEURAsTxt() {
-		return pSalesPriceEURAsTxt;
-	}
-
-	public void setpSalesPriceEURAsTxt(String pSalesPriceEURAsTxt) {
-		this.pSalesPriceEURAsTxt = pSalesPriceEURAsTxt;
-	}
-
-	public String getpRegularPriceRSDAsTxt() {
-		return pRegularPriceRSDAsTxt;
-	}
-
-	public void setpRegularPriceRSDAsTxt(String pRegularPriceRSDAsTxt) {
-		this.pRegularPriceRSDAsTxt = pRegularPriceRSDAsTxt;
-	}
-
-	public String getpMinimumDiscountPctAsTxt() {
-		return pMinimumDiscountPctAsTxt;
-	}
-
-	public void setpMinimumDiscountPctAsTxt(String pMinimumDiscountPctAsTxt) {
-		this.pMinimumDiscountPctAsTxt = pMinimumDiscountPctAsTxt;
-	}
-
-	public String getpMaximumDiscountPctAsTxt() {
-		return pMaximumDiscountPctAsTxt;
-	}
-
-	public void setpMaximumDiscountPctAsTxt(String pMaximumDiscountPctAsTxt) {
-		this.pMaximumDiscountPctAsTxt = pMaximumDiscountPctAsTxt;
-	}
-
 	public String getpDiscountPctAsTxt() {
 		return pDiscountPctAsTxt;
 	}
@@ -484,6 +381,14 @@ public class ItemQtySalesPriceAndDiscSyncObject extends SyncObject {
 
 	public void setpPotentialCustomer(Integer pPotentialCustomer) {
 		this.pPotentialCustomer = pPotentialCustomer;
+	}
+
+	public String getpVATRate() {
+		return pVATRate;
+	}
+
+	public void setpVATRate(String pVATRate) {
+		this.pVATRate = pVATRate;
 	}
 	
 }

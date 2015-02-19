@@ -5,7 +5,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.ksoap2.serialization.PropertyInfo;
@@ -405,44 +404,41 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 				MobileStoreContract.SaleOrders.DOCUMENT_TYPE,
 				MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO,
 				MobileStoreContract.Customers.CUSTOMER_NO,
-				MobileStoreContract.SaleOrders.LOCATION_CODE,
-				MobileStoreContract.SaleOrders.SHORTCUT_DIMENSION_1_CODE,
+//				MobileStoreContract.SaleOrders.LOCATION_CODE,
+//				MobileStoreContract.SaleOrders.SHORTCUT_DIMENSION_1_CODE,
 				MobileStoreContract.SaleOrders.EXTERNAL_DOCUMENT_NO,
 				MobileStoreContract.SaleOrders.QUOTE_NO,
-				MobileStoreContract.SalesPerson.SALE_PERSON_NO,
+				MobileStoreContract.SalesPerson.SALE_PERSON_NO
 
 				// this is here like this because of join
-				"sell_to_address_no", "shipp_to_address_no",
-				MobileStoreContract.SaleOrders.REQUESTED_DELIVERY_DATE,
+//				"sell_to_address_no", "shipp_to_address_no",
+//				MobileStoreContract.SaleOrders.REQUESTED_DELIVERY_DATE,
 
-				MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST,
-				MobileStoreContract.Contacts.CONTACT_NO,
-				MobileStoreContract.SaleOrders.CONTACT_NAME,
-				MobileStoreContract.SaleOrders.CONTACT_PHONE,
-				MobileStoreContract.SaleOrders.CONTACT_EMAIL,
+//				MobileStoreContract.SaleOrders.CUST_USES_TRANSIT_CUST,
+//				MobileStoreContract.Contacts.CONTACT_NO,
+//				MobileStoreContract.SaleOrders.CONTACT_NAME,
+//				MobileStoreContract.SaleOrders.CONTACT_PHONE,
+//				MobileStoreContract.SaleOrders.CONTACT_EMAIL,
 
-				MobileStoreContract.SaleOrders.HIDE_REBATE,
-				MobileStoreContract.SaleOrders.FURTHER_SALE,
+//				MobileStoreContract.SaleOrders.HIDE_REBATE,
+//				MobileStoreContract.SaleOrders.FURTHER_SALE,
+//
+//				MobileStoreContract.SaleOrders.PAYMENT_OPTION,
+//				MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS,
+//				MobileStoreContract.SaleOrders.QUOTE_REALIZED_STATUS,
+//				MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS,
+//				MobileStoreContract.SaleOrders.SHIPMENT_METHOD_CODE,
+//				MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE 
+		};
 
-				MobileStoreContract.SaleOrders.PAYMENT_OPTION,
-				MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS,
-				MobileStoreContract.SaleOrders.QUOTE_REALIZED_STATUS,
-				MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS,
-				MobileStoreContract.SaleOrders.SHIPMENT_METHOD_CODE,
-				MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE };
-
-		Type[] PROJECTION_TYPE = { Integer.class, String.class, String.class,
-				String.class, String.class, String.class, String.class,
+		Type[] PROJECTION_TYPE = { 
+				Integer.class,
 				String.class,
-
-				String.class, String.class, Date.class,
-
-				String.class, String.class, String.class, String.class,
 				String.class,
-
-				Integer.class, Integer.class,
-
-				String.class, Integer.class, Integer.class, Integer.class, String.class, String.class };
+				String.class,
+				String.class,
+				String.class 
+		};
 
 		// int _ID = 0;
 		// int DOCUMENT_TYPE = 1;
@@ -474,19 +470,25 @@ public class MobileDeviceSalesDocumentSyncObject extends SyncObject {
 				MobileStoreContract.SaleOrders.SALES_ORDER_DEVICE_NO,
 				MobileStoreContract.SaleOrderLines.LINE_NO,
 				MobileStoreContract.Items.ITEM_NO,
-				MobileStoreContract.SaleOrderLines.LOCATION_CODE,
+//				MobileStoreContract.SaleOrderLines.LOCATION_CODE,
 				MobileStoreContract.SaleOrderLines.QUANTITY,
 				MobileStoreContract.SaleOrderLines.PRICE,
-				MobileStoreContract.SaleOrderLines.REAL_DISCOUNT,
-				// MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS,
-				MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS,
-				MobileStoreContract.SaleOrderLines.BACKORDER_STATUS,
-				MobileStoreContract.SaleOrderLines.AVAILABLE_TO_WHOLE_SHIPMENT };
+				MobileStoreContract.SaleOrderLines.REAL_DISCOUNT
+// 				MobileStoreContract.SaleOrderLines.CAMPAIGN_STATUS,
+//				MobileStoreContract.SaleOrderLines.QUOTE_REFUSED_STATUS,
+//				MobileStoreContract.SaleOrderLines.BACKORDER_STATUS,
+//				MobileStoreContract.SaleOrderLines.AVAILABLE_TO_WHOLE_SHIPMENT 
+		};
 
-		Type[] PROJECTION_TYPE = { Integer.class, String.class, Integer.class,
-				String.class, String.class, Double.class, Double.class,
-				Double.class, Integer.class, Integer.class, Integer.class,
-				Integer.class };
+		Type[] PROJECTION_TYPE = { 
+				Integer.class,
+				String.class,
+				Integer.class,
+				String.class,
+				Double.class,
+				Double.class,
+				Double.class
+		};
 
 		// int _ID = 0;
 		// int DOCUMENT_TYPE = 1;

@@ -32,7 +32,7 @@
                 android:id="@+id/add_customer_name1"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_weight="6"
                 android:inputType="text" />
         </LinearLayout>
 
@@ -54,7 +54,7 @@
                 android:id="@+id/add_customer_name2"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_weight="6"
                 android:inputType="text" />
         </LinearLayout>
 
@@ -76,7 +76,7 @@
                 android:id="@+id/add_customer_address_value"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_weight="6"
                 android:inputType="text" />
         </LinearLayout>
 
@@ -98,7 +98,7 @@
                 android:id="@+id/add_customer_address_value2"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_weight="6"
                 android:inputType="text" />
         </LinearLayout>
 
@@ -120,7 +120,7 @@
                 android:id="@+id/add_customer_city"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_weight="6"
                 android:completionThreshold="1"
                 android:hint="@string/add_customer_city_post_code_hint"
                 android:inputType="textEmailAddress" />
@@ -144,7 +144,7 @@
                 android:id="@+id/add_customer_phone"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_weight="6"
                 android:inputType="phone" />
         </LinearLayout>
 
@@ -166,7 +166,7 @@
                 android:id="@+id/add_customer_email_value"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_weight="6"
                 android:inputType="textEmailAddress" />
         </LinearLayout>
         
@@ -188,7 +188,7 @@
                 android:id="@+id/add_customer_company_vat_no"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_weight="6"
                 android:inputType="number" />
         </LinearLayout>
         
@@ -210,7 +210,7 @@
                 android:id="@+id/add_customer_company_id"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_weight="6"
                 android:inputType="number" />
         </LinearLayout>
 
@@ -233,7 +233,7 @@
                 android:id="@+id/contact_department_input"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_weight="7" />
+                android:layout_weight="6" />
         </LinearLayout>
         
         <LinearLayout
@@ -254,7 +254,30 @@
                 android:id="@+id/contact_position_input"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_weight="7" />
+                android:layout_weight="6" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/contact_link_title"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/customer_link_label"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <AutoCompleteTextView
+                android:id="@+id/acCustomerLink"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:completionThreshold="1"
+                android:inputType="text" />
         </LinearLayout>
     </LinearLayout>
 

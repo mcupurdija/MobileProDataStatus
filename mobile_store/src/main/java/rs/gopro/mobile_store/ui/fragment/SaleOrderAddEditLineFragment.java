@@ -42,9 +42,11 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -55,6 +57,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SaleOrderAddEditLineFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
@@ -99,10 +102,8 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 	
 	private EditText mPrice;
 	private EditText mPriceEur;
-	
 	private EditText mDiscount;
-	private EditText mDiscountMin;
-	private EditText mDiscountMax;
+	private String mVatRate;
 	
 	private CheckBox mAvailableToWholeShipment;
 	private Spinner mBackorderStatus;
@@ -146,11 +147,11 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		if (syncResult.getStatus().equals(SyncStatus.SUCCESS)) {
 			if (ItemQtySalesPriceAndDiscSyncObject.BROADCAST_SYNC_ACTION.equalsIgnoreCase(broadcastAction)) {
 				ItemQtySalesPriceAndDiscSyncObject syncObject = (ItemQtySalesPriceAndDiscSyncObject) syncResult.getComplexResult();
-				mDiscountMin.setText(syncObject.getpMinimumDiscountPctAsTxt());
-				mDiscountMax.setText(syncObject.getpMaximumDiscountPctAsTxt());
 				mQuantityAvailable.setText(syncObject.getpQuantityAsTxt());
-				mDiscount.setText(UIUtils.getDoubleFromUI(syncObject.getpDiscountPctAsTxt()).toString());
+				mDiscount.setText(syncObject.getpDiscountPctAsTxt());
 				mPrice.setText(syncObject.getpSalesPriceRSDAsTxt());
+				mVatRate = syncObject.getpVATRate();
+				
 				if (syncObject.getpSubstituteItemNoa46() != null && !syncObject.getpSubstituteItemNoa46().equals("") && !syncObject.getpSubstituteItemNoa46().equals("anyType{}")) {
 					// mItemNoLable.setText(getResources().getString(R.string.item_no_label));
 					mItemNoLable.setText("Postoji zamenski artikal broj:"+syncObject.getpSubstituteItemNoa46());
@@ -242,18 +243,20 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				try {
+					
+					mQuantity.setText("1");
+					
 					// clear fields
-					if (mDiscountMin != null) {
-						mDiscountMin.setText("");
-						mDiscountMax.setText("");
-						mQuantityAvailable.setText("");
-						mDiscount.setText("");
-						mPrice.setText("");
-					}
+					mQuantityAvailable.setText("");
+					mDiscount.setText("");
+					mPrice.setText("");
 					
 					Cursor cursor = (Cursor) itemAutocompleteAdapter.getItem(arg2);
 					itemId = cursor.getInt(0);
 					saveForm(NOT_THROW_EXCEPTION);
+					
+					InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(mItemAutocomplete.getWindowToken(), 0); 
 				} catch (SaleOrderValidationException e) {
 					LogUtils.LOGE(TAG, "Never should happen!", e);
 				}
@@ -286,7 +289,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			}
 		});
         mPriceEur = (EditText) rootView.findViewById(R.id.so_line_item_sugg_price_value);
-        mPrice.setFocusable(false);
+        //mPrice.setFocusable(false);
         mPriceEur.setFocusable(false);
         
         mDiscount = (EditText) rootView.findViewById(R.id.so_line_item_discount_value);
@@ -306,11 +309,6 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			public void afterTextChanged(Editable s) {
 			}
 		});
-        mDiscountMin = (EditText) rootView.findViewById(R.id.so_line_item_min_discount_value);
-        mDiscountMin.setFocusable(false);
-        mDiscountMax = (EditText) rootView.findViewById(R.id.so_line_item_max_discount_value);
-        mDiscountMax.setFocusable(false);
-        mDiscountMax.setVisibility(View.GONE);
         
         mAvailableToWholeShipment = (CheckBox) rootView.findViewById(R.id.so_line_avail_to_whole_ship_check_box);
         mAvailableToWholeShipment.setVisibility(View.GONE);
@@ -360,8 +358,6 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 				}
 				
 				// clear fields
-				mDiscountMin.setText("");
-				mDiscountMax.setText("");
 				mQuantityAvailable.setText("");
 				mDiscount.setText("");
 				mPrice.setText("");
@@ -489,11 +485,13 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		}
 		try {
 			double price_d = WsDataFormatEnUsLatin.parseForUIDouble(price);
-			double discount_d = WsDataFormatEnUsLatin.parseForUIDouble(discount.replace('.', ','));
+			double discount_d = WsDataFormatEnUsLatin.parseForUIDouble(discount);
 			double discounted_price = price_d - (price_d * (discount_d/100));
 			mPriceEur.setText(UIUtils.formatDoubleForUI(discounted_price));
-		} catch (NumberFormatException e) {
-			LogUtils.LOGE(TAG, "Not cool formats.", e);
+		} catch (Exception e) {
+			Toast toast = Toast.makeText(getActivity(), "Pogrešan format unetih podataka", Toast.LENGTH_SHORT);  
+			toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+			toast.show();
 		}
 	}
 
@@ -550,24 +548,20 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 			
 			String discount = mDiscount.getText().toString().trim();
 			if (discount != null && !discount.equals("")) {
-				localValues.put(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT, UIUtils.getDoubleFromUI(discount.replace('.', ',')));
+				localValues.put(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT, UIUtils.getDoubleFromUI(discount));
 			} else {
 				localValues.putNull(MobileStoreContract.SaleOrderLines.REAL_DISCOUNT);
 			}
 			
-			String discountMin = mDiscountMin.getText().toString().trim();
-			if (discountMin != null && !discountMin.equals("")) {
-				localValues.put(MobileStoreContract.SaleOrderLines.MIN_DISCOUNT, UIUtils.getDoubleFromUI(discountMin));
+			if (mVatRate != null && !mVatRate.equals("")) {
+				localValues.put(MobileStoreContract.SaleOrderLines.VAT_RATE, UIUtils.getDoubleFromUI(mVatRate));
 			} else {
-				localValues.putNull(MobileStoreContract.SaleOrderLines.MIN_DISCOUNT);
+				localValues.putNull(MobileStoreContract.SaleOrderLines.VAT_RATE);
 			}
 			
-			String discountMax = mDiscountMax.getText().toString().trim();
-			if (discountMax != null && !discountMax.equals("")) {
-				localValues.put(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT, UIUtils.getDoubleFromUI(discountMax));
-			} else {
-				localValues.putNull(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT);
-			}
+			localValues.putNull(MobileStoreContract.SaleOrderLines.MIN_DISCOUNT);
+			
+			localValues.putNull(MobileStoreContract.SaleOrderLines.MAX_DISCOUNT);
 			
 			int backorder_status = mBackorderStatus.getSelectedItemPosition();
 			localValues.put(MobileStoreContract.SaleOrderLines.BACKORDER_STATUS, Integer.valueOf(backorder_status));
@@ -815,9 +809,9 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
 		itemLoadProgressDialog = ProgressDialog.show(getActivity(), getActivity().getResources().getString(R.string.dialog_title_item_price_qty_load), getActivity().getResources().getString(R.string.dialog_body_item_price_qty_load), true, true);
 		Intent intent = new Intent(getActivity(), NavisionSyncService.class);
 		String quantity = mQuantity.getText().toString().replace('.', ','); // UIUtils.getDoubleFromUI(mQuantity.getText().toString().replace('.', ','));
-		int campaign_status = mCampaignStatus.getSelectedItemPosition();
+		//int campaign_status = mCampaignStatus.getSelectedItemPosition();
 		int potentialCustomerSignal = isPotentialCustomer(customerId) == false ? 0 : 1;
-		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, mLocation.getSelectedItem().toString(), campaign_status, Integer.valueOf(potentialCustomerSignal),customerNo, quantity, salesPersonNo, documentType, deviceDocumentNo, 0, "", "", "", "", "", "", "", "", "");
+		ItemQtySalesPriceAndDiscSyncObject itemQtySalesPriceAndDiscSyncObject = new ItemQtySalesPriceAndDiscSyncObject(itemNo, Integer.valueOf(potentialCustomerSignal), customerNo, quantity, salesPersonNo, documentType, deviceDocumentNo, 0, "", "", "", "", "", "");
 		intent.putExtra(NavisionSyncService.EXTRA_WS_SYNC_OBJECT, itemQtySalesPriceAndDiscSyncObject);
 		getActivity().startService(intent);
 		
@@ -899,19 +893,7 @@ public class SaleOrderAddEditLineFragment extends Fragment implements
         double discount = -1;
         if (!cursor.isNull(SaleOrderLinesQuery.REAL_DISCOUNT)) {
         	discount = cursor.getDouble(SaleOrderLinesQuery.REAL_DISCOUNT);
-        	mDiscount.setText(String.valueOf(discount));
-        }
-        
-        double discount_min = -1;
-        if (!cursor.isNull(SaleOrderLinesQuery.MIN_DISCOUNT)) {
-        	discount_min = cursor.getDouble(SaleOrderLinesQuery.MIN_DISCOUNT);
-        	mDiscountMin.setText(UIUtils.formatDoubleForUI(discount_min));
-        }
-        
-        double discount_max = -1;
-        if (!cursor.isNull(SaleOrderLinesQuery.MAX_DISCOUNT)) {
-        	discount_max = cursor.getDouble(SaleOrderLinesQuery.MAX_DISCOUNT);
-        	mDiscountMax.setText(UIUtils.formatDoubleForUI(discount_max));
+        	mDiscount.setText(UIUtils.formatDoubleForUI(discount));
         }
         
         int available_to_whole_shipment = -1;

@@ -7,10 +7,10 @@ import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.ui.components.CitiesAutocompleteCursorAdapter;
+import rs.gopro.mobile_store.ui.components.CustomerAutocompleteCursorAdapter;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
 import rs.gopro.mobile_store.util.DialogUtil;
 import rs.gopro.mobile_store.util.LogUtils;
-import rs.gopro.mobile_store.util.UIUtils;
 import rs.gopro.mobile_store.ws.NavisionSyncService;
 import rs.gopro.mobile_store.ws.model.CustomerBalanceSyncObject;
 import rs.gopro.mobile_store.ws.model.SetPotentialCustomersSyncObject;
@@ -43,6 +43,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 public class CustomersViewDetailFragment extends Fragment implements
@@ -52,6 +53,8 @@ public class CustomersViewDetailFragment extends Fragment implements
 	
 	public static final String IS_IN_UPDATE_MODE = "IS_IN_UPDATE_MODE";
 	
+	private String selectedLinkCustomerNo = null;
+	
 	private Uri mCustomerdetailUri;
 	
 	private TextView mCustomer_no;
@@ -60,6 +63,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 	private EditText mAddress;
 	private TextView mCity;
 	private AutoCompleteTextView mPostCode;
+	private AutoCompleteTextView acCustomerLink;
 	private EditText mPhone;
 	private EditText mMobile;
 	private EditText mEmail;
@@ -75,9 +79,12 @@ public class CustomersViewDetailFragment extends Fragment implements
 	private TextView mBalanceCommission;
 	private TextView mPaymentTermsCode;
 	
+	private TableRow customer_link_group;
+	
 	private ActionMode actionMode;
 	private boolean isInUpdateMode = false;
 	
+	private CustomerAutocompleteCursorAdapter customerAutocompleteCursorAdapter;
 	private CitiesAutocompleteCursorAdapter citiesAutocompleteCursorAdapter;
 	private Cursor cityCursorItem;
 	private ArrayAdapter<CharSequence> customerTypeAdapter, customerPositionAdapter;
@@ -221,6 +228,19 @@ public class CustomersViewDetailFragment extends Fragment implements
 		customerPositionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mCustomerPosition.setAdapter(customerPositionAdapter);
 		
+		customer_link_group = (TableRow) rootView.findViewById(R.id.customer_link_group);
+		acCustomerLink = (AutoCompleteTextView) rootView.findViewById(R.id.acCustomerLink);
+		customerAutocompleteCursorAdapter = new CustomerAutocompleteCursorAdapter(getActivity(), null);
+		acCustomerLink.setAdapter(customerAutocompleteCursorAdapter);
+		acCustomerLink.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Cursor cursor = (Cursor) customerAutocompleteCursorAdapter.getItem(position);
+				selectedLinkCustomerNo = cursor.getString(1);
+			}
+		});
+		
         mAddress2 = (EditText) rootView.findViewById(R.id.customer_address2_value);
         mBalanceCommission = (TextView) rootView.findViewById(R.id.customer_balance_commission_value);
         mPaymentTermsCode = (TextView) rootView.findViewById(R.id.customer_payment_terms_code_value);
@@ -254,6 +274,7 @@ public class CustomersViewDetailFragment extends Fragment implements
     		String companyidString = String.valueOf(cursor.getString(CustomerDetailQuery.COMPANY_ID));
     		String varregnoString = cursor.getString(CustomerDetailQuery.VAT_REG_NO);
     		String paymenttermscodeString = cursor.getString(CustomerDetailQuery.PAYMENT_TERMS_CODE);
+    		selectedLinkCustomerNo = cursor.getString(CustomerDetailQuery.CUSTOMER_LINK);
             
             mCustomer_no.setText(customernoString);
             mName.setText(nameString);
@@ -279,6 +300,19 @@ public class CustomersViewDetailFragment extends Fragment implements
             	mCustomerPosition.setSelection(customerPositionList.indexOf(cursor.getString(CustomerDetailQuery.CUSTOMER_POSITION)));
 			} catch (Exception e) {
 				LogUtils.LOGE(TAG, "CustomerPositionArray index out of bounds");
+			}
+            
+            if (isPotentialCustomer(cursor.getInt(CustomerDetailQuery._ID))) {
+            	if (selectedLinkCustomerNo != null) {
+            		Cursor c = getActivity().getContentResolver().query(Customers.CONTENT_URI, new String[] { Customers.CUSTOMER_NO, Customers.NAME }, Customers.CUSTOMER_NO + "=?", new String[] { selectedLinkCustomerNo }, null);
+    				if (c.moveToFirst()) {
+    					acCustomerLink.setText(String.format("%s - %s", c.getString(0), c.getString(1)));
+    				}
+    				c.close();
+				}
+				customer_link_group.setVisibility(View.VISIBLE);
+            } else {
+            	customer_link_group.setVisibility(View.GONE);
 			}
             
             azurirajCustomerBalanceAsCommission(customernoString);
@@ -318,6 +352,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 		mPhone.setFocusable(disable);
 		mCustomerType.setClickable(disable);
 		mCustomerPosition.setClickable(disable);
+		acCustomerLink.setFocusable(disable);
 	}
 	
 	private void saveForm(){
@@ -342,6 +377,12 @@ public class CustomersViewDetailFragment extends Fragment implements
 		
 		String[] customerPositionValueArray = getResources().getStringArray(R.array.pozicija_value_array);
 		contentValues.put(Customers.CUSTOMER_POSITION, customerPositionValueArray[mCustomerPosition.getSelectedItemPosition()]);
+		
+		if (selectedLinkCustomerNo != null) {
+			contentValues.put(Customers.CUSTOMER_LINK, selectedLinkCustomerNo);
+		} else {
+			contentValues.putNull(Customers.CUSTOMER_LINK);
+		}
 		
 		int result = getActivity().getContentResolver().update(mCustomerdetailUri, contentValues, null, null);
 		if (result > 0) {
@@ -447,7 +488,9 @@ public class CustomersViewDetailFragment extends Fragment implements
                 Customers.VAT_REG_NO,
                 Customers.PAYMENT_TERMS_CODE,
                 Customers.CUSTOMER_TYPE,
-                Customers.CUSTOMER_POSITION
+                Customers.CUSTOMER_POSITION,
+                Customers.CUSTOMER_LINK,
+                Customers.CONTACT_COMPANY_NO
         };
 
         int _ID = 0;
@@ -465,6 +508,8 @@ public class CustomersViewDetailFragment extends Fragment implements
         int PAYMENT_TERMS_CODE = 12;
         int CUSTOMER_TYPE = 13;
         int CUSTOMER_POSITION = 14;
+        int CUSTOMER_LINK = 15;
+        int CONTACT_COMPANY_NO = 16;
 	}
 	
 	private void azurirajCustomerBalanceAsCommission(String salesPersonNo) {

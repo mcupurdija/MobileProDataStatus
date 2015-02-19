@@ -130,6 +130,7 @@ CREATE TABLE `customers` (
 	`contact_company_no` TEXT,
 	`sync_object_batch` INTEGER,
 	`last_ecc_sync_date` TEXT DEFAULT NULL,
+	`customer_link` TEXT DEFAULT NULL,
 	`is_active` INTEGER DEFAULT 1,
 	`is_deleted` INTEGER DEFAULT 0,
 	`is_sent` INTEGER DEFAULT 0
@@ -20341,6 +20342,7 @@ CREATE TABLE `sale_order_lines` (
 	`price_eur` REAL,
 	`price_other` REAL,
 	`price_type` INTEGER DEFAULT 0,
+	`vat_rate` REAL,
 	`quote_refused_status` INTEGER,
 	`campaign_status` INTEGER,
 	`verify_status` INTEGER,
@@ -20733,4 +20735,4 @@ CREATE TABLE `app_settings` (
 	`items_sync_warnning_date` TEXT
 );
 
-INSERT INTO `app_settings` (_id, app_version, app_sync_warnning_date, customers_sync_warnning_date, items_sync_warnning_date) VALUES (1, '1.0.0', datetime('now'), datetime('now'), datetime('now'));
+INSERT INTO `app_settings` (_id, app_version, app_sync_warnning_date, customers_sync_warnning_date, items_sync_warnning_date) VALUES (1, '1.1.0', datetime('now'), datetime('now'), datetime('now'));

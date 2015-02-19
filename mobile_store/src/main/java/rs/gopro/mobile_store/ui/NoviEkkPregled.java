@@ -9,6 +9,7 @@ import java.util.List;
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Customers;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ElectronicCardCustomer;
+import rs.gopro.mobile_store.provider.MobileStoreContract.Items;
 import rs.gopro.mobile_store.provider.MobileStoreContract.ItemsColumns;
 import rs.gopro.mobile_store.provider.Tables;
 import rs.gopro.mobile_store.util.ApplicationConstants.SyncStatus;
@@ -277,7 +278,7 @@ public class NoviEkkPregled extends Activity {
 			headers[19] = getString(R.string.el_card_sales_line_last_line_discount_label);
 			headers[20] = getString(R.string.item_desc_label);
 			
-			cursor = context.getContentResolver().query(ElectronicCardCustomer.CONTENT_URI, ElectronicCardCustomerQuery.PROJECTION, ElectronicCardCustomer.CUSTOMER_ID + "=?", new String[] { customerId }, ElectronicCardCustomer.DEFAULT_SORT);
+			cursor = context.getContentResolver().query(ElectronicCardCustomer.CONTENT_URI, ElectronicCardCustomerQuery.PROJECTION, ElectronicCardCustomer.CUSTOMER_ID + "=?", new String[] { customerId }, Tables.ITEMS + "." + Items.DESCRIPTION);
 			
 			if (cursor.moveToFirst()) {
 				for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {

@@ -1228,11 +1228,11 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 				public void onClick(View v) {
 					
 					localyticsSession.tagEvent("REALIZACIJA > NOVA PORUDZBINA");
-					/*
+					
 					Intent newSaleOrderIntent = new Intent(Intent.ACTION_INSERT, MobileStoreContract.SaleOrders.CONTENT_URI);
 					newSaleOrderIntent.putExtra("rs.gopro.mobile_store.extra.CUSTOMER_ID", customerId);
 					startActivityForResult(newSaleOrderIntent, NEW_SALE_ORDER_REQUEST_CODE);
-					*/
+					
 				}
 			});
         	layoutRealizacijaPoklon.setOnClickListener(new View.OnClickListener() {

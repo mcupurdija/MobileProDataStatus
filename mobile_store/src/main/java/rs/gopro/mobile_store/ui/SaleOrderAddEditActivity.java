@@ -200,7 +200,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private String mAction;
     private Uri mUri;
     private String mViewType;
-    private String selectedCustomerNo = null, selectedBusinessUnitNo = null;
+    private String selectedCustomerNo = null;
     private String potentialCustomerNo = null;
     
     private int shippingAddressId = -1;
@@ -208,7 +208,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
     private int contactId = -1;
     private int customerId = -1;
     private int transitCustomerId = -1;
-    private int hasBusinessUnits;
     
     private String orderDate = null;
     
@@ -321,15 +320,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				Cursor cursor = (Cursor) customerAutoCompleteAdapter.getItem(arg2);
 				customerId = cursor.getInt(0);
-				
-				hasBusinessUnits = cursor.getInt(9);
-				if (hasBusinessUnits == 0) {
-					businessUnitSelector.setText(R.string.nemaPoslovnuJedinicu);
-					businessUnitSelector.setClickable(false);
-				} else {
-					businessUnitSelector.setText(R.string.izaberiPoslovnuJedinicu);
-					businessUnitSelector.setClickable(true);
-				}
 				
 				fillOtherCustomerData(customerId);
 				loadAndSetCustomerAddressData(BILLING_ADDRESS_SELECTOR, -1);
@@ -509,8 +499,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 				final String result = customerCursor.getString(codeIndex) + " - "
 						+ customerCursor.getString(nameIndex);
 				customerAutoComplete.setText(result);
-				
-				hasBusinessUnits = customerCursor.getInt(10);
 			}
 			fillOtherCustomerData(customerId);
 		}
@@ -582,27 +570,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			}
 			if (cursor != null && !cursor.isClosed()) {
 				cursor.close();
-			}
-		}
-		
-		if (!data.isNull(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE))) {
-			selectedBusinessUnitNo = data.getString(data.getColumnIndexOrThrow(MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE));
-			Cursor cursor = getContentResolver().query(CustomerBusinessUnits.CONTENT_URI, new String[] { CustomerBusinessUnits._ID, CustomerBusinessUnits.ADDRESS, CustomerBusinessUnits.CITY }, CustomerBusinessUnits.UNIT_NO + "=?", new String[] { selectedBusinessUnitNo }, null);
-			if (cursor.moveToFirst()) {
-				String address = cursor.getString(1);
-				String city = cursor.getString(2);
-				businessUnitSelector.setText(String.format("%s - %s, %s", selectedBusinessUnitNo, address, city));
-				businessUnitSelector.setClickable(true);
-			}
-		} else {
-			if (customerId != -1) {
-				if (hasBusinessUnits == 0) {
-					businessUnitSelector.setText(R.string.nemaPoslovnuJedinicu);
-					businessUnitSelector.setClickable(false);
-				} else {
-					businessUnitSelector.setText(R.string.izaberiPoslovnuJedinicu);
-					businessUnitSelector.setClickable(true);
-				}
 			}
 		}
 		
@@ -867,14 +834,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			//localValues.putNull(MobileStoreContract.SaleOrders.CUSTOMER_ID);
 		}
 		
-		if (hasBusinessUnits == 1 && selectedBusinessUnitNo == null) {
-			throw new SaleOrderValidationException(getString(R.string.obaveznaPoslovnaJedinica));
-		}
-		
-		if (!postojiOtvorenaPosetaKupcu() && salesType.getSelectedItemPosition() == 0) {
-			throw new SaleOrderValidationException(getString(R.string.vrstaProdajeRealizacijaError));
-		}
-		
 //		String transfer_customer_auto_complete = transitCustomerAutoComplete.getText().toString().trim();
 		if (transitCustomerId != -1) {
 			//Cursor customerItemCursor = (Cursor) transitCustomerAutoCompleteAdapter.getItem(transitCustomerAutoCompleteAdapter.getIdForTitle(transfer_customer_auto_complete));
@@ -904,9 +863,9 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		}
 		
 		int backorder_type = backorderType.getSelectedItemPosition();
-		if (backorder_type == 0) {
-			throw new SaleOrderValidationException("Način obrade nije izabran!");
-		}
+//		if (backorder_type == 0) {
+//			throw new SaleOrderValidationException("Način obrade nije izabran!");
+//		}
 		localValues.put(MobileStoreContract.SaleOrders.BACKORDER_SHIPMENT_STATUS, Integer.valueOf(backorder_type));
 		
 		String location = locationType.getSelectedItem().toString();
@@ -1004,12 +963,6 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 		
 		int order_condition_status = orderConditionStatus.getSelectedItemPosition();
 		localValues.put(MobileStoreContract.SaleOrders.ORDER_CONDITION_STATUS, Integer.valueOf(order_condition_status));
-		
-		if (selectedBusinessUnitNo != null) {
-			localValues.put(MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE, selectedBusinessUnitNo);
-		} else {
-			localValues.putNull(MobileStoreContract.SaleOrders.CUSTOMER_BUSINESS_UNIT_CODE);
-		}
 		
 		return localValues;
 	}
@@ -1450,7 +1403,7 @@ public class SaleOrderAddEditActivity  extends BaseActivity implements LoaderCal
 			String unit_no, String unit_name, String city, String post_code,
 			String phone_no, String contact) {
 		
-		selectedBusinessUnitNo = unit_no;
+//		selectedBusinessUnitNo = unit_no;
 		
 		String buttonText = String.format("%s - %s, %s", unit_no, address, city);
 		businessUnitSelector.setText(buttonText);

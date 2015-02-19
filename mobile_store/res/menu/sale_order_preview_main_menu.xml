@@ -12,7 +12,7 @@
      <item
         android:id="@+id/verify_sale_order_action_menu_option"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/contextual_verify_sale_order"/>
+        android:title="@string/contextual_verify_sale_order" android:visible="false"/>
      <item
         android:id="@+id/send_sale_order_action_menu_option"
         android:showAsAction="ifRoom|withText"
@@ -20,13 +20,13 @@
      <item
         android:id="@+id/clone_sale_order_menu_option"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/contextual_clone_sale_order"/>
+        android:title="@string/contextual_clone_sale_order" android:visible="false"/>
      <item
         android:id="@+id/get_new_sale_order_menu_option"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/get_new_sale_order_menu_option"/>
+        android:title="@string/get_new_sale_order_menu_option" android:visible="false"/>
      <item
         android:id="@+id/get_history_sale_order_menu_option"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/contextual_get_history_sale_order"/>
+        android:title="@string/contextual_get_history_sale_order" android:visible="false"/>
 </menu>

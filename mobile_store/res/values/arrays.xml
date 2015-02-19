@@ -9,14 +9,16 @@
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_settings</item>
+        <item>@drawable/ic_action_settings</item>
         <item>@null</item>
         <item>@drawable/ic_action_settings</item>
     </array>
     <string-array name="actions_names">
         <item>Main menu</item>
         <item>Recorded/Planned visits</item>
+        <item>Sale orders</item>
+        <item>Sent orders</item>
         <item>Customers</item>
-        <item>Contacts</item>
         <item>Methods</item>
         <item>Items</item>
         <item>Reports</item>
@@ -25,8 +27,9 @@
     <string-array name="actions_links">
         <item>category://main_menu</item>
         <item>settings://record_visits</item>
+        <item>settings://sale_orders</item>
+        <item>settings://sent_orders</item>
         <item>settings://customers</item>
-        <item>settings://contacts</item>
         <item>settings://methods</item>
         <item>settings://items</item>
         <item>category://reports</item>

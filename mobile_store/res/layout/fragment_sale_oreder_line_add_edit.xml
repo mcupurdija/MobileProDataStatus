@@ -7,25 +7,50 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:padding="8dp" >
 
-        <Button
-            android:id="@+id/so_line_save_button"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
-            android:layout_marginLeft="16dip"
-            android:layout_marginRight="16dip"
-            android:layout_marginTop="6dip"
-            android:gravity="center_vertical"
-            android:text="@string/so_line_save_button_text" />
+            android:orientation="horizontal" >
 
-        <TextView
-            android:id="@+id/so_line_item_no_label"
-            style="@style/AddEdit_Label"
-            android:layout_width="wrap_content"
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dip"
+                android:layout_marginRight="16dip"
+                android:layout_weight="6" />
+
+            <Button
+                android:id="@+id/so_line_save_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="@drawable/white_button"
+                android:text="@string/so_line_save_button_text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/item_no_label" />
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/so_line_item_no_label"
+                style="@style/AddEdit_Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/item_no_label" />
+
+            <TextView
+                android:id="@+id/so_line_disc_label"
+                style="@style/AddEdit_Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:singleLine="true" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,26 +65,19 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="16dip"
                 android:layout_marginRight="16dip"
-                android:layout_weight="7"
-                android:completionThreshold="1"
+                android:layout_weight="6"
+                android:completionThreshold="2"
                 android:hint="@string/item_no_hint"
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-			<TextView
-	            android:id="@+id/so_line_disc_label"
-	            style="@style/AddEdit_Label"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content" />
+
             <Button
                 android:id="@+id/so_line_read_item_data_button"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="16dip"
-                android:layout_marginRight="16dip"
                 android:layout_weight="3"
-                android:gravity="center_vertical"
+                android:background="@drawable/white_button"
                 android:text="@string/load_item_data_button" />
         </LinearLayout>
 
@@ -85,7 +103,7 @@
                 android:layout_marginRight="16dip"
                 android:layout_weight="3"
                 android:inputType="number" />
-            
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -96,8 +114,8 @@
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="45dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:background="@drawable/et_rect"
+                    android:gravity="center"
                     android:text="@string/button_add_label" />
 
                 <Button
@@ -106,8 +124,8 @@
                     android:layout_width="45dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
-                    android:gravity="center"
                     android:background="@drawable/et_rect"
+                    android:gravity="center"
                     android:text="@string/button_subtract_label" />
 
                 <Button
@@ -116,8 +134,8 @@
                     android:layout_width="45dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
-                    android:gravity="center"
                     android:background="@drawable/et_rect"
+                    android:gravity="center"
                     android:text="@string/button_multiply_label"
                     android:visibility="gone" />
             </LinearLayout>
@@ -165,60 +183,28 @@
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dip"
-                android:layout_marginRight="16dip"
-                android:layout_weight="5"
-                android:inputType="numberDecimal" />
-
-            <EditText
-                android:id="@+id/so_line_item_sugg_price_value"
-                style="@style/AddEdit_Text_Value"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dip"
-                android:layout_marginRight="16dip"
-                android:layout_weight="5"
-                android:inputType="numberDecimal" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/so_line_item_discounts_label"
-            style="@style/AddEdit_Label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/so_line_item_discounts_text" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dip"
-            android:orientation="horizontal" >
+                android:layout_marginRight="8dip"
+                android:layout_weight="3"
+                android:digits="0123456789,"
+                android:inputType="text" />
 
             <EditText
                 android:id="@+id/so_line_item_discount_value"
                 style="@style/AddEdit_Text_Value"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dip"
-                android:layout_marginRight="16dip"
-                android:layout_weight="5"
-                android:inputType="numberDecimal" />
+                android:layout_marginLeft="8dip"
+                android:layout_marginRight="8dip"
+                android:layout_weight="2"
+                android:digits="0123456789,"
+                android:inputType="text" />
 
             <EditText
-                android:id="@+id/so_line_item_min_discount_value"
+                android:id="@+id/so_line_item_sugg_price_value"
                 style="@style/AddEdit_Text_Value"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dip"
-                android:layout_marginRight="16dip"
-                android:layout_weight="3"
-                android:inputType="numberDecimal" />
-
-            <EditText
-                android:id="@+id/so_line_item_max_discount_value"
-                style="@style/AddEdit_Text_Value"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dip"
+                android:layout_marginLeft="8dip"
                 android:layout_marginRight="16dip"
                 android:layout_weight="3"
                 android:inputType="numberDecimal" />
@@ -229,7 +215,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dip"
             android:baselineAligned="false"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:visibility="gone" >
 
             <LinearLayout
                 android:layout_width="0px"
@@ -255,6 +242,7 @@
             </LinearLayout>
 
             <!-- invisible one, left here for code behind not to break -->
+
             <LinearLayout
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
@@ -303,7 +291,7 @@
                     android:layout_marginLeft="16dip"
                     android:layout_marginRight="16dip" />
             </LinearLayout>
-            
+
             <LinearLayout
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
@@ -332,7 +320,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:baselineAligned="false"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:visibility="gone" >
 
             <LinearLayout
                 android:layout_width="0px"
