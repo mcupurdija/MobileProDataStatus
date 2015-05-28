@@ -119,6 +119,7 @@ CREATE TABLE `customers` (
 	`post_code` TEXT, 
 	`contact` TEXT, 
 	`phone` TEXT, 
+	`mobile` TEXT, 
 	`email` TEXT, 
 	`customer_currency_code` TEXT, 
 	`payment_terms_code` TEXT, 
@@ -20735,4 +20736,4 @@ CREATE TABLE `app_settings` (
 	`items_sync_warnning_date` TEXT
 );
 
-INSERT INTO `app_settings` (_id, app_version, app_sync_warnning_date, customers_sync_warnning_date, items_sync_warnning_date) VALUES (1, '1.1.0', datetime('now'), datetime('now'), datetime('now'));
+INSERT INTO `app_settings` (_id, app_version, app_sync_warnning_date, customers_sync_warnning_date, items_sync_warnning_date) VALUES (1, '1.2.1', datetime('now'), datetime('now'), datetime('now'));

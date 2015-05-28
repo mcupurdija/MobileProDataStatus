@@ -36,6 +36,7 @@
                     android:layout_marginLeft="5dp"
                     android:completionThreshold="2"
                     android:hint="@string/poklonArtikalItemHint"
+                    android:dropDownWidth="match_parent"
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:singleLine="true" />

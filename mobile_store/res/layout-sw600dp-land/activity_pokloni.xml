@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:gravity="center_vertical" >
+            android:orientation="vertical" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -32,25 +32,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:completionThreshold="2"
+                android:dropDownWidth="match_parent"
                 android:hint="@string/poklonArtikalItemHint"
                 android:imeOptions="actionNext"
                 android:inputType="textMultiLine"
                 android:lines="2"
                 android:maxLines="4"
                 android:minLines="2" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llPokloniKolicina"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/llPokloniArtikal" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/poklonArtikalKolicinaTitle"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginTop="10dp" />
 
             <EditText
                 android:id="@+id/etPokloniKolicina"
@@ -60,19 +55,13 @@
                 android:imeOptions="actionNext"
                 android:inputType="number"
                 android:singleLine="true" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llPokloniKomentar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/llPokloniKolicina" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/poklonArtikalKomentarTitle"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginTop="10dp" />
 
             <EditText
                 android:id="@+id/etPokloniKomentar"

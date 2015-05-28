@@ -210,7 +210,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 		});
         
         mPhone = (EditText) rootView.findViewById(R.id.customer_phone_value);
-        mMobile = (EditText) rootView.findViewById(R.id.customer_phone_mobile_value);
+        mMobile = (EditText) rootView.findViewById(R.id.customer_mobile_phone_value);
         mEmail = (EditText) rootView.findViewById(R.id.customer_email_value);
         mCompanyId = (EditText) rootView.findViewById(R.id.customer_company_id_value);
         mPrimaryContactId = (EditText) rootView.findViewById(R.id.customer_primary_contact_id_value);
@@ -270,6 +270,7 @@ public class CustomersViewDetailFragment extends Fragment implements
     		String cityString = cursor.getString(CustomerDetailQuery.CITY);
     		String postcodeString = cursor.getString(CustomerDetailQuery.POST_CODE);
     		String phoneString = cursor.getString(CustomerDetailQuery.PHONE);
+    		String mobileString = cursor.getString(CustomerDetailQuery.MOBILE);
     		String emailString = cursor.getString(CustomerDetailQuery.EMAIL);
     		String companyidString = String.valueOf(cursor.getString(CustomerDetailQuery.COMPANY_ID));
     		String varregnoString = cursor.getString(CustomerDetailQuery.VAT_REG_NO);
@@ -284,6 +285,7 @@ public class CustomersViewDetailFragment extends Fragment implements
             mCity.setText(cityString);
             mPostCode.setText(postcodeString);
             mPhone.setText(phoneString);
+            mMobile.setText(mobileString);
             mEmail.setText(emailString);
             mCompanyId.setText(companyidString);
             mVarRegNo.setText(varregnoString);
@@ -372,6 +374,7 @@ public class CustomersViewDetailFragment extends Fragment implements
 		contentValues.put(Customers.COMPANY_ID, mCompanyId.getText().toString());
 		contentValues.put(Customers.VAT_REG_NO, mVarRegNo.getText().toString());
 		contentValues.put(Customers.PHONE, mPhone.getText().toString());
+		contentValues.put(Customers.MOBILE, mMobile.getText().toString());
 		
 		contentValues.put(Customers.CUSTOMER_TYPE, mCustomerType.getSelectedItemPosition());
 		
@@ -490,7 +493,8 @@ public class CustomersViewDetailFragment extends Fragment implements
                 Customers.CUSTOMER_TYPE,
                 Customers.CUSTOMER_POSITION,
                 Customers.CUSTOMER_LINK,
-                Customers.CONTACT_COMPANY_NO
+                Customers.CONTACT_COMPANY_NO,
+                Customers.MOBILE
         };
 
         int _ID = 0;
@@ -510,6 +514,7 @@ public class CustomersViewDetailFragment extends Fragment implements
         int CUSTOMER_POSITION = 14;
         int CUSTOMER_LINK = 15;
         int CONTACT_COMPANY_NO = 16;
+        int MOBILE = 17;
 	}
 	
 	private void azurirajCustomerBalanceAsCommission(String salesPersonNo) {

@@ -150,6 +150,7 @@ public class MobileStoreContract {
 		String CITY = "city";
 		String CONTACT = "contact";
 		String PHONE = "phone";
+		String MOBILE = "mobile";
 		String CUSTOMER_CURRENCY_CODE = "customer_currency_code";
 		String PAYMENT_TERMS_CODE = "payment_terms_code";
 		String SALES_PERSON_ID = "sales_person_id";

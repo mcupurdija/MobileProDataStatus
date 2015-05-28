@@ -25,9 +25,10 @@ public class PotentialCustomerDomain extends Domain {
 	public String company_id;
 	public String customer_link;
 	public String position;
+	public String mobile;
 	
 	private static final String[] COLUMNS = new String[] { "customer_no", "name", "name2", "address", "address2", "city", "phone",
-		"customer_currency_code", "sales_person_no", "vat_reg_no", "post_code", "email", "company_id", "customer_link", "position" };
+		"customer_currency_code", "sales_person_no", "vat_reg_no", "post_code", "email", "mobile", "company_id", "customer_link", "position" };
 	
 	public PotentialCustomerDomain() {
 	}
@@ -55,6 +56,7 @@ public class PotentialCustomerDomain extends Domain {
 		contentValues.put(Customers.COMPANY_ID, getCompany_id());
 		contentValues.put(Customers.CUSTOMER_LINK, getCustomer_link());
 		contentValues.put(Customers.CUSTOMER_POSITION, getPosition());
+		contentValues.put(Customers.MOBILE, getMobile());
 		return contentValues;
 	}
 
@@ -183,6 +185,14 @@ public class PotentialCustomerDomain extends Domain {
 
 	public void setPosition(String position) {
 		this.position = position;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
 }

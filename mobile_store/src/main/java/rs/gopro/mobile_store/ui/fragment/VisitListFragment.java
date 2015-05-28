@@ -248,8 +248,7 @@ public class VisitListFragment extends ListFragment implements
         /** {@inheritDoc} */
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            return getActivity().getLayoutInflater().inflate(R.layout.list_item_visit,
-                    parent, false);
+            return getActivity().getLayoutInflater().inflate(R.layout.list_item_visit, parent, false);
         }
 
         /** {@inheritDoc} */
@@ -332,6 +331,7 @@ public class VisitListFragment extends ListFragment implements
                 MobileStoreContract.Customers.CUSTOMER_NO,
                 MobileStoreContract.Customers.NAME,
                 MobileStoreContract.Customers.NAME_2,
+                MobileStoreContract.Customers.CITY,
                 MobileStoreContract.Visits.VISIT_DATE,
                 MobileStoreContract.Visits.VISIT_RESULT,
                 MobileStoreContract.Visits.VISIT_TYPE, 
@@ -344,11 +344,12 @@ public class VisitListFragment extends ListFragment implements
         //int CUSTOMER_ID = 2;
         int CUSTOMER_NO = 3;
         int CUSTOMER_NAME = 4;
-//        int CUSTOMER_NAME2 = 5;
-        int VISIT_DATE = 6;
-//        int VISIT_RESULT = 7;
-        int VISIT_TYPE = 8;
-		int ARRIVAL_TIME = 9;
-		int DEPARTURE_TIME = 10;
+        int CUSTOMER_CITY = 5;
+//        int CUSTOMER_NAME2 = 6;
+        int VISIT_DATE = 7;
+//        int VISIT_RESULT = 8;
+        int VISIT_TYPE = 9;
+		int ARRIVAL_TIME = 10;
+		int DEPARTURE_TIME = 11;
 	}
 }

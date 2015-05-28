@@ -972,8 +972,10 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		dialog.setContentView(R.layout.dialog_realizacija_info);
 		
 		Date datum = null;
-		String naslov = null, kupacSifra = null, kupacNaziv = null, vremed = "", vremeo = null, vreme = null, kilometraza = null, poruka = null;
+		String ime2 = null, grad = null, naslov = null, kupacSifra = null, kupacNaziv = null, vremed = "", vremeo = null, vreme = null, kilometraza = null, poruka = null;
 		
+		TextView tvRealizacijaInfoIme2 = (TextView) dialog.findViewById(R.id.tvRealizacijaInfoIme2);
+		TextView tvRealizacijaInfoGrad = (TextView) dialog.findViewById(R.id.tvRealizacijaInfoGrad);
 		TextView tvRealizacijaInfoDatum = (TextView) dialog.findViewById(R.id.tvRealizacijaInfoDatum);
 		TextView tvRealizacijaInfoVreme = (TextView) dialog.findViewById(R.id.tvRealizacijaInfoVreme);
 		TextView tvRealizacijaInfoKilometraza = (TextView) dialog.findViewById(R.id.tvRealizacijaInfoKilometraza);
@@ -986,6 +988,8 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		kilometraza = cursor.getString(VisitsQuery.ODOMETER);
 		
 		try {
+			ime2 = cursor.getString(VisitsQuery.CUSTOMER_NAME2);
+			grad = cursor.getString(VisitsQuery.CITY);
 			kupacSifra = cursor.getString(VisitsQuery.CUSTOMER_NO);
 			kupacNaziv = cursor.getString(VisitsQuery.CUSTOMER_NAME);
 			datum = dateTimeFormat.parse(cursor.getString(VisitsQuery.VISIT_DATE));
@@ -1033,6 +1037,9 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
 		}
 		
 		dialog.setTitle(naslov);
+		
+		tvRealizacijaInfoIme2.setText("Ime 2: " + ime2);
+		tvRealizacijaInfoGrad.setText("Grad: " + grad);
 		tvRealizacijaInfoDatum.setText(getString(R.string.visit_date_label_title) + " " + dateFormat.format(datum));
 		tvRealizacijaInfoVreme.setText(getString(R.string.visit_time_label_title) + " " + vreme);
 		tvRealizacijaInfoKilometraza.setText(getString(R.string.visit_odometer_label_title) + " " + kilometraza);
@@ -1416,6 +1423,8 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
                 MobileStoreContract.Visits.CUSTOMER_ID,
                 MobileStoreContract.Customers.CUSTOMER_NO,
                 MobileStoreContract.Customers.NAME,
+                MobileStoreContract.Customers.NAME_2,
+                MobileStoreContract.Customers.CITY,
                 MobileStoreContract.Visits.ENTRY_TYPE,
                 MobileStoreContract.Visits.VISIT_STATUS,
                 MobileStoreContract.Visits.ARRIVAL_TIME, 
@@ -1433,17 +1442,19 @@ public class NovaRealizacijaActivity extends BaseActivity implements LoaderCallb
         int CUSTOMER_ID = 1;
         int CUSTOMER_NO = 2;
         int CUSTOMER_NAME = 3;
-//      int ENTRY_TYPE = 4;
-        int VISIT_STATUS = 5;
-		int ARRIVAL_TIME = 6;
-		int DEPARTURE_TIME = 7;
-		int ODOMETER = 8;
-		int NOTE = 9;
-		int VISIT_RESULT = 10;
-		int IS_SENT = 11;
-		int VISIT_DATE = 12;
-//		int ADDRESS_NO = 13;
-		int GIFT_STATUS = 14;
+        int CUSTOMER_NAME2 = 4;
+        int CITY = 5;
+//      int ENTRY_TYPE = 6;
+        int VISIT_STATUS = 7;
+		int ARRIVAL_TIME = 8;
+		int DEPARTURE_TIME = 9;
+		int ODOMETER = 10;
+		int NOTE = 11;
+		int VISIT_RESULT = 12;
+		int IS_SENT = 13;
+		int VISIT_DATE = 14;
+//		int ADDRESS_NO = 15;
+		int GIFT_STATUS = 16;
 	}
 	
 	private interface DefaultCustomerAddressQuery {

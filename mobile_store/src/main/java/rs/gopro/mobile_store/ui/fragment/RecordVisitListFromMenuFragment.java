@@ -5,6 +5,8 @@ import static rs.gopro.mobile_store.util.LogUtils.makeLogTag;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 import rs.gopro.mobile_store.R;
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import rs.gopro.mobile_store.provider.MobileStoreContract.Visits;
@@ -259,8 +261,10 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 		dialog.setContentView(R.layout.dialog_realizacija_info);
 		
 		Date datum = null;
-		String naslov = null, kupacSifra = null, kupacNaziv = null, vremed = "", vremeo = null, vreme = null, kilometraza = null, poruka = null;
+		String ime2 = null, grad = null, naslov = null, kupacSifra = null, kupacNaziv = null, vremed = "", vremeo = null, vreme = null, kilometraza = null, poruka = null;
 		
+		TextView tvRealizacijaInfoIme2 = (TextView) dialog.findViewById(R.id.tvRealizacijaInfoIme2);
+		TextView tvRealizacijaInfoGrad = (TextView) dialog.findViewById(R.id.tvRealizacijaInfoGrad);
 		TextView tvRealizacijaInfoDatum = (TextView) dialog.findViewById(R.id.tvRealizacijaInfoDatum);
 		TextView tvRealizacijaInfoVreme = (TextView) dialog.findViewById(R.id.tvRealizacijaInfoVreme);
 		TextView tvRealizacijaInfoKilometraza = (TextView) dialog.findViewById(R.id.tvRealizacijaInfoKilometraza);
@@ -273,6 +277,8 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 		kilometraza = cursor.getString(RecordedVisitsQuery.ODOMETER);
 		
 		try {
+			ime2 = cursor.getString(RecordedVisitsQuery.CUSTOMER_NAME2);
+			grad = cursor.getString(RecordedVisitsQuery.CITY);
 			kupacSifra = cursor.getString(RecordedVisitsQuery.CUSTOMER_NO);
 			kupacNaziv = cursor.getString(RecordedVisitsQuery.CUSTOMER_NAME);
 			datum = DateUtils.getLocalDbDate(cursor.getString(RecordedVisitsQuery.VISIT_DATE));
@@ -312,6 +318,8 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 		}
 		
 		dialog.setTitle(naslov);
+		tvRealizacijaInfoIme2.setText("Ime 2: " + ime2);
+		tvRealizacijaInfoGrad.setText("Grad: " + grad);
 		tvRealizacijaInfoDatum.setText(getString(R.string.visit_date_label_title) + " " + DateUtils.toDbDate(datum));
 		tvRealizacijaInfoVreme.setText(getString(R.string.visit_time_label_title) + " " + vreme);
 		if (kilometraza != null) {
@@ -362,9 +370,12 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 	        
 //	        String visit_date = UIUtils.formatDate(UIUtils.getDateTime(cursor.getString(VisitsQuery.VISIT_DATE)));
 			
+	        TextView tvName2City = (TextView) view.findViewById(R.id.visit_name2_city);
 	        ((TextView) view.findViewById(R.id.visit_title)).setText(arrivalTime + " - " + departureTime);
 			String customer_no = cursor.getString(RecordedVisitsQuery.CUSTOMER_NO);
-			String customer_name = cursor.getString(RecordedVisitsQuery.CUSTOMER_NAME);//  + cursor.getString(VisitsQuery.CUSTOMER_NAME2);
+			String customer_name = cursor.getString(RecordedVisitsQuery.CUSTOMER_NAME);
+			String customer_name2 = cursor.getString(RecordedVisitsQuery.CUSTOMER_NAME2);
+			String city = cursor.getString(RecordedVisitsQuery.CITY);
         	if (customer_no == null || customer_no.length() < 1) {
         		customer_no = "NEPOZNAT KUPAC";
         		customer_name = "-";
@@ -387,15 +398,22 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
         		
         	if (visit_result == ApplicationConstants.VISIT_TYPE_START_DAY) {
         		customer_no = "POČETAK DANA";
+        		tvName2City.setVisibility(View.GONE);
         	} else if (visit_result == ApplicationConstants.VISIT_TYPE_END_DAY) {
         		customer_no = "KRAJ DANA";
+        		tvName2City.setVisibility(View.GONE);
         	} else if (visit_result == ApplicationConstants.VISIT_TYPE_BACK_HOME) {
         		customer_no = "POVRATAK KUĆI";
+        		tvName2City.setVisibility(View.GONE);
         	} else if (visit_result == ApplicationConstants.VISIT_TYPE_PAUSE) {
         		customer_no = "ODMOR/OSTALO";
-        	}
+        		tvName2City.setVisibility(View.GONE);
+        	} else {
+        		tvName2City.setVisibility(View.VISIBLE);
+			}
         	
 			((TextView) view.findViewById(R.id.visit_subtitle1)).setText(customer_no + " " + customer_name);
+			tvName2City.setText(StringUtils.isNotEmpty(customer_name2) ? String.format("%s - %s", customer_name2, city) : city);
 			((TextView) view.findViewById(R.id.visit_subtitle2)).setText(odometer == -1 ? "-" : "Kilometraža: " + String.valueOf(odometer));
 			((TextView) view.findViewById(R.id.visit_status)).setText(status);
 			
@@ -437,6 +455,7 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 				MobileStoreContract.Customers.CUSTOMER_NO, 
 				MobileStoreContract.Customers.NAME, 
 				MobileStoreContract.Customers.NAME_2,
+				MobileStoreContract.Customers.CITY,
 				MobileStoreContract.Visits.VISIT_DATE, 
 				MobileStoreContract.Visits.VISIT_RESULT, 
 				MobileStoreContract.Visits.VISIT_TYPE, 
@@ -451,14 +470,15 @@ public class RecordVisitListFromMenuFragment extends ListFragment implements Loa
 //		int CUSTOMER_ID = 2;
 		int CUSTOMER_NO = 3;
 		int CUSTOMER_NAME = 4;
-//		int CUSTOMER_NAME2 = 5;
-		int VISIT_DATE = 6;
-		int VISIT_RESULT = 7;
-		int VISIT_TYPE = 8;
-		int ARRIVAL_TIME = 9;
-		int DEPARTURE_TIME = 10;
-		int ODOMETER = 11;
-		int NOTE = 12;
+		int CUSTOMER_NAME2 = 5;
+		int CITY = 6;
+		int VISIT_DATE = 7;
+		int VISIT_RESULT = 8;
+		int VISIT_TYPE = 9;
+		int ARRIVAL_TIME = 10;
+		int DEPARTURE_TIME = 11;
+		int ODOMETER = 12;
+		int NOTE = 13;
 	}
 
 //	@Override

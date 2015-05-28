@@ -29,10 +29,11 @@ public class CustomerDomain extends Domain {
 	public String contact_company_no;
 	public String balance_lcy;
 	public String balance_due_lcy;
+	public String mobile;
 
 	private static final String[] COLUMNS = new String[] { "customer_no", "name", "name2", "address", "address2", 
 		"city", "contact", "phone", "customer_currency_code", "payment_terms_code", "sales_person_no", "vat_reg_no", "post_code", "email", 
-		"company_id", "customer_type", "contact_company_no" };
+		"company_id", "customer_type", "contact_company_no", "mobile" };
 
 	@Override
 	public String[] getCSVMappingStrategy() {
@@ -59,6 +60,7 @@ public class CustomerDomain extends Domain {
 		contentValues.put(Customers.EMAIL, getEmail());
 		contentValues.put(Customers.COMPANY_ID, getCompany_id());
 		contentValues.put(Customers.CUSTOMER_TYPE, getCustomer_type());
+		contentValues.put(Customers.MOBILE, getMobile());
 		//contentValues.put(Customers.BALANCE_LCY, WsDataFormatEnUsLatin.toDoubleFromWs(getBalance_lcy()));
 		//contentValues.put(Customers.BALANCE_DUE_LCY, WsDataFormatEnUsLatin.toDoubleFromWs(getBalance_due_lcy()));
 		
@@ -230,6 +232,14 @@ public class CustomerDomain extends Domain {
 
 	public void setBalance_due_lcy(String balance_due_lcy) {
 		this.balance_due_lcy = balance_due_lcy;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
 }
