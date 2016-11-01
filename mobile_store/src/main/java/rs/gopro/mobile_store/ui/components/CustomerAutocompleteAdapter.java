@@ -1,5 +1,7 @@
 package rs.gopro.mobile_store.ui.components;
 
+import org.apache.commons.lang3.StringUtils;
+
 import rs.gopro.mobile_store.provider.MobileStoreContract;
 import android.content.Context;
 import android.database.Cursor;
@@ -7,7 +9,7 @@ import android.support.v4.widget.SimpleCursorAdapter;
 
 public class CustomerAutocompleteAdapter extends SimpleCursorAdapter {
 
-	private static final String[] CUSTOMER_PROJECTION = new String[] { MobileStoreContract.Customers._ID, MobileStoreContract.Customers.CUSTOMER_NO, MobileStoreContract.Customers.NAME };
+	private static final String[] CUSTOMER_PROJECTION = new String[] { MobileStoreContract.Customers._ID, MobileStoreContract.Customers.CUSTOMER_NO, MobileStoreContract.Customers.NAME, MobileStoreContract.Customers.NAME_2, MobileStoreContract.Customers.CITY };
 	
 	
 	public CustomerAutocompleteAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
@@ -31,7 +33,11 @@ public class CustomerAutocompleteAdapter extends SimpleCursorAdapter {
 	public CharSequence convertToString(Cursor cursor) {
 		final int codeIndex = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.CUSTOMER_NO);
 		final int nameIndex = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME);
-		final String str = cursor.getString(codeIndex) + " - " + cursor.getString(nameIndex);
-		return str;
+		final int name2Index = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.NAME_2);
+		final int cityIndex = cursor.getColumnIndexOrThrow(MobileStoreContract.Customers.CITY);
+		String name2 = cursor.getString(name2Index);
+		String city = cursor.getString(cityIndex);
+		return cursor.getString(codeIndex) + " - " + cursor.getString(nameIndex) + (StringUtils.isNotEmpty(name2) ? " (" + name2 + ")" : "") + (StringUtils.isNotEmpty(city) ? ", " + city : "");
+
 	}
 }

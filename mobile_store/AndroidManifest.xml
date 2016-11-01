@@ -325,7 +325,8 @@
 
         <activity
             android:name=".ui.PokloniActivity"
-            android:label="@string/poklonArtikliActivityTitle" >
+            android:label="@string/poklonArtikliActivityTitle"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
             android:name=".ui.AddMethodActivity"

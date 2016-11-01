@@ -19,6 +19,7 @@
         style="@style/AddEdit_Value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:dropDownWidth="match_parent"
         android:completionThreshold="1" />
 
     <TextView
